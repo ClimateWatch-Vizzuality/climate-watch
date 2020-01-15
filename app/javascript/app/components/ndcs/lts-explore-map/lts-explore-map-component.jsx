@@ -2,11 +2,12 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import ReactTooltip from 'react-tooltip';
-import { Link } from 'react-router-dom';
+import cx from 'classnames';
 import { TabletLandscape } from 'components/responsive';
 import Map from 'components/map';
 import Icon from 'components/icon';
 import ButtonGroup from 'components/button-group';
+import Button from 'components/button';
 import Loading from 'components/loading';
 import ModalMetadata from 'components/modal-metadata';
 import Dropdown from 'components/dropdown';
@@ -198,16 +199,21 @@ class LTSExploreMap extends PureComponent {
                     <ReactTooltip
                       className={styles.tooltipContainer}
                       id="lts-map-tooltip"
-                      delayHide={isTablet ? 0 : 1000}
+                      delayHide={isTablet ? 0 : 3000}
                     >
-                      <Link
+                      <Button
+                        onClick={handleCountryClick}
                         className={tooltipTheme.container}
-                        to={`/ndcs/country/${countryData.id}`}
                       >
-                        <div className={tooltipTheme.countryName}>
+                        <div
+                          className={cx(
+                            tooltipTheme.countryName,
+                            tooltipTheme.link
+                          )}
+                        >
                           {countryData.name}
                         </div>
-                      </Link>
+                      </Button>
                     </ReactTooltip>
                   )}
                   {!isTablet &&
