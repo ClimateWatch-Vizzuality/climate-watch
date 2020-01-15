@@ -5,7 +5,7 @@
   float: left;
   display: flex;
   justify-content: space-between;
-  border-right: solid 2.5px $border-color;
+  border-right: solid 2.5px $gray3;
   height: 45px;
 
   & > :first-child {
@@ -23,7 +23,7 @@
 }
 
 .button {
-  border: solid 2.5px $border-color;
+  border: solid 2.5px $gray3;
   border-radius: 0;
   border-right: 0;
   padding: 0;
