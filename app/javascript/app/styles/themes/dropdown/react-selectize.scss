@@ -1,6 +1,8 @@
 @import '~styles/settings.scss';
 
 $height: 45px;
+$dropdown-border: 2px solid #ECF1FA;
+$dropdown-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.09);
 
 .dropdown :global {
   width: 100%;
@@ -35,9 +37,9 @@ $height: 45px;
         overflow: hidden;
         transition: box-shadow 150ms ease-out;
 
-        &:hover {
-          box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.09);
-        }
+        // &:hover {
+        //   box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.09);
+        // }
 
         .react-selectize-placeholder {
           line-height: 45px;
@@ -202,8 +204,8 @@ $height: 45px;
     &.root-node {
       .react-selectize-control {
         background-color: transparent;
-        border: solid 1px $border-color;
-        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.09);
+        border: $dropdown-border;
+        // box-shadow: $dropdown-box-shadow;
         border-radius: 4px;
         font-size: $font-size;
 
@@ -287,8 +289,8 @@ $height: 45px;
     &.dropdown-menu {
       background: $white;
       color: $theme-color-light;
-      border: solid 1px $border-color;
-      box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.09);
+      border: $dropdown-border;
+      // box-shadow: $dropdown-box-shadow;
       margin-top: -1px;
 
       &.flipped {
@@ -357,7 +359,7 @@ $height: 45px;
 
   .multi-select.react-selectize.root-node .simple-value {
     background: #f2f9fc;
-    border: 1px solid $border-color;
+    border: $dropdown-border;
     border-radius: 2px;
     color: #08c;
   }
@@ -467,7 +469,7 @@ $height: 45px;
   }
 
   .dropdown-menu {
-    border: solid 1px $border-color !important;
+    border: $dropdown-border !important;
   }
 
   .open {
