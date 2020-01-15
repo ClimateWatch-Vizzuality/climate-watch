@@ -2,7 +2,7 @@
 
 .questionCard {
   position: relative;
-  border: solid 2.5px $link-water;
+  border: solid 2.5px $gray3;
   border-radius: 6px;
   padding: 20px 60px 25px;
   clear: both;
@@ -12,7 +12,7 @@
   margin-bottom: 20px;
 
   &:hover {
-    background-color: $catskill-white;
+    background-color: $gray3;
   }
 }
 
