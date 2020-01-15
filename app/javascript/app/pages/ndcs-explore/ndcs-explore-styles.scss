@@ -23,3 +23,12 @@
     flex: 1;
   }
 }
+
+.searchWrapper {
+  margin-bottom: 64px;
+  @include columns(12);
+
+  @media #{$tablet-landscape} {
+    @include columns(6);
+  }
+}
