@@ -89,10 +89,11 @@
 
 .v-secondary {
   background-color: $white;
-  border: solid 1px $border-color;
+  border: solid 2.5px $border-color;
 
   &:hover {
-    background-color: $hover-gray;
+    background-color: $catskill-white;
+    border: none;
   }
 }
 
