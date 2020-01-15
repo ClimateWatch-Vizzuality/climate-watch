@@ -40,7 +40,7 @@ class NDCCountry extends PureComponent {
         />
       ) : (
         <Button
-          variant="primary"
+          variant="secondary"
           link={`/ndcs/country/${match.params.iso}/full`}
           className={styles.viewDocumentButton}
         >
@@ -132,11 +132,8 @@ class NDCCountry extends PureComponent {
                 {!FEATURE_LTS_EXPLORE && renderIntroDropdown()}
                 {FEATURE_LTS_EXPLORE && (
                   <BackButton
-                    directLinksRegexs={[
-                      { regex: /countries\/compare/, label: 'country compare' },
-                      { regex: /countries/, label: 'country' }
-                    ]}
-                    clearRegexs={[/\/ndcs\/country/, /\/ndcs\/compare/]}
+                    backLabel="NDCs Explore"
+                    pathname="/ndcs-explore"
                   />
                 )}
                 {this.renderFullTextDropdown()}

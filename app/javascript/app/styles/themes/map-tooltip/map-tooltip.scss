@@ -25,6 +25,12 @@
   color: $dark-gray;
 }
 
+.link {
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
 .icon {
   margin-left: 30px;
   fill: $white;
