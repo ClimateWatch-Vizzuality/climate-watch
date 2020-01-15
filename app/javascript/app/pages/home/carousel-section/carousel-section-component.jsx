@@ -86,6 +86,7 @@ class CarouselSectionComponent extends Component {
           smImage={slide.smImage}
           bgImage={slide.bgImage}
           altText={slide.altText}
+          topSlide
         />
       ));
 
@@ -99,6 +100,7 @@ class CarouselSectionComponent extends Component {
           buttons={slide.buttons}
           countriesOptions={countriesOptions}
           handleDropDownChange={this.handleDropDownChange}
+          bottomSlide
         />
       ));
 
