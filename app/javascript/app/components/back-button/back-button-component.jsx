@@ -3,32 +3,22 @@ import PropTypes from 'prop-types';
 import Icon from 'components/icon';
 import { Link } from 'react-router-dom';
 import longArrowBack from 'assets/icons/long-arrow-back.svg';
-import { getPreviousLinkTo } from 'app/utils/history';
 import styles from './back-button-styles.scss';
 
 const BackButton = props => {
-  const { goBack, lastPathLabel, pathname } = props;
-  const previousLinkTo = previousLinkTo && getPreviousLinkTo();
+  const { pathname, backLabel } = props;
   return (
     <div className={styles.backButton}>
-      {pathname || (lastPathLabel && previousLinkTo.pathname) ? (
-        <Link to={pathname || previousLinkTo}>
-          <Icon className={styles.backIcon} icon={longArrowBack} />
-          Back to {lastPathLabel}
-        </Link>
-      ) : (
-        <button className={styles.linkButton} onClick={goBack}>
-          <Icon className={styles.backIcon} icon={longArrowBack} />
-          Back
-        </button>
-      )}
+      <Link to={pathname}>
+        <Icon className={styles.backIcon} icon={longArrowBack} />
+        Go to {backLabel}
+      </Link>
     </div>
   );
 };
 
 BackButton.propTypes = {
-  goBack: PropTypes.func.isRequired,
-  lastPathLabel: PropTypes.string,
+  backLabel: PropTypes.string,
   pathname: PropTypes.string
 };
 

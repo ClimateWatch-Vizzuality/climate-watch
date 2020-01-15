@@ -105,13 +105,7 @@ class LTSCountry extends PureComponent {
                   [styles.withSearch]: hasSearch
                 })}
               >
-                <BackButton
-                  directLinksRegexs={[
-                    { regex: /countries\/compare/, label: 'country compare' },
-                    { regex: /countries/, label: 'country' }
-                  ]}
-                  clearRegexs={[/\/lts\/country/, /\/lts\/compare/]}
-                />
+                <BackButton backLabel="LTS Explore" pathname="/lts-explore" />
                 {this.renderFullTextDropdown()}
                 {hasSearch && (
                   <Search
