@@ -38,7 +38,7 @@ const mapStateToProps = (
       link: `https://twitter.com/intent/tweet?url=${url}`
     },
     {
-      label: isEmbed ? 'Copy Embed URL' : 'Copy Link',
+      label: 'Copy Embed URL',
       icon: linkIcon,
       action: copyUrl
     }

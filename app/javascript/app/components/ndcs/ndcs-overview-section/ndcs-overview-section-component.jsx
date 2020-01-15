@@ -9,10 +9,12 @@ import QuestionCard from './question-card';
 
 const NdcsOverviewSection = ({ data, section, location }) => {
   const { title, description, hint, questions, color } = data;
+  const isEmbed = isEmbededComponent(location);
+
   return (
     <div
       className={cx({
-        [styles.commitmentContainer]: !isEmbededComponent(location)
+        [styles.commitmentContainer]: !isEmbed
       })}
     >
       <div className={layout.content}>
@@ -20,7 +22,9 @@ const NdcsOverviewSection = ({ data, section, location }) => {
           <div className={styles.commitmentWrapper}>
             <div className={styles.commitmentText}>
               <div>
-                <h1 className={styles.title}>{title}</h1>
+                <h1 className={styles.title}>{`${
+                  isEmbed ? '' : `${section}. `
+                }${title}`}</h1>
                 <p className={styles.description}>{description}</p>
               </div>
               <p className={styles.hint}>{hint}</p>
