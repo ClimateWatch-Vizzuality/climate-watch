@@ -7,12 +7,12 @@ import { getPreviousLinkTo } from 'app/utils/history';
 import styles from './back-button-styles.scss';
 
 const BackButton = props => {
-  const { goBack, lastPathLabel } = props;
-  const previousLinkTo = getPreviousLinkTo();
+  const { goBack, lastPathLabel, pathname } = props;
+  const previousLinkTo = previousLinkTo && getPreviousLinkTo();
   return (
     <div className={styles.backButton}>
-      {lastPathLabel && previousLinkTo.pathname ? (
-        <Link to={previousLinkTo}>
+      {pathname || (lastPathLabel && previousLinkTo.pathname) ? (
+        <Link to={pathname || previousLinkTo}>
           <Icon className={styles.backIcon} icon={longArrowBack} />
           Back to {lastPathLabel}
         </Link>
@@ -28,7 +28,8 @@ const BackButton = props => {
 
 BackButton.propTypes = {
   goBack: PropTypes.func.isRequired,
-  lastPathLabel: PropTypes.string
+  lastPathLabel: PropTypes.string,
+  pathname: PropTypes.string
 };
 
 export default BackButton;

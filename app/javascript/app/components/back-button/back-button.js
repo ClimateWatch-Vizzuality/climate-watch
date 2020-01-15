@@ -4,15 +4,14 @@ import { withRouter } from 'react-router';
 import Component from './back-button-component';
 
 const Container = props => {
-  const { clearRegexs, directLinksRegexs, history } = props;
-  const lastPathLabel = previousPathLabel(
-    clearRegexs || [],
-    directLinksRegexs || []
-  );
+  const { clearRegexs, directLinksRegexs, history, lastPathLabel } = props;
+  const updatedLastPathLabel =
+    lastPathLabel ||
+    previousPathLabel(clearRegexs || [], directLinksRegexs || []);
   return createElement(Component, {
     ...props,
     goBack: history.goBack,
-    lastPathLabel
+    lastPathLabel: updatedLastPathLabel
   });
 };
 
