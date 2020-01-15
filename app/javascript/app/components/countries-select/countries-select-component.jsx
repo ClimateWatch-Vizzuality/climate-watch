@@ -49,7 +49,7 @@ class CountriesSelect extends PureComponent {
                 autofocus={opened || autofocus}
               />
               {isCompareVisible && (
-                <Button color="plain" link="/countries/compare">
+                <Button variant="secondary" link="/countries/compare">
                   Compare
                 </Button>
               )}

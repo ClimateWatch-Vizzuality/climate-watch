@@ -78,7 +78,7 @@ class CompareGhgChart extends PureComponent {
       <Button
         key="action2"
         className={styles.colEnd}
-        color="yellow"
+        variant="primary"
         link={`/ghg-emissions?breakBy=regions-${CALCULATION_OPTIONS.ABSOLUTE_VALUE.value}&regions=${selectedLocationsFilter}`}
         onClick={handleAnalyticsClick}
       >

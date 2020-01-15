@@ -10,7 +10,7 @@ const SubscribeSection = () => (
   >
     <div className={styles.subscribe}>
       <h2>Sign up for Updates</h2>
-      <Button className={styles.button} color="yellow" link={'/about/contact'}>
+      <Button className={styles.button} variant="primary" link="/about/contact">
         Subscribe
       </Button>
     </div>

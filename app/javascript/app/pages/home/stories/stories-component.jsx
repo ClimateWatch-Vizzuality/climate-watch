@@ -76,7 +76,7 @@ class Stories extends PureComponent {
         <Button
           onClick={this.handleBtnClick}
           className={styles.button}
-          color="white"
+          variant="secondary"
         >
           More Stories
         </Button>

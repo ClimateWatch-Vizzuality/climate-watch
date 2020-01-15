@@ -54,15 +54,13 @@ function ShareButton({
       key={option.label}
     >
       {option.icon &&
-          (withAction && succesfulActions.includes(option.label) ? (
-            <Icon icon={checkIcon} className={styles.icon} />
-          ) : (
-            <Icon icon={option.icon} className={styles.icon} />
-          ))}
+        (withAction && succesfulActions.includes(option.label) ? (
+          <Icon icon={checkIcon} className={styles.icon} />
+        ) : (
+          <Icon icon={option.icon} className={styles.icon} />
+        ))}
       <span className={styles.title}>{option.label}</span>
-      {withDownloadIcon && (
-        <Icon icon={downloadIcon} className={styles.icon} />
-      )}
+      {withDownloadIcon && <Icon icon={downloadIcon} className={styles.icon} />}
     </div>
   );
 
@@ -100,7 +98,7 @@ function ShareButton({
       <Button
         className={cx(styles.shareButton, className)}
         onClick={() => setOpen(true)}
-        color="yellow"
+        variant="primary"
         dataFor="info-tooltip"
         dataTip="Sharermation"
       >

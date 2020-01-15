@@ -34,7 +34,7 @@
   padding: 0;
 }
 
-.yellow {
+.v-primary {
   background-color: $theme-secondary;
 
   &:hover {
@@ -52,7 +52,7 @@
   }
 }
 
-.red {
+.v-danger {
   background-color: $climate-risk-1;
 
   &:hover {
@@ -60,7 +60,7 @@
   }
 }
 
-.twitter {
+.v-twitter {
   background-color: $twitter;
   color: $white;
 
@@ -69,7 +69,7 @@
   }
 }
 
-.facebook {
+.v-facebook {
   background-color: $facebook;
   color: $white;
 
@@ -78,7 +78,7 @@
   }
 }
 
-.google {
+.v-google {
   background-color: $google;
   color: $white;
 
@@ -87,20 +87,12 @@
   }
 }
 
-.white {
+.v-secondary {
   background-color: $white;
   border: solid 1px $border-color;
 
   &:hover {
     background-color: $hover-gray;
-  }
-}
-
-.plain {
-  @extend .white;
-
-  @media #{$desktop} {
-    background-color: transparent;
   }
 }
 

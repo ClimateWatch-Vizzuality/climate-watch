@@ -31,13 +31,7 @@ const ResultCard = props => {
               id={match.idx}
               dangerouslySetInnerHTML={{ __html: match.fragment }} // eslint-disable-line
             />
-            {/* Button onClick just to avoid disable */}
-            <Button
-              className={styles.link}
-              color="white"
-              square
-              onClick={() => true}
-            >
+            <Button className={styles.link} variant="secondary" square onClick={() => true}>
               <Icon icon={iconLink} className={styles.iconLink} />
             </Button>
           </NavLink>

@@ -12,7 +12,7 @@ const Button = props => {
     children,
     className,
     square,
-    color,
+    variant,
     disabled,
     onClick,
     dataFor,
@@ -22,7 +22,7 @@ const Button = props => {
   } = props;
   const classNames = cx(className, styles.button, {
     [styles.square]: square,
-    [styles[color]]: !!color,
+    [styles[`v-${variant}`]]: !!variant,
     [styles.disabled]: disabled || (!onClick && !link && !href)
   });
 
@@ -67,7 +67,7 @@ Button.propTypes = {
   className: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   link: PropTypes.string,
   square: PropTypes.bool,
-  color: PropTypes.string,
+  variant: PropTypes.string,
   disabled: PropTypes.bool,
   onClick: PropTypes.func,
   dataFor: PropTypes.string,

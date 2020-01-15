@@ -55,7 +55,7 @@ class CompareNDCContentOverview extends PureComponent {
     } = this.props;
     const compareButton = (
       <Button
-        color="yellow"
+        variant="primary"
         link={`/ndcs/compare/mitigation?locations=${selectedLocationsFilter}`}
         onClick={handleAnalyticsClick}
       >

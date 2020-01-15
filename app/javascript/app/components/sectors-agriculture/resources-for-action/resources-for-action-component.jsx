@@ -75,7 +75,7 @@ class ResourcesForAction extends PureComponent {
               </p>
             </div>
             <Button
-              color="yellow"
+              variant="primary"
               className={styles.button}
               href="https://ndcpartnership.org/knowledge-portal"
             >
