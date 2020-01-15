@@ -63,12 +63,13 @@ class NDCCountry extends PureComponent {
       );
     }
     return (
-      <div className={styles.compareButton}>
+      <div className={styles.compareButtonContainer}>
         <Button
           variant="primary"
           link={`/ndcs/compare/mitigation?locations=${match.params.iso}`}
+          className={styles.compareButton}
         >
-          {'Compare countries and submissions'}
+          Compare countries and submissions
         </Button>
       </div>
     );

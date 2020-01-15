@@ -40,13 +40,14 @@ class LTSCountry extends PureComponent {
   renderCompareButton() {
     const { match } = this.props;
     return (
-      <div className={styles.compareButton}>
+      <div className={styles.compareButtonContainer}>
         <Button
           variant="primary"
           link={`/lts/compare/mitigation?locations=${match.params.iso}`}
+          className={styles.compareButton}
           disabled
         >
-          {'Compare countries and submissions'}
+          Compare countries and submissions
         </Button>
       </div>
     );
