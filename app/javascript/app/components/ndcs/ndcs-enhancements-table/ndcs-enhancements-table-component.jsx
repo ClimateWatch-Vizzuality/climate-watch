@@ -34,22 +34,19 @@ const NDCSEnhancementsTable = ({
           {renderSearch(handleSearchChange, query)}
         </div>
       )}
-      {!loading &&
-      tableData &&
-      tableData.length > 0 && (
+      {!loading && tableData && tableData.length > 0 && (
         <div className={styles.tableWrapper}>
           <Table
             data={tableData}
             horizontalScroll
             parseHtml
             dynamicRowsHeight
-            setColumnWidth={column => (1160 - (6 + 2) * 10) / 6}
+            setColumnWidth={() => 180}
             defaultColumns={columns}
           />
         </div>
       )}
-      {!loading &&
-      (!tableData || tableData.length <= 0) && (
+      {!loading && (!tableData || tableData.length <= 0) && (
         <NoContent className={styles.noContent} message={noContentMsg} />
       )}
     </div>
@@ -61,6 +58,7 @@ NDCSEnhancementsTable.propTypes = {
   noContentMsg: PropTypes.string,
   query: PropTypes.string,
   tableData: PropTypes.array,
+  columns: PropTypes.array,
   handleSearchChange: PropTypes.func.isRequired
 };
 

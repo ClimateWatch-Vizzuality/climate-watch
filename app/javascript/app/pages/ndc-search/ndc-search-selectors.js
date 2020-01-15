@@ -25,10 +25,11 @@ const getDocumentSelected = createSelector(
 );
 
 export const filterSearchResults = createSelector(
-  [getResultsData, getDocumentSelected],
-  (results, docSelected) => {
+  [getResultsData, getDocumentSelected, getDocQuery],
+  (results, docSelected, docQuery) => {
     if (!results) return null;
-    if (!docSelected) return results;
+    if (!docQuery || docQuery === 'all') return results;
+    if (!docSelected) return null;
     return uniqBy(
       results.filter(d => d.document_type === docSelected.value),
       'location.iso_code3'
@@ -49,6 +50,25 @@ export const getSearchResultsSorted = createSelector(
     });
   }
 );
+export const getResults = createSelector(
+  [getSearchResultsSorted, getDocumentSelected],
+  (results, docSelected) =>
+    results &&
+    results.map(result => {
+      const { iso_code3, name } = result.location;
+      const documentType = result && result.document_type.toUpperCase();
+      const title = `${name} ${!docSelected ? documentType : ''} - ${
+        result.language
+      }`;
+      const slug = `${iso_code3}-${documentType}-${result.language}`;
+
+      return {
+        slug,
+        title,
+        ...result
+      };
+    })
+);
 
 export function getMessageText(search) {
   if (isEmpty(search)) {
@@ -59,5 +79,6 @@ export function getMessageText(search) {
 
 export default {
   getSearchResultsSorted,
+  getResults,
   getMessageText
 };

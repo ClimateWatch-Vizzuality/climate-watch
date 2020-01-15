@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import { deburrUpper } from 'app/utils';
+import { deburrUpper, filterQuery } from 'app/utils';
 import uniqBy from 'lodash/uniqBy';
 import sortBy from 'lodash/sortBy';
 import isEmpty from 'lodash/isEmpty';
@@ -76,24 +76,8 @@ export const tableGetSelectedData = createSelector(
   }
 );
 
-export const tableGetFilteredData = createSelector(
-  [tableGetSelectedData, getQuery],
-  (data, query) => {
-    if (!data || isEmpty(data)) return null;
-    return data.filter(d => {
-      let match = false;
-      Object.keys(d).forEach(col => {
-        if (deburrUpper(d[col]).indexOf(query) > -1) {
-          match = true;
-        }
-      });
-      return match;
-    });
-  }
-);
-
 export const tableRemoveIsoFromData = createSelector(
-  [tableGetFilteredData],
+  [tableGetSelectedData],
   data => {
     if (!data || isEmpty(data)) return null;
 
@@ -146,6 +130,30 @@ export const getDefaultColumns = createSelector(
       const match = indicators.find(indicator => indicator.value === id);
       return match ? match.label : id;
     });
+  }
+);
+
+const getFilteredData = createSelector(
+  [tableRemoveIsoFromData, getDefaultColumns],
+  (data, columnHeaders) => {
+    if (!data || isEmpty(data)) return null;
+    return data.map(d => {
+      const filteredHeadersD = {};
+      Object.keys(d).forEach(k => {
+        if (columnHeaders.includes(k)) {
+          filteredHeadersD[k] = d[k];
+        }
+      });
+      return filteredHeadersD;
+    });
+  }
+);
+
+export const getFilteredDataBySearch = createSelector(
+  [getFilteredData, getQuery],
+  (data, query) => {
+    if (!data || isEmpty(data)) return null;
+    return filterQuery(data, query);
   }
 );
 

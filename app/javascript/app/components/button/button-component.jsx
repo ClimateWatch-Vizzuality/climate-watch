@@ -46,7 +46,7 @@ const Button = props => {
     <NavLink
       className={classNames}
       to={link}
-      onClick={onClick}
+      onClick={disabled ? e => e.preventDefault() : onClick}
       target={target}
       {...tooltipProps}
     >

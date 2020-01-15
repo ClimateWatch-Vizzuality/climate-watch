@@ -9,6 +9,7 @@ import styles from './intro-styles.scss';
 const Intro = props => {
   const {
     title,
+    subtitle,
     description,
     disclaimer,
     theme,
@@ -28,13 +29,18 @@ const Intro = props => {
   return (
     <div className={cx(styles.wrapper, className)}>
       <div className={cx(theme.main, { [styles.withButton]: !!actionButton })}>
-        <h2 className={theme.title}>{title}</h2>
+        <h2 className={theme.title}>
+          {title}
+          {subtitle && <span className={theme.subtitle}>{subtitle}</span>}
+        </h2>
         <TabletLandscape> {actionButton} </TabletLandscape>
       </div>
-      <p
-        className={cx(theme.description, textColumns ? theme.columns : '')}
-        dangerouslySetInnerHTML={{ __html: description }} // eslint-disable-line
-      />
+      {description && (
+        <p
+          className={cx(theme.description, textColumns ? theme.columns : '')}
+          dangerouslySetInnerHTML={{ __html: description }} // eslint-disable-line
+        />
+      )}
       {disclaimer && <p className={styles.disclaimer}>{disclaimer}</p>}
       <TabletPortraitOnly> {actionButton} </TabletPortraitOnly>
     </div>
@@ -42,7 +48,8 @@ const Intro = props => {
 };
 
 Intro.propTypes = {
-  title: PropTypes.string,
+  title: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+  subtitle: PropTypes.string,
   description: PropTypes.string,
   disclaimer: PropTypes.string,
   theme: PropTypes.object,

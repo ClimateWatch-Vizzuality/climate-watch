@@ -2,7 +2,15 @@ import isEmpty from 'lodash/isEmpty';
 
 const activeId = 'ndc';
 const FEATURE_LTS_EXPLORE = process.env.FEATURE_LTS_EXPLORE === 'true';
+const FEATURE_COMMITMENTS_OVERVIEW =
+  process.env.FEATURE_COMMITMENTS_OVERVIEW === 'true';
+
 export default [
+  FEATURE_COMMITMENTS_OVERVIEW && {
+    path: '/ndc-overview',
+    label: 'Overview',
+    activeId
+  },
   {
     path: '/ndcs-content',
     label: 'NDC Content',

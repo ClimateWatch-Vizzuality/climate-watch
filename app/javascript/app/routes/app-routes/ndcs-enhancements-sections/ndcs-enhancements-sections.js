@@ -1,6 +1,3 @@
-import { createElement } from 'react';
-import { Redirect } from 'react-router-dom';
-
 import NDCSEnhancementsViz from 'components/ndcs/ndcs-enhancements-viz';
 import NDCSEnhancementsTable from 'components/ndcs/ndcs-enhancements-table';
 

@@ -39,7 +39,7 @@ node {
     cw_files_prefix = 'climatewatch.org/www.climatewatch.org/climate-watch/'
     user_report_key = '81f6ea43-5c9f-48e0-bdb2-56fc59aafbb4'
   } else {
-    feature_flags_env = feature_flags_env + ' --build-arg FEATURE_LTS_EXPLORE=true'
+    feature_flags_env = feature_flags_env + ' --build-arg FEATURE_LTS_EXPLORE=true --build-arg FEATURE_COMMITMENTS_OVERVIEW=true'
   }
 
   // env vars with build-arg

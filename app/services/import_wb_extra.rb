@@ -32,7 +32,7 @@ class ImportWbExtra
   end
 
   def import_data
-    all_countries = Location.where(location_type: 'COUNTRY')
+    all_countries = Location.all
     not_included_countries = []
 
     all_countries.each do |country|
@@ -53,7 +53,6 @@ class ImportWbExtra
   def create_country_data(country_code, year)
     year_index = (year - FIRST_YEAR)
     country_location = Location.find_by(
-      location_type: 'COUNTRY',
       iso_code3: country_code
     )
 
