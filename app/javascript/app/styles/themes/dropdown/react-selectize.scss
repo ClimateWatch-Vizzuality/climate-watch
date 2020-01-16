@@ -1,12 +1,16 @@
 @import '~styles/settings.scss';
 
 $height: 45px;
-$dropdown-border: 2.5px solid #ECF1FA;
+$dropdown-border: 2.5px solid #ecf1fa;
 $dropdown-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.09);
 
 .dropdown :global {
   width: 100%;
   position: relative;
+
+  .cw__multi-level-dropdown-styles_selector {
+    border: $dropdown-border !important;
+  }
 
   .react-selectize {
     color: $theme-color;
@@ -18,11 +22,7 @@ $dropdown-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.09);
       &.disabled {
         pointer-events: none;
         cursor: not-allowed;
-        background-color: $light-gray;
-
-        .react-selectize-toggle-button-container {
-          opacity: 0;
-        }
+        opacity: 0.5;
       }
 
       .react-selectize-control {
@@ -38,9 +38,9 @@ $dropdown-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.09);
         transition: box-shadow 150ms ease-out;
         border: $dropdown-border;
 
-        // &:hover {
-        //   box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.09);
-        // }
+        &:hover {
+          box-shadow: none !important;
+        }
 
         .react-selectize-placeholder {
           line-height: 45px;
@@ -117,6 +117,11 @@ $dropdown-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.09);
 
         .react-selectize-toggle-button-container {
           width: 32px;
+
+          svg {
+            width: 10px;
+            height: 10px;
+          }
         }
 
         .react-selectize-reset-button-container:hover .react-selectize-reset-button path {
@@ -149,6 +154,7 @@ $dropdown-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.09);
     }
 
     &.dropdown-menu {
+      box-shadow: none;
       box-sizing: border-box;
       overflow: auto;
       position: absolute;
@@ -179,16 +185,15 @@ $dropdown-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.09);
   }
 
   .cw__multiselect-styles_multiSelect {
-    color: pink;
     .multi-select.react-selectize.root-node .simple-value {
       display: inline-block;
       // margin: 2px;
       vertical-align: middle;
-  
+
       .react-selectize-control {
         border: $dropdown-border;
       }
-  
+
       span {
         display: inline-block;
         padding: 2px 5px 4px;
@@ -196,7 +201,6 @@ $dropdown-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.09);
       }
     }
   }
-
 
   .simple-select.react-selectize.root-node .simple-value {
     // margin: 2px;
@@ -300,7 +304,7 @@ $dropdown-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.09);
       color: $theme-color-light;
       border: $dropdown-border;
       // box-shadow: $dropdown-box-shadow;
-      margin-top: -1px;
+      margin-top: -3px;
 
       &.flipped {
         border-top-left-radius: 4px;
