@@ -137,15 +137,17 @@ const getFilteredData = createSelector(
   [tableRemoveIsoFromData, getDefaultColumns],
   (data, columnHeaders) => {
     if (!data || isEmpty(data)) return null;
-    return data.map(d => {
-      const filteredHeadersD = {};
-      Object.keys(d).forEach(k => {
-        if (columnHeaders.includes(k)) {
-          filteredHeadersD[k] = d[k];
-        }
-      });
-      return filteredHeadersD;
-    });
+    return data
+      .map(d => {
+        const filteredHeadersD = {};
+        Object.keys(d).forEach(k => {
+          if (columnHeaders.includes(k)) {
+            filteredHeadersD[k] = d[k];
+          }
+        });
+        return filteredHeadersD;
+      })
+      .filter(d => !d.country.includes('undefined')); // Should be removed when the data is fixed
   }
 );
 
