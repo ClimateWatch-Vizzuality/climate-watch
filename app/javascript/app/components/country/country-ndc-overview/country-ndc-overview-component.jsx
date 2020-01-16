@@ -53,7 +53,7 @@ class CountryNdcOverview extends PureComponent {
     const link = `/ndcs/compare/mitigation?locations=${iso}`;
     return (
       <Button
-        color="white"
+        variant="secondary"
         href={isNdcp ? href : null}
         link={isNdcp ? null : link}
       >
@@ -71,7 +71,7 @@ class CountryNdcOverview extends PureComponent {
     return (
       <Button
         className={styles.exploreBtn}
-        color="yellow"
+        variant="primary"
         href={isNdcp ? href : null}
         link={isNdcp ? null : link}
         onClick={handleAnalyticsClick}

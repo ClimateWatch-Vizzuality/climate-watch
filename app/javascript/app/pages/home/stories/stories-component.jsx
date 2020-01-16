@@ -5,8 +5,8 @@ import { timeFormat } from 'd3-time-format';
 import { handleAnalytics } from 'utils/analytics';
 import StoriesProvider from 'providers/stories-provider';
 import storiesDefaultImage from 'assets/backgrounds/stories-default';
-// import SectionTitle from 'components/section-title';
-import { Icon, Button } from 'cw-components';
+import Button from 'components/button';
+import { Icon } from 'cw-components';
 import yellowWriLogo from 'assets/icons/yellow-wri-logo';
 import { WRI_CLIMATE_BLOG } from 'data/constants';
 import styles from './stories-styles.scss';
@@ -75,7 +75,8 @@ class Stories extends PureComponent {
         </div>
         <Button
           onClick={this.handleBtnClick}
-          theme={{ button: cx(styles.button) }}
+          className={styles.button}
+          variant="secondary"
         >
           More Stories
         </Button>

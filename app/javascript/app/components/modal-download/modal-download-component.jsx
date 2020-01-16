@@ -59,7 +59,7 @@ class ModalDownload extends PureComponent {
           <TextInput
             className={styles.input}
             theme={theme}
-            label={'First name'}
+            label="First name"
             value={this.state.firstName}
             inputType="text"
             onChange={e => this.handleChange(e, 'firstName')}
@@ -69,7 +69,7 @@ class ModalDownload extends PureComponent {
           <TextInput
             className={styles.input}
             theme={theme}
-            label={'Last name'}
+            label="Last name"
             value={this.state.lastName}
             inputType="text"
             onChange={e => this.handleChange(e, 'lastName')}
@@ -80,7 +80,7 @@ class ModalDownload extends PureComponent {
               className={styles.input}
               theme={theme}
               inputType="email"
-              label={'Email'}
+              label="Email"
               value={this.state.email}
               onChange={e => this.handleChange(e, 'email')}
               required={requiredError}
@@ -88,7 +88,7 @@ class ModalDownload extends PureComponent {
             <CheckInput
               className={styles.checkbox}
               checked={this.state.subscription}
-              label={'Subscribe to email updates'}
+              label="Subscribe to email updates"
               onChange={e => this.updateCheckValue(e, 'subscription')}
               toggleFirst
               disabled={!this.state.email && true}
@@ -102,7 +102,8 @@ class ModalDownload extends PureComponent {
             label="Country"
             options={countries}
             onValueChange={selected =>
-              this.updateDropdownValue(selected, 'country')}
+              this.updateDropdownValue(selected, 'country')
+            }
             value={this.state.country}
             hideResetButton
             optional
@@ -112,7 +113,7 @@ class ModalDownload extends PureComponent {
             className={styles.input}
             theme={theme}
             inputType="text"
-            label={'Organization'}
+            label="Organization"
             value={this.state.organization}
             onChange={e => this.handleChange(e, 'organization')}
             required={requiredError}
@@ -123,7 +124,8 @@ class ModalDownload extends PureComponent {
             label="Sector"
             options={sectors}
             onValueChange={selected =>
-              this.updateDropdownValue(selected, 'sector')}
+              this.updateDropdownValue(selected, 'sector')
+            }
             value={this.state.sector}
             hideResetButton
             optional
@@ -133,7 +135,7 @@ class ModalDownload extends PureComponent {
             className={styles.input}
             theme={theme}
             inputType="textarea"
-            label={'How do you intend to use the data?'}
+            label="How do you intend to use the data?"
             value={this.state.explanation}
             onChange={e => this.handleChange(e, 'explanation')}
             optional
@@ -141,9 +143,7 @@ class ModalDownload extends PureComponent {
 
           <CheckInput
             checked={this.state.testUser}
-            label={
-              'Do you want to test new developments of Climate Watch platform?'
-            }
+            label="Do you want to test new developments of Climate Watch platform?"
             onChange={e => this.updateCheckValue(e, 'testUser')}
             toggleFirst
             disabled={!this.state.email && true}
@@ -154,7 +154,7 @@ class ModalDownload extends PureComponent {
         <Button
           type="submit"
           onClick={onSubmit}
-          color="yellow"
+          variant="primary"
           className={styles.downloadButton}
         >
           {`Download ${downloadSize ? `(${downloadSize})` : ''}`}

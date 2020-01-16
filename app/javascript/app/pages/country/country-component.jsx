@@ -42,7 +42,7 @@ class Country extends PureComponent {
             <Intro title={country.name} description={description} />
             {!isPageContained && (
               <Button
-                color="yellow"
+                variant="primary"
                 link={`/countries/compare?locations=${country.iso}`}
               >
                 Compare

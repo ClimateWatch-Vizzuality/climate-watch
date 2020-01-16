@@ -13,17 +13,8 @@
   text-transform: capitalize;
   color: $theme-color;
   cursor: pointer;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.09);
-  transition: box-shadow 150ms ease-out;
+  transition: background-color 150ms ease-out;
   min-width: 25px;
-
-  &:hover {
-    box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.09);
-  }
-
-  &.noSpace {
-    padding: 0;
-  }
 
   &:disabled {
     cursor: not-allowed;
@@ -38,97 +29,81 @@
   }
 }
 
-.noBox {
-  width: 45px;
-  background-color: transparent;
-  box-shadow: none;
-
-  &:hover {
-    box-shadow: none;
-  }
-}
-
 .square {
   width: 45px;
   padding: 0;
 }
 
-.transparent {
-  background-color: transparent;
-  border: solid 1px rgba($white, 0.3);
-}
-
-.withShadow {
-  transition: box-shadow 150ms ease-out;
+.v-primary {
+  background-color: $theme-secondary;
 
   &:hover {
-    box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.09);
+    background-color: $theme-secondary-dark;
+  }
+
+  &.disabled {
+    background-color: rgba($theme-secondary, 0.6);
+    color: rgba($theme-color, 0.6);
+    cursor: not-allowed;
+
+    svg {
+      fill: rgba($theme-color, 0.6);
+    }
   }
 }
 
-.yellow {
-  background-color: $theme-secondary;
-
-  @extend .withShadow;
-}
-
-.red {
+.v-danger {
   background-color: $climate-risk-1;
 
-  @extend .withShadow;
+  &:hover {
+    background-color: darken($climate-risk-1, 10%);
+  }
 }
 
-.twitter {
+.v-twitter {
   background-color: $twitter;
   color: $white;
 
-  @extend .withShadow;
+  &:hover {
+    background-color: darken($twitter, 10%);
+  }
 }
 
-.facebook {
+.v-facebook {
   background-color: $facebook;
   color: $white;
 
-  @extend .withShadow;
+  &:hover {
+    background-color: darken($facebook, 10%);
+  }
 }
 
-.google {
+.v-google {
   background-color: $google;
   color: $white;
 
-  @extend .withShadow;
-}
-
-.white {
-  background-color: $white;
-  border: solid 1px $border-color;
-}
-
-.plain {
-  background-color: $white;
-  border: solid 1px $border-color;
-  transition: background-color 150ms ease-out;
-
-  @media #{$desktop} {
-    background-color: transparent;
+  &:hover {
+    background-color: darken($google, 10%);
   }
+}
+
+.v-secondary {
+  background-color: $white;
+  border: solid 2.5px $border-color;
 
   &:hover {
-    background-color: $white;
+    background-color: $gray3;
+    border: none;
   }
 }
 
 .disabled {
   background-color: transparent;
-  color: $gray;
+  color: rgba($theme-color, 0.6);
   border: solid 1px $border-color;
   cursor: not-allowed;
 
-  &:hover {
-    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.09);
-  }
-
   svg {
-    fill: $border-color;
+    fill: rgba($theme-color, 0.6);
   }
 }

@@ -116,7 +116,7 @@ class DataExplorerContent extends PureComponent {
           {metadataSection ? this.renderMeta() : this.renderTable()}
         </div>
         <div className={styles.buttons}>
-          <Button className={styles.button} href={href} color="plain">
+          <Button className={styles.button} href={href} variant="secondary">
             {`Visualize in ${toStartCase(sectionLabel)}`}
           </Button>
           {!loading && data && !metadataSection ? (
@@ -138,7 +138,7 @@ class DataExplorerContent extends PureComponent {
           <Button
             className={styles.button}
             onClick={handleDownloadModalOpen}
-            color="yellow"
+            variant="primary"
             disabled={!data}
           >
             {downloadButtonText}

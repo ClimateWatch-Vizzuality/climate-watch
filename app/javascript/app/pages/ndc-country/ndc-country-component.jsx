@@ -40,7 +40,7 @@ class NDCCountry extends PureComponent {
         />
       ) : (
         <Button
-          color="yellow"
+          variant="primary"
           link={`/ndcs/country/${match.params.iso}/full`}
           className={styles.viewDocumentButton}
         >
@@ -55,7 +55,7 @@ class NDCCountry extends PureComponent {
     if (!FEATURE_LTS_EXPLORE) {
       return (
         <Button
-          color="yellow"
+          variant="primary"
           link={`/ndcs/compare/mitigation?locations=${match.params.iso}`}
         >
           {'Compare'}
@@ -65,7 +65,7 @@ class NDCCountry extends PureComponent {
     return (
       <div className={styles.compareButton}>
         <Button
-          color="yellow"
+          variant="primary"
           link={`/ndcs/compare/mitigation?locations=${match.params.iso}`}
         >
           {'Compare countries and submissions'}

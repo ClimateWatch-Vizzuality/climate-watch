@@ -5,14 +5,8 @@
   float: left;
   display: flex;
   justify-content: space-between;
-  border-right: solid 1px $border-color;
+  border-right: solid 2.5px $gray3;
   height: 45px;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.09);
-  transition: box-shadow 150ms ease-out;
-
-  &:hover {
-    box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.09);
-  }
 
   & > :first-child {
     border-radius: 4px 0 0 4px;
@@ -25,27 +19,18 @@
 
 .disabled {
   cursor: not-allowed;
-
-  &:hover {
-    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.09);
-  }
+  fill: rgba($theme-color, 0.6);
 }
 
 .button {
-  border: solid 1px $border-color;
+  border: solid 2.5px $gray3;
   border-radius: 0;
   border-right: 0;
   padding: 0;
   width: 100%;
   box-shadow: none;
-  fill: rgba($theme-color, 0.7);
-  transition: fill 150ms ease-out;
-  min-width: 20px;
-
-  &:hover {
-    box-shadow: none;
-    fill: $theme-color;
-  }
+  fill: $theme-color;
+  min-width: 24px;
 
   &.share {
     height: 45px;

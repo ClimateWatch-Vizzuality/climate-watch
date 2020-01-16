@@ -12,11 +12,9 @@ const Button = props => {
     children,
     className,
     square,
-    color,
+    variant,
     disabled,
     onClick,
-    noBox,
-    noSpace,
     dataFor,
     dataTip,
     title,
@@ -24,10 +22,8 @@ const Button = props => {
   } = props;
   const classNames = cx(className, styles.button, {
     [styles.square]: square,
-    [styles[color]]: !!color,
-    [styles.noBox]: noBox,
-    [styles.disabled]: disabled || (!onClick && !link && !href),
-    [styles.noSpace]: noSpace
+    [styles[`v-${variant}`]]: !!variant,
+    [styles.disabled]: disabled || (!onClick && !link && !href)
   });
 
   const tooltipProps = {
@@ -71,9 +67,7 @@ Button.propTypes = {
   className: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   link: PropTypes.string,
   square: PropTypes.bool,
-  color: PropTypes.string,
-  noSpace: PropTypes.bool,
-  noBox: PropTypes.bool,
+  variant: PropTypes.string,
   disabled: PropTypes.bool,
   onClick: PropTypes.func,
   dataFor: PropTypes.string,
@@ -83,7 +77,6 @@ Button.propTypes = {
 };
 
 Button.defaultProps = {
-  noSpace: false,
   disabled: false,
   href: null,
   dataFor: null,

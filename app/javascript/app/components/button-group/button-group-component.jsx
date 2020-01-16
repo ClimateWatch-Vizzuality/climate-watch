@@ -51,7 +51,7 @@ const renderButton = (buttonConfig, currentPathname) => {
           analyticsGraphName={buttonConfig.analyticsGraphName}
           reverse={buttonConfig.reverseDropdown}
           positionRight={buttonConfig.positionRight}
-          dataFor="blueTooltip"
+          dataFor="tooltip"
           dataTip={dataTip}
         />
       );
@@ -68,7 +68,7 @@ const renderButton = (buttonConfig, currentPathname) => {
               : buttonConfig.href
           }
           disabled={buttonConfig.disabled}
-          dataFor="blueTooltip"
+          dataFor="tooltip"
           dataTip={dataTip}
           target={buttonConfig.link && isPageContained ? '_blank' : undefined}
         >
@@ -91,7 +91,7 @@ const ButtonGroup = ({ className, buttonsConfig, disabled, location }) => {
       {buttonsConfig.map(buttonConfig =>
         renderButton(buttonConfig, currentPathname)
       )}
-      <ReactTooltip id="blueTooltip" effect="solid" />
+      <ReactTooltip id="tooltip" effect="solid" />
     </div>
   );
 };

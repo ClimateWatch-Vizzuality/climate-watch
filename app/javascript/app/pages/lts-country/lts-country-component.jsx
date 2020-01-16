@@ -26,7 +26,7 @@ class LTSCountry extends PureComponent {
     return (
       documentsOptions && (
         <Button
-          color="yellow"
+          variant="secondary"
           link={`/lts/country/${match.params.iso}/full`}
           className={styles.viewDocumentButton}
           disabled
@@ -42,7 +42,7 @@ class LTSCountry extends PureComponent {
     return (
       <div className={styles.compareButton}>
         <Button
-          color="yellow"
+          variant="primary"
           link={`/lts/compare/mitigation?locations=${match.params.iso}`}
           disabled
         >

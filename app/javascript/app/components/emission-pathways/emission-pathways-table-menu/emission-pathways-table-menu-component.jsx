@@ -18,7 +18,7 @@ class EmissionPathwaysTableMenu extends PureComponent {
     );
 
     const button = (
-      <Button color="yellow" href="mailto:ClimateWatch@WRI.org">
+      <Button variant="primary" href="mailto:ClimateWatch@WRI.org">
         Get in touch
       </Button>
     );
