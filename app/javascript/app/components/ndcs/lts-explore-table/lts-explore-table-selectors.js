@@ -150,7 +150,7 @@ const getFilteredDataBySearch = createSelector(
   [getFilteredData, getQuery],
   (data, query) => {
     if (!data || isEmpty(data)) return null;
-    return filterQuery(data, query);
+    return filterQuery(data, query, ['iso']);
   }
 );
 
