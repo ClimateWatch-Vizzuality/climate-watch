@@ -8,10 +8,6 @@ $dropdown-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.09);
   width: 100%;
   position: relative;
 
-  .cw__multi-level-dropdown-styles_selector {
-    border: $dropdown-border !important;
-  }
-
   .react-selectize {
     color: $theme-color;
 
@@ -184,15 +180,9 @@ $dropdown-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.09);
     }
   }
 
-  .cw__multiselect-styles_multiSelect {
     .multi-select.react-selectize.root-node .simple-value {
       display: inline-block;
-      // margin: 2px;
       vertical-align: middle;
-
-      .react-selectize-control {
-        border: $dropdown-border;
-      }
 
       span {
         display: inline-block;
@@ -200,11 +190,8 @@ $dropdown-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.09);
         vertical-align: center;
       }
     }
-  }
 
   .simple-select.react-selectize.root-node .simple-value {
-    // margin: 2px;
-
     span {
       display: inline-block;
       vertical-align: center;
@@ -218,7 +205,6 @@ $dropdown-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.09);
       .react-selectize-control {
         background-color: transparent;
         border: $dropdown-border;
-        // box-shadow: $dropdown-box-shadow;
         border-radius: 4px;
         font-size: $font-size;
 
@@ -303,7 +289,6 @@ $dropdown-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.09);
       background: $white;
       color: $theme-color-light;
       border: $dropdown-border;
-      // box-shadow: $dropdown-box-shadow;
       margin-top: -3px;
 
       &.flipped {
