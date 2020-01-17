@@ -228,10 +228,13 @@ export function stripHTML(text) {
   return text.replace(/<(?:.|\n)*?>/gm, '');
 }
 
-export function filterQuery(data, query) {
+export function filterQuery(data, query, exceptions) {
   return data.filter(d => {
     let match = false;
-    Object.keys(d).forEach(col => {
+    const keys = exceptions
+      ? Object.keys(d).filter(k => !exceptions.includes(k))
+      : Object.keys(d);
+    keys.forEach(col => {
       if (deburrUpper(d[col]).indexOf(query) > -1) {
         match = true;
       }
