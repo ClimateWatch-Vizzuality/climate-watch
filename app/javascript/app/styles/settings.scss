@@ -40,34 +40,30 @@ $logos-top-bottom-margin: 15px;
 // Colors
 $black: #333;
 $white: #fff;
-$theme-color: #113750;
+$theme-color: #0a1941;
+$theme-color-medium: #0845CB;
 $theme-color-light: #25597c;
-$theme-color-intense: #0a1941;
-$theme-secondary: #ffc735;
-$theme-secondary-dark: #f6a806;
+$theme-secondary: #FFC735;
+$theme-secondary-dark: #F6A806;
 
 // Grays
-$light-gray: #f5f6f7;
-$athens-gray: #eeeff3;
-$lighter-gray: #e5e5eb;
-$theme-border: #e6e7ed;
-$secondary-gray: #d0d7dc;
-$chart-fill-gray: #caccd0;
-$manatee: #8f8fa0;
-$dark-gray: #8f8fa1;
-$gray: #b1b1c1;
-$base-text: #424242;
-$slate: #555;
-$placeholder-gray: #393f44;
 
-// UI kit Grays
-$gray3: #ecf1fa;
+$gray1: #757584;
+$gray2: #CCCDCF;
+$gray4: #F1F4FB;
 
-$link-color: #0845cb;
-$ebony-clay: #233140;
+$base-text:$gray1;
+$gray3: $gray4;
+$gray: $gray1;
+$manatee: $gray1;
+$chart-fill-gray: $theme-color;
+$theme-color-intense: $theme-color;
 
-$bg-main: #00548b;
-$bg-blue: #1b3b5a;
+$theme-border: $gray2;
+$light-gray: $gray4;
+$dark-gray: $gray1;
+
+$link-color: $theme-color-medium;
 
 $teal-blue: #045f61;
 $purple: #74356a;
