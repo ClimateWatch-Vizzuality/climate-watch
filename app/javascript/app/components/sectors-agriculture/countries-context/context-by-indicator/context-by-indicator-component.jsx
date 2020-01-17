@@ -10,6 +10,8 @@ import ButtonGroup from 'components/button-group';
 import Icon from 'components/icon';
 import accordionArrow from 'assets/icons/accordion-arrow.svg';
 import tooltipTheme from 'styles/themes/map-tooltip/map-tooltip.scss';
+import dropdownTheme from 'styles/themes/dropdown/react-selectize.scss';
+
 import styles from './context-by-indicator-styles';
 import { MAP_COLORS } from './context-by-indicator-selectors';
 
@@ -89,6 +91,7 @@ class ContextByIndicatorComponent extends Component {
                   options={indicators}
                   onValueChange={updateIndicatorFilter}
                   hideResetButton
+                  theme={dropdownTheme}
                 />
                 <Dropdown
                   label={'Year'}
@@ -97,6 +100,7 @@ class ContextByIndicatorComponent extends Component {
                   renderOption={this.renderYearLabel}
                   onValueChange={updateIndicatorYearFilter}
                   hideResetButton
+                  theme={dropdownTheme}
                 />
               </div>
               {isTablet && (

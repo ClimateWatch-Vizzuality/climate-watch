@@ -16,11 +16,7 @@ $height: 45px;
       &.disabled {
         pointer-events: none;
         cursor: not-allowed;
-        background-color: $light-gray;
-
-        .react-selectize-toggle-button-container {
-          opacity: 0;
-        }
+        opacity: 0.5;
       }
 
       .react-selectize-control {
@@ -34,9 +30,10 @@ $height: 45px;
         height: $height;
         overflow: hidden;
         transition: box-shadow 150ms ease-out;
+        border: $dropdown-border;
 
         &:hover {
-          box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.09);
+          box-shadow: none !important;
         }
 
         .react-selectize-placeholder {
@@ -114,6 +111,11 @@ $height: 45px;
 
         .react-selectize-toggle-button-container {
           width: 32px;
+
+          svg {
+            width: 10px;
+            height: 10px;
+          }
         }
 
         .react-selectize-reset-button-container:hover .react-selectize-reset-button path {
@@ -146,6 +148,7 @@ $height: 45px;
     }
 
     &.dropdown-menu {
+      box-shadow: none;
       box-sizing: border-box;
       overflow: auto;
       position: absolute;
@@ -177,7 +180,6 @@ $height: 45px;
 
   .multi-select.react-selectize.root-node .simple-value {
     display: inline-block;
-    // margin: 2px;
     vertical-align: middle;
 
     span {
@@ -188,8 +190,6 @@ $height: 45px;
   }
 
   .simple-select.react-selectize.root-node .simple-value {
-    // margin: 2px;
-
     span {
       display: inline-block;
       vertical-align: center;
@@ -202,8 +202,7 @@ $height: 45px;
     &.root-node {
       .react-selectize-control {
         background-color: transparent;
-        border: solid 1px $border-color;
-        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.09);
+        border: $dropdown-border;
         border-radius: 4px;
         font-size: $font-size;
 
@@ -287,9 +286,8 @@ $height: 45px;
     &.dropdown-menu {
       background: $white;
       color: $theme-color-light;
-      border: solid 1px $border-color;
-      box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.09);
-      margin-top: -1px;
+      border: $dropdown-border;
+      margin-top: -3px;
 
       &.flipped {
         border-top-left-radius: 4px;
@@ -357,7 +355,7 @@ $height: 45px;
 
   .multi-select.react-selectize.root-node .simple-value {
     background: #f2f9fc;
-    border: 1px solid $border-color;
+    border: $dropdown-border;
     border-radius: 2px;
     color: #08c;
   }
@@ -416,10 +414,6 @@ $height: 45px;
 .plain :global {
   .react-selectize-control {
     background-color: $white !important;
-
-    @media #{$desktop} {
-      background-color: transparent !important;
-    }
   }
 
   .dropdown-menu {
@@ -467,7 +461,7 @@ $height: 45px;
   }
 
   .dropdown-menu {
-    border: solid 1px $border-color !important;
+    border: $dropdown-border !important;
   }
 
   .open {

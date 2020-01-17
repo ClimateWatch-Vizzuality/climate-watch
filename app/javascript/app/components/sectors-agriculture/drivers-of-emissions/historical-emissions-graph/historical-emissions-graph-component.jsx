@@ -7,6 +7,7 @@ import CountriesProvider from 'providers/countries-provider/countries-provider';
 import AgricultureEmissionsProvider from 'providers/agriculture-emissions-provider/agriculture-emissions-provider';
 import WbCountryDataProvider from 'providers/wb-country-data-provider';
 import { TabletLandscape, TabletPortraitOnly } from 'components/responsive';
+import dropdownTheme from 'styles/themes/dropdown/react-selectize.scss';
 
 import styles from './historical-emissions-graph-styles.scss';
 import CardPieChart from '../card-pie-chart/card-pie-chart';
@@ -46,6 +47,8 @@ class HistoricalEmissionsGraph extends PureComponent {
           value={emissionsCountry}
           groups={locationGroups}
           hideResetButton
+          theme={dropdownTheme}
+          
         />
         <Dropdown
           key="emissions"
@@ -56,6 +59,7 @@ class HistoricalEmissionsGraph extends PureComponent {
           value={emissionType}
           hideResetButton
           noAutoSort
+          theme={dropdownTheme}
         />
         <Dropdown
           key="metric"
@@ -66,6 +70,7 @@ class HistoricalEmissionsGraph extends PureComponent {
           value={emissionMetric}
           hideResetButton
           noAutoSort
+          theme={dropdownTheme}
         />
       </div>
     );

@@ -5,11 +5,14 @@ import { Dropdown } from 'cw-components';
 import { TabletLandscape } from 'components/responsive';
 import ButtonGroup from 'components/button-group';
 import NoContent from 'components/no-content';
+import dropdownTheme from 'styles/themes/dropdown/react-selectize.scss';
+
 import IndicatorCards from './indicator-card';
 import LandArea from './land-area';
 import MeatData from './meat-data';
 
 import styles from './context-by-country-styles.scss';
+
 
 const ContextByCountryComponent = ({
   cards,
@@ -53,6 +56,7 @@ const ContextByCountryComponent = ({
                   options={countries}
                   onValueChange={updateCountryFilter}
                   hideResetButton
+                  theme={dropdownTheme}
                 />
               )}
               {
@@ -64,6 +68,7 @@ const ContextByCountryComponent = ({
                     options={years}
                     onValueChange={updateCountryYearFilter}
                     hideResetButton
+                    theme={dropdownTheme}
                   />
                 )
               }

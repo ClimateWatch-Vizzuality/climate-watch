@@ -81,8 +81,10 @@ $google: #d8483b;
 $border-color: rgba(26, 28, 34, 0.1);
 
 // box-shadow
-
 $box-shadow-light: 0 2px 10px 0 $chart-fill-gray;
+
+// border
+$dropdown-border: 2.5px solid $gray3;
 
 // Breakpoints
 $breakpoint-mobile-only: 37.4375rem; // 599px / 16px
