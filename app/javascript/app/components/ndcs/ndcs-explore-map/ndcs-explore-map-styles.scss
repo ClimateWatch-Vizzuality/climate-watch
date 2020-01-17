@@ -72,6 +72,7 @@
 
 .containerUpper {
   @include columns();
+
   margin-bottom: 20px;
 
   @media #{$tablet-landscape} {
