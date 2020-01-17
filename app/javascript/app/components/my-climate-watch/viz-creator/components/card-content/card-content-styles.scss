@@ -10,7 +10,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: $light-gray;
+  background-color: $gray3;
 }
 
 .cardImage {
@@ -20,7 +20,7 @@
 .placeholder {
   font-size: $font-size-sm;
   font-style: italic;
-  color: $dark-gray;
+  color: $gray1;
 }
 
 .cardContent {

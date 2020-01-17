@@ -29,11 +29,11 @@ $close-position: 35px;
 }
 
 .header {
-  background-color: $light-gray;
+  background-color: $gray3;
   padding: $modal-padding $gutter-padding;
   padding-bottom: 0;
   min-height: 95px;
-  border-bottom: solid 1px $border-color;
+  border-bottom: solid 1px $gray2;
 }
 
 .modalContent {

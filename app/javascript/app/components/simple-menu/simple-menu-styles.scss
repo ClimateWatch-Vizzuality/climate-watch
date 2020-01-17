@@ -117,7 +117,7 @@
     right: 0;
     width: 210px;
     z-index: $z-index-over-loader;
-    border-top: 1px solid $theme-border;
+    border-top: 1px solid $gray2;
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.09);
 
     &.open {
@@ -129,11 +129,11 @@
       text-align: left;
       position: relative;
       transition: color 0.1s linear;
-      border-bottom: 1px solid $theme-border;
+      border-bottom: 1px solid $gray2;
       cursor: pointer;
 
       .link {
-        color: $dark-gray;
+        color: $gray1;
         vertical-align: text-bottom;
         text-transform: uppercase;
 
@@ -147,13 +147,13 @@
           width: auto;
           font-size: $font-size-s;
           line-height: $line-height-medium;
-          color: $dark-gray;
+          color: $gray1;
           letter-spacing: 1px;
           background-color: transparent;
           transition: color 0.1s linear;
 
           .icon {
-            fill: $dark-gray;
+            fill: $gray1;
             margin-right: 5px;
             width: 15px;
             height: 15px;

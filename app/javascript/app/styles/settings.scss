@@ -41,29 +41,16 @@ $logos-top-bottom-margin: 15px;
 $black: #333;
 $white: #fff;
 $theme-color: #0a1941;
-$theme-color-medium: #0845CB;
+$theme-color-medium: #0845cb;
 $theme-color-light: #25597c;
-$theme-secondary: #FFC735;
-$theme-secondary-dark: #F6A806;
+$theme-secondary: #ffc735;
+$theme-secondary-dark: #f6a806;
 
 // Grays
 
 $gray1: #757584;
-$gray2: #CCCDCF;
-$gray4: #F1F4FB;
-
-$base-text:$gray1;
-$gray3: $gray4;
-$gray: $gray1;
-$manatee: $gray1;
-$chart-fill-gray: $theme-color;
-$theme-color-intense: $theme-color;
-
-$theme-border: $gray2;
-$light-gray: $gray4;
-$dark-gray: $gray1;
-
-$link-color: $theme-color-medium;
+$gray2: #cccdcf;
+$gray3: #f1f4fb;
 
 $teal-blue: #045f61;
 $purple: #74356a;
@@ -74,10 +61,8 @@ $twitter: #5b8ec8;
 $facebook: #3b5999;
 $google: #d8483b;
 
-$border-color: rgba(26, 28, 34, 0.1);
-
 // box-shadow
-$box-shadow-light: 0 2px 10px 0 $chart-fill-gray;
+$box-shadow-light: 0 2px 10px 0 $theme-color;
 
 // border
 $dropdown-border: 2.5px solid $gray3;

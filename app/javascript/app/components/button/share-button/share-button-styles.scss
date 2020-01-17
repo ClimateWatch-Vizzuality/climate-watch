@@ -44,7 +44,7 @@
     cursor: pointer;
 
     .link {
-      color: $dark-gray;
+      color: $gray1;
       vertical-align: text-bottom;
       text-transform: uppercase;
 
@@ -58,13 +58,13 @@
         width: auto;
         font-size: $font-size-s;
         line-height: $line-height-medium;
-        color: $dark-gray;
+        color: $gray1;
         letter-spacing: 1px;
         background-color: transparent;
         transition: color 0.1s linear;
 
         .icon {
-          fill: $dark-gray;
+          fill: $gray1;
           margin-right: 5px;
           width: 15px;
           height: 15px;

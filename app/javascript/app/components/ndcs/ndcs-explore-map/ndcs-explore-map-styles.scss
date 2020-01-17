@@ -111,7 +111,7 @@
 
   .summaryCard {
     flex-flow: row wrap;
-    color: $theme-color-intense;
+    color: $theme-color;
     display: flex;
     align-items: center;
     padding: 20px;
@@ -156,7 +156,7 @@
     padding: 24px 20px;
     flex-direction: column;
     font-size: $font-size-sm;
-    color: $theme-color-intense;
+    color: $theme-color;
 
     .legendItem {
       &:not(:last-child) {

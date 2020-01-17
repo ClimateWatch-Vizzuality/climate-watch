@@ -1,8 +1,8 @@
 @import '~styles/layout.scss';
 
 .wrapper {
-  border-bottom: solid 1px $border-color;
-  border-top: solid 1px $border-color;
+  border-bottom: solid 1px $gray2;
+  border-top: solid 1px $gray2;
   min-height: 450px;
 }
 
@@ -67,7 +67,7 @@
 
 .cardTitle {
   font-size: $font-size-s;
-  color: $dark-gray;
+  color: $gray1;
   margin-bottom: 6px;
 }
 
@@ -82,7 +82,7 @@
 
 .noContent {
   font-size: $font-size-sm;
-  color: $dark-gray;
+  color: $gray1;
   font-style: italic;
   display: flex;
   justify-content: center;

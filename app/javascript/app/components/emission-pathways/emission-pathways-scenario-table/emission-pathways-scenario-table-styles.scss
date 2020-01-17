@@ -27,7 +27,7 @@
   @include columns((12));
   @include xy-gutters($gutter-position: ('top', 'bottom'), $gutters: $gutter-padding * 2);
 
-  color: $base-text;
+  color: $gray1;
   font-size: $font-size-large;
   list-style: none;
 }

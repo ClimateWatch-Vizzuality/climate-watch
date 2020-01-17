@@ -43,7 +43,7 @@
     p {
       font-size: $font-size;
       line-height: $line-height-modal;
-      color: $manatee;
+      color: $gray1;
     }
 
     span {
@@ -94,7 +94,7 @@
 
   .yearData {
     position: absolute;
-    color: $manatee;
+    color: $gray1;
     right: 30px;
     bottom: 20px;
     font-size: $font-size-s;
@@ -127,12 +127,12 @@
   align-items: center;
   margin-bottom: $gutter-padding;
   width: 95%;
-  background-color: $chart-fill-gray;
+  background-color: $theme-color;
 
   &::after {
     content: attr(data-value);
     position: absolute;
-    color: $dark-gray;
+    color: $gray1;
     font-size: $font-size-sm;
     right: 0;
     top: -3px;
@@ -153,7 +153,7 @@
   }
 
   .value {
-    color: $dark-gray;
+    color: $gray1;
     font-size: $font-size-sm;
     padding-left: 10px;
   }

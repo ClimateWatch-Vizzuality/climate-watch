@@ -7,7 +7,7 @@
   padding: 30px 20px 20px;
   clear: both;
   display: block;
-  color: $theme-color-intense;
+  color: $theme-color;
   text-decoration: none;
   margin-bottom: 20px;
 
@@ -30,7 +30,7 @@
 
 .questionText {
   font-weight: $font-weight-bold;
-  color: $theme-color-intense;
+  color: $theme-color;
   margin-bottom: 15px;
 }
 
@@ -40,7 +40,7 @@
 
 .answerNumber {
   font-size: $font-size-large;
-  color: $theme-color-intense;
+  color: $theme-color;
 }
 
 .percentage {

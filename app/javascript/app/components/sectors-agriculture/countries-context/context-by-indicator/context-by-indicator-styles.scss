@@ -52,7 +52,7 @@
     &::after {
       content: attr(data-value);
       position: absolute;
-      color: $dark-gray;
+      color: $gray1;
       font-size: $font-size-sm;
       right: 0;
       top: -3px;
@@ -61,7 +61,7 @@
   }
 
   .value {
-    color: $dark-gray;
+    color: $gray1;
     font-size: $font-size-sm;
     padding-left: 10px;
   }

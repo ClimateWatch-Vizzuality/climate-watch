@@ -43,7 +43,7 @@
 .optional {
   font-size: $font-size-s;
   font-weight: $font-weight;
-  color: $gray;
+  color: $gray1;
 }
 
 .loader {
@@ -68,7 +68,7 @@
 }
 
 .infoIcon {
-  fill: $gray;
+  fill: $gray1;
 }
 
 .arrowIcon {
@@ -87,7 +87,7 @@
 
 .disclaimer {
   margin-left: 10px;
-  color: $manatee;
+  color: $gray1;
   max-width: 300px;
 }
 

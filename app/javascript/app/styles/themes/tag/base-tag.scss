@@ -1,7 +1,7 @@
 @import '~styles/layout.scss';
 
 .tag {
-  border: solid 1px $border-color;
+  border: solid 1px $gray2;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.09);
   border-radius: 4px;
   padding: 5px;
@@ -10,7 +10,7 @@
   justify-content: flex-start;
   align-items: center;
   font-size: $font-size-sm;
-  color: $dark-gray;
+  color: $gray1;
   flex-grow: 0;
 }
 
@@ -29,7 +29,7 @@
 }
 
 .closeButton {
-  fill: $dark-gray;
+  fill: $gray1;
   cursor: pointer;
 
   &:focus {
