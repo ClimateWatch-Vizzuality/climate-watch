@@ -26,18 +26,14 @@ const LTSExplore = ({ route }) => (
       </div>
     </Header>
     <div className={styles.wrapper}>
-      <div className={styles.wrapper}>
-        <div className={layout.content}>
-          {route.sections &&
-            route.sections.length > 0 &&
-            route.sections.map(section => (
-              <div key={section.label} className={styles.section}>
-                <div id={section.hash} className={styles.sectionHash} />
-                <section.component />
-              </div>
-            ))}
-        </div>
-      </div>
+      {route.sections &&
+        route.sections.length > 0 &&
+        route.sections.map(section => (
+          <div key={section.label} className={styles.section}>
+            <div id={section.hash} className={styles.sectionHash} />
+            <section.component />
+          </div>
+        ))}
     </div>
   </div>
 );

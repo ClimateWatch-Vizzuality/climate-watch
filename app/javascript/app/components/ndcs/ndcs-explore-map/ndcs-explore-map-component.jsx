@@ -19,6 +19,7 @@ import ShareButton from 'components/button/share-button';
 
 import tooltipTheme from 'styles/themes/map-tooltip/map-tooltip.scss';
 import newMapTheme from 'styles/themes/map/map-new-zoom-controls.scss';
+import layout from 'styles/layout.scss';
 import styles from './ndcs-explore-map-styles.scss';
 
 const renderButtonGroup = (clickHandler, downloadLink) => (
@@ -133,93 +134,104 @@ class NDCSExploreMap extends PureComponent {
         <TabletLandscape>
           {isTablet => (
             <div className={styles.wrapper}>
-              <div className={styles.filtersLayout}>
-                <div className={styles.filtersGroup}>
-                  <Dropdown
-                    label="Category"
-                    paceholder="Select a category"
-                    options={categories}
-                    onValueChange={handleCategoryChange}
-                    value={selectedCategory}
-                    hideResetButton
-                    plain
-                  />
-                  <Dropdown
-                    label="Indicator"
-                    options={indicators}
-                    onValueChange={handleIndicatorChange}
-                    value={selectedIndicator}
-                    hideResetButton
-                    plain
-                  />
+              <div className={layout.content}>
+                <div className="grid-column-item">
+                  <div className={styles.filtersLayout}>
+                    <div className={styles.filtersGroup}>
+                      <Dropdown
+                        label="Category"
+                        paceholder="Select a category"
+                        options={categories}
+                        onValueChange={handleCategoryChange}
+                        value={selectedCategory}
+                        hideResetButton
+                        plain
+                      />
+                      <Dropdown
+                        label="Indicator"
+                        options={indicators}
+                        onValueChange={handleIndicatorChange}
+                        value={selectedIndicator}
+                        hideResetButton
+                        plain
+                      />
+                    </div>
+                    {isTablet &&
+                      renderButtonGroup(handleInfoClick, downloadLink)}
+                  </div>
                 </div>
-                {isTablet && renderButtonGroup(handleInfoClick, downloadLink)}
               </div>
-              <div className={styles.containerUpper}>
-                <div
-                  className={styles.containerCharts}
-                  ref={r => {
-                    this.setState({ tooltipParentRef: r });
-                  }}
-                >
-                  {!loading && (
-                    <React.Fragment>
-                      {summaryCardData && renderSummary(summaryCardData)}
-                      {emissionsCardData &&
-                        this.renderDonutChart(emissionsCardData)}
-                      {legendData && renderLegend(legendData)}
-                    </React.Fragment>
-                  )}
-                </div>
-                <div className={styles.containerMap}>
-                  {loading && <Loading light className={styles.loader} />}
-                  <p className={styles.mapInfo}>
-                    <Icon
-                      icon={handCursorIcon}
-                      className={styles.handCursorIcon}
-                    />
-                    <span>
-                      Explore the interactive map to understand which countries
-                      have submitted new or updated NDCs.
-                    </span>
-                  </p>
-                  <Map
-                    paths={paths}
-                    tooltipId="ndcs-map-tooltip"
-                    onCountryClick={handleCountryClick}
-                    onCountryEnter={handleCountryEnter}
-                    onCountryFocus={handleCountryEnter}
-                    zoomEnable
-                    customCenter={isTablet ? [20, 20] : [10, 20]}
-                    theme={newMapTheme}
-                    className={styles.map}
-                  />
-                  {countryData && (
-                    <ReactTooltip
-                      className={styles.tooltipContainer}
-                      id="ndcs-map-tooltip"
-                      delayHide={isTablet ? 0 : 3000}
-                    >
-                      <Button
-                        onClick={() => handleCountryClick(null, countryData)}
-                        className={tooltipTheme.container}
+              <div className={styles.containerUpperWrapper}>
+                <div className={layout.content}>
+                  <div className="grid-column-item">
+                    <div className={styles.containerUpper}>
+                      <div
+                        className={styles.containerCharts}
+                        ref={r => {
+                          this.setState({ tooltipParentRef: r });
+                        }}
                       >
-                        <div
-                          className={cx(
-                            tooltipTheme.countryName,
-                            tooltipTheme.link
-                          )}
-                        >
-                          {countryData.name}
-                        </div>
-                      </Button>
-                    </ReactTooltip>
-                  )}
-                  {!isTablet &&
-                    renderButtonGroup(handleInfoClick, downloadLink)}
+                        {!loading && (
+                          <React.Fragment>
+                            {summaryCardData && renderSummary(summaryCardData)}
+                            {emissionsCardData &&
+                              this.renderDonutChart(emissionsCardData)}
+                            {legendData && renderLegend(legendData)}
+                          </React.Fragment>
+                        )}
+                      </div>
+                      <div className={styles.containerMap}>
+                        {loading && <Loading light className={styles.loader} />}
+                        <p className={styles.mapInfo}>
+                          <Icon
+                            icon={handCursorIcon}
+                            className={styles.handCursorIcon}
+                          />
+                          <span>
+                            Explore the interactive map to understand which
+                            countries have submitted new or updated NDCs.
+                          </span>
+                        </p>
+                        <Map
+                          paths={paths}
+                          tooltipId="ndcs-map-tooltip"
+                          onCountryClick={handleCountryClick}
+                          onCountryEnter={handleCountryEnter}
+                          onCountryFocus={handleCountryEnter}
+                          zoomEnable
+                          customCenter={isTablet ? [20, 20] : [10, 20]}
+                          theme={newMapTheme}
+                          className={styles.map}
+                        />
+                        {countryData && (
+                          <ReactTooltip
+                            className={styles.tooltipContainer}
+                            id="ndcs-map-tooltip"
+                            delayHide={isTablet ? 0 : 3000}
+                          >
+                            <Button
+                              onClick={() => handleCountryClick(null, countryData)}
+                              className={tooltipTheme.container}
+                            >
+                              <div
+                                className={cx(
+                                  tooltipTheme.countryName,
+                                  tooltipTheme.link
+                                )}
+                              >
+                                {countryData.name}
+                              </div>
+                            </Button>
+                          </ReactTooltip>
+                        )}
+                        {!isTablet &&
+                          renderButtonGroup(handleInfoClick, downloadLink)}
+                      </div>
+                    </div>
+                    <ModalMetadata />
+                  </div>
                 </div>
               </div>
-              <ModalMetadata />
             </div>
           )}
         </TabletLandscape>

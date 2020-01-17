@@ -7,6 +7,7 @@ import Loading from 'components/loading';
 import darkSearch from 'styles/themes/search/search-dark.scss';
 import exploreTableTheme from 'styles/themes/table/explore-table-theme.scss';
 
+import layout from 'styles/layout.scss';
 import styles from 'components/ndcs/shared/explore-table-styles.scss';
 
 const renderSearch = (searchHandler, query) => (
@@ -32,28 +33,30 @@ const NDCSExploreTable = ({
 }) => (
   <div>
     <div className={styles.wrapper}>
-      {loading && <Loading light className={styles.loader} />}
-      {!loading && (
-        <div className={styles.filtersLayout}>
-          {renderSearch(handleSearchChange, query)}
-        </div>
-      )}
-      {!loading && tableData && tableData.length > 0 && (
-        <div className={styles.tableWrapper}>
-          <Table
-            data={tableData}
-            horizontalScroll
-            parseHtml
-            setColumnWidth={setColumnWidth}
-            defaultColumns={columns}
-            theme={exploreTableTheme}
-            titleLinks={titleLinks}
-          />
-        </div>
-      )}
-      {!loading && (!tableData || tableData.length <= 0) && (
-        <NoContent className={styles.noContent} message={noContentMsg} />
-      )}
+      <div className={layout.content}>
+        {loading && <Loading light className={styles.loader} />}
+        {!loading && (
+          <div className={styles.filtersLayout}>
+            {renderSearch(handleSearchChange, query)}
+          </div>
+        )}
+        {!loading && tableData && tableData.length > 0 && (
+          <div className={styles.tableWrapper}>
+            <Table
+              data={tableData}
+              horizontalScroll
+              parseHtml
+              setColumnWidth={setColumnWidth}
+              defaultColumns={columns}
+              theme={exploreTableTheme}
+              titleLinks={titleLinks}
+            />
+          </div>
+        )}
+        {!loading && (!tableData || tableData.length <= 0) && (
+          <NoContent className={styles.noContent} message={noContentMsg} />
+        )}
+      </div>
     </div>
   </div>
 );
