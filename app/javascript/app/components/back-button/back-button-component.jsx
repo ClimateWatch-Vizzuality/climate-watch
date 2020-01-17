@@ -11,7 +11,7 @@ const BackButton = props => {
     <div className={styles.backButton}>
       <Link to={pathname}>
         <Icon className={styles.backIcon} icon={longArrowBack} />
-        Go to {backLabel}
+        {backLabel ? `Go to ${backLabel}` : 'Back'}
       </Link>
     </div>
   );
