@@ -34,7 +34,7 @@ class SearchPage extends PureComponent {
       <div className={styles.page}>
         <Header route={route}>
           <div className={styles.headerCols}>
-            <BackButton pathname="/ndcs-explore" lastPathLabel="explore NDCs" />
+            <BackButton pathname="/ndcs-explore" backLabel="explore NDCs" />
             <Intro className={styles.intro} title="NDC Search" />
             <NdcsAutocompleteSearch
               className={styles.select}
