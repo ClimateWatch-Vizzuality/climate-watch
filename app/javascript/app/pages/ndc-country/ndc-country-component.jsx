@@ -31,7 +31,10 @@ class NDCCountry extends PureComponent {
       documentsOptions &&
       (documentsOptions.length > 1 ? (
         <Dropdown
-          className={dropdownLinksTheme.dropdownOptionWithArrow}
+          className={cx(
+            dropdownLinksTheme.dropdownOptionWithArrow,
+            styles.countryDropdown
+          )}
           placeholder="View full text"
           options={documentsOptions}
           onValueChange={handleDropDownChange}
@@ -40,7 +43,7 @@ class NDCCountry extends PureComponent {
         />
       ) : (
         <Button
-          variant="primary"
+          variant="secondary"
           link={`/ndcs/country/${match.params.iso}/full`}
           className={styles.viewDocumentButton}
         >
@@ -63,12 +66,13 @@ class NDCCountry extends PureComponent {
       );
     }
     return (
-      <div className={styles.compareButton}>
+      <div className={styles.compareButtonContainer}>
         <Button
           variant="primary"
           link={`/ndcs/compare/mitigation?locations=${match.params.iso}`}
+          className={styles.compareButton}
         >
-          {'Compare countries and submissions'}
+          Compare countries and submissions
         </Button>
       </div>
     );
@@ -132,11 +136,8 @@ class NDCCountry extends PureComponent {
                 {!FEATURE_LTS_EXPLORE && renderIntroDropdown()}
                 {FEATURE_LTS_EXPLORE && (
                   <BackButton
-                    directLinksRegexs={[
-                      { regex: /countries\/compare/, label: 'country compare' },
-                      { regex: /countries/, label: 'country' }
-                    ]}
-                    clearRegexs={[/\/ndcs\/country/, /\/ndcs\/compare/]}
+                    backLabel="NDCs Explore"
+                    pathname="/ndcs-explore"
                   />
                 )}
                 {this.renderFullTextDropdown()}

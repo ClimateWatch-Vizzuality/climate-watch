@@ -52,10 +52,6 @@
   margin-bottom: 60px;
 }
 
-.row {
-  @include columns();
-}
-
 .subtitles {
   @include columns((9, 3));
 }
@@ -91,20 +87,14 @@
 }
 
 .cards {
-  @include columns('shrink', $wrap: false);
+  @include columns(12);
 
-  > div {
-    width: 270px;
+  @media #{$tablet-portrait} {
+    @include columns((6, 6, 12));
   }
-
-  overflow: auto;
 
   @media #{$tablet-landscape} {
     @include columns((4, 4, 4));
-
-    > div {
-      width: 100%;
-    }
   }
 }
 

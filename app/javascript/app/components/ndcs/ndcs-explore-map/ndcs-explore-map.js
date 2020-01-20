@@ -86,15 +86,17 @@ class NDCSExploreMapContainer extends PureComponent {
     this.updateUrlParam({ name: 'search', value: query });
   };
 
-  handleCountryClick = geography => {
+  handleCountryClick = (geography, countryData) => {
     const { isoCountries } = this.props;
-    const iso = geography.properties && geography.properties.id;
-    if (iso && isCountryIncluded(isoCountries, iso)) {
-      this.props.history.push(`/ndcs/country/${iso}`);
+    const { id: iso, name } = countryData || {};
+    const countryIso =
+      iso || (geography && geography.properties && geography.properties.id);
+    if (countryIso && isCountryIncluded(isoCountries, countryIso)) {
+      this.props.history.push(`/ndcs/country/${countryIso}`);
       handleAnalytics(
         'NDCS Explore Map',
         'Use map to find country',
-        geography.properties.name
+        name || geography.properties.name
       );
     }
   };
