@@ -52,10 +52,6 @@
   margin-bottom: 60px;
 }
 
-.row {
-  @include columns();
-}
-
 .subtitles {
   @include columns((9, 3));
 }

@@ -191,73 +191,71 @@ class CountryNdcOverview extends PureComponent {
   renderCards() {
     const { values } = this.props;
     return FEATURE_LTS_EXPLORE ? (
-      <div className={styles.row}>
-        <div className={styles.cards}>
-          <Card title="Contribution Type" theme={cardTheme} contentFirst>
-            <div className={styles.cardContent}>
-              {values && values.mitigation_contribution_type ? (
-                <React.Fragment>
-                  <CardRowLight
-                    rowData={{
-                      title: 'Mitigation contribution type',
-                      value: values.mitigation_contribution_type[0].value
-                    }}
-                  />
-                  <CardRowLight
-                    rowData={{
-                      title: 'Target type',
-                      value: values.ghg_target_type[0].value
-                    }}
-                  />
-                  <CardRowLight
-                    rowData={{
-                      title: 'Adaptation included',
-                      value: values.adaptation[0].value
-                    }}
-                  />
-                </React.Fragment>
-              ) : (
-                <div className={styles.noContent}>Not included</div>
-              )}
-            </div>
-          </Card>
-          <Card title="GHG Target" theme={cardTheme} contentFirst>
-            <div className={styles.cardContent}>
-              {values && values.time_target_year ? (
-                <React.Fragment>
-                  <CardRowLight
-                    rowData={{
-                      title: 'Target year',
-                      value: values.time_target_year[0].value
-                    }}
-                  />
-                  <CardRowLight
-                    rowData={{
-                      title: 'Sectors covered',
-                      value: values.coverage_sectors[0].value
-                    }}
-                  />
-                </React.Fragment>
-              ) : (
-                <div className={styles.noContent}>Not included</div>
-              )}
-            </div>
-          </Card>
-          <Card title="Non-GHG Target" theme={cardTheme} contentFirst>
-            <div className={styles.cardContent}>
-              {values && values.non_ghg_target ? (
+      <div className={styles.cards}>
+        <Card title="Contribution Type" theme={cardTheme} contentFirst>
+          <div className={styles.cardContent}>
+            {values && values.mitigation_contribution_type ? (
+              <React.Fragment>
                 <CardRowLight
                   rowData={{
-                    title: '',
-                    value: values.non_ghg_target[0].value
+                    title: 'Mitigation contribution type',
+                    value: values.mitigation_contribution_type[0].value
                   }}
                 />
-              ) : (
-                <div className={styles.noContent}>Not included</div>
-              )}
-            </div>
-          </Card>
-        </div>
+                <CardRowLight
+                  rowData={{
+                    title: 'Target type',
+                    value: values.ghg_target_type[0].value
+                  }}
+                />
+                <CardRowLight
+                  rowData={{
+                    title: 'Adaptation included',
+                    value: values.adaptation[0].value
+                  }}
+                />
+              </React.Fragment>
+            ) : (
+              <div className={styles.noContent}>Not included</div>
+            )}
+          </div>
+        </Card>
+        <Card title="GHG Target" theme={cardTheme} contentFirst>
+          <div className={styles.cardContent}>
+            {values && values.time_target_year ? (
+              <React.Fragment>
+                <CardRowLight
+                  rowData={{
+                    title: 'Target year',
+                    value: values.time_target_year[0].value
+                  }}
+                />
+                <CardRowLight
+                  rowData={{
+                    title: 'Sectors covered',
+                    value: values.coverage_sectors[0].value
+                  }}
+                />
+              </React.Fragment>
+            ) : (
+              <div className={styles.noContent}>Not included</div>
+            )}
+          </div>
+        </Card>
+        <Card title="Non-GHG Target" theme={cardTheme} contentFirst>
+          <div className={styles.cardContent}>
+            {values && values.non_ghg_target ? (
+              <CardRowLight
+                rowData={{
+                  title: '',
+                  value: values.non_ghg_target[0].value
+                }}
+              />
+            ) : (
+              <div className={styles.noContent}>Not included</div>
+            )}
+          </div>
+        </Card>
       </div>
     ) : (
       this.renderLegacyCards()
