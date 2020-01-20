@@ -202,7 +202,7 @@ class LTSExploreMap extends PureComponent {
                       delayHide={isTablet ? 0 : 3000}
                     >
                       <Button
-                        onClick={handleCountryClick}
+                        onClick={() => handleCountryClick(null, countryData)}
                         className={tooltipTheme.container}
                       >
                         <div
