@@ -38,7 +38,7 @@ const QuestionCard = ({ link, questionText, questionStats, color }) => {
                 : '-'}{' '}
               %
             </span>{' '}
-            of the total GHG
+            of total GHG emissions
           </div>
           <Progress
             value={(answerNumber / maxPartiesNumber) * 100}
