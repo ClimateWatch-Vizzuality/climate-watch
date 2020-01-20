@@ -70,3 +70,11 @@
     z-index: $z-index-base;
   }
 }
+
+.countryDropdown {
+  margin-bottom: 10px;
+
+  @media #{$tablet-landscape} {
+    margin-bottom: 0;
+  }
+}

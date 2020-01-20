@@ -27,7 +27,8 @@ $min-width: 110px;
       width: auto !important;
 
       > span {
-        overflow: visible !important;
+        max-width: 81vw;
+        min-height: 60px;
         width: auto !important;
       }
     }
@@ -51,8 +52,16 @@ $min-width: 110px;
       visibility: visible;
     }
 
+    .value-wrapper {
+      min-width: $min-width + 45px;
+    }
+
     .simple-select {
-      max-width: $min-width + 45px;
+      min-width: $min-width + 45px;
+
+      .resizable-input {
+        min-width: $min-width + 100px;
+      }
     }
 
     .react-selectize-toggle-button-container {

@@ -31,7 +31,10 @@ class NDCCountry extends PureComponent {
       documentsOptions &&
       (documentsOptions.length > 1 ? (
         <Dropdown
-          className={dropdownLinksTheme.dropdownOptionWithArrow}
+          className={cx(
+            dropdownLinksTheme.dropdownOptionWithArrow,
+            styles.countryDropdown
+          )}
           placeholder="View full text"
           options={documentsOptions}
           onValueChange={handleDropDownChange}
