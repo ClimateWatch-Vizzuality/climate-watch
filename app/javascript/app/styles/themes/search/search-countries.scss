@@ -1,23 +1,23 @@
 @import '~styles/settings.scss';
 
-.input {
-  background-color: transparent;
-  border-bottom: solid 1px $theme-color;
-  box-shadow: none;
-  color: $theme-color;
-  border-radius: 0;
+// .input {
+//   background-color: transparent;
+//   border-bottom: solid 1px $theme-color;
+//   box-shadow: none;
+//   color: $theme-color;
+//   border-radius: 0;
 
-  &::placeholder {
-    color: $theme-color;
-    font-style: initial;
-    opacity: 0.5;
-  }
+//   &::placeholder {
+//     color: $theme-color;
+//     font-style: initial;
+//     opacity: 0.5;
+//   }
 
-  &:hover {
-    box-shadow: 0 5px 5px -5px rgba(0, 0, 0, 0.09);
-  }
-}
+//   &:hover {
+//     box-shadow: 0 5px 5px -5px rgba(0, 0, 0, 0.09);
+//   }
+// }
 
-.iconSearch {
-  fill: $theme-color;
-}
+// .iconSearch {
+//   fill: $theme-color;
+// }

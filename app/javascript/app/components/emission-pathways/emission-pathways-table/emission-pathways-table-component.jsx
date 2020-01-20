@@ -5,7 +5,6 @@ import NoContent from 'components/no-content';
 import Search from 'components/search';
 import Loading from 'components/loading';
 import Dropdown from 'components/dropdown';
-import darkSearch from 'styles/themes/search/search-dark.scss';
 import layout from 'styles/layout.scss';
 import EspModelsProvider from 'providers/esp-models-provider';
 import EspScenariosProvider from 'providers/esp-scenarios-provider';
@@ -64,7 +63,8 @@ class EmissionPathwaysTable extends PureComponent {
         placeholder={`Filter by ${toStartCase(field)}`}
         options={filterOptions ? filterOptions[field] : []}
         onValueChange={selected =>
-          handleFilterChange(field, categoryName, selected && selected.value)}
+          handleFilterChange(field, categoryName, selected && selected.value)
+        }
         value={selectedFields ? selectedFields[field] : null}
         plain
       />
@@ -100,10 +100,8 @@ class EmissionPathwaysTable extends PureComponent {
                   <div className={styles.searchLayout}>
                     <Search
                       value={query}
-                      theme={darkSearch}
                       onChange={handleSearchChange}
                       placeholder={`Search in ${categoryName}`}
-                      plain
                     />
                   </div>
                 </div>

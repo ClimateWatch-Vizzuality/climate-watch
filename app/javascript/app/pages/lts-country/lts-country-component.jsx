@@ -16,7 +16,6 @@ import { TabletLandscape } from 'components/responsive';
 import NdcsDocumentsMetaProvider from 'providers/ndcs-documents-meta-provider';
 
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
-import lightSearch from 'styles/themes/search/search-light.scss';
 import countryDropdownTheme from 'styles/themes/dropdown/dropdown-country.scss';
 import styles from './lts-country-styles.scss';
 
@@ -110,10 +109,10 @@ class LTSCountry extends PureComponent {
                 {this.renderFullTextDropdown()}
                 {hasSearch && (
                   <Search
-                    theme={lightSearch}
                     placeholder="Search"
                     value={search}
                     onChange={onSearchChange}
+                    transparent
                   />
                 )}
               </div>

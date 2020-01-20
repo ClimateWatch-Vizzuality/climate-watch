@@ -6,6 +6,7 @@ import cx from 'classnames';
 import { themr } from 'react-css-themr';
 
 import searchIcon from 'assets/icons/search.svg';
+import transparentTheme from 'styles/themes/search/search-light.scss';
 import styles from './search-styles.scss';
 
 class Search extends Component {
@@ -55,16 +56,19 @@ class Search extends Component {
       className,
       handleKeyUp,
       disabled,
-      plain
+      transparent = true
     } = this.props;
+
     return (
-      <div className={cx(styles.search, className, theme.search)}>
+      <div className={cx(styles.search, className, theme)}>
         <input
           ref={el => {
             this.inputRef = el;
           }}
           type="text"
-          className={cx(styles.input, theme.input, plain ? styles.plain : '')}
+          className={cx(styles.input, theme.input, {
+            [transparentTheme.input]: transparent
+          })}
           placeholder={placeholder}
           onChange={e => this.handleChange(e.target.value)}
           value={search}
@@ -74,7 +78,9 @@ class Search extends Component {
         {icon && (
           <Icon
             icon={searchIcon}
-            className={cx(styles.iconSearch, theme.iconSearch)}
+            className={cx(styles.iconSearch, {
+              [transparentTheme.iconSearch]: transparent
+            })}
           />
         )}
       </div>
@@ -92,12 +98,13 @@ Search.propTypes = {
   theme: PropTypes.object,
   handleKeyUp: PropTypes.func,
   disabled: PropTypes.bool,
-  plain: PropTypes.bool
+  transparent: PropTypes.bool
 };
 
 Search.defaultProps = {
   icon: true,
-  value: ''
+  value: '',
+  transparent: false
 };
 
 export default themr('Search', styles)(Search);
