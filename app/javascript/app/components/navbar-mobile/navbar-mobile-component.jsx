@@ -18,7 +18,7 @@ const NavBarMobile = ({ closeMenu, hamburgerIsOpen, routes }) => (
       <NavLink exact to="/" onClick={closeMenu} className={styles.homeLink}>
         <Icon className={styles.logo} icon={cwLogo} />
       </NavLink>
-      <Hamburger text={'MENU'} />
+      <Hamburger />
     </div>
     {hamburgerIsOpen && (
       <div className={styles.navigation}>

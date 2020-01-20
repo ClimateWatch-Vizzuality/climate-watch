@@ -1,6 +1,7 @@
 @import '~styles/settings.scss';
 
 .card {
+  background-color: $white;
   border-radius: 6px;
   border-color: transparent;
   box-shadow: 0 2px 20px 0 $gray3;
@@ -21,4 +22,5 @@
 
 .data {
   background-color: $white;
+  margin-bottom: 15px;
 }

@@ -13,11 +13,11 @@
 }
 
 .listItem {
-  border-bottom: solid 1px $theme-border;
+  border-bottom: solid 1px $gray2;
 }
 
 .link {
-  color: $dark-gray;
+  color: $gray1;
   padding: $gutter-padding / 2;
 
   &:hover {

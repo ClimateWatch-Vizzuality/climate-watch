@@ -1,8 +1,8 @@
 @import '~styles/layout.scss';
 
 .wrapper {
-  border-bottom: solid 1px $border-color;
-  border-top: solid 1px $border-color;
+  border-bottom: solid 1px $gray2;
+  border-top: solid 1px $gray2;
   min-height: 450px;
 }
 
@@ -105,7 +105,7 @@
 
 .metaTitle {
   font-size: $font-size-sm;
-  color: $dark-gray;
+  color: $gray1;
   margin-bottom: 5px;
 }
 
@@ -119,7 +119,7 @@
 
 .noContent {
   font-size: $font-size-sm;
-  color: $dark-gray;
+  color: $gray1;
   font-style: italic;
   display: flex;
   justify-content: center;
@@ -170,7 +170,7 @@
     }
 
     .alertText {
-      color: $dark-gray;
+      color: $gray1;
     }
   }
 }

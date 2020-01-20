@@ -5,7 +5,7 @@
   padding: 50px 0 $gutter-padding 0;
 
   &:not(:last-child) {
-    border-bottom: 1px solid $border-color;
+    border-bottom: 1px solid $gray2;
   }
 }
 
@@ -60,7 +60,7 @@
     .description {
       margin-top: 10px;
       font-size: $font-size;
-      color: $dark-gray;
+      color: $gray1;
     }
   }
 

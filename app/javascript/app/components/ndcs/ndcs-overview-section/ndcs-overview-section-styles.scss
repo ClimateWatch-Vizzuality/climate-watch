@@ -2,7 +2,7 @@
 @import '~styles/layout.scss';
 
 .commitmentContainer {
-  border-top: solid 1px $border-color;
+  border-top: solid 1px $gray2;
 }
 
 .section {
@@ -43,13 +43,13 @@
 }
 
 .description {
-  color: $theme-color-intense;
+  color: $theme-color;
   font-size: $font-size;
   line-height: $line-height-modal;
   margin-bottom: 20px;
 }
 
 .hint {
-  color: $manatee;
+  color: $gray1;
   line-height: $line-height-modal;
 }

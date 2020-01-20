@@ -29,7 +29,7 @@
 .label {
   font-size: $font-size-s;
   font-weight: bold;
-  color: $gray;
+  color: $gray1;
 }
 
 .switch input {
@@ -37,7 +37,7 @@
 }
 
 .slider {
-  background-color: $light-gray;
+  background-color: $gray1;
   bottom: 0;
   cursor: pointer;
   left: 0;

@@ -21,7 +21,7 @@ $margin-container: 10px;
   }
 
   .legendLogoTitle {
-    color: $dark-gray;
+    color: $gray1;
   }
 
   @media #{$tablet-landscape} {
@@ -94,7 +94,7 @@ $margin-container: 10px;
 }
 
 .tagDescription {
-  color: $dark-gray;
+  color: $gray1;
 }
 
 .tagSelector :global {

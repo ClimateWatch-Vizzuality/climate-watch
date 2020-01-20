@@ -40,34 +40,17 @@ $logos-top-bottom-margin: 15px;
 // Colors
 $black: #333;
 $white: #fff;
-$theme-color: #113750;
+$theme-color: #0a1941;
+$theme-color-medium: #0845cb;
 $theme-color-light: #25597c;
-$theme-color-intense: #0a1941;
 $theme-secondary: #ffc735;
 $theme-secondary-dark: #f6a806;
 
 // Grays
-$light-gray: #f5f6f7;
-$athens-gray: #eeeff3;
-$lighter-gray: #e5e5eb;
-$theme-border: #e6e7ed;
-$secondary-gray: #d0d7dc;
-$chart-fill-gray: #caccd0;
-$manatee: #8f8fa0;
-$dark-gray: #8f8fa1;
-$gray: #b1b1c1;
-$base-text: #424242;
-$slate: #555;
-$placeholder-gray: #393f44;
 
-// UI kit Grays
-$gray3: #ecf1fa;
-
-$link-color: #0845cb;
-$ebony-clay: #233140;
-
-$bg-main: #00548b;
-$bg-blue: #1b3b5a;
+$gray1: #757584;
+$gray2: #cccdcf;
+$gray3: #f1f4fb;
 
 $teal-blue: #045f61;
 $purple: #74356a;
@@ -78,10 +61,8 @@ $twitter: #5b8ec8;
 $facebook: #3b5999;
 $google: #d8483b;
 
-$border-color: rgba(26, 28, 34, 0.1);
-
 // box-shadow
-$box-shadow-light: 0 2px 10px 0 $chart-fill-gray;
+$box-shadow-light: 0 2px 10px 0 $gray3;
 
 // border
 $dropdown-border: 2.5px solid $gray3;

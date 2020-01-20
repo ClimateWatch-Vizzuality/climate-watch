@@ -9,7 +9,7 @@
   padding-top: 15px;
   background-color: $white;
   box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.1);
-  border-top: solid 1px $theme-border;
+  border-top: solid 1px $gray2;
 
   @media #{$tablet-landscape} {
     min-height: calc(100% - 196px); // 196px = font size plus footer padding

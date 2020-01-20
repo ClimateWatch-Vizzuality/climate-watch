@@ -2,7 +2,7 @@
 
 .content {
   position: relative;
-  background-color: $light-gray;
+  background-color: $gray3;
   padding: 1em;
 
   &::before {
@@ -12,7 +12,7 @@
     position: absolute;
     content: "";
 
-    @include triangle($light-gray, 'up');
+    @include triangle($gray3, 'up');
   }
 }
 
@@ -23,7 +23,7 @@
 }
 
 .open {
-  background-color: $bg-blue;
+  background-color: $theme-color-medium;
   color: $white;
 }
 

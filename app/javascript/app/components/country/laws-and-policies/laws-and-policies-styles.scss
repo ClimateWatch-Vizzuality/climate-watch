@@ -82,12 +82,12 @@
   flex: 0 0 33%;
   height: 350px;
   box-shadow: 0 1px 25px 0 rgba(0, 0, 0, 0.1);
-  border: solid 1px $border-color;
+  border: solid 1px $gray2;
   z-index: $z-index-over-base;
 }
 
 .fixedCardContentContainer {
-  background-color: $light-gray;
+  background-color: $gray3;
   min-height: 70px;
   display: flex;
   align-items: center;
@@ -118,11 +118,11 @@
 }
 
 .noContent {
-  background-color: $light-gray;
+  background-color: $gray3;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: $manatee;
+  color: $gray1;
   height: 350px;
   width: 100%;
   font-size: $font-size-sm;

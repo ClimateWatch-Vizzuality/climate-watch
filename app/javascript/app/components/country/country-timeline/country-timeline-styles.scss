@@ -93,7 +93,7 @@
           position: absolute;
           pointer-events: none;
           border-color: rgba(255, 255, 255, 0);
-          border-top-color: $light-gray;
+          border-top-color: $gray3;
           border-width: 6px;
           margin-left: -6px;
         }
@@ -108,7 +108,7 @@
           border-top-right-radius: 4px;
 
           li {
-            background-color: $light-gray;
+            background-color: $gray3;
             text-align: left;
             position: relative;
             border-bottom: 1px solid rgba($white, 0.2);
@@ -121,7 +121,7 @@
               height: auto;
               font-size: $font-size;
               line-height: $line-height-medium;
-              color: $dark-gray;
+              color: $gray1;
               background-color: transparent;
               transition: color 0.1s linear;
             }
@@ -177,7 +177,7 @@
           width: 32px !important;
           background-color: $white;
           box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.09);
-          border: solid 1px $border-color;
+          border: solid 1px $gray2;
 
           > svg {
             fill: $theme-color !important;

@@ -5,7 +5,7 @@
   height: 45px;
   border-radius: 4px;
   color: $theme-color;
-  border: solid 1px $border-color;
+  border: solid 1px $gray2;
   padding: 0 40px 0 15px;
   font-size: $font-size;
   font-family: $font-family-1;
@@ -30,11 +30,11 @@
   &.disabled {
     pointer-events: none;
     cursor: not-allowed;
-    background-color: $light-gray;
+    background-color: $gray3;
   }
 
   &.notApplicable {
-    background-color: $light-gray;
+    background-color: $gray3;
   }
 
   &.inputFailed {
@@ -60,5 +60,5 @@
 .optional {
   font-size: $font-size-s;
   font-weight: $font-weight;
-  color: $gray;
+  color: $gray1;
 }

@@ -327,7 +327,7 @@ $height: 45px;
 
       .option-wrapper {
         border-bottom: solid 1px #e5e5eb;
-        color: $dark-gray;
+        color: $gray1;
 
         &:last-child {
           border-bottom: 0;
@@ -424,7 +424,7 @@ $height: 45px;
     color: $theme-color !important;
 
     @media #{$desktop} {
-      color: $gray !important;
+      color: $gray1 !important;
     }
   }
 
