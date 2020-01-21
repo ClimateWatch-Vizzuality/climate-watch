@@ -19,7 +19,7 @@
   transition: box-shadow 150ms ease-out;
 
   &::placeholder {
-    color: $theme-color-intense;
+    color: $theme-color;
     font-style: italic;
   }
 
