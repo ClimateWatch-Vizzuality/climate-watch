@@ -8,8 +8,12 @@
   flex-direction: column;
   justify-content: space-between;
   background-color: $gray3;
-  height: 230px;
   width: 17em;
+  height: auto;
+
+  @media #{$tablet-portrait} {
+    height: 230px;
+  }
 
   @media #{$tablet-landscape} {
     height: 300px;
