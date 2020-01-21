@@ -53,7 +53,7 @@ export const getIncludedCountriesCount = createSelector(
 
 const countryStyle = {
   default: {
-    fill: '#b1b1c1',
+    fill: '#868697',
     fillOpacity: 0.3,
     stroke: '#ffffff',
     strokeWidth: 0.3,
@@ -66,7 +66,7 @@ const countryStyle = {
     outline: 'none'
   },
   pressed: {
-    fill: '#b1b1c1',
+    fill: '#868697',
     stroke: '#ffffff',
     strokeWidth: 0.3,
     outline: 'none'

@@ -29,6 +29,7 @@ $min-width: 110px;
       @media #{$tablet-portrait} {
         font-size: $font-size-xl-large;
       }
+
       > span {
         max-width: 81vw;
         min-height: 60px;
