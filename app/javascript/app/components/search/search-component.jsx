@@ -60,9 +60,14 @@ class Search extends Component {
 
     return (
       <div
-        className={cx(styles.search, className, {
-          [styles.searchTransparent]: transparent
-        })}
+        className={cx(
+          styles.search,
+          className,
+          {
+            [styles.searchTransparent]: transparent
+          },
+          theme.search
+        )}
       >
         <input
           ref={el => {
