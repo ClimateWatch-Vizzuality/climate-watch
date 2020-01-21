@@ -55,7 +55,7 @@ class Search extends Component {
       className,
       handleKeyUp,
       disabled,
-      transparent
+      variant
     } = this.props;
 
     return (
@@ -64,7 +64,7 @@ class Search extends Component {
           styles.search,
           className,
           {
-            [styles.searchTransparent]: transparent
+            [styles[`v-${variant}`]]: variant
           },
           theme.search
         )}
@@ -102,13 +102,12 @@ Search.propTypes = {
   theme: PropTypes.object,
   handleKeyUp: PropTypes.func,
   disabled: PropTypes.bool,
-  transparent: PropTypes.bool
+  variant: PropTypes.string
 };
 
 Search.defaultProps = {
   icon: true,
-  value: '',
-  transparent: false
+  value: ''
 };
 
 export default themr('Search', styles)(Search);

@@ -53,7 +53,7 @@ class NDCTable extends PureComponent {
             onChange={handleSearchChange}
             className={styles.searchBox}
             placeholder="Search table data"
-            transparent
+            variant="transparent"
           />
         </div>
         <TabletPortrait>

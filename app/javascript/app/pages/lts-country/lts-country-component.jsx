@@ -112,7 +112,7 @@ class LTSCountry extends PureComponent {
                     placeholder="Search"
                     value={search}
                     onChange={onSearchChange}
-                    transparent
+                    variant="transparent"
                   />
                 )}
               </div>
