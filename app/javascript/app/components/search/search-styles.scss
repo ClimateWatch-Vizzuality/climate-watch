@@ -41,3 +41,28 @@
   height: 50px;
   fill: $ebony-clay;
 }
+
+.searchTransparent {
+  .input {
+    border: 2.5px solid rgba(255, 255, 255, 0.5);
+    transition: background-color 150ms ease-out;
+    background-color: transparent;
+    color: $white;
+
+    &::placeholder {
+      color: $white;
+    }
+
+    &:focus {
+      border: 2.5px solid rgba(255, 255, 255, 0.5);
+    }
+
+    &:hover {
+      border: $dropdown-border;
+    }
+  }
+
+  .iconSearch {
+    fill: $white;
+  }
+}
