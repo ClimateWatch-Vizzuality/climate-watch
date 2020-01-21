@@ -4,6 +4,8 @@ import cx from 'classnames';
 import Disclaimer from 'components/disclaimer';
 import { toStartCase } from 'utils/utils';
 import { isArray } from 'util';
+import ReactMarkdown from 'react-markdown';
+
 import styles from './metadata-text-styles.scss';
 
 const MetadataAllProps = ({ data }) =>
@@ -34,13 +36,12 @@ const MetadataProp = ({ title, data }) =>
           {data}
         </a>
       ) : (
-        <span
-          className={cx({
+        <ReactMarkdown
+          className={cx(styles.markdown, {
             [styles.empty]: data === 'Not specified'
           })}
-        >
-          {data}
-        </span>
+          source={data}
+        />
       )}
     </p>
   ));

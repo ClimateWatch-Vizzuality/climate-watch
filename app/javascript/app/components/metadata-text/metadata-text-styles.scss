@@ -27,3 +27,13 @@
 .empty {
   opacity: 0.7;
 }
+
+.markdown {
+  ul {
+    list-style: unset;
+    margin-left: 20px;
+  }
+  p {
+    margin: 16px 0;
+  }
+}
