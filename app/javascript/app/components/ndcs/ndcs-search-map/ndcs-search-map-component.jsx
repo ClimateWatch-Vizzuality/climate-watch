@@ -26,6 +26,7 @@ const NDCSearchMap = props => (
       paths={props.paths}
       onCountryClick={props.handleCountryClick}
       customCenter={[20, -30]}
+      zoomEnable
     />
   </div>
 );

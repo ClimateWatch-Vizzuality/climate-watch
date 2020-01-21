@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 import worldPaths from 'app/data/world-50m-paths';
-import { PATH_LAYERS } from 'app/data/constants';
+import { PATH_LAYERS, MIN_ZOOM_SHOW_ISLANDS } from 'app/data/constants';
 import uniq from 'lodash/uniq';
 
 const getResultsData = state => state.data || [];
@@ -8,6 +8,7 @@ const getLoading = state => state.loading || null;
 const getDocument = state => state.search.document || null;
 export const getTotalCountriesNumber = state =>
   (state.countriesData && state.countriesData.length) || null;
+const getZoom = state => state.zoom || null;
 
 export const getTotalDocumentsNumber = createSelector(
   [state => state.meta, getDocument],
@@ -87,11 +88,18 @@ const activeCountryStyle = {
 };
 
 export const getPathsWithStyles = createSelector(
-  [getIncludedCountries, getLoading],
-  (countriesIncluded, loading) => {
+  [getIncludedCountries, getLoading, getZoom],
+  (countriesIncluded, loading, zoom) => {
     const paths = [];
     worldPaths.forEach(path => {
-      if (path.properties.layer !== PATH_LAYERS.ISLANDS) {
+      if (
+        (zoom >= MIN_ZOOM_SHOW_ISLANDS &&
+          (path.properties.layer === PATH_LAYERS.COUNTRIES ||
+            path.properties.layer === PATH_LAYERS.ISLANDS)) ||
+        (zoom < MIN_ZOOM_SHOW_ISLANDS &&
+          (path.properties.layer === PATH_LAYERS.COUNTRIES ||
+            path.properties.layer === PATH_LAYERS.POINTS))
+      ) {
         const iso = path.properties && path.properties.id;
         const isCountryIncluded = countriesIncluded.includes(iso);
         paths.push({
