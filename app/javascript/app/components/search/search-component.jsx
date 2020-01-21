@@ -55,16 +55,26 @@ class Search extends Component {
       className,
       handleKeyUp,
       disabled,
-      plain
+      variant
     } = this.props;
+
     return (
-      <div className={cx(styles.search, className, theme.search)}>
+      <div
+        className={cx(
+          styles.search,
+          className,
+          {
+            [styles[`v-${variant}`]]: variant
+          },
+          theme.search
+        )}
+      >
         <input
           ref={el => {
             this.inputRef = el;
           }}
           type="text"
-          className={cx(styles.input, theme.input, plain ? styles.plain : '')}
+          className={cx(styles.input, theme.input)}
           placeholder={placeholder}
           onChange={e => this.handleChange(e.target.value)}
           value={search}
@@ -92,7 +102,7 @@ Search.propTypes = {
   theme: PropTypes.object,
   handleKeyUp: PropTypes.func,
   disabled: PropTypes.bool,
-  plain: PropTypes.bool
+  variant: PropTypes.string
 };
 
 Search.defaultProps = {

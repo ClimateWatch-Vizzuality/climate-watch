@@ -11,33 +11,24 @@
   height: 45px;
   border-radius: 4px;
   background-color: $white;
-  box-shadow: 0 5px 15px 0 rgba(71, 44, 184, 0.1);
   color: $theme-color;
-  border: 0;
+  border: $dropdown-border;
   padding: 0 40px 0 15px;
   font-size: $font-size;
   font-family: $font-family-1;
   transition: box-shadow 150ms ease-out;
 
   &::placeholder {
-    color: rgba($theme-color, 0.5);
-    font-style: italic;
+    color: $theme-color;
   }
 
   &:focus {
     outline: none;
+    border: 2px solid $theme-color-medium;
   }
 
-  &:hover {
-    box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.09);
-  }
-
-  &.plain {
-    transition: background-color 150ms ease-out;
-
-    &:hover {
-      background-color: $white;
-    }
+  &:disabled {
+    opacity: 50%;
   }
 }
 
@@ -47,4 +38,29 @@
   right: 0;
   width: 50px;
   height: 50px;
+  fill: $black;
+}
+
+.v-transparent {
+  .input {
+    border: 2.5px solid rgba(255, 255, 255, 0.5);
+    background-color: transparent;
+    color: $white;
+
+    &::placeholder {
+      color: $white;
+    }
+
+    &:focus {
+      border: 2.5px solid rgba(255, 255, 255, 0.5);
+    }
+
+    &:hover {
+      border: $dropdown-border;
+    }
+  }
+
+  .iconSearch {
+    fill: $white;
+  }
 }

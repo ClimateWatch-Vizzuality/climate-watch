@@ -8,8 +8,6 @@ import NdcsSdgsDataProvider from 'providers/ndcs-sdgs-data-provider';
 import Dropdown from 'components/dropdown';
 import Search from 'components/search';
 
-import darkSearch from 'styles/themes/search/search-dark.scss';
-import lightSearch from 'styles/themes/search/search-light.scss';
 import theme from 'styles/themes/dropdown/dropdown-links.scss';
 import styles from './ndcs-autocomplete-search-styles.scss';
 
@@ -65,11 +63,11 @@ class NdcsAutocompleteSearch extends PureComponent {
             noAutoSort
           />
           <Search
-            theme={dark ? darkSearch : lightSearch}
             className={label ? styles.search : ''}
             placeholder="e.g. “reduce emissions by 37%”"
             value={search.searchBy === 'query' ? search.query : ''}
             handleKeyUp={handleKeyUp}
+            variant="transparent"
           />
         </div>
       </div>

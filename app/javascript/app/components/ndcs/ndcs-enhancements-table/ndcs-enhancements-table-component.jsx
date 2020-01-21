@@ -4,17 +4,14 @@ import Search from 'components/search';
 import { Table } from 'cw-components';
 import NoContent from 'components/no-content';
 import Loading from 'components/loading';
-import darkSearch from 'styles/themes/search/search-dark.scss';
 import styles from './ndcs-enhancements-table-styles.scss';
 
 const renderSearch = (searchHandler, query) => (
   <Search
     value={query}
-    theme={darkSearch}
     onChange={searchHandler}
     className={styles.searchBox}
     placeholder="Search table data"
-    plain
   />
 );
 

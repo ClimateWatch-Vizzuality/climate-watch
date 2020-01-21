@@ -19,7 +19,6 @@ import { TabletLandscape } from 'components/responsive';
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
 import dropdownLinksTheme from 'styles/themes/dropdown/dropdown-links.scss';
 import countryDropdownTheme from 'styles/themes/dropdown/dropdown-country.scss';
-import lightSearch from 'styles/themes/search/search-light.scss';
 import styles from './ndc-country-styles.scss';
 
 const FEATURE_LTS_EXPLORE = process.env.FEATURE_LTS_EXPLORE === 'true';
@@ -146,10 +145,10 @@ class NDCCountry extends PureComponent {
                 </TabletLandscape>
                 {hasSearch && (
                   <Search
-                    theme={lightSearch}
                     placeholder="Search"
                     value={search}
                     onChange={onSearchChange}
+                    variant="transparent"
                   />
                 )}
               </div>

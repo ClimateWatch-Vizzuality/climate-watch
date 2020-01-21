@@ -2,6 +2,7 @@
 
 .input {
   background-color: transparent;
+  border: none;
   border-bottom: solid 1px $theme-color;
   box-shadow: none;
   color: $theme-color;
@@ -15,6 +16,11 @@
 
   &:hover {
     box-shadow: 0 5px 5px -5px rgba(0, 0, 0, 0.09);
+  }
+
+  &:focus {
+    border: none;
+    border-bottom: solid 1px $theme-color;
   }
 }
 
