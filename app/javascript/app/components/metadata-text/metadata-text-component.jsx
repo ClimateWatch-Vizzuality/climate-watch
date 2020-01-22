@@ -23,27 +23,17 @@ MetadataAllProps.propTypes = {
   data: PropTypes.object.isRequired
 };
 
-const urlTitles = ['url', 'Link'];
 const MetadataProp = ({ title, data }) =>
   data &&
   (title === 'logo' ? (
     <img src={`https:${data}`} />
   ) : (
-    <p className={styles.text}>
-      <span className={styles.textHighlight}>{toStartCase(title)}: </span>
-      {urlTitles.includes(title) ? (
-        <a className={styles.link} href={data}>
-          {data}
-        </a>
-      ) : (
-        <ReactMarkdown
-          className={cx(styles.markdown, {
-            [styles.empty]: data === 'Not specified'
-          })}
-          source={data}
-        />
-      )}
-    </p>
+    <ReactMarkdown
+      className={cx(styles.markdown, {
+        [styles.empty]: data === 'Not specified'
+      })}
+      source={`**${toStartCase(title)}**: ${data}`}
+    />
   ));
 
 MetadataProp.propTypes = {
@@ -100,15 +90,7 @@ class MetadataText extends PureComponent {
             )}
             {cautions && <MetadataProp title="Cautions" data={cautions} />}
             {learn_more_link && (
-              <MetadataProp
-                title="Read more"
-                data={
-                  <a key="link" className={styles.link} href={learn_more_link}>
-                    {' '}
-                    {learn_more_link}{' '}
-                  </a>
-                }
-              />
+              <MetadataProp title="Read more" data={learn_more_link} />
             )}
             {summary_of_licenses && (
               <MetadataProp
@@ -120,16 +102,7 @@ class MetadataText extends PureComponent {
             {terms_of_service_link && (
               <MetadataProp
                 title="Terms of service link"
-                data={
-                  <a
-                    key="link"
-                    className={styles.link}
-                    href={terms_of_service_link}
-                  >
-                    {' '}
-                    {terms_of_service_link}{' '}
-                  </a>
-                }
+                data={terms_of_service_link}
               />
             )}
             {displayDisclaimer && (
