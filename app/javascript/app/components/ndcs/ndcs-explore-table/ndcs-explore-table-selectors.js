@@ -52,7 +52,7 @@ export const getDefaultColumns = createSelector(
 export const tableGetSelectedData = createSelector(
   [getIndicatorsParsed, getCountries],
   (indicators, countries) => {
-    if (!indicators || !indicators.length || !indicators[0].locations) {
+    if (!indicators || !indicators.length || !indicators[0].locations || !countries) {
       return [];
     }
     const refIndicator =
