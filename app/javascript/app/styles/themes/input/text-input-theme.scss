@@ -5,7 +5,7 @@
   height: 45px;
   border-radius: 4px;
   color: $theme-color;
-  border: solid 1px $gray2;
+  border: solid 2.5px $gray3;
   padding: 0 40px 0 15px;
   font-size: $font-size;
   font-family: $font-family-1;
@@ -19,7 +19,7 @@
 
   &:focus {
     outline: none;
-    border: solid 1px $theme-color;
+    border: solid 2.5px $theme-color-medium;
   }
 
   &.textArea {
@@ -30,7 +30,7 @@
   &.disabled {
     pointer-events: none;
     cursor: not-allowed;
-    background-color: $gray3;
+    background-color: rgba($gray3, 0.6);
   }
 
   &.notApplicable {

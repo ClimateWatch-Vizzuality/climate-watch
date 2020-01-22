@@ -1,5 +1,9 @@
+@import '~styles/settings';
+
 .input {
   font-size: 1rem;
+  border-radius: 4px;
+  border: solid 2.5px $gray3;
 
   &:focus {
     background-color: transparent;
