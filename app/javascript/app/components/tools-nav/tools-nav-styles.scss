@@ -4,7 +4,7 @@
   display: flex;
   align-items: center;
   height: $navbar-height;
-  border-left: solid 1px rgba($gray, 0.5);
+  border-left: solid 1px rgba($gray1, 0.5);
 }
 
 .shareButton {
@@ -18,7 +18,7 @@
 }
 
 .iconButton {
-  fill: $dark-gray;
+  fill: $gray1;
   padding: 22px 15px 0;
 
   &.active {
@@ -36,7 +36,7 @@
 }
 
 .link {
-  color: $dark-gray;
+  color: $gray1;
   margin-left: 25px;
   text-decoration: none;
   position: relative;
@@ -45,7 +45,7 @@
   font-size: $font-size-s;
 
   svg {
-    fill: $dark-gray;
+    fill: $gray1;
   }
 
   &.disabled {

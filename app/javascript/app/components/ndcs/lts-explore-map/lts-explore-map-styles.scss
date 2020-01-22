@@ -66,8 +66,14 @@
   flex-direction: column;
 }
 
+.containerUpperWrapper {
+  background-color: $gray3;
+}
+
 .containerUpper {
   @include columns();
+
+  margin-bottom: 20px;
 
   @media #{$tablet-landscape} {
     @include columns((4,8));
@@ -111,7 +117,7 @@
 
   .summaryCard {
     flex-flow: row wrap;
-    color: $theme-color-intense;
+    color: $theme-color;
     display: flex;
     align-items: center;
     padding: 20px;
@@ -151,7 +157,7 @@
     padding: 24px 20px;
     flex-direction: column;
     font-size: $font-size-sm;
-    color: $theme-color-intense;
+    color: $theme-color;
   }
 }
 
@@ -172,9 +178,15 @@
   background-color: $white;
 }
 
+.filtersLayout {
+  margin-bottom: 20px;
+}
+
 @media #{$tablet-landscape} {
   .filtersLayout {
     @include columns((8,4));
+
+    margin-bottom: 0;
   }
 
   .filtersGroup {

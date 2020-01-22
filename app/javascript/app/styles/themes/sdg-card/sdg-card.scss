@@ -3,11 +3,11 @@
 .card {
   position: relative;
   margin-bottom: -1px;
-  border: solid 1px $theme-border;
+  border: solid 1px $gray2;
 
   &:last-child {
     border-left: 1px solid transparent;
-    box-shadow: -1px 0 0 $theme-border;
+    box-shadow: -1px 0 0 $gray2;
   }
 
   &:not(:last-child) {

@@ -5,7 +5,7 @@ $extra-text-padding: 30px;
 
 .cardRow {
   background-color: $white;
-  border-top: 1px solid $athens-gray;
+  border-top: 1px solid $gray3;
 
   &:last-child {
     flex: 1;
@@ -17,7 +17,7 @@ p {
 }
 
 .title {
-  color: $manatee;
+  color: $gray1;
   font-size: $font-size-sm;
   padding: {
     top: 15px;
@@ -27,7 +27,7 @@ p {
 }
 
 .subtitle {
-  color: $manatee;
+  color: $gray1;
   font-size: $font-size-sm;
   padding: {
     left: $extra-text-padding;

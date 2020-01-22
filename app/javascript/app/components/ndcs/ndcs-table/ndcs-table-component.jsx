@@ -7,7 +7,6 @@ import NoContent from 'components/no-content';
 import Loading from 'components/loading';
 import { isPageContained } from 'utils/navigation';
 
-import darkSearch from 'styles/themes/search/search-dark.scss';
 import styles from './ndcs-table-styles.scss';
 
 class NDCTable extends PureComponent {
@@ -61,11 +60,9 @@ class NDCTable extends PureComponent {
           />
           <Search
             value={query}
-            theme={darkSearch}
             onChange={handleSearchChange}
             className={styles.searchBox}
             placeholder="Search table data"
-            plain
           />
         </div>
         {this.getTableContent()}

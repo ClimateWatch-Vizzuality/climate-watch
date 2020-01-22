@@ -74,7 +74,7 @@ class NDCCountryFull extends PureComponent {
                 <Intro title={`${country.wri_standard_name} - Full Content`} />
               )}
             </div>
-            <Button color="yellow" link={`/ndcs/country/${iso}`}>
+            <Button variant="primary" link={`/ndcs/country/${iso}`}>
               View NDC Overview
             </Button>
           </div>

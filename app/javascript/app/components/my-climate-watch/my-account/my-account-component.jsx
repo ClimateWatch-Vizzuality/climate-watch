@@ -93,7 +93,8 @@ class MyAccount extends Component {
             label="Sector"
             options={sectors}
             onValueChange={selected =>
-              this.updateDropdownValue(selected, 'sector')}
+              this.updateDropdownValue(selected, 'sector')
+            }
             value={this.state.sector}
             hideResetButton
           />
@@ -103,7 +104,8 @@ class MyAccount extends Component {
             options={countries}
             value={this.state.country}
             onValueChange={selected =>
-              this.updateDropdownValue(selected, 'country')}
+              this.updateDropdownValue(selected, 'country')
+            }
             hideResetButton
           />
         </div>
@@ -129,7 +131,7 @@ class MyAccount extends Component {
           toggleFirst
         />
         <div className={styles.updateButton}>
-          <Button color={'yellow'} onClick={() => saveUserData(this.state)}>
+          <Button variant="primary" onClick={() => saveUserData(this.state)}>
             <span>Update profile</span>
           </Button>
           {isProfileUpdated && (

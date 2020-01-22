@@ -98,9 +98,7 @@ function ShareButton({
       <Button
         className={cx(styles.shareButton, className)}
         onClick={() => setOpen(true)}
-        color="yellow"
-        dataFor="info-tooltip"
-        dataTip="Sharermation"
+        variant="primary"
       >
         <Icon icon={shareIcon} />
         <span className={styles.shareText}>Share</span>

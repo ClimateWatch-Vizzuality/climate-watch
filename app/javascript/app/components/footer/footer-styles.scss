@@ -9,11 +9,11 @@
 }
 
 .gray {
-  background-color: $light-gray;
+  background-color: $gray3;
 }
 
 .border {
-  border-top: solid 1px $border-color;
+  border-top: solid 1px $gray2;
   padding-top: 0;
 
   &.isContained {
@@ -26,7 +26,7 @@
   flex-direction: column;
   justify-content: space-between;
   padding-bottom: $gutter-padding;
-  color: $dark-gray;
+  color: $gray1;
   font-weight: $font-weight-semi-bold;
 }
 
@@ -117,7 +117,7 @@
   font-weight: bold;
   letter-spacing: 1px;
   text-transform: uppercase;
-  color: $dark-gray;
+  color: $gray1;
   margin-right: 10px;
   min-width: 90px;
 }

@@ -1,0 +1,36 @@
+@import '~styles/settings.scss';
+
+.wrapper :global {
+  width: 100%;
+  position: relative;
+
+  //dropdown styles
+  .cw__multi-level-dropdown-styles_selector {
+    border: $dropdown-border !important;
+    padding-right: 20px;
+  }
+
+  //menu container styles
+  .cw__multi-level-dropdown-styles_menu {
+    border: $dropdown-border !important;
+    border-radius: 0 0 4px 4px;
+    margin-top: -3px;
+  }
+
+  //dropdown toggle arrow wrapper styles
+  .cw__multi-level-dropdown-styles_arrow {
+    height: 10px;
+    width: 10px;
+  }
+
+  //'x' button styles
+  .cw__multi-level-dropdown-styles_clearBtn {
+    padding-right: 10px;
+  }
+
+  //when dropdown is disabled
+  .cw__multi-level-dropdown-styles_disabled {
+    background-color: unset;
+    opacity: 0.5;
+  }
+}

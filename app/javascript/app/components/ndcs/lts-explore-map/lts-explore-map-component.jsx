@@ -2,11 +2,12 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import ReactTooltip from 'react-tooltip';
-import { Link } from 'react-router-dom';
+import cx from 'classnames';
 import { TabletLandscape } from 'components/responsive';
 import Map from 'components/map';
 import Icon from 'components/icon';
 import ButtonGroup from 'components/button-group';
+import Button from 'components/button';
 import Loading from 'components/loading';
 import ModalMetadata from 'components/modal-metadata';
 import Dropdown from 'components/dropdown';
@@ -16,6 +17,7 @@ import LegendItem from 'components/ndcs/shared/legend-item';
 import handCursorIcon from 'assets/icons/hand-cursor.svg';
 import ShareButton from 'components/button/share-button';
 
+import layout from 'styles/layout.scss';
 import tooltipTheme from 'styles/themes/map-tooltip/map-tooltip.scss';
 import newMapTheme from 'styles/themes/map/map-new-zoom-controls.scss';
 import styles from './lts-explore-map-styles.scss';
@@ -131,87 +133,105 @@ class LTSExploreMap extends PureComponent {
         <TabletLandscape>
           {isTablet => (
             <div className={styles.wrapper}>
-              <div className={styles.filtersLayout}>
-                <div className={styles.filtersGroup}>
-                  <Dropdown
-                    label="Category"
-                    paceholder="Select a category"
-                    options={categories}
-                    onValueChange={handleCategoryChange}
-                    value={selectedCategory}
-                    hideResetButton
-                    plain
-                  />
-                  <Dropdown
-                    label="Indicator"
-                    options={indicators}
-                    onValueChange={handleIndicatorChange}
-                    value={selectedIndicator}
-                    hideResetButton
-                    plain
-                  />
+              <div className={layout.content}>
+                <div className="grid-column-item">
+                  <div className={styles.filtersLayout}>
+                    <div className={styles.filtersGroup}>
+                      <Dropdown
+                        label="Category"
+                        paceholder="Select a category"
+                        options={categories}
+                        onValueChange={handleCategoryChange}
+                        value={selectedCategory}
+                        hideResetButton
+                        plain
+                      />
+                      <Dropdown
+                        label="Indicator"
+                        options={indicators}
+                        onValueChange={handleIndicatorChange}
+                        value={selectedIndicator}
+                        hideResetButton
+                        plain
+                      />
+                    </div>
+                    {isTablet &&
+                      renderButtonGroup(handleInfoClick, downloadLink)}
+                  </div>
                 </div>
-                {isTablet && renderButtonGroup(handleInfoClick, downloadLink)}
               </div>
-              <div className={styles.containerUpper}>
-                <div
-                  className={styles.containerCharts}
-                  ref={r => {
-                    this.setState({ tooltipParentRef: r });
-                  }}
-                >
-                  {!loading && (
-                    <React.Fragment>
-                      {summaryCardData && renderSummary(summaryCardData)}
-                      {emissionsCardData &&
-                        this.renderDonutChart(emissionsCardData)}
-                      {legendData && renderLegend(legendData)}
-                    </React.Fragment>
-                  )}
-                </div>
-                <div className={styles.containerMap}>
-                  {loading && <Loading light className={styles.loader} />}
-                  <p className={styles.mapInfo}>
-                    <Icon
-                      icon={handCursorIcon}
-                      className={styles.handCursorIcon}
-                    />
-                    <span>
-                      Explore which countries have submitted long-term
-                      strategies thus far below. Visit Climate Watch in the
-                      coming months for in-depth analysis of long-term
-                      strategies.
-                    </span>
-                  </p>
-                  <Map
-                    paths={paths}
-                    tooltipId="lts-map-tooltip"
-                    onCountryClick={handleCountryClick}
-                    onCountryEnter={handleCountryEnter}
-                    onCountryFocus={handleCountryEnter}
-                    zoomEnable
-                    customCenter={isTablet ? [20, 20] : [10, 20]}
-                    theme={newMapTheme}
-                    className={styles.map}
-                  />
-                  {countryData && (
-                    <ReactTooltip
-                      className={styles.tooltipContainer}
-                      id="lts-map-tooltip"
-                      delayHide={isTablet ? 0 : 1000}
-                    >
-                      <Link
-                        className={tooltipTheme.container}
-                        to={`/ndcs/country/${countryData.id}`}
+              <div className={styles.containerUpperWrapper}>
+                <div className={layout.content}>
+                  <div className="grid-column-item">
+                    <div className={styles.containerUpper}>
+                      <div
+                        className={styles.containerCharts}
+                        ref={r => {
+                          this.setState({ tooltipParentRef: r });
+                        }}
                       >
-                        <div className={tooltipTheme.countryName}>
-                          {countryData.name}
-                        </div>
-                      </Link>
-                    </ReactTooltip>
-                  )}
-                  {!isTablet &&
-                    renderButtonGroup(handleInfoClick, downloadLink)}
+                        {!loading && (
+                          <React.Fragment>
+                            {summaryCardData && renderSummary(summaryCardData)}
+                            {emissionsCardData &&
+                              this.renderDonutChart(emissionsCardData)}
+                            {legendData && renderLegend(legendData)}
+                          </React.Fragment>
+                        )}
+                      </div>
+                      <div className={styles.containerMap}>
+                        {loading && <Loading light className={styles.loader} />}
+                        <p className={styles.mapInfo}>
+                          <Icon
+                            icon={handCursorIcon}
+                            className={styles.handCursorIcon}
+                          />
+                          <span>
+                            Explore which countries have submitted long-term
+                            strategies thus far below. Visit Climate Watch in
+                            the coming months for in-depth analysis of long-term
+                            strategies.
+                          </span>
+                        </p>
+                        <Map
+                          paths={paths}
+                          tooltipId="lts-map-tooltip"
+                          onCountryClick={handleCountryClick}
+                          onCountryEnter={handleCountryEnter}
+                          onCountryFocus={handleCountryEnter}
+                          zoomEnable
+                          customCenter={isTablet ? [20, 20] : [10, 20]}
+                          theme={newMapTheme}
+                          className={styles.map}
+                        />
+                        {countryData && (
+                          <ReactTooltip
+                            className={styles.tooltipContainer}
+                            id="lts-map-tooltip"
+                            delayHide={isTablet ? 0 : 3000}
+                          >
+                            <Button
+                              onClick={() =>
+                                handleCountryClick(null, countryData)
+                              }
+                              className={tooltipTheme.container}
+                            >
+                              <div
+                                className={cx(
+                                  tooltipTheme.countryName,
+                                  tooltipTheme.link
+                                )}
+                              >
+                                {countryData.name}
+                              </div>
+                            </Button>
+                          </ReactTooltip>
+                        )}
+                        {!isTablet &&
+                          renderButtonGroup(handleInfoClick, downloadLink)}
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
               <ModalMetadata />

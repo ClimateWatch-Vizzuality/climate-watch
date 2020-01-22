@@ -27,6 +27,9 @@ import { orderByColumns, stripHTML } from 'utils';
 import lineIcon from 'assets/icons/line_chart.svg';
 import areaIcon from 'assets/icons/area_chart.svg';
 import percentageIcon from 'assets/icons/icon-percentage-chart.svg';
+import dropdownTheme from 'styles/themes/dropdown/react-selectize.scss';
+import multiLevelDropdownTheme from 'styles/themes/dropdown/multi-level-dropdown.scss';
+
 import styles from './ghg-emissions-styles.scss';
 
 const getValues = value => (value && (isArray(value) ? value : [value])) || [];
@@ -60,6 +63,7 @@ class GhgEmissions extends PureComponent {
         onValueChange={selected => handleChange(field, selected)}
         value={value || null}
         hideResetButton
+        theme={dropdownTheme}
         {...iconsProp}
       />
     );
@@ -244,22 +248,24 @@ class GhgEmissions extends PureComponent {
             options={options.regions || []}
             values={getValues(selectedOptions.regionsSelected)}
             onValueChange={selected => handleChange('regions', selected)}
+            theme={dropdownTheme}
           />
           <MultiLevelDropdown
             label="Sectors/Subsectors"
-            theme={{ wrapper: styles.dropdown }}
             optGroups={sectorGroups}
             options={options.sectors}
             values={selectedOptions.sectorsSelected || []}
             onChange={selected => handleChange('sectors', selected)}
             clearable
             multiselect
+            theme={multiLevelDropdownTheme}
           />
           <Multiselect
             label={'Gases'}
             options={options.gases}
             values={getValues(selectedOptions.gasesSelected)}
             onValueChange={selected => handleChange('gases', selected)}
+            theme={dropdownTheme}
           />
           {this.renderDropdown('Show data by', 'breakBy')}
           {this.renderDropdown(null, 'chartType', icons)}

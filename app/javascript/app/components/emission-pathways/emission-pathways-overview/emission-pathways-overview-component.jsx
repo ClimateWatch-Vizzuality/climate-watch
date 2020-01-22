@@ -59,7 +59,7 @@ class EmissionPathwaysOverview extends PureComponent {
               <Button
                 className={(styles.col5, styles.seeAllButton)}
                 onClick={handleInfoClick}
-                color="plain"
+                variant="secondary"
               >
                 See all
               </Button>

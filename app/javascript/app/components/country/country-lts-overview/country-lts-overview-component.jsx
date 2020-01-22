@@ -63,7 +63,7 @@ const CountryLtsOverview = props => {
       className={styles.descriptionContainer}
       // eslint-disable-next-line react/no-danger
       dangerouslySetInnerHTML={{
-        __html: cardData && cardData.lts_vision
+        __html: cardData && cardData.lts_vision && cardData.lts_vision.value
       }}
     />
   );

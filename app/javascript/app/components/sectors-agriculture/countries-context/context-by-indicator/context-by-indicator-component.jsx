@@ -10,6 +10,8 @@ import ButtonGroup from 'components/button-group';
 import Icon from 'components/icon';
 import accordionArrow from 'assets/icons/accordion-arrow.svg';
 import tooltipTheme from 'styles/themes/map-tooltip/map-tooltip.scss';
+import dropdownTheme from 'styles/themes/dropdown/react-selectize.scss';
+
 import styles from './context-by-indicator-styles';
 import { MAP_COLORS } from './context-by-indicator-selectors';
 
@@ -34,7 +36,9 @@ class ContextByIndicatorComponent extends Component {
     const { yearsWithData } = this.props;
     const hasData = yearsWithData.find(y => y.value === option.value);
     return (
-      <div style={{ color: `${hasData ? '#113750' : '#b1b1c1'}`, padding: '10px' }}>
+      <div
+        style={{ color: `${hasData ? '#113750' : '#b1b1c1'}`, padding: '10px' }}
+      >
         {option.label}
       </div>
     );
@@ -89,6 +93,7 @@ class ContextByIndicatorComponent extends Component {
                   options={indicators}
                   onValueChange={updateIndicatorFilter}
                   hideResetButton
+                  theme={dropdownTheme}
                 />
                 <Dropdown
                   label={'Year'}
@@ -97,10 +102,14 @@ class ContextByIndicatorComponent extends Component {
                   renderOption={this.renderYearLabel}
                   onValueChange={updateIndicatorYearFilter}
                   hideResetButton
+                  theme={dropdownTheme}
                 />
               </div>
               {isTablet && (
-                <ButtonGroup className={styles.btnGroup} buttonsConfig={buttonGroupConfig} />
+                <ButtonGroup
+                  className={styles.btnGroup}
+                  buttonsConfig={buttonGroupConfig}
+                />
               )}
             </div>
             <div className={styles.visualizationsContainer}>
@@ -113,7 +122,11 @@ class ContextByIndicatorComponent extends Component {
                   onCountryFocus={undefined}
                   dragEnable={false}
                 />
-                <MapLegend mapColors={MAP_COLORS} buckets={legend} className={styles.legend} />
+                <MapLegend
+                  mapColors={MAP_COLORS}
+                  buckets={legend}
+                  className={styles.legend}
+                />
               </div>
               {topTenCountries && (
                 <div className={styles.topTenSection}>
@@ -125,7 +138,9 @@ class ContextByIndicatorComponent extends Component {
                       <ul className={styles.countriesContainer}>
                         {topTenCountries.map(c => (
                           <li
-                            key={`${c.value}-${Math.random()}-${selectedIndicator.label}`}
+                            key={`${c.value}-${Math.random()}-${
+                              selectedIndicator.label
+                            }`}
                             className={styles.countryData}
                             data-for="cc-chart-tooltip"
                             data-tip={c.label}
@@ -143,7 +158,10 @@ class ContextByIndicatorComponent extends Component {
                           </li>
                         ))}
                       </ul>
-                      <ReactTooltip className={styles.tooltipContainer} id="cc-chart-tooltip" />
+                      <ReactTooltip
+                        className={styles.tooltipContainer}
+                        id="cc-chart-tooltip"
+                      />
                     </React.Fragment>
                   ) : (
                     <div
@@ -154,7 +172,10 @@ class ContextByIndicatorComponent extends Component {
               )}
             </div>
             {!isTablet && (
-              <ButtonGroup className={styles.btnGroup} buttonsConfig={buttonGroupConfig} />
+              <ButtonGroup
+                className={styles.btnGroup}
+                buttonsConfig={buttonGroupConfig}
+              />
             )}
             {countryData && (
               <ReactTooltip

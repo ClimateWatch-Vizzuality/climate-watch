@@ -21,7 +21,7 @@ const Intro = props => {
   const actionButton =
     (customButton || button) &&
     (customButton || (
-      <Button color="yellow" className={theme.button} {...button}>
+      <Button variant="primary" className={theme.button} {...button}>
         {button.text}
       </Button>
     ));

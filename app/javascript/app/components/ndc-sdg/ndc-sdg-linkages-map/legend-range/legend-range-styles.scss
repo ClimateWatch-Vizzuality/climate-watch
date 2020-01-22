@@ -18,12 +18,12 @@
   width: 12px;
   height: 12px;
   background-color: #d3d3dc;
-  border: solid 2px $light-gray;
+  border: solid 2px $gray3;
   position: absolute;
   left: -1px;
   bottom: 5px;
   border-radius: 6px;
-  box-shadow: 0 0 4px 0 $light-gray;
+  box-shadow: 0 0 4px 0 $gray3;
 }
 
 .scale {
@@ -34,6 +34,6 @@
   > li {
     font-size: $font-size-sm;
     line-height: 2;
-    color: $dark-gray;
+    color: $gray1;
   }
 }

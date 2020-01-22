@@ -99,7 +99,7 @@
 }
 
 .containerCharts {
-  box-shadow: 0 20px 20px -20px $chart-fill-gray;
+  box-shadow: 0 20px 20px -20px $theme-color;
 
   > div {
     @include columns(100%);
@@ -112,7 +112,7 @@
   }
 
   @media #{$tablet-landscape} {
-    box-shadow: 20px 0 20px -20px $chart-fill-gray;
+    box-shadow: 20px 0 20px -20px $theme-color;
 
     &,
     > div {

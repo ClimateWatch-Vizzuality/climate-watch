@@ -27,12 +27,12 @@
 .licenseAndPolicy {
   font-size: $font-size-sm;
   line-height: $line-height-medium;
-  color: $dark-gray;
+  color: $gray1;
   text-align: center;
 
   > a {
     font-size: $font-size-sm;
-    color: $dark-gray;
+    color: $gray1;
     border-bottom: 1px solid $theme-secondary;
   }
 }

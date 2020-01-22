@@ -4,12 +4,12 @@
   display: flex;
   justify-content: space-between;
   padding: 5px 10px;
-  border-top: solid 1px $border-color;
+  border-top: solid 1px $gray2;
 }
 
 .title {
   font-size: $font-size-s;
-  color: $dark-gray;
+  color: $gray1;
 }
 
 .bucket {

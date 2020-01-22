@@ -6,7 +6,8 @@ $footer-height: 65px;
   max-width: 100%;
   overflow: auto;
   margin: 0;
-  border: solid 1px $gray;
+  border: solid 1px $gray1;
+  height: 100%;
   background-color: $white;
 }
 
@@ -30,7 +31,7 @@ $footer-height: 65px;
   align-items: flex-end;
   justify-content: flex-end;
   text-align: right;
-  background-color: $light-gray;
+  background-color: $gray3;
   padding: 10px $gutter-padding / 2;
   color: $theme-color;
   line-height: $line-height-medium;

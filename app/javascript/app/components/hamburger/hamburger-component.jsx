@@ -8,9 +8,8 @@ import hamburger from 'assets/icons/hamburger.svg';
 
 import styles from './hamburger-styles.scss';
 
-const Hamburger = ({ isOpen, openMenu, closeMenu, text, className }) => (
+const Hamburger = ({ isOpen, openMenu, closeMenu, className }) => (
   <div className={cx(styles.container, className)}>
-    <p className={styles.text}>{text}</p>
     <button onClick={isOpen ? closeMenu : openMenu} className={styles.button}>
       <Icon icon={isOpen ? close : hamburger} className={styles.icon} />
     </button>
@@ -21,7 +20,6 @@ Hamburger.propTypes = {
   isOpen: PropTypes.bool,
   openMenu: PropTypes.func,
   closeMenu: PropTypes.func,
-  text: PropTypes.string,
   className: PropTypes.string
 };
 
