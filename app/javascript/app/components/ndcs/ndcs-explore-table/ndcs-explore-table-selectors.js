@@ -1,9 +1,8 @@
 import { createSelector } from 'reselect';
 import isEmpty from 'lodash/isEmpty';
 import { filterQuery } from 'app/utils';
+import { getMapIndicator } from 'components/ndcs/ndcs-explore-map/ndcs-explore-map-selectors';
 import {
-  getSelectedIndicatorHeader,
-  addIndicatorColumn,
   getIndicatorsParsed,
   getQuery
 } from 'components/ndcs/lts-explore-table/lts-explore-table-selectors';
@@ -12,6 +11,14 @@ const getCountries = state => state.countries || null;
 
 export const getISOCountries = createSelector([getCountries], countries =>
   countries.map(country => country.iso_code3)
+);
+
+const getSelectedIndicatorHeader = createSelector(
+  [getMapIndicator],
+  selectedIndicator => {
+    if (!selectedIndicator) return null;
+    return `${selectedIndicator.label} (Current selection)`;
+  }
 );
 
 const HEADER_CHANGES = {
@@ -39,6 +46,55 @@ export const getDefaultColumns = createSelector(
       return match ? match.label : id;
     });
     return columns.map(c => HEADER_CHANGES[c] || c);
+  }
+);
+
+export const tableGetSelectedData = createSelector(
+  [getIndicatorsParsed, getCountries],
+  (indicators, countries) => {
+    if (!indicators || !indicators.length || !indicators[0].locations || !countries) {
+      return [];
+    }
+    const refIndicator =
+      indicators.find(i => i.value === 'submission') || indicators[0];
+
+    return Object.keys(refIndicator.locations).map(iso => {
+      if (refIndicator.locations[iso].value === 'No Document Submitted') {
+        return false;
+      }
+      const countryData =
+        countries.find(country => country.iso_code3 === iso) || {};
+      const row = {
+        country: countryData.wri_standard_name || iso,
+        iso
+      };
+      indicators.forEach(ind => {
+        if (ind.locations[iso]) {
+          row[ind.label] = ind.locations[iso].value;
+        }
+      });
+      return row;
+    });
+  }
+);
+
+const addIndicatorColumn = createSelector(
+  [tableGetSelectedData, getMapIndicator, getSelectedIndicatorHeader],
+  (data, selectedIndicator, selectedIndicatorHeader) => {
+    if (
+      !data ||
+      isEmpty(data) ||
+      !selectedIndicator ||
+      !selectedIndicatorHeader
+    ) { return null; }
+    const updatedTableData = data;
+    return updatedTableData.map(countryRow => {
+      const updatedCountryRow = { ...countryRow };
+      const countryIndicatorData = selectedIndicator.locations[countryRow.iso];
+      updatedCountryRow[selectedIndicatorHeader] =
+        countryIndicatorData && countryIndicatorData.value;
+      return updatedCountryRow;
+    });
   }
 );
 

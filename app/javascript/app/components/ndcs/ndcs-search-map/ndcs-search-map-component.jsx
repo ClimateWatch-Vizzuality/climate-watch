@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import Map from 'components/map';
+import newMapTheme from 'styles/themes/map/map-new-zoom-controls.scss';
 import styles from './ndcs-search-map-styles.scss';
 
 const NDCSearchMap = props => (
@@ -26,6 +27,8 @@ const NDCSearchMap = props => (
       paths={props.paths}
       onCountryClick={props.handleCountryClick}
       customCenter={[20, -30]}
+      zoomEnable
+      theme={newMapTheme}
     />
   </div>
 );

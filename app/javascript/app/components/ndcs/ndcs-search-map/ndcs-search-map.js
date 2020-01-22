@@ -21,7 +21,8 @@ const mapStateToProps = (state, { location }) => {
     meta: ndcSearch.data && ndcSearch.data.meta,
     loading: ndcSearch.loading,
     search,
-    countriesData: state.countries.data
+    countriesData: state.countries.data,
+    zoom: state.map.zoom
   };
   return {
     paths: getPathsWithStyles(ndcsSearchData),

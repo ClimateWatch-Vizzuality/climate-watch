@@ -68,6 +68,7 @@ const headerChanges = {
     'Latest submission (Current selection)',
   Document: 'LTS submission Link',
   'Submission Date': 'Date of LTS submission',
+  'Long-term Strategy Document': 'Long-term Strategies Document',
   'Share of GHG Emissions': 'Share of global GHG emissions'
 };
 

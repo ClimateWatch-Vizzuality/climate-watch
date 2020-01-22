@@ -71,6 +71,10 @@
   }
 }
 
+.mobileActions {
+  @include row();
+}
+
 .countryDropdown {
   margin-bottom: 10px;
 
