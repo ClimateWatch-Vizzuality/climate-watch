@@ -81,7 +81,12 @@ export const tableGetSelectedData = createSelector(
 const addIndicatorColumn = createSelector(
   [tableGetSelectedData, getMapIndicator, getSelectedIndicatorHeader],
   (data, selectedIndicator, selectedIndicatorHeader) => {
-    if (!data || isEmpty(data)) return null;
+    if (
+      !data ||
+      isEmpty(data) ||
+      !selectedIndicator ||
+      !selectedIndicatorHeader
+    ) { return null; }
     const updatedTableData = data;
     return updatedTableData.map(countryRow => {
       const updatedCountryRow = { ...countryRow };
