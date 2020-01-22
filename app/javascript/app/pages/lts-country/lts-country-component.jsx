@@ -16,7 +16,6 @@ import { TabletLandscape } from 'components/responsive';
 import NdcsDocumentsMetaProvider from 'providers/ndcs-documents-meta-provider';
 
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
-import lightSearch from 'styles/themes/search/search-light.scss';
 import countryDropdownTheme from 'styles/themes/dropdown/dropdown-country.scss';
 import styles from './lts-country-styles.scss';
 
@@ -26,7 +25,7 @@ class LTSCountry extends PureComponent {
     return (
       documentsOptions && (
         <Button
-          color="yellow"
+          variant="secondary"
           link={`/lts/country/${match.params.iso}/full`}
           className={styles.viewDocumentButton}
           disabled
@@ -40,13 +39,14 @@ class LTSCountry extends PureComponent {
   renderCompareButton() {
     const { match } = this.props;
     return (
-      <div className={styles.compareButton}>
+      <div className={styles.compareButtonContainer}>
         <Button
-          color="yellow"
+          variant="primary"
           link={`/lts/compare/mitigation?locations=${match.params.iso}`}
+          className={styles.compareButton}
           disabled
         >
-          {'Compare countries and submissions'}
+          Compare countries and submissions
         </Button>
       </div>
     );
@@ -105,20 +105,14 @@ class LTSCountry extends PureComponent {
                   [styles.withSearch]: hasSearch
                 })}
               >
-                <BackButton
-                  directLinksRegexs={[
-                    { regex: /countries\/compare/, label: 'country compare' },
-                    { regex: /countries/, label: 'country' }
-                  ]}
-                  clearRegexs={[/\/lts\/country/, /\/lts\/compare/]}
-                />
+                <BackButton backLabel="LTS Explore" pathname="/lts-explore" />
                 {this.renderFullTextDropdown()}
                 {hasSearch && (
                   <Search
-                    theme={lightSearch}
                     placeholder="Search"
                     value={search}
                     onChange={onSearchChange}
+                    variant="transparent"
                   />
                 )}
               </div>

@@ -114,16 +114,6 @@ export const addIndicatorColumn = createSelector(
   }
 );
 
-export const getTitleLinks = createSelector([addIndicatorColumn], data => {
-  if (!data || isEmpty(data)) return null;
-  return data.map(d => [
-    {
-      columnName: 'country',
-      url: `/lts/country/${d.iso}`
-    }
-  ]);
-});
-
 const addDocumentTarget = createSelector([addIndicatorColumn], data => {
   if (!data || isEmpty(data)) return null;
   return data.map(d => {
@@ -146,16 +136,46 @@ const getFilteredData = createSelector(
         if (columnHeaders.includes(header)) {
           filteredAndChangedHeadersD[header] = d[k];
         }
+        // Leave iso and filter it later to get titleLink
+        if (k === 'iso') {
+          filteredAndChangedHeadersD.iso = d.iso;
+        }
       });
       return filteredAndChangedHeadersD;
     });
   }
 );
 
-export const getFilteredDataBySearch = createSelector(
+const getFilteredDataBySearch = createSelector(
   [getFilteredData, getQuery],
   (data, query) => {
     if (!data || isEmpty(data)) return null;
-    return filterQuery(data, query);
+    return filterQuery(data, query, ['iso']);
+  }
+);
+
+export const getTitleLinks = createSelector([getFilteredDataBySearch], data => {
+  if (!data || isEmpty(data)) return null;
+  return data.map(d => [
+    {
+      columnName: 'country',
+      url: `/lts/country/${d.iso}`
+    }
+  ]);
+});
+
+export const removeIsoFromData = createSelector(
+  [getFilteredDataBySearch],
+  data => {
+    if (!data || isEmpty(data)) return null;
+    return data.map(d => {
+      const updatedD = {};
+      Object.keys(d).forEach(key => {
+        if (key !== 'iso') {
+          updatedD[key] = d[key];
+        }
+      });
+      return updatedD;
+    });
   }
 );

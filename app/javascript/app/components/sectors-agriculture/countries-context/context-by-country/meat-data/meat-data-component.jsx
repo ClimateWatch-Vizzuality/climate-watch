@@ -7,9 +7,11 @@ import MeatWorldProductionProvider from 'providers/agriculture-world-meat-produc
 import MeatTradeProvider from 'providers/agriculture-meat-trade-provider';
 import MeatWorldTradeProvider from 'providers/agriculture-world-meat-trade-provider';
 import { Card, Chart, Dropdown } from 'cw-components';
+import cx from 'classnames';
 import NoContent from 'components/no-content';
-import Tooltip from './tooltip';
+import dropdownTheme from 'styles/themes/dropdown/react-selectize.scss';
 
+import Tooltip from './tooltip';
 import styles from './meat-data-styles.scss';
 
 const cardTheme = {
@@ -35,7 +37,10 @@ const MeatData = ({
   handleLegendChange
 }) => {
   const params = selectedCountry &&
-  selectedYear && { country: selectedCountry.value, year: selectedYear.value };
+    selectedYear && {
+      country: selectedCountry.value,
+      year: selectedYear.value
+    };
   return (
     <div className={styles.container}>
       {chartData && (
@@ -47,9 +52,10 @@ const MeatData = ({
           <div className={styles.cardContainer}>
             <div className={styles.header}>
               <div className={styles.title}>
-                Beef, sheep, and other animals are resource and greenhouse gas-intensive to produce
-                and have a higher carbon footprint than non-animal foods. However, products are
-                traded globally and consumption in other countries is driving the demand and
+                Beef, sheep, and other animals are resource and greenhouse
+                gas-intensive to produce and have a higher carbon footprint than
+                non-animal foods. However, products are traded globally and
+                consumption in other countries is driving the demand and
                 emissions growth.
               </div>
             </div>
@@ -57,21 +63,25 @@ const MeatData = ({
               {categories && (
                 <Dropdown
                   label={'Categories'}
-                  theme={{ select: styles.dropdown }}
                   value={selectedCategory}
                   options={categories}
                   onValueChange={updateCategoryFilter}
                   hideResetButton
+                  theme={{
+                    dropdown: cx(styles.dropdown, dropdownTheme.dropdown)
+                  }}
                 />
               )}
               {breakByOptions && (
                 <Dropdown
                   label={'Break by'}
-                  theme={{ select: styles.dropdown }}
                   value={selectedBreakBy}
                   options={breakByOptions}
                   onValueChange={updateBreakByFilter}
                   hideResetButton
+                  theme={{
+                    dropdown: cx(styles.dropdown, dropdownTheme.dropdown)
+                  }}
                 />
               )}
             </div>

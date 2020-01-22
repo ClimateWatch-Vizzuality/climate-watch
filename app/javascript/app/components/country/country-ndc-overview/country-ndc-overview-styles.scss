@@ -1,8 +1,8 @@
 @import '~styles/layout.scss';
 
 .wrapper {
-  border-bottom: solid 1px $border-color;
-  border-top: solid 1px $border-color;
+  border-bottom: solid 1px $gray2;
+  border-top: solid 1px $gray2;
   min-height: 450px;
 }
 
@@ -52,10 +52,6 @@
   margin-bottom: 60px;
 }
 
-.row {
-  @include columns();
-}
-
 .subtitles {
   @include columns((9, 3));
 }
@@ -91,20 +87,14 @@
 }
 
 .cards {
-  @include columns('shrink', $wrap: false);
+  @include columns(12);
 
-  > div {
-    width: 270px;
+  @media #{$tablet-portrait} {
+    @include columns((6, 6, 12));
   }
-
-  overflow: auto;
 
   @media #{$tablet-landscape} {
     @include columns((4, 4, 4));
-
-    > div {
-      width: 100%;
-    }
   }
 }
 
@@ -115,7 +105,7 @@
 
 .metaTitle {
   font-size: $font-size-sm;
-  color: $dark-gray;
+  color: $gray1;
   margin-bottom: 5px;
 }
 
@@ -129,7 +119,7 @@
 
 .noContent {
   font-size: $font-size-sm;
-  color: $dark-gray;
+  color: $gray1;
   font-style: italic;
   display: flex;
   justify-content: center;
@@ -180,7 +170,7 @@
     }
 
     .alertText {
-      color: $dark-gray;
+      color: $gray1;
     }
   }
 }

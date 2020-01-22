@@ -44,13 +44,13 @@ class Disclaimer extends PureComponent {
               rel="noopener noreferrer"
             >
               Pledge Pipeline
-            </a>.
+            </a>
+            .
           </div>
           {!onlyText && (
             <Button
               className={styles.closeButton}
               onClick={handleOnRequestClose}
-              noBox
             >
               <Icon icon={closeIcon} className={styles.close} />
             </Button>

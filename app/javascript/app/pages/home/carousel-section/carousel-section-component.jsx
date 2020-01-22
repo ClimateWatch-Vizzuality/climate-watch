@@ -16,7 +16,7 @@ const renderButton = (b, countriesOptions, handleDropDownChange) => {
         className={styles.button}
         key={b.text}
         link={b.link}
-        color={b.color}
+        variant={b.variant}
       >
         {b.text}
       </Button>

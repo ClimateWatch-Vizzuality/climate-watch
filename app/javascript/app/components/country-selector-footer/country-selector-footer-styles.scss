@@ -10,7 +10,7 @@
   height: 70px;
   background: $white !important;
   z-index: $z-index-sticky;
-  border-top: 1px solid $theme-border;
+  border-top: 1px solid $gray2;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
 
   > :nth-child(1) {
@@ -42,7 +42,7 @@
   position: initial !important;
   right: $gutter-padding / 2;
   width: 45px !important;
-  border: solid 1px $border-color;
+  border: solid 1px $gray2;
   border-radius: 4px;
   bottom: 69px !important;
 

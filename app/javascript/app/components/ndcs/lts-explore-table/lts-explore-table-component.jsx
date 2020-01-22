@@ -4,19 +4,17 @@ import Search from 'components/search';
 import { Table } from 'cw-components';
 import NoContent from 'components/no-content';
 import Loading from 'components/loading';
-import darkSearch from 'styles/themes/search/search-dark.scss';
 import exploreTableTheme from 'styles/themes/table/explore-table-theme.scss';
 
+import layout from 'styles/layout.scss';
 import styles from 'components/ndcs/shared/explore-table-styles.scss';
 
 const renderSearch = (searchHandler, query) => (
   <Search
     value={query}
-    theme={darkSearch}
     onChange={searchHandler}
     className={styles.searchBox}
     placeholder="Search table data"
-    plain
   />
 );
 
@@ -32,29 +30,31 @@ const LTSExploreTable = ({
 }) => (
   <div>
     <div className={styles.wrapper}>
-      {loading && <Loading light className={styles.loader} />}
-      {!loading && (
-        <div className={styles.filtersLayout}>
-          {renderSearch(handleSearchChange, query)}
-        </div>
-      )}
-      {!loading && tableData && tableData.length > 0 && (
-        <div className={styles.tableWrapper}>
-          <Table
-            data={tableData}
-            horizontalScroll
-            parseHtml
-            dynamicRowsHeight
-            setColumnWidth={setColumnWidth}
-            defaultColumns={columns}
-            titleLinks={titleLinks}
-            theme={exploreTableTheme}
-          />
-        </div>
-      )}
-      {!loading && (!tableData || tableData.length <= 0) && (
-        <NoContent className={styles.noContent} message={noContentMsg} />
-      )}
+      <div className={layout.content}>
+        {loading && <Loading light className={styles.loader} />}
+        {!loading && (
+          <div className={styles.filtersLayout}>
+            {renderSearch(handleSearchChange, query)}
+          </div>
+        )}
+        {!loading && tableData && tableData.length > 0 && (
+          <div className={styles.tableWrapper}>
+            <Table
+              data={tableData}
+              horizontalScroll
+              parseHtml
+              dynamicRowsHeight
+              setColumnWidth={setColumnWidth}
+              defaultColumns={columns}
+              titleLinks={titleLinks}
+              theme={exploreTableTheme}
+            />
+          </div>
+        )}
+        {!loading && (!tableData || tableData.length <= 0) && (
+          <NoContent className={styles.noContent} message={noContentMsg} />
+        )}
+      </div>
     </div>
   </div>
 );

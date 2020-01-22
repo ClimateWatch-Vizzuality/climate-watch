@@ -7,6 +7,9 @@ import worldPaths from 'app/data/world-50m-paths';
 import { PATH_LAYERS } from 'app/data/constants';
 import { COUNTRY_STYLES } from 'components/ndcs/shared/constants';
 
+const FEATURE_LTS_UPDATED_DATA =
+  process.env.FEATURE_LTS_UPDATED_DATA === 'true';
+
 const getSearch = state => state.search || null;
 const getCountries = state => state.countries || null;
 const getCategories = state => state.categories || null;
@@ -20,11 +23,13 @@ export const getIndicatorsParsed = createSelector(
   [getCategories, getIndicatorsData, getISOCountries],
   (categories, indicators, isos) => {
     if (!categories || !indicators || !indicators.length) return null;
+
     const categoryIds = Object.keys(categories).filter(
       // Need to get the NDC Enhancement data category to borrow the emissions figure from that dataset for consistency
       id =>
         categories[id].slug === 'longterm_strategy' ||
-        categories[id].slug === 'ndc_enhancement'
+        categories[id].slug === 'ndc_enhancement' ||
+        (FEATURE_LTS_UPDATED_DATA && categories[id].slug === 'overview')
     );
     const preppedIndicators = sortBy(
       uniqBy(
@@ -62,8 +67,9 @@ export const getMapIndicator = createSelector(
   [getIndicatorsParsed, getISOCountries],
   (indicators, isos) => {
     if (!indicators || !indicators.length) return null;
-    const mapIndicator = indicators.find(ind => ind.value === 'lts');
-
+    const mapIndicator = indicators.find(
+      ind => ind.value === (FEATURE_LTS_UPDATED_DATA ? 'lts_submission' : 'lts')
+    );
     if (mapIndicator) {
       const noInfoId = Object.keys(mapIndicator.legendBuckets).find(
         id => mapIndicator.legendBuckets[id].label === 'No Document Submitted'

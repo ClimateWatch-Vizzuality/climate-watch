@@ -8,7 +8,7 @@
 .wrapper {
   padding-top: $gutter-padding;
   padding-bottom: $gutter-padding;
-  background-color: $light-gray;
+  background-color: $white;
 }
 
 .headerLayout {
@@ -21,5 +21,14 @@
 
   > div {
     flex: 1;
+  }
+}
+
+.searchWrapper {
+  margin-bottom: 64px;
+  @include columns(12);
+
+  @media #{$tablet-landscape} {
+    @include columns(6);
   }
 }

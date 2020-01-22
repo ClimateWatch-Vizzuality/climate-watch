@@ -19,7 +19,6 @@ import { TabletLandscape } from 'components/responsive';
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
 import dropdownLinksTheme from 'styles/themes/dropdown/dropdown-links.scss';
 import countryDropdownTheme from 'styles/themes/dropdown/dropdown-country.scss';
-import lightSearch from 'styles/themes/search/search-light.scss';
 import styles from './ndc-country-styles.scss';
 
 const FEATURE_LTS_EXPLORE = process.env.FEATURE_LTS_EXPLORE === 'true';
@@ -31,7 +30,10 @@ class NDCCountry extends PureComponent {
       documentsOptions &&
       (documentsOptions.length > 1 ? (
         <Dropdown
-          className={dropdownLinksTheme.dropdownOptionWithArrow}
+          className={cx(
+            dropdownLinksTheme.dropdownOptionWithArrow,
+            styles.countryDropdown
+          )}
           placeholder="View full text"
           options={documentsOptions}
           onValueChange={handleDropDownChange}
@@ -40,7 +42,7 @@ class NDCCountry extends PureComponent {
         />
       ) : (
         <Button
-          color="yellow"
+          variant="secondary"
           link={`/ndcs/country/${match.params.iso}/full`}
           className={styles.viewDocumentButton}
         >
@@ -55,7 +57,7 @@ class NDCCountry extends PureComponent {
     if (!FEATURE_LTS_EXPLORE) {
       return (
         <Button
-          color="yellow"
+          variant="primary"
           link={`/ndcs/compare/mitigation?locations=${match.params.iso}`}
         >
           {'Compare'}
@@ -63,12 +65,13 @@ class NDCCountry extends PureComponent {
       );
     }
     return (
-      <div className={styles.compareButton}>
+      <div className={styles.compareButtonContainer}>
         <Button
-          color="yellow"
+          variant="primary"
           link={`/ndcs/compare/mitigation?locations=${match.params.iso}`}
+          className={styles.compareButton}
         >
-          {'Compare countries and submissions'}
+          Compare countries and submissions
         </Button>
       </div>
     );
@@ -132,11 +135,8 @@ class NDCCountry extends PureComponent {
                 {!FEATURE_LTS_EXPLORE && renderIntroDropdown()}
                 {FEATURE_LTS_EXPLORE && (
                   <BackButton
-                    directLinksRegexs={[
-                      { regex: /countries\/compare/, label: 'country compare' },
-                      { regex: /countries/, label: 'country' }
-                    ]}
-                    clearRegexs={[/\/ndcs\/country/, /\/ndcs\/compare/]}
+                    backLabel="NDCs Explore"
+                    pathname="/ndcs-explore"
                   />
                 )}
                 {this.renderFullTextDropdown()}
@@ -145,10 +145,10 @@ class NDCCountry extends PureComponent {
                 </TabletLandscape>
                 {hasSearch && (
                   <Search
-                    theme={lightSearch}
                     placeholder="Search"
                     value={search}
                     onChange={onSearchChange}
+                    variant="transparent"
                   />
                 )}
               </div>

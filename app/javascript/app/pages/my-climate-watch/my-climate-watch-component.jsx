@@ -37,7 +37,7 @@ const MyCw = ({ location, route, login, openCreator, logout }) => {
           <Button
             key={socialName}
             className={styles.login}
-            color={socialName}
+            variant={socialName}
             href={getLoginUrlBySocial(socialName)}
           >
             Login with {startCase(socialName)}

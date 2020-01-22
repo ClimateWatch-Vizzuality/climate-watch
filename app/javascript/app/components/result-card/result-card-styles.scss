@@ -27,7 +27,7 @@
 }
 
 .count {
-  color: $theme-color-intense;
+  color: $theme-color;
   font-weight: $font-weight-bold;
   display: inline-block;
   padding-bottom: 30px;
@@ -35,7 +35,7 @@
 
 .match {
   padding-bottom: 40px;
-  color: $dark-gray;
+  color: $gray1;
   line-height: 1.5em;
   position: relative;
   transition: color 150ms ease-out;

@@ -89,7 +89,7 @@ class Step4 extends Component {
             Cancel
           </Button>
           <Button
-            color="yellow"
+            variant="primary"
             onClick={() => {
               saveTitle(this.state.title);
               saveDescription(this.state.description);

@@ -5,6 +5,7 @@ import Sticky from 'react-stickynode';
 import Loading from 'components/loading';
 import { TabletLandscape } from 'components/responsive';
 
+import BackButton from 'components/back-button';
 import Header from 'components/header';
 import Intro from 'components/intro';
 import ResultCard from 'components/result-card';
@@ -33,6 +34,7 @@ class SearchPage extends PureComponent {
       <div className={styles.page}>
         <Header route={route}>
           <div className={styles.headerCols}>
+            <BackButton pathname="/ndcs-explore" backLabel="explore NDCs" />
             <Intro className={styles.intro} title="NDC Search" />
             <NdcsAutocompleteSearch
               className={styles.select}

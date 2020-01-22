@@ -48,8 +48,8 @@
 
   hr {
     max-width: $paragraph-max-width;
-    color: $border-color;
-    background-color: $border-color;
+    color: $gray2;
+    background-color: $gray2;
     height: 2px;
     border: none;
   }
@@ -73,7 +73,7 @@
   }
 
   td {
-    border-bottom: 1px solid $theme-border;
+    border-bottom: 1px solid $gray2;
   }
 
   ul,
@@ -144,7 +144,7 @@
       vertical-align: middle;
       border-radius: 5px;
       margin-right: 15px;
-      background-color: $dark-gray;
+      background-color: $gray1;
     }
   }
 
@@ -161,7 +161,7 @@
 
       &::before {
         padding: 5px 8px 5px 10px;
-        color: $dark-gray;
+        color: $gray1;
         border-radius: 15px;
         margin-right: 10px;
         content: counters(item, ".") " ";

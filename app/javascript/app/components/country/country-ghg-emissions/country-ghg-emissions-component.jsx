@@ -77,8 +77,7 @@ class CountryGhgEmissions extends PureComponent {
         }
       ];
 
-    const link = `/ghg-emissions?breakBy=regions-${CALCULATION_OPTIONS
-      .ABSOLUTE_VALUE.value}&regions=${iso}`;
+    const link = `/ghg-emissions?breakBy=regions-${CALCULATION_OPTIONS.ABSOLUTE_VALUE.value}&regions=${iso}`;
     const href = `/contained${link}&isNdcp=true`;
 
     return [
@@ -89,9 +88,8 @@ class CountryGhgEmissions extends PureComponent {
       />,
       <Button
         key="action2"
-        noSpace
         className={styles.exploreBtn}
-        color="yellow"
+        variant="primary"
         href={isNdcp ? href : null}
         link={isNdcp ? null : link}
         onClick={handleAnalyticsClick}
@@ -171,9 +169,9 @@ class CountryGhgEmissions extends PureComponent {
         <EmissionsMetaProvider />
         <WbCountryDataProvider />
         <h3 className={styles.title}>
-          {`Greenhouse Gas Emissions and Emissions Targets ${isEmbed
-            ? `in ${countryName}`
-            : ''}`}
+          {`Greenhouse Gas Emissions and Emissions Targets ${
+            isEmbed ? `in ${countryName}` : ''
+          }`}
         </h3>
         <TabletLandscape>
           <div

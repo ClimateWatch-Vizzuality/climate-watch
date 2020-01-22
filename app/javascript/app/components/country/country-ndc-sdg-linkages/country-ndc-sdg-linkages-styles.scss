@@ -7,7 +7,7 @@
     margin-bottom: 0;
   }
 
-  border-bottom: solid 1px $theme-border;
+  border-bottom: solid 1px $gray2;
 }
 
 .header {
@@ -16,7 +16,7 @@
 }
 
 .sdgs {
-  border-left: solid 1px $theme-border;
+  border-left: solid 1px $gray2;
 
   @include columns(12, $gutters: false);
   @include xy-gutters($gutter-position: ('bottom'));

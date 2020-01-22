@@ -4,7 +4,6 @@ import Table from 'components/table';
 import Dropdown from 'components/dropdown';
 import NoContent from 'components/no-content';
 import Search from 'components/search';
-import darkSearch from 'styles/themes/search/search-dark.scss';
 import Loading from 'components/loading';
 import layout from 'styles/layout.scss';
 import cx from 'classnames';
@@ -92,10 +91,8 @@ class EmissionPathwaysScenarioTableComponent extends PureComponent {
             />
             <Search
               value={query}
-              theme={darkSearch}
               onChange={handleSearchChange}
               placeholder={'Search by all fields'}
-              plain
             />
           </div>
         </div>

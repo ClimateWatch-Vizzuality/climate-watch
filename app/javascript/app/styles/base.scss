@@ -122,3 +122,7 @@ html {
 *:focus {
   outline: none;
 }
+
+input {
+  caret-color: $theme-secondary;
+}

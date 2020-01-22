@@ -28,13 +28,13 @@ export const slidesData = [
       {
         text: 'Search NDCs',
         link: '/ndcs-content',
-        color: 'yellow',
+        variant: 'primary',
         type: 'button'
       },
       {
         text: 'Compare NDCs',
         link: '/ndcs/compare',
-        color: 'white',
+        variant: 'secondary',
         type: 'button'
       }
     ],
@@ -53,7 +53,7 @@ export const slidesData = [
       {
         text: 'Discover NDC-SDG linkages',
         link: '/ndcs-sdg',
-        color: 'yellow',
+        variant: 'primary',
         type: 'button'
       }
     ],
@@ -72,7 +72,7 @@ export const slidesData = [
       {
         text: 'Explore emissions',
         link: '/ghg-emissions',
-        color: 'yellow',
+        variant: 'primary',
         type: 'button'
       }
     ],
@@ -91,7 +91,7 @@ export const slidesData = [
       {
         text: 'Explore pathways',
         link: '/pathways',
-        color: 'yellow',
+        variant: 'primary',
         type: 'button'
       }
     ],
@@ -109,7 +109,7 @@ export const slidesData = [
       {
         text: 'Download and Explore Data',
         link: '/data-explorer',
-        color: 'yellow',
+        variant: 'primary',
         type: 'button'
       }
     ],

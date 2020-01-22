@@ -7,30 +7,10 @@
   box-shadow: none;
   padding: 10px;
   margin-bottom: 10px;
-  fill: $gray;
+  fill: $theme-color;
   transition: fill 0.3s ease;
 
   &Active {
     fill: $theme-color;
-  }
-
-  &:hover {
-    box-shadow: none;
-    fill: $theme-color;
-  }
-
-  &.box {
-    height: 45px;
-    width: 45px;
-    border: solid 1px $border-color;
-    border-radius: 4px;
-    padding: 0;
-    fill: rgba($theme-color, 0.7);
-    transition: all 150ms ease-out;
-    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.09);
-
-    &:hover {
-      box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.09);
-    }
   }
 }

@@ -3,8 +3,8 @@
 
 .container {
   background-color: white;
-  border-left: solid 1px $border-color;
-  border-right: solid 1px $border-color;
+  border-left: solid 1px $gray3;
+  border-right: solid 1px $gray3;
   min-height: 685px;
   order: 2;
 
@@ -51,9 +51,9 @@
     .target {
       display: flex;
       padding: 15px 15px 15px 20px;
-      color: $dark-gray;
+      color: $gray1;
       outline: none;
-      border-top: 1px solid $theme-border;
+      border-top: 1px solid $gray2;
       border-bottom: 4px solid transparent;
 
       &:hover {

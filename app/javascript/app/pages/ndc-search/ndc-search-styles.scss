@@ -3,7 +3,7 @@
 
 .page {
   @media #{$tablet-landscape} {
-    background-image: linear-gradient(to right, #{$white}, #{$white} 50%, #{$light-gray} 50%, #{$light-gray});
+    background-image: linear-gradient(to right, #{$white}, #{$white} 50%, #{$gray3} 50%, #{$gray3});
   }
 }
 
@@ -13,6 +13,7 @@
 
 .headerCols {
   @include row();
+
   margin-bottom: 15px;
   z-index: $z-index-sticky;
 

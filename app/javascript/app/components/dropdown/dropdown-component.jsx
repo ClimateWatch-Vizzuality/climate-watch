@@ -86,7 +86,9 @@ class Dropdown extends PureComponent {
               className={cx(className, disabled, {
                 [styles.withDot]: colorDot
               })}
-              renderToggleButton={() => <Icon icon={arrow} />}
+              renderToggleButton={() => (
+                <Icon icon={arrow} className={styles.arrowIcon} />
+              )}
               renderOption={option => (
                 <div className={styles.optionItem}>
                   {option.targetsAmount && option.targetsAmount > 0 ? (

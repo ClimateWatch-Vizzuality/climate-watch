@@ -2,7 +2,7 @@
 @import '~styles/layout.scss';
 
 .container {
-  background-image: linear-gradient(to top, #{$light-gray} 80%, rgb(255, 255, 255) 75%);
+  background-image: linear-gradient(to top, #{$gray3} 80%, rgb(255, 255, 255) 75%);
   padding: 0 0 70px;
 
   > * {
@@ -82,7 +82,7 @@
     padding: 0 !important;
     border: 0 !important;
     border-radius: 50%;
-    background-color: $gray;
+    background-color: $gray1;
     margin: 0 10px;
 
     &.slick-active {
@@ -107,7 +107,7 @@
         background: none;
 
         > ::after {
-          background-color: $theme-color-intense !important;
+          background-color: $theme-color !important;
         }
       }
 
