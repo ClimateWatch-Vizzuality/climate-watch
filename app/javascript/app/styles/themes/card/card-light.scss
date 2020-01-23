@@ -1,26 +1,38 @@
 @import '~styles/settings.scss';
 
-.card {
-  background-color: $white;
-  border-radius: 6px;
-  border-color: transparent;
-  box-shadow: 0 2px 20px 0 $gray3;
-  margin: 15px;
-}
+// .card {
+//   background-color: $white;
+//   border-radius: 6px;
+//   border-color: transparent;
+//   box-shadow: 0 2px 20px 0 $gray3;
+//   margin: 15px;
+// }
 
-.contentContainer {
-  background-color: $gray3;
-  display: flex;
-  align-items: center;
-  padding: 0 30px;
-  min-height: 70px;
-}
+// .contentContainer {
+//   background-color: $gray3;
+//   display: flex;
+//   flex-direction: column;
+//   align-items: left4;
+//   justify-content: center;
+//   padding: 0 30px;
+//   min-height: 70px;
+// }
 
-.title {
-  font-weight: $font-weight;
-}
+// .title {
+//   font-weight: $font-weight;
+// }
 
-.data {
-  background-color: $white;
-  margin-bottom: 15px;
-}
+// .title ~ .subtitle {
+//   color: pink;
+// }
+
+
+// .subtitle ~ .title {
+//   color: red;
+// }
+
+
+// .data {
+//   background-color: $white;
+//   margin-bottom: 15px;
+// }
