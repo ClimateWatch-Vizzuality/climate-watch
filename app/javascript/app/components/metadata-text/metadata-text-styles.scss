@@ -1,6 +1,15 @@
 @import '~styles/layout.scss';
 
-.text {
+.title {
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+.empty {
+  opacity: 0.7;
+}
+
+.markdown {
   font-size: $font-size;
   line-height: $line-height-modal;
   color: $theme-color;
@@ -9,21 +18,17 @@
   &Highlight {
     font-weight: $font-weight-bold;
   }
-}
 
-.link {
-  font-size: $font-size;
-  line-height: $line-height-medium;
-  height: 1.62;
-  color: $theme-color;
-  border-bottom: 1px solid $theme-secondary;
-}
+  ul {
+    list-style: unset;
+    margin-left: 20px;
+  }
 
-.title {
-  font-weight: bold;
-  margin-bottom: 12px;
-}
-
-.empty {
-  opacity: 0.7;
+  a {
+    font-size: $font-size;
+    line-height: $line-height-medium;
+    height: 1.62;
+    color: $theme-color;
+    border-bottom: 1px solid $theme-secondary;
+  }
 }
