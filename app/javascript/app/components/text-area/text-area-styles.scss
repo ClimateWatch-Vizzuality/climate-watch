@@ -1,3 +1,7 @@
+@import '~styles/settings';
+
 .textarea {
   font-size: 1rem;
+  border-radius: 4px;
+  border: $dropdown-border;;
 }

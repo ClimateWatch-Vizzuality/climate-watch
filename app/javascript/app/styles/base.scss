@@ -123,6 +123,7 @@ html {
   outline: none;
 }
 
-input {
+input,
+textarea {
   caret-color: $theme-secondary;
 }
