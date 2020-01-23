@@ -28,9 +28,8 @@
   }
 
   &.disabled {
-    pointer-events: none;
     cursor: not-allowed;
-    background-color: rgba($gray3, 0.6);
+    opacity: 0.5;
   }
 
   &.notApplicable {
