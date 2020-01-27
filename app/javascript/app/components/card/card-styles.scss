@@ -1,93 +1,41 @@
 @import '~styles/layout.scss';
 @import '~styles/settings.scss';
 
-// .card {
-//   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.09);
-//   border: solid 1px rgba($gray2, 0.1);
-//   display: flex;
-//   flex-direction: column;
-//   justify-content: space-between;
-//   background-color: $gray3;
-//   width: 17em;
-//   height: auto;
-
-//   @media #{$tablet-portrait} {
-//     height: 230px;
-//   }
-
-//   @media #{$tablet-landscape} {
-//     height: 300px;
-//     width: initial;
-//   }
-// }
-
-// .data {
-//   background-color: $gray3;
-//   overflow: auto;
-//   height: 100%;
-// }
-
-// .contentContainer {
-//   padding: 15px 20px;
-//   background-color: $white;
-//   color: $theme-color;
-//   min-height: 90px;
-// }
-
-// .title {
-//   font-size: $font-size;
-//   font-weight: $font-weight-bold;
-// }
-
-// .subtitle {
-//   color: $theme-color;
-//   line-height: $line-height-medium;
-// }
-
-// .link {
-//   text-decoration: underline solid $theme-secondary;
-//   color: $theme-color;
-//   cursor: pointer;
-// }
-
-
 .card {
   background-color: $white;
   border-radius: 6px;
   border-color: transparent;
-  box-shadow: 0 2px 20px 0 $gray3;
-  margin: 15px;
+  box-shadow: $box-shadow-light;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  width: 17em;
   height: auto;
   overflow: hidden;
-
-  @media #{$tablet-portrait} {
-    height: 230px;
-  }
-
-  @media #{$tablet-landscape} {
-    height: 300px;
-    width: initial;
-  }
+  margin: 15px;
 }
 
 .data {
-  background-color: $gray3;
+  display: flex;
+  flex-direction: column;
+  background-color: $white;
   overflow: auto;
-  height: 100%;
+  min-height: 260px;
+
+  > * {
+    flex: 1;
+  }
+
+  @media #{$tablet-landscape} {
+    height: 260px;
+  }
 }
 
 .contentContainer {
   background-color: $gray3;
   display: flex;
   flex-direction: column;
-  align-items: left4;
+  align-items: left;
   justify-content: center;
-  padding: 0 30px;
-  min-height: 70px;
+  height: 80px;
   padding: 15px 20px;
   color: $theme-color;
 }
@@ -97,12 +45,9 @@
   font-weight: $font-weight;
 }
 
-.boldTitle { //only when card has a subtitle also
-  font-weight: $font-weight-bold;
-}
-
 .subtitle {
   color: $theme-color;
+  font-size: $font-size-sm;
   line-height: $line-height-medium;
 }
 
@@ -110,37 +55,4 @@
   text-decoration: underline solid $theme-secondary;
   color: $theme-color;
   cursor: pointer;
-}
-
-// .card {
-//   background-color: $white;
-//   border-radius: 6px;
-//   border-color: transparent;
-//   box-shadow: 0 2px 20px 0 $gray3;
-//   margin: 15px;
-// }
-
-// .contentContainer {
-//   background-color: $gray3;
-//   display: flex;
-//   flex-direction: column;
-//   align-items: left4;
-//   justify-content: center;
-//   padding: 0 30px;
-//   min-height: 70px;
-// }
-
-// .title {
-//   font-weight: $font-weight;
-// }
-
-// .title ~ .subtitle {
-//   color: $gray1;
-// }
-
-
-
-.data {
-  background-color: $white;
-  margin-bottom: 15px;
 }

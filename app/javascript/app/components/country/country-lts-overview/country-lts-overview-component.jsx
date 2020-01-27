@@ -9,7 +9,6 @@ import Loading from 'components/loading';
 import NoContent from 'components/no-content';
 import { TabletLandscape, TabletPortraitOnly } from 'components/responsive';
 import introTheme from 'styles/themes/intro/intro-simple.scss';
-import cardTheme from 'styles/themes/card/card-light.scss';
 import layout from 'styles/layout.scss';
 import NdcCountryAccordionProvider from 'providers/ndc-country-accordion-provider';
 
@@ -23,20 +22,20 @@ const Cards = ({ cardData }) => (
           <div className="grid-column-item">
             {cardData ? (
               <div className={styles.cardsRowContainer}>
-                <Card title="Submission" contentFirst theme={cardTheme}>
+                <Card title="Submission" contentFirst>
                   <div className={styles.cardContent}>
                     <CardRowLight rowData={cardData.lts_document} />
                     <CardRowLight rowData={cardData.lts_date} />
                   </div>
                 </Card>
-                <Card title="Mitigation" contentFirst theme={cardTheme}>
+                <Card title="Mitigation" contentFirst>
                   <div className={styles.cardContent}>
                     <CardRowLight rowData={cardData.lts_target} />
                     <CardRowLight rowData={cardData.lts_m_tt} />
                     <CardRowLight rowData={cardData.lts_zero} />
                   </div>
                 </Card>
-                <Card title="Modeling" contentFirst theme={cardTheme}>
+                <Card title="Modeling" contentFirst>
                   <div className={styles.cardContent}>
                     <CardRowLight rowData={cardData.lts_m_sce_yn} />
                     <CardRowLight rowData={cardData.lts_m_model} />

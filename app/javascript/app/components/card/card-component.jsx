@@ -43,17 +43,7 @@ class Card extends PureComponent {
             {title.title}
           </a>
         ) : (
-          title && (
-            <p
-              className={cx(
-                styles.title,
-                { [styles.boldTitle]: subtitle },
-                theme.title
-              )}
-            >
-              {title}
-            </p>
-          )
+          title && <p className={cx(styles.title, theme.title)}>{title}</p>
         )}
         {subtitle && (
           <p className={cx(styles.subtitle, theme.subtitle)}>{subtitle}</p>

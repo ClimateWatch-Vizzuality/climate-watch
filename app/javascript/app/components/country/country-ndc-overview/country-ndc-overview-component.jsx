@@ -13,7 +13,6 @@ import ButtonGroup from 'components/button-group';
 import { TabletLandscape, TabletPortraitOnly } from 'components/responsive';
 import introTheme from 'styles/themes/intro/intro-simple.scss';
 import layout from 'styles/layout.scss';
-import cardTheme from 'styles/themes/card/card-light.scss';
 
 import alertIcon from 'assets/icons/alert.svg';
 import NdcContentOverviewProvider from 'providers/ndc-content-overview-provider';
@@ -101,7 +100,7 @@ class CountryNdcOverview extends PureComponent {
             <div className={styles.legacyCards}>
               <div className="grid-column-item">
                 <div className={styles.legacyCardsRowContainer}>
-                  <Card title="GHG Target" theme={cardTheme} contentFirst>
+                  <Card title="GHG Target" contentFirst>
                     <div className={styles.cardContent}>
                       {values && values.ghg_target_type ? (
                         <React.Fragment>
@@ -123,7 +122,7 @@ class CountryNdcOverview extends PureComponent {
                       )}
                     </div>
                   </Card>
-                  <Card title="Non-GHG Target" theme={cardTheme} contentFirst>
+                  <Card title="Non-GHG Target" contentFirst>
                     <div className={styles.cardContent}>
                       {values && values.non_ghg_target ? (
                         <CardRowLight
@@ -139,7 +138,6 @@ class CountryNdcOverview extends PureComponent {
                   </Card>
                   <Card
                     title="Identified Sectors for Mitigation Action"
-                    theme={cardTheme}
                     contentFirst
                   >
                     <div className={styles.cardContent}>
@@ -163,7 +161,6 @@ class CountryNdcOverview extends PureComponent {
               <div className={styles.adaptationList}>
                 <Card
                   title="Identified Sectors for Adaptation Action"
-                  theme={cardTheme}
                   contentFirst
                 >
                   <div className={styles.cardContent}>
@@ -192,7 +189,7 @@ class CountryNdcOverview extends PureComponent {
     const { values } = this.props;
     return FEATURE_LTS_EXPLORE ? (
       <div className={styles.cards}>
-        <Card title="Contribution Type" theme={cardTheme} contentFirst>
+        <Card title="Contribution Type" contentFirst>
           <div className={styles.cardContent}>
             {values && values.mitigation_contribution_type ? (
               <React.Fragment>
@@ -220,7 +217,7 @@ class CountryNdcOverview extends PureComponent {
             )}
           </div>
         </Card>
-        <Card title="GHG Target" theme={cardTheme} contentFirst>
+        <Card title="GHG Target" contentFirst>
           <div className={styles.cardContent}>
             {values && values.time_target_year ? (
               <React.Fragment>
@@ -242,7 +239,7 @@ class CountryNdcOverview extends PureComponent {
             )}
           </div>
         </Card>
-        <Card title="Non-GHG Target" theme={cardTheme} contentFirst>
+        <Card title="Non-GHG Target" contentFirst>
           <div className={styles.cardContent}>
             {values && values.non_ghg_target ? (
               <CardRowLight
