@@ -225,6 +225,7 @@ export const getEmissionsCardData = createSelector(
         const [locationIso, { label_id: labelId }] = entry;
         if (
           labelId === parseInt(legendItem.id, 10) &&
+          locationIso !== 'EU28' && // To avoid double counting
           emissionPercentages[locationIso]
         ) {
           legendItemValue += parseFloat(emissionPercentages[locationIso].value);
