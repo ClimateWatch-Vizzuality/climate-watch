@@ -39,6 +39,7 @@
 }
 
 .cards {
+  margin-bottom: 40px;
   > div {
     @include xy-gutters($gutter-position: ('top', 'bottom'));
   }

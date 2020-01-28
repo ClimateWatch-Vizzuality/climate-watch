@@ -8,7 +8,7 @@ import ModalMetadata from 'components/modal-metadata';
 import Dropdown from 'components/dropdown';
 import ButtonGroup from 'components/button-group';
 import Card from 'components/card';
-import CardRow from 'components/card/card-row-light';
+import CardRow from 'components/card/card-row';
 import LawsAndPoliciesProvider from 'providers/laws-and-policies-provider';
 import cx from 'classnames';
 import { Desktop, TabletLandscapeOnly } from 'components/responsive';

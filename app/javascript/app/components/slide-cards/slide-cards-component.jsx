@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import upperFirst from 'lodash/upperFirst';
 
 import Card from 'components/card';
-import CardRow from 'components/card/card-row-light';
+import CardRow from 'components/card/card-row';
 import Icon from 'components/icon';
 
 import rightArrow from 'assets/icons/right-arrow.svg';

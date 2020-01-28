@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Button from 'components/button';
 import Card from 'components/card';
-import CardRowLight from 'components/card/card-row-light';
+import CardRow from 'components/card/card-row';
 import Intro from 'components/intro';
 import Icon from 'components/icon';
 import cx from 'classnames';
@@ -104,13 +104,13 @@ class CountryNdcOverview extends PureComponent {
                     <div className={styles.cardContent}>
                       {values && values.ghg_target_type ? (
                         <React.Fragment>
-                          <CardRowLight
+                          <CardRow
                             rowData={{
                               title: 'Target type',
                               value: values.ghg_target_type[0].value
                             }}
                           />
-                          <CardRowLight
+                          <CardRow
                             rowData={{
                               title: 'Target year',
                               value: values.time_target_year[0].value
@@ -125,7 +125,7 @@ class CountryNdcOverview extends PureComponent {
                   <Card title="Non-GHG Target" contentFirst>
                     <div className={styles.cardContent}>
                       {values && values.non_ghg_target ? (
-                        <CardRowLight
+                        <CardRow
                           rowData={{
                             title: '',
                             value: values.non_ghg_target[0].value
@@ -142,7 +142,7 @@ class CountryNdcOverview extends PureComponent {
                   >
                     <div className={styles.cardContent}>
                       {values && values.coverage_sectors ? (
-                        <CardRowLight
+                        <CardRow
                           rowData={{
                             title: '',
                             value: values.coverage_sectors[0].value
@@ -193,19 +193,19 @@ class CountryNdcOverview extends PureComponent {
           <div className={styles.cardContent}>
             {values && values.mitigation_contribution_type ? (
               <React.Fragment>
-                <CardRowLight
+                <CardRow
                   rowData={{
                     title: 'Mitigation contribution type',
                     value: values.mitigation_contribution_type[0].value
                   }}
                 />
-                <CardRowLight
+                <CardRow
                   rowData={{
                     title: 'Target type',
                     value: values.ghg_target_type[0].value
                   }}
                 />
-                <CardRowLight
+                <CardRow
                   rowData={{
                     title: 'Adaptation included',
                     value: values.adaptation[0].value
@@ -221,13 +221,13 @@ class CountryNdcOverview extends PureComponent {
           <div className={styles.cardContent}>
             {values && values.time_target_year ? (
               <React.Fragment>
-                <CardRowLight
+                <CardRow
                   rowData={{
                     title: 'Target year',
                     value: values.time_target_year[0].value
                   }}
                 />
-                <CardRowLight
+                <CardRow
                   rowData={{
                     title: 'Sectors covered',
                     value: values.coverage_sectors[0].value
@@ -242,7 +242,7 @@ class CountryNdcOverview extends PureComponent {
         <Card title="Non-GHG Target" contentFirst>
           <div className={styles.cardContent}>
             {values && values.non_ghg_target ? (
-              <CardRowLight
+              <CardRow
                 rowData={{
                   title: '',
                   value: values.non_ghg_target[0].value
