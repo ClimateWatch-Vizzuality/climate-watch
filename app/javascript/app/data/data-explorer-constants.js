@@ -178,6 +178,9 @@ export const DATA_EXPLORER_TO_MODULES_PARAMS = {
     },
     categories: {
       key: 'category'
+    },
+    indicators: {
+      key: 'indicator'
     }
   },
   'emission-pathways': {

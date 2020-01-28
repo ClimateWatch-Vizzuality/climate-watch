@@ -499,8 +499,10 @@ export const parseExternalParams = createSelector(
             ids.map(f => parseInt(f, 10)).includes(i.id) ||
             ids.includes(i.number) ||
             ids.includes(i.iso_code3) ||
-            ids.includes(i.iso)
+            ids.includes(i.iso) ||
+            ids.includes(i.slug)
         );
+
         const selectedIds = filterObjects.map(labelObject => {
           const label = POSSIBLE_VALUE_FIELDS.find(
             f => labelObject && labelObject[f]
