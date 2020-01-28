@@ -37,6 +37,7 @@
   height: 100%;
   width: 100%;
   max-height: 520px;
+  margin: 0;
 }
 
 .fixedCardEmbed {
@@ -58,15 +59,12 @@
 
 .fixedCardData {
   padding: 37px 31px;
+  height: 100%;
   overflow: hidden;
 }
 
 @media #{$tablet-portrait} {
   .portraitContent {
     @include columns((6,6));
-  }
-
-  .agricultureLabel {
-    margin-bottom: 40px;
   }
 }

@@ -1,7 +1,9 @@
 import React from 'react';
 import cx from 'classnames';
 import PropTypes from 'prop-types';
-import { Card, PieChart, TooltipChart } from 'cw-components';
+import { PieChart, TooltipChart } from 'cw-components';
+import Card from 'components/card';
+
 import NoContent from 'components/no-content';
 
 import styles from './indicator-card-styles.scss';
@@ -26,7 +28,9 @@ const renderLegend = (card, year) => {
     </div>
   ) : (
     <NoContent
-      message={card.noDataMessage || `No data for ${card.countryName} in ${year.value}`}
+      message={
+        card.noDataMessage || `No data for ${card.countryName} in ${year.value}`
+      }
       className={styles.noContent}
       minHeight={100}
     />
@@ -39,15 +43,15 @@ const renderBulletList = (card, year) => {
     <div className={cx(styles.textHtmlWrapper, styles.bulletList)}>
       <ul>
         {card.bulletList.map(text => (
-          <li key={text}>
-            {text}
-          </li>
+          <li key={text}>{text}</li>
         ))}
       </ul>
     </div>
   ) : (
     <NoContent
-      message={card.noDataMessage || `No data for ${card.countryName} in ${year.value}`}
+      message={
+        card.noDataMessage || `No data for ${card.countryName} in ${year.value}`
+      }
       className={styles.noContent}
       minHeight={100}
     />
@@ -89,7 +93,7 @@ const indicatorCardsComponent = ({ cards, selectedYear }) => (
   <div className={styles.cardsContainer}>
     {cards &&
       cards.map(card => (
-        <Card title={card.title} theme={cardTheme}>
+        <Card title={card.title} theme={cardTheme} contentFirst>
           <div
             className={cx(styles.textHtmlWrapper, styles.introText)}
             dangerouslySetInnerHTML={{ __html: card.text }}
@@ -97,19 +101,22 @@ const indicatorCardsComponent = ({ cards, selectedYear }) => (
           <div className={styles.cardContent}>
             {card.bulletList && renderBulletList(card, selectedYear)}
             {card.legend && renderLegend(card, selectedYear)}
-            {
-              card.chartData &&
-              card.chartData.some(l => l.value) && (
-                <div className={styles.chart}>
-                  <PieChart
-                    data={card.chartData}
-                    width={150}
-                    config={card.chartConfig}
-                    customTooltip={card.tooltipValueFormat ? <TooltipChart getCustomYLabelFormat={card.tooltipValueFormat} /> : null}
-                  />
-                </div>
-              )
-            }
+            {card.chartData && card.chartData.some(l => l.value) && (
+              <div className={styles.chart}>
+                <PieChart
+                  data={card.chartData}
+                  width={150}
+                  config={card.chartConfig}
+                  customTooltip={
+                    card.tooltipValueFormat ? (
+                      <TooltipChart
+                        getCustomYLabelFormat={card.tooltipValueFormat}
+                      />
+                    ) : null
+                  }
+                />
+              </div>
+            )}
             {card.rank && (
               <div
                 className={cx(styles.textHtmlWrapper, styles.rank)}

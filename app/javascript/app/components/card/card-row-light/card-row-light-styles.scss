@@ -5,21 +5,26 @@
   padding: 16px 28px 24px;
 
   &:not(:last-child) {
-    border-bottom: 2px solid #e8ecf5;
+    border-bottom: 2px solid $shadow-gray;
+  }
+
+  & > * {
+    margin-bottom: 6px;
+  }
+
+  &WithSubtitle > p {
+    margin-left: 10px;
   }
 }
 
-.cardTitle {
+.title {
   font-size: $font-size-s;
   color: $gray1;
-  margin-bottom: 6px;
 }
 
-.targetText {
+.text {
   display: block;
   font-size: $font-size-sm;
   line-height: $line-height-small;
   color: $theme-color;
-  margin-bottom: 0;
-  margin-top: 6px;
 }

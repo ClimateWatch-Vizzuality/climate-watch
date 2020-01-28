@@ -8,7 +8,7 @@ import ModalMetadata from 'components/modal-metadata';
 import Dropdown from 'components/dropdown';
 import ButtonGroup from 'components/button-group';
 import Card from 'components/card';
-import CardRow from 'components/card/card-row';
+import CardRow from 'components/card/card-row-light';
 import LawsAndPoliciesProvider from 'providers/laws-and-policies-provider';
 import cx from 'classnames';
 import { Desktop, TabletLandscapeOnly } from 'components/responsive';
@@ -52,9 +52,11 @@ class LawsAndPolicies extends PureComponent {
           options={sectors}
           onValueChange={this.handleSourceChange}
           value={currentSector}
-          disclaimer={`${nationalPoliciesCount} ${nationalPoliciesCount === 1
-            ? 'national law and policy'
-            : 'national laws and policies'} with targets available for ${countryName} for the selected sector`}
+          disclaimer={`${nationalPoliciesCount} ${
+            nationalPoliciesCount === 1
+              ? 'national law and policy'
+              : 'national laws and policies'
+          } with targets available for ${countryName} for the selected sector`}
           hideResetButton
         />
         <div className={styles.buttonContainer}>
@@ -87,10 +89,8 @@ class LawsAndPolicies extends PureComponent {
     const countryName = country && `${country.wri_standard_name}`;
     const countryIso = country && country.iso_code3;
     const ndcContentPresent = !isEmpty(ndcContent);
-    const linkForEUcountries = `${window.location.protocol}//${window.location
-      .host}/ndcs/country/EU28/`;
-    const linkForOtherCountries = `${window.location.protocol}//${window
-      .location.host}/ndcs/country/${countryIso}/`;
+    const linkForEUcountries = `${window.location.protocol}//${window.location.host}/ndcs/country/EU28/`;
+    const linkForOtherCountries = `${window.location.protocol}//${window.location.host}/ndcs/country/${countryIso}/`;
 
     return (
       <div className={layout.content}>
@@ -128,25 +128,24 @@ class LawsAndPolicies extends PureComponent {
           {ndcContentPresent ? (
             <Card
               contentFirst
-              theme={{
-                card: styles.fixedCard,
-                contentContainer: styles.fixedCardContentContainer,
-                title: styles.fixedCardTitle,
-                data: styles.fixedCardData
-              }}
+              theme={{ card: styles.fixedCard }}
               title={{
                 title: 'Targets in Submitted NDC',
                 link: isInEu ? linkForEUcountries : linkForOtherCountries
               }}
             >
               <CardRow
-                title="Targets type"
-                description={ndcContent.type || 'Target type not defined'}
+                rowData={{
+                  title: 'Targets type',
+                  value: ndcContent.type || 'Target type not defined'
+                }}
               />
               <CardRow
-                title="Targets"
-                subtitle={currentSector && currentSector.label}
-                description={ndcContent.description}
+                rowData={{
+                  title: 'Targets',
+                  subtitle: currentSector && currentSector.label,
+                  value: ndcContent.description
+                }}
               />
             </Card>
           ) : (

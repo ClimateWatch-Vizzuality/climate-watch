@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import upperFirst from 'lodash/upperFirst';
 
 import Card from 'components/card';
-import CardRow from 'components/card/card-row';
+import CardRow from 'components/card/card-row-light';
 import Icon from 'components/icon';
 
 import rightArrow from 'assets/icons/right-arrow.svg';
@@ -67,26 +67,21 @@ class SlideCards extends Component {
                       ? `Targets found in ${card.source.title}`
                       : 'Targets'
                   }}
-                  theme={{
-                    contentContainer: styles.cardContentContainer,
-                    title: styles.cardTitle,
-                    data: styles.cardData,
-                    card: styles.cardInside
-                  }}
+                  theme={{ card: styles.cardInside }}
                 >
                   {Object.keys(card.content).map((targetType, i) => [
                     <CardRow
                       keyValue={`${i}-${targetType}`}
-                      title="Targets Type"
-                      subtitle=""
-                      description={targetType}
+                      rowData={{ title: 'Targets Type', value: targetType }}
                     />,
                     card.content[targetType].map((target, ind) => (
                       <CardRow
                         keyValue={`${ind}-target.description`}
-                        title="Targets"
-                        subtitle={upperFirst(target.scope)}
-                        description={target.description}
+                        rowData={{
+                          title: 'Targets',
+                          subtitle: upperFirst(target.scope),
+                          value: target.description
+                        }}
                       />
                     ))
                   ])}

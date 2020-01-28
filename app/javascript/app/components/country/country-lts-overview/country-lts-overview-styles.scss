@@ -102,6 +102,6 @@
   padding: 16px 28px 24px;
 
   &:not(:last-child) {
-    border-bottom: 2px solid #e8ecf5;
+    border-bottom: 2px solid $shadow-gray;
   }
 }
