@@ -46,6 +46,37 @@ $theme-color-light: #25597c;
 $theme-secondary: #ffc735;
 $theme-secondary-dark: #f6a806;
 
+// Header colors
+
+$header-ndc: #000d44;
+$header-countries: #113750;
+$header-emissions: #341870;
+$header-sectors: #a73f14;
+$header-about: $theme-color-medium;
+
+$header-commitments-gradient: (#001880, #526ee7);
+$header-emissions-gradient: (#341870, #7a50d3);
+$header-countries-gradient: ($header-countries, #228d94);
+$header-sectors-gradient: ($header-sectors, #de7950);
+$header-about-gradient: (#0845cb, #18ade2);
+
+/* stylelint-disable */
+:export {
+  headerColors: {
+    ndc: $header-ndc;
+    countries: $header-countries;
+    emissions: $header-emissions;
+  }
+
+  headerGradients: {
+    commitments: $header-commitments-gradient;
+    emissions: $header-emissions-gradient;
+    countries: $header-countries-gradient;
+    sectors: $header-sectors-gradient;
+    about: $header-about-gradient;
+  }
+};
+
 // Grays
 
 $gray1: #757584;

@@ -11,7 +11,7 @@
     &.-compare,
     &.-ndc-search {
       .sticky-inner-wrapper {
-        background-color: $light-blue;
+        background-color: $header-ndc;
       }
     }
 
@@ -24,25 +24,25 @@
     &.-country,
     &.-country-compare {
       .sticky-inner-wrapper {
-        background-color: $teal-blue;
+        background-color: $header-countries;
       }
     }
 
     &.-about {
       .sticky-inner-wrapper {
-        background-color: $theme-color;
+        background-color: $header-about;
       }
     }
 
     &.-emissions {
       .sticky-inner-wrapper {
-        background-color: $purple;
+        background-color: $header-emissions;
       }
     }
 
     &.-sectors-agriculture {
       .sticky-inner-wrapper {
-        background: linear-gradient(135deg, #0677b3 0%, #00b4d2 100%);
+        background-color: $header-sectors;
       }
     }
 

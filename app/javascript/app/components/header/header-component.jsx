@@ -15,7 +15,7 @@ const Header = props => {
   const getStyle = () => {
     let style = {};
     if (gradient) {
-      const [startColor, endColor] = gradient || [color, color];
+      const [startColor, endColor] = gradient;
       style = {
         backgroundImage: `url(${background}), linear-gradient(to right, ${startColor} 25%, ${endColor})`
       };

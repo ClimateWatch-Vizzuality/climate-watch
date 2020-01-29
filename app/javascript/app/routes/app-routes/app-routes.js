@@ -64,6 +64,7 @@ const FEATURE_LTS_EXPLORE = process.env.FEATURE_LTS_EXPLORE === 'true';
 const FEATURE_COMMITMENTS_OVERVIEW =
   process.env.FEATURE_COMMITMENTS_OVERVIEW === 'true';
 
+// Main pages have a gradient header color and secondary have a single color
 export default [
   {
     path: '/',
@@ -86,7 +87,7 @@ export default [
     component: CountryCompare,
     exact: true,
     sections: countryCompareSections,
-    headerGradient: HEADER_GRADIENTS.countries
+    headerColor: HEADER_COLORS.countries
   },
   FEATURE_AGRICULTURE
     ? {
@@ -212,7 +213,7 @@ export default [
     label: 'PATHWAYS MODEL',
     sections: emissionPathwaysModelSections,
     routes: emissionPathwaysModelRoutes,
-    headerGradient: HEADER_GRADIENTS.overview
+    headerColor: HEADER_COLORS.emissions
   },
   {
     path: '/pathways/scenarios/:id',
@@ -220,7 +221,7 @@ export default [
     label: 'PATHWAYS SCENARIO',
     headerImage: 'emission-pathways',
     sections: emissionPathwaysScenarioSections,
-    headerGradient: HEADER_GRADIENTS.overview
+    headerColor: HEADER_COLORS.emissions
   },
   {
     path: '/pathways',
@@ -230,7 +231,7 @@ export default [
     headerImage: 'emission-pathways',
     sections: emissionPathwaysSections,
     routes: emissionPathwaysRoutes,
-    headerGradient: HEADER_GRADIENTS.overview
+    headerGradient: HEADER_GRADIENTS.emissions
   },
   {
     path: '/ndc-search',
@@ -261,7 +262,7 @@ export default [
     component: About,
     label: 'ABOUT',
     routes: AboutRoutes,
-    headerColor: HEADER_COLORS.about
+    headerGradient: HEADER_GRADIENTS.about
   },
   {
     nav: true,

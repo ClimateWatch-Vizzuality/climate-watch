@@ -1,15 +1,31 @@
+import variables from './settings.scss';
+
 export const STICKY_OFFSET = {
   mobile: 105,
   desktop: 49
 };
 
-export const HEADER_GRADIENTS = {
-  commitments: ['#001880', '#526EE7'],
-  emissions: ['#341870', '#7A50D3'],
-  countries: ['#133F42', '#228D94'],
-  sectors: ['#A73F14', '#DE7950']
+const getHeaderColors = () => {
+  const headerColors = {};
+  Object.keys(variables).forEach(v => {
+    if (v.startsWith('headerColor')) {
+      const headerColorKey = v.replace('headerColors-', '');
+      headerColors[headerColorKey] = variables[v];
+    }
+  });
+  return headerColors;
 };
-export const HEADER_COLORS = {
-  ndc: '#000D44',
-  about: '#113750'
+
+const getHeaderGradients = () => {
+  const headerGradients = {};
+  Object.keys(variables).forEach(v => {
+    if (v.startsWith('headerGradients')) {
+      const headerColorKey = v.replace('headerGradients-', '');
+      headerGradients[headerColorKey] = variables[v].split(',');
+    }
+  });
+  return headerGradients;
 };
+
+export const HEADER_GRADIENTS = getHeaderGradients();
+export const HEADER_COLORS = getHeaderColors();

@@ -55,7 +55,6 @@ const MyCw = ({ location, route, login, openCreator, logout }) => {
             useRoutes
             links={route.routes}
             theme={anchorNavRegularTheme}
-            gradientColor={route.headerColor}
           />
         </div>
       </Header>
