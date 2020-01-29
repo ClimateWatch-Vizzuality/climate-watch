@@ -8,7 +8,10 @@ module Api
       'indc_summary_long',
       'coverage_sectors',
       'coverage_sectors_short',
-      'other_adaption info'
+      'other_adaption info',
+      'mitigation_contribution_type',
+      'ghg_target_type',
+      'adaptation'
     ].freeze
 
     SECTORS_INDICATORS = [
