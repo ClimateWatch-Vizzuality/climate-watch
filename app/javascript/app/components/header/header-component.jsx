@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
-import { TabletLandscape } from 'components/responsive';
 import { themr } from 'react-css-themr';
 import background from 'assets/headers/background-header.png';
 import styles from './header-styles.scss';
@@ -27,14 +26,12 @@ const Header = props => {
   };
 
   return (
-    <TabletLandscape>
-      <div
-        className={cx(className, styles.header, theme.header, sizeClass)}
-        style={getStyle()}
-      >
-        {children}
-      </div>
-    </TabletLandscape>
+    <div
+      className={cx(className, styles.header, theme.header, sizeClass)}
+      style={getStyle()}
+    >
+      {children}
+    </div>
   );
 };
 
