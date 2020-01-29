@@ -28,6 +28,7 @@ const CardRowComponent = ({ rowData }) => (
 CardRowComponent.propTypes = {
   rowData: PropTypes.shape({
     title: PropTypes.string,
+    subtitle: PropTypes.string,
     value: PropTypes.any
   })
 };
