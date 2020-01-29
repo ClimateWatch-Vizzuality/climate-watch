@@ -52,7 +52,6 @@
 }
 
 .link {
-  text-decoration: underline solid $theme-secondary;
-  color: $theme-color;
-  cursor: pointer;
+  color: $theme-color-medium;
+  text-decoration: underline;
 }
