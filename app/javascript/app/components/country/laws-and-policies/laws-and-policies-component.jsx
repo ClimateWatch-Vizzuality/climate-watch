@@ -12,6 +12,7 @@ import CardRow from 'components/card/card-row';
 import LawsAndPoliciesProvider from 'providers/laws-and-policies-provider';
 import cx from 'classnames';
 import { Desktop, TabletLandscapeOnly } from 'components/responsive';
+import cardTheme from 'styles/themes/card/card-overflow-content.scss';
 
 import styles from './laws-and-policies-styles.scss';
 
@@ -128,7 +129,7 @@ class LawsAndPolicies extends PureComponent {
           {ndcContentPresent ? (
             <Card
               contentFirst
-              theme={{ card: styles.fixedCard }}
+              theme={{ card: styles.fixedCard, ...cardTheme }}
               title={{
                 title: 'Targets in Submitted NDC',
                 link: isInEu ? linkForEUcountries : linkForOtherCountries

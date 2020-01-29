@@ -9,6 +9,7 @@ import Loading from 'components/loading';
 import NoContent from 'components/no-content';
 import { TabletLandscape, TabletPortraitOnly } from 'components/responsive';
 import introTheme from 'styles/themes/intro/intro-simple.scss';
+import cardTheme from 'styles/themes/card/card-overflow-content.scss';
 import layout from 'styles/layout.scss';
 import NdcCountryAccordionProvider from 'providers/ndc-country-accordion-provider';
 
@@ -22,20 +23,20 @@ const Cards = ({ cardData }) => (
           <div className="grid-column-item">
             {cardData ? (
               <div className={styles.cardsRowContainer}>
-                <Card title="Submission" contentFirst>
+                <Card title="Submission" theme={cardTheme} contentFirst>
                   <div className={styles.cardContent}>
                     <CardRow rowData={cardData.lts_document} />
                     <CardRow rowData={cardData.lts_date} />
                   </div>
                 </Card>
-                <Card title="Mitigation" contentFirst>
+                <Card title="Mitigation" theme={cardTheme} contentFirst>
                   <div className={styles.cardContent}>
                     <CardRow rowData={cardData.lts_target} />
                     <CardRow rowData={cardData.lts_m_tt} />
                     <CardRow rowData={cardData.lts_zero} />
                   </div>
                 </Card>
-                <Card title="Modeling" contentFirst>
+                <Card title="Modeling" theme={cardTheme} contentFirst>
                   <div className={styles.cardContent}>
                     <CardRow rowData={cardData.lts_m_sce_yn} />
                     <CardRow rowData={cardData.lts_m_model} />

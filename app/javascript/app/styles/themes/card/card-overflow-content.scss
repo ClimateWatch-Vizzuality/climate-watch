@@ -1,0 +1,7 @@
+@import '~styles/settings.scss';
+
+.data { 
+  @media #{ $tablet-portrait } {
+    mask-image: linear-gradient(white 90%, transparent 100%);
+  }
+}

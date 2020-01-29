@@ -13,7 +13,7 @@ import ButtonGroup from 'components/button-group';
 import { TabletLandscape, TabletPortraitOnly } from 'components/responsive';
 import introTheme from 'styles/themes/intro/intro-simple.scss';
 import layout from 'styles/layout.scss';
-
+import cardTheme from 'styles/themes/card/card-overflow-content.scss';
 import alertIcon from 'assets/icons/alert.svg';
 import NdcContentOverviewProvider from 'providers/ndc-content-overview-provider';
 
@@ -189,7 +189,7 @@ class CountryNdcOverview extends PureComponent {
     const { values } = this.props;
     return FEATURE_LTS_EXPLORE ? (
       <div className={styles.cards}>
-        <Card title="Contribution Type" contentFirst>
+        <Card title="Contribution Type" theme={cardTheme} contentFirst>
           <div className={styles.cardContent}>
             {values && values.mitigation_contribution_type ? (
               <React.Fragment>
@@ -198,18 +198,21 @@ class CountryNdcOverview extends PureComponent {
                     title: 'Mitigation contribution type',
                     value: values.mitigation_contribution_type[0].value
                   }}
+                  theme={cardTheme}
                 />
                 <CardRow
                   rowData={{
                     title: 'Target type',
                     value: values.ghg_target_type[0].value
                   }}
+                  theme={cardTheme}
                 />
                 <CardRow
                   rowData={{
                     title: 'Adaptation included',
                     value: values.adaptation[0].value
                   }}
+                  theme={cardTheme}
                 />
               </React.Fragment>
             ) : (
@@ -217,7 +220,7 @@ class CountryNdcOverview extends PureComponent {
             )}
           </div>
         </Card>
-        <Card title="GHG Target" contentFirst>
+        <Card title="GHG Target" theme={cardTheme} contentFirst>
           <div className={styles.cardContent}>
             {values && values.time_target_year ? (
               <React.Fragment>
@@ -239,7 +242,7 @@ class CountryNdcOverview extends PureComponent {
             )}
           </div>
         </Card>
-        <Card title="Non-GHG Target" contentFirst>
+        <Card title="Non-GHG Target" theme={cardTheme} contentFirst>
           <div className={styles.cardContent}>
             {values && values.non_ghg_target ? (
               <CardRow
