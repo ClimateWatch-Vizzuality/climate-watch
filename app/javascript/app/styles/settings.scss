@@ -47,7 +47,6 @@ $theme-secondary: #ffc735;
 $theme-secondary-dark: #f6a806;
 
 // Grays
-
 $gray1: #757584;
 $gray2: #cccdcf;
 $gray3: #f1f4fb;
@@ -58,6 +57,7 @@ $teal-blue: #045f61;
 $purple: #74356a;
 $light-blue: #035388;
 $error: #d46948;
+$shadow-gray: #e8ecf5;
 
 $twitter: #5b8ec8;
 $facebook: #3b5999;
@@ -65,6 +65,7 @@ $google: #d8483b;
 
 // box-shadow
 $box-shadow-light: 0 2px 10px 0 $gray3;
+$box-shadow-card: 0 2px 20px 0 $shadow-gray;
 
 // border
 $dropdown-border: 2.5px solid $gray3;

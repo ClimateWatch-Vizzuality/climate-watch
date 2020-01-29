@@ -4,6 +4,7 @@
 $circle-size: 50px;
 
 .cardsContainer {
+  box-shadow: $box-shadow-card;
   display: flex;
   flex-wrap: nowrap;
   margin-bottom: 0;
@@ -59,32 +60,18 @@ $circle-size: 50px;
 
 .card {
   list-style-type: none;
+  height: 350px;
   width: 390px;
   margin-left: -1px;
   z-index: $z-index-base;
 }
 
 .cardInside {
-  height: 350px;
-  width: 390px;
   box-shadow: none;
-}
-
-.cardContentContainer {
-  background-color: $gray3;
-  min-height: 70px;
-  display: flex;
-  align-items: center;
-}
-
-.cardTitle {
-  font-size: $font-size;
-  font-weight: $font-weight;
-}
-
-.cardData {
-  display: flex;
-  flex-direction: column;
+  border-left: 1px solid $shadow-gray;
+  border-radius: 0 6px 6px 0;
+  height: 350px;
+  margin: 0;
 }
 
 .wrapper {
