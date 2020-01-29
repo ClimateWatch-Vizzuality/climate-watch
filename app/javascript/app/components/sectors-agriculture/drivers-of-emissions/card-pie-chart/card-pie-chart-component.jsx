@@ -94,11 +94,7 @@ class CardPieChart extends PureComponent {
 
     return (
       <div>
-        <Card
-          theme={cardTheme}
-          subtitle={subtitle}
-          // contentFirst
-        >
+        <Card theme={cardTheme} subtitle={subtitle}>
           {pieChartData && agricultureEmissions ? (
             <div className={styles.cardContent}>
               <p className={styles.description}>
