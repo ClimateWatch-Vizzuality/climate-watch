@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 import { scaleLinear } from 'd3-scale';
-import { largerPointPaths as worldPaths } from 'app/data/world-50m-paths';
+import worldPaths from 'app/data/world-50m-paths';
 import { generateLinkToDataExplorer } from 'utils/data-explorer';
 import { shouldShowPath } from 'utils/map';
 

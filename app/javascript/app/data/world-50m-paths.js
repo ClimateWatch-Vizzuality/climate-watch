@@ -14,9 +14,7 @@ const largerPointLayerPaths = feature(
   pointsTopojson.objects[Object.keys(pointsTopojson.objects)[0]]
 ).features;
 
-export const largerPointPaths = [
+export default [
   ...paths.filter(p => p.properties.layer !== PATH_LAYERS.POINTS),
   ...largerPointLayerPaths
 ];
-
-export default paths;

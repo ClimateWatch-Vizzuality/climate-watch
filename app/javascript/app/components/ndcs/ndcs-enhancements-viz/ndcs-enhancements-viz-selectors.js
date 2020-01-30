@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import { createSelector } from 'reselect';
 import {
   getColorByIndex,
@@ -7,7 +8,7 @@ import {
 import uniqBy from 'lodash/uniqBy';
 import sortBy from 'lodash/sortBy';
 import { generateLinkToDataExplorer } from 'utils/data-explorer';
-import { largerPointPaths as worldPaths } from 'app/data/world-50m-paths';
+import worldPaths from 'app/data/world-50m-paths';
 import { europeSlug, europeanCountries } from 'app/data/european-countries';
 import { COUNTRY_STYLES } from 'components/ndcs/shared/constants';
 

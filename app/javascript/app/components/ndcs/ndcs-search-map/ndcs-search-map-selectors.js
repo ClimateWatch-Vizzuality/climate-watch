@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import { largerPointPaths as worldPaths } from 'app/data/world-50m-paths';
+import worldPaths from 'app/data/world-50m-paths';
 import { shouldShowPath } from 'utils/map';
 import uniq from 'lodash/uniq';
 

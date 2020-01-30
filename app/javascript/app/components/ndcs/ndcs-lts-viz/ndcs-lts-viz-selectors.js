@@ -7,7 +7,7 @@ import {
 import uniqBy from 'lodash/uniqBy';
 import sortBy from 'lodash/sortBy';
 import { generateLinkToDataExplorer } from 'utils/data-explorer';
-import { largerPointPaths as worldPaths } from 'app/data/world-50m-paths';
+import worldPaths from 'app/data/world-50m-paths';
 import { COUNTRY_STYLES } from 'components/ndcs/shared/constants';
 
 const FEATURE_LTS_UPDATED_DATA =

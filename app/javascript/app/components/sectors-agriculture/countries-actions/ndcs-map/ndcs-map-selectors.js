@@ -6,7 +6,7 @@ import {
 } from 'utils/map';
 import { sortBy, flatten, lowerCase, uniqBy, has } from 'lodash';
 import { generateLinkToDataExplorer } from 'utils/data-explorer';
-import { largerPointPaths as worldPaths } from 'app/data/world-50m-paths';
+import worldPaths from 'app/data/world-50m-paths';
 import { europeSlug, europeanCountries } from 'app/data/european-countries';
 
 import { COUNTRY_STYLES } from 'components/ndcs/shared/constants';

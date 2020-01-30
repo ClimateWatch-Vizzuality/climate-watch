@@ -8,7 +8,7 @@ import uniqBy from 'lodash/uniqBy';
 import sortBy from 'lodash/sortBy';
 import groupBy from 'lodash/groupBy';
 import { generateLinkToDataExplorer } from 'utils/data-explorer';
-import { largerPointPaths as worldPaths } from 'app/data/world-50m-paths';
+import worldPaths from 'app/data/world-50m-paths';
 import { COUNTRY_STYLES } from 'components/ndcs/shared/constants';
 import {
   sortByIndexAndNotInfo,
@@ -128,7 +128,6 @@ export const getPathsWithStyles = createSelector(
     worldPaths.forEach(path => {
       if (shouldShowPath(path, zoom)) {
         const { locations, legendBuckets } = indicator;
-
         if (!locations) {
           paths.push({
             ...path,
