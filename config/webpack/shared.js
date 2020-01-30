@@ -9,7 +9,6 @@ const { sync } = require('glob');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
 const DirectoryNamedWebpackPlugin = require('directory-named-webpack-plugin');
-const ImageminWebpWebpackPlugin = require('imagemin-webp-webpack-plugin');
 
 const extname = require('path-complete-extname');
 const { env, settings, output, loadersDir } = require('./configuration.js');
@@ -52,8 +51,7 @@ module.exports = {
     new webpack.DefinePlugin({
       'process.env.JSCOV': JSON.stringify(false),
       'process.env.NODE_ENV': env.NODE_ENV
-    }),
-    new ImageminWebpWebpackPlugin()
+    })
   ],
 
   resolve: {
