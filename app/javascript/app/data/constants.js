@@ -1,3 +1,5 @@
+import { CHART_NAMED_COLORS } from 'app/styles/constants';
+
 const { GFW_API } = process.env;
 const { CW_API } = process.env;
 const { ESP_API } = process.env;
@@ -85,16 +87,7 @@ export const TOP_EMITTERS = [
   'MEX'
 ];
 
-export const CHART_COLORS = [
-  '#00B4D2',
-  '#0677B3',
-  '#D2187C',
-  '#FFB400',
-  '#FF7800',
-  '#FF88AA',
-  '#AB0000',
-  '#20D5B7'
-];
+export const CHART_COLORS = Object.values(CHART_NAMED_COLORS);
 
 export const CHART_COLORS_EXTENDED = [
   '#e6194B',
@@ -119,18 +112,7 @@ export const CHART_COLORS_EXTENDED = [
 
 export const OTHER_COLOR = '#999C9F';
 
-export const NEW_CHART_COLORS_BASIC = [
-  '#FFB800',
-  '#0845CB',
-  '#FF6C2F',
-  '#008EEE',
-  '#FF6CD0',
-  '#2EC9DF',
-  '#D2187C',
-  '#6D40EA',
-  '#999C9F',
-  '#13C881'
-];
+export const NEW_CHART_COLORS_BASIC = CHART_COLORS;
 
 export const NEW_CHART_COLORS = [
   '#FFB800',

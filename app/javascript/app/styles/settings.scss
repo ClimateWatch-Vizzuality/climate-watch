@@ -60,6 +60,39 @@ $header-countries-gradient: ($header-countries, #228d94);
 $header-sectors-gradient: ($header-sectors, #de7950);
 $header-about-gradient: (#0845cb, #18ade2);
 
+// Grays
+$gray1: #757584;
+$gray2: #CCCDCF;
+$gray3: #f1f4fb;
+
+// $map-gray: #868697; Only on js
+
+// Colors for map / charts
+
+$chart-gray-color-1: #999C9F;
+
+$chart-color-1: #FFB800;
+$chart-color-2: #0845CB;
+$chart-color-3: #FF6C2F;
+$chart-color-4: #008EEE;
+$chart-color-5: #FF6CD0;
+$chart-color-6: #2EC9DF;
+$chart-color-7: #D2187C;
+$chart-color-8: #6D40EA;
+$chart-color-9: #13C881;
+$chart-color-10: #83A2E5;
+
+$teal-blue: #045f61;
+$purple: #74356a;
+$light-blue: #035388;
+$error: #d46948;
+$shadow-gray: #e8ecf5;
+
+$twitter: #5b8ec8;
+$facebook: #3b5999;
+$google: #d8483b;
+
+// Exports
 /* stylelint-disable */
 :export {
   headerColors: {
@@ -75,24 +108,25 @@ $header-about-gradient: (#0845cb, #18ade2);
     sectors: $header-sectors-gradient;
     about: $header-about-gradient;
   }
+
+  chartGrayColors: {
+    grayColor1: $chart-gray-color-1;
+    grayColor2: $gray2;
+  }
+
+  chartColors: {
+    color1: $chart-color-1;
+    color2: $chart-color-2;
+    color3: $chart-color-3;
+    color4: $chart-color-4;
+    color5: $chart-color-5;
+    color6: $chart-color-6;
+    color7: $chart-color-7;
+    color8: $chart-color-8;
+    color9: $chart-color-9;
+    color10: $chart-color-10;
+  }
 };
-
-// Grays
-$gray1: #757584;
-$gray2: #cccdcf;
-$gray3: #f1f4fb;
-
-// $map-gray: #868697; Only on js
-
-$teal-blue: #045f61;
-$purple: #74356a;
-$light-blue: #035388;
-$error: #d46948;
-$shadow-gray: #e8ecf5;
-
-$twitter: #5b8ec8;
-$facebook: #3b5999;
-$google: #d8483b;
 
 // box-shadow
 $box-shadow-light: 0 2px 10px 0 $gray3;

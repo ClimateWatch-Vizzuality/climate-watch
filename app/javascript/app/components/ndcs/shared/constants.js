@@ -1,20 +1,22 @@
+import { CHART_NAMED_GRAY_COLORS } from 'app/styles/constants';
+
 export const COUNTRY_STYLES = {
   default: {
-    fill: '#e9e9e9',
+    fill: CHART_NAMED_GRAY_COLORS.grayColor2,
     fillOpacity: 1,
     stroke: '#f5f6f7',
     strokeWidth: 1,
     outline: 'none'
   },
   hover: {
-    fill: '#e9e9e9',
+    fill: CHART_NAMED_GRAY_COLORS.grayColor2,
     fillOpacity: 1,
     stroke: '#f5f6f7',
     strokeWidth: 1,
     outline: 'none'
   },
   pressed: {
-    fill: '#e9e9e9',
+    fill: CHART_NAMED_GRAY_COLORS.grayColor2,
     fillOpacity: 1,
     stroke: '#f5f6f7',
     strokeWidth: 1,

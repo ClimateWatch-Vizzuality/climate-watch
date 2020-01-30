@@ -1,51 +1,16 @@
 import { PATH_LAYERS, MIN_ZOOM_SHOW_ISLANDS } from 'app/data/constants';
+import {
+  CHART_NAMED_COLORS,
+  CHART_NAMED_GRAY_COLORS
+} from 'app/styles/constants';
 
-const buckets = [
-  ['#EEBC8F', '#25597C'],
-  ['#EEBC8F', '#FEE08D', '#25597C'],
-  ['#EEBC8F', '#FEE08D', '#5081A6', '#25597C'],
-  ['#EEBC8F', '#FEE08D', '#ACBBBF', '#5081A6', '#25597C'],
-  ['#EEBC8F', '#F6CE8E', '#FEE08D', '#90B1CB', '#5081A6', '#25597C'],
-  ['#EEBC8F', '#F6CE8E', '#FEE08D', '#90B1CB', '#7199B8', '#5081A6', '#25597C'],
-  [
-    '#EEBC8F',
-    '#F6CE8E',
-    '#FEE08D',
-    '#ACBBBF',
-    '#90B1CB',
-    '#7199B8',
-    '#5081A6',
-    '#25597C'
-  ],
-  [
-    '#EEBC8F',
-    '#F6CE8E',
-    '#FEE08D',
-    '#E3D2A0',
-    '#ACBBBF',
-    '#90B1CB',
-    '#7199B8',
-    '#5081A6',
-    '#25597C'
-  ],
-  [
-    '#EEBC8F',
-    '#F6CE8E',
-    '#FEE08D',
-    '#E3D2A0',
-    '#C5C5B2',
-    '#ACBBBF',
-    '#90B1CB',
-    '#7199B8',
-    '#5081A6',
-    '#25597C'
-  ]
-];
+const colorArray = Object.values(CHART_NAMED_COLORS);
+const buckets = colorArray.map((_, i) => colorArray.slice(0, i + 1));
 
 export function getColorByIndex(data, index, colors = buckets) {
   const length = Object.keys(data).length;
-  if (index === -2 || length === 1) return '#ddd';
-  return colors[length - 2][index - 1] || '#E5E5EB';
+  if (index === -2 || length === 1) return CHART_NAMED_GRAY_COLORS.grayColor1;
+  return colors[length - 2][index - 1] || CHART_NAMED_GRAY_COLORS.grayColor2;
 }
 
 export function createLegendBuckets(
