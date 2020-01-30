@@ -90,7 +90,7 @@ class LawsAndPolicies extends PureComponent {
     const countryName = country && `${country.wri_standard_name}`;
     const countryIso = country && country.iso_code3;
     const ndcContentPresent = !isEmpty(ndcContent);
-    const linkForEUcountries = `${window.location.protocol}//${window.location.host}/ndcs/country/EU28/`;
+    const linkForEUcountries = `${window.location.protocol}//${window.location.host}/ndcs/country/EUU/`;
     const linkForOtherCountries = `${window.location.protocol}//${window.location.host}/ndcs/country/${countryIso}/`;
 
     return (
