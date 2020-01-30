@@ -27,8 +27,7 @@ export const europeanCountries = [
   'SVK',
   'SVN',
   'ESP',
-  'SWE',
-  'GBR'
+  'SWE'
 ];
 
 export default {
