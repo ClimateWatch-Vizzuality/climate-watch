@@ -9,7 +9,7 @@ RSpec.describe ImportLocationMembers do
         get_object: {
           body: <<~END
             parent_iso_code3,name,iso_code3,,
-            EU28,Poland,POL,,'
+            EUU,Poland,POL,,'
           END
         }
       }
@@ -17,7 +17,7 @@ RSpec.describe ImportLocationMembers do
   end
 
   before(:each) do
-    FactoryBot.create(:location, iso_code3: 'EU28', location_type: 'GROUP')
+    FactoryBot.create(:location, iso_code3: 'EUU', location_type: 'GROUP')
     FactoryBot.create(:location, iso_code3: 'POL', location_type: 'COUNTRY')
   end
 
