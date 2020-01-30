@@ -1,11 +1,8 @@
 import { createSelector } from 'reselect';
 import { scalePow } from 'd3-scale';
 import isEmpty from 'lodash/isEmpty';
-import {
-  CALCULATION_OPTIONS,
-  MIN_ZOOM_SHOW_ISLANDS,
-  PATH_LAYERS
-} from 'app/data/constants';
+import { CALCULATION_OPTIONS } from 'app/data/constants';
+import { shouldShowPath } from 'utils/map';
 import groupBy from 'lodash/groupBy';
 
 import worldPaths from 'app/data/world-50m-paths';
@@ -59,7 +56,7 @@ function setScale(ranges) {
 }
 
 function getRanges(min, max) {
-  return buckets.map((el, i) => max / 100 * steps[i]); // eslint-disable-line
+  return buckets.map((el, i) => (max / 100) * steps[i]); // eslint-disable-line
 }
 
 export const getSourceOptions = createSelector(getSources, sources => {
@@ -185,14 +182,7 @@ export const getPathsWithStyles = createSelector(
 
     const paths = [];
     worldPaths.forEach(path => {
-      if (
-        (zoom >= MIN_ZOOM_SHOW_ISLANDS &&
-          (path.properties.layer === PATH_LAYERS.COUNTRIES ||
-            path.properties.layer === PATH_LAYERS.ISLANDS)) ||
-        (zoom < MIN_ZOOM_SHOW_ISLANDS &&
-          (path.properties.layer === PATH_LAYERS.COUNTRIES ||
-            path.properties.layer === PATH_LAYERS.POINTS))
-      ) {
+      if (shouldShowPath(path, zoom)) {
         let color = '#E5E5EB'; // default color
         const iso = path.properties && path.properties.id;
         if (data && data.values && data.values[iso]) {

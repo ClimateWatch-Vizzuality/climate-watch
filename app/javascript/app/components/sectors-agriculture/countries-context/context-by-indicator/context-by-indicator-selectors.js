@@ -1,10 +1,9 @@
 import { createSelector, createStructuredSelector } from 'reselect';
-import { getColorByIndex } from 'utils/map';
+import { getColorByIndex, shouldShowPath } from 'utils/map';
 import { isEmpty, orderBy, flatten } from 'lodash';
 import { format } from 'd3-format';
 import worldPaths from 'app/data/world-50m-paths';
 import {
-  PATH_LAYERS,
   AGRICULTURE_INDICATORS_NAMES,
   AGRICULTURE_INDICATORS_MAP_BUCKETS
 } from 'app/data/constants';
@@ -191,7 +190,7 @@ export const getPathsWithStyles = createSelector(
     if (!selectedIndicator) return [];
     const paths = [];
     worldPaths.forEach(path => {
-      if (path.properties.layer !== PATH_LAYERS.ISLANDS) {
+      if (shouldShowPath(path)) {
         if (!mapData) {
           paths.push({
             ...path,

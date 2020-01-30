@@ -2,7 +2,7 @@ import { createSelector } from 'reselect';
 import { deburrUpper, isCountryIncluded } from 'app/utils';
 import sortBy from 'lodash/sortBy';
 import worldPaths from 'app/data/world-50m-paths';
-import { PATH_LAYERS } from 'app/data/constants';
+import { shouldShowPath } from 'utils/map';
 
 const COUNTRY_PLATFORMS_ISOS = ['ZAF', 'IDN', 'IND'];
 
@@ -92,7 +92,7 @@ export const getPathsWithStyles = createSelector(
   (query, preSelect, isoCountries) => {
     const paths = [];
     worldPaths.forEach(path => {
-      if (path.properties.layer !== PATH_LAYERS.ISLANDS) {
+      if (shouldShowPath(path)) {
         const iso = path.properties && path.properties.id;
         if (!iso || (isoCountries && !isCountryIncluded(isoCountries, iso))) {
           return paths.push({

@@ -343,7 +343,6 @@ export const getChartData = createSelector(
         calculationData[y][r] &&
         calculationData[y][r][metricField];
       let metricData = getMetricForYearAndRegion(year, region);
-
       // if no metric data for expandable column then use expanded regions to
       // calculate metric data
       if (!metricData && column.expandsTo && column.expandsTo.length) {

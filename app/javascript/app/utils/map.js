@@ -1,3 +1,5 @@
+import { PATH_LAYERS, MIN_ZOOM_SHOW_ISLANDS } from 'app/data/constants';
+
 const buckets = [
   ['#EEBC8F', '#25597C'],
   ['#EEBC8F', '#FEE08D', '#25597C'],
@@ -65,7 +67,15 @@ export function createLegendBuckets(
   return { ...labels, 0: { name: notApplicableLabel, index: 0 } };
 }
 
-export default {
-  getColorByIndex,
-  createLegendBuckets
-};
+// Map path filtering
+// If we have a zoom level we show the points until we reach the MIN_ZOOM_SHOW_ISLANDS level
+// If we dont we always show the points instead of the islands
+export const shouldShowPath = (path, zoom) =>
+  (zoom
+    ? (zoom >= MIN_ZOOM_SHOW_ISLANDS &&
+        (path.properties.layer === PATH_LAYERS.COUNTRIES ||
+          path.properties.layer === PATH_LAYERS.ISLANDS)) ||
+      (zoom < MIN_ZOOM_SHOW_ISLANDS &&
+        (path.properties.layer === PATH_LAYERS.COUNTRIES ||
+          path.properties.layer === PATH_LAYERS.POINTS))
+    : path.properties.layer !== PATH_LAYERS.ISLANDS);
