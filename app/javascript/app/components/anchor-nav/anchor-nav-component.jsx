@@ -6,7 +6,6 @@ import { NavLink } from 'react-router-dom';
 import { NavHashLink } from 'react-router-hash-link';
 import qs from 'query-string';
 
-import { hexToRgba } from 'utils/utils';
 import styles from './anchor-nav-styles.scss';
 
 const AnchorNav = props => {
@@ -16,26 +15,11 @@ const AnchorNav = props => {
     className,
     query,
     theme,
-    gradientColor,
     offset,
     activeSection
   } = props;
-  const gradientStyle = gradientColor
-    ? {
-      background: `radial-gradient(40px 30px ellipse at 0%, ${gradientColor}, ${hexToRgba(
-        gradientColor,
-        0
-      )}), radial-gradient(50px 30px ellipse at 100%, ${gradientColor}, ${hexToRgba(
-        gradientColor,
-        0
-      )})`
-    }
-    : null;
   return (
     <div>
-      {gradientStyle && (
-        <span className={styles.gradient} style={gradientStyle} />
-      )}
       <div className={cx(styles.anchorContainer)}>
         <nav className={cx(className, theme.anchorNav)}>
           {links.map((link, index) => {
@@ -100,7 +84,6 @@ AnchorNav.propTypes = {
   className: PropTypes.string,
   query: PropTypes.string,
   theme: PropTypes.object,
-  gradientColor: PropTypes.string,
   activeSection: PropTypes.string,
   offset: PropTypes.array
 };

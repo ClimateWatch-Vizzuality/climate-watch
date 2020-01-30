@@ -28,7 +28,6 @@ const About = ({ route, anchorLinks, query }) => (
           links={anchorLinks}
           query={query}
           theme={anchorNavRegularTheme}
-          gradientColor={route.headerColor}
           className={styles.anchorNav}
         />
       </Sticky>
