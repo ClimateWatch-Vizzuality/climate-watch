@@ -6,7 +6,6 @@ import cx from 'classnames';
 import { TabletLandscape } from 'components/responsive';
 import Map from 'components/map';
 import Icon from 'components/icon';
-import Button from 'components/button';
 import ButtonGroup from 'components/button-group';
 import Loading from 'components/loading';
 import ModalMetadata from 'components/modal-metadata';
@@ -211,7 +210,7 @@ class NDCSExploreMap extends PureComponent {
                             id="ndcs-map-tooltip"
                             delayHide={isTablet ? 0 : 3000}
                           >
-                            <Button
+                            <button
                               onClick={() =>
                                 handleCountryClick(null, countryData)
                               }
@@ -225,7 +224,7 @@ class NDCSExploreMap extends PureComponent {
                               >
                                 {countryData.name}
                               </div>
-                            </Button>
+                            </button>
                           </ReactTooltip>
                         )}
                         {!isTablet &&
