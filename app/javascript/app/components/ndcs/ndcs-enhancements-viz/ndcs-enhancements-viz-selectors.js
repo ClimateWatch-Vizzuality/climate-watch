@@ -221,8 +221,8 @@ export const summarizeIndicators = createSelector(
       const location = indicator.locations[l];
       const type = location.label_slug;
       if (type) {
-        if (l === 'EU28') summaryData[type].includesEU = true;
-        summaryData[type].countries.value += l === 'EU28' ? 28 : 1;
+        if (l === 'EUU') summaryData[type].includesEU = true;
+        summaryData[type].countries.value += l === 'EUU' ? 27 : 1;
         if (emissionsIndicator.locations[l]) {
           summaryData[type].emissions.value += parseFloat(
             emissionsIndicator.locations[l].value

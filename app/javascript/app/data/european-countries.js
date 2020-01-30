@@ -1,4 +1,4 @@
-export const europeSlug = 'EU28';
+export const europeSlug = 'EUU';
 
 export const europeanCountries = [
   'AUT',

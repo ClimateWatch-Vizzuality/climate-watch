@@ -75,7 +75,7 @@ export const DEFAULT_EMISSIONS_SELECTIONS = {
 export const TOP_EMITTERS = [
   'CHN',
   'USA',
-  'EU28',
+  'EUU',
   'IND',
   'RUS',
   'JPN',

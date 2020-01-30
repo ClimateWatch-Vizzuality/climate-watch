@@ -102,8 +102,8 @@ export const sectionsData = [
               'United States Environmental Protection Agency'
           },
           {
-            Acronym: 'EU28',
-            'Acronym definition': 'European Union group of 28 countries'
+            Acronym: 'EUU',
+            'Acronym definition': 'European Union group of countries'
           },
           {
             Acronym: 'F-gases',

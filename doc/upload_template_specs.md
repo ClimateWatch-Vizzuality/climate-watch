@@ -238,7 +238,7 @@ Countries and country groups for which data is collected are referenced by a cod
 
 | column name | data type |
 | ---| --|
-| **parent_iso_code3** | String, 3-digit iso code for country groups, e.g. 'EU28'|
+| **parent_iso_code3** | String, 3-digit iso code for country groups, e.g. 'EUU'|
 |name | String, name of country who is a member of a group, e.g. 'Poland' (not required)|
 | **iso_code3** | String, 3-digit iso code for country who is member of a group, e.g. 'POL'|
 

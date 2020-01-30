@@ -128,10 +128,10 @@ export const getPathsWithStyles = createSelector(
     });
 
     // reorder map paths to show EU geometry if selected
-    if (preSelect === 'EU28') {
-      const EUPath = paths.find(p => p.properties.id === 'EU28');
-      const EU28Index = paths.indexOf(EUPath);
-      paths.push(paths.splice(EU28Index, 1)[0]);
+    if (preSelect === 'EUU') {
+      const EUPath = paths.find(p => p.properties.id === 'EUU');
+      const EUUIndex = paths.indexOf(EUPath);
+      paths.push(paths.splice(EUUIndex, 1)[0]);
     }
     return paths;
   }
