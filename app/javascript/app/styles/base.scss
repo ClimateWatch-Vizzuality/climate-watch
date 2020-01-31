@@ -127,19 +127,3 @@ input,
 textarea {
   caret-color: $theme-secondary;
 }
-
-//AWESOME TOOTLIPE LOL
-:global {
-  .__react_component_tooltip.type-dark {
-    background-color: #0a1941 !important;
-    color: $white !important;
-    font-family: Lato;
-    font-size: 13px;
-    opacity: 1 !important;
-    border-radius: 4px !important;
-
-    &.place-top::after {
-      border-top-color: #0a1941 !important;
-    }
-  }
-}
