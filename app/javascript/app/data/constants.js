@@ -1,7 +1,8 @@
 import {
   CHART_NAMED_COLORS,
   CHART_NAMED_EXTENDED_COLORS,
-  CHART_NAMED_GRAY_COLORS
+  CHART_NAMED_GRAY_COLORS,
+  CHART_NAMED_EXTRA_COLORS
 } from 'app/styles/constants';
 
 const { GFW_API } = process.env;
@@ -95,40 +96,10 @@ export const OTHER_COLOR = CHART_NAMED_GRAY_COLORS.grayColor1;
 
 export const CHART_COLORS = Object.values(CHART_NAMED_COLORS);
 export const CHART_COLORS_EXTENDED = Object.values(CHART_NAMED_EXTENDED_COLORS);
+export const CHART_COLORS_EXTRA = Object.values(CHART_NAMED_EXTRA_COLORS);
 export const NEW_CHART_COLORS_BASIC = CHART_COLORS;
 export const NEW_CHART_COLORS = CHART_COLORS_EXTENDED;
-export const NEW_CHART_COLORS_EXTENDED = [
-  '#FFB800',
-  '#B69FF4',
-  '#FF6C2F',
-  '#FFB5E7',
-  '#512FAF',
-  '#2EC9DF',
-  '#0E9560',
-  '#B28000',
-  '#999C9F',
-  '#FFB597',
-  '#D2187C',
-  '#96E4EF',
-  '#6D40EA',
-  '#B24B20',
-  '#0845CB',
-  '#C1EEDC',
-  '#0063A6',
-  '#80C3F6',
-  '#008EEE',
-  '#FFDB80',
-  '#9D115C',
-  '#BF509B',
-  '#FF6CD0',
-  '#208C9B',
-  '#83A2E5',
-  '#032265',
-  '#E88BBD',
-  '#727477',
-  '#13C881',
-  '#CCCDCF'
-];
+export const NEW_CHART_COLORS_EXTENDED = CHART_COLORS_EXTRA;
 
 export const GREY_CHART_COLORS = [
   '#68696B',
