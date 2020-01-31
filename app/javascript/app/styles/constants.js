@@ -20,3 +20,6 @@ export const HEADER_GRADIENTS = getColorsFromSettings('headerGradients', true);
 export const HEADER_COLORS = getColorsFromSettings('headerColors');
 export const CHART_NAMED_COLORS = getColorsFromSettings('chartColors');
 export const CHART_NAMED_GRAY_COLORS = getColorsFromSettings('chartGrayColors');
+export const CHART_NAMED_EXTENDED_COLORS = getColorsFromSettings(
+  'chartColorsExtended'
+);

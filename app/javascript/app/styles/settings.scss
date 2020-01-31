@@ -81,6 +81,24 @@ $chart-color-7: #d2187c;
 $chart-color-8: #6d40ea;
 $chart-color-9: #13c881;
 $chart-color-10: #83a2e5;
+$chart-color-11: #ffb5e7;
+$chart-color-12: #96e4ef;
+$chart-color-13: #c1eedc;
+$chart-color-14: #b69ff4;
+$chart-color-15: #ffdb80;
+$chart-color-16: #ffb597;
+$chart-color-17: #80c3f6;
+$chart-color-18: #e88bbd;
+$chart-color-19: #512faf;
+$chart-color-20: #b24b20;
+$chart-color-21: #0063a6;
+$chart-color-22: #b28000;
+$chart-color-23: #9d115c;
+$chart-color-24: #bf509b;
+$chart-color-25: #208c9b;
+$chart-color-26: #0e9560;
+$chart-color-26: #032265;
+$chart-color-27: #727477;
 
 $teal-blue: #045f61;
 $purple: #74356a;
@@ -115,6 +133,40 @@ $google: #d8483b;
   }
 
   chartColors: {
+    color1: $chart-color-1;
+    color2: $chart-color-2;
+    color3: $chart-color-3;
+    color4: $chart-color-4;
+    color5: $chart-color-5;
+    color6: $chart-color-6;
+    color7: $chart-color-7;
+    color8: $chart-color-8;
+    color9: $chart-color-9;
+    color10: $chart-color-10;
+  }
+
+  chartColorsExtended: {
+    color1: $chart-color-1;
+    color2: $chart-color-10;
+    color3: $chart-color-3;
+    color4: $chart-color-11;
+    color5: $chart-color-8;
+    color6: $chart-color-12;
+    color7: $chart-color-7;
+    color8: $chart-color-13;
+    color9: $chart-color-4;
+    color10: $chart-color-14;
+    color11: $chart-color-2;
+    color12: $chart-color-5;
+    color13: $chart-color-15;
+    color14: $chart-color-6;
+    color15: $chart-color-16;
+    color16: $chart-color-17;
+    color17: $chart-color-18;
+    color18: $chart-color-9;
+  }
+
+  chartColorsExtra: {
     color1: $chart-color-1;
     color2: $chart-color-2;
     color3: $chart-color-3;
