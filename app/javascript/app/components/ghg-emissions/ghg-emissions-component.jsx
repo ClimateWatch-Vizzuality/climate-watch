@@ -29,6 +29,7 @@ import areaIcon from 'assets/icons/area_chart.svg';
 import percentageIcon from 'assets/icons/icon-percentage-chart.svg';
 import dropdownTheme from 'styles/themes/dropdown/react-selectize.scss';
 import multiLevelDropdownTheme from 'styles/themes/dropdown/multi-level-dropdown.scss';
+import legendChartTheme from 'styles/themes/chart/legend-chart.scss';
 
 import styles from './ghg-emissions-styles.scss';
 
@@ -127,7 +128,7 @@ class GhgEmissions extends PureComponent {
         <Chart
           className={styles.chartWrapper}
           type={chartTypeSelected && chartTypeSelected.value}
-          theme={{ legend: styles.legend }}
+          theme={legendChartTheme}
           config={config}
           data={data}
           domain={domain}

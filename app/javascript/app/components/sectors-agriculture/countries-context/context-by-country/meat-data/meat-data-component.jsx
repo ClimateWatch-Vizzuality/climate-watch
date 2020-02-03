@@ -11,6 +11,7 @@ import Card from 'components/card';
 import cx from 'classnames';
 import NoContent from 'components/no-content';
 import dropdownTheme from 'styles/themes/dropdown/react-selectize.scss';
+import legendChartTheme from 'styles/themes/chart/legend-chart.scss';
 
 import Tooltip from './tooltip';
 import styles from './meat-data-styles.scss';
@@ -91,7 +92,7 @@ const MeatData = ({
               {chartData && chartData.hasValues ? (
                 <Chart
                   type="bar"
-                  theme={{ legend: styles.legend }}
+                  theme={{ ...legendChartTheme, legend: styles.legend }}
                   config={chartConfig}
                   data={chartData.data}
                   domain={domain}

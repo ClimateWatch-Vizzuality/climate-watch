@@ -8,6 +8,7 @@ import AgricultureEmissionsProvider from 'providers/agriculture-emissions-provid
 import WbCountryDataProvider from 'providers/wb-country-data-provider';
 import { TabletLandscape, TabletPortraitOnly } from 'components/responsive';
 import dropdownTheme from 'styles/themes/dropdown/react-selectize.scss';
+import legendChartTheme from 'styles/themes/chart/legend-chart.scss';
 
 import styles from './historical-emissions-graph-styles.scss';
 import CardPieChart from '../card-pie-chart/card-pie-chart';
@@ -48,7 +49,6 @@ class HistoricalEmissionsGraph extends PureComponent {
           groups={locationGroups}
           hideResetButton
           theme={dropdownTheme}
-          
         />
         <Dropdown
           key="emissions"
@@ -91,12 +91,17 @@ class HistoricalEmissionsGraph extends PureComponent {
         lineType="linear"
         showUnit
         loading={loading && !data}
+        theme={legendChartTheme}
       />
     );
   };
 
   renderExploreButtonGroup = () => {
-    const { exploreEmissionsConfig, emissionsCountry, handleInfoClick } = this.props;
+    const {
+      exploreEmissionsConfig,
+      emissionsCountry,
+      handleInfoClick
+    } = this.props;
     const buttonGroupConfig = [
       {
         type: 'info',
@@ -149,7 +154,9 @@ class HistoricalEmissionsGraph extends PureComponent {
         <RegionsProvider />
         <CountriesProvider />
         <WbCountryDataProvider />
-        <AgricultureEmissionsProvider isoCode3={emissionsCountry && emissionsCountry.value} />
+        <AgricultureEmissionsProvider
+          isoCode3={emissionsCountry && emissionsCountry.value}
+        />
       </div>
     );
   }
