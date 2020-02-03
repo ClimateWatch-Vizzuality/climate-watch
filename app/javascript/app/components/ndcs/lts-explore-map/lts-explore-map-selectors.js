@@ -1,10 +1,13 @@
 import { createSelector } from 'reselect';
-import { getColorByIndex, createLegendBuckets } from 'utils/map';
+import {
+  getColorByIndex,
+  createLegendBuckets,
+  shouldShowPath
+} from 'utils/map';
 import uniqBy from 'lodash/uniqBy';
 import sortBy from 'lodash/sortBy';
 import { generateLinkToDataExplorer } from 'utils/data-explorer';
 import worldPaths from 'app/data/world-50m-paths';
-import { PATH_LAYERS } from 'app/data/constants';
 import { COUNTRY_STYLES } from 'components/ndcs/shared/constants';
 import {
   sortByIndexAndNotInfo,
@@ -18,6 +21,7 @@ const getSearch = state => state.search || null;
 const getCountries = state => state.countries || null;
 const getCategoriesData = state => state.categories || null;
 const getIndicatorsData = state => state.indicators || null;
+const getZoom = state => state.map.zoom || null;
 
 export const getCategories = createSelector(getCategoriesData, categories =>
   (!categories
@@ -120,12 +124,12 @@ export const getMapIndicator = createSelector(
 );
 
 export const getPathsWithStyles = createSelector(
-  [getMapIndicator],
-  indicator => {
+  [getMapIndicator, getZoom],
+  (indicator, zoom) => {
     if (!indicator) return [];
     const paths = [];
     worldPaths.forEach(path => {
-      if (path.properties.layer !== PATH_LAYERS.ISLANDS) {
+      if (shouldShowPath(path, zoom)) {
         const { locations, legendBuckets } = indicator;
 
         if (!locations) {

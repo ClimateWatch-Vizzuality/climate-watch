@@ -1,8 +1,8 @@
 import { createSelector } from 'reselect';
 import { scaleLinear } from 'd3-scale';
 import worldPaths from 'app/data/world-50m-paths';
-import { PATH_LAYERS } from 'app/data/constants';
 import { generateLinkToDataExplorer } from 'utils/data-explorer';
+import { shouldShowPath } from 'utils/map';
 
 const getSearch = state => state.search || null;
 const getNdcsSdgsGoalsData = state => state.goalsData || null;
@@ -31,12 +31,12 @@ export const getPathsWithStyles = createSelector(
   [getNdcsSdgsGoalsDataSelected, getTargetHover],
   (data, targetHover) => {
     if (!data) {
-      return worldPaths.filter(p => p.properties.layer !== PATH_LAYERS.ISLANDS);
+      return worldPaths.filter(path => shouldShowPath(path));
     }
     setScaleBuckets([initialStep, data.colour]);
     const paths = [];
     worldPaths.forEach(path => {
-      if (path.properties.layer !== PATH_LAYERS.ISLANDS) {
+      if (shouldShowPath(path)) {
         let color = '#E5E5EB'; // default color
         let clickAllowed = false;
         const iso = path.properties && path.properties.id;

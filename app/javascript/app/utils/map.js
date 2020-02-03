@@ -1,49 +1,16 @@
-const buckets = [
-  ['#EEBC8F', '#25597C'],
-  ['#EEBC8F', '#FEE08D', '#25597C'],
-  ['#EEBC8F', '#FEE08D', '#5081A6', '#25597C'],
-  ['#EEBC8F', '#FEE08D', '#ACBBBF', '#5081A6', '#25597C'],
-  ['#EEBC8F', '#F6CE8E', '#FEE08D', '#90B1CB', '#5081A6', '#25597C'],
-  ['#EEBC8F', '#F6CE8E', '#FEE08D', '#90B1CB', '#7199B8', '#5081A6', '#25597C'],
-  [
-    '#EEBC8F',
-    '#F6CE8E',
-    '#FEE08D',
-    '#ACBBBF',
-    '#90B1CB',
-    '#7199B8',
-    '#5081A6',
-    '#25597C'
-  ],
-  [
-    '#EEBC8F',
-    '#F6CE8E',
-    '#FEE08D',
-    '#E3D2A0',
-    '#ACBBBF',
-    '#90B1CB',
-    '#7199B8',
-    '#5081A6',
-    '#25597C'
-  ],
-  [
-    '#EEBC8F',
-    '#F6CE8E',
-    '#FEE08D',
-    '#E3D2A0',
-    '#C5C5B2',
-    '#ACBBBF',
-    '#90B1CB',
-    '#7199B8',
-    '#5081A6',
-    '#25597C'
-  ]
-];
+import { PATH_LAYERS, MIN_ZOOM_SHOW_ISLANDS } from 'app/data/constants';
+import {
+  CHART_NAMED_COLORS,
+  CHART_NAMED_GRAY_COLORS
+} from 'app/styles/constants';
+
+const colorArray = Object.values(CHART_NAMED_COLORS);
+const buckets = colorArray.map((_, i) => colorArray.slice(0, i + 1));
 
 export function getColorByIndex(data, index, colors = buckets) {
   const length = Object.keys(data).length;
-  if (index === -2 || length === 1) return '#ddd';
-  return colors[length - 2][index - 1] || '#E5E5EB';
+  if (index === -2 || length === 1) return CHART_NAMED_GRAY_COLORS.grayColor1;
+  return colors[length - 2][index - 1] || CHART_NAMED_GRAY_COLORS.grayColor2;
 }
 
 export function createLegendBuckets(
@@ -65,7 +32,15 @@ export function createLegendBuckets(
   return { ...labels, 0: { name: notApplicableLabel, index: 0 } };
 }
 
-export default {
-  getColorByIndex,
-  createLegendBuckets
-};
+// Map path filtering
+// If we have a zoom level we show the points until we reach the MIN_ZOOM_SHOW_ISLANDS level
+// If we dont we always show the points instead of the islands
+export const shouldShowPath = (path, zoom) =>
+  (zoom
+    ? (zoom >= MIN_ZOOM_SHOW_ISLANDS &&
+        (path.properties.layer === PATH_LAYERS.COUNTRIES ||
+          path.properties.layer === PATH_LAYERS.ISLANDS)) ||
+      (zoom < MIN_ZOOM_SHOW_ISLANDS &&
+        (path.properties.layer === PATH_LAYERS.COUNTRIES ||
+          path.properties.layer === PATH_LAYERS.POINTS))
+    : path.properties.layer !== PATH_LAYERS.ISLANDS);

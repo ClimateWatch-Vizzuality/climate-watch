@@ -1,3 +1,10 @@
+import {
+  CHART_NAMED_COLORS,
+  CHART_NAMED_EXTENDED_COLORS,
+  CHART_NAMED_GRAY_COLORS,
+  CHART_NAMED_EXTRA_COLORS
+} from 'app/styles/constants';
+
 const { GFW_API } = process.env;
 const { CW_API } = process.env;
 const { ESP_API } = process.env;
@@ -85,108 +92,11 @@ export const TOP_EMITTERS = [
   'MEX'
 ];
 
-export const CHART_COLORS = [
-  '#00B4D2',
-  '#0677B3',
-  '#D2187C',
-  '#FFB400',
-  '#FF7800',
-  '#FF88AA',
-  '#AB0000',
-  '#20D5B7'
-];
+export const OTHER_COLOR = CHART_NAMED_GRAY_COLORS.grayColor1;
 
-export const CHART_COLORS_EXTENDED = [
-  '#e6194B',
-  '#3cb44b',
-  '#ffe119',
-  '#4363d8',
-  '#f58231',
-  '#911eb4',
-  '#42d4f4',
-  '#f032e6',
-  '#bfef45',
-  '#FFC4D5',
-  '#469990',
-  '#e6beff',
-  '#9A6324',
-  '#800000',
-  '#aaffc3',
-  '#808000',
-  '#FFDA80',
-  '#000075'
-];
-
-export const OTHER_COLOR = '#999C9F';
-
-export const NEW_CHART_COLORS_BASIC = [
-  '#FFB800',
-  '#0845CB',
-  '#FF6C2F',
-  '#008EEE',
-  '#FF6CD0',
-  '#2EC9DF',
-  '#D2187C',
-  '#6D40EA',
-  '#999C9F',
-  '#13C881'
-];
-
-export const NEW_CHART_COLORS = [
-  '#FFB800',
-  '#83A2E5',
-  '#FF6C2F',
-  '#FFB5E7',
-  '#6D40EA',
-  '#96E4EF',
-  '#FFDB80',
-  '#D2187C',
-  '#13C881',
-  '#008EEE',
-  '#2EC9DF',
-  '#FFB597',
-  '#B69FF4',
-  '#0845CB',
-  '#FF6CD0',
-  '#C1EEDC',
-  '#999C9F',
-  '#80C3F6',
-  '#CCCDCF',
-  '#E88BBD'
-];
-
-export const NEW_CHART_COLORS_EXTENDED = [
-  '#FFB800',
-  '#B69FF4',
-  '#FF6C2F',
-  '#FFB5E7',
-  '#512FAF',
-  '#2EC9DF',
-  '#0E9560',
-  '#B28000',
-  '#999C9F',
-  '#FFB597',
-  '#D2187C',
-  '#96E4EF',
-  '#6D40EA',
-  '#B24B20',
-  '#0845CB',
-  '#C1EEDC',
-  '#0063A6',
-  '#80C3F6',
-  '#008EEE',
-  '#FFDB80',
-  '#9D115C',
-  '#BF509B',
-  '#FF6CD0',
-  '#208C9B',
-  '#83A2E5',
-  '#032265',
-  '#E88BBD',
-  '#727477',
-  '#13C881',
-  '#CCCDCF'
-];
+export const CHART_COLORS = Object.values(CHART_NAMED_COLORS);
+export const CHART_COLORS_EXTENDED = Object.values(CHART_NAMED_EXTENDED_COLORS);
+export const CHART_COLORS_EXTRA = Object.values(CHART_NAMED_EXTRA_COLORS);
 
 export const GREY_CHART_COLORS = [
   '#68696B',

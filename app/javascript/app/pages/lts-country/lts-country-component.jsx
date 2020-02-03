@@ -105,7 +105,7 @@ class LTSCountry extends PureComponent {
                   [styles.withSearch]: hasSearch
                 })}
               >
-                <BackButton backLabel="LTS Explore" pathname="/lts-explore" />
+                <BackButton backLabel="Explore LTS" pathname="/lts-explore" />
                 <TabletPortrait>
                   {this.renderFullTextDropdown()}
                   {hasSearch && (

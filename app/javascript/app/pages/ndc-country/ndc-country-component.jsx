@@ -135,7 +135,7 @@ class NDCCountry extends PureComponent {
                 {!FEATURE_LTS_EXPLORE && renderIntroDropdown()}
                 {FEATURE_LTS_EXPLORE && (
                   <BackButton
-                    backLabel="NDCs Explore"
+                    backLabel="Explore NDCs"
                     pathname="/ndcs-explore"
                   />
                 )}

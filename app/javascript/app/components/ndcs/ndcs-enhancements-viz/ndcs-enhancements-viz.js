@@ -58,10 +58,6 @@ class NDCSEnhancementsVizContainer extends PureComponent {
     };
   }
 
-  handleSearchChange = query => {
-    this.updateUrlParam({ name: 'search', value: query });
-  };
-
   componentWillMount() {
     this.props.fetchNDCSEnhancements();
   }
@@ -74,29 +70,21 @@ class NDCSEnhancementsVizContainer extends PureComponent {
     const isEuropeanCountry = europeanCountries.includes(geometryIdHover);
     const id = isEuropeanCountry ? europeSlug : geometryIdHover;
 
-    const dateIndicator = indicators.find(
-      indicator => indicator.value == 'ndce_date'
-    );
+    const dateIndicator = indicators.find(i => i.value === 'ndce_date');
     const statementIndicator = indicators.find(
-      indicator => indicator.value == 'ndce_statement'
+      i => i.value === 'ndce_statement'
     );
 
     if (indicator.locations && indicator.locations[id]) {
       let tooltipTxt;
       switch (indicator.locations[id].label_slug) {
         case 'submitted_2020':
-          tooltipTxt =
-            `Submitted a 2020 NDC on ${
-              dateIndicator.locations[id].value
-            }.`;
+          tooltipTxt = `Submitted a 2020 NDC on ${dateIndicator.locations[id].value}.`;
           break;
         case 'no_info_2020':
           break;
         default:
-          tooltipTxt =
-            `${indicator.locations[id].value
-            }\n\n${
-              statementIndicator.locations[id].value}`;
+          tooltipTxt = `${indicator.locations[id].value}\n\n${statementIndicator.locations[id].value}`;
           break;
       }
       return tooltipTxt ? `${tooltipTxt}\n\nLearn more in table below.` : '';
@@ -108,16 +96,19 @@ class NDCSEnhancementsVizContainer extends PureComponent {
     const { geometryIdHover } = this.state;
     const { indicator, countries } = this.props;
     if (!geometryIdHover || !indicator) return '';
-
-    if (europeanCountries.includes(geometryIdHover)) return 'European Union (28)';
-    const country = countries.find(country => {
-      return country.iso_code3 === geometryIdHover;
-    });
+    if (europeanCountries.includes(geometryIdHover)) {
+      return countries.find(c => c.iso_code3 === 'EUU').wri_standard_name;
+    }
+    const country = countries.find(c => c.iso_code3 === geometryIdHover);
     return country ? country.wri_standard_name : '';
   }
 
+  handleSearchChange = query => {
+    this.updateUrlParam({ name: 'search', value: query });
+  };
+
   handleCountryClick = geography => {
-    //Click action has been disabled for countries on this map per WRI request
+    // Click action has been disabled for countries on this map per WRI request
     const { isoCountries } = this.props;
     const iso = geography.properties && geography.properties.id;
     if (iso && isCountryIncluded(isoCountries, iso)) {
@@ -179,8 +170,13 @@ class NDCSEnhancementsVizContainer extends PureComponent {
 
 NDCSEnhancementsVizContainer.propTypes = {
   history: PropTypes.object.isRequired,
+  query: PropTypes.string.isRequired,
+  indicator: PropTypes.object,
+  indicators: PropTypes.array,
+  summaryData: PropTypes.object,
   location: PropTypes.object.isRequired,
   isoCountries: PropTypes.array.isRequired,
+  countries: PropTypes.array,
   setModalMetadata: PropTypes.func.isRequired,
   fetchNDCSEnhancements: PropTypes.func.isRequired
 };

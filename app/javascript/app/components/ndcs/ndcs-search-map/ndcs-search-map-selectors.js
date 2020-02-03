@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 import worldPaths from 'app/data/world-50m-paths';
-import { PATH_LAYERS, MIN_ZOOM_SHOW_ISLANDS } from 'app/data/constants';
+import { shouldShowPath } from 'utils/map';
 import uniq from 'lodash/uniq';
 
 const getResultsData = state => state.data || [];
@@ -92,14 +92,7 @@ export const getPathsWithStyles = createSelector(
   (countriesIncluded, loading, zoom) => {
     const paths = [];
     worldPaths.forEach(path => {
-      if (
-        (zoom >= MIN_ZOOM_SHOW_ISLANDS &&
-          (path.properties.layer === PATH_LAYERS.COUNTRIES ||
-            path.properties.layer === PATH_LAYERS.ISLANDS)) ||
-        (zoom < MIN_ZOOM_SHOW_ISLANDS &&
-          (path.properties.layer === PATH_LAYERS.COUNTRIES ||
-            path.properties.layer === PATH_LAYERS.POINTS))
-      ) {
+      if (shouldShowPath(path, zoom)) {
         const iso = path.properties && path.properties.id;
         const isCountryIncluded = countriesIncluded.includes(iso);
         paths.push({
