@@ -64,6 +64,7 @@ class ModalDownload extends PureComponent {
             inputType="text"
             onChange={e => this.handleChange(e, 'firstName')}
             required={requiredError}
+            disabled
           />
 
           <TextInput

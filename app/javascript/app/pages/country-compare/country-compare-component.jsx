@@ -30,7 +30,6 @@ const CountryCompare = ({ route, anchorLinks, setActiveSection }) => (
               links={anchorLinks}
               className={styles.anchorNav}
               theme={anchorNavRegularTheme}
-              gradientColor={route.headerColor}
               offset={[-150, -100, -100]}
             />
           </Sticky>
@@ -44,7 +43,8 @@ const CountryCompare = ({ route, anchorLinks, setActiveSection }) => (
               >
                 <CountryCompareSelector className={styles.countrySelectors} />
               </Sticky>
-            ) : null)}
+            ) : null)
+          }
         </Desktop>
         {route.sections &&
           route.sections.length > 0 &&

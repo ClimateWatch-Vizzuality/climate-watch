@@ -18,9 +18,9 @@ import {
   DATA_SCALE,
   DEFAULT_AXES_CONFIG,
   GHG_TABLE_HEADER,
-  NEW_CHART_COLORS_BASIC,
-  NEW_CHART_COLORS,
-  NEW_CHART_COLORS_EXTENDED,
+  CHART_COLORS,
+  CHART_COLORS_EXTENDED,
+  CHART_COLORS_EXTRA,
   OTHER_COLOR
 } from 'data/constants';
 import { getWBData, getData, getRegions } from './ghg-emissions-selectors-get';
@@ -343,7 +343,6 @@ export const getChartData = createSelector(
         calculationData[y][r] &&
         calculationData[y][r][metricField];
       let metricData = getMetricForYearAndRegion(year, region);
-
       // if no metric data for expandable column then use expanded regions to
       // calculate metric data
       if (!metricData && column.expandsTo && column.expandsTo.length) {
@@ -434,9 +433,9 @@ let colorThemeCache = {
 };
 
 const getColorPalette = columns => {
-  if (columns.length <= 10) return NEW_CHART_COLORS_BASIC;
-  if (columns.length <= 20) return NEW_CHART_COLORS;
-  return NEW_CHART_COLORS_EXTENDED;
+  if (columns.length <= 10) return CHART_COLORS;
+  if (columns.length <= 18) return CHART_COLORS_EXTENDED;
+  return CHART_COLORS_EXTRA;
 };
 
 const getUnit = metric => {

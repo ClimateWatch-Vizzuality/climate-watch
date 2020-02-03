@@ -53,11 +53,9 @@ class Card extends PureComponent {
 
     return (
       <div className={cx(styles.card, theme.card)} key={keyValue}>
-        {contentFirst ? (
-          [renderContent(), renderChildren()]
-        ) : (
-          [renderChildren(), renderContent()]
-        )}
+        {contentFirst
+          ? [renderContent(), renderChildren()]
+          : [renderChildren(), renderContent()]}
       </div>
     );
   }

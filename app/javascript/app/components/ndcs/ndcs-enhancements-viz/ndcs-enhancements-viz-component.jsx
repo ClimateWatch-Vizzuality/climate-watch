@@ -32,13 +32,15 @@ const renderButtonGroup = (clickHandler, downloadLink) => (
         <em>
           Explore the data to track which countries have signaled they will
           update or enhance their national climate commitments (NDCs) by 2020.
-          To request changes or additions, please contact &nbsp;<a
+          To request changes or additions, please contact &nbsp;
+          <a
             href="mailto:Rhys.Gerholdt@wri.org?subject=2020 NDC Tracker Update"
             target="_blank"
             rel="noopener noreferrer"
           >
             Rhys Gerholdt
-          </a>.
+          </a>
+          .
         </em>
       </p>
     </div>
@@ -75,7 +77,7 @@ const renderCircular = datum => (
     <div>
       <CircularChart
         index={0.1}
-        value={Math.round(datum.value / datum.max * 100 * 10) / 10}
+        value={Math.round((datum.value / datum.max) * 100 * 10) / 10}
         color={datum.opts.color}
       />
       <div className={styles.circularChartValues}>
@@ -106,7 +108,6 @@ const NDCSEnhancementsViz = ({
   countryData,
   summaryData,
   handleInfoClick,
-  handleCountryClick,
   handleCountryEnter,
   mapColors
 }) => (
@@ -120,8 +121,7 @@ const NDCSEnhancementsViz = ({
 
           <div className={styles.containerUpper}>
             <div className={styles.containerCharts}>
-              {!loading &&
-              summaryData && (
+              {!loading && summaryData && (
                 <div>
                   {renderCircular(summaryData.intend_2020.countries)}
                   {renderCircular(summaryData.enhance_2020.countries)}
@@ -140,8 +140,7 @@ const NDCSEnhancementsViz = ({
                 dragEnable={false}
                 customCenter={!isTablet ? [10, -10] : null}
               />
-              {countryData &&
-              tooltipTxt.length > 0 && (
+              {countryData && tooltipTxt.length > 0 && (
                 <ReactTooltip
                   className={styles.tooltipContainer}
                   id="ndcs-map-tooltip"
@@ -176,7 +175,6 @@ NDCSEnhancementsViz.propTypes = {
   downloadLink: PropTypes.string,
   countryData: PropTypes.object,
   summaryData: PropTypes.object,
-  handleCountryClick: PropTypes.func.isRequired,
   handleCountryEnter: PropTypes.func.isRequired,
   handleInfoClick: PropTypes.func.isRequired,
   mapColors: PropTypes.array

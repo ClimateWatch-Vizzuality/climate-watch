@@ -1,13 +1,19 @@
 import { createSelector } from 'reselect';
-import { getColorByIndex, createLegendBuckets } from 'utils/map';
+import {
+  getColorByIndex,
+  createLegendBuckets,
+  shouldShowPath
+} from 'utils/map';
 import uniqBy from 'lodash/uniqBy';
 import sortBy from 'lodash/sortBy';
-import camelCase from 'lodash/camelCase';
 import { generateLinkToDataExplorer } from 'utils/data-explorer';
 import worldPaths from 'app/data/world-50m-paths';
-import { PATH_LAYERS } from 'app/data/constants';
 import { COUNTRY_STYLES } from 'components/ndcs/shared/constants';
-import { sortByIndexAndNotInfo } from 'components/ndcs/shared/utils';
+import {
+  sortByIndexAndNotInfo,
+  getIndicatorEmissionsData,
+  getLabels
+} from 'components/ndcs/shared/utils';
 
 const NO_DOCUMENT_SUBMITTED = 'No Document Submitted';
 
@@ -15,6 +21,7 @@ const getSearch = state => state.search || null;
 const getCountries = state => state.countries || null;
 const getCategoriesData = state => state.categories || null;
 const getIndicatorsData = state => state.indicators || null;
+const getZoom = state => state.map.zoom || null;
 
 export const getCategories = createSelector(getCategoriesData, categories =>
   (!categories
@@ -68,8 +75,7 @@ export const getSelectedCategory = createSelector(
   (selected, categories = []) => {
     if (!categories || !categories.length) return null;
     const defaultCategory =
-      categories.find(cat => cat.value === 'longterm_strategy') ||
-      categories[0];
+      categories.find(cat => cat.value === 'overview') || categories[0];
     if (selected) {
       return (
         categories.find(category => category.value === selected) ||
@@ -95,7 +101,8 @@ export const getSelectedIndicator = createSelector(
   [state => state.indicatorSelected, getCategoryIndicators],
   (selected, indicators = []) => {
     if (!indicators || !indicators.length) return {};
-    const defaultSelection = indicators[0];
+    const defaultSelection =
+      indicators.find(i => i.slug === 'lts_submission') || indicators[0];
     return selected
       ? indicators.find(indicator => indicator.value === selected) ||
           defaultSelection
@@ -117,12 +124,12 @@ export const getMapIndicator = createSelector(
 );
 
 export const getPathsWithStyles = createSelector(
-  [getMapIndicator],
-  indicator => {
+  [getMapIndicator, getZoom],
+  (indicator, zoom) => {
     if (!indicator) return [];
     const paths = [];
     worldPaths.forEach(path => {
-      if (path.properties.layer !== PATH_LAYERS.ISLANDS) {
+      if (shouldShowPath(path, zoom)) {
         const { locations, legendBuckets } = indicator;
 
         if (!locations) {
@@ -215,32 +222,12 @@ export const getEmissionsCardData = createSelector(
       return null;
     }
     const emissionsIndicator = indicators.find(i => i.slug === 'lts_ghg');
-    if (!emissionsIndicator) return null;
-
-    const emissionPercentages = emissionsIndicator.locations;
-    let summedPercentage = 0;
-    const data = legend.map(legendItem => {
-      let legendItemValue = 0;
-      Object.entries(selectedIndicator.locations).forEach(entry => {
-        const [locationIso, { label_id: labelId }] = entry;
-        if (
-          labelId === parseInt(legendItem.id, 10) &&
-          emissionPercentages[locationIso]
-        ) {
-          legendItemValue += parseFloat(emissionPercentages[locationIso].value);
-        }
-      });
-      summedPercentage += legendItemValue;
-
-      // The 'No information' label is always the last one so we can calculate its value substracting from 100
-      return {
-        name: camelCase(legendItem.name),
-        value:
-          legendItem.name === NO_DOCUMENT_SUBMITTED
-            ? 100 - summedPercentage
-            : legendItemValue
-      };
-    });
+    const data = getIndicatorEmissionsData(
+      emissionsIndicator,
+      selectedIndicator,
+      legend,
+      NO_DOCUMENT_SUBMITTED
+    );
 
     const config = {
       animation: true,
@@ -248,22 +235,10 @@ export const getEmissionsCardData = createSelector(
       outerRadius: 70,
       hideLabel: true,
       hideLegend: true,
-      innerHoverLabel: true
+      innerHoverLabel: true,
+      ...getLabels(legend, NO_DOCUMENT_SUBMITTED)
     };
 
-    const tooltipLabels = {};
-    const themeLabels = {};
-    legend.forEach(l => {
-      tooltipLabels[camelCase(l.name)] = {
-        label: l.name
-      };
-      themeLabels[camelCase(l.name)] = {
-        label: l.name,
-        stroke: l.color
-      };
-    });
-    config.tooltip = tooltipLabels;
-    config.theme = themeLabels;
     return {
       config,
       data

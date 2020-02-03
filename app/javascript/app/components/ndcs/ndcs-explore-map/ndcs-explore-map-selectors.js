@@ -1,14 +1,20 @@
 import { createSelector } from 'reselect';
-import { getColorByIndex, createLegendBuckets } from 'utils/map';
+import {
+  getColorByIndex,
+  createLegendBuckets,
+  shouldShowPath
+} from 'utils/map';
 import uniqBy from 'lodash/uniqBy';
 import sortBy from 'lodash/sortBy';
 import groupBy from 'lodash/groupBy';
-import camelCase from 'lodash/camelCase';
 import { generateLinkToDataExplorer } from 'utils/data-explorer';
 import worldPaths from 'app/data/world-50m-paths';
-import { PATH_LAYERS } from 'app/data/constants';
 import { COUNTRY_STYLES } from 'components/ndcs/shared/constants';
-import { sortByIndexAndNotInfo } from 'components/ndcs/shared/utils';
+import {
+  sortByIndexAndNotInfo,
+  getIndicatorEmissionsData,
+  getLabels
+} from 'components/ndcs/shared/utils';
 
 const NOT_APPLICABLE_LABEL = 'Not Applicable';
 
@@ -16,6 +22,7 @@ const getSearch = state => state.search || null;
 const getCountries = state => state.countries || null;
 const getCategoriesData = state => state.categories || null;
 const getIndicatorsData = state => state.indicators || null;
+const getZoom = state => state.map.zoom || null;
 
 export const getCategories = createSelector(getCategoriesData, categories =>
   (!categories
@@ -114,14 +121,13 @@ export const getMapIndicator = createSelector(
 );
 
 export const getPathsWithStyles = createSelector(
-  [getMapIndicator],
-  indicator => {
+  [getMapIndicator, getZoom],
+  (indicator, zoom) => {
     if (!indicator) return [];
     const paths = [];
     worldPaths.forEach(path => {
-      if (path.properties.layer !== PATH_LAYERS.ISLANDS) {
+      if (shouldShowPath(path, zoom)) {
         const { locations, legendBuckets } = indicator;
-
         if (!locations) {
           paths.push({
             ...path,
@@ -208,56 +214,22 @@ export const getEmissionsCardData = createSelector(
       return null;
     }
     const emissionsIndicator = indicators.find(i => i.slug === 'ndce_ghg');
-    if (!emissionsIndicator) return null;
-    const emissionPercentages = emissionsIndicator.locations;
-    let summedPercentage = 0;
-    const data = legend.map(legendItem => {
-      let legendItemValue = 0;
-      Object.entries(selectedIndicator.locations).forEach(entry => {
-        const [locationIso, { label_id: labelId }] = entry;
-        if (
-          labelId === parseInt(legendItem.id, 10) &&
-          emissionPercentages[locationIso]
-        ) {
-          legendItemValue += parseFloat(emissionPercentages[locationIso].value);
-        }
-      });
-      summedPercentage += legendItemValue;
+    const data = getIndicatorEmissionsData(
+      emissionsIndicator,
+      selectedIndicator,
+      legend
+    );
 
-      // The 'No information' label is always the last one so we can calculate its value substracting from 100
-      if (legendItem.name === NOT_APPLICABLE_LABEL && summedPercentage < 100) {
-        return {
-          name: camelCase(legendItem.name),
-          value: 100 - summedPercentage
-        };
-      }
-      return {
-        name: camelCase(legendItem.name),
-        value: legendItemValue
-      };
-    });
     const config = {
       animation: true,
       innerRadius: 50,
       outerRadius: 70,
       hideLabel: true,
       hideLegend: true,
-      innerHoverLabel: true
+      innerHoverLabel: true,
+      ...getLabels(legend)
     };
 
-    const tooltipLabels = {};
-    const themeLabels = {};
-    legend.forEach(l => {
-      tooltipLabels[camelCase(l.name)] = {
-        label: l.name
-      };
-      themeLabels[camelCase(l.name)] = {
-        label: l.name,
-        stroke: l.color
-      };
-    });
-    config.tooltip = tooltipLabels;
-    config.theme = themeLabels;
     return {
       config,
       data

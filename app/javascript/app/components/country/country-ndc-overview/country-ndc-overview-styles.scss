@@ -89,6 +89,8 @@
 .cards {
   @include columns(12);
 
+  margin-bottom: 40px;
+
   @media #{$tablet-portrait} {
     @include columns((6, 6, 12));
   }

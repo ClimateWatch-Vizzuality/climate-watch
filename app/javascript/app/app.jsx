@@ -11,7 +11,8 @@ import { withRouter } from 'react-router';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import 'cw-components/dist/main.css';
-import 'styles/sticky.scss';
+import 'styles/override/sticky.scss';
+import 'styles/override/react-tooltip.scss';
 
 import store from 'app/store';
 import routes, { basename } from 'app/routes/routes';

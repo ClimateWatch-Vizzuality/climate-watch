@@ -9,7 +9,7 @@ module Api
               show_in_cw: true
             ).or(
               Location.where(
-                iso_code3: 'EU28'
+                iso_code3: 'EUU'
               )
             ).order(:wri_standard_name)
 

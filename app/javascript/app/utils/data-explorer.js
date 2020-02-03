@@ -2,7 +2,8 @@ import invertBy from 'lodash/invertBy';
 import qs from 'querystring';
 import {
   DATA_EXPLORER_TO_MODULES_PARAMS,
-  FILTERS_DATA_WITHOUT_MODEL
+  FILTERS_DATA_WITHOUT_MODEL,
+  DATA_EXPLORER_EXTERNAL_PREFIX
 } from 'data/data-explorer-constants';
 import { replaceAll } from 'utils/utils';
 import { getStorageWithExpiration } from 'utils/localStorage';
@@ -54,9 +55,10 @@ const parseFilters = (search, section) => {
   );
   const parsedFilters = {};
   Object.keys(search).forEach(key => {
-    const parsedKey = `external-${section}-${modulesToDataExplorerParamsSchema[
-      key
-    ]}`.replace('_', '-');
+    const parsedKey = `${DATA_EXPLORER_EXTERNAL_PREFIX}-${section}-${modulesToDataExplorerParamsSchema[key]}`.replace(
+      '_',
+      '-'
+    );
     parsedFilters[parsedKey] = search[key];
   });
   return parsedFilters;

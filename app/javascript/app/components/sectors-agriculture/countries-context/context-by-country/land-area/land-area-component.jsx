@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import LandAreaProvider from 'providers/agriculture-land-area-provider';
 import { SunburstChart, Card, Tag } from 'cw-components';
 import Tooltip from './tooltip';
-
 import styles from './land-area-styles.scss';
 
 const cardTheme = {
@@ -31,13 +30,19 @@ const LandArea = ({
 }) => (
   <div className={styles.container}>
     {chartData && (
-      <Card key={'Share in Land Area'} title={'Share in Land Area'} theme={cardTheme}>
+      <Card
+        key={'Share in Land Area'}
+        title={'Share in Land Area'}
+        theme={cardTheme}
+        contentFirst
+      >
         <div className={styles.cardContainer}>
           <div className={styles.header}>
             <div className={styles.title}>
-              Land used for agricultural production often uses a significant portion of total land
-              in a country and expanding agricultural land can drive deforestation and emissions
-              growth. See the total percentage of land used for agriculture.
+              Land used for agricultural production often uses a significant
+              portion of total land in a country and expanding agricultural land
+              can drive deforestation and emissions growth. See the total
+              percentage of land used for agriculture.
             </div>
           </div>
           <div className={styles.chartContainer}>
@@ -56,20 +61,16 @@ const LandArea = ({
                 ))}
             </div>
             <div className={styles.chart}>
-              {
-                chartData &&
-                chartColors &&
-                chartConfig && (
-                  <SunburstChart
-                    data={chartData}
-                    customTooltip={<Tooltip />}
-                    width={250}
-                    height={250}
-                    colors={chartColors}
-                    config={chartConfig}
-                  />
-                )
-              }
+              {chartData && chartColors && chartConfig && (
+                <SunburstChart
+                  data={chartData}
+                  customTooltip={<Tooltip />}
+                  width={250}
+                  height={250}
+                  colors={chartColors}
+                  config={chartConfig}
+                />
+              )}
             </div>
           </div>
         </div>
@@ -78,12 +79,11 @@ const LandArea = ({
         </div>
       </Card>
     )}
-    {
-      selectedCountry &&
-      selectedYear && (
-        <LandAreaProvider params={{ country: selectedCountry.value, year: selectedYear.value }} />
-      )
-    }
+    {selectedCountry && selectedYear && (
+      <LandAreaProvider
+        params={{ country: selectedCountry.value, year: selectedYear.value }}
+      />
+    )}
   </div>
 );
 

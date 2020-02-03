@@ -23,7 +23,7 @@ const NdcsOverviewSection = ({ data, section, location }) => {
             <div className={styles.commitmentText}>
               <div>
                 <h1 className={styles.title}>{`${
-                  isEmbed ? '' : `${section}. `
+                  isEmbed ? '' : `${section} `
                 }${title}`}</h1>
                 <p className={styles.description}>{description}</p>
               </div>

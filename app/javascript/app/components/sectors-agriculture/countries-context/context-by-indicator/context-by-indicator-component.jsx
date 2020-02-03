@@ -37,7 +37,7 @@ class ContextByIndicatorComponent extends Component {
     const hasData = yearsWithData.find(y => y.value === option.value);
     return (
       <div
-        style={{ color: `${hasData ? '#113750' : '#b1b1c1'}`, padding: '10px' }}
+        style={{ color: `${hasData ? '#113750' : '#868697'}`, padding: '10px' }}
       >
         {option.label}
       </div>

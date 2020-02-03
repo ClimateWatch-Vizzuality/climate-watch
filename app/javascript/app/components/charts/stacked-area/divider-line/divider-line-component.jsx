@@ -8,7 +8,7 @@ const DividerLine = ({ x }) => (
       position="top"
       strokeWidth={0.5}
       content={content => (
-        <g fill="#b1b1c1" style={{ fontSize: '0.9rem' }}>
+        <g fill="#868697" style={{ fontSize: '0.9rem' }}>
           <text x={content.viewBox.x - 140} y="35">
             Historical emissions
           </text>

@@ -144,7 +144,7 @@ class NDCSExploreMapContainer extends PureComponent {
   render() {
     const { query } = this.props;
     const noContentMsg = query
-      ? 'No resundcs found'
+      ? 'No results found'
       : 'There is no data for this indicator';
     return createElement(Component, {
       ...this.props,

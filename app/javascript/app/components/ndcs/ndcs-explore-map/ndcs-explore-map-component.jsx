@@ -6,13 +6,13 @@ import cx from 'classnames';
 import { TabletLandscape } from 'components/responsive';
 import Map from 'components/map';
 import Icon from 'components/icon';
-import Button from 'components/button';
 import ButtonGroup from 'components/button-group';
 import Loading from 'components/loading';
 import ModalMetadata from 'components/modal-metadata';
 import Dropdown from 'components/dropdown';
 import { PieChart } from 'cw-components';
 import CustomTooltip from 'components/ndcs/shared/donut-tooltip';
+import CustomInnerHoverLabel from 'components/ndcs/shared/donut-custom-label';
 import LegendItem from 'components/ndcs/shared/legend-item';
 import handCursorIcon from 'assets/icons/hand-cursor.svg';
 import ShareButton from 'components/button/share-button';
@@ -97,6 +97,7 @@ class NDCSExploreMap extends PureComponent {
         data={emissionsCardData.data}
         width={200}
         config={emissionsCardData.config}
+        customInnerHoverLabel={CustomInnerHoverLabel}
         customTooltip={
           <CustomTooltip
             reference={this.state.tooltipParentRef}
@@ -209,7 +210,7 @@ class NDCSExploreMap extends PureComponent {
                             id="ndcs-map-tooltip"
                             delayHide={isTablet ? 0 : 3000}
                           >
-                            <Button
+                            <button
                               onClick={() =>
                                 handleCountryClick(null, countryData)
                               }
@@ -223,7 +224,7 @@ class NDCSExploreMap extends PureComponent {
                               >
                                 {countryData.name}
                               </div>
-                            </Button>
+                            </button>
                           </ReactTooltip>
                         )}
                         {!isTablet &&

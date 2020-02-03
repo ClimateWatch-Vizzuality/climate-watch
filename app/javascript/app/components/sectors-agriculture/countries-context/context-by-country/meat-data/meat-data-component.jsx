@@ -6,7 +6,8 @@ import MeatProductionProvider from 'providers/agriculture-meat-production-provid
 import MeatWorldProductionProvider from 'providers/agriculture-world-meat-production-provider';
 import MeatTradeProvider from 'providers/agriculture-meat-trade-provider';
 import MeatWorldTradeProvider from 'providers/agriculture-world-meat-trade-provider';
-import { Card, Chart, Dropdown } from 'cw-components';
+import { Chart, Dropdown } from 'cw-components';
+import Card from 'components/card';
 import cx from 'classnames';
 import NoContent from 'components/no-content';
 import dropdownTheme from 'styles/themes/dropdown/react-selectize.scss';
@@ -48,6 +49,7 @@ const MeatData = ({
           key={'Production, Consumption and Trade'}
           title={'Production, Consumption and Trade'}
           theme={cardTheme}
+          contentFirst
         >
           <div className={styles.cardContainer}>
             <div className={styles.header}>

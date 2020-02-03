@@ -1,57 +1,36 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
-
 import styles from './card-row-styles.scss';
 
-class CardRow extends PureComponent {
-  // eslint-disable-line react/prefer-stateless-function
-  render() {
-    const { title, subtitle, description, theme, keyValue } = this.props;
-    const titleKey = `${keyValue}-title`;
-    const subtitleKey = `${keyValue}-subtitle`;
-    const descKey = `${keyValue}-desc`;
-
-    return (
-      <div key={keyValue} className={cx(styles.cardRow, theme.cardRow)}>
-        {title && (
-          <p key={titleKey} className={styles.title}>
-            {title}
-          </p>
-        )}
-        {subtitle && (
-          <p key={subtitleKey} className={styles.subtitle}>
-            {subtitle}
-          </p>
-        )}
-        {description && (
-          <p
-            key={descKey}
-            className={cx(styles.description, theme.description, {
-              [styles.descriptionExtraPadding]: subtitle
-            })}
-          >
-            {description}
-          </p>
-        )}
+const CardRowComponent = ({ rowData }) => (
+  <React.Fragment>
+    {rowData && (
+      <div
+        className={cx(styles.cardRow, {
+          [styles.cardRowWithSubtitle]: rowData.subtitle
+        })}
+      >
+        <div className={styles.title}>{rowData.title || ''}</div>
+        {rowData.subtitle && <p className={styles.title}>{rowData.subtitle}</p>}
+        <p
+          className={styles.text}
+          // eslint-disable-next-line react/no-danger
+          dangerouslySetInnerHTML={{
+            __html: rowData.value || ''
+          }}
+        />
       </div>
-    );
-  }
-}
+    )}
+  </React.Fragment>
+);
 
-CardRow.propTypes = {
-  title: PropTypes.string,
-  subtitle: PropTypes.string,
-  description: PropTypes.string,
-  keyValue: PropTypes.string,
-  theme: PropTypes.shape({
-    cardRow: PropTypes.string
+CardRowComponent.propTypes = {
+  rowData: PropTypes.shape({
+    title: PropTypes.string,
+    subtitle: PropTypes.string,
+    value: PropTypes.any
   })
 };
 
-CardRow.defaultProps = {
-  theme: {},
-  keyValue: ''
-};
-
-export default CardRow;
+export default CardRowComponent;

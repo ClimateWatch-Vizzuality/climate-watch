@@ -23,7 +23,7 @@ const CustomizedXAxisTick = ({ x, y, payload }) => (
       y="0"
       dy="16"
       textAnchor="end"
-      stroke="#b1b1c1"
+      stroke="#868697"
       strokeWidth="0.5"
       fontSize="13px"
     >
@@ -62,16 +62,14 @@ const CustomizedYAxisTick = ({
       y="0"
       dy="0"
       textAnchor="end"
-      stroke="#b1b1c1"
+      stroke="#868697"
       strokeWidth="0.5"
       fontSize="13px"
     >
       {index === 0 &&
-      (payload.value === 0 || (payload.value < 0 && payload.value > -0.001)) ? (
-          '0'
-        ) : (
-          getYLabelformat(unit, espGraph, precision, payload.value)
-        )}
+      (payload.value === 0 || (payload.value < 0 && payload.value > -0.001))
+        ? '0'
+        : getYLabelformat(unit, espGraph, precision, payload.value)}
     </text>
   </g>
 );

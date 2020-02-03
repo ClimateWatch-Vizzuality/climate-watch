@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
-import { Card, PieChart, Tag, Loading, NoContent } from 'cw-components';
+import { PieChart, Tag, Loading, NoContent } from 'cw-components';
+import Card from 'components/card';
 import PropTypes from 'prop-types';
 import { TabletLandscape, TabletPortraitOnly } from 'components/responsive';
 import EmissionsMetaProvider from 'providers/ghg-emissions-meta-provider';
@@ -20,7 +21,10 @@ class CardPieChart extends PureComponent {
   renderAgricultureLabel = () => {
     const { pieChartData } = this.props;
     const color = pieChartData && pieChartData.color;
-    const emission = pieChartData && pieChartData.agricultureEmissions && pieChartData.agricultureEmissions.excludingLUCF;
+    const emission =
+      pieChartData &&
+      pieChartData.agricultureEmissions &&
+      pieChartData.agricultureEmissions.excludingLUCF;
 
     return (
       <div className={styles.agricultureLabel}>
@@ -35,7 +39,8 @@ class CardPieChart extends PureComponent {
             color={color}
           />
           <span className={styles.labelValue} style={{ color }}>
-            {emission.formattedPercentage} ({renderEmissionValue(emission.formattedValue)})
+            {emission.formattedPercentage} (
+            {renderEmissionValue(emission.formattedValue)})
           </span>
         </div>
       </div>
@@ -48,14 +53,24 @@ class CardPieChart extends PureComponent {
     const config = pieChartData && pieChartData.config;
 
     return (
-      <PieChart data={data} width="100%" height={250} config={config} customTooltip={<Tooltip />} />
+      <PieChart
+        data={data}
+        width="100%"
+        height={250}
+        config={config}
+        customTooltip={<Tooltip />}
+      />
     );
   };
 
   renderLoading = () => {
     const { pieChartData } = this.props;
     const loading = pieChartData && pieChartData.loading;
-    return loading ? <Loading height="100%" /> : <NoContent message="No data available" />;
+    return loading ? (
+      <Loading height="100%" />
+    ) : (
+      <NoContent message="No data available" />
+    );
   };
 
   render() {
@@ -63,10 +78,13 @@ class CardPieChart extends PureComponent {
     const location = pieChartData && pieChartData.location;
     const year = pieChartData && pieChartData.year;
 
-    const agricultureEmissions = pieChartData && pieChartData.agricultureEmissions;
+    const agricultureEmissions =
+      pieChartData && pieChartData.agricultureEmissions;
     const totalIncludingLUCF = pieChartData && pieChartData.totalIncludingLUCF;
     const totalExcludingLUCF = pieChartData && pieChartData.totalExcludingLUCF;
-    const subtitle = pieChartData ? `${location} GHG emissions by sector in ${year} (excluding LUCF)` : '';
+    const subtitle = pieChartData
+      ? `${location} GHG emissions by sector in ${year} (excluding LUCF)`
+      : '';
 
     const cardTheme = {
       card: isEmbed ? styles.fixedCardEmbed : styles.fixedCard,
@@ -76,17 +94,24 @@ class CardPieChart extends PureComponent {
 
     return (
       <div>
-        <Card
-          theme={cardTheme}
-          subtitle={subtitle}
-        >
+        <Card theme={cardTheme} subtitle={subtitle}>
           {pieChartData && agricultureEmissions ? (
             <div className={styles.cardContent}>
               <p className={styles.description}>
-                <span>{location}</span> in <span>{year}</span>, the Agriculture sector contributed{' '}
-                {renderEmissionValue(agricultureEmissions.excludingLUCF.formattedValue)} GHG emissions, which represented{' '}
-                <span>{agricultureEmissions.excludingLUCF.formattedPercentage}</span> of its total emissions excluding{' '}
-                land-use change and forestry ({renderEmissionValue(totalExcludingLUCF)}), and <span>{agricultureEmissions.includingLUCF.formattedPercentage}</span>{' '}
+                <span>{location}</span> in <span>{year}</span>, the Agriculture
+                sector contributed{' '}
+                {renderEmissionValue(
+                  agricultureEmissions.excludingLUCF.formattedValue
+                )}{' '}
+                GHG emissions, which represented{' '}
+                <span>
+                  {agricultureEmissions.excludingLUCF.formattedPercentage}
+                </span>{' '}
+                of its total emissions excluding land-use change and forestry (
+                {renderEmissionValue(totalExcludingLUCF)}), and{' '}
+                <span>
+                  {agricultureEmissions.includingLUCF.formattedPercentage}
+                </span>{' '}
                 including LUCF ({renderEmissionValue(totalIncludingLUCF)})
               </p>
               <TabletLandscape>

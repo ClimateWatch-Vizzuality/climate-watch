@@ -38,7 +38,7 @@ export const CustomizedYAxisTick = ({ payload, unit, x, y }) => (
       y="0"
       dy="0"
       textAnchor="end"
-      stroke="#b1b1c1"
+      stroke="#868697"
       strokeWidth="0.5"
       fontSize="13px"
     >
