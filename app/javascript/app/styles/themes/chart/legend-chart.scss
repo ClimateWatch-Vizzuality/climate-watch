@@ -17,6 +17,7 @@
 .legend {
   :global {
     .react-selectize-control {
+      border: $dropdown-border !important;
       box-shadow: none !important;
       height: 27px !important;
 
