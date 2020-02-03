@@ -12,6 +12,7 @@ export const commitmentsData = [
         link:
           'https://unfccc.int/process/the-paris-agreement/status-of-ratification',
         slug: 'pa_ratified',
+        metadataSlug: 'ndc_cw',
         answerLabel: 'Yes'
       },
       {
@@ -19,12 +20,14 @@ export const commitmentsData = [
           'How many Parties submitted first Nationally Determined Contributions?',
         link: 'https://www4.unfccc.int/sites/NDCStaging/Pages/All.aspx',
         slug: 'submission',
+        metadataSlug: 'ndc_cw',
         answerLabel: 'First NDC Submitted'
       },
       {
         questionText: 'How many Parties have submitted Long-Term Strategies?',
         link: '/lts-tracker',
         slug: 'lts_submission',
+        metadataSlug: 'ndc_cw',
         answerLabel: 'Long-term Strategy Submitted'
       }
     ]
@@ -43,6 +46,7 @@ export const commitmentsData = [
         link: '/ndc-tracker',
         slug: 'ndce_status_2020',
         linkSlug: 'enhance_2020',
+        metadataSlug: 'ndc_cw',
         answerLabel: 'Intends to Enhance Ambition or Action in 2020 NDC'
       },
       {
@@ -51,6 +55,7 @@ export const commitmentsData = [
         link: '/ndc-tracker',
         slug: 'ndce_status_2020',
         linkSlug: 'submitted_2020',
+        metadataSlug: 'ndc_cw',
         answerLabel: '2020 NDC Submitted'
       }
     ]

@@ -7,7 +7,7 @@ import ShareButton from 'components/button/share-button';
 import styles from './ndcs-overview-section-styles.scss';
 import QuestionCard from './question-card';
 
-const NdcsOverviewSection = ({ data, section, location }) => {
+const NdcsOverviewSection = ({ data, section, location, handleInfoClick }) => {
   const { title, description, hint, questions, color } = data;
   const isEmbed = isEmbededComponent(location);
 
@@ -41,11 +41,13 @@ const NdcsOverviewSection = ({ data, section, location }) => {
               <QuestionCard
                 key={`${question.slug}${question.questionText}`}
                 slug={question.slug}
+                metadataSlug={question.metadataSlug}
                 link={question.link}
                 color={color}
                 linkSlug={question.linkSlug}
                 questionText={question.questionText}
                 answerLabel={question.answerLabel}
+                handleInfoClick={handleInfoClick}
               />
             ))}
           </div>
@@ -58,6 +60,7 @@ const NdcsOverviewSection = ({ data, section, location }) => {
 NdcsOverviewSection.propTypes = {
   section: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   location: PropTypes.object,
+  handleInfoClick: PropTypes.func.isRequired,
   data: PropTypes.shape({
     title: PropTypes.string,
     description: PropTypes.string,
