@@ -1,7 +1,7 @@
 @import '~styles/layout.scss';
 
 .tag {
-  border: 2px solid #e8ecf5;
+  border: 2px solid $shadow-gray;
   border-radius: 4px;
   padding: 5px;
   display: flex;
@@ -29,7 +29,6 @@
 
 .closeButton {
   fill: $gray1;
-  stroke: $gray1;
   cursor: pointer;
   height: 12px;
 

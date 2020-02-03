@@ -1,5 +1,11 @@
 @import '~styles/settings';
 
 .legend li {
-  border: $dropdown-border;
+  border: 2px solid $shadow-gray;
+  box-shadow: none;
+  margin-bottom: 10px;
+
+  svg {
+    fill: $gray1;
+  }
 }

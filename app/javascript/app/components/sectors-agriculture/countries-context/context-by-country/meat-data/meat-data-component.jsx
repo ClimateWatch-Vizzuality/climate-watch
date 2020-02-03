@@ -91,8 +91,9 @@ const MeatData = ({
             <div className={styles.chartContainer}>
               {chartData && chartData.hasValues ? (
                 <Chart
+                  className={styles.legend}
                   type="bar"
-                  theme={{ ...legendChartTheme, legend: styles.legend }}
+                  theme={legendChartTheme}
                   config={chartConfig}
                   data={chartData.data}
                   domain={domain}
