@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 export const commitmentsData = [
   {
     title: 'Climate commitments under the Paris Agreement.',
@@ -70,12 +71,14 @@ export const commitmentsData = [
     questions: [
       {
         questionText: 'How many countries have a net zero emission target?',
-        link: 'https://eciu.net/netzerotracker'
+        link: 'https://eciu.net/netzerotracker',
+        metadataSlug: 'net_zero'
       },
       {
         questionText:
           'How many countries have an economy-wide target in a national law or policy?',
-        link: 'https://climate-laws.org/'
+        link: 'https://climate-laws.org/',
+        metadataSlug: 'national_laws_policies'
       }
     ]
   }
