@@ -58,7 +58,6 @@ export const getMapIndicator = createSelector(
     const mapIndicator = indicators.find(
       ind => ind.value === 'ndce_status_2020'
     );
-
     if (mapIndicator) {
       const noInfoId = Object.keys(mapIndicator.legendBuckets).find(
         id => mapIndicator.legendBuckets[id].slug === 'no_info_2020'
@@ -225,8 +224,12 @@ export const summarizeIndicators = createSelector(
       const location = indicator.locations[l];
       const type = location.label_slug;
       if (type) {
-        if (l === 'EUU') summaryData[type].includesEU = true;
-        summaryData[type].countries.value += l === 'EUU' ? 27 : 1;
+        if (l === 'EUU') {
+          summaryData[type].includesEU = true;
+          summaryData[type].countries.value += 27;
+        } else {
+          summaryData[type].countries.value += 1;
+        }
         if (emissionsIndicator.locations[l]) {
           summaryData[type].emissions.value += parseFloat(
             emissionsIndicator.locations[l].value

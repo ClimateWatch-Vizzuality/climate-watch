@@ -55,16 +55,9 @@
   @media #{$tablet-landscape} {
     @include row((9, 3));
 
-    &.withSearch {
-      @include row((6, 3, 3));
-    }
-
+    &.withSearch,
     &.withoutBack {
       @include row((6, 3, 3));
-
-      &.withSearch {
-        @include column-offset(6);
-      }
     }
 
     z-index: $z-index-base;
