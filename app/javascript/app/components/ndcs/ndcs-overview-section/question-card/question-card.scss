@@ -23,6 +23,12 @@
   text-decoration: none;
 }
 
+.externalLinkIcon {
+  margin-left: 10px;
+  height: 12px;
+  width: 12px;
+}
+
 .infoButton {
   position: absolute;
   z-index: $z-index-over-map;

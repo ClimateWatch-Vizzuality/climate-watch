@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Progress from 'components/progress';
 import Icon from 'components/icon';
 import infoIcon from 'assets/icons/info.svg';
+import externalLinkIcon from 'assets/icons/external-link.svg';
 import ReactTooltip from 'react-tooltip';
 import Loading from 'components/loading';
 import styles from './question-card.scss';
@@ -12,6 +13,7 @@ const QuestionCard = ({
   link,
   questionText,
   questionStats,
+  hasExternalLink,
   color,
   handleInfoClick
 }) => {
@@ -33,9 +35,14 @@ const QuestionCard = ({
         className={styles.questionCardLink}
         href={link}
         target="_blank"
-        title="Paris agreement - Status of ratification"
+        title={questionText}
       >
-        <div className={styles.questionText}>{questionText}</div>
+        <div className={styles.questionText}>
+          {questionText}
+          {hasExternalLink && (
+            <Icon className={styles.externalLinkIcon} icon={externalLinkIcon} />
+          )}
+        </div>
         {answerNumber || answerNumber === 0 ? (
           <React.Fragment>
             <div className={styles.answerText}>
@@ -66,6 +73,7 @@ const QuestionCard = ({
 QuestionCard.propTypes = {
   questionText: PropTypes.string,
   link: PropTypes.string,
+  hasExternalLink: PropTypes.bool,
   metadataSlug: PropTypes.string,
   handleInfoClick: PropTypes.func.isRequired,
   color: PropTypes.string,
