@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="8px" height="12px" viewBox="0 0 8 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <g id="UI-KIT" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="GENERAL-UI-COMPONENT" transform="translate(-312.000000, -2400.000000)" fill="#0a1941">
+            <g id="icon/external" transform="translate(312.000000, 2400.000000)">
+                <g id="open_in_new">
+                    <path d="M1.096,0.3 L7.8688,0.3 L7.8688,7.00575 L5.2744,4.674375 C3.8128,6.136125 0.8648,8.28975 2.3996,11.699625 C-2.3464,7.8795 1.5688,4.348875 3.21,2.60775 L1.0956,0.299625 L1.096,0.3 Z" id="Path"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

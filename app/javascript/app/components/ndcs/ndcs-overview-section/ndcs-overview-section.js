@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import actions from 'pages/ndcs/ndcs-actions';
+import { actions as modalActions } from 'components/modal-metadata';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 
@@ -13,6 +14,16 @@ const NdcsOverviewSection = props => {
     fetchNDCS(true);
   }, []);
 
+  const handleInfoClick = source => {
+    if (source) {
+      props.setModalMetadata({
+        category: 'NDC Overview',
+        slugs: source,
+        open: true
+      });
+    }
+  };
+
   const { match, location } = props;
   let { section } = props;
   section = section || match.params.section;
@@ -23,6 +34,7 @@ const NdcsOverviewSection = props => {
         key={commitmentData.title}
         section={index + 1}
         location={location}
+        handleInfoClick={handleInfoClick}
       />
     ));
   }
@@ -31,6 +43,7 @@ const NdcsOverviewSection = props => {
       data={commitmentsData[section - 1]}
       section={section}
       location={location}
+      handleInfoClick={handleInfoClick}
     />
   );
 };
@@ -38,6 +51,9 @@ const NdcsOverviewSection = props => {
 NdcsOverviewSection.propTypes = {
   section: PropTypes.number,
   location: PropTypes.object,
-  match: PropTypes.object
+  match: PropTypes.object,
+  setModalMetadata: PropTypes.func.isRequired
 };
-export default withRouter(connect(null, actions)(NdcsOverviewSection));
+export default withRouter(
+  connect(null, { ...actions, ...modalActions })(NdcsOverviewSection)
+);

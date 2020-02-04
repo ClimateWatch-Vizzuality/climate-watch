@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 export const commitmentsData = [
   {
     title: 'Climate commitments under the Paris Agreement.',
@@ -9,22 +10,24 @@ export const commitmentsData = [
     questions: [
       {
         questionText: 'How many Parties ratified the Paris Agreement?',
-        link:
-          'https://unfccc.int/process/the-paris-agreement/status-of-ratification',
+        link: '/ndcs-explore?indicator=pa_status',
         slug: 'pa_ratified',
+        metadataSlug: 'ndc_cw',
         answerLabel: 'Yes'
       },
       {
         questionText:
           'How many Parties submitted first Nationally Determined Contributions?',
-        link: 'https://www4.unfccc.int/sites/NDCStaging/Pages/All.aspx',
+        link: '/ndcs-explore',
         slug: 'submission',
+        metadataSlug: 'ndc_cw',
         answerLabel: 'First NDC Submitted'
       },
       {
         questionText: 'How many Parties have submitted Long-Term Strategies?',
         link: '/lts-tracker',
         slug: 'lts_submission',
+        metadataSlug: 'ndc_cw',
         answerLabel: 'Long-term Strategy Submitted'
       }
     ]
@@ -40,17 +43,17 @@ export const commitmentsData = [
       {
         questionText:
           'How many Parties intend to enhance ambition or action in their NDCs?',
-        link: '/ndc-tracker',
+        link: '/ndcs-explore',
         slug: 'ndce_status_2020',
-        linkSlug: 'enhance_2020',
+        metadataSlug: 'ndc_cw',
         answerLabel: 'Intends to Enhance Ambition or Action in 2020 NDC'
       },
       {
         questionText:
           'How many Parties have submitted an updated or second NDC?',
-        link: '/ndc-tracker',
+        link: '/ndcs-explore',
         slug: 'ndce_status_2020',
-        linkSlug: 'submitted_2020',
+        metadataSlug: 'ndc_cw',
         answerLabel: '2020 NDC Submitted'
       }
     ]
@@ -58,19 +61,23 @@ export const commitmentsData = [
   {
     title: 'Other climate commitments.',
     description:
-      'Aside from commitments made through NDCs and LTS, some countries also have net-zero emission targets. Many have also enacted national climate policies and laws, which incorporate either economy-wide and/or sectoral targets. While these targets are not explicitly for the Paris Agreement, they indicate countries’ commitment to climate action and may align with commitments under the Paris Agreement.',
+      'Aside from commitments made through NDCs and LTS, some parties also have net-zero emission targets. Many have also enacted national climate policies and laws, which incorporate either economy-wide and/or sectoral targets. While these targets are not explicitly for the Paris Agreement, they indicate parties’ commitment to climate action and may align with commitments under the Paris Agreement.',
     hint:
-      'See how many countries have submitted additional commitments and explore the details by clicking on each box.',
+      'See how many parties have submitted additional commitments and explore the details by clicking on each box.',
     color: '#2EC9DF',
     questions: [
       {
-        questionText: 'How many countries have a net zero emission target?',
-        link: 'https://eciu.net/netzerotracker'
+        questionText: 'How many parties have a net zero emission target?',
+        link: 'https://eciu.net/netzerotracker',
+        metadataSlug: 'net_zero',
+        hasExternalLink: true
       },
       {
         questionText:
-          'How many countries have an economy-wide target in a national law or policy?',
-        link: 'https://climate-laws.org/'
+          'How many parties have an economy-wide target in a national law or policy?',
+        link: 'https://climate-laws.org/',
+        metadataSlug: 'national_laws_policies',
+        hasExternalLink: true
       }
     ]
   }
