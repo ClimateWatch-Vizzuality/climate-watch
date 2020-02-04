@@ -1,0 +1,28 @@
+@import '~styles/settings.scss';
+
+//Overriding ReactTooltip component, the dark variant
+:global {
+  .__react_component_tooltip.type-dark {
+    background-color: $theme-color !important;
+    border-radius: 4px !important;
+    color: $white !important;
+    font-size: 13px;
+    opacity: 1 !important;
+
+    &.place-top::after {
+      border-top-color: $theme-color !important;
+    }
+
+    &.place-bottom::after {
+      border-bottom-color: $theme-color !important;
+    }
+
+    &.place-left::after {
+      border-left-color: $theme-color !important;
+    }
+
+    &.place-right::after {
+      border-right-color: $theme-color !important;
+    }
+  }
+}

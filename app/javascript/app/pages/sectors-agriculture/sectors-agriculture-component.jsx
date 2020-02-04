@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Waypoint from 'react-waypoint';
@@ -44,7 +45,6 @@ class SectorsAgriculture extends PureComponent {
             <AnchorNav
               links={anchorLinks}
               theme={anchorNavRegularTheme}
-              gradientColor={route.headerColor}
               className={styles.anchorNav}
             />
           </Sticky>

@@ -12,7 +12,7 @@ import AnchorNav from 'components/anchor-nav';
 import { Dropdown as CWDropdown } from 'cw-components';
 import { LTS_COUNTRY } from 'data/SEO';
 import { MetaDescription, SocialMetadata } from 'components/seo';
-import { TabletLandscape } from 'components/responsive';
+import { TabletPortrait, MobileOnly } from 'components/responsive';
 import NdcsDocumentsMetaProvider from 'providers/ndcs-documents-meta-provider';
 
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
@@ -105,19 +105,34 @@ class LTSCountry extends PureComponent {
                   [styles.withSearch]: hasSearch
                 })}
               >
-                <BackButton backLabel="LTS Explore" pathname="/lts-explore" />
-                {this.renderFullTextDropdown()}
-                {hasSearch && (
-                  <Search
-                    placeholder="Search"
-                    value={search}
-                    onChange={onSearchChange}
-                    variant="transparent"
-                  />
-                )}
+                <BackButton backLabel="Explore LTS" pathname="/lts-explore" />
+                <TabletPortrait>
+                  {this.renderFullTextDropdown()}
+                  {hasSearch && (
+                    <Search
+                      placeholder="Search"
+                      value={search}
+                      onChange={onSearchChange}
+                      variant="transparent"
+                    />
+                  )}
+                </TabletPortrait>
               </div>
               <div className={styles.title}>{renderIntroDropdown()}</div>
-              <TabletLandscape>{this.renderCompareButton()}</TabletLandscape>
+              <MobileOnly>
+                <div className={styles.mobileActions}>
+                  {this.renderFullTextDropdown()}
+                  {hasSearch && (
+                    <Search
+                      placeholder="Search"
+                      value={search}
+                      onChange={onSearchChange}
+                      variant="transparent"
+                    />
+                  )}
+                </div>
+              </MobileOnly>
+              <TabletPortrait>{this.renderCompareButton()}</TabletPortrait>
             </div>
             <Sticky activeClass="sticky -ndcs" top="#navBarMobile">
               <AnchorNav
@@ -125,7 +140,6 @@ class LTSCountry extends PureComponent {
                 links={anchorLinks}
                 className={styles.anchorNav}
                 theme={anchorNavRegularTheme}
-                gradientColor={route.headerColor}
               />
             </Sticky>
           </Header>

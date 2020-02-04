@@ -10,6 +10,7 @@ import rightArrow from 'assets/icons/right-arrow.svg';
 import backArrow from 'assets/icons/left-arrow.svg';
 
 import cx from 'classnames';
+import cardTheme from 'styles/themes/card/card-overflow-content.scss';
 import styles from './slide-cards-styles.scss';
 
 class SlideCards extends Component {
@@ -67,26 +68,21 @@ class SlideCards extends Component {
                       ? `Targets found in ${card.source.title}`
                       : 'Targets'
                   }}
-                  theme={{
-                    contentContainer: styles.cardContentContainer,
-                    title: styles.cardTitle,
-                    data: styles.cardData,
-                    card: styles.cardInside
-                  }}
+                  theme={{ card: styles.cardInside, ...cardTheme }}
                 >
                   {Object.keys(card.content).map((targetType, i) => [
                     <CardRow
                       keyValue={`${i}-${targetType}`}
-                      title="Targets Type"
-                      subtitle=""
-                      description={targetType}
+                      rowData={{ title: 'Targets Type', value: targetType }}
                     />,
                     card.content[targetType].map((target, ind) => (
                       <CardRow
                         keyValue={`${ind}-target.description`}
-                        title="Targets"
-                        subtitle={upperFirst(target.scope)}
-                        description={target.description}
+                        rowData={{
+                          title: 'Targets',
+                          subtitle: upperFirst(target.scope),
+                          value: target.description
+                        }}
                       />
                     ))
                   ])}

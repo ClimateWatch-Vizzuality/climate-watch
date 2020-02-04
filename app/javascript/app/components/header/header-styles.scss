@@ -5,11 +5,12 @@
   background-color: $theme-color;
   padding-top: 20px;
   color: $white;
-  background-size: cover;
+  background-size: auto;
   background-repeat: no-repeat;
+  background-position: right top;
 
   @media #{$desktop} {
-    padding-top: 50px;
+    padding-top: 64px;
   }
 }
 

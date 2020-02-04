@@ -1,11 +1,15 @@
+/* eslint-disable max-len */
 import { createSelector } from 'reselect';
-import { getColorByIndex, createLegendBuckets } from 'utils/map';
+import {
+  getColorByIndex,
+  createLegendBuckets,
+  shouldShowPath
+} from 'utils/map';
 import uniqBy from 'lodash/uniqBy';
 import sortBy from 'lodash/sortBy';
 import { generateLinkToDataExplorer } from 'utils/data-explorer';
 import worldPaths from 'app/data/world-50m-paths';
 import { europeSlug, europeanCountries } from 'app/data/european-countries';
-import { PATH_LAYERS } from 'app/data/constants';
 import { COUNTRY_STYLES } from 'components/ndcs/shared/constants';
 
 const getSearch = state => state.search || null;
@@ -54,7 +58,6 @@ export const getMapIndicator = createSelector(
     const mapIndicator = indicators.find(
       ind => ind.value === 'ndce_status_2020'
     );
-
     if (mapIndicator) {
       const noInfoId = Object.keys(mapIndicator.legendBuckets).find(
         id => mapIndicator.legendBuckets[id].slug === 'no_info_2020'
@@ -115,7 +118,7 @@ export const getPathsWithStyles = createSelector(
     if (!indicator) return [];
     const paths = [];
     worldPaths.forEach(path => {
-      if (path.properties.layer !== PATH_LAYERS.ISLANDS) {
+      if (shouldShowPath(path)) {
         const { locations, legendBuckets } = indicator;
 
         if (!locations) {
@@ -221,8 +224,12 @@ export const summarizeIndicators = createSelector(
       const location = indicator.locations[l];
       const type = location.label_slug;
       if (type) {
-        if (l === 'EU28') summaryData[type].includesEU = true;
-        summaryData[type].countries.value += l === 'EU28' ? 28 : 1;
+        if (l === 'EUU') {
+          summaryData[type].includesEU = true;
+          summaryData[type].countries.value += 27;
+        } else {
+          summaryData[type].countries.value += 1;
+        }
         if (emissionsIndicator.locations[l]) {
           summaryData[type].emissions.value += parseFloat(
             emissionsIndicator.locations[l].value

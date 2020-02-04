@@ -53,7 +53,7 @@ export const FILTER_DEFAULTS = {
     sectors: 'Total including LUCF'
   },
   'ndc-content': {
-    categories: ALL_SELECTED,
+    categories: 'UNFCCC Process',
     indicators: ALL_SELECTED,
     sectors: ALL_SELECTED,
     countries: ALL_SELECTED
@@ -178,6 +178,9 @@ export const DATA_EXPLORER_TO_MODULES_PARAMS = {
     },
     categories: {
       key: 'category'
+    },
+    indicators: {
+      key: 'indicator'
     }
   },
   'emission-pathways': {

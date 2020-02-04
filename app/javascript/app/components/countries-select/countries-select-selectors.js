@@ -2,7 +2,7 @@ import { createSelector } from 'reselect';
 import { deburrUpper, isCountryIncluded } from 'app/utils';
 import sortBy from 'lodash/sortBy';
 import worldPaths from 'app/data/world-50m-paths';
-import { PATH_LAYERS } from 'app/data/constants';
+import { shouldShowPath } from 'utils/map';
 
 const COUNTRY_PLATFORMS_ISOS = ['ZAF', 'IDN', 'IND'];
 
@@ -92,7 +92,7 @@ export const getPathsWithStyles = createSelector(
   (query, preSelect, isoCountries) => {
     const paths = [];
     worldPaths.forEach(path => {
-      if (path.properties.layer !== PATH_LAYERS.ISLANDS) {
+      if (shouldShowPath(path)) {
         const iso = path.properties && path.properties.id;
         if (!iso || (isoCountries && !isCountryIncluded(isoCountries, iso))) {
           return paths.push({
@@ -128,10 +128,10 @@ export const getPathsWithStyles = createSelector(
     });
 
     // reorder map paths to show EU geometry if selected
-    if (preSelect === 'EU28') {
-      const EUPath = paths.find(p => p.properties.id === 'EU28');
-      const EU28Index = paths.indexOf(EUPath);
-      paths.push(paths.splice(EU28Index, 1)[0]);
+    if (preSelect === 'EUU') {
+      const EUPath = paths.find(p => p.properties.id === 'EUU');
+      const EUUIndex = paths.indexOf(EUPath);
+      paths.push(paths.splice(EUUIndex, 1)[0]);
     }
     return paths;
   }

@@ -2,11 +2,11 @@
 
 /* eslint global-require: 0 */
 
-const dotenv = require('dotenv').config(); // eslint-disable-line
 const webpack = require('webpack');
 const merge = require('webpack-merge');
 const CompressionPlugin = require('compression-webpack-plugin');
 const sharedConfig = require('./shared.js');
+const ImageminWebpWebpackPlugin = require('imagemin-webp-webpack-plugin');
 
 module.exports = merge(sharedConfig, {
   output: { filename: '[name]-[chunkhash].js' },
@@ -33,7 +33,7 @@ module.exports = merge(sharedConfig, {
         comments: false
       }
     }),
-
+    new ImageminWebpWebpackPlugin(),
     new CompressionPlugin({
       asset: '[path].gz[query]',
       algorithm: 'gzip',

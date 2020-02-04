@@ -1,10 +1,14 @@
 import { createSelector } from 'reselect';
-import { getColorByIndex, createLegendBuckets } from 'utils/map';
+import {
+  getColorByIndex,
+  createLegendBuckets,
+  shouldShowPath
+} from 'utils/map';
 import { sortBy, flatten, lowerCase, uniqBy, has } from 'lodash';
 import { generateLinkToDataExplorer } from 'utils/data-explorer';
 import worldPaths from 'app/data/world-50m-paths';
 import { europeSlug, europeanCountries } from 'app/data/european-countries';
-import { PATH_LAYERS } from 'app/data/constants';
+
 import { COUNTRY_STYLES } from 'components/ndcs/shared/constants';
 
 const getSearch = state => state.search || null;
@@ -149,7 +153,7 @@ export const getPathsWithStyles = createSelector(
     const paths = [];
 
     worldPaths.forEach(path => {
-      if (path.properties.layer !== PATH_LAYERS.ISLANDS) {
+      if (shouldShowPath(path)) {
         const { locations, legendBuckets } = selectedIndicator;
 
         if (!locations) {

@@ -1,5 +1,9 @@
+@import '~styles/settings';
+
 .input {
   font-size: 1rem;
+  border-radius: 4px;
+  border: $dropdown-border;
 
   &:focus {
     background-color: transparent;

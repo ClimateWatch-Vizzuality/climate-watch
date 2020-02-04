@@ -32,7 +32,6 @@ class EmissionPathwaysModel extends PureComponent {
               <AnchorNav
                 links={anchorLinks}
                 theme={anchorNavRegularTheme}
-                gradientColor={route.headerColor}
                 className={styles.anchorNav}
               />
             </Sticky>

@@ -22,7 +22,7 @@ export const commitmentsData = [
         answerLabel: 'First NDC Submitted'
       },
       {
-        questionText: 'How many Parties have submitted Long-term strategies?',
+        questionText: 'How many Parties have submitted Long-Term Strategies?',
         link: '/lts-tracker',
         slug: 'lts_submission',
         answerLabel: 'Long-term Strategy Submitted'

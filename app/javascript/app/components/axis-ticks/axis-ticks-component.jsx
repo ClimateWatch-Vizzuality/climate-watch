@@ -11,7 +11,7 @@ export const CustomXAxisTick = ({ x, y, payload, customStrokeWidth }) => (
       y="0"
       dy="16"
       textAnchor="end"
-      stroke="#b1b1c1"
+      stroke="#868697"
       strokeWidth={customStrokeWidth || '0.5'}
       fontSize="13px"
     >
@@ -27,7 +27,7 @@ export const CustomYAxisTick = ({ x, y, payload, customStrokeWidth, unit }) => (
       y="4"
       dy="0"
       textAnchor="end"
-      stroke="#b1b1c1"
+      stroke="#1B2036"
       strokeWidth={customStrokeWidth || '0.5'}
       fontSize="13px"
     >

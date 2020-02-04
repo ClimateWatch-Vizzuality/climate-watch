@@ -30,6 +30,8 @@ import LTSExplore from 'pages/lts-explore';
 import NDCSExplore from 'pages/ndcs-explore';
 import NdcOverview from 'pages/ndc-overview';
 
+import { HEADER_GRADIENTS, HEADER_COLORS } from 'styles/constants';
+
 // routes
 import NDCSRoutes from './NDCS-routes';
 import NDCCountryRoutes from './NDCCountry-routes';
@@ -62,6 +64,7 @@ const FEATURE_LTS_EXPLORE = process.env.FEATURE_LTS_EXPLORE === 'true';
 const FEATURE_COMMITMENTS_OVERVIEW =
   process.env.FEATURE_COMMITMENTS_OVERVIEW === 'true';
 
+// Main pages have a gradient header color and secondary have a single color
 export default [
   {
     path: '/',
@@ -75,17 +78,16 @@ export default [
     exact: true,
     nav: true,
     label: 'COUNTRIES',
-    headerImage: 'countries',
     navNestedMenu: true,
-    Child: CountriesSelect
+    Child: CountriesSelect,
+    headerGradient: HEADER_GRADIENTS.countries
   },
   {
     path: '/countries/compare',
     component: CountryCompare,
     exact: true,
-    headerImage: 'countries',
-    headerColor: '#045F61',
-    sections: countryCompareSections
+    sections: countryCompareSections,
+    headerColor: HEADER_COLORS.countries
   },
   FEATURE_AGRICULTURE
     ? {
@@ -103,46 +105,46 @@ export default [
   FEATURE_AGRICULTURE && {
     path: '/sectors/agriculture',
     component: SectorsAgriculture,
-    headerImage: 'sectors-agriculture',
-    headerColor: '#0677B3',
-    sections: agricultureSections
+    sections: agricultureSections,
+    headerGradient: HEADER_GRADIENTS.sectors
   },
   FEATURE_AGRICULTURE && {
     path: '/sectors/coming-soon',
-    component: Sectors
+    component: Sectors,
+    headerGradient: HEADER_GRADIENTS.sectors
   },
   FEATURE_COMMITMENTS_OVERVIEW && {
     path: '/ndc-overview',
     component: NdcOverview,
-    headerImage: 'ndc',
-    routes: NDCOverviewRoutes
+    routes: NDCOverviewRoutes,
+    headerGradient: HEADER_GRADIENTS.commitments
   },
   {
     path: '/ndcs/country/:iso/full',
     component: NDCCountryFull,
     exact: true,
-    headerImage: 'ndc'
+    headerColor: HEADER_COLORS.ndc
   },
   {
     path: '/ndcs/country/:iso',
     component: NDCCountry,
     headerImage: 'ndc',
-    headerColor: '#035388',
-    routes: NDCCountryRoutes
+    routes: NDCCountryRoutes,
+    headerColor: HEADER_COLORS.ndc
   },
   {
     path: '/lts/country/:iso',
     component: LTSCountry,
     headerImage: 'ndc',
-    headerColor: '#035388',
-    routes: LTSCountryRoutes
+    routes: LTSCountryRoutes,
+    headerColor: HEADER_COLORS.ndc
   },
   {
     path: '/ndcs/compare',
     component: NDCCompare,
-    headerImage: 'ndc',
-    headerColor: '#035388',
-    routes: NDCCompareRoutes
+    headerGradient: HEADER_GRADIENTS.commitments,
+    routes: NDCCompareRoutes,
+    headerColor: HEADER_COLORS.ndc
   },
   {
     nav: true,
@@ -153,49 +155,49 @@ export default [
     path: '/ndcs-content',
     component: NDCS,
     headerImage: 'ndc',
-    headerColor: '#035388',
-    routes: NDCSContentRoutes
+    routes: NDCSContentRoutes,
+    headerGradient: HEADER_GRADIENTS.commitments
   },
   FEATURE_LTS_EXPLORE && {
     path: '/lts-explore',
     component: LTSExplore,
     headerImage: 'ndc',
-    headerColor: '#035388',
-    sections: LTSExploreSections
+    sections: LTSExploreSections,
+    headerGradient: HEADER_GRADIENTS.commitments
   },
   FEATURE_LTS_EXPLORE && {
     path: '/ndcs-explore',
     component: NDCSExplore,
     headerImage: 'ndc',
-    headerColor: '#035388',
-    sections: NDCSExploreSections
+    sections: NDCSExploreSections,
+    headerGradient: HEADER_GRADIENTS.commitments
   },
   {
     path: '/2020-ndc-tracker',
     component: NDCSEnhancements,
     headerImage: 'ndc',
-    headerColor: '#035388',
-    sections: ndcsEnhancementsSections
+    sections: ndcsEnhancementsSections,
+    headerGradient: HEADER_GRADIENTS.commitments
   },
   {
     path: '/lts-tracker',
     component: NDCSLTS,
     headerImage: 'ndc',
-    headerColor: '#035388',
-    sections: ndcsLTSSections
+    sections: ndcsLTSSections,
+    headerGradient: HEADER_GRADIENTS.commitments
   },
   {
     path: '/ndcs-sdg',
     component: NDCSDG,
     exact: true,
-    headerImage: 'ndc-sdg'
+    headerGradient: HEADER_GRADIENTS.commitments
   },
   {
     path: '/countries/:iso',
     component: Country,
     headerImage: 'countries',
-    headerColor: '#045F61',
-    sections: countrySections
+    sections: countrySections,
+    headerGradient: HEADER_GRADIENTS.countries
   },
   {
     path: '/ghg-emissions',
@@ -203,25 +205,23 @@ export default [
     nav: true,
     exact: true,
     label: 'GHG EMISSIONS',
-    headerImage: 'emissions',
-    headerColor: '#46407D'
+    headerGradient: HEADER_GRADIENTS.emissions
   },
   {
     path: '/pathways/models/:id',
     component: EmissionPathwaysModel,
     label: 'PATHWAYS MODEL',
-    headerImage: 'emission-pathways',
-    headerColor: '#74356A',
     sections: emissionPathwaysModelSections,
-    routes: emissionPathwaysModelRoutes
+    routes: emissionPathwaysModelRoutes,
+    headerColor: HEADER_COLORS.emissions
   },
   {
     path: '/pathways/scenarios/:id',
     component: EmissionPathwaysScenario,
     label: 'PATHWAYS SCENARIO',
     headerImage: 'emission-pathways',
-    headerColor: '#74356A',
-    sections: emissionPathwaysScenarioSections
+    sections: emissionPathwaysScenarioSections,
+    headerColor: HEADER_COLORS.emissions
   },
   {
     path: '/pathways',
@@ -231,14 +231,14 @@ export default [
     headerImage: 'emission-pathways',
     sections: emissionPathwaysSections,
     routes: emissionPathwaysRoutes,
-    headerColor: '#74356A'
+    headerGradient: HEADER_GRADIENTS.emissions
   },
   {
     path: '/ndc-search',
     exact: true,
     component: NDCSearch,
     headerImage: 'ndc',
-    headerColor: '#035388'
+    headerColor: HEADER_COLORS.ndc
   },
   {
     path: '/stories',
@@ -261,9 +261,8 @@ export default [
     path: '/about',
     component: About,
     label: 'ABOUT',
-    headerImage: 'about',
-    headerColor: '#113750',
-    routes: AboutRoutes
+    routes: AboutRoutes,
+    headerGradient: HEADER_GRADIENTS.about
   },
   {
     nav: true,
