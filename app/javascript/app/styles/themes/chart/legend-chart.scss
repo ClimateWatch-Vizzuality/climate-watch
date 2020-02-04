@@ -1,0 +1,29 @@
+@import '~styles/settings';
+
+.legend li {
+  border: $dropdown-border;
+  box-shadow: none;
+  margin-bottom: 10px;
+
+  svg {
+    fill: $gray1;
+  }
+
+  p {
+    padding: 3px 0;
+  }
+}
+
+.legend {
+  :global {
+    .react-selectize-control {
+      border: $dropdown-border !important;
+      box-shadow: none !important;
+      height: 27px !important;
+
+      &:hover {
+        box-shadow: none !important;
+      }
+    }
+  }
+}
