@@ -1,0 +1,65 @@
+@import '~styles/layout.scss';
+
+$country-filter-height: 60px;
+
+.anchorNav {
+  @include row('shrink', $wrap: false);
+}
+
+.accordion {
+  margin-bottom: 40px;
+}
+
+.backButton {
+  margin-right: 20px;
+}
+
+.backIcon {
+  fill: $white;
+  width: 60px;
+  height: 60px;
+}
+
+.title {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.countrySelector {
+  border-bottom: solid 1px rgba($theme-color, 0.3);
+}
+
+.row {
+  @include row();
+
+  height: $country-filter-height;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.fourFold {
+  @include columns(3, $gutters: false);
+}
+
+.offset {
+  @include column-offset(3, $gutters: false);
+}
+
+.separator {
+  border-right: solid 1px rgba($theme-color, 0.3);
+  height: $country-filter-height;
+}
+
+.selector {
+  display: flex;
+  align-items: center;
+}
+
+.accordion {
+  margin-bottom: -1px;
+  position: relative;
+  min-height: 400px;
+  z-index: $z-index-under-loader;
+}
