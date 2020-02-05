@@ -64,7 +64,6 @@ class ModalDownload extends PureComponent {
             inputType="text"
             onChange={e => this.handleChange(e, 'firstName')}
             required={requiredError}
-            disabled
           />
 
           <TextInput
@@ -191,7 +190,7 @@ class ModalDownload extends PureComponent {
       <Modal
         isOpen={isOpen}
         onRequestClose={onRequestClose}
-        header={<ModalHeader title="Purpose of Download" />}
+        header={<ModalHeader title="Data Download" />}
       >
         {this.renderForm()}
       </Modal>
