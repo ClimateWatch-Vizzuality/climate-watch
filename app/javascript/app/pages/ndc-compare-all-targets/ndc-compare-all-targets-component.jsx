@@ -5,6 +5,7 @@ import Header from 'components/header';
 import Intro from 'components/intro';
 import cx from 'classnames';
 import layout from 'styles/layout.scss';
+import HandIconInfo from 'components/ndcs/shared/hand-icon-info';
 import styles from './ndc-compare-all-targets-styles.scss';
 
 class NDCCompareAllTargets extends PureComponent {
@@ -23,6 +24,14 @@ Explore a summary of which countries have submitted each type of target and comp
             </div>
           </div>
         </Header>
+        <div className={cx(layout.content, styles.wrapper)}>
+          <HandIconInfo
+            text="Explore which countries have submitted long-term
+              strategies thus far below. Visit Climate Watch in
+              the coming months for in-depth analysis of long-term
+              strategies."
+          />
+        </div>
       </div>
     );
   }
