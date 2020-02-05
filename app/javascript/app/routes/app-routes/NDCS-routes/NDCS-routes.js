@@ -52,5 +52,10 @@ export default [
     path: '/ndcs-sdg',
     label: 'EXPLORE NDC-SDG LINKAGES',
     activeId
+  },
+  (FEATURE_ALL_COMMITMENTS_MENU_ITEMS || FEATURE_COMMITMENTS_OVERVIEW) && {
+    path: '/compare-all-targets',
+    label: 'COMPARE ALL TARGETS',
+    activeId
   }
 ].filter(o => !isEmpty(o));
