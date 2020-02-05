@@ -1,8 +1,7 @@
 @import '~styles/layout.scss';
 
 .tag {
-  border: solid 1px $gray2;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.09);
+  border: $dropdown-border;
   border-radius: 4px;
   padding: 5px;
   display: flex;
@@ -23,7 +22,7 @@
 }
 
 .label {
-  padding: 5px 0;
+  padding: 3px 0;
   margin-right: 8px;
   width: max-content;
 }
@@ -31,6 +30,7 @@
 .closeButton {
   fill: $gray1;
   cursor: pointer;
+  height: 12px;
 
   &:focus {
     outline: none;

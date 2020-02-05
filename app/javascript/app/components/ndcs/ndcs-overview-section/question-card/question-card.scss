@@ -7,8 +7,6 @@
   padding: 30px 20px 20px;
   clear: both;
   display: block;
-  color: $theme-color;
-  text-decoration: none;
   margin-bottom: 20px;
 
   @media #{$tablet-portrait} {
@@ -18,6 +16,17 @@
   &:hover {
     background-color: $gray3;
   }
+}
+
+.questionCardLink {
+  color: $theme-color;
+  text-decoration: none;
+}
+
+.externalLinkIcon {
+  margin-left: 10px;
+  height: 12px;
+  width: 12px;
 }
 
 .infoButton {

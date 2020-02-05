@@ -47,6 +47,10 @@
   font-size: $font-size;
   line-height: $line-height-modal;
   margin-bottom: 20px;
+
+  &.firstDescription {
+    margin-bottom: 145px;
+  }
 }
 
 .hint {

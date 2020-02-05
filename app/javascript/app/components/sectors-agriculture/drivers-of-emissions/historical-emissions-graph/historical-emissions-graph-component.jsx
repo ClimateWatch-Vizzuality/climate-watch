@@ -8,6 +8,7 @@ import AgricultureEmissionsProvider from 'providers/agriculture-emissions-provid
 import WbCountryDataProvider from 'providers/wb-country-data-provider';
 import { TabletLandscape, TabletPortraitOnly } from 'components/responsive';
 import dropdownTheme from 'styles/themes/dropdown/react-selectize.scss';
+import legendChartTheme from 'styles/themes/chart/legend-chart.scss';
 
 import styles from './historical-emissions-graph-styles.scss';
 import CardPieChart from '../card-pie-chart/card-pie-chart';
@@ -90,6 +91,7 @@ class HistoricalEmissionsGraph extends PureComponent {
         lineType="linear"
         showUnit
         loading={loading && !data}
+        theme={legendChartTheme}
       />
     );
   };

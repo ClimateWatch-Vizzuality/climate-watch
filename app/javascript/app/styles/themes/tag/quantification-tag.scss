@@ -1,8 +1,7 @@
 @import '~styles/layout.scss';
 
 .tag {
-  border: none;
-  box-shadow: none;
+  border: 2px solid $shadow-gray;
   padding: 0;
   display: flex;
   flex-direction: row;
@@ -23,7 +22,17 @@
 }
 
 .label {
-  padding: 5px 0;
+  padding: 3px 0;
   margin-right: 8px;
   width: max-content;
+}
+
+.closeButton {
+  fill: $gray1;
+  cursor: pointer;
+  height: 12px;
+
+  &:focus {
+    outline: none;
+  }
 }
