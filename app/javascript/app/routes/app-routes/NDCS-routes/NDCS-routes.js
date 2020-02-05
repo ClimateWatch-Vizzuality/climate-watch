@@ -44,8 +44,13 @@ export default [
     activeId
   },
   (FEATURE_ALL_COMMITMENTS_MENU_ITEMS || !FEATURE_LTS_EXPLORE) && {
-    path: '/ndc-search',
-    label: 'NDC Search',
+    path: '/ndcs/compare/mitigation',
+    label: 'NDC Comparison',
+    activeId
+  },
+  (FEATURE_ALL_COMMITMENTS_MENU_ITEMS || FEATURE_COMMITMENTS_OVERVIEW) && {
+    path: '/custom-compare',
+    label: 'Custom compare',
     activeId
   },
   {
