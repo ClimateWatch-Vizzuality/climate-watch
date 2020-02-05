@@ -8,14 +8,16 @@ import AnchorNav from 'components/anchor-nav';
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
 import layout from 'styles/layout.scss';
 import styles from './custom-compare-styles.scss';
+import BackButton from '../../components/back-button/back-button';
 
 const CustomComparisonComponent = props => {
   const { route, anchorLinks } = props;
 
   return (
-    <div className={styles.wrapper}>
+    <div>
       <Header route={route}>
         <div className={cx(layout.content, styles.header)}>
+          <BackButton pathname="/" backLabel="compare all targets" />
           <div className={styles.title}>
             <Intro title="Custom comparison" />
           </div>
@@ -29,7 +31,7 @@ const CustomComparisonComponent = props => {
           />
         </Sticky>
       </Header>
-      <div className={styles.wrapper}>SOME CONTENT HERE</div>
+      <div className={styles.content}>CONTENT HERE</div>
     </div>
   );
 };
