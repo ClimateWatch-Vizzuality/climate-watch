@@ -5,10 +5,11 @@ import Intro from 'components/intro';
 import cx from 'classnames';
 import Sticky from 'react-stickynode';
 import AnchorNav from 'components/anchor-nav';
+import BackButton from 'components/back-button/back-button';
+
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
 import layout from 'styles/layout.scss';
 import styles from './custom-compare-styles.scss';
-import BackButton from '../../components/back-button/back-button';
 
 const CustomComparisonComponent = props => {
   const { route, anchorLinks } = props;
