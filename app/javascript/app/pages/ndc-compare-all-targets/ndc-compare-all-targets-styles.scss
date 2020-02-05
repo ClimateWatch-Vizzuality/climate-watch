@@ -7,3 +7,29 @@
 .wrapper {
   margin-top: 20px;
 }
+
+.handIconInfo {
+  margin-bottom: 80px;
+}
+
+.legendAndActions {
+  @include columns(12);
+
+  @media #{$tablet-portrait} {
+    @include columns((6, 6));
+  }
+}
+
+.legendItem {
+  margin-right: 26px;
+  font-size: $font-size;
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+
+  .submitIcon {
+    height: 30px;
+    width: 30px;
+    margin-right: 10px;
+  }
+}
