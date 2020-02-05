@@ -9,8 +9,9 @@ import ModalOverview from 'components/modal-overview';
 import Dropdown from 'components/dropdown';
 import Chart from 'components/charts/chart';
 import { TabletLandscape, TabletPortraitOnly } from 'components/responsive';
-import ExploreButtonGroup from '../explore-group';
+import legendChartTheme from 'styles/themes/chart/legend-chart.scss';
 
+import ExploreButtonGroup from '../explore-group';
 import styles from './emission-pathways-graph-styles.scss';
 
 class EmissionPathwayGraph extends PureComponent {
@@ -141,7 +142,8 @@ class EmissionPathwayGraph extends PureComponent {
                 hideResetButton
                 disabled={filtersDisabled}
                 onValueChange={option =>
-                  handleSelectorChange(option, 'indicator')}
+                  handleSelectorChange(option, 'indicator')
+                }
                 value={filtersSelected.indicator}
               />
             </div>
@@ -165,6 +167,7 @@ class EmissionPathwayGraph extends PureComponent {
           margin={{ top: 50 }}
           espGraph
           model={model || null}
+          theme={legendChartTheme}
         />
         <TabletPortraitOnly>
           {this.renderExploreButtonGroup()}
