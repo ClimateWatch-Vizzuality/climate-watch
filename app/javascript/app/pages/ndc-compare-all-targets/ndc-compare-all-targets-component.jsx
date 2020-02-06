@@ -55,7 +55,8 @@ const NDCCompareAllTargets = props => {
     noContentMsg,
     columns,
     setColumnWidth,
-    route
+    route,
+    location
   } = props;
   const renderTable = () => (
     <div>
@@ -137,7 +138,8 @@ NDCCompareAllTargets.propTypes = {
   handleSearchChange: PropTypes.func.isRequired,
   noContentMsg: PropTypes.string,
   columns: PropTypes.array,
-  setColumnWidth: PropTypes.func.isRequired
+  setColumnWidth: PropTypes.func.isRequired,
+  location: PropTypes.object
 };
 
 export default NDCCompareAllTargets;
