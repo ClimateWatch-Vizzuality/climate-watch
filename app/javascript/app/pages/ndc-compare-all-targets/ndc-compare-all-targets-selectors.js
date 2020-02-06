@@ -43,14 +43,14 @@ const getData = createSelector(
 
 export const getColumns = createSelector([getData], rows => {
   if (!rows) return [];
-  //   'Country',
-  //   'Share of global GHG emissions',
-  //   'Pre-2020 pledge',
-  //   'INDC',
-  //   'NDC',
-  //   '2nd NDC',
-  //   'Targets in National Policies',
-  //   'LTS'
+  //   'Country', X
+  //   'Share of global GHG emissions', X
+  //   'Pre-2020 pledge', Missing
+  //   'INDC', X
+  //   'NDC', X
+  //   '2nd NDC', X
+  //   'Targets in National Policies', Missing
+  //   'LTS' X
   return rows[0] && Object.keys(rows[0]);
 });
 
