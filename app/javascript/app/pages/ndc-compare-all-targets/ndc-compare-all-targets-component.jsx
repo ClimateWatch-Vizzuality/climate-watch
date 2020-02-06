@@ -108,19 +108,21 @@ const NDCCompareAllTargets = props => {
               the coming months for in-depth analysis of long-term
               strategies."
         />
-        <div className={styles.legendAndActions}>
-          {renderLegend()}
-          <Button variant="primary" disabled>
-            Compare
-          </Button>
-          {loading && <Loading light className={styles.loader} />}
-          {!loading && (
-            <div className={styles.filtersLayout}>
-              {renderSearch(handleSearchChange, query)}
-            </div>
-          )}
+        <div>
+          <div className={styles.legendAndActions}>
+            {renderLegend()}
+            <Button variant="primary" className={styles.compareButton} disabled>
+              Compare
+            </Button>
+            {loading && <Loading light className={styles.loader} />}
+            {!loading && (
+              <div className={styles.filtersLayout}>
+                {renderSearch(handleSearchChange, query)}
+              </div>
+            )}
+          </div>
+          {renderTable()}
         </div>
-        {renderTable()}
       </div>
     </div>
   );
