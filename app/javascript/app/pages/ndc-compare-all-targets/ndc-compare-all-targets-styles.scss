@@ -19,26 +19,33 @@
     @include xy-gutters($gutter-position: ('bottom'));
   }
 
-  @media #{$tablet-portrait} {
-    @include columns((6, 6, 12));
-
-    > :first-child {
-      @include xy-gutters($gutter-position: ('bottom'));
-    }
-  }
-
   @media #{$tablet-landscape} {
-    @include columns((7, 2, 3));
+    @include columns((7, 5));
   }
 
   margin-bottom: 20px;
 }
 
+.buttonAndSearch {
+  justify-content: flex-end;
+
+  @include row(12);
+
+  > * {
+    @include xy-gutters($gutter-position: ('bottom'));
+  }
+
+  @media #{$tablet-landscape} {
+    @include columns((6, 6));
+  }
+}
+
 .compareButton {
   width: 100%;
 
-  @media #{$tablet-portrait} {
-    width: 120px;
+  @media #{$tablet-landscape} {
+    max-width: 120px;
+    min-width: 120px;
   }
 }
 

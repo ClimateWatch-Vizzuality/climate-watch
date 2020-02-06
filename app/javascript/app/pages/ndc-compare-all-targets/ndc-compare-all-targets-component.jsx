@@ -113,15 +113,20 @@ const NDCCompareAllTargets = props => {
         <div>
           <div className={styles.legendAndActions}>
             {renderLegend()}
-            <Button variant="primary" className={styles.compareButton} disabled>
-              Compare
-            </Button>
-            {loading && <Loading light mini />}
-            {!loading && (
-              <div className={styles.filtersLayout}>
-                {renderSearch(handleSearchChange, query)}
-              </div>
-            )}
+            <div className={styles.buttonAndSearch}>
+              <Button
+                variant="primary"
+                className={styles.compareButton}
+                disabled
+              >
+                Compare
+              </Button>
+              {!loading && (
+                <div className={styles.filtersLayout}>
+                  {renderSearch(handleSearchChange, query)}
+                </div>
+              )}
+            </div>
           </div>
           {renderTable()}
         </div>
