@@ -59,7 +59,11 @@ const NDCCompareAllTargets = props => {
   } = props;
   const renderTable = () => (
     <div>
-      {loading && <Loading light className={styles.loader} />}
+      {loading && (
+        <div className={styles.loaderWrapper}>
+          <Loading light />
+        </div>
+      )}
       {!loading && tableData && tableData.length > 0 && (
         <div className={styles.tableWrapper}>
           <Table
@@ -80,7 +84,7 @@ const NDCCompareAllTargets = props => {
   );
 
   return (
-    <div className={styles.wrapper}>
+    <React.Fragment>
       <MetaDescription
         descriptionContext={NCS_COMPARE_ALL}
         subtitle="NDCS CONTENT"
@@ -103,10 +107,7 @@ const NDCCompareAllTargets = props => {
       <div className={cx(layout.content, styles.wrapper)}>
         <HandIconInfo
           className={styles.handIconInfo}
-          text="Explore which countries have submitted long-term
-              strategies thus far below. Visit Climate Watch in
-              the coming months for in-depth analysis of long-term
-              strategies."
+          text="Click on up to 3 of the submitted boxes and click on the compare button."
         />
         <div>
           <div className={styles.legendAndActions}>
@@ -114,7 +115,7 @@ const NDCCompareAllTargets = props => {
             <Button variant="primary" className={styles.compareButton} disabled>
               Compare
             </Button>
-            {loading && <Loading light className={styles.loader} />}
+            {loading && <Loading light mini />}
             {!loading && (
               <div className={styles.filtersLayout}>
                 {renderSearch(handleSearchChange, query)}
@@ -124,7 +125,7 @@ const NDCCompareAllTargets = props => {
           {renderTable()}
         </div>
       </div>
-    </div>
+    </React.Fragment>
   );
 };
 
