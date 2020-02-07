@@ -257,15 +257,9 @@
 }
 
 .mapInfo {
-  font-style: italic;
   position: absolute;
   z-index: $z-index-over-base;
   width: 80%;
   display: flex;
-
-  .handCursorIcon {
-    width: 46px;
-    height: 37px;
-    margin-right: 12px;
-  }
+  font-style: italic;
 }

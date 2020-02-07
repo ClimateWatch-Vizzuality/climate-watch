@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="30px" height="30px" viewBox="0 0 30 30" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+        <g id="climate_watch-comparison_overview3" transform="translate(-241.000000, -458.000000)" stroke="#0A1941" stroke-width="1.5">
+            <g id="Group-8" transform="translate(100.000000, 458.000000)">
+                <g id="Group-7">
+                    <g id="Group-4" transform="translate(141.000000, 0.000000)">
+                        <g id="Group">
+                            <g id="remove-circle">
+                                <circle id="Oval" fill="#CCCDCF" cx="15" cy="14.99875" r="14.0625"></circle>
+                                <line x1="9.375" y1="20.62375" x2="20.625" y2="9.37375" id="Shape"></line>
+                                <line x1="20.625" y1="20.62375" x2="9.375" y2="9.37375" id="Shape"></line>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
