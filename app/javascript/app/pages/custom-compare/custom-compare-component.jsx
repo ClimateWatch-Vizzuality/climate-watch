@@ -18,7 +18,10 @@ const CustomComparisonComponent = props => {
     <div>
       <Header route={route}>
         <div className={cx(layout.content, styles.header)}>
-          <BackButton pathname="/" backLabel="compare all targets" />
+          <BackButton
+            pathname="/compare-all-targets"
+            backLabel="compare all targets"
+          />
           <div className={styles.title}>
             <Intro title="Custom comparison" />
           </div>
