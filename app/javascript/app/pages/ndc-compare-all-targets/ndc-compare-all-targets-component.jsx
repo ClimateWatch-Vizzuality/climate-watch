@@ -76,7 +76,7 @@ const NDCCompareAllTargets = props => {
     const isActive = selectedTargets.includes(id);
     const isLastColumn = columnIndex === columns.length - 1;
     if (dataKey === 'Country') {
-      return <Link to={`/ndc/${cellData.iso}`}>{cellData.name}</Link>;
+      return <Link to={`/ndcs/country/${cellData.iso}`}>{cellData.name}</Link>;
     }
     if (dataKey === 'Share of global GHG emissions') {
       return cellData;
