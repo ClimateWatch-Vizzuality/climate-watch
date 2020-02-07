@@ -48,8 +48,8 @@ const NDCCompareAllContainer = props => {
       column,
       columns,
       tableWidth: 1170,
-      narrowColumnWidth: 80,
-      wideColumnWidth: 180,
+      narrowColumnWidth: 134,
+      wideColumnWidth: 200,
       narrowColumns: [0, 2, 3, 4, 5],
       wideColumns: [1]
     });

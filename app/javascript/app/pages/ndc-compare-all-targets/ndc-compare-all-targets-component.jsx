@@ -1,10 +1,11 @@
 /* eslint-disable max-len */
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import Button from 'components/button';
 import Header from 'components/header';
 import Intro from 'components/intro';
+import { Link } from 'react-router-dom';
 import Icon from 'components/icon';
-import Button from 'components/button';
 import cx from 'classnames';
 import layout from 'styles/layout.scss';
 import HandIconInfo from 'components/ndcs/shared/hand-icon-info';
@@ -16,8 +17,8 @@ import { Table } from 'cw-components';
 import NoContent from 'components/no-content';
 import Loading from 'components/loading';
 import { NCS_COMPARE_ALL } from 'data/SEO';
+import compareTableTheme from 'styles/themes/table/compare-table-theme.scss';
 import { MetaDescription, SocialMetadata } from 'components/seo';
-import exploreTableTheme from 'styles/themes/table/explore-table-theme.scss';
 import styles from './ndc-compare-all-targets-styles.scss';
 
 const renderLegend = () => (
@@ -58,6 +59,53 @@ const NDCCompareAllTargets = props => {
     route,
     location
   } = props;
+  const [selectedTargets, setSelectedTargets] = useState([]);
+  const canSelect = selectedTargets.length < 3;
+
+  const addSelectedTarget = target => {
+    if (selectedTargets.includes(target)) {
+      setSelectedTargets(selectedTargets.filter(t => t !== target));
+    } else if (canSelect) {
+      setSelectedTargets([...selectedTargets, target]);
+    }
+  };
+
+  const cellRenderer = cell => {
+    const { cellData, dataKey, columnIndex, rowData } = cell;
+    const id = `${rowData.Country.iso}-${dataKey}`;
+    const isActive = selectedTargets.includes(id);
+    const isLastColumn = columnIndex === columns.length - 1;
+    if (dataKey === 'Country') {
+      return <Link to={`/ndc/${cellData.iso}`}>{cellData.name}</Link>;
+    }
+    if (dataKey === 'Share of global GHG emissions') {
+      return cellData;
+    }
+    if (cellData === 'yes') {
+      return (
+        <Button
+          onClick={() => addSelectedTarget(id)}
+          className={cx(
+            styles.iconButton,
+            { [styles.clickable]: isActive || canSelect },
+            { [styles.lastColumn]: isLastColumn },
+            { [styles.active]: isActive }
+          )}
+          disabled={!isActive && !canSelect}
+        >
+          <Icon icon={compareSubmittedIcon} className={styles.submitIcon} />
+        </Button>
+      );
+    }
+    return (
+      <button
+        className={cx(styles.iconButton, { [styles.lastColumn]: isLastColumn })}
+      >
+        <Icon icon={compareNotSubmittedIcon} className={styles.submitIcon} />
+      </button>
+    );
+  };
+
   const renderTable = () => (
     <div>
       {loading && (
@@ -74,7 +122,8 @@ const NDCCompareAllTargets = props => {
             dynamicRowsHeight
             setColumnWidth={setColumnWidth}
             defaultColumns={columns}
-            theme={exploreTableTheme}
+            theme={compareTableTheme}
+            customCellRenderer={cellRenderer}
           />
         </div>
       )}
@@ -83,7 +132,6 @@ const NDCCompareAllTargets = props => {
       )}
     </div>
   );
-
   return (
     <React.Fragment>
       <MetaDescription
@@ -117,9 +165,13 @@ const NDCCompareAllTargets = props => {
               <Button
                 variant="primary"
                 className={styles.compareButton}
-                disabled
+                disabled={selectedTargets.length === 0}
               >
-                Compare
+                {`Compare${
+                  selectedTargets.length === 0
+                    ? ''
+                    : ` (${selectedTargets.length})`
+                }`}
               </Button>
               {!loading && (
                 <div className={styles.filtersLayout}>

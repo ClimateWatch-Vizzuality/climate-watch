@@ -8,12 +8,12 @@ const COUNTRY_PLATFORMS_ISOS = ['ZAF', 'IDN', 'IND'];
 
 const getCountries = state => sortBy(state.countries, 'wri_standard_name');
 export const getPreSelect = state => state.preSelect;
-export const getFilterUpper = state => deburrUpper(state.query);
+export const getFilter = state => state.query;
 
-const filterCountries = (countries, queryUpper) => {
-  if (!queryUpper) return countries;
+const filterCountries = (countries, query) => {
+  if (!query) return countries;
   return countries.filter(country =>
-    deburrUpper(country.wri_standard_name).includes(queryUpper)
+    deburrUpper(country.wri_standard_name).includes(deburrUpper(query))
   );
 };
 
@@ -25,7 +25,7 @@ const addCountriesPath = countries =>
   }));
 
 export const getFilteredCountries = createSelector(
-  [getCountries, getFilterUpper],
+  [getCountries, getFilter],
   filterCountries
 );
 
@@ -88,7 +88,7 @@ const semiActiveCountryStyles = {
 };
 
 export const getPathsWithStyles = createSelector(
-  [getFilterUpper, getPreSelect, getISOCountries],
+  [getFilter, getPreSelect, getISOCountries],
   (query, preSelect, isoCountries) => {
     const paths = [];
     worldPaths.forEach(path => {
@@ -108,8 +108,8 @@ export const getPathsWithStyles = createSelector(
           });
         }
 
-        const nameUpper = deburrUpper(path.properties.name);
-        const isEqual = iso === preSelect || nameUpper === query;
+        const name = path.properties.name;
+        const isEqual = iso === preSelect || name === query;
         if (isEqual) {
           return paths.push({
             ...path,
@@ -117,7 +117,7 @@ export const getPathsWithStyles = createSelector(
           });
         }
 
-        const isInFilter = query ? nameUpper.includes(query) : false;
+        const isInFilter = query ? name.includes(query) : false;
         const style = isInFilter ? semiActiveCountryStyles : countryStyles;
         return paths.push({
           ...path,

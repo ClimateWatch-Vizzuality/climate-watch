@@ -220,14 +220,23 @@ export function stripHTML(text) {
   return text.replace(/<(?:.|\n)*?>/gm, '');
 }
 
-export function filterQuery(data, query, exceptions) {
+// exceptions: Array of columns to avoid
+// objectValueKeys: { ColumnName: keyToFilterIn, ... }
+export function filterQuery(data, query, exceptions, objectValueKeys) {
   return data.filter(d => {
     let match = false;
     const keys = exceptions
       ? Object.keys(d).filter(k => !exceptions.includes(k))
       : Object.keys(d);
     keys.forEach(col => {
-      if (deburrUpper(d[col]).indexOf(query) > -1) {
+      const matchesWithObjectValue =
+        objectValueKeys &&
+        objectValueKeys[col] &&
+        deburrUpper(d[col][objectValueKeys[col]]).indexOf(deburrUpper(query)) >
+          -1;
+      const matchesWithValue =
+        deburrUpper(d[col]).indexOf(deburrUpper(query)) > -1;
+      if (matchesWithObjectValue || matchesWithValue) {
         match = true;
       }
     });

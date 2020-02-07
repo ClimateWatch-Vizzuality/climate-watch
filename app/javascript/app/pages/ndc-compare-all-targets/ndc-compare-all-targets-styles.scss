@@ -57,9 +57,32 @@
   align-items: center;
 
   .submitIcon {
-    height: 30px;
-    width: 30px;
     margin-right: 10px;
+  }
+}
+
+.submitIcon {
+  height: 30px;
+  width: 30px;
+}
+
+.iconButton {
+  width: 100%;
+  height: 100%;
+  border: solid $gray2 1px;
+  border-width: 0 0 1px 1px;
+  border-radius: 0;
+
+  &.active {
+    background-color: $theme-color;
+  }
+
+  &.clickable {
+    cursor: pointer;
+  }
+
+  &.lastColumn {
+    border-right: solid $gray2 1px;
   }
 }
 
