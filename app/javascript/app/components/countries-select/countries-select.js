@@ -10,7 +10,7 @@ import actions from './countries-select-actions';
 import reducers, { initialState } from './countries-select-reducers';
 import CountrySelectComponent from './countries-select-component';
 import {
-  getFilterUpper,
+  getFilter,
   getPreSelect,
   getISOCountries,
   getFilteredCountriesWithPath,
@@ -26,7 +26,7 @@ const mapStateToProps = (state, { location }) => {
   };
   return {
     paths: getPathsWithStyles(stateWithFilters),
-    query: getFilterUpper(stateWithFilters),
+    query: getFilter(stateWithFilters),
     preSelect: getPreSelect(stateWithFilters),
     isoCountries: getISOCountries(stateWithFilters),
     countriesList: getFilteredCountriesWithPath(stateWithFilters),

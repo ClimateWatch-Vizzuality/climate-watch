@@ -1,13 +1,13 @@
 import { createSelector } from 'reselect';
-import { deburrUpper, filterQuery } from 'app/utils';
+import { filterQuery } from 'app/utils';
+import deburr from 'lodash/deburr';
 import isEmpty from 'lodash/isEmpty';
 
 const getCountries = state => (state.countries && state.countries.data) || null;
 const getIndicatorsData = state =>
   (state.compareAll.data && state.compareAll.data.indicators) || null;
 export const getLoading = state => state.compareAll.loading || null;
-export const getQuery = (state, { search }) =>
-  (search.search && deburrUpper(search.search)) || '';
+export const getQuery = (state, { search }) => deburr(search.search) || '';
 
 const getData = createSelector(
   [getCountries, getIndicatorsData],
@@ -20,21 +20,28 @@ const getData = createSelector(
       const countryNDC = ndcIndicator.locations[c.iso_code3];
       const countryLTS = ltsIndicator.locations[c.iso_code3];
       const countryEmissions = emissionsIndicator.locations[c.iso_code3];
+      const getIconValue = (conditionYes, conditionIntends) => {
+        if (conditionYes) return 'yes';
+        if (conditionIntends) return 'intends';
+        return 'no';
+      };
       return {
-        Country: c.wri_standard_name,
+        Country: { name: c.wri_standard_name, iso: c.iso_code3 },
         'Share of global GHG emissions':
           countryEmissions && countryEmissions.value,
-        INDC:
+        INDC: getIconValue(
           countryNDC.value === 'INDC Submitted' ||
+            countryNDC.value === 'First NDC Submitted' ||
+            countryNDC.value === 'Second NDC Submitted'
+        ),
+        NDC: getIconValue(
           countryNDC.value === 'First NDC Submitted' ||
-          countryNDC.value === 'Second NDC Submitted',
-        NDC:
-          countryNDC.value === 'First NDC Submitted' ||
-          countryNDC.value === 'Second NDC Submitted',
-        '2nd NDC': countryNDC.value === 'Second NDC Submitted',
-        LTS: countryLTS
-          ? countryLTS.value === 'Long-term Strategy Submitted'
-          : false
+            countryNDC.value === 'Second NDC Submitted'
+        ),
+        '2nd NDC': getIconValue(countryNDC.value === 'Second NDC Submitted'),
+        LTS: getIconValue(
+          countryLTS && countryLTS.value === 'Long-term Strategy Submitted'
+        )
       };
     });
     return rows;
@@ -58,6 +65,6 @@ export const getFilteredDataBySearch = createSelector(
   [getData, getQuery],
   (data, query) => {
     if (!data || isEmpty(data)) return null;
-    return filterQuery(data, query);
+    return filterQuery(data, query, [], { Country: 'name' });
   }
 );

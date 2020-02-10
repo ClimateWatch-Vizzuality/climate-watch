@@ -57,14 +57,9 @@
   align-items: center;
 
   .submitIcon {
+    margin-right: 10px;
     height: 30px;
     width: 30px;
-    margin-right: 10px;
   }
 }
 
-.loaderWrapper {
-  display: flex;
-  justify-content: center;
-  min-height: 460px;
-}

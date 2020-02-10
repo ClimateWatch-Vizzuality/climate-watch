@@ -1,10 +1,10 @@
 /* eslint-disable max-len */
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import Button from 'components/button';
 import Header from 'components/header';
 import Intro from 'components/intro';
 import Icon from 'components/icon';
-import Button from 'components/button';
 import cx from 'classnames';
 import layout from 'styles/layout.scss';
 import HandIconInfo from 'components/ndcs/shared/hand-icon-info';
@@ -12,12 +12,10 @@ import compareSubmittedIcon from 'assets/icons/compare-submitted.svg';
 import compareNotSubmittedIcon from 'assets/icons/compare-not-submitted.svg';
 import compareIntendsIcon from 'assets/icons/compare-intends.svg';
 import Search from 'components/search';
-import { Table } from 'cw-components';
-import NoContent from 'components/no-content';
-import Loading from 'components/loading';
 import { NCS_COMPARE_ALL } from 'data/SEO';
 import { MetaDescription, SocialMetadata } from 'components/seo';
-import exploreTableTheme from 'styles/themes/table/explore-table-theme.scss';
+import qs from 'query-string';
+import CompareAllTable from './ndc-compare-all-targets-table/ndc-compare-all-targets-table';
 import styles from './ndc-compare-all-targets-styles.scss';
 
 const renderLegend = () => (
@@ -46,44 +44,32 @@ const renderSearch = (searchHandler, query) => (
   />
 );
 
+const getLinkToCustomCompare = selectedTargets => {
+  let linkToCustomCompare = {};
+  selectedTargets.forEach((t, i) => {
+    const [country, document] = t.split('-');
+    linkToCustomCompare = {
+      ...linkToCustomCompare,
+      [`country${i}`]: country,
+      [`document${i}`]: document
+    };
+  });
+  return qs.stringify(linkToCustomCompare);
+};
+
 const NDCCompareAllTargets = props => {
   const {
     loading,
-    tableData,
     query,
     handleSearchChange,
+    route,
+    location,
+    tableData,
     noContentMsg,
     columns,
-    setColumnWidth,
-    route,
-    location
+    setColumnWidth
   } = props;
-  const renderTable = () => (
-    <div>
-      {loading && (
-        <div className={styles.loaderWrapper}>
-          <Loading light />
-        </div>
-      )}
-      {!loading && tableData && tableData.length > 0 && (
-        <div className={styles.tableWrapper}>
-          <Table
-            data={tableData}
-            horizontalScroll
-            parseHtml
-            dynamicRowsHeight
-            setColumnWidth={setColumnWidth}
-            defaultColumns={columns}
-            theme={exploreTableTheme}
-          />
-        </div>
-      )}
-      {!loading && (!tableData || tableData.length <= 0) && (
-        <NoContent className={styles.noContent} message={noContentMsg} />
-      )}
-    </div>
-  );
-
+  const [selectedTargets, setSelectedTargets] = useState([]);
   return (
     <React.Fragment>
       <MetaDescription
@@ -117,9 +103,16 @@ const NDCCompareAllTargets = props => {
               <Button
                 variant="primary"
                 className={styles.compareButton}
-                disabled
+                disabled={selectedTargets.length === 0}
+                link={`/custom-compare/${getLinkToCustomCompare(
+                  selectedTargets
+                )}`}
               >
-                Compare
+                {`Compare${
+                  selectedTargets.length === 0
+                    ? ''
+                    : ` (${selectedTargets.length})`
+                }`}
               </Button>
               {!loading && (
                 <div className={styles.filtersLayout}>
@@ -128,7 +121,15 @@ const NDCCompareAllTargets = props => {
               )}
             </div>
           </div>
-          {renderTable()}
+          <CompareAllTable
+            loading={loading}
+            tableData={tableData}
+            noContentMsg={noContentMsg}
+            columns={columns}
+            setColumnWidth={setColumnWidth}
+            selectedTargets={selectedTargets}
+            setSelectedTargets={setSelectedTargets}
+          />
         </div>
       </div>
     </React.Fragment>
