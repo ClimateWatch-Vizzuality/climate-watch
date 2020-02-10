@@ -20,7 +20,8 @@
   }
 }
 
-.loaderWrapper {
+.loaderWrapper,
+.noContent {
   display: flex;
   justify-content: center;
   min-height: 460px;
