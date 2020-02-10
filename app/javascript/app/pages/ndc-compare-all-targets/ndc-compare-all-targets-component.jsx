@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import Button from 'components/button';
 import Header from 'components/header';
 import Intro from 'components/intro';
-import { Link } from 'react-router-dom';
 import Icon from 'components/icon';
 import cx from 'classnames';
 import layout from 'styles/layout.scss';
@@ -13,12 +12,10 @@ import compareSubmittedIcon from 'assets/icons/compare-submitted.svg';
 import compareNotSubmittedIcon from 'assets/icons/compare-not-submitted.svg';
 import compareIntendsIcon from 'assets/icons/compare-intends.svg';
 import Search from 'components/search';
-import { Table } from 'cw-components';
-import NoContent from 'components/no-content';
-import Loading from 'components/loading';
 import { NCS_COMPARE_ALL } from 'data/SEO';
-import compareTableTheme from 'styles/themes/table/compare-table-theme.scss';
 import { MetaDescription, SocialMetadata } from 'components/seo';
+import qs from 'query-string';
+import CompareAllTable from './ndc-compare-all-targets-table/ndc-compare-all-targets-table';
 import styles from './ndc-compare-all-targets-styles.scss';
 
 const renderLegend = () => (
@@ -47,91 +44,32 @@ const renderSearch = (searchHandler, query) => (
   />
 );
 
+const getLinkToCustomCompare = selectedTargets => {
+  let linkToCustomCompare = {};
+  selectedTargets.forEach((t, i) => {
+    const [country, document] = t.split('-');
+    linkToCustomCompare = {
+      ...linkToCustomCompare,
+      [`country${i}`]: country,
+      [`document${i}`]: document
+    };
+  });
+  return qs.stringify(linkToCustomCompare);
+};
+
 const NDCCompareAllTargets = props => {
   const {
     loading,
-    tableData,
     query,
     handleSearchChange,
+    route,
+    location,
+    tableData,
     noContentMsg,
     columns,
-    setColumnWidth,
-    route,
-    location
+    setColumnWidth
   } = props;
   const [selectedTargets, setSelectedTargets] = useState([]);
-  const canSelect = selectedTargets.length < 3;
-
-  const addSelectedTarget = target => {
-    if (selectedTargets.includes(target)) {
-      setSelectedTargets(selectedTargets.filter(t => t !== target));
-    } else if (canSelect) {
-      setSelectedTargets([...selectedTargets, target]);
-    }
-  };
-
-  const cellRenderer = cell => {
-    const { cellData, dataKey, columnIndex, rowData } = cell;
-    const id = `${rowData.Country.iso}-${dataKey}`;
-    const isActive = selectedTargets.includes(id);
-    const isLastColumn = columnIndex === columns.length - 1;
-    if (dataKey === 'Country') {
-      return <Link to={`/ndcs/country/${cellData.iso}`}>{cellData.name}</Link>;
-    }
-    if (dataKey === 'Share of global GHG emissions') {
-      return cellData;
-    }
-    if (cellData === 'yes') {
-      return (
-        <Button
-          onClick={() => addSelectedTarget(id)}
-          className={cx(
-            styles.iconButton,
-            { [styles.clickable]: isActive || canSelect },
-            { [styles.lastColumn]: isLastColumn },
-            { [styles.active]: isActive }
-          )}
-          disabled={!isActive && !canSelect}
-        >
-          <Icon icon={compareSubmittedIcon} className={styles.submitIcon} />
-        </Button>
-      );
-    }
-    return (
-      <button
-        className={cx(styles.iconButton, { [styles.lastColumn]: isLastColumn })}
-      >
-        <Icon icon={compareNotSubmittedIcon} className={styles.submitIcon} />
-      </button>
-    );
-  };
-
-  const renderTable = () => (
-    <div>
-      {loading && (
-        <div className={styles.loaderWrapper}>
-          <Loading light />
-        </div>
-      )}
-      {!loading && tableData && tableData.length > 0 && (
-        <div className={styles.tableWrapper}>
-          <Table
-            data={tableData}
-            horizontalScroll
-            parseHtml
-            dynamicRowsHeight
-            setColumnWidth={setColumnWidth}
-            defaultColumns={columns}
-            theme={compareTableTheme}
-            customCellRenderer={cellRenderer}
-          />
-        </div>
-      )}
-      {!loading && (!tableData || tableData.length <= 0) && (
-        <NoContent className={styles.noContent} message={noContentMsg} />
-      )}
-    </div>
-  );
   return (
     <React.Fragment>
       <MetaDescription
@@ -166,7 +104,9 @@ const NDCCompareAllTargets = props => {
                 variant="primary"
                 className={styles.compareButton}
                 disabled={selectedTargets.length === 0}
-                link={`/custom-compare/${selectedTargets}`}
+                link={`/custom-compare/${getLinkToCustomCompare(
+                  selectedTargets
+                )}`}
               >
                 {`Compare${
                   selectedTargets.length === 0
@@ -181,7 +121,15 @@ const NDCCompareAllTargets = props => {
               )}
             </div>
           </div>
-          {renderTable()}
+          <CompareAllTable
+            loading={loading}
+            tableData={tableData}
+            noContentMsg={noContentMsg}
+            columns={columns}
+            setColumnWidth={setColumnWidth}
+            selectedTargets={selectedTargets}
+            setSelectedTargets={setSelectedTargets}
+          />
         </div>
       </div>
     </React.Fragment>
