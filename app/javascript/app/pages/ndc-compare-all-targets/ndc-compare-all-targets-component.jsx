@@ -104,7 +104,7 @@ const NDCCompareAllTargets = props => {
                 variant="primary"
                 className={styles.compareButton}
                 disabled={selectedTargets.length === 0}
-                link={`/custom-compare/${getLinkToCustomCompare(
+                link={`/custom-compare?${getLinkToCustomCompare(
                   selectedTargets
                 )}`}
               >

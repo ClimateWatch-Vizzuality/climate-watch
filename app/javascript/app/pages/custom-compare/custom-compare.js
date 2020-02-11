@@ -9,8 +9,7 @@ import Component from './custom-compare-component';
 import {
   getAnchorLinks,
   getFiltersData,
-  getCountriesOptions,
-  getFiltersSelected
+  getCountryOptions
 } from './custom-compare-selectors';
 
 const mapStateToProps = (state, { location, route }) => {
@@ -22,9 +21,10 @@ const mapStateToProps = (state, { location, route }) => {
 
   return {
     anchorLinks: getAnchorLinks(routeData),
-    filtersData: getFiltersData(state),
-    countryOptions: getCountriesOptions(state),
-    filtersSelected: getFiltersSelected(state, { search })
+    filtersData: getFiltersData(state, { search }),
+    countryOptions: getCountryOptions(state)
+    // ,
+    // filtersSelected: getFiltersSelected(state, { search })
   };
 };
 

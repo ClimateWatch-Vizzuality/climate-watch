@@ -21,34 +21,34 @@ const tempOptions = [
   { label: 'Option 4', value: 'option4' }
 ];
 
-const Filter = ({ key, countryOptions, data, handleCountryChange }) => (
+const FiltersGroup = ({ index, selectedCountry, selectedDocument, countryOptions, documentOptions, handleCountryChange }) => (
   <div className={styles.filter}>
     <Dropdown
-      key={`${key}-country`}
+      key={`${index}-country`}
       label=""
       options={countryOptions}
       onValueChange={({ value }) => {
         // console.log('new params:',{ name: data.key, value })
         handleCountryChange({ name: data.key, value });
       }}
-      value={data.selectedCountry}
+      value={selectedCountry}
       hideResetButton
       theme={{ dropdown: styles.dropdown }}
       className={styles.dropdown}
     />
     <Dropdown
-      key={`${key}-submission`}
+      key={`${index}-document`}
       label=""
-      options={tempOptions}
+      options={documentOptions}
       onValueChange={() => {}}
-      value={tempOptions[0]}
+      value={selectedDocument}
       hideResetButton
     />
   </div>
 );
 
-Filter.propTypes = {
-  key: PropTypes.string.isRequired,
+FiltersGroup.propTypes = {
+  index: PropTypes.string.isRequired,
   countryOptions: PropTypes.array,
   data: PropTypes.object,
   handleCountryChange: PropTypes.func
@@ -59,8 +59,8 @@ const CustomComparisonComponent = props => {
     route,
     anchorLinks,
     countryOptions,
-    filtersSelected,
-    handleCountryChange
+    handleCountryChange,
+    filtersData
   } = props;
   return (
     <div>
@@ -86,12 +86,15 @@ const CustomComparisonComponent = props => {
       <div className={styles.filtersWrapper}>
         <div className={styles.content}>
           <div className={styles.filters}>
-            {filtersSelected &&
-              filtersSelected.map(data => (
-                <Filter
-                  key={data.key}
-                  data={data}
+            {filtersData &&
+              filtersData.map(({ index, selectedCountry, selectedDocument, documentOptions }) => (
+                <FiltersGroup
+                  key={`filters-group-${index}`}
+                  selectedCountry={selectedCountry}
+                  selectedDocument={selectedDocument}
                   countryOptions={countryOptions}
+                  documentOptions={documentOptions}
+                  // documentOptions={filtersData}
                   handleCountryChange={handleCountryChange}
                 />
               ))}
