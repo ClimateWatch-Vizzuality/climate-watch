@@ -107,7 +107,9 @@ class CountryNdcOverview extends PureComponent {
                           <CardRow
                             rowData={{
                               title: 'Target type',
-                              value: values.ghg_target_type[0].value
+                              value:
+                                values.ghg_target_type &&
+                                values.ghg_target_type[0].value
                             }}
                           />
                           <CardRow
@@ -203,7 +205,8 @@ class CountryNdcOverview extends PureComponent {
                 <CardRow
                   rowData={{
                     title: 'Target type',
-                    value: values.ghg_target_type[0].value
+                    value:
+                      values.ghg_target_type && values.ghg_target_type[0].value
                   }}
                   theme={cardTheme}
                 />
