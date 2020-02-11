@@ -207,14 +207,26 @@ export const getLegend = createSelector(
   }
 );
 
-export const getEmissionsIndicatorLocations = createSelector(
-  [getIndicatorsData],
-  indicators => {
-    if (!indicators) {
+export const getTooltipCountryValues = createSelector(
+  [getIndicatorsData, getSelectedIndicator],
+  (indicators, selectedIndicator) => {
+    if (!indicators || !selectedIndicator) {
       return null;
     }
     const emissionsIndicator = indicators.find(i => i.slug === 'ndce_ghg');
-    return emissionsIndicator ? emissionsIndicator.locations : null;
+    const tooltipCountryValues = {};
+    Object.keys(selectedIndicator.locations).forEach(iso => {
+      const labelId =
+        selectedIndicator.locations[iso] &&
+        selectedIndicator.locations[iso].label_id;
+      tooltipCountryValues[iso] = {
+        value: labelId && selectedIndicator.legendBuckets[labelId].name,
+        emissionsValue:
+          emissionsIndicator.locations[iso] &&
+          emissionsIndicator.locations[iso].value
+      };
+    });
+    return tooltipCountryValues;
   }
 );
 

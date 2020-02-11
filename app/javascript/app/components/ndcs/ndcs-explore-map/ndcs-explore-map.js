@@ -23,7 +23,7 @@ import {
   getCategories,
   getCategoryIndicators,
   getSelectedCategory,
-  getEmissionsIndicatorLocations
+  getTooltipCountryValues
 } from './ndcs-explore-map-selectors';
 
 const actions = { ...fetchActions, ...modalActions };
@@ -61,9 +61,7 @@ const mapStateToProps = (state, { location }) => {
     isoCountries: getISOCountries(ndcsExploreWithSelection),
     selectedIndicator: getMapIndicator(ndcsExploreWithSelection),
     emissionsCardData: getEmissionsCardData(ndcsExploreWithSelection),
-    emissionsIndicatorLocations: getEmissionsIndicatorLocations(
-      ndcsExploreWithSelection
-    ),
+    tooltipCountryValues: getTooltipCountryValues(ndcsExploreWithSelection),
     legendData: getLegend(ndcsExploreWithSelection),
     summaryCardData: getSummaryCardData(ndcsExploreWithSelection),
     downloadLink: getLinkToDataExplorer(ndcsExploreWithSelection),
@@ -106,15 +104,17 @@ class NDCSExploreMapContainer extends PureComponent {
   };
 
   handleCountryEnter = geography => {
-    const { selectedIndicator, emissionsIndicatorLocations } = this.props;
+    const { tooltipCountryValues } = this.props;
     const iso = geography.properties && geography.properties.id;
     const tooltipValues = {
       value:
-        selectedIndicator.locations[iso] &&
-        selectedIndicator.locations[iso].value,
+        tooltipCountryValues && tooltipCountryValues[iso]
+          ? tooltipCountryValues[iso].value
+          : 'Not Applicable',
       emissionsValue:
-        emissionsIndicatorLocations[iso] &&
-        emissionsIndicatorLocations[iso].value,
+        tooltipCountryValues &&
+        tooltipCountryValues[iso] &&
+        tooltipCountryValues[iso].emissionsValue,
       countryName: geography.properties && geography.properties.name
     };
 
@@ -186,8 +186,7 @@ NDCSExploreMapContainer.propTypes = {
   query: PropTypes.object,
   summaryData: PropTypes.array,
   indicator: PropTypes.object,
-  selectedIndicator: PropTypes.object,
-  emissionsIndicatorLocations: PropTypes.object
+  tooltipCountryValues: PropTypes.object
 };
 
 export default withRouter(

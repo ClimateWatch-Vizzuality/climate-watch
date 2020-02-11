@@ -1,8 +1,6 @@
 /* eslint-disable react/no-danger */
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import ReactTooltip from 'react-tooltip';
-import cx from 'classnames';
 import { TabletLandscape } from 'components/responsive';
 import Map from 'components/map';
 import ButtonGroup from 'components/button-group';
@@ -15,9 +13,9 @@ import HandIconInfo from 'components/ndcs/shared/hand-icon-info';
 import CustomInnerHoverLabel from 'components/ndcs/shared/donut-custom-label';
 import LegendItem from 'components/ndcs/shared/legend-item';
 import ShareButton from 'components/button/share-button';
+import ExploreMapTooltip from 'components/ndcs/shared/explore-map-tooltip';
 
 import layout from 'styles/layout.scss';
-import tooltipTheme from 'styles/themes/map-tooltip/map-tooltip.scss';
 import newMapTheme from 'styles/themes/map/map-new-zoom-controls.scss';
 import styles from './lts-explore-map-styles.scss';
 
@@ -125,8 +123,11 @@ class LTSExploreMap extends PureComponent {
       selectedIndicator,
       handleCategoryChange,
       selectedCategory,
-      handleIndicatorChange
+      handleIndicatorChange,
+      tooltipValues
     } = this.props;
+
+    const TOOLTIP_ID = 'lts-map-tooltip';
 
     return (
       <div>
@@ -190,7 +191,7 @@ class LTSExploreMap extends PureComponent {
                         />
                         <Map
                           paths={paths}
-                          tooltipId="lts-map-tooltip"
+                          tooltipId={TOOLTIP_ID}
                           onCountryClick={handleCountryClick}
                           onCountryEnter={handleCountryEnter}
                           onCountryFocus={handleCountryEnter}
@@ -200,27 +201,13 @@ class LTSExploreMap extends PureComponent {
                           className={styles.map}
                         />
                         {countryData && (
-                          <ReactTooltip
-                            className={styles.tooltipContainer}
-                            id="lts-map-tooltip"
-                            delayHide={isTablet ? 0 : 3000}
-                          >
-                            <button
-                              onClick={() =>
-                                handleCountryClick(null, countryData)
-                              }
-                              className={tooltipTheme.container}
-                            >
-                              <div
-                                className={cx(
-                                  tooltipTheme.countryName,
-                                  tooltipTheme.link
-                                )}
-                              >
-                                {countryData.name}
-                              </div>
-                            </button>
-                          </ReactTooltip>
+                          <ExploreMapTooltip
+                            id={TOOLTIP_ID}
+                            isTablet={isTablet}
+                            countryData={countryData}
+                            handleCountryClick={handleCountryClick}
+                            tooltipValues={tooltipValues}
+                          />
                         )}
                         {!isTablet &&
                           renderButtonGroup(handleInfoClick, downloadLink)}
@@ -254,6 +241,7 @@ LTSExploreMap.propTypes = {
   selectedIndicator: PropTypes.object,
   handleCategoryChange: PropTypes.func,
   selectedCategory: PropTypes.object,
+  tooltipValues: PropTypes.object,
   handleIndicatorChange: PropTypes.func
 };
 
