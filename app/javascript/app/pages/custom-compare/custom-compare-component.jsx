@@ -7,6 +7,7 @@ import Sticky from 'react-stickynode';
 import AnchorNav from 'components/anchor-nav';
 import BackButton from 'components/back-button';
 import Dropdown from 'components/dropdown';
+import NdcCompareAllTargetsProvider from 'providers/ndc-compare-all-targets-provider/ndc-compare-all-targets';
 
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
 
@@ -20,14 +21,17 @@ const tempOptions = [
   { label: 'Option 4', value: 'option4' }
 ];
 
-const Filter = ({ key }) => (
+const Filter = ({ key, countryOptions, data, handleCountryChange }) => (
   <div className={styles.filter}>
     <Dropdown
       key={`${key}-country`}
       label=""
-      options={tempOptions}
-      onValueChange={() => {}}
-      value={tempOptions[0]}
+      options={countryOptions}
+      onValueChange={({ value }) => {
+        // console.log('new params:',{ name: data.key, value })
+        handleCountryChange({ name: data.key, value });
+      }}
+      value={data.selectedCountry}
       hideResetButton
       theme={{ dropdown: styles.dropdown }}
       className={styles.dropdown}
@@ -44,12 +48,20 @@ const Filter = ({ key }) => (
 );
 
 Filter.propTypes = {
-  key: PropTypes.string.isRequired
+  key: PropTypes.string.isRequired,
+  countryOptions: PropTypes.array,
+  data: PropTypes.object,
+  handleCountryChange: PropTypes.func
 };
 
 const CustomComparisonComponent = props => {
-  const { route, anchorLinks } = props;
-
+  const {
+    route,
+    anchorLinks,
+    countryOptions,
+    filtersSelected,
+    handleCountryChange
+  } = props;
   return (
     <div>
       <Header route={route}>
@@ -74,22 +86,32 @@ const CustomComparisonComponent = props => {
       <div className={styles.filtersWrapper}>
         <div className={styles.content}>
           <div className={styles.filters}>
-            <Filter key="1" />
-            <Filter key="2" />
-            <Filter key="3" />
+            {filtersSelected &&
+              filtersSelected.map(data => (
+                <Filter
+                  key={data.key}
+                  data={data}
+                  countryOptions={countryOptions}
+                  handleCountryChange={handleCountryChange}
+                />
+              ))}
           </div>
         </div>
       </div>
       <div className={styles.content}>
         <div className={styles.accordions}>CONTENT HERE</div>
       </div>
+      <NdcCompareAllTargetsProvider />
     </div>
   );
 };
 
 CustomComparisonComponent.propTypes = {
   route: PropTypes.object.isRequired,
-  anchorLinks: PropTypes.array
+  anchorLinks: PropTypes.array,
+  filtersSelected: PropTypes.array,
+  countryOptions: PropTypes.array,
+  handleCountryChange: PropTypes.func
 };
 
 export default CustomComparisonComponent;
