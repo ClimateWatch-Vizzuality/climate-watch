@@ -245,13 +245,15 @@ export const getEmissionsCardData = createSelector(
       return null;
     }
     const emissionsIndicator = indicators.find(i => i.slug === 'lts_ghg');
-    const data = getIndicatorEmissionsData(
+    let data = getIndicatorEmissionsData(
       emissionsIndicator,
       selectedIndicator,
       legend,
       NO_DOCUMENT_SUBMITTED
     );
 
+    // Remove extra No document submitted. TODO: Fix in data
+    data = data.filter(d => d.name !== 'noDocumentSubmitted');
     const config = {
       animation: true,
       innerRadius: 50,
