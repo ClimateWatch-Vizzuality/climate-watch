@@ -207,6 +207,17 @@ export const getLegend = createSelector(
   }
 );
 
+export const getEmissionsIndicatorLocations = createSelector(
+  [getIndicatorsData],
+  indicators => {
+    if (!indicators) {
+      return null;
+    }
+    const emissionsIndicator = indicators.find(i => i.slug === 'ndce_ghg');
+    return emissionsIndicator ? emissionsIndicator.locations : null;
+  }
+);
+
 export const getEmissionsCardData = createSelector(
   [getLegend, getMapIndicator, getIndicatorsData],
   (legend, selectedIndicator, indicators) => {

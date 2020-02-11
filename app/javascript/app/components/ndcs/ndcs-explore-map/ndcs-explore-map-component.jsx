@@ -6,6 +6,7 @@ import cx from 'classnames';
 import { TabletLandscape } from 'components/responsive';
 import Map from 'components/map';
 import ButtonGroup from 'components/button-group';
+import Button from 'components/button';
 import Loading from 'components/loading';
 import ModalMetadata from 'components/modal-metadata';
 import Dropdown from 'components/dropdown';
@@ -109,6 +110,32 @@ class NDCSExploreMap extends PureComponent {
     </div>
   );
 
+  renderTooltip(isTablet) {
+    const { countryData, handleCountryClick, tooltipValues } = this.props;
+    return (
+      <ReactTooltip
+        className={styles.tooltipContainer}
+        id="ndcs-map-tooltip"
+        delayHide={isTablet ? 0 : 3000}
+      >
+        <Button
+          onClick={() => handleCountryClick(null, countryData)}
+          className={cx(tooltipTheme.container, styles.tooltipButton)}
+        >
+          <div className={cx(tooltipTheme.countryName, tooltipTheme.link)}>
+            <div className={styles.tooltipCountry}>
+              {tooltipValues.countryName}
+            </div>
+            <div className={styles.tooltipValue}>{tooltipValues.value}</div>
+            <div className={styles.tooltipValue}>
+              {tooltipValues.emissionsValue} of global emissions
+            </div>
+          </div>
+        </Button>
+      </ReactTooltip>
+    );
+  }
+
   render() {
     const {
       loading,
@@ -198,29 +225,7 @@ class NDCSExploreMap extends PureComponent {
                           theme={newMapTheme}
                           className={styles.map}
                         />
-                        {countryData && (
-                          <ReactTooltip
-                            className={styles.tooltipContainer}
-                            id="ndcs-map-tooltip"
-                            delayHide={isTablet ? 0 : 3000}
-                          >
-                            <button
-                              onClick={() =>
-                                handleCountryClick(null, countryData)
-                              }
-                              className={tooltipTheme.container}
-                            >
-                              <div
-                                className={cx(
-                                  tooltipTheme.countryName,
-                                  tooltipTheme.link
-                                )}
-                              >
-                                {countryData.name}
-                              </div>
-                            </button>
-                          </ReactTooltip>
-                        )}
+                        {countryData && this.renderTooltip(isTablet)}
                         {!isTablet &&
                           renderButtonGroup(handleInfoClick, downloadLink)}
                       </div>
@@ -253,6 +258,7 @@ NDCSExploreMap.propTypes = {
   selectedIndicator: PropTypes.object,
   handleCategoryChange: PropTypes.func,
   selectedCategory: PropTypes.object,
+  tooltipValues: PropTypes.object,
   handleIndicatorChange: PropTypes.func
 };
 

@@ -22,7 +22,8 @@ import {
   getSummaryCardData,
   getCategories,
   getCategoryIndicators,
-  getSelectedCategory
+  getSelectedCategory,
+  getEmissionsIndicatorLocations
 } from './ndcs-explore-map-selectors';
 
 const actions = { ...fetchActions, ...modalActions };
@@ -60,6 +61,9 @@ const mapStateToProps = (state, { location }) => {
     isoCountries: getISOCountries(ndcsExploreWithSelection),
     selectedIndicator: getMapIndicator(ndcsExploreWithSelection),
     emissionsCardData: getEmissionsCardData(ndcsExploreWithSelection),
+    emissionsIndicatorLocations: getEmissionsIndicatorLocations(
+      ndcsExploreWithSelection
+    ),
     legendData: getLegend(ndcsExploreWithSelection),
     summaryCardData: getSummaryCardData(ndcsExploreWithSelection),
     downloadLink: getLinkToDataExplorer(ndcsExploreWithSelection),
@@ -73,8 +77,8 @@ class NDCSExploreMapContainer extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      geometryIdHover: null,
-      country: null
+      country: null,
+      tooltipValues: {}
     };
   }
 
@@ -102,9 +106,19 @@ class NDCSExploreMapContainer extends PureComponent {
   };
 
   handleCountryEnter = geography => {
+    const { selectedIndicator, emissionsIndicatorLocations } = this.props;
     const iso = geography.properties && geography.properties.id;
-    if (iso) this.setState({ geometryIdHover: iso });
-    this.setState({ country: geography.properties });
+    const tooltipValues = {
+      value:
+        selectedIndicator.locations[iso] &&
+        selectedIndicator.locations[iso].value,
+      emissionsValue:
+        emissionsIndicatorLocations[iso] &&
+        emissionsIndicatorLocations[iso].value,
+      countryName: geography.properties && geography.properties.name
+    };
+
+    this.setState({ tooltipValues, country: geography.properties });
   };
 
   handleSearchChange = query => {
@@ -157,7 +171,8 @@ class NDCSExploreMapContainer extends PureComponent {
       handleIndicatorChange: this.handleIndicatorChange,
       indicator: this.props.indicator,
       countryData: this.state.country,
-      summaryData: this.props.summaryData
+      summaryData: this.props.summaryData,
+      tooltipValues: this.state.tooltipValues
     });
   }
 }
@@ -170,7 +185,9 @@ NDCSExploreMapContainer.propTypes = {
   fetchNDCS: PropTypes.func.isRequired,
   query: PropTypes.object,
   summaryData: PropTypes.array,
-  indicator: PropTypes.object
+  indicator: PropTypes.object,
+  selectedIndicator: PropTypes.object,
+  emissionsIndicatorLocations: PropTypes.object
 };
 
 export default withRouter(
