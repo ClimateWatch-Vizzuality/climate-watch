@@ -42,6 +42,7 @@ const renderMyCWLink = (location, onClick, theme) => (
 );
 const ToolsNav = props => {
   const { className, closeMenu, location, reverse, theme } = props;
+  const { pathname, search } = location;
   return (
     <div className={cx(styles.toolsNav, className, theme.toolsNav)}>
       {[
@@ -60,9 +61,10 @@ const ToolsNav = props => {
       </TabletPortrait>
       <MobileOnly>
         <ShareButton
+          onClick={closeMenu}
           className={cx(styles.shareButton, theme.shareButton)}
           analyticsName="Main menu"
-          // sharePath={`/embed/ndc-overview/${section}`}
+          sharePath={`/embed/${pathname}${search}`}
         />
       </MobileOnly>
     </div>

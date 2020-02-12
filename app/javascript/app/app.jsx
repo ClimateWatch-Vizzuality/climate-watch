@@ -7,6 +7,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { renderRoutes } from 'react-router-config';
 import ScrollToTop from 'components/scroll-to-top';
 import { withRouter } from 'react-router';
+import ModalShare from 'components/modal-share';
 
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -43,6 +44,7 @@ const App = ({ data }) => (
     <BrowserRouter basename={basename}>
       <ScrollToTop>
         <RoutesContainer />
+        <ModalShare />
       </ScrollToTop>
     </BrowserRouter>
   </Provider>
