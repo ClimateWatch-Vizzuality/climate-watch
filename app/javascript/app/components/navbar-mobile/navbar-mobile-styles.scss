@@ -30,37 +30,34 @@
 }
 
 .navigation {
-  @include row((11, 1), $gridDirection: 'vertical');
-
+  overflow: auto;
+  background-color: $theme-color;
+  text-align: center;
   height: calc(100vh - #{$gutter-padding * 2});
-  background-color: white;
+  padding-top: 30px;
 
-  @media #{$mobile-only} {
-    @include row((10, 2), $gridDirection: 'vertical');
-  }
+  @include columns((11, 1), $gridDirection: 'vertical');
 }
 
-.navMenu {
-  display: flex;
-  flex-direction: column;
+.menuContact {
+  width: 100%;
+  display: block;
+  padding: 25px 0;
 
-  > * {
-    position: relative;
-    width: fit-content;
-    margin-bottom: 25px;
+  > a {
+    color: $white;
+  }
+
+  svg {
+    fill: $white;
   }
 }
 
 .toolsContainer {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-
-  @media #{$mobile-only} {
-    flex-direction: column-reverse;
-    align-items: flex-start;
-    justify-content: flex-start;
-  }
+  justify-content: flex-start;
+  flex-direction: column-reverse;
 }
 
 .tools {
@@ -69,4 +66,16 @@
   > :first-child {
     margin-left: 0;
   }
+
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 20px;
+
+  > a {
+    margin: 25px 0;
+  }
+}
+
+.active {
+  background-color: lighten($theme-color, 10%);
 }

@@ -1,0 +1,27 @@
+@import '~styles/layout.scss';
+
+.shareButton {
+  margin-top: 20px;
+  padding-bottom: 40px;
+  background-color: transparent;
+  text-transform: uppercase;
+  font-weight: $font-weight-bold;
+  color: $white;
+
+  &:hover {
+    background-color: transparent;
+  }
+
+  > svg {
+    fill: $white;
+  }
+}
+
+.link {
+  color: $white;
+  font-size: $font-size-sm;
+
+  svg {
+    fill: $white;
+  }
+}

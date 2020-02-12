@@ -22,13 +22,14 @@ class Nav extends PureComponent {
       isRendered,
       allowNested,
       isMobile,
-      closeMenu
+      closeMenu,
+      activeClassName,
+      theme
     } = this.props;
-
     return (
-      <nav className={cx(styles.navbar, className)}>
+      <nav className={cx(styles.navbar, className, theme.navbar)}>
         <Desktop>
-          <NavLink exact className={styles.link} to="/">
+          <NavLink exact className={cx(styles.link, theme.link)} to="/">
             <Icon className={styles.logo} icon={cwLogo} />
           </NavLink>
         </Desktop>
@@ -40,7 +41,7 @@ class Nav extends PureComponent {
                 reverse={reverse}
                 isRendered={isRendered}
                 title={route.label}
-                className={styles.link}
+                className={cx(styles.link, theme.link)}
                 Child={route.Child}
               />
             );
@@ -49,8 +50,10 @@ class Nav extends PureComponent {
             return (
               <NavLink
                 key={route.path}
-                className={styles.link}
-                activeClassName={hideActive ? '' : styles.active}
+                className={cx(styles.link, theme.link)}
+                activeClassName={
+                  activeClassName || cx({ [styles.active]: !hideActive })
+                }
                 to={route.path}
                 onClick={isMobile ? closeMenu : null}
               >
@@ -72,7 +75,12 @@ class Nav extends PureComponent {
               key={route.label}
               options={route.routes}
               title={route.label}
-              buttonClassName={cx(styles.link, styles.menuLink)}
+              buttonClassName={cx(
+                styles.link,
+                styles.menuLink,
+                theme.link,
+                theme.menuLink
+              )}
               reverse={reverse}
               positionRight
             />
@@ -90,15 +98,18 @@ Nav.propTypes = {
   isRendered: PropTypes.bool,
   routes: PropTypes.array.isRequired,
   className: PropTypes.string,
+  activeClassName: PropTypes.string,
   isMobile: PropTypes.bool,
-  closeMenu: PropTypes.func
+  closeMenu: PropTypes.func,
+  theme: PropTypes.object
 };
 
 Nav.defaultProps = {
   routes: [],
   hideActive: false,
   allowNested: true,
-  isMobile: false
+  isMobile: false,
+  theme: {}
 };
 
 export default Nav;
