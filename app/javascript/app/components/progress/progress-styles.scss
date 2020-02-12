@@ -1,16 +1,26 @@
 @import '~styles/settings';
 
 .progress {
-  width: 101%;
   height: 10px;
   background-color: $gray3;
-  border-radius: 10px;
   border: 1px solid $gray1;
+  border-radius: 10px;
+  overflow: hidden;
 
   .bar {
-    border-radius: 10px;
-    height: 130%;
-    margin-top: -1px;
-    margin-left: -1px;
+    background-clip: content-box;
+    height: 100%;
+    padding-right: 4px;
+    position: relative;
+
+    &:after {
+      content: '';
+      background: inherit;
+      border-radius: 0 10px 10px 0;
+      height: 8px;
+      position: absolute;
+      right: 0;
+      width: 4px;
+    }
   }
 }

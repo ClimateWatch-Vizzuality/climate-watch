@@ -5,16 +5,15 @@ import ReactTooltip from 'react-tooltip';
 import cx from 'classnames';
 import { TabletLandscape } from 'components/responsive';
 import Map from 'components/map';
-import Icon from 'components/icon';
 import ButtonGroup from 'components/button-group';
 import Loading from 'components/loading';
 import ModalMetadata from 'components/modal-metadata';
 import Dropdown from 'components/dropdown';
 import { PieChart } from 'cw-components';
 import CustomTooltip from 'components/ndcs/shared/donut-tooltip';
+import HandIconInfo from 'components/ndcs/shared/hand-icon-info';
 import CustomInnerHoverLabel from 'components/ndcs/shared/donut-custom-label';
 import LegendItem from 'components/ndcs/shared/legend-item';
-import handCursorIcon from 'assets/icons/hand-cursor.svg';
 import ShareButton from 'components/button/share-button';
 
 import layout from 'styles/layout.scss';
@@ -182,18 +181,13 @@ class LTSExploreMap extends PureComponent {
                       </div>
                       <div className={styles.containerMap}>
                         {loading && <Loading light className={styles.loader} />}
-                        <p className={styles.mapInfo}>
-                          <Icon
-                            icon={handCursorIcon}
-                            className={styles.handCursorIcon}
-                          />
-                          <span>
-                            Explore which countries have submitted long-term
+                        <HandIconInfo
+                          className={styles.mapInfo}
+                          text="Explore which countries have submitted long-term
                             strategies thus far below. Visit Climate Watch in
                             the coming months for in-depth analysis of long-term
-                            strategies.
-                          </span>
-                        </p>
+                            strategies."
+                        />
                         <Map
                           paths={paths}
                           tooltipId="lts-map-tooltip"

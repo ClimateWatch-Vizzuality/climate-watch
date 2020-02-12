@@ -1,0 +1,16 @@
+@import '~styles/layout.scss';
+
+.anchorNav {
+  @include row('shrink', $wrap: false);
+}
+
+.title {
+  margin-bottom: 60px;
+}
+
+.content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 500px;
+}
