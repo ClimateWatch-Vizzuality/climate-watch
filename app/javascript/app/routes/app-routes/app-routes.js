@@ -11,6 +11,7 @@ import NDCCountryFull from 'pages/ndc-country-full';
 import NDCCountry from 'pages/ndc-country';
 import LTSCountry from 'pages/lts-country';
 import NDCCompare from 'pages/ndc-compare';
+import NDCCompareAll from 'pages/ndc-compare-all-targets';
 import NDCS from 'pages/ndcs';
 import NDCSEnhancements from 'pages/ndcs-enhancements';
 import NDCSLTS from 'pages/ndcs-lts';
@@ -29,6 +30,7 @@ import SectorsAgriculture from 'pages/sectors-agriculture';
 import LTSExplore from 'pages/lts-explore';
 import NDCSExplore from 'pages/ndcs-explore';
 import NdcOverview from 'pages/ndc-overview';
+import CustomCompare from 'pages/custom-compare';
 
 import { HEADER_GRADIENTS, HEADER_COLORS } from 'styles/constants';
 
@@ -45,6 +47,7 @@ import AboutNestedRoutes from './about-nested-routes';
 import emissionPathwaysRoutes from './emission-pathways-routes';
 import emissionPathwaysModelRoutes from './emission-pathways-model-routes';
 import sectorsRoutes from './sectors-routes';
+import CustomCompareRoutes from './custom-compare-routes';
 
 // sections
 import countrySections from './country-sections';
@@ -61,6 +64,8 @@ import NDCOverviewRoutes from './ndcs-overview-routes';
 
 const FEATURE_AGRICULTURE = process.env.FEATURE_AGRICULTURE === 'true';
 const FEATURE_LTS_EXPLORE = process.env.FEATURE_LTS_EXPLORE === 'true';
+const FEATURE_ALL_COMMITMENTS_MENU_ITEMS =
+  process.env.FEATURE_ALL_COMMITMENTS_MENU_ITEMS === 'true';
 const FEATURE_COMMITMENTS_OVERVIEW =
   process.env.FEATURE_COMMITMENTS_OVERVIEW === 'true';
 
@@ -139,7 +144,13 @@ export default [
     routes: LTSCountryRoutes,
     headerColor: HEADER_COLORS.ndc
   },
-  {
+  FEATURE_COMMITMENTS_OVERVIEW && {
+    path: '/compare-all-targets',
+    component: NDCCompareAll,
+    headerGradient: HEADER_GRADIENTS.commitments,
+    headerColor: HEADER_COLORS.ndc
+  },
+  (!FEATURE_COMMITMENTS_OVERVIEW || FEATURE_ALL_COMMITMENTS_MENU_ITEMS) && {
     path: '/ndcs/compare',
     component: NDCCompare,
     headerGradient: HEADER_GRADIENTS.commitments,
@@ -191,6 +202,12 @@ export default [
     component: NDCSDG,
     exact: true,
     headerGradient: HEADER_GRADIENTS.commitments
+  },
+  FEATURE_COMMITMENTS_OVERVIEW && {
+    path: '/custom-compare',
+    component: CustomCompare,
+    routes: CustomCompareRoutes,
+    headerColor: HEADER_COLORS.ndc
   },
   {
     path: '/countries/:iso',

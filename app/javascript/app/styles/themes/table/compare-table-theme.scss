@@ -1,0 +1,20 @@
+@import '~styles/settings.scss';
+
+.column {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.row {
+  padding-top: 0 !important; // Due to the :global in styles
+  padding-bottom: 0 !important; // Due to the :global in styles
+}
+
+.column {
+  margin-right: 0 !important; // Due to the :global in styles
+}
+
+.oddRow {
+  background-color: $lighter-blue;
+}

@@ -9,6 +9,11 @@ $footer-height: 65px;
   border: solid 1px $gray1;
   height: 100%;
   background-color: $white;
+
+  &.embedNdcp {
+    height: initial;
+    border: none;
+  }
 }
 
 .hasFooter {

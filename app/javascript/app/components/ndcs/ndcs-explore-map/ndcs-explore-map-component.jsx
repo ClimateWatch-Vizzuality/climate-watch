@@ -5,16 +5,15 @@ import ReactTooltip from 'react-tooltip';
 import cx from 'classnames';
 import { TabletLandscape } from 'components/responsive';
 import Map from 'components/map';
-import Icon from 'components/icon';
 import ButtonGroup from 'components/button-group';
 import Loading from 'components/loading';
 import ModalMetadata from 'components/modal-metadata';
 import Dropdown from 'components/dropdown';
 import { PieChart } from 'cw-components';
 import CustomTooltip from 'components/ndcs/shared/donut-tooltip';
+import HandIconInfo from 'components/ndcs/shared/hand-icon-info';
 import CustomInnerHoverLabel from 'components/ndcs/shared/donut-custom-label';
 import LegendItem from 'components/ndcs/shared/legend-item';
-import handCursorIcon from 'assets/icons/hand-cursor.svg';
 import ShareButton from 'components/button/share-button';
 
 import tooltipTheme from 'styles/themes/map-tooltip/map-tooltip.scss';
@@ -183,16 +182,11 @@ class NDCSExploreMap extends PureComponent {
                       </div>
                       <div className={styles.containerMap}>
                         {loading && <Loading light className={styles.loader} />}
-                        <p className={styles.mapInfo}>
-                          <Icon
-                            icon={handCursorIcon}
-                            className={styles.handCursorIcon}
-                          />
-                          <span>
-                            Explore the interactive map to understand which
-                            countries have submitted new or updated NDCs.
-                          </span>
-                        </p>
+                        <HandIconInfo
+                          className={styles.mapInfo}
+                          text="Explore the interactive map to understand which
+                            countries have submitted new or updated NDCs."
+                        />
                         <Map
                           paths={paths}
                           tooltipId="ndcs-map-tooltip"

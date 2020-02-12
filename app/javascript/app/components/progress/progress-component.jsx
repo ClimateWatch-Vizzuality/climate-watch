@@ -9,10 +9,12 @@ const Progress = ({ value, theme, color, className = '' }) => {
   const classNames = cx(className, theme.icon);
   return (
     <div className={cx(styles.progress, classNames)}>
-      <div
-        className={styles.bar}
-        style={{ backgroundColor: color, width: `${value ? value + 1 : 0}%` }}
-      />
+      {!!value && (
+        <div
+          className={styles.bar}
+          style={{ backgroundColor: color, width: `${value ? value + 1 : 0}%` }}
+        />
+      )}
     </div>
   );
 };

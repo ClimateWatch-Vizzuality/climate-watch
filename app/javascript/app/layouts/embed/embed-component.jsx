@@ -16,7 +16,7 @@ class Embed extends PureComponent {
     const link = location.pathname.replace('/embed', '');
     const isNdcp = isPageNdcp(location);
     return (
-      <div className={styles.embed}>
+      <div className={cx(styles.embed, { [styles.embedNdcp]: isNdcp })}>
         <CountriesProvider />
         <div
           className={cx(layout.content, styles.embedContent, {

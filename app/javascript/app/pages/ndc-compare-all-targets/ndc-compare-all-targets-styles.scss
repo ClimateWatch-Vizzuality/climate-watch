@@ -1,0 +1,65 @@
+@import '~styles/layout.scss';
+
+.title {
+  margin-bottom: 64px;
+}
+
+.wrapper {
+  margin-top: 20px;
+}
+
+.handIconInfo {
+  margin-bottom: 80px;
+}
+
+.legendAndActions {
+  @include columns(12);
+
+  > * {
+    @include xy-gutters($gutter-position: ('bottom'));
+  }
+
+  @media #{$tablet-landscape} {
+    @include columns((7, 5));
+  }
+
+  margin-bottom: 20px;
+}
+
+.buttonAndSearch {
+  justify-content: flex-end;
+
+  @include row(12);
+
+  > * {
+    @include xy-gutters($gutter-position: ('bottom'));
+  }
+
+  @media #{$tablet-landscape} {
+    @include columns((6, 6));
+  }
+}
+
+.compareButton {
+  width: 100%;
+
+  @media #{$tablet-landscape} {
+    max-width: 120px;
+    min-width: 120px;
+  }
+}
+
+.legendItem {
+  margin-right: 26px;
+  font-size: $font-size;
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+
+  .submitIcon {
+    margin-right: 10px;
+    height: 30px;
+    width: 30px;
+  }
+}
+
