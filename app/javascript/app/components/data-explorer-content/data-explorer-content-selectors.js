@@ -696,6 +696,7 @@ export const getMethodology = createSelector(
     }
 
     const methodology = meta.methodology;
+    if (!methodology) return null;
     let metaSource = DATA_EXPLORER_METHODOLOGY_SOURCE[section];
     if (sectionHasSources) {
       const selectedSource =
