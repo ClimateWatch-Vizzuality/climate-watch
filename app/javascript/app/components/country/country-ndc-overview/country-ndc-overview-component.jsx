@@ -115,7 +115,9 @@ class CountryNdcOverview extends PureComponent {
                           <CardRow
                             rowData={{
                               title: 'Target year',
-                              value: values.time_target_year[0].value
+                              value:
+                                values.time_target_year &&
+                                values.time_target_year[0].value
                             }}
                           />
                         </React.Fragment>
