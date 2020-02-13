@@ -1,4 +1,4 @@
-import { createElement, useEffect } from 'react';
+import { createElement } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -6,9 +6,6 @@ import qs from 'query-string';
 import { getLocationParamUpdated } from 'utils/navigation';
 import { setColumnWidth as setColumnWidthUtil } from 'utils/table';
 import NDCCompareAllComponent from './ndc-compare-all-targets-component';
-
-import actions from './ndc-compare-all-targets-actions';
-import reducers, { initialState } from './ndc-compare-all-targets-reducers';
 
 import {
   getFilteredDataBySearch,
@@ -30,18 +27,7 @@ const mapStateToProps = (state, { location }) => {
 };
 
 const NDCCompareAllContainer = props => {
-  const {
-    history,
-    location,
-    columns,
-    query,
-    tableData,
-    fetchCompareAll
-  } = props;
-
-  useEffect(() => {
-    fetchCompareAll();
-  }, []);
+  const { history, location, columns, query, tableData } = props;
 
   const setColumnWidth = column =>
     setColumnWidthUtil({
@@ -83,7 +69,6 @@ NDCCompareAllContainer.propTypes = {
   query: PropTypes.string
 };
 
-export { actions, reducers, initialState };
 export default withRouter(
-  connect(mapStateToProps, actions)(NDCCompareAllContainer)
+  connect(mapStateToProps, null)(NDCCompareAllContainer)
 );

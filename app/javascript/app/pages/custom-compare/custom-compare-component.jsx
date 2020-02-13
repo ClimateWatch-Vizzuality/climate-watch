@@ -7,7 +7,7 @@ import Sticky from 'react-stickynode';
 import AnchorNav from 'components/anchor-nav';
 import BackButton from 'components/back-button';
 import Dropdown from 'components/dropdown';
-import NdcCompareAllTargetsProvider from 'providers/ndc-compare-all-targets-provider/ndc-compare-all-targets';
+import NdcCompareAllTargetsProvider from 'providers/ndc-compare-all-targets-provider';
 
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
 
@@ -34,13 +34,12 @@ const FiltersGroup = ({ data, countryPlaceholder, handleFilterChange }) => {
     <div className={styles.filter}>
       <Dropdown
         key={`${countryParam}-filter`}
+        className={styles.dropdown}
         options={contriesOptions}
         onValueChange={({ value }) => handleFilterChange(countryParam, value)}
         value={countryValue}
-        hideResetButton
-        theme={{ dropdown: styles.dropdown }}
         placeholder={countryPlaceholder}
-        className={styles.dropdown}
+        hideResetButton
       />
       <Dropdown
         key={`${documentParam}-filter`}
