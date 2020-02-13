@@ -7,11 +7,10 @@ const NDC = ['First NDC Submitted', 'Second NDC Submitted'];
 const getCountries = state => (state.countries && state.countries.data) || null;
 const getIndicatorsData = state =>
   (state.compareAll.data && state.compareAll.data.indicators) || null;
-
 // export const getLoading = state => state.compareAll.loading || null;
-export const getQuery = (state, { search }) => search || '';
+const getQuery = (state, { search }) => search || '';
 
-export const getCountryOptions = createSelector([getCountries], countries => {
+const getCountryOptions = createSelector([getCountries], countries => {
   if (!countries) return [];
   return countries.map(({ wri_standard_name, iso_code3 }) => ({
     label: wri_standard_name,
@@ -19,11 +18,10 @@ export const getCountryOptions = createSelector([getCountries], countries => {
   }));
 });
 
-//zabezpiecz query
-export const getSelectedCountries = createSelector(
+const getSelectedCountries = createSelector(
   [getCountryOptions, getQuery],
   (countriesData, query) => {
-    if (!countriesData) return null;
+    if (!countriesData && !countriesData.length && !query) return null;
     const { country0, country1, country2 } = query;
     return {
       country0,
@@ -33,7 +31,7 @@ export const getSelectedCountries = createSelector(
   }
 );
 
-export const getSelectedDocuments = createSelector([getQuery], query => {
+const getSelectedDocuments = createSelector([getQuery], query => {
   if (!query) return null;
   const { document0, document1, document2 } = query;
   return {
@@ -43,109 +41,73 @@ export const getSelectedDocuments = createSelector([getQuery], query => {
   };
 });
 
-export const getDocumentsOptionsByCountry = createSelector(
+const getDocumentsOptionsByCountry = createSelector(
   [getSelectedCountries, getIndicatorsData],
   (selectedCountries, indicators) => {
     if (!selectedCountries || !indicators || !indicators.length) return null;
+
     const ndcIndicator = indicators.find(i => i.slug === 'submission');
     const ltsIndicator = indicators.find(i => i.slug === 'lts_submission');
 
-    const rows = Object.keys(selectedCountries).reduce((acc, key) => {
-      if (!selectedCountries[key]) return null;
+    const rows = Object.values(selectedCountries).reduce((acc, country) => {
+      if (!country) return acc;
 
-      const iso = selectedCountries[key];
-
-      const countryNDC = ndcIndicator.locations[iso];
-      const countryLTS = ltsIndicator.locations[iso];
+      const countryNDC = ndcIndicator.locations[country];
+      const countryLTS = ltsIndicator.locations[country];
 
       let documents = [];
 
-      if (INDC.includes(countryNDC.value))
+      if (INDC.includes(countryNDC.value)) {
         documents = [...documents, { label: 'INDC', value: 'INDC' }];
-      if (NDC.includes(countryNDC.value))
+      }
+      if (NDC.includes(countryNDC.value)) {
         documents = [...documents, { label: 'NDC', value: 'NDC' }];
-      if (countryNDC.value === 'Second NDC Submitted')
+      }
+      if (countryNDC.value === 'Second NDC Submitted') {
         documents = [...documents, { label: '2nd NDC', value: '2nd NDC' }];
-      if (countryLTS && countryLTS.value === 'Long-term Strategy Submitted')
+      }
+      if (countryLTS && countryLTS.value === 'Long-term Strategy Submitted') {
         documents = [...documents, { label: 'LTS', value: 'LTS' }];
+      }
 
       return {
         ...acc,
-        [iso]: documents
+        [country]: documents
       };
     }, {});
-    console.log(rows);
     return rows;
   }
 );
 
-// export const getFiltersSelected = createSelector(
-//   [getCountryOptions, getQuery],
-//   (countriesData, query) => {
-//     if (!countriesData) return null;
-//     const { country0, country1, country2 } = query;
-//     return [
-//       {
-//         selectedCountry:
-//           countriesData.find(({ value }) => value === country0),
-//         selectedDocument: null,
-//         key: 'country0'
-//       },
-//       {
-//         selectedCountry:
-//           countriesData.find(({ value }) => value === country1),
-//         selectedDocument: null,
-//         key: 'country1'
-//       },
-//       {
-//         selectedCountry:
-//           countriesData.find(({ value }) => value === country2),
-//         selectedDocument: null,
-//         key: 'country2'
-//       }
-//     ];
-//   }
-// );
-
 export const getFiltersData = createSelector(
-  [getSelectedCountries, getDocumentsOptionsByCountry, getSelectedDocuments],
-  (selectedCountries, documentOptions, selectedDocuments) => {
-    if (!selectedCountries) return null;
-    const filtersData = Object.keys(selectedCountries).map((key, i) => ({
-      index: `${i}`,
-      selectedCountry: selectedCountries[key],
-      documentOptions: documentOptions[selectedCountries[key]],
-      selectedDocument: selectedDocuments[`document${i}`]
+  [
+    getSelectedCountries,
+    getCountryOptions,
+    getSelectedDocuments,
+    getDocumentsOptionsByCountry
+  ],
+  (selectedCountries, countryOptions, selectedDocuments, documentOptions) => {
+    if (!countryOptions || !countryOptions.length || !selectedCountries) {
+      return null;
+    }
+
+    const filtersData = Object.values(selectedCountries).map((country, i) => ({
+      key: `filters-group-${i}`,
+      countryParam: `country${i}`,
+      countryValue: countryOptions.find(({ value }) => country === value),
+      contriesOptions: countryOptions,
+      documentParam: `document${i}`,
+      documentValue:
+        documentOptions &&
+        documentOptions[country] &&
+        documentOptions[country].find(
+          ({ value }) => value === selectedDocuments[`document${i}`]
+        ),
+      documentOptions: documentOptions ? documentOptions[country] : []
     }));
 
     return filtersData;
   }
-  // [getFiltersSelected, getIndicatorsData],
-  // (filters, indicators) => {
-  //   if (!filters || !indicators || !indicators.length) return null;
-
-  //   const ndcIndicator = indicators.find(i => i.slug === 'submission');
-  //   const ltsIndicator = indicators.find(i => i.slug === 'lts_submission');
-
-  //   const rows = filters.reduce((acc, { selectedCountry }) => {
-  //     if (!selectedCountry) return null;
-  //     const countryNDC = ndcIndicator.locations[selectedCountry.value];
-  //     const countryLTS = ltsIndicator.locations[selectedCountry.value];
-
-  //     let documents = [];
-
-  //     if (INDC.includes(countryNDC.value)) documents = [...documents, { label: 'INDC', value: 'INDC' }]
-  //     if (NDC.includes(countryNDC.value)) documents = [...documents, { label: 'NDC', value: 'NDC' }]
-  //     if (countryNDC.value === 'Second NDC Submitted') documents = [...documents, { label: '2nd NDC', value: '2nd NDC' }]
-  //     if (countryLTS && countryLTS.value === 'Long-term Strategy Submitted') documents = [...documents, { label: 'LTS', value: 'LTS' }]
-
-  //     return {
-  //       ...acc,
-  //       [selectedCountry.value]: documents
-  //     };
-  //   }, {});
-  //   console.log(rows);
-  //   return rows;
 );
 
 export const getAnchorLinks = createSelector(
@@ -167,6 +129,4 @@ export default {
   getAnchorLinks,
   getFiltersData,
   getCountryOptions
-  // ,
-  // getFiltersSelected
 };

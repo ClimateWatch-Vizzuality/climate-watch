@@ -6,11 +6,7 @@ import { getLocationParamUpdated } from 'utils/navigation';
 import PropTypes from 'prop-types';
 
 import Component from './custom-compare-component';
-import {
-  getAnchorLinks,
-  getFiltersData,
-  getCountryOptions
-} from './custom-compare-selectors';
+import { getAnchorLinks, getFiltersData } from './custom-compare-selectors';
 
 const mapStateToProps = (state, { location, route }) => {
   const search = qs.parse(location.search);
@@ -21,25 +17,19 @@ const mapStateToProps = (state, { location, route }) => {
 
   return {
     anchorLinks: getAnchorLinks(routeData),
-    filtersData: getFiltersData(state, { search }),
-    countryOptions: getCountryOptions(state)
-    // ,
-    // filtersSelected: getFiltersSelected(state, { search })
+    filtersData: getFiltersData(state, { search })
   };
 };
 
 const CustomCompare = props => {
   const { history } = props;
 
-  const updateUrlParam = (param, clear) => {
-    history.replace(getLocationParamUpdated(location, param, clear));
+  const handleFilterChange = (name, value) => {
+    const params = { name, value };
+    history.replace(getLocationParamUpdated(location, params));
   };
 
-  const handleSearchChange = newParams => {
-    updateUrlParam(newParams);
-  };
-
-  return <Component {...props} handleCountryChange={handleSearchChange} />;
+  return <Component {...props} handleFilterChange={handleFilterChange} />;
 };
 
 CustomCompare.propTypes = {

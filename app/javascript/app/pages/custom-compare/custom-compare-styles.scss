@@ -29,10 +29,11 @@
     grid-template-rows: auto;
     grid-gap: unset;
     margin: unset;
+    min-height: 174px;
   }
 
   @media #{$desktop} {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: 0.6fr repeat(3, 1fr);
 
     > :nth-child(1) {
       grid-column: 2 / 3;
@@ -81,6 +82,11 @@
     .value-wrapper {
       font-weight: bold;
       font-size: $font-size-large;
+    }
+
+    .react-selectize-placeholder {
+      font-size: $font-size-large;
+      font-weight: bold;
     }
   }
 }

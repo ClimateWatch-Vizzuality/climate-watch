@@ -14,54 +14,48 @@ import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.s
 import layout from 'styles/layout.scss';
 import styles from './custom-compare-styles.scss';
 
-const tempOptions = [
-  { label: 'Option 1', value: 'option1' },
-  { label: 'Option 2', value: 'option2' },
-  { label: 'Option 3', value: 'option3' },
-  { label: 'Option 4', value: 'option4' }
+const COUNTRY_PLACEHOLDERS = [
+  'Add a first country',
+  'Add a second country',
+  'Add a third country'
 ];
 
-const FiltersGroup = ({ index, selectedCountry, selectedDocument, countryOptions, documentOptions, handleCountryChange }) => (
-  <div className={styles.filter}>
-    <Dropdown
-      key={`${index}-country`}
-      label=""
-      options={countryOptions}
-      onValueChange={({ value }) => {
-        // console.log('new params:',{ name: data.key, value })
-        handleCountryChange({ name: data.key, value });
-      }}
-      value={selectedCountry}
-      hideResetButton
-      theme={{ dropdown: styles.dropdown }}
-      className={styles.dropdown}
-    />
-    <Dropdown
-      key={`${index}-document`}
-      label=""
-      options={documentOptions}
-      onValueChange={() => {}}
-      value={selectedDocument}
-      hideResetButton
-    />
-  </div>
-);
+const FiltersGroup = ({ data, countryPlaceholder, handleFilterChange }) => {
+  const {
+    countryParam,
+    countryValue,
+    contriesOptions,
+    documentParam,
+    documentValue,
+    documentOptions
+  } = data;
 
-FiltersGroup.propTypes = {
-  index: PropTypes.string.isRequired,
-  countryOptions: PropTypes.array,
-  data: PropTypes.object,
-  handleCountryChange: PropTypes.func
+  return (
+    <div className={styles.filter}>
+      <Dropdown
+        key={`${countryParam}-filter`}
+        options={contriesOptions}
+        onValueChange={({ value }) => handleFilterChange(countryParam, value)}
+        value={countryValue}
+        hideResetButton
+        theme={{ dropdown: styles.dropdown }}
+        placeholder={countryPlaceholder}
+        className={styles.dropdown}
+      />
+      <Dropdown
+        key={`${documentParam}-filter`}
+        options={documentOptions}
+        onValueChange={({ value }) => handleFilterChange(documentParam, value)}
+        value={documentValue}
+        placeholder="Choose a submission"
+        hideResetButton
+      />
+    </div>
+  );
 };
 
 const CustomComparisonComponent = props => {
-  const {
-    route,
-    anchorLinks,
-    countryOptions,
-    handleCountryChange,
-    filtersData
-  } = props;
+  const { route, anchorLinks, handleFilterChange, filtersData } = props;
   return (
     <div>
       <Header route={route}>
@@ -87,15 +81,12 @@ const CustomComparisonComponent = props => {
         <div className={styles.content}>
           <div className={styles.filters}>
             {filtersData &&
-              filtersData.map(({ index, selectedCountry, selectedDocument, documentOptions }) => (
+              filtersData.map((data, i) => (
                 <FiltersGroup
-                  key={`filters-group-${index}`}
-                  selectedCountry={selectedCountry}
-                  selectedDocument={selectedDocument}
-                  countryOptions={countryOptions}
-                  documentOptions={documentOptions}
-                  // documentOptions={filtersData}
-                  handleCountryChange={handleCountryChange}
+                  key={data.key}
+                  data={data}
+                  countryPlaceholder={COUNTRY_PLACEHOLDERS[i]}
+                  handleFilterChange={handleFilterChange}
                 />
               ))}
           </div>
@@ -109,12 +100,40 @@ const CustomComparisonComponent = props => {
   );
 };
 
+FiltersGroup.propTypes = {
+  data: PropTypes.shape({
+    countryParam: PropTypes.string,
+    countryValue: PropTypes.shape({
+      label: PropTypes.string,
+      value: PropTypes.string
+    }),
+    contriesOptions: PropTypes.arrayOf(
+      PropTypes.shape({
+        label: PropTypes.string,
+        value: PropTypes.string
+      })
+    ),
+    documentParam: PropTypes.string,
+    documentValue: PropTypes.shape({
+      label: PropTypes.string,
+      value: PropTypes.string
+    }),
+    documentOptions: PropTypes.arrayOf(
+      PropTypes.shape({
+        label: PropTypes.string,
+        value: PropTypes.string
+      })
+    )
+  }),
+  countryPlaceholder: PropTypes.string,
+  handleFilterChange: PropTypes.func
+};
+
 CustomComparisonComponent.propTypes = {
   route: PropTypes.object.isRequired,
   anchorLinks: PropTypes.array,
-  filtersSelected: PropTypes.array,
-  countryOptions: PropTypes.array,
-  handleCountryChange: PropTypes.func
+  filtersData: PropTypes.object,
+  handleFilterChange: PropTypes.func
 };
 
 export default CustomComparisonComponent;
