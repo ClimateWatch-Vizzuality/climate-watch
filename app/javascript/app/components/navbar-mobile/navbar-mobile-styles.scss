@@ -49,7 +49,7 @@
   }
 
   svg {
-    fill: $white;
+    display: none;
   }
 }
 
@@ -78,4 +78,10 @@
 
 .active {
   background-color: lighten($theme-color, 10%);
+}
+
+.separator {
+  width: 50px;
+  border-top: 1px solid $white;
+  margin: 25px auto;
 }

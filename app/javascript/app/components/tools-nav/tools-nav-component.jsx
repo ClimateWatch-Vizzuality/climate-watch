@@ -19,7 +19,13 @@ const activeProps = location => ({
 const renderDataExplorerLink = (location, onClick, theme) => (
   <NavLink
     key={'data-explorer'}
-    className={cx(styles.link, styles.noWrap, styles.linkWithIcon, theme.link)}
+    className={cx(
+      styles.link,
+      styles.noWrap,
+      styles.linkWithIcon,
+      theme.link,
+      theme.linkWithIcon
+    )}
     to="/data-explorer"
     title="Data Explorer"
     onClick={onClick}

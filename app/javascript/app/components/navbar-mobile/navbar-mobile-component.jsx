@@ -31,6 +31,7 @@ const NavBarMobile = ({ closeMenu, hamburgerIsOpen, routes }) => (
             activeClassName={styles.active}
             isMobile
           />
+          <div className={styles.separator} />
           <div className={styles.toolsContainer}>
             <ToolsNav
               className={styles.tools}

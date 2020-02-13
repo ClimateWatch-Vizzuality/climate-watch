@@ -14,6 +14,9 @@
 
   > svg {
     fill: $white;
+    order: 1;
+    margin-left: 10px;
+    height: 12px;
   }
 }
 
@@ -21,7 +24,15 @@
   color: $white;
   font-size: $font-size-sm;
 
-  svg {
+  > svg {
     fill: $white;
+  }
+}
+
+.linkWithIcon {
+  > svg {
+    order: 1;
+    margin-left: 10px;
+    height: 12px;
   }
 }
