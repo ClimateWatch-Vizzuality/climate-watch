@@ -5,11 +5,16 @@
   padding-bottom: 40px;
   background-color: transparent;
   text-transform: uppercase;
+  font-size: $font-size-s;
   font-weight: $font-weight-bold;
   color: $white;
 
   &:hover {
     background-color: transparent;
+  }
+
+  > span {
+    display: block;
   }
 
   > svg {
@@ -31,7 +36,6 @@
 
 .linkWithIcon {
   > svg {
-    order: 1;
     margin-left: 10px;
     height: 12px;
   }

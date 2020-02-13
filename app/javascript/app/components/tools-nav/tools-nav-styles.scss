@@ -8,8 +8,21 @@
 }
 
 .shareButton {
-  @media #{$desktop} {
-    margin-left: 15px;
+  margin-left: 15px;
+  background-color: transparent;
+  padding: 0;
+
+  > svg {
+    height: 12px;
+    fill: $theme-color;
+  }
+
+  > span {
+    display: none;
+  }
+
+  &:hover {
+    background-color: transparent;
   }
 }
 
@@ -18,7 +31,7 @@
 }
 
 .iconButton {
-  fill: $gray1;
+  fill: $theme-color;
   padding: 22px 15px 0;
 
   &.active {
@@ -27,7 +40,7 @@
 }
 
 .downloadIcon {
-  margin-right: 5px;
+  margin-left: 10px;
 }
 
 .linkWithIcon {
@@ -36,16 +49,16 @@
 }
 
 .link {
-  color: $gray1;
+  color: $theme-color;
   margin-left: 25px;
   text-decoration: none;
   position: relative;
-  letter-spacing: 1px;
+  letter-spacing: $letter-spacing-wide;
   font-weight: $font-weight-bold;
   font-size: $font-size-s;
 
   svg {
-    fill: $gray1;
+    fill: $theme-color;
   }
 
   &.disabled {

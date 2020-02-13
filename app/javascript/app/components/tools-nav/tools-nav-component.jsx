@@ -1,12 +1,10 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import ShareMenu from 'components/share-menu';
 import ShareButton from 'components/button/share-button';
 import Icon from 'components/icon';
 import downloadIcon from 'assets/icons/download.svg';
 import cx from 'classnames';
 import PropTypes from 'prop-types';
-import { TabletPortrait, MobileOnly } from 'components/responsive';
 import styles from './tools-nav-styles.scss';
 
 const mycwLinkConfig = { to: '/my-climate-watch', title: 'My climate watch' };
@@ -31,8 +29,8 @@ const renderDataExplorerLink = (location, onClick, theme) => (
     onClick={onClick}
     {...activeProps(location)}
   >
-    <Icon icon={downloadIcon} className={styles.downloadIcon} />
     <span>DATA EXPLORER</span>
+    <Icon icon={downloadIcon} className={styles.downloadIcon} />
   </NavLink>
 );
 const renderMyCWLink = (location, onClick, theme) => (
@@ -47,7 +45,7 @@ const renderMyCWLink = (location, onClick, theme) => (
   </NavLink>
 );
 const ToolsNav = props => {
-  const { className, closeMenu, location, reverse, theme } = props;
+  const { className, closeMenu, location, theme } = props;
   const { pathname, search } = location;
   return (
     <div className={cx(styles.toolsNav, className, theme.toolsNav)}>
@@ -55,24 +53,12 @@ const ToolsNav = props => {
         renderMyCWLink(location, closeMenu, theme),
         renderDataExplorerLink(location, closeMenu, theme)
       ]}
-      <TabletPortrait>
-        <ShareMenu
-          className={cx(
-            styles.iconButton,
-            styles.shareButton,
-            theme.shareButton
-          )}
-          reverse={reverse}
-        />
-      </TabletPortrait>
-      <MobileOnly>
-        <ShareButton
-          onClick={closeMenu}
-          className={cx(styles.shareButton, theme.shareButton)}
-          analyticsName="Main menu"
-          sharePath={`/embed/${pathname}${search}`}
-        />
-      </MobileOnly>
+      <ShareButton
+        onClick={closeMenu}
+        className={cx(styles.shareButton, theme.shareButton)}
+        analyticsName="Main menu"
+        sharePath={`/embed/${pathname}${search}`}
+      />
     </div>
   );
 };
@@ -80,7 +66,6 @@ const ToolsNav = props => {
 ToolsNav.propTypes = {
   className: PropTypes.string,
   theme: PropTypes.object,
-  reverse: PropTypes.bool,
   location: PropTypes.object,
   closeMenu: PropTypes.func
 };
