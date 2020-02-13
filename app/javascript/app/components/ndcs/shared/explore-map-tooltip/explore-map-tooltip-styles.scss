@@ -1,0 +1,16 @@
+@import '~styles/settings.scss';
+
+.tooltipButton {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  text-align: left;
+}
+
+.tooltipCountry {
+  margin-bottom: 5px;
+}
+
+.tooltipValue {
+  font-size: $font-size-sm;
+}

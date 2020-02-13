@@ -207,6 +207,29 @@ export const getLegend = createSelector(
   }
 );
 
+export const getTooltipCountryValues = createSelector(
+  [getIndicatorsData, getSelectedIndicator],
+  (indicators, selectedIndicator) => {
+    if (!indicators || !selectedIndicator) {
+      return null;
+    }
+    const emissionsIndicator = indicators.find(i => i.slug === 'ndce_ghg');
+    const tooltipCountryValues = {};
+    Object.keys(selectedIndicator.locations).forEach(iso => {
+      const labelId =
+        selectedIndicator.locations[iso] &&
+        selectedIndicator.locations[iso].label_id;
+      tooltipCountryValues[iso] = {
+        value: labelId && selectedIndicator.legendBuckets[labelId].name,
+        emissionsValue:
+          emissionsIndicator.locations[iso] &&
+          emissionsIndicator.locations[iso].value
+      };
+    });
+    return tooltipCountryValues;
+  }
+);
+
 export const getEmissionsCardData = createSelector(
   [getLegend, getMapIndicator, getIndicatorsData],
   (legend, selectedIndicator, indicators) => {
@@ -227,6 +250,7 @@ export const getEmissionsCardData = createSelector(
       hideLabel: true,
       hideLegend: true,
       innerHoverLabel: true,
+      minAngle: 3,
       ...getLabels(legend)
     };
 
