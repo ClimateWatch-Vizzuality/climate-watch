@@ -14,6 +14,7 @@ import HandIconInfo from 'components/ndcs/shared/hand-icon-info';
 import CustomInnerHoverLabel from 'components/ndcs/shared/donut-custom-label';
 import LegendItem from 'components/ndcs/shared/legend-item';
 import ShareButton from 'components/button/share-button';
+import ModalShare from 'components/modal-share';
 
 import newMapTheme from 'styles/themes/map/map-new-zoom-controls.scss';
 import layout from 'styles/layout.scss';
@@ -39,6 +40,7 @@ const renderButtonGroup = (clickHandler, downloadLink) => (
       ]}
     />
     <ShareButton analyticsName="NDC Explore" sharePath="/embed/ndcs-explore" />
+    <ModalShare />
   </div>
 );
 

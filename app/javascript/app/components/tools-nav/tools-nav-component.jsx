@@ -1,6 +1,5 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import ShareButton from 'components/button/share-button';
 import Icon from 'components/icon';
 import downloadIcon from 'assets/icons/download.svg';
 import cx from 'classnames';
@@ -46,19 +45,12 @@ const renderMyCWLink = (location, onClick, theme) => (
 );
 const ToolsNav = props => {
   const { className, closeMenu, location, theme } = props;
-  const { pathname, search } = location;
   return (
     <div className={cx(styles.toolsNav, className, theme.toolsNav)}>
       {[
         renderMyCWLink(location, closeMenu, theme),
         renderDataExplorerLink(location, closeMenu, theme)
       ]}
-      <ShareButton
-        onClick={closeMenu}
-        className={cx(styles.shareButton, theme.shareButton)}
-        analyticsName="Main menu"
-        sharePath={`/embed/${pathname}${search}`}
-      />
     </div>
   );
 };

@@ -40,6 +40,7 @@ const renderButtonGroup = clickHandler => (
       ]}
     />
     <ShareButton analyticsName="LTS Explore" sharePath="/embed/lts-explore" />
+    <ModalShare />
   </div>
 );
 

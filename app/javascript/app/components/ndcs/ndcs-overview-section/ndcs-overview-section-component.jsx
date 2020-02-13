@@ -4,6 +4,7 @@ import cx from 'classnames';
 import { isEmbededComponent } from 'utils/navigation';
 import layout from 'styles/layout.scss';
 import ShareButton from 'components/button/share-button';
+import ModalShare from 'components/modal-share';
 import styles from './ndcs-overview-section-styles.scss';
 import QuestionCard from './question-card';
 
@@ -42,6 +43,7 @@ const NdcsOverviewSection = ({ data, section, location, handleInfoClick }) => {
               analyticsName="NDC Overview"
               sharePath={`/embed/ndc-overview/${section}`}
             />
+            <ModalShare />
             {questions.map(question => (
               <QuestionCard
                 key={`${question.slug}${question.questionText}`}
