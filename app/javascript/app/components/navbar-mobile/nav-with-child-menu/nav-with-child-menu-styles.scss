@@ -29,6 +29,6 @@
 }
 
 .active {
-  background-color: lighten($theme-color, 10%);
+  background-color: $theme-color-bright;
 }
 

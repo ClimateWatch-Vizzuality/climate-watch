@@ -10,7 +10,7 @@ import styles from './contact-styles.scss';
 const Contact = ({ className }) => (
   <div className={cx(styles.contactContainer, className)}>
     <a className={styles.contact} href="mailto:climatewatch@wri.org">
-      CONTACT US
+      Contact us
     </a>
     <Icon icon={contactIcon} />
   </div>

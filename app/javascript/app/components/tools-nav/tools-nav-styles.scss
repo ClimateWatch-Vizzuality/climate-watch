@@ -17,10 +17,6 @@
     fill: $theme-color;
   }
 
-  > span {
-    display: none;
-  }
-
   &:hover {
     background-color: transparent;
   }
@@ -41,6 +37,15 @@
 
 .downloadIcon {
   margin-left: 10px;
+  fill: $theme-color;
+}
+
+.titleWrapper {
+  display: flex;
+}
+
+.title {
+  text-transform: uppercase;
 }
 
 .linkWithIcon {
@@ -56,10 +61,6 @@
   letter-spacing: $letter-spacing-wide;
   font-weight: $font-weight-bold;
   font-size: $font-size-s;
-
-  svg {
-    fill: $theme-color;
-  }
 
   &.disabled {
     cursor: not-allowed;
@@ -90,4 +91,14 @@
 
 .noWrap {
   white-space: nowrap;
+}
+
+.arrowIcon {
+  display: none;
+  fill: $white;
+  transform: rotate(-90deg);
+}
+
+.myCWButton {
+  text-transform: uppercase;
 }

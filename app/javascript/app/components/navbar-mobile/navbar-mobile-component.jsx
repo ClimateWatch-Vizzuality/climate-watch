@@ -38,8 +38,8 @@ const NavBarMobile = ({ closeMenu, hamburgerIsOpen, routes }) => (
               theme={mobileToolsNavTheme}
               reverse
             />
-            <Contact className={styles.menuContact} />
           </div>
+          <Contact className={styles.menuContact} />
         </div>
       </div>
     )}

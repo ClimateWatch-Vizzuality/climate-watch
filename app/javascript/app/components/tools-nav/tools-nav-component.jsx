@@ -4,6 +4,7 @@ import Icon from 'components/icon';
 import downloadIcon from 'assets/icons/download.svg';
 import cx from 'classnames';
 import PropTypes from 'prop-types';
+import arrow from 'assets/icons/arrow-down-tiny.svg';
 import styles from './tools-nav-styles.scss';
 
 const mycwLinkConfig = { to: '/my-climate-watch', title: 'My climate watch' };
@@ -28,19 +29,32 @@ const renderDataExplorerLink = (location, onClick, theme) => (
     onClick={onClick}
     {...activeProps(location)}
   >
-    <span>DATA EXPLORER</span>
-    <Icon icon={downloadIcon} className={styles.downloadIcon} />
+    <span className={styles.titleWrapper}>
+      <span className={cx(styles.title, theme.title)}>Data explorer</span>
+      <Icon
+        icon={downloadIcon}
+        className={cx(styles.downloadIcon, theme.downloadIcon)}
+      />
+    </span>
+    <Icon icon={arrow} className={cx(styles.arrowIcon, theme.arrowIcon)} />
   </NavLink>
 );
 const renderMyCWLink = (location, onClick, theme) => (
   <NavLink
     key={'my-climate-watch'}
-    className={cx(styles.link, styles.noWrap, styles.myCwButton, theme.link)}
+    className={cx(
+      styles.link,
+      styles.noWrap,
+      styles.myCwButton,
+      theme.link,
+      theme.myCwButton
+    )}
     {...mycwLinkConfig}
     onClick={onClick}
     {...activeProps(location)}
   >
-    MY CW
+    <span className={cx(styles.title, theme.title)}>My CW</span>
+    <Icon icon={arrow} className={cx(styles.arrowIcon, theme.arrowIcon)} />
   </NavLink>
 );
 const ToolsNav = props => {

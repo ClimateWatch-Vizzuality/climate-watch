@@ -32,7 +32,6 @@
 .navigation {
   overflow: auto;
   background-color: $theme-color;
-  text-align: center;
   height: calc(100vh - #{$gutter-padding * 2});
   padding-top: 30px;
 
@@ -41,15 +40,22 @@
 
 .menuContact {
   width: 100%;
-  display: block;
-  padding: 25px 0;
+  display: flex;
+  padding: 10px 30px 40px;
+  justify-content: flex-start;
+  text-transform: initial;
 
   > a {
     color: $white;
+    font-size: $font-size;
+    text-transform: initial;
+    order: 1;
   }
 
-  svg {
-    display: none;
+  > svg {
+    margin-right: 15px;
+    order: 0;
+    fill: $white;
   }
 }
 
@@ -57,11 +63,11 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  flex-direction: column-reverse;
 }
 
 .tools {
   border: none;
+  height: 100%;
 
   > :first-child {
     margin-left: 0;
@@ -69,19 +75,18 @@
 
   flex-direction: column;
   width: 100%;
-  margin-bottom: 20px;
 
   > a {
-    margin: 25px 0;
+    padding: 10px 30px;
   }
 }
 
 .active {
-  background-color: lighten($theme-color, 10%);
+  background-color: $theme-color-bright;
 }
 
 .separator {
   width: 50px;
   border-top: 1px solid $white;
-  margin: 25px auto;
+  margin: 10px 30px 35px;
 }

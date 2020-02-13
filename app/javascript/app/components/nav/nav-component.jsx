@@ -5,6 +5,7 @@ import cx from 'classnames';
 
 import { Desktop } from 'components/responsive';
 import Icon from 'components/icon';
+import arrow from 'assets/icons/arrow-down-tiny.svg';
 import SimpleMenu from 'components/simple-menu';
 import NavNestedMenu from 'components/nav/nav-nested-menu';
 import NavWithChildMenu from 'components/navbar-mobile/nav-with-child-menu';
@@ -50,14 +51,18 @@ class Nav extends PureComponent {
             return (
               <NavLink
                 key={route.path}
-                className={cx(styles.link, theme.link)}
+                className={cx(styles.link, theme.link, theme.mainLink)}
                 activeClassName={
                   activeClassName || cx({ [styles.active]: !hideActive })
                 }
                 to={route.path}
                 onClick={isMobile ? closeMenu : null}
               >
-                {route.label}
+                <span>{route.label}</span>
+                <Icon
+                  icon={arrow}
+                  className={cx(styles.arrowIcon, theme.arrowIcon)}
+                />
               </NavLink>
             );
           }
@@ -67,6 +72,7 @@ class Nav extends PureComponent {
                 key={route.label}
                 options={route.routes}
                 title={route.label}
+                theme={theme}
               />
             );
           }
