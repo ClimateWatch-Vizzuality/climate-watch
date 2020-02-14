@@ -7,7 +7,6 @@ const NDC = ['First NDC Submitted', 'Second NDC Submitted'];
 const getCountries = state => (state.countries && state.countries.data) || null;
 const getIndicatorsData = state =>
   (state.compareAll.data && state.compareAll.data.indicators) || null;
-// export const getLoading = state => state.compareAll.loading || null;
 const getQuery = (state, { search }) => search || '';
 
 const getCountryOptions = createSelector([getCountries], countries => {
