@@ -41,7 +41,8 @@
 }
 
 .arrowIcon {
-  fill: $white;
   display: block;
   height: 5px;
+  fill: $gray1;
+  transform: rotate(-90deg);
 }

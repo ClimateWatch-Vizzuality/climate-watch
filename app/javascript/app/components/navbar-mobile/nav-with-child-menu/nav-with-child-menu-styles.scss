@@ -18,7 +18,8 @@
 }
 
 .link {
-  display: block;
+  display: flex;
+  justify-content: space-between;
   padding: 25px 0;
   font-size: $font-size-sm;
   font-weight: $font-weight-bold;
@@ -30,5 +31,11 @@
 
 .active {
   background-color: $theme-color-bright;
+}
+
+.arrowIcon {
+  display: block;
+  fill: $gray1;
+  transform: rotate(-90deg);
 }
 
