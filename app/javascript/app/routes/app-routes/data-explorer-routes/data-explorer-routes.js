@@ -49,5 +49,15 @@ export default [
       }),
     anchor: true,
     exact: true
+  },
+  {
+    label: 'LTS Content',
+    path: '/data-explorer/lts-content',
+    component: () =>
+      createElement(DataExplorerContent, {
+        section: 'ndc-content'
+      }),
+    anchor: true,
+    exact: true
   }
 ];
