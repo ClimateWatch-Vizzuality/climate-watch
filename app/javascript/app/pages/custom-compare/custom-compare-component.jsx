@@ -131,7 +131,7 @@ FiltersGroup.propTypes = {
 CustomComparisonComponent.propTypes = {
   route: PropTypes.object.isRequired,
   anchorLinks: PropTypes.array,
-  filtersData: PropTypes.object,
+  filtersData: PropTypes.array,
   handleFilterChange: PropTypes.func
 };
 
