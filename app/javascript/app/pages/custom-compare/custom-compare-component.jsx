@@ -40,6 +40,7 @@ const FiltersGroup = ({ data, countryPlaceholder, handleFilterChange }) => {
         value={countryValue}
         placeholder={countryPlaceholder}
         hideResetButton
+        noAutoSort
       />
       <Dropdown
         key={`${documentParam}-filter`}
@@ -48,6 +49,7 @@ const FiltersGroup = ({ data, countryPlaceholder, handleFilterChange }) => {
         value={documentValue}
         placeholder="Choose a submission"
         hideResetButton
+        noAutoSort
       />
     </div>
   );
