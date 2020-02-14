@@ -6,7 +6,13 @@ import cx from 'classnames';
 import arrow from 'assets/icons/arrow-down-tiny.svg';
 import styles from './nav-with-child-menu-styles.scss';
 
-const NavWithChildMenu = ({ title, options, closeMenu, theme }) => (
+const NavWithChildMenu = ({
+  title,
+  options,
+  closeMenu,
+  theme,
+  activeClassName
+}) => (
   <div className={cx(styles.container, theme.navWithChildContainer)}>
     <div className={cx(styles.title, theme.title)}>{title}:</div>
     {options.map(option => (
@@ -15,7 +21,7 @@ const NavWithChildMenu = ({ title, options, closeMenu, theme }) => (
         to={option.path}
         onClick={closeMenu}
         className={cx(styles.link, theme.link)}
-        activeClassName={styles.active}
+        activeClassName={activeClassName || styles.active}
       >
         {option.label.toUpperCase()}
         <Icon icon={arrow} className={cx(styles.arrowIcon, theme.arrowIcon)} />
@@ -28,7 +34,8 @@ NavWithChildMenu.propTypes = {
   options: PropTypes.array.isRequired,
   title: PropTypes.string,
   closeMenu: PropTypes.func,
-  theme: PropTypes.obje
+  theme: PropTypes.object,
+  activeClassName: PropTypes.string
 };
 
 NavWithChildMenu.defaultProps = {

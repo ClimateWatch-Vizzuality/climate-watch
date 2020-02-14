@@ -20,6 +20,7 @@
 .link {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding: 25px 0;
   font-size: $font-size-sm;
   font-weight: $font-weight-bold;
@@ -27,10 +28,6 @@
   letter-spacing: $letter-spacing-wide;
   color: $white;
   width: 100%;
-}
-
-.active {
-  background-color: $theme-color-bright;
 }
 
 .arrowIcon {

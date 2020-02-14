@@ -74,6 +74,7 @@ class Nav extends PureComponent {
                 options={route.routes}
                 title={route.label}
                 theme={theme}
+                activeClassName={activeClassName}
               />
             );
           }
