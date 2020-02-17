@@ -60,7 +60,7 @@ class NDCCountry extends PureComponent {
           variant="primary"
           link={`/ndcs/compare/mitigation?locations=${match.params.iso}`}
         >
-          {'Compare'}
+          Compare
         </Button>
       );
     }
@@ -71,7 +71,7 @@ class NDCCountry extends PureComponent {
           link={`/ndcs/compare/mitigation?locations=${match.params.iso}`}
           className={styles.compareButton}
         >
-          Compare countries and submissions
+          Compare Countries and Submissions
         </Button>
       </div>
     );

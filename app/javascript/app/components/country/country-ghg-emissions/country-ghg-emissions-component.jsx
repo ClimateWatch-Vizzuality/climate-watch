@@ -94,7 +94,7 @@ class CountryGhgEmissions extends PureComponent {
         link={isNdcp ? null : link}
         onClick={handleAnalyticsClick}
       >
-        Explore emissions
+        Explore Emissions
       </Button>
     ];
   }

@@ -46,7 +46,7 @@ class LTSCountry extends PureComponent {
           className={styles.compareButton}
           disabled
         >
-          Compare countries and submissions
+          Compare Countries and Submissions
         </Button>
       </div>
     );
