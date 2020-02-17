@@ -224,11 +224,10 @@ export const getTooltipCountryValues = createSelector(
     const emissionsIndicator = indicators.find(i => i.slug === 'lts_ghg');
     const tooltipCountryValues = {};
     Object.keys(selectedIndicator.locations).forEach(iso => {
-      const labelId =
-        selectedIndicator.locations[iso] &&
-        selectedIndicator.locations[iso].label_id;
       tooltipCountryValues[iso] = {
-        value: labelId && selectedIndicator.legendBuckets[labelId].name,
+        value:
+          selectedIndicator.locations[iso] &&
+          selectedIndicator.locations[iso].value,
         emissionsValue:
           emissionsIndicator.locations[iso] &&
           emissionsIndicator.locations[iso].value

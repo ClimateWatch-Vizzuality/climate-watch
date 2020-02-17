@@ -26,13 +26,13 @@ export const getIndicatorsParsed = createSelector(
   [getCategories, getIndicatorsData, getISOCountries],
   (categories, indicators, isos) => {
     if (!categories || !indicators || !indicators.length) return null;
-
     const categoryIds = Object.keys(categories).filter(
       // Need to get the NDC Enhancement data category to borrow the emissions figure from that dataset for consistency
       id =>
         categories[id].slug === 'longterm_strategy' ||
         categories[id].slug === 'ndc_enhancement' ||
-        (FEATURE_LTS_UPDATED_DATA && categories[id].slug === 'overview')
+        (FEATURE_LTS_UPDATED_DATA &&
+          categories[id].slug === 'summary_information')
     );
     const preppedIndicators = sortBy(
       uniqBy(
@@ -54,6 +54,7 @@ export const getIndicatorsParsed = createSelector(
       ),
       'label'
     );
+
     let filteredIndicators = [];
     categoryIds.forEach(id => {
       filteredIndicators = filteredIndicators.concat(
@@ -62,6 +63,7 @@ export const getIndicatorsParsed = createSelector(
         )
       );
     });
+
     return filteredIndicators;
   }
 );

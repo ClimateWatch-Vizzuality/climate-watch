@@ -66,10 +66,10 @@ class NDCSLTSVizContainer extends PureComponent {
     if (!geometryIdHover || !indicator) return '';
 
     const id = geometryIdHover;
-
     const targetIndicator = indicators.find(i => i.value === 'lts_target');
 
     if (
+      targetIndicator &&
       indicator.locations &&
       indicator.locations[id] &&
       indicator.locations[id].value === 'Long-term Strategy Submitted'
