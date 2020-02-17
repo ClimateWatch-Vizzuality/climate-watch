@@ -14,6 +14,7 @@ import CustomInnerHoverLabel from 'components/ndcs/shared/donut-custom-label';
 import LegendItem from 'components/ndcs/shared/legend-item';
 import ShareButton from 'components/button/share-button';
 import ExploreMapTooltip from 'components/ndcs/shared/explore-map-tooltip';
+import ModalShare from 'components/modal-share';
 
 import layout from 'styles/layout.scss';
 import newMapTheme from 'styles/themes/map/map-new-zoom-controls.scss';
