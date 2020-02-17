@@ -221,14 +221,18 @@ export const getTooltipCountryValues = createSelector(
     if (!indicators || !selectedIndicator) {
       return null;
     }
+    let updatedSelectedIndicator = selectedIndicator;
+    if (selectedIndicator.value === 'lts_submission') {
+      updatedSelectedIndicator = indicators.find(i => i.slug === 'lts_target');
+    }
+
     const emissionsIndicator = indicators.find(i => i.slug === 'lts_ghg');
     const tooltipCountryValues = {};
-    Object.keys(selectedIndicator.locations).forEach(iso => {
-      const labelId =
-        selectedIndicator.locations[iso] &&
-        selectedIndicator.locations[iso].label_id;
+    Object.keys(updatedSelectedIndicator.locations).forEach(iso => {
       tooltipCountryValues[iso] = {
-        value: labelId && selectedIndicator.legendBuckets[labelId].name,
+        value:
+          updatedSelectedIndicator.locations[iso] &&
+          updatedSelectedIndicator.locations[iso].value,
         emissionsValue:
           emissionsIndicator.locations[iso] &&
           emissionsIndicator.locations[iso].value

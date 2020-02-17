@@ -4,9 +4,10 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  //to correct padding: 8px 21px; fromreact-tooltip componet
+  // to correct padding from react-tooltip component
   margin: 7px -6px;
   pointer-events: all;
+  text-transform: initial;
 }
 
 .info {
