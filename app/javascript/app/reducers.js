@@ -102,6 +102,7 @@ import * as autocompleteSearchComponent from 'components/autocomplete-search';
 import * as countrySelectComponent from 'components/countries-select';
 import * as modalDownloadComponent from 'components/modal-download';
 import * as modalMetadataComponent from 'components/modal-metadata';
+import * as shareModalComponent from 'components/modal-share';
 import * as modalESPOverviewComponent from 'components/modal-overview';
 import * as espGraphComponent from 'components/emission-pathways/emission-pathways-graph';
 import * as countryGhgEmissionsMapComponent from 'components/country/country-ghg-map';
@@ -122,6 +123,7 @@ const componentsReducers = {
   modalDownload: handleActions(modalDownloadComponent),
   modalMetadata: handleActions(modalMetadataComponent),
   modalESPOverview: handleActions(modalESPOverviewComponent),
+  modalShare: handleActions(shareModalComponent),
   countryGhgEmissionsMap: handleActions(countryGhgEmissionsMapComponent),
   countryGhgEmissions: handleActions(countryGhgEmissionsComponent),
   countrySDGLinkages: handleActions(countrySDGLinkagesComponent),

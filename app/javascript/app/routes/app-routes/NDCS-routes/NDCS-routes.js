@@ -39,7 +39,7 @@ export default [
     activeId
   },
   (FEATURE_ALL_COMMITMENTS_MENU_ITEMS || !FEATURE_LTS_EXPLORE) && {
-    path: '/ndcs/compare/mitigation',
+    path: '/ndcs/compare',
     label: 'NDC Comparison',
     activeId
   },

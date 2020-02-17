@@ -1,0 +1,48 @@
+@import '~styles/settings.scss';
+
+.navbar {
+  display: flex;
+  flex-direction: column;
+
+  .link {
+    position: relative;
+    padding: 15px 30px;
+    width: 100%;
+  }
+
+  > a {
+    display: block;
+    color: $white;
+    font-size: $font-size;
+  }
+}
+
+.link {
+  color: $gray1;
+  font-size: $font-size;
+
+  &.mainLink {
+    padding: 15px 30px;
+    display: flex;
+    color: $white;
+    justify-content: space-between;
+    font-size: $font-size;
+  }
+}
+
+.navWithChildContainer {
+  margin-bottom: 30px;
+}
+
+.title {
+  text-align: left;
+  padding: 15px 30px;
+  font-size: $font-size;
+}
+
+.arrowIcon {
+  display: block;
+  height: 5px;
+  fill: $gray1;
+  transform: rotate(-90deg);
+}

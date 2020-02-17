@@ -15,7 +15,7 @@
   color: $theme-color;
   font-size: $font-size-s;
   font-weight: $font-weight-bold;
-  letter-spacing: 1px;
+  letter-spacing: $letter-spacing-wide;
 
   &.active::after {
     content: "";
@@ -45,4 +45,8 @@
       height: 6px;
     }
   }
+}
+
+.arrowIcon {
+  display: none;
 }

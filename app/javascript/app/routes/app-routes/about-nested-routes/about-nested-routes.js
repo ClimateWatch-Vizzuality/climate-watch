@@ -2,7 +2,7 @@ const activeId = 'about';
 
 export default [
   {
-    path: '/about',
+    path: '/about/description',
     label: 'About Climate Watch',
     activeId
   },
