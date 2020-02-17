@@ -36,7 +36,7 @@ module Api
         private
 
         def parametrise_filter
-          params[:source_ids] = ::Indc::Source.not_lts.pluck(:id) unless params[:source_ids]
+          params[:source_ids] = ::Indc::Source.non_lts.pluck(:id) unless params[:source_ids]
           @filter = Data::NdcContent::Filter.new(params)
         end
       end
