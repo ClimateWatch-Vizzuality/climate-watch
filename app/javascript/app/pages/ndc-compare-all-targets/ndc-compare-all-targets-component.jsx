@@ -14,6 +14,7 @@ import compareIntendsIcon from 'assets/icons/compare-intends.svg';
 import Search from 'components/search';
 import { NCS_COMPARE_ALL } from 'data/SEO';
 import { MetaDescription, SocialMetadata } from 'components/seo';
+import NdcCompareAllTargetsProvider from 'providers/ndc-compare-all-targets-provider';
 import qs from 'query-string';
 import CompareAllTable from './ndc-compare-all-targets-table/ndc-compare-all-targets-table';
 import styles from './ndc-compare-all-targets-styles.scss';
@@ -104,7 +105,7 @@ const NDCCompareAllTargets = props => {
                 variant="primary"
                 className={styles.compareButton}
                 disabled={selectedTargets.length === 0}
-                link={`/custom-compare/${getLinkToCustomCompare(
+                link={`/custom-compare?${getLinkToCustomCompare(
                   selectedTargets
                 )}`}
               >
@@ -132,6 +133,7 @@ const NDCCompareAllTargets = props => {
           />
         </div>
       </div>
+      <NdcCompareAllTargetsProvider />
     </React.Fragment>
   );
 };
