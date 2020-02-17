@@ -54,6 +54,6 @@ export default [
   },
   {
     path: '/ndcs/compare',
-    component: () => createElement(Redirect, { to: '/ndcs/compare/mitigation' })
+    component: () => createElement(Redirect, { to: '/ndcs/compare/overview' })
   }
 ];
