@@ -12,7 +12,8 @@ module Api
                 }
               ]
             )
-            indicators = ::Indc::Indicator.includes(:categories).all
+            source = ::Indc::Source.non_lts.pluck(:id)
+            indicators = ::Indc::Indicator.where(source_id: source).includes(:categories).all
             render json: indicators,
                    adapter: :json,
                    each_serializer: Api::V1::Data::NdcContent::IndicatorSerializer,
