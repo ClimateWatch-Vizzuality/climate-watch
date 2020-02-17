@@ -9,7 +9,7 @@ import AboutFaq from 'components/about/about-faq';
 
 export default [
   {
-    path: '/about',
+    path: '/about/description',
     component: AboutDescription,
     exact: true,
     anchor: true,
@@ -99,5 +99,9 @@ export default [
     label: 'FAQ',
     component: () =>
       createElement(Redirect, { to: '/about/faq/general_questions' })
+  },
+  {
+    path: '/about',
+    component: () => createElement(Redirect, { to: '/about/description' })
   }
 ];
