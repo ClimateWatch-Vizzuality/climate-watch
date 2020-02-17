@@ -1,7 +1,7 @@
 module Api
   module V1
     module Data
-      class NdcContentController < Api::V1::Data::ApiController
+      class LtsContentController < Api::V1::Data::ApiController
         include Streamable
         before_action :parametrise_filter, only: [:index, :download]
 
@@ -21,7 +21,7 @@ module Api
               :data_sources, :indicators, :categories, :sectors
             ].map do |resource|
               {
-                link: "/api/v1/data/ndc_content/#{resource}",
+                link: "/api/v1/data/lts_content/#{resource}",
                 rel: "meta #{resource}"
               }
             end + [{link: '/api/v1/locations/countries', rel: 'meta locations'}]
@@ -36,7 +36,7 @@ module Api
         private
 
         def parametrise_filter
-          params[:source_ids] = ::Indc::Source.not_lts.pluck(:id) unless params[:source_ids]
+          params[:source_ids] = ::Indc::Source.lts.pluck(:id)
           @filter = Data::NdcContent::Filter.new(params)
         end
       end
