@@ -110,7 +110,9 @@ export const DATA_EXPLORER_SECTIONS = {
   },
   'lts-content': {
     label: 'lts_content',
-    moduleName: 'lts-content'
+    moduleName: 'lts-content',
+    linkLabel: 'lts_explore',
+    linkName: 'lts-explore'
   }
 };
 
@@ -196,6 +198,17 @@ export const DATA_EXPLORER_TO_MODULES_PARAMS = {
     }
   },
   'ndc-content': {
+    sectors: {
+      key: 'sectors'
+    },
+    categories: {
+      key: 'category'
+    },
+    indicators: {
+      key: 'indicator'
+    }
+  },
+  'lts-content': {
     sectors: {
       key: 'sectors'
     },

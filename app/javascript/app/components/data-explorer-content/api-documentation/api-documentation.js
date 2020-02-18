@@ -201,7 +201,7 @@ const API_CALLS = {
     {
       title: 'GET /api/v1/data/lts_content',
       url: `${CW_API}/data/lts_content`,
-      description: 'Retrieves time series data for NDC content',
+      description: 'Retrieves time series data for LTS content',
       queryParams: [
         countriesParam,
         {
