@@ -11,18 +11,20 @@ import {
   getFilteredDataBySearch,
   getColumns,
   getLoading,
-  getQuery
+  getSearch,
+  getSelectedTargets
 } from './ndc-compare-all-targets-selectors';
 
 const mapStateToProps = (state, { location }) => {
   const search = qs.parse(location.search);
   return {
     loading: getLoading(state),
-    query: getQuery(state, { search }),
+    query: getSearch(state, { search }),
     tableData: getFilteredDataBySearch(state, { search }),
     columns: getColumns(state, {
       search
-    })
+    }),
+    selectedTargets: getSelectedTargets(state, { search })
   };
 };
 
@@ -50,6 +52,14 @@ const NDCCompareAllContainer = props => {
       value
     });
   };
+
+  const handleTargetsChange = value => {
+    updateUrlParam({
+      name: 'targets',
+      value: value.toString()
+    });
+  };
+
   const noContentMsg = query ? 'No data for this search' : 'No data';
 
   return createElement(NDCCompareAllComponent, {
@@ -57,7 +67,8 @@ const NDCCompareAllContainer = props => {
     noContentMsg,
     handleSearchChange,
     tableData,
-    setColumnWidth
+    setColumnWidth,
+    handleTargetsChange
   });
 };
 

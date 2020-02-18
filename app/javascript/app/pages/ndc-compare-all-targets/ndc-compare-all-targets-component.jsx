@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import Button from 'components/button';
 import Header from 'components/header';
@@ -68,9 +68,10 @@ const NDCCompareAllTargets = props => {
     tableData,
     noContentMsg,
     columns,
-    setColumnWidth
+    setColumnWidth,
+    handleTargetsChange,
+    selectedTargets
   } = props;
-  const [selectedTargets, setSelectedTargets] = useState([]);
   return (
     <React.Fragment>
       <MetaDescription
@@ -101,7 +102,7 @@ const NDCCompareAllTargets = props => {
           <div className={styles.legendAndActions}>
             {renderLegend()}
             <div className={styles.buttonAndSearch}>
-              <Button
+              {/* <Button
                 variant="primary"
                 className={styles.compareButton}
                 disabled={selectedTargets.length === 0}
@@ -114,7 +115,7 @@ const NDCCompareAllTargets = props => {
                     ? ''
                     : ` (${selectedTargets.length})`
                 }`}
-              </Button>
+              </Button> */}
               {!loading && (
                 <div className={styles.filtersLayout}>
                   {renderSearch(handleSearchChange, query)}
@@ -129,7 +130,7 @@ const NDCCompareAllTargets = props => {
             columns={columns}
             setColumnWidth={setColumnWidth}
             selectedTargets={selectedTargets}
-            setSelectedTargets={setSelectedTargets}
+            setSelectedTargets={handleTargetsChange}
           />
         </div>
       </div>
@@ -144,10 +145,12 @@ NDCCompareAllTargets.propTypes = {
   tableData: PropTypes.array,
   query: PropTypes.string,
   handleSearchChange: PropTypes.func.isRequired,
+  handleTargetsChange: PropTypes.func.isRequired,
   noContentMsg: PropTypes.string,
   columns: PropTypes.array,
   setColumnWidth: PropTypes.func.isRequired,
-  location: PropTypes.object
+  location: PropTypes.object,
+  selectedTargets: PropTypes.array
 };
 
 export default NDCCompareAllTargets;
