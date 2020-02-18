@@ -20,7 +20,8 @@ const mapStateToProps = (
   const { origin, pathname, search, hash } = location;
   const isEmbed = isEmbededComponent(location);
   const queryParams = shouldEmbedQueryParams ? search + hash : '';
-  const url = origin + (sharePath || pathname) + queryParams;
+  const url = `${origin}${!isEmbed ? '/embed' : ''}${sharePath ||
+    pathname}${queryParams}`;
   const copyUrl = () => copy(url);
   const iframeCode = `<iframe src="${url}" frameborder="0" style="height: 600px; width: 1230px"></iframe>`;
   const copyCode = () => copy(iframeCode);
@@ -44,16 +45,14 @@ const mapStateToProps = (
       label: 'Copy Embed URL',
       icon: linkIcon,
       action: copyUrl
-    }
-  ];
-
-  if (isEmbed) {
-    shareMenuOptions.push({
+    },
+    {
       label: 'Copy Embed code',
       icon: codeIcon,
       action: copyCode
-    });
-  }
+    }
+  ];
+
   return {
     shareMenuOptions,
     shareIcon,

@@ -21,7 +21,7 @@ $close-position: 35px;
   border-radius: 0;
 
   @media #{$tablet-landscape} {
-    width: 770px;
+    width: 810px;
     max-height: 640px;
     height: calc(100vh - 100px);
     top: auto;
@@ -38,7 +38,7 @@ $close-position: 35px;
 
 .modalContent {
   flex: 1;
-  overflow: scroll;
+  overflow: auto;
   padding: $modal-padding $gutter-padding;
   word-break: break-word;
   overscroll-behavior: none; /* stylelint-disable-line property-no-unknown */
