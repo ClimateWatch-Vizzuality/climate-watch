@@ -21,7 +21,7 @@ module Api
               :data_sources, :indicators, :categories, :sectors
             ].map do |resource|
               {
-                link: "/api/v1/data/ndc_content/#{resource}",
+                link: "#{link_prefix}#{resource}",
                 rel: "meta #{resource}"
               }
             end + [{link: '/api/v1/locations/countries', rel: 'meta locations'}]
@@ -34,6 +34,10 @@ module Api
         end
 
         private
+
+        def link_prefix
+          '/api/v1/data/ndc_content/'
+        end
 
         def parametrise_filter
           params[:source_ids] = ::Indc::Source.non_lts.pluck(:id) unless params[:source_ids]
