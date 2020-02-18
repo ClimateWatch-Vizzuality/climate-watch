@@ -55,7 +55,7 @@ export default [
     path: '/data-explorer/lts-content',
     component: () =>
       createElement(DataExplorerContent, {
-        section: 'ndc-content'
+        section: 'lts-content'
       }),
     anchor: true,
     exact: true
