@@ -96,13 +96,15 @@ const ModalShare = ({
       onRequestClose={() => setShareModal({ open: false })}
       header={<ModalHeader title="Share" />}
     >
-      <ul className={styles.links}>
-        {shareMenuOptions.map(option => (
-          <li className={styles.linkContainer} key={option.label}>
-            {renderLink(option)}
-          </li>
-        ))}
-      </ul>
+      {shareMenuOptions.map(({ key, options }) => (
+        <ul className={styles.links} key={key}>
+          {options.map(option => (
+            <li className={styles.linkContainer} key={option.label}>
+              {renderLink(option)}
+            </li>
+          ))}
+        </ul>
+      ))}
     </Modal>
   );
 };

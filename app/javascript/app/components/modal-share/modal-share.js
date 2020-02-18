@@ -27,29 +27,39 @@ const mapStateToProps = (
   const copyCode = () => copy(iframeCode);
   const shareMenuOptions = [
     {
-      label: 'Email',
-      icon: mailIcon,
-      link: `mailto:?subject=Climate%20Watch&body=${url}`
+      key: 'socialOptions',
+      options: [
+        {
+          label: 'Email',
+          icon: mailIcon,
+          link: `mailto:?subject=Climate%20Watch&body=${url}`
+        },
+        {
+          label: 'Facebook',
+          icon: facebookIcon,
+          link: `https://www.facebook.com/sharer/sharer.php?u=${url}`
+        },
+        {
+          label: 'Twitter',
+          icon: twitterIcon,
+          link: `https://twitter.com/intent/tweet?url=${url}`
+        }
+      ]
     },
     {
-      label: 'Facebook',
-      icon: facebookIcon,
-      link: `https://www.facebook.com/sharer/sharer.php?u=${url}`
-    },
-    {
-      label: 'Twitter',
-      icon: twitterIcon,
-      link: `https://twitter.com/intent/tweet?url=${url}`
-    },
-    {
-      label: 'Copy Embed URL',
-      icon: linkIcon,
-      action: copyUrl
-    },
-    {
-      label: 'Copy Embed code',
-      icon: codeIcon,
-      action: copyCode
+      key: 'embedOptions',
+      options: [
+        {
+          label: 'Copy Embed URL',
+          icon: linkIcon,
+          action: copyUrl
+        },
+        {
+          label: 'Copy Embed code',
+          icon: codeIcon,
+          action: copyCode
+        }
+      ]
     }
   ];
 
