@@ -46,16 +46,16 @@ const renderSearch = (searchHandler, query) => (
 );
 
 const getLinkToCustomCompare = selectedTargets => {
-  let linkToCustomCompare = {};
-  selectedTargets.forEach((t, i) => {
-    const [country, document] = t.split('-');
-    linkToCustomCompare = {
-      ...linkToCustomCompare,
-      [`country${i}`]: country,
-      [`document${i}`]: document
-    };
-  });
-  return qs.stringify(linkToCustomCompare);
+  // let linkToCustomCompare = {};
+  // selectedTargets.forEach((t, i) => {
+  //   const [country, document] = t.split('-');
+  //   linkToCustomCompare = {
+  //     ...linkToCustomCompare,
+  //     [`country${i}`]: country,
+  //     [`document${i}`]: document
+  //   };
+  // });
+  return `targets=${qs.stringify(selectedTargets)}`;
 };
 
 const NDCCompareAllTargets = props => {
@@ -70,7 +70,8 @@ const NDCCompareAllTargets = props => {
     columns,
     setColumnWidth,
     handleTargetsChange,
-    selectedTargets
+    selectedTargets,
+    queryParams
   } = props;
   return (
     <React.Fragment>
@@ -102,20 +103,18 @@ const NDCCompareAllTargets = props => {
           <div className={styles.legendAndActions}>
             {renderLegend()}
             <div className={styles.buttonAndSearch}>
-              {/* <Button
+              <Button
                 variant="primary"
                 className={styles.compareButton}
                 disabled={selectedTargets.length === 0}
-                link={`/custom-compare?${getLinkToCustomCompare(
-                  selectedTargets
-                )}`}
+                link={`/custom-compare?targets=${selectedTargets.join('%2')}`}
               >
                 {`Compare${
                   selectedTargets.length === 0
                     ? ''
                     : ` (${selectedTargets.length})`
                 }`}
-              </Button> */}
+              </Button>
               {!loading && (
                 <div className={styles.filtersLayout}>
                   {renderSearch(handleSearchChange, query)}

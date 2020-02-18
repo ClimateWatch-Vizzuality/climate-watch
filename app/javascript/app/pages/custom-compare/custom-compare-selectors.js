@@ -21,7 +21,7 @@ const getSelectedCountries = createSelector(
   [getCountryOptions, getQuery],
   (countriesData, query) => {
     if (!countriesData && !countriesData.length && !query) return null;
-    const { country0, country1, country2 } = query;
+    cosnt selectedCountries = query.targets.split(',');
     return {
       country0,
       country1,
