@@ -126,7 +126,7 @@ export const DATA_EXPLORER_METHODOLOGY_SOURCE = {
   },
   'ndc-sdg-linkages': ['ndc_sdc_all indicators'],
   'ndc-content': ['ndc_cw', 'ndc_wb', 'ndc_die'],
-  'lts-content': ['ndc_cw', 'ndc_wb', 'ndc_die'],
+  'lts-content': ['lts'],
   'emission-pathways': [null] // model, scenario and indicator related metadata
 };
 

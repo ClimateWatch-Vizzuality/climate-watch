@@ -174,7 +174,7 @@ export const getPathsWithStyles = createSelector(
 );
 
 export const getLinkToDataExplorer = createSelector([getSearch], search => {
-  const section = 'ndc-content';
+  const section = 'lts-content';
   return generateLinkToDataExplorer(search, section);
 });
 
