@@ -130,9 +130,9 @@ class ImportIndc
     }
   end
 
-  def submission_attributes(submission)
+  def submission_attributes(location, submission)
     {
-      location: Location.find_by!(iso_code3: submission[:iso]),
+      location: location,
       submission_type: submission[:type],
       language: submission[:language],
       submission_date: submission[:date_of_submission],
@@ -418,7 +418,9 @@ class ImportIndc
 
   def import_submissions
     @submissions.each do |sub|
-      Indc::Submission.create!(submission_attributes(sub))
+      location = Location.find_by(iso_code3: sub[:iso])
+      next unless location
+      Indc::Submission.create!(submission_attributes(location, sub))
     end
   end
 
