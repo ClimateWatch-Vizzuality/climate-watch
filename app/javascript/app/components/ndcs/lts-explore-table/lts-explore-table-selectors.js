@@ -80,9 +80,17 @@ export const getSelectedIndicatorHeader = createSelector(
   }
 );
 
+export const getExtraColumn = createSelector(
+  [getMapIndicator],
+  selectedIndicator => {
+    if (!selectedIndicator) return null;
+    return selectedIndicator.value === 'lts_submission' ? 'lts_target' : null;
+  }
+);
+
 export const getDefaultColumns = createSelector(
-  [getIndicatorsParsed, getSelectedIndicatorHeader],
-  (indicators, selectedIndicatorHeader) => {
+  [getIndicatorsParsed, getSelectedIndicatorHeader, getExtraColumn],
+  (indicators, selectedIndicatorHeader, extraColumn) => {
     if (!indicators || isEmpty(indicators)) return [];
     const columnIds = [
       'country',
@@ -91,6 +99,10 @@ export const getDefaultColumns = createSelector(
       'lts_date',
       'lts_ghg'
     ];
+
+    if (extraColumn) {
+      columnIds.splice(2, 0, extraColumn);
+    }
 
     const columns = columnIds.map(id => {
       const match = indicators.find(indicator => indicator.value === id);

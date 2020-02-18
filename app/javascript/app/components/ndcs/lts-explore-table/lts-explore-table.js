@@ -13,7 +13,8 @@ import {
   getISOCountries,
   removeIsoFromData,
   getDefaultColumns,
-  getTitleLinks
+  getTitleLinks,
+  getExtraColumn
 } from './lts-explore-table-selectors';
 
 const mapStateToProps = (state, { location }) => {
@@ -38,7 +39,8 @@ const mapStateToProps = (state, { location }) => {
     isoCountries: getISOCountries(LTSWithSelection),
     tableData: removeIsoFromData(LTSWithSelection),
     columns: getDefaultColumns(LTSWithSelection),
-    titleLinks: getTitleLinks(LTSWithSelection)
+    titleLinks: getTitleLinks(LTSWithSelection),
+    extraColumn: getExtraColumn(LTSWithSelection)
   };
 };
 
@@ -48,16 +50,18 @@ class LTSExploreTableContainer extends PureComponent {
     this.state = {};
   }
 
-  setColumnWidth = column =>
-    setColumnWidth({
+  setColumnWidth = column => {
+    const { extraColumn } = this.props;
+    return setColumnWidth({
       column,
       columns: this.props.columns,
-      tableWidth: 1170,
-      narrowColumnWidth: 110,
-      wideColumnWidth: 380,
-      narrowColumns: [0, 3],
-      wideColumns: [1]
+      tableWidth: 1100,
+      narrowColumnWidth: extraColumn ? 100 : 120,
+      wideColumnWidth: extraColumn ? 290 : 400,
+      narrowColumns: extraColumn ? [0, 4, 5] : [0, 3, 4],
+      wideColumns: extraColumn ? [2] : [1]
     });
+  };
 
   updateUrlParam(param, clear) {
     const { history, location } = this.props;
@@ -88,7 +92,8 @@ LTSExploreTableContainer.propTypes = {
   location: PropTypes.object.isRequired,
   tableData: PropTypes.array,
   columns: PropTypes.array,
-  query: PropTypes.object
+  query: PropTypes.object,
+  extraColumn: PropTypes.string
 };
 
 export default withRouter(
