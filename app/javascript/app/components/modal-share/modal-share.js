@@ -12,11 +12,8 @@ import actions from './modal-share-actions';
 import reducers, { initialState } from './modal-share-reducers';
 import Component from './modal-share-component';
 
-const mapStateToProps = (
-  state,
-  { sharePath, shouldEmbedQueryParams = true }
-) => {
-  const { isOpen: isModalOpen } = state.modalShare;
+const mapStateToProps = (state, { shouldEmbedQueryParams = true }) => {
+  const { isOpen: isModalOpen, sharePath } = state.modalShare;
   const { origin, pathname, search, hash } = location;
   const isEmbed = isEmbededComponent(location);
   const queryParams = shouldEmbedQueryParams ? search + hash : '';

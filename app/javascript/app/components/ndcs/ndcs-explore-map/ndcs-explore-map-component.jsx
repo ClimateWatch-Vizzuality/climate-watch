@@ -39,8 +39,8 @@ const renderButtonGroup = (clickHandler, downloadLink) => (
         }
       ]}
     />
-    <ShareButton analyticsName="NDC Explore" sharePath="/embed/ndcs-explore" />
-    <ModalShare />
+    <ShareButton />
+    <ModalShare analyticsName="NDC Explore" />
   </div>
 );
 
