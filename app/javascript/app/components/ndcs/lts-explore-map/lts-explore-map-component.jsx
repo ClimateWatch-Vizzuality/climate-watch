@@ -20,7 +20,7 @@ import layout from 'styles/layout.scss';
 import newMapTheme from 'styles/themes/map/map-new-zoom-controls.scss';
 import styles from './lts-explore-map-styles.scss';
 
-const renderButtonGroup = clickHandler => (
+const renderButtonGroup = (clickHandler, downloadLink) => (
   <div className={styles.buttonGroupContainer}>
     <ButtonGroup
       className={styles.buttonGroup}
@@ -32,8 +32,7 @@ const renderButtonGroup = clickHandler => (
         {
           type: 'download',
           section: 'lts-explore',
-          // link: downloadLink,
-          disabled: true
+          link: downloadLink
         },
         {
           type: 'addToUser'

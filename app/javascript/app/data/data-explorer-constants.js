@@ -22,6 +22,17 @@ export const FIRST_TABLE_HEADERS = {
     'indicator',
     'value'
   ],
+  'lts-content': [
+    'country',
+    'categories', // remove when it's splitted into global and overview category
+    'global_category',
+    'overview_category',
+    'sector',
+    'subsector',
+    'indicator_id',
+    'indicator',
+    'value'
+  ],
   'ndc-sdg-linkages': [
     'country',
     'sdg',
@@ -58,6 +69,12 @@ export const FILTER_DEFAULTS = {
     sectors: ALL_SELECTED,
     countries: ALL_SELECTED
   },
+  'lts-content': {
+    categories: 'Communication of Long-term Strategy',
+    indicators: ALL_SELECTED,
+    sectors: ALL_SELECTED,
+    countries: ALL_SELECTED
+  },
   'ndc-sdg-linkages': {
     countries: ALL_SELECTED,
     goals: ALL_SELECTED,
@@ -90,6 +107,12 @@ export const DATA_EXPLORER_SECTIONS = {
   'ndc-content': {
     label: 'ndc_content',
     moduleName: 'ndcs-content'
+  },
+  'lts-content': {
+    label: 'lts_content',
+    moduleName: 'lts-content',
+    linkLabel: 'lts_explore',
+    linkName: 'lts-explore'
   }
 };
 
@@ -103,6 +126,7 @@ export const DATA_EXPLORER_METHODOLOGY_SOURCE = {
   },
   'ndc-sdg-linkages': ['ndc_sdc_all indicators'],
   'ndc-content': ['ndc_cw', 'ndc_wb', 'ndc_die'],
+  'lts-content': ['lts'],
   'emission-pathways': [null] // model, scenario and indicator related metadata
 };
 
@@ -125,7 +149,8 @@ export const DATA_EXPLORER_FILTERS = {
     'subcategories',
     'indicators'
   ],
-  'ndc-content': ['categories', 'indicators', 'sectors', 'countries'] // TODO: add focus when ready
+  'ndc-content': ['categories', 'indicators', 'sectors', 'countries'], // TODO: add focus when ready
+  'lts-content': ['categories', 'indicators', 'sectors', 'countries'] // TODO: add focus when ready
 };
 
 // The dropdown named as the keys will be deleted if one of the values column changes
@@ -183,6 +208,17 @@ export const DATA_EXPLORER_TO_MODULES_PARAMS = {
       key: 'indicator'
     }
   },
+  'lts-content': {
+    sectors: {
+      key: 'sectors'
+    },
+    categories: {
+      key: 'category'
+    },
+    indicators: {
+      key: 'indicator'
+    }
+  },
   'emission-pathways': {
     locations: {
       key: 'currentLocation',
@@ -215,6 +251,14 @@ export const MULTIPLE_LEVEL_SECTION_FIELDS = {
     }
   ],
   'ndc-content': [
+    {
+      key: 'sectors'
+    },
+    {
+      key: 'categories'
+    }
+  ],
+  'lts-content': [
     {
       key: 'sectors'
     },
@@ -282,6 +326,15 @@ export const FILTERED_FIELDS = {
     ]
   },
   'ndc-content': {
+    indicators: [
+      {
+        parent: FILTER_NAMES.categories,
+        parentId: 'id',
+        id: 'category_ids'
+      }
+    ]
+  },
+  'lts-content': {
     indicators: [
       {
         parent: FILTER_NAMES.categories,
