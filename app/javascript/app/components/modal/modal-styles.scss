@@ -38,7 +38,7 @@ $close-position: 35px;
 
 .modalContent {
   flex: 1;
-  overflow: scroll;
+  overflow: auto;
   padding: $modal-padding $gutter-padding;
   word-break: break-word;
   overscroll-behavior: none; /* stylelint-disable-line property-no-unknown */

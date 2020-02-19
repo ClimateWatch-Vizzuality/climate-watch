@@ -20,40 +20,49 @@ const mapStateToProps = (
   const { origin, pathname, search, hash } = location;
   const isEmbed = isEmbededComponent(location);
   const queryParams = shouldEmbedQueryParams ? search + hash : '';
-  const url = origin + (sharePath || pathname) + queryParams;
+  const url = `${origin}${!isEmbed ? '/embed' : ''}${sharePath ||
+    pathname}${queryParams}`;
   const copyUrl = () => copy(url);
   const iframeCode = `<iframe src="${url}" frameborder="0" style="height: 600px; width: 1230px"></iframe>`;
   const copyCode = () => copy(iframeCode);
   const shareMenuOptions = [
     {
-      label: 'Email',
-      icon: mailIcon,
-      link: `mailto:?subject=Climate%20Watch&body=${url}`
+      key: 'socialOptions',
+      options: [
+        {
+          label: 'Email',
+          icon: mailIcon,
+          link: `mailto:?subject=Climate%20Watch&body=${url}`
+        },
+        {
+          label: 'Facebook',
+          icon: facebookIcon,
+          link: `https://www.facebook.com/sharer/sharer.php?u=${url}`
+        },
+        {
+          label: 'Twitter',
+          icon: twitterIcon,
+          link: `https://twitter.com/intent/tweet?url=${url}`
+        }
+      ]
     },
     {
-      label: 'Facebook',
-      icon: facebookIcon,
-      link: `https://www.facebook.com/sharer/sharer.php?u=${url}`
-    },
-    {
-      label: 'Twitter',
-      icon: twitterIcon,
-      link: `https://twitter.com/intent/tweet?url=${url}`
-    },
-    {
-      label: 'Copy Embed URL',
-      icon: linkIcon,
-      action: copyUrl
+      key: 'embedOptions',
+      options: [
+        {
+          label: 'Copy Embed URL',
+          icon: linkIcon,
+          action: copyUrl
+        },
+        {
+          label: 'Copy Embed code',
+          icon: codeIcon,
+          action: copyCode
+        }
+      ]
     }
   ];
 
-  if (isEmbed) {
-    shareMenuOptions.push({
-      label: 'Copy Embed code',
-      icon: codeIcon,
-      action: copyCode
-    });
-  }
   return {
     shareMenuOptions,
     shareIcon,
