@@ -54,11 +54,13 @@ export const getLabels = (
 ) => {
   const tooltip = {};
   const theme = {};
+  const getNoInfoLabel = () =>
+    (noInformationLabel === NOT_APPLICABLE_LABEL
+      ? NOT_APPLICABLE_OR_NOT_INFO_LABEL
+      : noInformationLabel);
   legend.forEach(l => {
     const legendName =
-      l.name === noInformationLabel || l.name === NOT_APPLICABLE_LABEL
-        ? noInformationLabel
-        : l.name;
+      l.name === noInformationLabel ? getNoInfoLabel() : l.name;
     tooltip[camelCase(legendName)] = {
       label: legendName
     };
