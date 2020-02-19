@@ -50,11 +50,13 @@ export const getIndicatorEmissionsData = (
 
 export const getLabels = (
   legend,
-  noInformationLabel = NOT_APPLICABLE_OR_NOT_INFO_LABEL
+  noInformationLabel = NOT_APPLICABLE_OR_NOT_INFO_LABEL,
+  noLabelOverride
 ) => {
   const tooltip = {};
   const theme = {};
   const getNoInfoLabel = () =>
+    (noLabelOverride && noInformationLabel) ||
     (noInformationLabel === NOT_APPLICABLE_LABEL
       ? NOT_APPLICABLE_OR_NOT_INFO_LABEL
       : noInformationLabel);

@@ -266,7 +266,7 @@ export const getEmissionsCardData = createSelector(
       hideLegend: true,
       innerHoverLabel: true,
       minAngle: 3,
-      ...getLabels(legend, NO_DOCUMENT_SUBMITTED)
+      ...getLabels(legend, NO_DOCUMENT_SUBMITTED, true)
     };
 
     return {
