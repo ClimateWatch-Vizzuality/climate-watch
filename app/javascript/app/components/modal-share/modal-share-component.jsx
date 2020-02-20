@@ -14,7 +14,7 @@ import styles from './modal-share-styles.scss';
 const ModalShare = ({
   isModalOpen,
   shareMenuOptions,
-  setShareModal,
+  closeModal,
   analyticsName,
   withDownloadIcon
 }) => {
@@ -39,7 +39,7 @@ const ModalShare = ({
   };
 
   const handleLinkClick = () => {
-    setShareModal({ open: false });
+    closeModal();
     handleAnalyticsClick();
   };
 
@@ -93,7 +93,7 @@ const ModalShare = ({
     <Modal
       isOpen={isModalOpen}
       theme={{ modal: styles.modal, modalContent: styles.modalContent }}
-      onRequestClose={() => setShareModal({ open: false })}
+      onRequestClose={() => closeModal()}
       header={<ModalHeader title="Share" />}
     >
       {shareMenuOptions.map(({ key, options }) => (
@@ -114,7 +114,7 @@ ModalShare.propTypes = {
   shareMenuOptions: PropTypes.array,
   withDownloadIcon: PropTypes.bool,
   analyticsName: PropTypes.string,
-  setShareModal: PropTypes.func.isRequired
+  closeModal: PropTypes.func.isRequired
 };
 
 export default ModalShare;

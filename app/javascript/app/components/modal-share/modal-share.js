@@ -1,5 +1,4 @@
 import { connect } from 'react-redux';
-import { withHandlers } from 'recompose';
 import shareIcon from 'assets/icons/share.svg';
 import facebookIcon from 'assets/icons/facebook.svg';
 import twitterIcon from 'assets/icons/twitter.svg';
@@ -65,12 +64,10 @@ const mapStateToProps = (state, { shouldEmbedQueryParams = true }) => {
   };
 };
 
-const includeActions = withHandlers({
-  onRequestClose: props => () => {
-    props.setShareModal({ open: false });
-  }
+const mapDispatchToProps = dispatch => ({
+  closeModal: () => dispatch(actions.setShareModal({ open: false }))
 });
 
 export { actions, reducers, initialState };
 
-export default connect(mapStateToProps, actions)(includeActions(Component));
+export default connect(mapStateToProps, mapDispatchToProps)(Component);
