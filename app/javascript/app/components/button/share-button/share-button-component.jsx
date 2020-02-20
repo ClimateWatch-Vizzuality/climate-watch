@@ -6,12 +6,12 @@ import cx from 'classnames';
 import shareIcon from 'assets/icons/share.svg';
 import styles from './share-button-styles.scss';
 
-function ShareButton({ className, onClick, setShareModal }) {
+function ShareButton({ className, onClick, setShareModal, sharePath }) {
   return (
     <Button
       className={cx(styles.shareButton, className)}
       onClick={e => {
-        setShareModal({ open: true });
+        setShareModal({ open: true, sharePath });
         if (onClick) {
           onClick(e);
         }
@@ -27,7 +27,8 @@ function ShareButton({ className, onClick, setShareModal }) {
 ShareButton.propTypes = {
   className: PropTypes.node,
   onClick: PropTypes.func,
-  setShareModal: PropTypes.func
+  setShareModal: PropTypes.func,
+  sharePath: PropTypes.string
 };
 
 export default ShareButton;

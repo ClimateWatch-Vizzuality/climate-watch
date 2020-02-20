@@ -14,9 +14,9 @@ class LawsAndPoliciesProvider extends PureComponent {
 
   componentWillReceiveProps(props) {
     const iso = props.match.params.iso;
-    const { data } = this.props.lawsAndPolicies;
+    const { data } = this.props.lawsAndPolicies || {};
 
-    if (!data[iso]) {
+    if (data && !data[iso]) {
       this.props.fetchLawsAndPolicies({ iso });
     }
   }

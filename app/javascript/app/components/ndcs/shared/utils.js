@@ -50,15 +50,19 @@ export const getIndicatorEmissionsData = (
 
 export const getLabels = (
   legend,
-  noInformationLabel = NOT_APPLICABLE_OR_NOT_INFO_LABEL
+  noInformationLabel = NOT_APPLICABLE_OR_NOT_INFO_LABEL,
+  noLabelOverride
 ) => {
   const tooltip = {};
   const theme = {};
+  const getNoInfoLabel = () =>
+    (noLabelOverride && noInformationLabel) ||
+    (noInformationLabel === NOT_APPLICABLE_LABEL
+      ? NOT_APPLICABLE_OR_NOT_INFO_LABEL
+      : noInformationLabel);
   legend.forEach(l => {
     const legendName =
-      l.name === noInformationLabel || l.name === NOT_APPLICABLE_LABEL
-        ? noInformationLabel
-        : l.name;
+      l.name === noInformationLabel ? getNoInfoLabel() : l.name;
     tooltip[camelCase(legendName)] = {
       label: legendName
     };

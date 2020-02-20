@@ -1,10 +1,12 @@
 export const initialState = {
-  isOpen: false
+  isOpen: false,
+  sharePath: null
 };
 
 const setShareModal = (state, { payload }) => ({
   ...state,
-  isOpen: payload.open
+  isOpen: payload.open,
+  sharePath: payload.sharePath
 });
 
 export default {

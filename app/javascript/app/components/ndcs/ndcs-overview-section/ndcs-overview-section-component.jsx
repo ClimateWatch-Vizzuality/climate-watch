@@ -40,10 +40,9 @@ const NdcsOverviewSection = ({ data, section, location, handleInfoClick }) => {
           <div className={styles.questionsWrapper}>
             <ShareButton
               className={styles.shareButton}
-              analyticsName="NDC Overview"
-              sharePath={`/embed/ndc-overview/${section}`}
+              sharePath={`/ndc-overview/${section}`}
             />
-            <ModalShare />
+            <ModalShare analyticsName="NDC Overview" />
             {questions.map(question => (
               <QuestionCard
                 key={`${question.slug}${question.questionText}`}

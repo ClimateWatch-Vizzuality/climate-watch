@@ -250,7 +250,7 @@ export const getEmissionsCardData = createSelector(
       hideLegend: true,
       innerHoverLabel: true,
       minAngle: 3,
-      ...getLabels(legend)
+      ...getLabels(legend, NOT_APPLICABLE_LABEL)
     };
 
     return {

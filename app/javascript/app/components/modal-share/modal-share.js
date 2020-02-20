@@ -7,21 +7,16 @@ import mailIcon from 'assets/icons/mail.svg';
 import linkIcon from 'assets/icons/link.svg';
 import codeIcon from 'assets/icons/code.svg';
 import copy from 'copy-to-clipboard';
-import { isEmbededComponent } from 'utils/navigation';
 import actions from './modal-share-actions';
 import reducers, { initialState } from './modal-share-reducers';
 import Component from './modal-share-component';
 
-const mapStateToProps = (
-  state,
-  { sharePath, shouldEmbedQueryParams = true }
-) => {
-  const { isOpen: isModalOpen } = state.modalShare;
+const mapStateToProps = (state, { shouldEmbedQueryParams = true }) => {
+  const { isOpen: isModalOpen, sharePath } = state.modalShare;
   const { origin, pathname, search, hash } = location;
-  const isEmbed = isEmbededComponent(location);
   const queryParams = shouldEmbedQueryParams ? search + hash : '';
-  const url = `${origin}${!isEmbed ? '/embed' : ''}${sharePath ||
-    pathname}${queryParams}`;
+  const embedUri = `/embed${sharePath || pathname.replace('/embed', '')}`;
+  const url = `${origin}${embedUri}${queryParams}`;
   const copyUrl = () => copy(url);
   const iframeCode = `<iframe src="${url}" frameborder="0" style="height: 600px; width: 1230px"></iframe>`;
   const copyCode = () => copy(iframeCode);
