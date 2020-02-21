@@ -11,7 +11,7 @@ const getIndicatorsData = state =>
 const getQuery = (state, { search }) => search || '';
 
 export const getBackButtonLink = createSelector([getQuery], query => {
-  if (!query) return '';
+  if (!query) return '/compare-all-targets';
   const targetParams = query.targets ? query.targets.split(',') : [];
   const documentParams = uniq(
     targetParams.filter(target => !target.endsWith('-'))
