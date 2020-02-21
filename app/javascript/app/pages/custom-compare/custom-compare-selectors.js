@@ -31,7 +31,9 @@ export const getSelectedTargets = createSelector([getQuery], query => {
   if (!query) return null;
   const queryTargets = query.targets ? query.targets.split(',') : [];
   return [1, 2, 3].map((value, i) => {
-    const target = queryTargets[i] && queryTargets[i].split('-'); // targets are saved as a string 'ISO3-DOCUMENT', e.g. 'USA-NDC'
+    // targets are saved as a string 'ISO3-DOCUMENT', e.g. 'USA-NDC'
+    const target =
+      queryTargets && queryTargets[i] && queryTargets[i].split('-');
     const country = target && target.length > 0 && target[0];
     const document = target && target.length > 1 && target[1];
     return { key: `target${i}`, country, document };
@@ -106,7 +108,6 @@ export const getFiltersData = createSelector(
         documentOptions[country].find(({ value }) => value === document),
       documentOptions: documentOptions ? documentOptions[country] : []
     }));
-
     return filtersData;
   }
 );

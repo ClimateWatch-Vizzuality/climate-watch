@@ -41,24 +41,22 @@ const CustomCompare = props => {
 
   const handleCountryFilterChange = (targetKey, newCountry) => {
     const { selectedTargets } = props;
-    const newTargetParams = selectedTargets.map(
-      ({ key, country, document }) => {
-        if (key === targetKey) return `${newCountry}-`;
-        return `${country}-${document}`;
-      }
-    );
+    const newTargetParams = [];
+    selectedTargets.forEach(({ key, country, document = '' }) => {
+      if (key === targetKey) newTargetParams.push(`${newCountry}-`);
+      else if (country) newTargetParams.push(`${country}-${document}`);
+    });
 
     updateTargetParams(newTargetParams);
   };
 
   const handleDocumentFilterChange = (targetKey, newDocument) => {
     const { selectedTargets } = props;
-    const newTargetParams = selectedTargets.map(
-      ({ key, country, document }) => {
-        if (key === targetKey) return `${country}-${newDocument}`;
-        return `${country}-${document}`;
-      }
-    );
+    const newTargetParams = [];
+    selectedTargets.forEach(({ key, country, document = '' }) => {
+      if (key === targetKey) newTargetParams.push(`${country}-${newDocument}`);
+      else if (country) newTargetParams.push(`${country}-${document}`);
+    });
 
     updateTargetParams(newTargetParams);
   };
