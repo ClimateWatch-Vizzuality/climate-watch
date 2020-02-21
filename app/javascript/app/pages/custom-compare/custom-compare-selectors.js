@@ -29,11 +29,11 @@ const getCountryOptions = createSelector([getCountries], countries => {
 
 export const getSelectedTargets = createSelector([getQuery], query => {
   if (!query) return null;
-  const queryTargets = query.targets.split(',');
+  const queryTargets = query.targets ? query.targets.split(',') : [];
   return [1, 2, 3].map((value, i) => {
-    const targets = queryTargets[i] && queryTargets[i].split('-');
-    const country = targets && targets.length && targets[0];
-    const document = targets && targets.length > 1 && targets[1];
+    const target = queryTargets[i] && queryTargets[i].split('-'); // targets are saved as a string 'ISO3-DOCUMENT', e.g. 'USA-NDC'
+    const country = target && target.length > 0 && target[0];
+    const document = target && target.length > 1 && target[1];
     return { key: `target${i}`, country, document };
   });
 });
@@ -46,7 +46,9 @@ const getDocumentsOptionsByCountry = createSelector(
       !selectedTargets.length ||
       !indicators ||
       !indicators.length
-    ) { return null; }
+    ) {
+      return null;
+    }
 
     const ndcIndicator = indicators.find(i => i.slug === 'submission');
     const ltsIndicator = indicators.find(i => i.slug === 'lts_submission');
@@ -54,8 +56,8 @@ const getDocumentsOptionsByCountry = createSelector(
     const rows = selectedTargets.reduce((acc, { country }) => {
       if (!country) return acc;
 
-      const countryNDC = ndcIndicator.locations[country];
-      const countryLTS = ltsIndicator.locations[country];
+      const countryNDC = ndcIndicator.locations[country] || {};
+      const countryLTS = ltsIndicator.locations[country] || {};
 
       let documents = [];
 
