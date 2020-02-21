@@ -15,7 +15,6 @@ import Search from 'components/search';
 import { NCS_COMPARE_ALL } from 'data/SEO';
 import { MetaDescription, SocialMetadata } from 'components/seo';
 import NdcCompareAllTargetsProvider from 'providers/ndc-compare-all-targets-provider';
-import qs from 'query-string';
 import CompareAllTable from './ndc-compare-all-targets-table/ndc-compare-all-targets-table';
 import styles from './ndc-compare-all-targets-styles.scss';
 
@@ -45,19 +44,6 @@ const renderSearch = (searchHandler, query) => (
   />
 );
 
-const getLinkToCustomCompare = selectedTargets => {
-  // let linkToCustomCompare = {};
-  // selectedTargets.forEach((t, i) => {
-  //   const [country, document] = t.split('-');
-  //   linkToCustomCompare = {
-  //     ...linkToCustomCompare,
-  //     [`country${i}`]: country,
-  //     [`document${i}`]: document
-  //   };
-  // });
-  return `targets=${qs.stringify(selectedTargets)}`;
-};
-
 const NDCCompareAllTargets = props => {
   const {
     loading,
@@ -70,8 +56,7 @@ const NDCCompareAllTargets = props => {
     columns,
     setColumnWidth,
     handleTargetsChange,
-    selectedTargets,
-    queryParams
+    selectedTargets
   } = props;
   return (
     <React.Fragment>
@@ -107,7 +92,7 @@ const NDCCompareAllTargets = props => {
                 variant="primary"
                 className={styles.compareButton}
                 disabled={selectedTargets.length === 0}
-                link={`/custom-compare?targets=${selectedTargets.join('%2')}`}
+                link={`/custom-compare?targets=${selectedTargets.join(',')}`}
               >
                 {`Compare${
                   selectedTargets.length === 0
