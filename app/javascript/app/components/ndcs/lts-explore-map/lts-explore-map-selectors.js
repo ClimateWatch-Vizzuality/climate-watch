@@ -33,10 +33,11 @@ export const getCategories = createSelector(getCategoriesData, categories =>
     })))
 );
 
-export const getMaximumCountries = createSelector(
-  getCountries,
-  countries => countries.length
-);
+export const getMaximumCountries = createSelector(getCountries, countries => {
+  const partiesISO = ['EUU'];
+  const nonParties = countries.filter(c => !partiesISO.includes(c.iso_code3));
+  return nonParties.length;
+});
 
 export const getISOCountries = createSelector([getCountries], countries =>
   countries.map(country => country.iso_code3)
@@ -194,17 +195,17 @@ export const getLegend = createSelector(
     }));
     const legendItems = uniqBy(
       bucketsWithId.map(label => {
-        let partiesNumber = Object.values(indicator.locations).filter(
+        let countriesNumber = Object.values(indicator.locations).filter(
           l => l.label_id === parseInt(label.id, 10)
         ).length;
         if (label.name === NO_DOCUMENT_SUBMITTED) {
-          partiesNumber =
+          countriesNumber =
             maximumCountries - Object.values(indicator.locations).length;
         }
         return {
           ...label,
-          value: percentage(partiesNumber, maximumCountries),
-          partiesNumber,
+          value: percentage(countriesNumber, maximumCountries),
+          countriesNumber,
           color: getColorByIndex(indicator.legendBuckets, label.index)
         };
       }),
@@ -282,12 +283,12 @@ export const getSummaryCardData = createSelector(
     if (!indicators || !maximumCountries) return null;
     const LTSIndicator = indicators.find(i => i.slug === 'lts_document');
     if (!LTSIndicator) return null;
-    const partiesNumber = Object.values(LTSIndicator.locations).filter(
+    const countriesNumber = Object.values(LTSIndicator.locations).filter(
       l => l.value
     ).length;
     return {
-      value: partiesNumber,
-      description: `out of ${maximumCountries} parties have submitted long-term strategies`
+      value: countriesNumber,
+      description: `out of ${maximumCountries} countries have submitted long-term strategies`
     };
   }
 );
