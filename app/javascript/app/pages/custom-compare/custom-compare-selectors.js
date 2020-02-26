@@ -34,8 +34,8 @@ export const getSelectedTargets = createSelector([getQuery], query => {
     // targets are saved as a string 'ISO3-DOCUMENT', e.g. 'USA-NDC'
     const target =
       queryTargets && queryTargets[i] && queryTargets[i].split('-');
-    const country = target && target.length > 0 && target[0];
-    const document = target && target.length > 1 && target[1];
+    const country = target && target[0];
+    const document = target && target[1];
     return { key: `target${i}`, country, document };
   });
 });
