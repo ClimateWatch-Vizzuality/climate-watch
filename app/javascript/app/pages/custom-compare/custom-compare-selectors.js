@@ -27,35 +27,17 @@ const getCountryOptions = createSelector([getCountries], countries => {
   }));
 });
 
-export const getSelectedTargets = createSelector([getQuery], query => {
-  if (!query) return null;
-  const queryTargets = query.targets ? query.targets.split(',') : [];
-  return [1, 2, 3].map((value, i) => {
-    // targets are saved as a string 'ISO3-DOCUMENT', e.g. 'USA-NDC'
-    const target =
-      queryTargets && queryTargets[i] && queryTargets[i].split('-');
-    const country = target && target[0];
-    const document = target && target[1];
-    return { key: `target${i}`, country, document };
-  });
-});
-
-const getDocumentsOptionsByCountry = createSelector(
-  [getSelectedTargets, getIndicatorsData],
-  (selectedTargets, indicators) => {
-    if (
-      !selectedTargets ||
-      !selectedTargets.length ||
-      !indicators ||
-      !indicators.length
-    ) {
+export const getDocumentsOptionsByCountry = createSelector(
+  [getCountryOptions, getIndicatorsData],
+  (countries, indicators) => {
+    if (!countries || !countries.length || !indicators || !indicators.length) {
       return null;
     }
 
     const ndcIndicator = indicators.find(i => i.slug === 'submission');
     const ltsIndicator = indicators.find(i => i.slug === 'lts_submission');
 
-    const rows = selectedTargets.reduce((acc, { country }) => {
+    const rows = countries.reduce((acc, { value: country }) => {
       if (!country) return acc;
 
       const countryNDC = ndcIndicator.locations[country] || {};
@@ -84,6 +66,19 @@ const getDocumentsOptionsByCountry = createSelector(
     return rows;
   }
 );
+
+export const getSelectedTargets = createSelector([getQuery], query => {
+  if (!query) return null;
+  const queryTargets = query.targets ? query.targets.split(',') : [];
+  return [1, 2, 3].map((value, i) => {
+    // targets are saved as a string 'ISO3-DOCUMENT', e.g. 'USA-NDC'
+    const target =
+      queryTargets && queryTargets[i] && queryTargets[i].split('-');
+    const country = target && target[0];
+    const document = target && target[1];
+    return { key: `target${i}`, country, document };
+  });
+});
 
 export const getFiltersData = createSelector(
   [getCountryOptions, getDocumentsOptionsByCountry, getSelectedTargets],
