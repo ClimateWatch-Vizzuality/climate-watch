@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect';
 import qs from 'query-string';
+import { uniq } from 'lodash';
 
 const INDC = ['INDC Submitted', 'First NDC Submitted', 'Second NDC Submitted'];
 const NDC = ['First NDC Submitted', 'Second NDC Submitted'];
@@ -9,6 +10,15 @@ const getIndicatorsData = state =>
   (state.compareAll.data && state.compareAll.data.indicators) || null;
 const getQuery = (state, { search }) => search || '';
 
+export const getBackButtonLink = createSelector([getQuery], query => {
+  if (!query) return '/compare-all-targets';
+  const targetParams = query.targets ? query.targets.split(',') : [];
+  const documentParams = uniq(
+    targetParams.filter(target => !target.endsWith('-'))
+  );
+  return `/compare-all-targets?targets=${documentParams}`;
+});
+
 const getCountryOptions = createSelector([getCountries], countries => {
   if (!countries) return [];
   return countries.map(({ wri_standard_name, iso_code3 }) => ({
@@ -17,42 +27,21 @@ const getCountryOptions = createSelector([getCountries], countries => {
   }));
 });
 
-const getSelectedCountries = createSelector(
-  [getCountryOptions, getQuery],
-  (countriesData, query) => {
-    if (!countriesData && !countriesData.length && !query) return null;
-    const { country0, country1, country2 } = query;
-    return {
-      country0,
-      country1,
-      country2
-    };
-  }
-);
-
-const getSelectedDocuments = createSelector([getQuery], query => {
-  if (!query) return null;
-  const { document0, document1, document2 } = query;
-  return {
-    document0,
-    document1,
-    document2
-  };
-});
-
-const getDocumentsOptionsByCountry = createSelector(
-  [getSelectedCountries, getIndicatorsData],
-  (selectedCountries, indicators) => {
-    if (!selectedCountries || !indicators || !indicators.length) return null;
+export const getDocumentsOptionsByCountry = createSelector(
+  [getCountryOptions, getIndicatorsData],
+  (countries, indicators) => {
+    if (!countries || !countries.length || !indicators || !indicators.length) {
+      return null;
+    }
 
     const ndcIndicator = indicators.find(i => i.slug === 'submission');
     const ltsIndicator = indicators.find(i => i.slug === 'lts_submission');
 
-    const rows = Object.values(selectedCountries).reduce((acc, country) => {
+    const rows = countries.reduce((acc, { value: country }) => {
       if (!country) return acc;
 
-      const countryNDC = ndcIndicator.locations[country];
-      const countryLTS = ltsIndicator.locations[country];
+      const countryNDC = ndcIndicator.locations[country] || {};
+      const countryLTS = ltsIndicator.locations[country] || {};
 
       let documents = [];
 
@@ -78,33 +67,42 @@ const getDocumentsOptionsByCountry = createSelector(
   }
 );
 
+export const getSelectedTargets = createSelector([getQuery], query => {
+  if (!query) return null;
+  const queryTargets = query.targets ? query.targets.split(',') : [];
+  return [1, 2, 3].map((value, i) => {
+    // targets are saved as a string 'ISO3-DOCUMENT', e.g. 'USA-NDC'
+    const target =
+      queryTargets && queryTargets[i] && queryTargets[i].split('-');
+    const country = target && target[0];
+    const document = target && target[1];
+    return { key: `target${i}`, country, document };
+  });
+});
+
 export const getFiltersData = createSelector(
-  [
-    getSelectedCountries,
-    getCountryOptions,
-    getSelectedDocuments,
-    getDocumentsOptionsByCountry
-  ],
-  (selectedCountries, countryOptions, selectedDocuments, documentOptions) => {
-    if (!countryOptions || !countryOptions.length || !selectedCountries) {
+  [getCountryOptions, getDocumentsOptionsByCountry, getSelectedTargets],
+  (countryOptions, documentOptions, targets) => {
+    if (
+      !countryOptions ||
+      !countryOptions.length ||
+      !targets ||
+      !targets.length
+    ) {
       return null;
     }
 
-    const filtersData = Object.values(selectedCountries).map((country, i) => ({
-      key: `filters-group-${i}`,
-      countryParam: `country${i}`,
+    const filtersData = targets.map(({ key, country, document }) => ({
+      key,
       countryValue: countryOptions.find(({ value }) => country === value),
       contriesOptions: countryOptions,
-      documentParam: `document${i}`,
       documentValue:
         documentOptions &&
+        document &&
         documentOptions[country] &&
-        documentOptions[country].find(
-          ({ value }) => value === selectedDocuments[`document${i}`]
-        ),
+        documentOptions[country].find(({ value }) => value === document),
       documentOptions: documentOptions ? documentOptions[country] : []
     }));
-
     return filtersData;
   }
 );
@@ -123,9 +121,3 @@ export const getAnchorLinks = createSelector(
       }));
   }
 );
-
-export default {
-  getAnchorLinks,
-  getFiltersData,
-  getCountryOptions
-};

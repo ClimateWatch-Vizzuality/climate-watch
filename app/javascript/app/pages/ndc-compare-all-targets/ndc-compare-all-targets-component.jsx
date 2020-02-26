@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import Button from 'components/button';
 import Header from 'components/header';
@@ -15,7 +15,6 @@ import Search from 'components/search';
 import { NCS_COMPARE_ALL } from 'data/SEO';
 import { MetaDescription, SocialMetadata } from 'components/seo';
 import NdcCompareAllTargetsProvider from 'providers/ndc-compare-all-targets-provider';
-import qs from 'query-string';
 import CompareAllTable from './ndc-compare-all-targets-table/ndc-compare-all-targets-table';
 import styles from './ndc-compare-all-targets-styles.scss';
 
@@ -45,19 +44,6 @@ const renderSearch = (searchHandler, query) => (
   />
 );
 
-const getLinkToCustomCompare = selectedTargets => {
-  let linkToCustomCompare = {};
-  selectedTargets.forEach((t, i) => {
-    const [country, document] = t.split('-');
-    linkToCustomCompare = {
-      ...linkToCustomCompare,
-      [`country${i}`]: country,
-      [`document${i}`]: document
-    };
-  });
-  return qs.stringify(linkToCustomCompare);
-};
-
 const NDCCompareAllTargets = props => {
   const {
     loading,
@@ -68,9 +54,10 @@ const NDCCompareAllTargets = props => {
     tableData,
     noContentMsg,
     columns,
-    setColumnWidth
+    setColumnWidth,
+    handleTargetsChange,
+    selectedTargets
   } = props;
-  const [selectedTargets, setSelectedTargets] = useState([]);
   return (
     <React.Fragment>
       <MetaDescription
@@ -105,9 +92,7 @@ const NDCCompareAllTargets = props => {
                 variant="primary"
                 className={styles.compareButton}
                 disabled={selectedTargets.length === 0}
-                link={`/custom-compare?${getLinkToCustomCompare(
-                  selectedTargets
-                )}`}
+                link={`/custom-compare?targets=${selectedTargets.join(',')}`}
               >
                 {`Compare${
                   selectedTargets.length === 0
@@ -129,7 +114,7 @@ const NDCCompareAllTargets = props => {
             columns={columns}
             setColumnWidth={setColumnWidth}
             selectedTargets={selectedTargets}
-            setSelectedTargets={setSelectedTargets}
+            setSelectedTargets={handleTargetsChange}
           />
         </div>
       </div>
@@ -144,10 +129,12 @@ NDCCompareAllTargets.propTypes = {
   tableData: PropTypes.array,
   query: PropTypes.string,
   handleSearchChange: PropTypes.func.isRequired,
+  handleTargetsChange: PropTypes.func.isRequired,
   noContentMsg: PropTypes.string,
   columns: PropTypes.array,
   setColumnWidth: PropTypes.func.isRequired,
-  location: PropTypes.object
+  location: PropTypes.object,
+  selectedTargets: PropTypes.array
 };
 
 export default NDCCompareAllTargets;

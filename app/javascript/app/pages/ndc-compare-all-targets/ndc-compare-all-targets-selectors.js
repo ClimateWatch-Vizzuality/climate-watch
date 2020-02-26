@@ -7,7 +7,8 @@ const getCountries = state => (state.countries && state.countries.data) || null;
 const getIndicatorsData = state =>
   (state.compareAll.data && state.compareAll.data.indicators) || null;
 export const getLoading = state => state.compareAll.loading || null;
-export const getQuery = (state, { search }) => deburr(search.search) || '';
+export const getSearch = (state, { search }) => deburr(search.search) || '';
+export const getQuery = (state, { search }) => search || '';
 
 const getData = createSelector(
   [getCountries, getIndicatorsData],
@@ -62,9 +63,15 @@ export const getColumns = createSelector([getData], rows => {
 });
 
 export const getFilteredDataBySearch = createSelector(
-  [getData, getQuery],
-  (data, query) => {
+  [getData, getSearch],
+  (data, search) => {
     if (!data || isEmpty(data)) return null;
-    return filterQuery(data, query, [], { Country: 'name' });
+    return filterQuery(data, search, [], { Country: 'name' });
   }
 );
+
+export const getSelectedTargets = createSelector([getQuery], query => {
+  if (!query || !query.targets) return [];
+  const selectedTargets = query.targets.split(',');
+  return selectedTargets;
+});

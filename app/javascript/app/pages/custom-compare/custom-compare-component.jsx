@@ -20,12 +20,16 @@ const COUNTRY_PLACEHOLDERS = [
   'Add a third country'
 ];
 
-const FiltersGroup = ({ data, countryPlaceholder, handleFilterChange }) => {
+const FiltersGroup = ({
+  data,
+  countryPlaceholder,
+  handleCountryFilterChange,
+  handleDocumentFilterChange
+}) => {
   const {
-    countryParam,
+    key,
     countryValue,
     contriesOptions,
-    documentParam,
     documentValue,
     documentOptions
   } = data;
@@ -33,19 +37,19 @@ const FiltersGroup = ({ data, countryPlaceholder, handleFilterChange }) => {
   return (
     <div className={styles.filter}>
       <Dropdown
-        key={`${countryParam}-filter`}
+        key={`${key}-country`}
         className={styles.dropdown}
         options={contriesOptions}
-        onValueChange={({ value }) => handleFilterChange(countryParam, value)}
+        onValueChange={({ value }) => handleCountryFilterChange(key, value)}
         value={countryValue}
         placeholder={countryPlaceholder}
         hideResetButton
         noAutoSort
       />
       <Dropdown
-        key={`${documentParam}-filter`}
+        key={`${key}-document`}
         options={documentOptions}
-        onValueChange={({ value }) => handleFilterChange(documentParam, value)}
+        onValueChange={({ value }) => handleDocumentFilterChange(key, value)}
         value={documentValue}
         placeholder="Choose a submission"
         hideResetButton
@@ -56,13 +60,20 @@ const FiltersGroup = ({ data, countryPlaceholder, handleFilterChange }) => {
 };
 
 const CustomComparisonComponent = props => {
-  const { route, anchorLinks, handleFilterChange, filtersData } = props;
+  const {
+    route,
+    anchorLinks,
+    handleCountryFilterChange,
+    handleDocumentFilterChange,
+    filtersData,
+    backButtonLink
+  } = props;
   return (
     <div>
       <Header route={route}>
         <div className={cx(layout.content, styles.header)}>
           <BackButton
-            pathname="/compare-all-targets"
+            pathname={backButtonLink}
             backLabel="compare all targets"
           />
           <div className={styles.title}>
@@ -87,7 +98,8 @@ const CustomComparisonComponent = props => {
                   key={data.key}
                   data={data}
                   countryPlaceholder={COUNTRY_PLACEHOLDERS[i]}
-                  handleFilterChange={handleFilterChange}
+                  handleCountryFilterChange={handleCountryFilterChange}
+                  handleDocumentFilterChange={handleDocumentFilterChange}
                 />
               ))}
           </div>
@@ -127,14 +139,17 @@ FiltersGroup.propTypes = {
     )
   }),
   countryPlaceholder: PropTypes.string,
-  handleFilterChange: PropTypes.func
+  handleCountryFilterChange: PropTypes.func,
+  handleDocumentFilterChange: PropTypes.func
 };
 
 CustomComparisonComponent.propTypes = {
   route: PropTypes.object.isRequired,
   anchorLinks: PropTypes.array,
   filtersData: PropTypes.array,
-  handleFilterChange: PropTypes.func
+  handleCountryFilterChange: PropTypes.func,
+  handleDocumentFilterChange: PropTypes.func,
+  backButtonLink: PropTypes.string
 };
 
 export default CustomComparisonComponent;
