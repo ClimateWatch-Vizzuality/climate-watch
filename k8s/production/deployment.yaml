@@ -3,14 +3,14 @@ kind: Deployment
 metadata:
   namespace: climate-watch
   labels:
-    name: {name}
-  name: {name}
+    name: climate-watch
+  name: climate-watch
 spec:
   revisionHistoryLimit: 2
   template:
     metadata:
       labels:
-        name: {name}
+        name: climate-watch
     spec:
       tolerations:
       - key: "type"
@@ -35,11 +35,11 @@ spec:
                 - key: name
                   operator: In
                   values:
-                  - {name}
+                  - climate-watch
               topologyKey: kubernetes.io/hostname
       containers:
-      - name: {name}
-        image: vizzuality/{name}
+      - name: climate-watch
+        image: vizzuality/climate-watch
         imagePullPolicy: Always
         resources:
           requests:
@@ -107,8 +107,8 @@ spec:
         ports:
           - containerPort: 3000
 
-      - name: {name}-sidekiq
-        image: vizzuality/{name}
+      - name: climate-watch-sidekiq
+        image: vizzuality/climate-watch
         imagePullPolicy: Always
         resources:
           requests:
