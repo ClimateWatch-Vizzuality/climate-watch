@@ -85,7 +85,7 @@ node {
 
     stage ("Deploy Application") {
       sh("echo Deploying to STAGING cluster")
-      sh("kubectl config use-context ${KUBECTL_CONTEXT_PREFIX}_${CLOUD_PROJECT_NAME}_${CLOUD_PROJECT_ZONE}_${KUBE_STAGING_CLUSTER}")
+      sh("kubectl config use-context ${KUBECTL_CONTEXT_PREFIX}_${CLOUD_PROJECT_NAME}_${CLOUD_PROJECT_ZONE}_${KUBE_PROD_CLUSTER}")
       switch ("${env.BRANCH_NAME}") {
 
         // Roll out to sandbox
