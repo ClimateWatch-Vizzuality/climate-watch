@@ -3,8 +3,8 @@ kind: Deployment
 metadata:
   namespace: climate-watch
   labels:
-    name: {name}-staging
-  name: {name}-staging
+    name: climate-watch-staging
+  name: climate-watch-staging
 spec:
   revisionHistoryLimit: 0
   template:
@@ -12,7 +12,7 @@ spec:
       annotations:
         chaos.alpha.kubernetes.io/enabled: "true"
       labels:
-        name: {name}-staging
+        name: climate-watch-staging
     spec:
       tolerations:
       - key: "type"
@@ -37,11 +37,11 @@ spec:
                 - key: name
                   operator: In
                   values:
-                  - {name}-staging
+                  - climate-watch-staging
               topologyKey: kubernetes.io/hostname
       containers:
-      - name: {name}-staging
-        image: vizzuality/{name}
+      - name: climate-watch-staging
+        image: vizzuality/climate-watch
         imagePullPolicy: Always
         resources:
           requests:
@@ -110,8 +110,8 @@ spec:
         ports:
           - containerPort: 3000
 
-      - name: {name}-staging-sidekiq
-        image: vizzuality/{name}
+      - name: climate-watch-staging-sidekiq
+        image: vizzuality/climate-watch
         imagePullPolicy: Always
         resources:
           requests:
