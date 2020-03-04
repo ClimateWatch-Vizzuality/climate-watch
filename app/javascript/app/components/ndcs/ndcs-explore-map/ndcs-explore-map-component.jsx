@@ -67,7 +67,7 @@ const renderLegend = legendData => (
           <LegendItem
             key={l.name}
             name={l.name}
-            partiesNumber={l.partiesNumber}
+            number={l.partiesNumber}
             value={l.value}
             color={l.color}
           />
