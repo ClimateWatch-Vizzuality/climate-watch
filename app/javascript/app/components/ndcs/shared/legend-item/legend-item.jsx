@@ -3,7 +3,7 @@ import Progress from 'components/progress';
 import PropTypes from 'prop-types';
 import styles from './legend-item-styles.scss';
 
-const LegendItem = ({ name, partiesNumber, value, color }) => (
+const LegendItem = ({ name, number, value, color, itemsName }) => (
   <div className={styles.legendItem}>
     <div>
       <span className={styles.legendDot} style={{ backgroundColor: color }} />
@@ -12,7 +12,7 @@ const LegendItem = ({ name, partiesNumber, value, color }) => (
     <div className={styles.progressContainer}>
       <Progress value={value} className={styles.progressBar} color={color} />
       <div className={styles.partiesNumber}>
-        {partiesNumber} {partiesNumber === 1 ? 'party' : 'parties'}
+        {number} {number === 1 ? itemsName[0] : itemsName[1]}
       </div>
     </div>
   </div>
@@ -20,9 +20,14 @@ const LegendItem = ({ name, partiesNumber, value, color }) => (
 
 LegendItem.propTypes = {
   name: PropTypes.string,
-  partiesNumber: PropTypes.number,
+  number: PropTypes.number,
+  itemsName: PropTypes.array,
   value: PropTypes.number,
   color: PropTypes.string
+};
+
+LegendItem.defaultProps = {
+  itemsName: ['party', 'parties']
 };
 
 export default LegendItem;
