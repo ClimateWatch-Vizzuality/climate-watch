@@ -230,7 +230,7 @@ GEM
       arel (>= 6)
     powerpack (0.1.2)
     public_suffix (3.0.3)
-    puma (3.12.3)
+    puma (3.12.4)
     rack (2.2.2)
     rack-protection (2.0.4)
       rack
@@ -411,7 +411,7 @@ DEPENDENCIES
   oj
   pg (~> 0.20)
   pg_search
-  puma (~> 3.12)
+  puma (~> 3.12.4)
   rails (= 5.2.2)
   rails-controller-testing
   rspec-collection_matchers
