@@ -25,7 +25,8 @@ ActiveAdmin.register_page 'Global CW Platform NDC Texts' do
     end
 
     def import_worker
-      DataUploader::BaseImportWorker.perform_async(section.id, 'ImportNdcTexts', current_admin_user.email)
+      DataUploader::BaseImportWorker.
+        perform_async(section.id, 'ImportNdcTexts', current_admin_user.email)
     end
 
     def section_repository
@@ -39,13 +40,6 @@ ActiveAdmin.register_page 'Global CW Platform NDC Texts' do
 
   section_proc = proc {
     DataUploader::Repositories::SectionRepository.new.filter_by_section_and_platform(
-      section_name,
-      platform_name
-    )
-  }
-
-  datasets = proc {
-    DataUploader::Repositories::DatasetRepository.new.filter_by_section_and_platform(
       section_name,
       platform_name
     )
