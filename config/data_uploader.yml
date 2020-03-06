@@ -59,9 +59,7 @@ platforms:
         datasets:
           - locations_groupings
       - name: ndc_texts
-        # importer:
-        datasets:
-          - ndc_texts
+        importer: ImportNdcTexts
       - name: quantifications
         importer: ImportQuantifications
         datasets:
