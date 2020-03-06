@@ -106,3 +106,5 @@ platforms:
           - Acronyms
           - metadata_sources
           - metadata_sources_descriptions
+      - name: blog_stories
+        importer: ImportStories
