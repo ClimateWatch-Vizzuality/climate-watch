@@ -1,8 +1,15 @@
 @import '~styles/settings.scss';
 
+$progress-bar-width: 180px;
+
 .legendItem {
   &:not(:last-child) {
     margin-bottom: 10px;
+  }
+
+  .legendName {
+    max-width: $progress-bar-width;
+    margin-bottom: 2px;
   }
 
   .legendDot {
@@ -18,7 +25,7 @@
     align-items: center;
 
     .progressBar {
-      width: 180px;
+      width: $progress-bar-width;
     }
 
     .partiesNumber {

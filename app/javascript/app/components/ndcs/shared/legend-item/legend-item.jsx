@@ -5,9 +5,9 @@ import styles from './legend-item-styles.scss';
 
 const LegendItem = ({ name, number, value, color, itemsName }) => (
   <div className={styles.legendItem}>
-    <div>
+    <div className={styles.legendName}>
       <span className={styles.legendDot} style={{ backgroundColor: color }} />
-      {name}
+      <span>{name}</span>
     </div>
     <div className={styles.progressContainer}>
       <Progress value={value} className={styles.progressBar} color={color} />
