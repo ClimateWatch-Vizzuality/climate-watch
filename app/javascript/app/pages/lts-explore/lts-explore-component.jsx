@@ -19,7 +19,7 @@ const LTSExplore = ({ route }) => (
           <div className={styles.headerLayout}>
             <Intro
               title="Explore Long-Term Strategies (LTS)"
-              description="Under the Paris Agreement, countries are invited to communicate “mid-century long-term low GHG emissions development strategies” (long-term strategies, or LTS). These strategies are central to the goal of limiting global warming to well below 2°C and to pursue efforts to limit the increase to 1.5°C, representing a significant opportunity for countries to lay out their vision for achieving a low-carbon economy by 2050 while also pursuing sustainable development. It is advantageous for countries to align their NDCs and long-term strategies for consistency and to avoid the lock in of carbon-intensive behavior, technologies and policies."
+              description="Under the Paris Agreement, countries are invited to communicate “mid-century long-term low GHG emissions development strategies” (long-term strategies, or LTS). These strategies are central to the goal of limiting global warming to well below 2°C and to pursue efforts to limit the increase to 1.5°C, representing a significant opportunity for countries to lay out their vision for achieving a low-carbon economy by 2050 while also pursuing sustainable development. It is advantageous for countries to align their NDCs and long-term strategies for consistency and to avoid the lock-in of carbon-intensive behavior, technologies and policies."
             />
           </div>
         </div>
