@@ -25,6 +25,13 @@
   padding-bottom: 0 !important; // Due to the :global in styles
 }
 
+.column {
+  a {
+    border-bottom: none !important;
+    text-decoration: underline !important;
+  }
+}
+
 .evenRow {
   .column {
     &:nth-child(2),
