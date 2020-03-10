@@ -26,6 +26,7 @@
 
 .searchWrapper {
   margin-bottom: 64px;
+
   @include columns(12);
 
   :first-child {
