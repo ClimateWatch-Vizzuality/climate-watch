@@ -2,6 +2,7 @@
 import React from 'react';
 import Proptypes from 'prop-types';
 import Header from 'components/header';
+import Button from 'components/button';
 import Intro from 'components/intro';
 import { NDCS_EXPLORE } from 'data/SEO';
 import { MetaDescription, SocialMetadata } from 'components/seo';
@@ -27,6 +28,13 @@ const NDCSExplore = ({ route }) => (
             />
           </div>
           <div className={styles.searchWrapper}>
+            <Button
+              variant="primary"
+              link="/2020-ndc-tracker"
+              className="link-button"
+            >
+              Go to 2020 NDC Tracker
+            </Button>
             <AutocompleteSearch placeholder="Search NDCs for a keyword or phrase (e.g., ‘forest’ or ‘CO2’)" />
           </div>
         </div>
