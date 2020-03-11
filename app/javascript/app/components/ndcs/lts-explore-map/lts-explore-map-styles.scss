@@ -169,7 +169,7 @@
 }
 
 .filtersGroup {
-    &.sticky {
+  &.sticky {
     padding: 10px 0 20px;
   }
 }
@@ -191,6 +191,7 @@
 @media #{$tablet-landscape} {
   .filtersLayout {
     @include columns((8,4));
+
     margin-bottom: 0;
   }
 
