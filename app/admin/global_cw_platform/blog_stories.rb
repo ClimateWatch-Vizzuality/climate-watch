@@ -1,12 +1,12 @@
-ActiveAdmin.register_page 'Global CW Platform NDC Texts' do
+ActiveAdmin.register_page 'Global Cw Platform Blog Stories' do
   include DataUploader::SharedAdmin
 
-  section_name = 'ndc_texts'
+  section_name = 'blog_stories'
   platform_name = 'global_cw_platform'
 
   controller do
     def section_name
-      'ndc_texts'
+      'blog_stories'
     end
 
     def platform_name
@@ -14,7 +14,7 @@ ActiveAdmin.register_page 'Global CW Platform NDC Texts' do
     end
 
     def path
-      admin_global_cw_platform_ndc_texts_path
+      admin_global_cw_platform_blog_stories_path
     end
 
     def section
@@ -25,8 +25,7 @@ ActiveAdmin.register_page 'Global CW Platform NDC Texts' do
     end
 
     def import_worker
-      DataUploader::BaseImportWorker.
-        perform_async(section.id, 'ImportNdcTexts', current_admin_user.email)
+      DataUploader::BaseImportWorker.perform_async(section.id, 'ImportStories', current_admin_user.email)
     end
 
     def section_repository
@@ -46,8 +45,8 @@ ActiveAdmin.register_page 'Global CW Platform NDC Texts' do
   }
 
   content do
-    render partial: 'admin/form_upload_ndc_texts', locals: {
-      import_path: admin_global_cw_platform_ndc_texts_run_importer_path,
+    render partial: 'admin/blog_stories', locals: {
+      import_path: admin_global_cw_platform_blog_stories_run_importer_path,
       logs: section_proc.call.worker_logs.order(created_at: :desc)
     }
   end
