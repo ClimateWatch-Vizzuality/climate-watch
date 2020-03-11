@@ -186,10 +186,7 @@ class LTSExploreMap extends PureComponent {
                         {loading && <Loading light className={styles.loader} />}
                         <HandIconInfo
                           className={styles.mapInfo}
-                          text="Explore which countries have submitted long-term
-                            strategies thus far below. Visit Climate Watch in
-                            the coming months for in-depth analysis of long-term
-                            strategies."
+                          text="Click on a country to see an in-depth analysis of its long-term strategy"
                         />
                         <Map
                           paths={paths}

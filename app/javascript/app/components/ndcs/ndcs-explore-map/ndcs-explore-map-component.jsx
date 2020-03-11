@@ -186,8 +186,7 @@ class NDCSExploreMap extends PureComponent {
                         {loading && <Loading light className={styles.loader} />}
                         <HandIconInfo
                           className={styles.mapInfo}
-                          text="Explore the interactive map to understand which
-                            countries have submitted new or updated NDCs."
+                          text="Click on a country to see an in-depth analysis of its NDC"
                         />
                         <Map
                           paths={paths}
