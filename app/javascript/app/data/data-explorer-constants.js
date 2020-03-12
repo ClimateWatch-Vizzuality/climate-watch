@@ -18,9 +18,11 @@ export const FIRST_TABLE_HEADERS = {
     'overview_category',
     'sector',
     'subsector',
-    'indicator_id',
     'indicator',
-    'value'
+    'value',
+    'source',
+    'indicator_name',
+    'indicator_id'
   ],
   'lts-content': [
     'country',
@@ -29,9 +31,11 @@ export const FIRST_TABLE_HEADERS = {
     'overview_category',
     'sector',
     'subsector',
-    'indicator_id',
     'indicator',
-    'value'
+    'value',
+    'source',
+    'indicator_name',
+    'indicator_id'
   ],
   'ndc-sdg-linkages': [
     'country',
