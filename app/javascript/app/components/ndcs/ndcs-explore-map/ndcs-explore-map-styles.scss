@@ -200,6 +200,12 @@
   justify-content: left;
 }
 
+.filtersGroup {
+  &.sticky {
+    padding: 10px 0 20px;
+  }
+}
+
 @media #{$tablet-portrait} {
   .filtersGroup {
     @include columns(6);
