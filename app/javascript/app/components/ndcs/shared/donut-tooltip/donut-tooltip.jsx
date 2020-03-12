@@ -17,7 +17,7 @@ const DonutTooltip = props => {
 
   const legendItemName = capitalize(lowerCase(payload[0].name));
 
-  const chartTop = chartReference.getBoundingClientRect().top;
+  const chartTop = chartReference && chartReference.getBoundingClientRect().top;
   const referenceTop = reference.getBoundingClientRect().top;
   let top = chartTop - referenceTop + coordinate.y;
 
