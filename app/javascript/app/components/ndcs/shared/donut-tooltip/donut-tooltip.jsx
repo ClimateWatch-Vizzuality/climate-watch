@@ -9,7 +9,8 @@ const DonutTooltip = props => {
   const {
     reference,
     chartReference,
-    content: { payload, coordinate }
+    content: { payload, coordinate },
+    itemName
   } = props;
   if (!payload || !payload[0]) return null;
 
@@ -26,7 +27,7 @@ const DonutTooltip = props => {
   if (top < 340 && left < 190) top += 80;
   return ReactDOM.createPortal(
     <div className={styles.tooltip} style={{ left, top }}>
-      {`Countries with ${legendItemName} represent ${percentage}% of global emissions`}
+      {`${itemName} with ${legendItemName} represent ${percentage}% of global emissions`}
     </div>,
     reference
   );
@@ -35,7 +36,12 @@ const DonutTooltip = props => {
 DonutTooltip.propTypes = {
   content: PropTypes.object,
   reference: PropTypes.object,
-  chartReference: PropTypes.object
+  chartReference: PropTypes.object,
+  itemName: PropTypes.string
+};
+
+DonutTooltip.defaultProps = {
+  itemName: 'Countries'
 };
 
 export default DonutTooltip;
