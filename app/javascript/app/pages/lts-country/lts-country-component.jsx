@@ -4,6 +4,7 @@ import { renderRoutes } from 'react-router-config';
 import Header from 'components/header';
 import Intro from 'components/intro';
 import Button from 'components/button';
+import Icon from 'components/icon';
 import BackButton from 'components/back-button';
 import Search from 'components/search';
 import cx from 'classnames';
@@ -13,6 +14,7 @@ import { Dropdown as CWDropdown } from 'cw-components';
 import { LTS_COUNTRY } from 'data/SEO';
 import { MetaDescription, SocialMetadata } from 'components/seo';
 import { TabletPortrait, MobileOnly } from 'components/responsive';
+import externalLinkIcon from 'assets/icons/external-link.svg';
 
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
 import countryDropdownTheme from 'styles/themes/dropdown/dropdown-country.scss';
@@ -30,6 +32,7 @@ class LTSCountry extends PureComponent {
         target="_blank"
       >
         View LTS Document
+        <Icon className={styles.externalLinkIcon} icon={externalLinkIcon} />
       </Button>
     );
   }
