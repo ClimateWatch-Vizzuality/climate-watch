@@ -13,7 +13,6 @@ import { Dropdown as CWDropdown } from 'cw-components';
 import { LTS_COUNTRY } from 'data/SEO';
 import { MetaDescription, SocialMetadata } from 'components/seo';
 import { TabletPortrait, MobileOnly } from 'components/responsive';
-import NdcsDocumentsMetaProvider from 'providers/ndcs-documents-meta-provider';
 
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
 import countryDropdownTheme from 'styles/themes/dropdown/dropdown-country.scss';
@@ -21,18 +20,17 @@ import styles from './lts-country-styles.scss';
 
 class LTSCountry extends PureComponent {
   renderFullTextDropdown() {
-    const { match, documentsOptions } = this.props;
+    const { documentLink } = this.props;
     return (
-      documentsOptions && (
-        <Button
-          variant="secondary"
-          link={`/lts/country/${match.params.iso}/full`}
-          className={styles.viewDocumentButton}
-          disabled
-        >
-          View LTS Document
-        </Button>
-      )
+      <Button
+        variant="secondary"
+        href={documentLink}
+        className={styles.viewDocumentButton}
+        disabled={!documentLink}
+        target="_blank"
+      >
+        View LTS Document
+      </Button>
     );
   }
 
@@ -96,7 +94,6 @@ class LTSCountry extends PureComponent {
           descriptionContext={LTS_COUNTRY({ countryName })}
           href={location.href}
         />
-        <NdcsDocumentsMetaProvider />
         {country && (
           <Header route={route}>
             <div className={styles.header}>
@@ -158,7 +155,7 @@ LTSCountry.propTypes = {
   anchorLinks: PropTypes.array,
   notSummary: PropTypes.bool,
   match: PropTypes.object.isRequired,
-  documentsOptions: PropTypes.array,
+  documentLink: PropTypes.string,
   handleCountryLink: PropTypes.func.isRequired,
   countriesOptions: PropTypes.array
 };
