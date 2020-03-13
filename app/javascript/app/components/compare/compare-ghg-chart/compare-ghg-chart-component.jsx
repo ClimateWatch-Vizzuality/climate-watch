@@ -82,7 +82,7 @@ class CompareGhgChart extends PureComponent {
         link={`/ghg-emissions?breakBy=regions-${CALCULATION_OPTIONS.ABSOLUTE_VALUE.value}&regions=${selectedLocationsFilter}`}
         onClick={handleAnalyticsClick}
       >
-        Explore emissions
+        Explore Emissions
       </Button>
     ];
   }

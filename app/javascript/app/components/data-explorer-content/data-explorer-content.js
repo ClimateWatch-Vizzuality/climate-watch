@@ -20,6 +20,7 @@ import {
   parseData,
   getMethodology,
   getSectionLabel,
+  getLinkLabel,
   getFirstTableHeaders,
   parseFilterQuery,
   parseExternalParams,
@@ -49,9 +50,9 @@ const mapStateToProps = (state, { section, location }) => {
   ];
   const filterQuery = parseFilterQuery(dataState);
   const devESPURL = section === 'emission-pathways' ? ESP_HOST : '';
-  const downloadHref = `${devESPURL}/api/v1/data/${DATA_EXPLORER_SECTIONS[
-    section
-  ].label}/download.zip${filterQuery ? `?${parseQuery(filterQuery)}` : ''}`;
+  const downloadHref = `${devESPURL}/api/v1/data/${
+    DATA_EXPLORER_SECTIONS[section].label
+  }/download.zip${filterQuery ? `?${parseQuery(filterQuery)}` : ''}`;
   const meta =
     section === 'emission-pathways'
       ? getPathwaysMetodology(dataState)
@@ -75,6 +76,7 @@ const mapStateToProps = (state, { section, location }) => {
     firstColumnHeaders: getFirstTableHeaders(dataState),
     href: getLink(dataState),
     sectionLabel: getSectionLabel(dataState),
+    linkLabel: getLinkLabel(dataState),
     downloadHref,
     anchorLinks,
     query: location.search,

@@ -190,6 +190,38 @@ const API_CALLS = {
       ],
       extra: multipleValuesExtra
     }
+  ],
+  'lts-content': [
+    {
+      title: 'GET /api/v1/data/lts_content/meta',
+      url: `${CW_API}/data/lts_content/meta`,
+      description: linkHeaderDescription,
+      extra: linkHeaderExtra
+    },
+    {
+      title: 'GET /api/v1/data/lts_content',
+      url: `${CW_API}/data/lts_content`,
+      description: 'Retrieves time series data for LTS content',
+      queryParams: [
+        countriesParam,
+        {
+          name: 'sources',
+          parameter: 'source_ids[]',
+          description: 'source id'
+        },
+        indicatorsParam,
+        categoriesParam,
+        {
+          name: 'labels',
+          parameter: 'label_ids[]',
+          description: 'label id'
+        },
+        sectorsParam,
+        sortColumnParam,
+        sortDirectionParam
+      ],
+      extra: multipleValuesExtra
+    }
   ]
 };
 

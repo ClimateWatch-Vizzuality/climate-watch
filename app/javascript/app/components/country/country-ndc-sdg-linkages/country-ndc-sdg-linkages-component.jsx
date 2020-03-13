@@ -158,7 +158,7 @@ class CountrySDGLinkages extends PureComponent {
         link={isNdcp ? null : link}
         onClick={handleAnalyticsClick}
       >
-        Explore global linkages
+        Explore Global Linkages
       </Button>
     );
     const buttonGroupConfig = isEmbed

@@ -1,5 +1,6 @@
 class ImportNdcTexts
   def call
+    puts 'Deleting all ndc full text'
     Ndc.delete_all
     bucket_name = Rails.application.secrets.s3_bucket_name
     prefix = "#{CW_FILES_PREFIX}ndc_texts/"

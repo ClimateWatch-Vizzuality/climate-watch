@@ -1,30 +1,44 @@
-<% if datasets.any? %>
-  <table class="index_table">
-    <thead>
-      <th class="col" style="width:10%">Dataset name</th>
-      <th class="col" style="width:10%">Dataset</th>
+<p>NDC Full text files are managed directly on S3. Once you upload all the files to S3 you can <b>Run Importers</b>. Importers are scripts that will move the data from S3 to the database.</p>
+<p>Importers are working in the background for better performance, so make sure you refresh the page to see if the importing has been successful.</p>
+<p>The result of importing will appear in the logs table below. There are three states:
+  <li><b>started</b> - that means the importers were started and are still in the process of copying the files to the DB,</li>
+  <li><b>finished</b> - meaning that importers finished and the correct content was imported, although some of the rows could be ignored check details column for errors if that is the case,</li>
+  <li><b>failed</b> - meaning the importers finishes and failed due to an error. The short descriptions of errors can be seen in the details column in the logs table below.</li>
+</p>
+<p>The history of imports (logs table) displays also the <b>email of admin</b> who performed the importing.</p>
+<br>
+
+<%= form_tag(import_path, class: 'importer-button') do %>
+  <%= submit_tag 'Run Full Text Importers',
+    data: { confirm: 'Running the importers will replace existing data, are you sure you want to proceed?', disable_with: 'Importing...' } %>
+<% end %>
+
+<% if logs.any? %>
+  <h2>History of imports</h2>
+  <table class="index_table logs_table">
+    <htead>
+    <th class="col" style="width:20%">Created at</th>
+    <th class="col" style="width:10%">Status</th>
+    <th class="col" style="width:50%">Details</th>
+    <th class="col" style="width:20%">Admin user</th>
     </thead>
     <tbody>
-      <% datasets.each do |dataset| %>
+      <% logs.each do |log| %>
         <tr>
-          <td><%= dataset.name %>
+          <td><%= log.created_at.in_time_zone("Eastern Time (US & Canada)") %> (EST)</td>
+          <td><%= log.state %></td>
           <td>
-            <% if dataset.datafile.attached? %>
-              <%= dataset.datafile.filename %>
-            <% end %>
-            <div class='forms-container'>
-              <%= form_tag(upload_path, multipart: true, class: 'form_inline') do %>
-                <%= file_field_tag 'datafile' %>
-                <%= submit_tag 'Upload file' %>
-                <%= hidden_field_tag :dataset_id, dataset.id %>
+            <% if log.details_errors.any? %>
+              <strong>Errors: </strong>
+              <%= log.details_errors.first['msg'] %>
+              <% if log.details_errors.length > 1 %>
+                <%= link_to 'Show more...', '#', class: 'open-simple-modal', data: { modal_text: simple_format(log.details_errors_messages), modal_title: 'Job Details' } %>
               <% end %>
-            </div>
+            <% end %>
           </td>
+          <td><%= log.user_email %></td>
         </tr>
       <% end %>
     </tbody>
   </table>
-  <%= form_tag(download_path, multipart: true) do %>
-    <%= submit_tag 'Download data files' %>
-  <% end %>
 <% end %>

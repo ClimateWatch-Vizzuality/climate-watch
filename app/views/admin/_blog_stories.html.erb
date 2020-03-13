@@ -1,0 +1,61 @@
+<h5>Latest 5 stories imported</h5>
+<table class="index_table">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Published at</th>
+      <th>Link</th>
+      <th>Tags</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% Story.order(published_at: :desc).limit(5).each do |st| %>
+      <tr>
+        <td><%= st.title %></td>
+        <td><%= st.published_at.strftime('%m-%d-%Y') %></td>
+        <td><%= link_to st.link, st.link %></td>
+        <td><%= st.tags.join(', ') %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<p>
+  Clicking on "Run Importers" will import new blog posts from WRI's blog
+  which will be featured on Climate Watch's homepage.
+</p>
+<br>
+
+<%= form_tag(import_path, class: 'importer-button') do %>
+  <%= submit_tag 'Run Importers',
+    data: { confirm: 'Running the importers will append new data, are you sure you want to proceed?', disable_with: 'Importing...' } %>
+<% end %>
+<% if logs.any? %>
+  <h2>History of imports</h2>
+  <table class="index_table logs_table">
+    <htead>
+    <th class="col" style="width:20%">Created at</th>
+    <th class="col" style="width:10%">Status</th>
+    <th class="col" style="width:50%">Details</th>
+    <th class="col" style="width:20%">Admin user</th>
+    </thead>
+    <tbody>
+      <% logs.each do |log| %>
+        <tr>
+          <td><%= log.created_at.in_time_zone("Eastern Time (US & Canada)") %> (EST)</td>
+          <td><%= log.state %></td>
+          <td>
+            <% if log.details_errors.any? %>
+              <strong>Errors: </strong>
+              <%= log.details_errors.first['msg'] %>
+              <% if log.details_errors.length > 1 %>
+                <%= link_to 'Show more...', '#', class: 'open-simple-modal', data: { modal_text: simple_format(log.details_errors_messages), modal_title: 'Job Details' } %>
+              <% end %>
+            <% end %>
+          </td>
+          <td><%= log.user_email %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>
+

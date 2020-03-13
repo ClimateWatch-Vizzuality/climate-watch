@@ -107,13 +107,17 @@ class CountryNdcOverview extends PureComponent {
                           <CardRow
                             rowData={{
                               title: 'Target type',
-                              value: values.ghg_target_type[0].value
+                              value:
+                                values.ghg_target_type &&
+                                values.ghg_target_type[0].value
                             }}
                           />
                           <CardRow
                             rowData={{
                               title: 'Target year',
-                              value: values.time_target_year[0].value
+                              value:
+                                values.time_target_year &&
+                                values.time_target_year[0].value
                             }}
                           />
                         </React.Fragment>
@@ -203,7 +207,8 @@ class CountryNdcOverview extends PureComponent {
                 <CardRow
                   rowData={{
                     title: 'Target type',
-                    value: values.ghg_target_type[0].value
+                    value:
+                      values.ghg_target_type && values.ghg_target_type[0].value
                   }}
                   theme={cardTheme}
                 />

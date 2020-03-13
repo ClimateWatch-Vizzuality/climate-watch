@@ -14,6 +14,7 @@ import {
   getIndicatorEmissionsData,
   getLabels
 } from 'components/ndcs/shared/utils';
+import { europeSlug, europeanCountries } from 'app/data/european-countries';
 
 const NO_DOCUMENT_SUBMITTED = 'No Document Submitted';
 
@@ -33,9 +34,20 @@ export const getCategories = createSelector(getCategoriesData, categories =>
     })))
 );
 
+// Remove and act as true for subsequent selectors when EUU LTS will be in the data
+export const getIsEUUSubmitted = createSelector(
+  [getIndicatorsData],
+  indicators => {
+    if (!indicators) return null;
+    const LTSIndicator = indicators.find(i => i.slug === 'lts_document');
+    if (!LTSIndicator) return null;
+    return !!LTSIndicator.locations[europeSlug];
+  }
+);
+
 export const getMaximumCountries = createSelector(
-  getCountries,
-  countries => countries.length
+  [getCountries, getIsEUUSubmitted],
+  (countries, isEUUsubmitted) => (isEUUsubmitted ? countries.length + 1 : countries.length)
 );
 
 export const getISOCountries = createSelector([getCountries], countries =>
@@ -174,7 +186,7 @@ export const getPathsWithStyles = createSelector(
 );
 
 export const getLinkToDataExplorer = createSelector([getSearch], search => {
-  const section = 'ndc-content';
+  const section = 'lts-content';
   return generateLinkToDataExplorer(search, section);
 });
 
@@ -194,17 +206,17 @@ export const getLegend = createSelector(
     }));
     const legendItems = uniqBy(
       bucketsWithId.map(label => {
-        let partiesNumber = Object.values(indicator.locations).filter(
+        let countriesNumber = Object.values(indicator.locations).filter(
           l => l.label_id === parseInt(label.id, 10)
         ).length;
         if (label.name === NO_DOCUMENT_SUBMITTED) {
-          partiesNumber =
+          countriesNumber =
             maximumCountries - Object.values(indicator.locations).length;
         }
         return {
           ...label,
-          value: percentage(partiesNumber, maximumCountries),
-          partiesNumber,
+          value: percentage(countriesNumber, maximumCountries),
+          countriesNumber,
           color: getColorByIndex(indicator.legendBuckets, label.index)
         };
       }),
@@ -215,6 +227,33 @@ export const getLegend = createSelector(
   }
 );
 
+export const getTooltipCountryValues = createSelector(
+  [getIndicatorsData, getSelectedIndicator],
+  (indicators, selectedIndicator) => {
+    if (!indicators || !selectedIndicator) {
+      return null;
+    }
+    let updatedSelectedIndicator = selectedIndicator;
+    if (selectedIndicator.value === 'lts_submission') {
+      updatedSelectedIndicator = indicators.find(i => i.slug === 'lts_target');
+    }
+
+    const emissionsIndicator = indicators.find(i => i.slug === 'lts_ghg');
+    const tooltipCountryValues = {};
+    Object.keys(updatedSelectedIndicator.locations).forEach(iso => {
+      tooltipCountryValues[iso] = {
+        value:
+          updatedSelectedIndicator.locations[iso] &&
+          updatedSelectedIndicator.locations[iso].value,
+        emissionsValue:
+          emissionsIndicator.locations[iso] &&
+          emissionsIndicator.locations[iso].value
+      };
+    });
+    return tooltipCountryValues;
+  }
+);
+
 export const getEmissionsCardData = createSelector(
   [getLegend, getMapIndicator, getIndicatorsData],
   (legend, selectedIndicator, indicators) => {
@@ -222,13 +261,15 @@ export const getEmissionsCardData = createSelector(
       return null;
     }
     const emissionsIndicator = indicators.find(i => i.slug === 'lts_ghg');
-    const data = getIndicatorEmissionsData(
+    let data = getIndicatorEmissionsData(
       emissionsIndicator,
       selectedIndicator,
       legend,
       NO_DOCUMENT_SUBMITTED
     );
 
+    // Remove extra No document submitted. TODO: Fix in data
+    data = data.filter(d => d.name !== 'noDocumentSubmitted');
     const config = {
       animation: true,
       innerRadius: 50,
@@ -236,7 +277,8 @@ export const getEmissionsCardData = createSelector(
       hideLabel: true,
       hideLegend: true,
       innerHoverLabel: true,
-      ...getLabels(legend, NO_DOCUMENT_SUBMITTED)
+      minAngle: 3,
+      ...getLabels(legend, NO_DOCUMENT_SUBMITTED, true)
     };
 
     return {
@@ -247,17 +289,29 @@ export const getEmissionsCardData = createSelector(
 );
 
 export const getSummaryCardData = createSelector(
-  [getMaximumCountries, getIndicatorsData],
-  (maximumCountries, indicators) => {
+  [getMaximumCountries, getIndicatorsData, getIsEUUSubmitted],
+  (maximumCountries, indicators, isEUUsubmitted) => {
     if (!indicators || !maximumCountries) return null;
     const LTSIndicator = indicators.find(i => i.slug === 'lts_document');
     if (!LTSIndicator) return null;
-    const partiesNumber = Object.values(LTSIndicator.locations).filter(
+    let countriesNumber = Object.values(LTSIndicator.locations).filter(
       l => l.value
     ).length;
+    if (isEUUsubmitted) {
+      const partiesNumber = countriesNumber + 1;
+      const europeanCountriesWithSubmission = europeanCountries.filter(
+        iso => LTSIndicator.locations[iso]
+      );
+      countriesNumber +=
+        europeanCountries.length - europeanCountriesWithSubmission.length; // To avoid double counting
+      return {
+        value: partiesNumber,
+        description: `out of ${maximumCountries} parties representing ${countriesNumber} countries have submitted long-term strategies`
+      };
+    }
     return {
-      value: partiesNumber,
-      description: `out of ${maximumCountries} parties have submitted long-term strategies`
+      value: countriesNumber,
+      description: `out of ${maximumCountries} countries have submitted long-term strategies`
     };
   }
 );

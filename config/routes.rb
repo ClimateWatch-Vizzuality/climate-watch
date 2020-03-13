@@ -91,6 +91,17 @@ Rails.application.routes.draw do
           resources :labels, only: [:index]
           resources :sectors, only: [:index]
         end
+        resources :lts_content, only: [:index] do
+          get :download, on: :collection, defaults: { format: 'zip' }
+          get :meta, on: :collection
+        end
+        namespace :lts_content do
+          resources :indicators, only: [:index]
+          resources :data_sources, only: [:index]
+          resources :categories, only: [:index]
+          resources :labels, only: [:index]
+          resources :sectors, only: [:index]
+        end
         namespace :agriculture_profile, only: [:index] do
           resources :emissions, only: [:index]
           resources :country_contexts, only: [:index]

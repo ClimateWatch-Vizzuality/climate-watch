@@ -26,9 +26,18 @@
 
 .searchWrapper {
   margin-bottom: 64px;
+
   @include columns(12);
 
+  :first-child {
+    @include xy-gutters($gutter-position: ('bottom'));
+  }
+
   @media #{$tablet-landscape} {
-    @include columns(6);
+    @include columns((3, 6));
+
+    :first-child {
+      @include xy-gutters($gutter-position: ('bottom'), $gutters: 0);
+    }
   }
 }

@@ -59,9 +59,7 @@ platforms:
         datasets:
           - locations_groupings
       - name: ndc_texts
-        # importer:
-        datasets:
-          - ndc_texts
+        importer: ImportNdcTexts
       - name: quantifications
         importer: ImportQuantifications
         datasets:
@@ -106,3 +104,5 @@ platforms:
           - Acronyms
           - metadata_sources
           - metadata_sources_descriptions
+      - name: blog_stories
+        importer: ImportStories

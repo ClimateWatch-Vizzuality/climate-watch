@@ -14,9 +14,9 @@ class LawsAndPoliciesProvider extends PureComponent {
 
   componentWillReceiveProps(props) {
     const iso = props.match.params.iso;
-    const { data } = this.props.lawsAndPolicies;
+    const { data } = this.props.lawsAndPolicies || {};
 
-    if (!data[iso]) {
+    if (data && !data[iso]) {
       this.props.fetchLawsAndPolicies({ iso });
     }
   }
@@ -33,9 +33,4 @@ LawsAndPoliciesProvider.propTypes = {
 };
 
 export { actions, reducers, initialState };
-const mapStateToProps = state => ({
-  lawsAndPolicies: state.lawsAndPolicies
-});
-export default withRouter(
-  connect(mapStateToProps, actions)(LawsAndPoliciesProvider)
-);
+export default withRouter(connect(null, actions)(LawsAndPoliciesProvider));

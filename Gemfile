@@ -17,7 +17,7 @@ gem 'pg', '~> 0.20'
 gem 'pg_search'
 gem 'rubyzip'
 # Use Puma as the app server
-gem 'puma', '~> 3.7'
+gem 'puma', '~> 3.12.4'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
@@ -102,7 +102,7 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 git 'https://github.com/ClimateWatch-Vizzuality/climate-watch-gems.git' do
-  gem 'cw_data_uploader', '~> 0.4.3', require: 'data_uploader'
+  gem 'cw_data_uploader', '~> 0.4.5', require: 'data_uploader'
   gem 'climate_watch_engine', '~> 1.4.3'
 end
 

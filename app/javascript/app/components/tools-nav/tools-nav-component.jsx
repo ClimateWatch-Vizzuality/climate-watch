@@ -1,61 +1,84 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import ShareMenu from 'components/share-menu';
 import Icon from 'components/icon';
 import downloadIcon from 'assets/icons/download.svg';
 import cx from 'classnames';
 import PropTypes from 'prop-types';
+import arrow from 'assets/icons/arrow-down-tiny.svg';
 import styles from './tools-nav-styles.scss';
 
 const mycwLinkConfig = { to: '/my-climate-watch', title: 'My climate watch' };
-const isActive = (match, location) => match && location.pathname.includes(match.path);
+const isActive = (match, location) =>
+  match && location.pathname.includes(match.path);
 const activeProps = location => ({
   isActive: match => isActive(match, location),
   activeClassName: styles.linkActive
 });
-const renderDataExplorerLink = (location, onClick) => (
+const renderDataExplorerLink = (location, onClick, theme) => (
   <NavLink
     key={'data-explorer'}
-    className={cx(styles.link, styles.noWrap, styles.linkWithIcon)}
+    className={cx(
+      styles.link,
+      styles.noWrap,
+      styles.linkWithIcon,
+      theme.link,
+      theme.linkWithIcon
+    )}
     to="/data-explorer"
     title="Data Explorer"
     onClick={onClick}
     {...activeProps(location)}
   >
-    <Icon icon={downloadIcon} className={styles.downloadIcon} />
-    <span>DATA EXPLORER</span>
+    <span className={styles.titleWrapper}>
+      <span className={cx(styles.title, theme.title)}>Data explorer</span>
+      <Icon
+        icon={downloadIcon}
+        className={cx(styles.downloadIcon, theme.downloadIcon)}
+      />
+    </span>
+    <Icon icon={arrow} className={cx(styles.arrowIcon, theme.arrowIcon)} />
   </NavLink>
 );
-const renderMyCWLink = (location, onClick) => (
+const renderMyCWLink = (location, onClick, theme) => (
   <NavLink
     key={'my-climate-watch'}
-    className={cx(styles.link, styles.noWrap, styles.myCwButton)}
+    className={cx(
+      styles.link,
+      styles.noWrap,
+      styles.myCwButton,
+      theme.link,
+      theme.myCwButton
+    )}
     {...mycwLinkConfig}
     onClick={onClick}
     {...activeProps(location)}
   >
-    MY CW
+    <span className={cx(styles.title, theme.title)}>My CW</span>
+    <Icon icon={arrow} className={cx(styles.arrowIcon, theme.arrowIcon)} />
   </NavLink>
 );
-const ToolsNav = props => (
-  <div className={cx(styles.toolsNav, props.className)}>
-    {[
-      renderMyCWLink(props.location, props.closeMenu),
-      renderDataExplorerLink(props.location, props.closeMenu)
-    ]}
-    <ShareMenu className={cx(styles.iconButton, styles.shareButton)} reverse={props.reverse} />
-  </div>
-);
+const ToolsNav = props => {
+  const { className, closeMenu, location, theme } = props;
+  return (
+    <div className={cx(styles.toolsNav, className, theme.toolsNav)}>
+      {[
+        renderMyCWLink(location, closeMenu, theme),
+        renderDataExplorerLink(location, closeMenu, theme)
+      ]}
+    </div>
+  );
+};
 
 ToolsNav.propTypes = {
   className: PropTypes.string,
-  reverse: PropTypes.bool,
+  theme: PropTypes.object,
   location: PropTypes.object,
   closeMenu: PropTypes.func
 };
 
 ToolsNav.defaultProps = {
-  reverse: false
+  reverse: false,
+  theme: {}
 };
 
 export default ToolsNav;
