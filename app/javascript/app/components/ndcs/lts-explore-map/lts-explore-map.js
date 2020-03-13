@@ -22,7 +22,8 @@ import {
   getCategories,
   getCategoryIndicators,
   getSelectedCategory,
-  getTooltipCountryValues
+  getTooltipCountryValues,
+  getIsEUUSubmitted
 } from './lts-explore-map-selectors';
 
 const actions = { ...fetchActions, ...modalActions };
@@ -49,6 +50,7 @@ const mapStateToProps = (state, { location }) => {
     query: LTSWithSelection.query,
     paths: getPathsWithStyles(LTSWithSelection),
     isoCountries: getISOCountries(LTSWithSelection),
+    isEUUSubmitted: getIsEUUSubmitted(LTSWithSelection),
     selectedIndicator: getMapIndicator(LTSWithSelection),
     emissionsCardData: getEmissionsCardData(LTSWithSelection),
     tooltipCountryValues: getTooltipCountryValues(LTSWithSelection),
