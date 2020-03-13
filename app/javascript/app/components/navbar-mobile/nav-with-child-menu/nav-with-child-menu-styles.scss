@@ -4,34 +4,35 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  width: 100%;
 }
 
 .title {
-  color: $theme-color;
-  font-size: $font-size-s;
+  color: $white;
+  font-size: $font-size-m;
   font-weight: $font-weight-bold;
-  letter-spacing: 1px;
+  letter-spacing: $letter-spacing-wide;
+  width: 100%;
+  text-align: center;
+  padding: 25px 0;
 }
 
 .link {
-  display: inline-flex;
-  padding-top: 20px;
-  margin-left: 10px;
-  color: $gray1;
-  font-size: $font-size-s;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 25px 0;
+  font-size: $font-size-sm;
   font-weight: $font-weight-bold;
   position: relative;
-  letter-spacing: 1px;
+  letter-spacing: $letter-spacing-wide;
+  color: $white;
+  width: 100%;
 }
 
-.active::after {
-  content: "";
-  position: absolute;
-  bottom: -5px;
-  left: 0;
-  right: 0;
-  background-color: $theme-secondary;
-  width: 100%;
-  height: 6px;
+.arrowIcon {
+  display: block;
+  fill: $gray1;
+  transform: rotate(-90deg);
 }
 

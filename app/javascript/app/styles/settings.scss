@@ -25,6 +25,12 @@ $line-height-medium: 1.62;
 $line-height-modal: 26px;
 $line-height-title: 54px;
 
+// letter spacing
+$letter-spacing-wider: 1.15px;
+$letter-spacing-wide: 1px;
+$letter-spacing-short: -0.3px;
+$letter-spacing-none: 0;
+
 // Layout
 $gutter-padding: 30px;
 $max-width: 1230px;
@@ -45,6 +51,9 @@ $theme-color-medium: #0845cb;
 $theme-color-light: #25597c;
 $theme-secondary: #ffc735;
 $theme-secondary-dark: #f6a806;
+
+// Only used on the mobile menu
+$theme-color-bright: #223054;
 
 // Table theme colors
 

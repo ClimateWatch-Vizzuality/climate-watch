@@ -1,8 +1,6 @@
 /* eslint-disable react/no-danger */
-import React, { PureComponent } from 'react';
+import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
-import ReactTooltip from 'react-tooltip';
-import cx from 'classnames';
 import { TabletLandscape } from 'components/responsive';
 import Map from 'components/map';
 import ButtonGroup from 'components/button-group';
@@ -15,13 +13,16 @@ import HandIconInfo from 'components/ndcs/shared/hand-icon-info';
 import CustomInnerHoverLabel from 'components/ndcs/shared/donut-custom-label';
 import LegendItem from 'components/ndcs/shared/legend-item';
 import ShareButton from 'components/button/share-button';
+import ExploreMapTooltip from 'components/ndcs/shared/explore-map-tooltip';
+import ModalShare from 'components/modal-share';
+import Sticky from 'react-stickynode';
+import cx from 'classnames';
 
 import layout from 'styles/layout.scss';
-import tooltipTheme from 'styles/themes/map-tooltip/map-tooltip.scss';
 import newMapTheme from 'styles/themes/map/map-new-zoom-controls.scss';
 import styles from './lts-explore-map-styles.scss';
 
-const renderButtonGroup = clickHandler => (
+const renderButtonGroup = (clickHandler, downloadLink) => (
   <div className={styles.buttonGroupContainer}>
     <ButtonGroup
       className={styles.buttonGroup}
@@ -33,15 +34,15 @@ const renderButtonGroup = clickHandler => (
         {
           type: 'download',
           section: 'lts-explore',
-          // link: downloadLink,
-          disabled: true
+          link: downloadLink
         },
         {
           type: 'addToUser'
         }
       ]}
     />
-    <ShareButton analyticsName="LTS Explore" sharePath="/embed/lts-explore" />
+    <ShareButton />
+    <ModalShare analyticsName="LTS Explore" />
   </div>
 );
 
@@ -58,7 +59,7 @@ const renderSummary = summaryData => (
   </div>
 );
 
-const renderLegend = legendData => (
+const renderLegend = (legendData, isEUUSubmitted) => (
   <div className={styles.legendCardContainer}>
     <div className={styles.legendContainer}>
       {legendData &&
@@ -66,7 +67,8 @@ const renderLegend = legendData => (
           <LegendItem
             key={l.name}
             name={l.name}
-            partiesNumber={l.partiesNumber}
+            itemsName={isEUUSubmitted ? undefined : ['country', 'countries']}
+            number={l.countriesNumber}
             value={l.value}
             color={l.color}
           />
@@ -75,31 +77,22 @@ const renderLegend = legendData => (
   </div>
 );
 
-class LTSExploreMap extends PureComponent {
-  constructor() {
-    super();
-    this.state = {
-      tooltipParentRef: null,
-      pieChartRef: null
-    };
-  }
-
-  renderDonutChart = emissionsCardData => (
-    <div
-      className={styles.donutContainer}
-      ref={r => {
-        this.setState({ pieChartRef: r });
-      }}
-    >
+function LTSExploreMap(props) {
+  const tooltipParentRef = useRef(null);
+  const pieChartRef = useRef(null);
+  const [stickyStatus, setStickyStatus] = useState(Sticky.STATUS_ORIGINAL);
+  const renderDonutChart = (emissionsCardData, isEUUSubmitted) => (
+    <div className={styles.donutContainer} ref={pieChartRef}>
       <PieChart
         data={emissionsCardData.data}
         width={200}
         config={emissionsCardData.config}
         customTooltip={
           <CustomTooltip
-            reference={this.state.tooltipParentRef}
-            chartReference={this.state.pieChartRef}
+            reference={tooltipParentRef.current}
+            chartReference={pieChartRef.current}
             data={emissionsCardData.data}
+            itemName={isEUUSubmitted ? 'Parties' : undefined}
           />
         }
         customInnerHoverLabel={CustomInnerHoverLabel}
@@ -108,35 +101,47 @@ class LTSExploreMap extends PureComponent {
     </div>
   );
 
-  render() {
-    const {
-      loading,
-      paths,
-      downloadLink,
-      countryData,
-      emissionsCardData,
-      summaryCardData,
-      legendData,
-      handleInfoClick,
-      handleCountryClick,
-      handleCountryEnter,
-      categories,
-      indicators,
-      selectedIndicator,
-      handleCategoryChange,
-      selectedCategory,
-      handleIndicatorChange
-    } = this.props;
+  const {
+    loading,
+    paths,
+    downloadLink,
+    countryData,
+    emissionsCardData,
+    summaryCardData,
+    legendData,
+    handleInfoClick,
+    handleCountryClick,
+    handleCountryEnter,
+    categories,
+    indicators,
+    selectedIndicator,
+    handleCategoryChange,
+    selectedCategory,
+    handleIndicatorChange,
+    tooltipValues,
+    isEUUSubmitted
+  } = props;
 
-    return (
-      <div>
-        <TabletLandscape>
-          {isTablet => (
-            <div className={styles.wrapper}>
+  const TOOLTIP_ID = 'lts-map-tooltip';
+
+  return (
+    <div>
+      <TabletLandscape>
+        {isTablet => (
+          <div className={styles.wrapper}>
+            <Sticky
+              activeClass="sticky -explore"
+              top="#navBarMobile"
+              onStateChange={sticky => setStickyStatus(sticky.status)}
+            >
               <div className={layout.content}>
                 <div className="grid-column-item">
                   <div className={styles.filtersLayout}>
-                    <div className={styles.filtersGroup}>
+                    <div
+                      className={cx(styles.filtersGroup, {
+                        [styles.sticky]: stickyStatus === Sticky.STATUS_FIXED
+                      })}
+                    >
                       <Dropdown
                         label="Category"
                         paceholder="Select a category"
@@ -156,86 +161,72 @@ class LTSExploreMap extends PureComponent {
                       />
                     </div>
                     {isTablet &&
+                      stickyStatus === Sticky.STATUS_ORIGINAL &&
                       renderButtonGroup(handleInfoClick, downloadLink)}
                   </div>
                 </div>
               </div>
-              <div className={styles.containerUpperWrapper}>
-                <div className={layout.content}>
-                  <div className="grid-column-item">
-                    <div className={styles.containerUpper}>
-                      <div
-                        className={styles.containerCharts}
-                        ref={r => {
-                          this.setState({ tooltipParentRef: r });
-                        }}
-                      >
-                        {!loading && (
-                          <React.Fragment>
-                            {summaryCardData && renderSummary(summaryCardData)}
-                            {emissionsCardData &&
-                              this.renderDonutChart(emissionsCardData)}
-                            {legendData && renderLegend(legendData)}
-                          </React.Fragment>
-                        )}
-                      </div>
-                      <div className={styles.containerMap}>
-                        {loading && <Loading light className={styles.loader} />}
-                        <HandIconInfo
-                          className={styles.mapInfo}
-                          text="Explore which countries have submitted long-term
-                            strategies thus far below. Visit Climate Watch in
-                            the coming months for in-depth analysis of long-term
-                            strategies."
+            </Sticky>
+            <div className={styles.containerUpperWrapper}>
+              <div className={layout.content}>
+                <div className="grid-column-item">
+                  <div className={styles.containerUpper}>
+                    <div
+                      className={styles.containerCharts}
+                      ref={tooltipParentRef}
+                    >
+                      {!loading && (
+                        <React.Fragment>
+                          {summaryCardData && renderSummary(summaryCardData)}
+                          {emissionsCardData &&
+                            renderDonutChart(
+                              emissionsCardData,
+                              isEUUSubmitted
+                            )}
+                          {legendData &&
+                            renderLegend(legendData, isEUUSubmitted)}
+                        </React.Fragment>
+                      )}
+                    </div>
+                    <div className={styles.containerMap}>
+                      {loading && <Loading light className={styles.loader} />}
+                      <HandIconInfo
+                        className={styles.mapInfo}
+                        text="Click on a country to see an in-depth analysis of its long-term strategy"
+                      />
+                      <Map
+                        paths={paths}
+                        tooltipId={TOOLTIP_ID}
+                        onCountryClick={handleCountryClick}
+                        onCountryEnter={handleCountryEnter}
+                        onCountryFocus={handleCountryEnter}
+                        zoomEnable
+                        customCenter={isTablet ? [20, 20] : [10, 20]}
+                        theme={newMapTheme}
+                        className={styles.map}
+                      />
+                      {countryData && (
+                        <ExploreMapTooltip
+                          id={TOOLTIP_ID}
+                          isTablet={isTablet}
+                          countryData={countryData}
+                          handleCountryClick={handleCountryClick}
+                          tooltipValues={tooltipValues}
                         />
-                        <Map
-                          paths={paths}
-                          tooltipId="lts-map-tooltip"
-                          onCountryClick={handleCountryClick}
-                          onCountryEnter={handleCountryEnter}
-                          onCountryFocus={handleCountryEnter}
-                          zoomEnable
-                          customCenter={isTablet ? [20, 20] : [10, 20]}
-                          theme={newMapTheme}
-                          className={styles.map}
-                        />
-                        {countryData && (
-                          <ReactTooltip
-                            className={styles.tooltipContainer}
-                            id="lts-map-tooltip"
-                            delayHide={isTablet ? 0 : 3000}
-                          >
-                            <button
-                              onClick={() =>
-                                handleCountryClick(null, countryData)
-                              }
-                              className={tooltipTheme.container}
-                            >
-                              <div
-                                className={cx(
-                                  tooltipTheme.countryName,
-                                  tooltipTheme.link
-                                )}
-                              >
-                                {countryData.name}
-                              </div>
-                            </button>
-                          </ReactTooltip>
-                        )}
-                        {!isTablet &&
-                          renderButtonGroup(handleInfoClick, downloadLink)}
-                      </div>
+                      )}
+                      {!isTablet &&
+                        renderButtonGroup(handleInfoClick, downloadLink)}
                     </div>
                   </div>
                 </div>
               </div>
-              <ModalMetadata />
             </div>
-          )}
-        </TabletLandscape>
-      </div>
-    );
-  }
+            <ModalMetadata />
+          </div>
+        )}
+      </TabletLandscape>
+    </div>
+  );
 }
 
 LTSExploreMap.propTypes = {
@@ -254,7 +245,9 @@ LTSExploreMap.propTypes = {
   selectedIndicator: PropTypes.object,
   handleCategoryChange: PropTypes.func,
   selectedCategory: PropTypes.object,
-  handleIndicatorChange: PropTypes.func
+  tooltipValues: PropTypes.object,
+  handleIndicatorChange: PropTypes.func,
+  isEUUSubmitted: PropTypes.bool
 };
 
 export default LTSExploreMap;

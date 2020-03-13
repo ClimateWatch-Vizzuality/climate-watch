@@ -44,7 +44,7 @@ $animation-delay-time: 0.1s;
   color: $theme-color;
   font-family: $font-family-1;
   margin-bottom: 5px;
-  letter-spacing: -0.3px;
+  letter-spacing: $letter-spacing-short;
   line-height: 1.12;
   transition: color $animation-time linear $animation-delay-time * 2;
 }

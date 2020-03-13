@@ -15,7 +15,8 @@
       }
     }
 
-    &.-country-selector {
+    &.-country-selector,
+    &.-explore {
       .sticky-inner-wrapper {
         background-color: $white;
       }

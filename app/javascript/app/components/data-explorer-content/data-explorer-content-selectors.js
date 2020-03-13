@@ -102,6 +102,11 @@ export const getSectionLabel = createSelector(
   section => DATA_EXPLORER_SECTIONS[section].label
 );
 
+export const getLinkLabel = createSelector(
+  getSection,
+  section => DATA_EXPLORER_SECTIONS[section].linkLabel || null
+);
+
 export const getSourceOptions = createSelector(
   [getSectionMeta, getSection],
   (sectionMeta, section) => {
@@ -281,13 +286,13 @@ export const getLink = createSelector(
     const parsedQuery = parseQuery(filterQuery, section, sectionMeta);
     const stringifiedQuery = qs.stringify(parsedQuery);
     const urlParameters = stringifiedQuery ? `?${stringifiedQuery}` : '';
-    const subSection =
-      DATA_EXPLORER_SECTIONS[section].moduleName === 'pathways'
-        ? '/models'
-        : '';
-    return `/${isPageContained ? `${CONTAINED_PATHNAME}/` : ''}${
-      DATA_EXPLORER_SECTIONS[section].moduleName
-    }${subSection}${urlParameters}`;
+    const moduleName =
+      DATA_EXPLORER_SECTIONS[section].linkName ||
+      DATA_EXPLORER_SECTIONS[section].moduleName;
+    const subSection = moduleName === 'pathways' ? '/models' : '';
+    return `/${
+      isPageContained ? `${CONTAINED_PATHNAME}/` : ''
+    }${moduleName}${subSection}${urlParameters}`;
   }
 );
 
@@ -696,6 +701,7 @@ export const getMethodology = createSelector(
     }
 
     const methodology = meta.methodology;
+    if (!methodology) return null;
     let metaSource = DATA_EXPLORER_METHODOLOGY_SOURCE[section];
     if (sectionHasSources) {
       const selectedSource =

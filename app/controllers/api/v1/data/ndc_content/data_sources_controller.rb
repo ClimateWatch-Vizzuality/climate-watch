@@ -4,11 +4,16 @@ module Api
       module NdcContent
         class DataSourcesController < Api::V1::Data::ApiController
           def index
-            data_sources = ::Indc::Source.all
             render json: data_sources,
                    adapter: :json,
                    each_serializer: Api::V1::Data::NdcContent::DataSourceSerializer,
                    root: :data
+          end
+
+          private
+
+          def data_sources
+            ::Indc::Source.non_lts
           end
         end
       end

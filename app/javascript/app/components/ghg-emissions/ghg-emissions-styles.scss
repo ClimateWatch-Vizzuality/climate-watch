@@ -37,10 +37,16 @@ $min-height: 500px;
 }
 
 .col4 {
-  @include columns((6, 6, 6, 6, 8, 4));
+  @include columns(12);
 
   > div {
     @include xy-gutters(30px, $gutter-position: 'bottom');
+  }
+
+  @media #{$tablet-portrait} {
+    @include columns(6);
+
+    align-items: flex-end;
   }
 
   @media #{$tablet-landscape} {
@@ -85,6 +91,17 @@ $min-height: 500px;
 
     li {
       margin: 5px 0 5px 30px;
+    }
+  }
+}
+
+:global .icons-dropdown {
+  &.open {
+    min-width: 240px;
+
+    @media #{$tablet-landscape} {
+      margin-left: -130px;
+      background-color: $white;
     }
   }
 }

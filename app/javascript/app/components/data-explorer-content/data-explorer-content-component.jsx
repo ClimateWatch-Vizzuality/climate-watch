@@ -77,6 +77,7 @@ class DataExplorerContent extends PureComponent {
     const {
       section,
       sectionLabel,
+      linkLabel,
       href,
       metadataSection,
       anchorLinks,
@@ -117,7 +118,7 @@ class DataExplorerContent extends PureComponent {
         </div>
         <div className={styles.buttons}>
           <Button className={styles.button} href={href} variant="secondary">
-            {`Visualize in ${toStartCase(sectionLabel)}`}
+            {`Visualize in ${toStartCase(linkLabel || sectionLabel)}`}
           </Button>
           {!loading && data && !metadataSection ? (
             <ReactPaginate
@@ -153,6 +154,7 @@ class DataExplorerContent extends PureComponent {
 
 DataExplorerContent.propTypes = {
   section: PropTypes.string.isRequired,
+  linkLabel: PropTypes.string,
   sectionLabel: PropTypes.string.isRequired,
   handlePageChange: PropTypes.func.isRequired,
   handleDownloadModalOpen: PropTypes.func.isRequired,

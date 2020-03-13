@@ -2,6 +2,7 @@ import React from 'react';
 import Proptypes from 'prop-types';
 import Header from 'components/header';
 import Intro from 'components/intro';
+import BackButton from 'components/back-button';
 import AutocompleteSearch from 'components/autocomplete-search';
 import { NDC_ENHANCEMENTS } from 'data/SEO';
 import { MetaDescription, SocialMetadata } from 'components/seo';
@@ -23,6 +24,7 @@ const NDCSEnhancements = ({ route }) => (
       <div className={layout.content}>
         <div className="grid-column-item">
           <div className={styles.headerLayout}>
+            <BackButton pathname="/ndcs-explore" backLabel="Explore NDCs" />
             <Intro
               title="2020 NDC Tracker"
               description={

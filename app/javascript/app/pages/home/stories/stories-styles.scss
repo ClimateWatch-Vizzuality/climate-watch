@@ -34,9 +34,9 @@
     "child-3";
 
   @media #{$tablet-landscape} {
-    -ms-grid-columns: 2fr 20px 1fr;
     -ms-grid-rows: 1fr 20px 1fr;
     grid-template-columns: 2fr 1fr;
+    -ms-grid-columns: 2fr 20px 1fr;
     grid-template-areas:
       "child-1 child-2"
       "child-1 child-3";
@@ -103,7 +103,7 @@
 .storyDate {
   color: $white;
   font-size: $font-size-sm;
-  letter-spacing: 1.15px;
+  letter-spacing: $letter-spacing-wider;
   line-height: 17px;
   padding: 30px;
 }

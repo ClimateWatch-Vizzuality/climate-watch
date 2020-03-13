@@ -119,7 +119,7 @@ class HistoricalEmissionsGraph extends PureComponent {
     ];
     return (
       <ExploreButtonGroup
-        exploreButtonText="Explore emissions"
+        exploreButtonText="Explore Emissions"
         exploreButtonConfig={exploreEmissionsConfig}
         buttonGroupConfig={buttonGroupConfig}
         theme={{

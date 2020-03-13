@@ -7,16 +7,26 @@ module Api
             set_links_header(
               [
                 {
-                  link: '/api/v1/data/ndc_content/data_sources',
+                  link: link_prefix,
                   rel: 'meta data_sources'
                 }
               ]
             )
-            indicators = ::Indc::Indicator.includes(:categories).all
+            indicators = ::Indc::Indicator.where(source_id: source).includes(:categories).all
             render json: indicators,
                    adapter: :json,
                    each_serializer: Api::V1::Data::NdcContent::IndicatorSerializer,
                    root: :data
+          end
+
+          private
+
+          def source
+            ::Indc::Source.non_lts.pluck(:id)
+          end
+
+          def link_prefix
+            '/api/v1/data/ndc_content/data_sources'
           end
         end
       end

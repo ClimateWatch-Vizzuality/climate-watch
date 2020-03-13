@@ -36,6 +36,7 @@ import * as agricultureWorldMeatProductionProvider from 'providers/agriculture-w
 import * as agricultureMeatTradeProvider from 'providers/agriculture-meat-trade-provider';
 import * as agricultureWorldMeatTradeProvider from 'providers/agriculture-world-meat-trade-provider';
 import * as ndcCountryAccordionProvider from 'providers/ndc-country-accordion-provider';
+import * as ndcCompareAllTargetsProvider from 'providers/ndc-compare-all-targets-provider';
 
 const providersReducers = {
   login: handleActions(loginProvider),
@@ -72,14 +73,14 @@ const providersReducers = {
   meatWorldProduction: handleActions(agricultureWorldMeatProductionProvider),
   meatTrade: handleActions(agricultureMeatTradeProvider),
   meatWorldTrade: handleActions(agricultureWorldMeatTradeProvider),
-  ndcCountryAccordion: handleActions(ndcCountryAccordionProvider)
+  ndcCountryAccordion: handleActions(ndcCountryAccordionProvider),
+  compareAll: handleActions(ndcCompareAllTargetsProvider)
 };
 
 // Pages
 import * as NDCSPage from 'pages/ndcs';
 import * as NDCSEnhancementsPage from 'pages/ndcs-enhancements';
 import * as NDCSLTSPage from 'pages/ndcs-lts';
-import * as CompareAllPage from 'pages/ndc-compare-all-targets';
 import * as LTSPage from 'pages/lts-explore';
 import * as countryNDCFullPage from 'pages/ndc-country-full';
 import * as ndcSearchPage from 'pages/ndc-search';
@@ -89,7 +90,6 @@ const pagesReducers = {
   ndcs: handleActions(NDCSPage),
   ndcsEnhancements: handleActions(NDCSEnhancementsPage),
   ndcsLTS: handleActions(NDCSLTSPage),
-  compareAll: handleActions(CompareAllPage),
   LTS: handleActions(LTSPage),
   countryNDCFull: handleActions(countryNDCFullPage),
   ndcSearch: handleActions(ndcSearchPage),
@@ -102,6 +102,7 @@ import * as autocompleteSearchComponent from 'components/autocomplete-search';
 import * as countrySelectComponent from 'components/countries-select';
 import * as modalDownloadComponent from 'components/modal-download';
 import * as modalMetadataComponent from 'components/modal-metadata';
+import * as shareModalComponent from 'components/modal-share';
 import * as modalESPOverviewComponent from 'components/modal-overview';
 import * as espGraphComponent from 'components/emission-pathways/emission-pathways-graph';
 import * as countryGhgEmissionsMapComponent from 'components/country/country-ghg-map';
@@ -122,6 +123,7 @@ const componentsReducers = {
   modalDownload: handleActions(modalDownloadComponent),
   modalMetadata: handleActions(modalMetadataComponent),
   modalESPOverview: handleActions(modalESPOverviewComponent),
+  modalShare: handleActions(shareModalComponent),
   countryGhgEmissionsMap: handleActions(countryGhgEmissionsMapComponent),
   countryGhgEmissions: handleActions(countryGhgEmissionsComponent),
   countrySDGLinkages: handleActions(countrySDGLinkagesComponent),

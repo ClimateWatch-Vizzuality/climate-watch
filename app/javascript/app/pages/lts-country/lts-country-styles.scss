@@ -64,3 +64,9 @@
 .mobileActions {
   @include row();
 }
+
+.externalLinkIcon {
+  margin: 3px 0 0 5px;
+  width: 13px;
+  height: 13px;
+}

@@ -1,0 +1,46 @@
+@import '~styles/layout.scss';
+
+.toolsNav {
+  align-items: flex-start;
+}
+
+.link {
+  color: $white;
+  font-size: $font-size;
+}
+
+.linkWithIcon {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-left: 0;
+
+  .title {
+    order: 1;
+    margin-left: 15px;
+    text-transform: initial;
+  }
+}
+
+.arrowIcon {
+  display: block;
+  height: 5px;
+  fill: $gray1;
+  transform: rotate(-90deg);
+}
+
+.downloadIcon {
+  margin-left: 0;
+  fill: white;
+}
+
+.myCwButton {
+  padding: 0 30px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+
+  .title {
+    text-transform: initial;
+  }
+}

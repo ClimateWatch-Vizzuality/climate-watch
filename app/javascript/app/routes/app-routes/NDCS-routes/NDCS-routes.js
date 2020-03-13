@@ -18,11 +18,6 @@ export default [
     label: 'NDC Content',
     activeId
   },
-  (FEATURE_ALL_COMMITMENTS_MENU_ITEMS || !FEATURE_LTS_EXPLORE) && {
-    path: '/2020-ndc-tracker',
-    label: '2020 NDC Tracker',
-    activeId
-  },
   (FEATURE_ALL_COMMITMENTS_MENU_ITEMS || FEATURE_LTS_EXPLORE) && {
     path: '/ndcs-explore',
     label: 'Explore NDCS',
@@ -39,18 +34,13 @@ export default [
     activeId
   },
   (FEATURE_ALL_COMMITMENTS_MENU_ITEMS || !FEATURE_LTS_EXPLORE) && {
-    path: '/ndcs/compare/mitigation',
+    path: '/ndcs/compare',
     label: 'NDC Comparison',
     activeId
   },
   (FEATURE_ALL_COMMITMENTS_MENU_ITEMS || !FEATURE_LTS_EXPLORE) && {
     path: '/ndc-search',
     label: 'NDC Search',
-    activeId
-  },
-  (FEATURE_ALL_COMMITMENTS_MENU_ITEMS || FEATURE_COMMITMENTS_OVERVIEW) && {
-    path: '/custom-compare',
-    label: 'Custom compare',
     activeId
   },
   {

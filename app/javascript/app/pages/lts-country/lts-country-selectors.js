@@ -1,11 +1,10 @@
 import { createSelector } from 'reselect';
 import qs from 'query-string';
-import isEmpty from 'lodash/isEmpty';
-import upperCase from 'lodash/upperCase';
 
 const getCountries = state => state.countries || null;
 const getIso = state => state.iso || null;
-const getDocuments = state => state.data || null;
+const getIndicators = state =>
+  (state.LTS.data && state.LTS.data.indicators) || null;
 
 const getCountryByIso = (countries, iso) =>
   countries.find(country => country.iso_code3 === iso);
@@ -33,15 +32,16 @@ export const getAnchorLinks = createSelector(
   }
 );
 
-export const getDocumentsOptions = createSelector(
-  [getDocuments, getIso],
-  (documents, iso) => {
-    if (isEmpty(documents) || !iso || !documents[iso]) return null;
-    return documents[iso].map(doc => ({
-      label: `${upperCase(doc.document_type)}(${doc.language})`,
-      value: `${doc.document_type}(${doc.language})`,
-      path: `/lts/country/${iso}/full?document=${doc.document_type}-${doc.language}`
-    }));
+export const getDocumentLink = createSelector(
+  [getIndicators, getIso],
+  (indicators, iso) => {
+    if (!indicators || !iso) return null;
+    const documentIndicator = indicators.find(i => i.slug === 'lts_document');
+    if (!documentIndicator || !documentIndicator.locations[iso]) return null;
+    const parsedLinkMatch = documentIndicator.locations[iso].value.match(
+      /href="(.+)">/
+    );
+    return (parsedLinkMatch && parsedLinkMatch[1]) || null;
   }
 );
 

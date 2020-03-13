@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe Api::V1::LseLawsAndPoliciesController, type: :controller do
   context do
-    let(:url) { 'http://www.lse.ac.uk/GranthamInstitute/wp-json/wri/v1/targets' }
+    let(:url) { 'https://climate-laws.org/cclow/api/targets' }
     let(:iso) { 'ARG' }
 
     describe 'SHOW actions' do

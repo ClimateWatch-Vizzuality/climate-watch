@@ -51,7 +51,7 @@ class GhgEmissions extends PureComponent {
     invokeCSVDownload(csvContentEncoded);
   };
 
-  renderDropdown(label, field, icons) {
+  renderDropdown(label, field, icons, props) {
     const { selected: selectedOptions, options, handleChange } = this.props;
     const value = selectedOptions && selectedOptions[`${field}Selected`];
     const iconsProp = icons ? { icons } : {};
@@ -66,6 +66,7 @@ class GhgEmissions extends PureComponent {
         hideResetButton
         theme={dropdownTheme}
         {...iconsProp}
+        {...props}
       />
     );
   }
@@ -198,9 +199,9 @@ class GhgEmissions extends PureComponent {
       />
     );
     const icons = {
-      line: lineIcon,
-      area: areaIcon,
-      percentage: percentageIcon
+      'Line chart': lineIcon,
+      'Stacked area Chart': areaIcon,
+      '100% stacked area chart': percentageIcon
     };
     const regionGroups = [
       {
@@ -269,7 +270,10 @@ class GhgEmissions extends PureComponent {
             theme={dropdownTheme}
           />
           {this.renderDropdown('Show data by', 'breakBy')}
-          {this.renderDropdown(null, 'chartType', icons)}
+          {this.renderDropdown(null, 'chartType', icons, {
+            variant: 'icons-labels',
+            customTheme: 'icons-dropdown'
+          })}
         </div>
         {this.renderChart()}
         <TabletPortraitOnly>

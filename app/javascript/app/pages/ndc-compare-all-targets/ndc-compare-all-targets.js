@@ -1,4 +1,4 @@
-import { createElement, useEffect } from 'react';
+import { createElement } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -7,13 +7,12 @@ import { getLocationParamUpdated } from 'utils/navigation';
 import { setColumnWidth as setColumnWidthUtil } from 'utils/table';
 import NDCCompareAllComponent from './ndc-compare-all-targets-component';
 
-import actions from './ndc-compare-all-targets-actions';
-import reducers, { initialState } from './ndc-compare-all-targets-reducers';
-
 import {
   getFilteredDataBySearch,
   getColumns,
   getLoading,
+  getSearch,
+  getSelectedTargets,
   getQuery
 } from './ndc-compare-all-targets-selectors';
 
@@ -21,27 +20,18 @@ const mapStateToProps = (state, { location }) => {
   const search = qs.parse(location.search);
   return {
     loading: getLoading(state),
-    query: getQuery(state, { search }),
+    query: getSearch(state, { search }),
     tableData: getFilteredDataBySearch(state, { search }),
     columns: getColumns(state, {
       search
-    })
+    }),
+    selectedTargets: getSelectedTargets(state, { search }),
+    queryParams: getQuery(state, { search })
   };
 };
 
 const NDCCompareAllContainer = props => {
-  const {
-    history,
-    location,
-    columns,
-    query,
-    tableData,
-    fetchCompareAll
-  } = props;
-
-  useEffect(() => {
-    fetchCompareAll();
-  }, []);
+  const { history, location, columns, query, tableData } = props;
 
   const setColumnWidth = column =>
     setColumnWidthUtil({
@@ -64,6 +54,14 @@ const NDCCompareAllContainer = props => {
       value
     });
   };
+
+  const handleTargetsChange = value => {
+    updateUrlParam({
+      name: 'targets',
+      value: value.toString()
+    });
+  };
+
   const noContentMsg = query ? 'No data for this search' : 'No data';
 
   return createElement(NDCCompareAllComponent, {
@@ -71,7 +69,8 @@ const NDCCompareAllContainer = props => {
     noContentMsg,
     handleSearchChange,
     tableData,
-    setColumnWidth
+    setColumnWidth,
+    handleTargetsChange
   });
 };
 
@@ -83,7 +82,6 @@ NDCCompareAllContainer.propTypes = {
   query: PropTypes.string
 };
 
-export { actions, reducers, initialState };
 export default withRouter(
-  connect(mapStateToProps, actions)(NDCCompareAllContainer)
+  connect(mapStateToProps, null)(NDCCompareAllContainer)
 );

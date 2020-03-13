@@ -42,6 +42,7 @@ const NDCSExploreTable = ({
             <Table
               data={tableData}
               horizontalScroll
+              dynamicRowsHeight
               parseHtml
               setColumnWidth={setColumnWidth}
               defaultColumns={columns}

@@ -5,6 +5,10 @@
   color: $gray1;
   cursor: pointer;
 
+  &:last-child {
+    padding-right: 0;
+  }
+
   &Active {
     color: $theme-color;
   }

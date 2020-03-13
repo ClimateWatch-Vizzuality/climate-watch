@@ -168,6 +168,12 @@
   justify-content: left;
 }
 
+.filtersGroup {
+  &.sticky {
+    padding: 10px 0 20px;
+  }
+}
+
 @media #{$tablet-portrait} {
   .filtersGroup {
     @include columns(6);
@@ -209,6 +215,12 @@
 
   @media #{$tablet-landscape} {
     width: 150px;
+  }
+}
+
+:global .sticky {
+  .buttonGroupContainer {
+    background-color: red;
   }
 }
 

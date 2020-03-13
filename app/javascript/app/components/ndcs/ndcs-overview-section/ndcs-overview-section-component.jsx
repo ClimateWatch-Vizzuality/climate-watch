@@ -4,6 +4,7 @@ import cx from 'classnames';
 import { isEmbededComponent } from 'utils/navigation';
 import layout from 'styles/layout.scss';
 import ShareButton from 'components/button/share-button';
+import ModalShare from 'components/modal-share';
 import styles from './ndcs-overview-section-styles.scss';
 import QuestionCard from './question-card';
 
@@ -22,7 +23,7 @@ const NdcsOverviewSection = ({ data, section, location, handleInfoClick }) => {
             <div className={styles.commitmentText}>
               <div>
                 <h1 className={styles.title}>{`${
-                  isEmbed ? '' : `${section} `
+                  isEmbed ? '' : `${section}. `
                 }${title}`}</h1>
                 <p
                   className={cx(styles.description, {
@@ -39,9 +40,9 @@ const NdcsOverviewSection = ({ data, section, location, handleInfoClick }) => {
           <div className={styles.questionsWrapper}>
             <ShareButton
               className={styles.shareButton}
-              analyticsName="NDC Overview"
-              sharePath={`/embed/ndc-overview/${section}`}
+              sharePath={`/ndc-overview/${section}`}
             />
+            <ModalShare analyticsName="NDC Overview" />
             {questions.map(question => (
               <QuestionCard
                 key={`${question.slug}${question.questionText}`}
