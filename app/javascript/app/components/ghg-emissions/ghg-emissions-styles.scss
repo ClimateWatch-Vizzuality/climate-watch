@@ -101,7 +101,7 @@ $min-height: 500px;
 
     @media #{$tablet-landscape} {
       margin-left: -130px;
-      background-color: white;
+      background-color: $white;
     }
   }
 }
