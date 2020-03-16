@@ -104,7 +104,6 @@ node {
           def userInput = true
           def didTimeout = false
           try {
-            slackSend (color: '#551A8B', channel: '#climate-watch-dev', message: "WAITING APPROVAL ON JENKINS (90seconds): Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
             timeout(time: 90, unit: 'SECONDS') {
               userInput = input(
                 id: 'Proceed1', message: 'Confirm deployment', parameters: [
@@ -114,7 +113,6 @@ node {
           }
           catch(err) { // timeout reached or input false
               sh("echo Aborted by user or timeout")
-              slackSend (color: '#FFA500', channel: '#climate-watch-dev', message: "CANCELLED (lack of approval): Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
               if('SYSTEM' == user.toString()) { // SYSTEM means timeout.
                   didTimeout = true
               } else {
