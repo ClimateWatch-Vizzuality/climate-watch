@@ -50,6 +50,7 @@ platforms:
           - NDC_submission
           - NDC_metadata
           - NDC_single_version
+          - NDC_documents
       - name: locations
         importer: ImportLocations
         datasets:
