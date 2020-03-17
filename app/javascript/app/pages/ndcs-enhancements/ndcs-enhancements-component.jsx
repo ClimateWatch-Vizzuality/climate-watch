@@ -10,6 +10,8 @@ import { MetaDescription, SocialMetadata } from 'components/seo';
 import layout from 'styles/layout.scss';
 import styles from './ndcs-enhancements-styles.scss';
 
+const FEATURE_LTS_EXPLORE = process.env.FEATURE_LTS_EXPLORE === 'true';
+
 const NDCSEnhancements = ({ route }) => (
   <div>
     <MetaDescription
@@ -24,7 +26,9 @@ const NDCSEnhancements = ({ route }) => (
       <div className={layout.content}>
         <div className="grid-column-item">
           <div className={styles.headerLayout}>
-            <BackButton pathname="/ndcs-explore" backLabel="Explore NDCs" />
+            {FEATURE_LTS_EXPLORE && (
+              <BackButton pathname="/ndcs-explore" backLabel="Explore NDCs" />
+            )}
             <Intro
               title="2020 NDC Tracker"
               description={
