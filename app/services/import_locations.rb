@@ -11,7 +11,7 @@ class ImportLocations
 
   def self.countries_in_eu
     %w(AUT BEL BGR HRV CYP CZE DNK EST FIN FRA DEU GRC HUN IRL ITA LVA LTU
-       LUX MLT NLD POL PRT ROU SVK SVN ESP SWE GBR)
+       LUX MLT NLD POL PRT ROU SVK SVN ESP SWE)
   end
 
   private
