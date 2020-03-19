@@ -221,6 +221,7 @@ export const getTooltipCountryValues = createSelector(
           selectedIndicator.locations[iso] &&
           selectedIndicator.locations[iso].value,
         emissionsValue:
+          emissionsIndicator &&
           emissionsIndicator.locations[iso] &&
           emissionsIndicator.locations[iso].value
       };
@@ -236,6 +237,7 @@ export const getEmissionsCardData = createSelector(
       return null;
     }
     const emissionsIndicator = indicators.find(i => i.slug === 'ndce_ghg');
+    if (!emissionsIndicator) return null;
     const data = getIndicatorEmissionsData(
       emissionsIndicator,
       selectedIndicator,
