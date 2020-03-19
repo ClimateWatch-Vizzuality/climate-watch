@@ -117,8 +117,17 @@ module Api
           joins(:values).
           where(slug: SECTORS_INDICATORS).
           where(indc_values: {location_id: location.id}).
-          where.not(indc_values: {value: "No specified measure"}).
-          order('indc_indicators.name').pluck(:name)
+          where.not(indc_values: {value: "No specified measure"})
+
+        if params[:document]
+          values = values.joins(:document).
+            where(indc_documents: {slug: params[:document]})
+
+          sectors = sectors.joins(values: :document).
+            where(indc_documents: {slug: params[:document]})
+        end
+       sectors = sectors.order('indc_indicators.name').pluck(:name)
+
 
         render json: NdcOverview.new(values, sectors),
                serializer: Api::V1::Indc::OverviewSerializer
