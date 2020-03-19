@@ -91,7 +91,7 @@ module Api
 
         if params[:document]
           indicators = indicators.
-            where(values: {indc_documents: {slug: params[:document]}})
+            where(values: {indc_documents: {slug: [params[:document], nil]}})
         end
 
         render json: NdcIndicators.new(indicators, categories, sectors),
@@ -121,10 +121,10 @@ module Api
 
         if params[:document]
           values = values.joins(:document).
-            where(indc_documents: {slug: params[:document]})
+            where(indc_documents: {slug: [params[:document], nil]})
 
           sectors = sectors.joins(values: :document).
-            where(indc_documents: {slug: params[:document]})
+            where(indc_documents: {slug: [params[:document], nil]})
         end
        sectors = sectors.order('indc_indicators.name').pluck(:name)
 
