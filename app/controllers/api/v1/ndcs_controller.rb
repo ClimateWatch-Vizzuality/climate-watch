@@ -49,6 +49,7 @@ module Api
           includes(:category_type).
           order(:order)
 
+        # params[:filter] -> ['map', 'table']
         if params[:filter]
           categories = categories.where(
             indc_category_types: {name: params[:filter]}
@@ -56,10 +57,9 @@ module Api
         end
 
         indicators = ::Indc::Indicator.
-          includes(
-            :labels, :source, :categories,
-            values: [:sector, :label, :location]
-        ).order(:order)
+          includes(:labels, :source, :categories,
+                   values: [:sector, :label, :location, :document]).
+          order(:order)
 
         # params[:source] -> one of ["CAIT", "LTS", "WB", "NDC Explorer"]
         if params[:source]
@@ -87,6 +87,11 @@ module Api
           indicators = indicators.where(
             values: {locations: {iso_code3: location_list}}
           )
+        end
+
+        if params[:document]
+          indicators = indicators.
+            where(values: {indc_documents: {slug: params[:document]}})
         end
 
         render json: NdcIndicators.new(indicators, categories, sectors),
