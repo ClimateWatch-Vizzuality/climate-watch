@@ -4,7 +4,7 @@ import cx from 'classnames';
 import Disclaimer from 'components/disclaimer';
 import { toStartCase } from 'utils/utils';
 import { isArray } from 'util';
-import ReactMarkdown from 'react-markdown';
+import ReactMarkdown from 'react-markdown/with-html';
 
 import styles from './metadata-text-styles.scss';
 
@@ -33,6 +33,7 @@ const MetadataProp = ({ title, data }) =>
         [styles.empty]: data === 'Not specified'
       })}
       source={`**${toStartCase(title)}**: ${data}`}
+      escapeHtml={false}
     />
   ));
 
