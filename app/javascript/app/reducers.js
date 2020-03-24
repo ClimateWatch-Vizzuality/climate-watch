@@ -99,6 +99,7 @@ const pagesReducers = {
 // Components
 import * as mapComponent from 'components/map';
 import * as autocompleteSearchComponent from 'components/autocomplete-search';
+import * as ndcsAutocompleteSearchComponent from 'components/ndcs/ndcs-autocomplete-search';
 import * as countrySelectComponent from 'components/countries-select';
 import * as modalDownloadComponent from 'components/modal-download';
 import * as modalMetadataComponent from 'components/modal-metadata';
@@ -119,6 +120,7 @@ import * as AnchorNavComponent from 'components/anchor-nav';
 const componentsReducers = {
   map: handleActions(mapComponent),
   autocompleteSearch: handleActions(autocompleteSearchComponent),
+  documents: handleActions(ndcsAutocompleteSearchComponent),
   countrySelect: handleActions(countrySelectComponent),
   modalDownload: handleActions(modalDownloadComponent),
   modalMetadata: handleActions(modalMetadataComponent),
