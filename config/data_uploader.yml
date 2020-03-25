@@ -42,14 +42,15 @@ platforms:
       - name: indc
         importer: ImportIndc
         datasets:
-          - NDC_CAIT_data
-          - NDC_CAIT_legend
+          - NDC_data
+          - NDC_legend
           - NDC_LTS_data
           - NDC_LTS_data_sectoral
-          - NDC_WB_data_wide
-          - NDC_WB_data_sectoral
+          - NDC_WB_data_sectoral_all
           - NDC_submission
           - NDC_metadata
+          - NDC_single_version
+          - NDC_documents
       - name: locations
         importer: ImportLocations
         datasets:
