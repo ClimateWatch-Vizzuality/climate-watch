@@ -47,7 +47,8 @@ export const getIsEUUSubmitted = createSelector(
 
 export const getMaximumCountries = createSelector(
   [getCountries, getIsEUUSubmitted],
-  (countries, isEUUsubmitted) => (isEUUsubmitted ? countries.length + 1 : countries.length)
+  (countries, isEUUsubmitted) =>
+    (isEUUsubmitted ? countries.length + 1 : countries.length)
 );
 
 export const getISOCountries = createSelector([getCountries], countries =>
@@ -238,16 +239,12 @@ export const getTooltipCountryValues = createSelector(
       updatedSelectedIndicator = indicators.find(i => i.slug === 'lts_target');
     }
 
-    const emissionsIndicator = indicators.find(i => i.slug === 'lts_ghg');
     const tooltipCountryValues = {};
     Object.keys(updatedSelectedIndicator.locations).forEach(iso => {
       tooltipCountryValues[iso] = {
         value:
           updatedSelectedIndicator.locations[iso] &&
-          updatedSelectedIndicator.locations[iso].value,
-        emissionsValue:
-          emissionsIndicator.locations[iso] &&
-          emissionsIndicator.locations[iso].value
+          updatedSelectedIndicator.locations[iso].value
       };
     });
     return tooltipCountryValues;

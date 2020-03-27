@@ -111,10 +111,6 @@ class NDCSExploreMapContainer extends PureComponent {
         tooltipCountryValues && tooltipCountryValues[iso]
           ? tooltipCountryValues[iso].value
           : 'Not Applicable',
-      emissionsValue:
-        tooltipCountryValues &&
-        tooltipCountryValues[iso] &&
-        tooltipCountryValues[iso].emissionsValue,
       countryName: geography.properties && geography.properties.name
     };
 
