@@ -47,7 +47,7 @@ export const getCountryDocuments = createSelector(
 );
 
 const documentValue = document =>
-  `${document.document_type}(${document.language})`;
+  `${document.document_type}-${document.language}`;
 
 export const getSelectedDocument = createSelector(
   [getCountryDocuments, getSearch],

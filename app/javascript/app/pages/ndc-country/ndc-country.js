@@ -1,4 +1,4 @@
-import { createElement, PureComponent } from 'react';
+import { createElement, useEffect } from 'react';
 import { connect } from 'react-redux';
 import Proptypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
@@ -51,22 +51,36 @@ const mapStateToProps = (state, { match, location, route }) => {
   };
 };
 
-class NDCCountryContainer extends PureComponent {
-  onSearchChange = query => {
-    this.updateUrlParam({ name: 'search', value: query });
-  };
+function NDCCountryContainer(props) {
+  const { history, location, country, documentsOptions } = props;
 
-  handleDropDownChange = documentSelected => {
-    this.updateUrlParam({ name: 'document', value: documentSelected.value });
-  };
-
-  updateUrlParam = (params, clear) => {
-    const { history, location } = this.props;
+  const updateUrlParam = (params, clear) => {
     history.replace(getLocationParamUpdated(location, params, clear));
   };
 
-  handleCountryLink = selected => {
-    const { history, country } = this.props;
+  useEffect(() => {
+    const search = location.search && qs.parse(location.search);
+    if (
+      (!search || !search.document) &&
+      documentsOptions &&
+      documentsOptions.length
+    ) {
+      updateUrlParam({
+        name: 'document',
+        value: documentsOptions[documentsOptions.length - 1].value
+      });
+    }
+  }, [documentsOptions]);
+
+  const onSearchChange = query => {
+    updateUrlParam({ name: 'search', value: query });
+  };
+
+  const handleDropDownChange = documentSelected => {
+    updateUrlParam({ name: 'document', value: documentSelected.value });
+  };
+
+  const handleCountryLink = selected => {
     const path = history.location.pathname.replace(
       country.iso_code3,
       selected.value
@@ -74,14 +88,12 @@ class NDCCountryContainer extends PureComponent {
     history.replace(path);
   };
 
-  render() {
-    return createElement(NDCCountryComponent, {
-      ...this.props,
-      onSearchChange: this.onSearchChange,
-      handleCountryLink: this.handleCountryLink,
-      handleDropDownChange: this.handleDropDownChange
-    });
-  }
+  return createElement(NDCCountryComponent, {
+    ...props,
+    onSearchChange,
+    handleCountryLink,
+    handleDropDownChange
+  });
 }
 
 NDCCountryContainer.propTypes = {

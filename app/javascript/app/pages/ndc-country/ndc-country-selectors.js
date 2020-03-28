@@ -27,7 +27,7 @@ export const getAnchorLinks = createSelector(
   [state => state.route.routes || [], state => state.iso, getSearch],
   (routes, iso, search) => {
     if (!search) return null;
-    const searchParams = { search: search.search };
+    const searchParams = { search: search.search, document: search.document };
     return routes
       .filter(route => route.anchor)
       .map(route => ({
@@ -47,7 +47,7 @@ const getCountryDocuments = createSelector(
 );
 
 const documentValue = document =>
-  `${document.document_type}(${document.language})`;
+  `${document.document_type}-${document.language}`;
 
 const documentOption = document => ({
   label: `${upperCase(document.document_type)}(${document.language})`,
