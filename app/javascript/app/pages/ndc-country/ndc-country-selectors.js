@@ -11,19 +11,22 @@ const getCountries = state => sortBy(state.countries, 'wri_standard_name');
 const getCountryByIso = (countries, iso) =>
   countries.find(country => country.iso_code3 === iso);
 
+const getSearch = state => {
+  const { search } = state.location;
+  if (!search) return null;
+  const parsedSearch = qs.parse(state.location.search);
+  return parsedSearch || null;
+};
+
 export const getCountry = createSelector(
   [getCountries, getIso],
   getCountryByIso
 );
 
 export const getAnchorLinks = createSelector(
-  [
-    state => state.route.routes || [],
-    state => state.iso,
-    state => state.location.search
-  ],
+  [state => state.route.routes || [], state => state.iso, getSearch],
   (routes, iso, search) => {
-    const searchParams = { search: qs.parse(search).search };
+    const searchParams = { search: search.search };
     return routes
       .filter(route => route.anchor)
       .map(route => ({
@@ -34,15 +37,38 @@ export const getAnchorLinks = createSelector(
   }
 );
 
-export const getDocumentsOptions = createSelector(
+const getCountryDocuments = createSelector(
   [getDocuments, getIso],
   (documents, iso) => {
     if (isEmpty(documents) || !iso || !documents[iso]) return null;
-    return documents[iso].map(doc => ({
-      label: `${upperCase(doc.document_type)}(${doc.language})`,
-      value: `${doc.document_type}(${doc.language})`,
-      path: `/ndcs/country/${iso}/full?document=${doc.document_type}-${doc.language}`
-    }));
+    return documents[iso];
+  }
+);
+
+const documentValue = document =>
+  `${document.document_type}(${document.language})`;
+const documentOption = document => ({
+  label: `${upperCase(document.document_type)}(${document.language})`,
+  value: documentValue(document)
+});
+
+export const getDocumentsOptions = createSelector(
+  [getCountryDocuments],
+  documents => {
+    if (isEmpty(documents)) return null;
+    return documents.map(document => documentOption(document));
+  }
+);
+
+export const getDocumentSelected = createSelector(
+  [getCountryDocuments, getSearch],
+  (documents, search) => {
+    if (isEmpty(documents)) return null;
+    if (!search || !search.document) return documentOption(documents[0]);
+    const selectedDocument = documents.find(
+      d => documentValue(d) === search.document
+    );
+    return selectedDocument ? documentOption(selectedDocument) : null;
   }
 );
 

@@ -10,6 +10,7 @@ import {
   getCountry,
   getAnchorLinks,
   getDocumentsOptions,
+  getDocumentSelected,
   addUrlToCountries
 } from './ndc-country-selectors';
 
@@ -18,7 +19,8 @@ const mapStateToProps = (state, { match, location, route }) => {
   const search = qs.parse(location.search);
   const countryData = {
     countries: state.countries.data,
-    iso: match.params.iso
+    iso: match.params.iso,
+    location
   };
   const routeData = {
     iso,
@@ -27,7 +29,8 @@ const mapStateToProps = (state, { match, location, route }) => {
   };
   const documentsData = {
     iso,
-    data: state.ndcsDocumentsMeta.data
+    data: state.ndcsDocumentsMeta.data,
+    location
   };
   const pathname = location.pathname.split('/');
   const notSummary = [
@@ -43,6 +46,7 @@ const mapStateToProps = (state, { match, location, route }) => {
     search: search.search,
     anchorLinks: getAnchorLinks(routeData),
     documentsOptions: getDocumentsOptions(documentsData),
+    documentSelected: getDocumentSelected(documentsData),
     notSummary
   };
 };
@@ -52,13 +56,13 @@ class NDCCountryContainer extends PureComponent {
     this.updateUrlParam({ name: 'search', value: query });
   };
 
+  handleDropDownChange = documentSelected => {
+    this.updateUrlParam({ name: 'document', value: documentSelected.value });
+  };
+
   updateUrlParam = (params, clear) => {
     const { history, location } = this.props;
     history.replace(getLocationParamUpdated(location, params, clear));
-  };
-
-  handleDropDownChange = selected => {
-    this.props.history.push(selected.path);
   };
 
   handleCountryLink = selected => {
@@ -74,8 +78,8 @@ class NDCCountryContainer extends PureComponent {
     return createElement(NDCCountryComponent, {
       ...this.props,
       onSearchChange: this.onSearchChange,
-      handleDropDownChange: this.handleDropDownChange,
-      handleCountryLink: this.handleCountryLink
+      handleCountryLink: this.handleCountryLink,
+      handleDropDownChange: this.handleDropDownChange
     });
   }
 }

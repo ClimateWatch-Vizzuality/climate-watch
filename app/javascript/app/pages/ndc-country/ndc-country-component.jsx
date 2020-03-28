@@ -17,38 +17,44 @@ import { MetaDescription, SocialMetadata } from 'components/seo';
 import { TabletPortrait, MobileOnly } from 'components/responsive';
 
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
-import dropdownLinksTheme from 'styles/themes/dropdown/dropdown-links.scss';
 import countryDropdownTheme from 'styles/themes/dropdown/dropdown-country.scss';
 import styles from './ndc-country-styles.scss';
 
 const FEATURE_LTS_EXPLORE = process.env.FEATURE_LTS_EXPLORE === 'true';
 
 class NDCCountry extends PureComponent {
-  renderFullTextDropdown() {
-    const { match, documentsOptions, handleDropDownChange } = this.props;
+  renderFullTextButton() {
+    const {
+      documentsOptions,
+      documentSelected,
+      handleDropDownChange
+    } = this.props;
     return (
-      documentsOptions &&
-      (documentsOptions.length > 1 ? (
+      documentsOptions && (
         <Dropdown
-          className={cx(
-            dropdownLinksTheme.dropdownOptionWithArrow,
-            styles.countryDropdown
-          )}
-          placeholder="View full text"
+          className={cx(styles.countryDropdown)}
           options={documentsOptions}
+          value={documentSelected}
           onValueChange={handleDropDownChange}
           white
           hideResetButton
         />
-      ) : (
+      )
+    );
+  }
+
+  renderFullTextDropdown() {
+    const { match, documentsOptions } = this.props;
+    return (
+      documentsOptions && (
         <Button
           variant="secondary"
           link={`/ndcs/country/${match.params.iso}/full`}
           className={styles.viewDocumentButton}
         >
-          {`View ${documentsOptions[0].label} Document`}
+          View Full Text
         </Button>
-      ))
+      )
     );
   }
 
@@ -141,6 +147,7 @@ class NDCCountry extends PureComponent {
                 )}
                 <TabletPortrait>
                   {this.renderFullTextDropdown()}
+                  {this.renderFullTextButton()}
                   {!FEATURE_LTS_EXPLORE && this.renderCompareButton()}
                   {hasSearch && (
                     <Search
@@ -197,6 +204,7 @@ NDCCountry.propTypes = {
   search: PropTypes.string,
   anchorLinks: PropTypes.array,
   documentsOptions: PropTypes.array,
+  documentSelected: PropTypes.object,
   countriesOptions: PropTypes.array,
   handleDropDownChange: PropTypes.func,
   location: PropTypes.object,
