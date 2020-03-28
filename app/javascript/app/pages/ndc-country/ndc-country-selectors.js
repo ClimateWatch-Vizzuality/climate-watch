@@ -47,6 +47,7 @@ const getCountryDocuments = createSelector(
 
 const documentValue = document =>
   `${document.document_type}(${document.language})`;
+
 const documentOption = document => ({
   label: `${upperCase(document.document_type)}(${document.language})`,
   value: documentValue(document)

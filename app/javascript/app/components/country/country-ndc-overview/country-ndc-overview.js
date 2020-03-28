@@ -12,17 +12,17 @@ import { actions as fetchActions } from 'components/ndcs/ndcs-country-accordion'
 import CountryNdcOverviewComponent from './country-ndc-overview-component';
 import {
   getValuesGrouped,
-  getLastDocument
+  getSelectedDocument,
+  getSectors,
+  getCountryDocuments
 } from './country-ndc-overview-selectors';
 
 const mapStateToProps = (state, { location, match }) => {
   const { iso } = match.params;
-  const overviewData =
-    state.ndcContentOverview.data && state.ndcContentOverview.data.locations;
-  const countryData = overviewData ? overviewData[iso] : null;
   const isNdcp = isPageNdcp(location);
   const isEmbed = isEmbededComponent(location);
   const documentsData = {
+    ...state,
     iso,
     documents: state.ndcsDocumentsMeta.data
   };
@@ -30,11 +30,11 @@ const mapStateToProps = (state, { location, match }) => {
     iso,
     isNdcp,
     isEmbed,
-    lastDocument: getLastDocument(documentsData),
-    values: getValuesGrouped(countryData),
+    selectedDocument: getSelectedDocument(documentsData, { location, iso }),
+    values: getValuesGrouped(state, { location, iso }),
     loading: state.ndcContentOverview.loading,
-    sectors: countryData ? countryData.sectors : null,
-    fetched: !isEmpty(countryData)
+    sectors: getSectors(state, { location, iso }),
+    fetched: !isEmpty(getCountryDocuments(state, { location, iso }))
   };
 };
 
