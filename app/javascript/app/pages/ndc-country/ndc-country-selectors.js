@@ -26,6 +26,7 @@ export const getCountry = createSelector(
 export const getAnchorLinks = createSelector(
   [state => state.route.routes || [], state => state.iso, getSearch],
   (routes, iso, search) => {
+    if (!search) return null;
     const searchParams = { search: search.search };
     return routes
       .filter(route => route.anchor)

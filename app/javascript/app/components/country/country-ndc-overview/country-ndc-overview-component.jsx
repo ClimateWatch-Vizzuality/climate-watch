@@ -312,7 +312,10 @@ class CountryNdcOverview extends PureComponent {
           hasSectors &&
           !loading &&
           this.renderAlertText()}
-        <NdcContentOverviewProvider locations={[iso]} />
+        <NdcContentOverviewProvider
+          locations={[iso]}
+          document={selectedDocument && selectedDocument.document_type}
+        />
         {!hasSectors && !loading ? (
           <NoContent
             message="No overview content data"

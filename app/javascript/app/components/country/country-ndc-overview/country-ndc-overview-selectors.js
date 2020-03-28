@@ -4,7 +4,8 @@ import isEmpty from 'lodash/isEmpty';
 import qs from 'query-string';
 
 const getIso = (state, { iso }) => iso || null;
-const getDocuments = state => (state && state.documents) || null;
+const getDataDocuments = state =>
+  (state && state.ndcsDocumentsMeta.data) || null;
 const getOverviewData = state =>
   state.ndcContentOverview.data && state.ndcContentOverview.data.locations;
 const getCountryOverviewData = createSelector(
@@ -38,7 +39,7 @@ export const getValuesGrouped = createSelector(
 );
 
 export const getCountryDocuments = createSelector(
-  [getDocuments, getIso],
+  [getDataDocuments, getIso],
   (documents, iso) => {
     if (isEmpty(documents) || !iso || !documents[iso]) return null;
     return documents[iso];
@@ -50,13 +51,14 @@ const documentValue = document =>
 
 export const getSelectedDocument = createSelector(
   [getCountryDocuments, getSearch],
-  (documents, search) => {
-    if (isEmpty(documents)) return null;
-    const lastDocument = documents[documents.length - 1];
-    if (!search.document) return lastDocument;
+  (countryDocuments, search) => {
+    if (isEmpty(countryDocuments)) return null;
+    const lastDocument = countryDocuments[countryDocuments.length - 1];
+    if (!search || !search.document) return lastDocument;
     return (
-      documents.find(document => documentValue(document) === search.document) ||
-      lastDocument
+      countryDocuments.find(
+        document => documentValue(document) === search.document
+      ) || lastDocument
     );
   }
 );

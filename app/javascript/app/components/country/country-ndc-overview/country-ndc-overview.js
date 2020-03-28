@@ -21,16 +21,12 @@ const mapStateToProps = (state, { location, match }) => {
   const { iso } = match.params;
   const isNdcp = isPageNdcp(location);
   const isEmbed = isEmbededComponent(location);
-  const documentsData = {
-    ...state,
-    iso,
-    documents: state.ndcsDocumentsMeta.data
-  };
+
   return {
     iso,
     isNdcp,
     isEmbed,
-    selectedDocument: getSelectedDocument(documentsData, { location, iso }),
+    selectedDocument: getSelectedDocument(state, { location, iso }),
     values: getValuesGrouped(state, { location, iso }),
     loading: state.ndcContentOverview.loading,
     sectors: getSectors(state, { location, iso }),
