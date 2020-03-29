@@ -47,7 +47,8 @@ export const getIsEUUSubmitted = createSelector(
 
 export const getMaximumCountries = createSelector(
   [getCountries, getIsEUUSubmitted],
-  (countries, isEUUsubmitted) => (isEUUsubmitted ? countries.length + 1 : countries.length)
+  (countries, isEUUsubmitted) =>
+    (isEUUsubmitted ? countries.length + 1 : countries.length)
 );
 
 export const getISOCountries = createSelector([getCountries], countries =>
@@ -298,7 +299,7 @@ export const getSummaryCardData = createSelector(
       l => l.value
     ).length;
     if (isEUUsubmitted) {
-      const partiesNumber = countriesNumber + 1;
+      const partiesNumber = countriesNumber;
       const europeanCountriesWithSubmission = europeanCountries.filter(
         iso => LTSIndicator.locations[iso]
       );
