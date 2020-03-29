@@ -70,3 +70,8 @@
   width: 13px;
   height: 13px;
 }
+
+.boldOption {
+  font-weight: $font-weight-very-bold !important;
+  color: $theme-color-bright !important;
+}
