@@ -39,28 +39,30 @@ function NDCCountry(props) {
     match
   } = props;
 
-  const renderDocumentsDropdown = () =>
-    documentsOptions && (
-      <Dropdown
-        className={cx(styles.countryDropdown)}
-        options={documentsOptions}
-        value={documentSelected}
-        onValueChange={handleDropDownChange}
-        white
-        hideResetButton
-      />
-    );
+  const renderDocumentsDropdown = () => (
+    <Dropdown
+      className={cx(styles.countryDropdown)}
+      options={documentsOptions}
+      value={documentSelected}
+      onValueChange={handleDropDownChange}
+      white
+      hideResetButton
+      disabled={!documentsOptions}
+    />
+  );
 
-  const renderFullTextButton = () =>
-    documentsOptions && (
-      <Button
-        variant="secondary"
-        link={`/ndcs/country/${match.params.iso}/full`}
-        className={styles.viewDocumentButton}
-      >
-        View Full Text
-      </Button>
-    );
+  const renderFullTextButton = () => (
+    <Button
+      variant="secondary"
+      link={`/ndcs/country/${
+        match.params.iso
+      }/full?document=${documentSelected && documentSelected.value}`}
+      className={styles.viewDocumentButton}
+      disabled={!documentsOptions}
+    >
+      View Full Text
+    </Button>
+  );
 
   const renderCompareButton = () => {
     if (!FEATURE_LTS_EXPLORE) {
