@@ -81,11 +81,13 @@ function NDCCountryContainer(props) {
   };
 
   const handleCountryLink = selected => {
-    const path = history.location.pathname.replace(
-      country.iso_code3,
-      selected.value
-    );
-    history.replace(path);
+    if (selected) {
+      const path = history.location.pathname.replace(
+        country.iso_code3,
+        selected.value
+      );
+      history.replace(path);
+    }
   };
 
   return createElement(NDCCountryComponent, {
