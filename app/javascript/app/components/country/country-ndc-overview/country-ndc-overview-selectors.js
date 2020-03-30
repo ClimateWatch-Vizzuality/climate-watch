@@ -10,7 +10,7 @@ const getOverviewData = state =>
   state.ndcContentOverview.data && state.ndcContentOverview.data.locations;
 const getCountryOverviewData = createSelector(
   [getOverviewData, getIso],
-  (data, iso) => (data && data[iso] && data[iso]) || null
+  (data, iso) => (data && data[iso]) || null
 );
 
 const getSearch = (state, { location }) => {
