@@ -59,7 +59,7 @@ const renderSummary = summaryData => (
   </div>
 );
 
-const renderLegend = (legendData, isEUUSubmitted) => (
+const renderLegend = legendData => (
   <div className={styles.legendCardContainer}>
     <div className={styles.legendContainer}>
       {legendData &&
@@ -67,7 +67,6 @@ const renderLegend = (legendData, isEUUSubmitted) => (
           <LegendItem
             key={l.name}
             name={l.name}
-            itemsName={isEUUSubmitted ? undefined : ['country', 'countries']}
             number={l.countriesNumber}
             value={l.value}
             color={l.color}
@@ -81,7 +80,7 @@ function LTSExploreMap(props) {
   const tooltipParentRef = useRef(null);
   const pieChartRef = useRef(null);
   const [stickyStatus, setStickyStatus] = useState(Sticky.STATUS_ORIGINAL);
-  const renderDonutChart = (emissionsCardData, isEUUSubmitted) => (
+  const renderDonutChart = emissionsCardData => (
     <div className={styles.donutContainer} ref={pieChartRef}>
       <PieChart
         data={emissionsCardData.data}
@@ -92,7 +91,7 @@ function LTSExploreMap(props) {
             reference={tooltipParentRef.current}
             chartReference={pieChartRef.current}
             data={emissionsCardData.data}
-            itemName={isEUUSubmitted ? 'Parties' : undefined}
+            itemName={'Parties'}
           />
         }
         customInnerHoverLabel={CustomInnerHoverLabel}
@@ -118,8 +117,7 @@ function LTSExploreMap(props) {
     handleCategoryChange,
     selectedCategory,
     handleIndicatorChange,
-    tooltipValues,
-    isEUUSubmitted
+    tooltipValues
   } = props;
 
   const TOOLTIP_ID = 'lts-map-tooltip';
@@ -186,9 +184,8 @@ function LTSExploreMap(props) {
                         <React.Fragment>
                           {summaryCardData && renderSummary(summaryCardData)}
                           {emissionsCardData &&
-                            renderDonutChart(emissionsCardData, isEUUSubmitted)}
-                          {legendData &&
-                            renderLegend(legendData, isEUUSubmitted)}
+                            renderDonutChart(emissionsCardData)}
+                          {legendData && renderLegend(legendData)}
                         </React.Fragment>
                       )}
                     </div>
@@ -250,8 +247,7 @@ LTSExploreMap.propTypes = {
   handleCategoryChange: PropTypes.func,
   selectedCategory: PropTypes.object,
   tooltipValues: PropTypes.object,
-  handleIndicatorChange: PropTypes.func,
-  isEUUSubmitted: PropTypes.bool
+  handleIndicatorChange: PropTypes.func
 };
 
 export default LTSExploreMap;

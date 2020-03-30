@@ -31,21 +31,8 @@ export const getCategories = createSelector(getCategoriesData, categories =>
     })))
 );
 
-// Remove and act as true for subsequent selectors when EUU LTS will be in the data
-export const getIsEUUSubmitted = createSelector(
-  [getIndicatorsData],
-  indicators => {
-    if (!indicators) return null;
-    const LTSIndicator = indicators.find(i => i.slug === 'lts_document');
-    if (!LTSIndicator) return null;
-    return !!LTSIndicator.locations[europeSlug];
-  }
-);
-
-export const getMaximumCountries = createSelector(
-  [getCountries, getIsEUUSubmitted],
-  (countries, isEUUsubmitted) =>
-    (isEUUsubmitted ? countries.length + 1 : countries.length)
+export const getMaximumCountries = createSelector([getCountries], countries =>
+  (countries ? countries.length : null)
 );
 
 export const getISOCountries = createSelector([getCountries], countries =>
@@ -331,29 +318,23 @@ export const getEmissionsCardData = createSelector(
 );
 
 export const getSummaryCardData = createSelector(
-  [getIndicatorsData, getIsEUUSubmitted],
-  (indicators, isEUUsubmitted) => {
+  [getIndicatorsData],
+  indicators => {
     if (!indicators) return null;
     const LTSIndicator = indicators.find(i => i.slug === 'lts_document');
     if (!LTSIndicator) return null;
     let countriesNumber = Object.values(LTSIndicator.locations).filter(
       l => l.value
     ).length;
-    if (isEUUsubmitted) {
-      const partiesNumber = countriesNumber;
-      const europeanCountriesWithSubmission = europeanCountries.filter(
-        iso => LTSIndicator.locations[iso]
-      );
-      countriesNumber +=
-        europeanCountries.length - europeanCountriesWithSubmission.length; // To avoid double counting
-      return {
-        value: partiesNumber,
-        description: ` parties have submitted a long-term strategy document, representing ${countriesNumber} countries`
-      };
-    }
+    const partiesNumber = countriesNumber;
+    const europeanCountriesWithSubmission = europeanCountries.filter(
+      iso => LTSIndicator.locations[iso]
+    );
+    countriesNumber +=
+      europeanCountries.length - europeanCountriesWithSubmission.length; // To avoid double counting
     return {
-      value: countriesNumber,
-      description: ' countries have submitted a long-term strategy document'
+      value: partiesNumber,
+      description: ` parties have submitted a long-term strategy document, representing ${countriesNumber} countries`
     };
   }
 );
