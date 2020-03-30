@@ -5,14 +5,17 @@ import { withRouter } from 'react-router';
 import { getLocationParamUpdated } from 'utils/navigation';
 import qs from 'query-string';
 import { handleAnalytics } from 'utils/analytics';
-
+import actions from './ndcs-autocomplete-search-actions';
 import NdcsAutocompleteSearchComponent from './ndcs-autocomplete-search-component';
+import reducers, { initialState } from './ndcs-autocomplete-search-reducers';
+
 import {
   getSearchListMeta,
   getSearchListData,
   getOptionSelectedMeta,
   getOptionSelectedData,
-  getDocumentSelected
+  getDocumentSelected,
+  getDocumentOptions
 } from './ndcs-autocomplete-search-selectors';
 
 const groups = [
@@ -30,30 +33,33 @@ const mapStateToProps = (state, props) => {
   const { location, match, global } = props;
   const search = qs.parse(location.search);
   const searchListMeta = {
-    data: state.ndcsSdgsMeta.data,
-    search
+    data: state.ndcsSdgsMeta.data
   };
   const searchListData = {
     sdgs: state.ndcsSdgsData.data[match.params.iso]
       ? state.ndcsSdgsData.data[match.params.iso].sdgs
-      : {},
-    search
+      : {}
   };
   return {
     search,
     iso: match.params.iso,
+    documentOptions: getDocumentOptions(state, search),
+    documentSelected: getDocumentSelected(state, search),
     searchList: global
-      ? getSearchListMeta(searchListMeta)
-      : getSearchListData(searchListData),
+      ? getSearchListMeta(searchListMeta, search)
+      : getSearchListData(searchListData, search),
     optionSelected: global
-      ? getOptionSelectedMeta(searchListMeta)
-      : getOptionSelectedData(searchListData),
-    groups,
-    documentSelected: getDocumentSelected(searchListData)
+      ? getOptionSelectedMeta(searchListMeta, search)
+      : getOptionSelectedData(searchListData, search),
+    groups
   };
 };
 
 class NdcsAutocompleteSearchContainer extends PureComponent {
+  componentDidMount() {
+    this.props.fetchNDCSDocuments();
+  }
+
   onSearchChange = option => {
     if (option) {
       this.updateUrlParam([
@@ -112,9 +118,12 @@ NdcsAutocompleteSearchContainer.propTypes = {
   history: Proptypes.object.isRequired,
   location: Proptypes.object,
   fetchSearchResults: Proptypes.func,
+  fetchNDCSDocuments: Proptypes.func,
   iso: Proptypes.string
 };
 
+export { actions, reducers, initialState };
+
 export default withRouter(
-  connect(mapStateToProps, null)(NdcsAutocompleteSearchContainer)
+  connect(mapStateToProps, actions)(NdcsAutocompleteSearchContainer)
 );
