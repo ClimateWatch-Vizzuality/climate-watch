@@ -6,6 +6,7 @@ import { handleActions } from 'app/utils/redux';
 import * as loginProvider from 'providers/login-provider';
 import * as countriesProvider from 'providers/countries-provider';
 import * as regionsProvider from 'providers/regions-provider';
+import * as documentsProvider from 'providers/documents-provider';
 import * as espLocationsProvider from 'providers/esp-locations-provider';
 import * as espTimeSeriesProvider from 'providers/esp-time-series-provider';
 import * as adaptationsProvider from 'providers/adaptations-provider';
@@ -42,6 +43,7 @@ const providersReducers = {
   login: handleActions(loginProvider),
   countries: handleActions(countriesProvider),
   regions: handleActions(regionsProvider),
+  documents: handleActions(documentsProvider),
   adaptations: handleActions(adaptationsProvider),
   emissions: handleActions(emissionsProvider),
   ndcsSdgsMeta: handleActions(ndcsSdgsMetaProvider),
