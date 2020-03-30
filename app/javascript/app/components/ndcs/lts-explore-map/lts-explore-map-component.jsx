@@ -150,6 +150,9 @@ function LTSExploreMap(props) {
                         value={selectedCategory}
                         hideResetButton
                         plain
+                        showTooltip={
+                          selectedCategory && selectedCategory.label.length > 14
+                        }
                       />
                       <Dropdown
                         label="Indicator"
@@ -158,6 +161,10 @@ function LTSExploreMap(props) {
                         value={selectedIndicator}
                         hideResetButton
                         plain
+                        showTooltip={
+                          selectedIndicator &&
+                          selectedIndicator.label.length > 14
+                        }
                       />
                     </div>
                     {isTablet &&
@@ -179,10 +186,7 @@ function LTSExploreMap(props) {
                         <React.Fragment>
                           {summaryCardData && renderSummary(summaryCardData)}
                           {emissionsCardData &&
-                            renderDonutChart(
-                              emissionsCardData,
-                              isEUUSubmitted
-                            )}
+                            renderDonutChart(emissionsCardData, isEUUSubmitted)}
                           {legendData &&
                             renderLegend(legendData, isEUUSubmitted)}
                         </React.Fragment>

@@ -103,10 +103,6 @@ class LTSExploreMapContainer extends PureComponent {
         tooltipCountryValues && tooltipCountryValues[iso]
           ? tooltipCountryValues[iso].value
           : 'No Document Submitted',
-      emissionsValue:
-        tooltipCountryValues &&
-        tooltipCountryValues[iso] &&
-        tooltipCountryValues[iso].emissionsValue,
       countryName: geography.properties && geography.properties.name
     };
 
