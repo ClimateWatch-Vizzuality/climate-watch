@@ -1,6 +1,7 @@
 import { createSelector } from 'reselect';
 import isEmpty from 'lodash/isEmpty';
 import sortBy from 'lodash/sortBy';
+import groupBy from 'lodash/groupBy';
 import upperCase from 'lodash/upperCase';
 import qs from 'query-string';
 
@@ -50,7 +51,7 @@ const documentValue = document =>
   `${document.document_type}-${document.language}`;
 
 const documentOption = document => ({
-  label: `${upperCase(document.document_type)}(${document.language})`,
+  label: upperCase(document.document_type),
   value: documentValue(document)
 });
 
@@ -58,7 +59,11 @@ export const getDocumentsOptions = createSelector(
   [getCountryDocuments],
   documents => {
     if (isEmpty(documents)) return null;
-    return documents.map(document => documentOption(document));
+    const groupedDocuments = groupBy(documents, 'document_type');
+    const englishDocuments = Object.values(groupedDocuments).map(
+      docs => docs.find(d => d.language === 'EN') || docs[0]
+    );
+    return englishDocuments.map(document => documentOption(document));
   }
 );
 
