@@ -149,7 +149,9 @@ function NDCSExploreMap(props) {
                         value={selectedCategory}
                         hideResetButton
                         plain
-                        showTooltip
+                        showTooltip={
+                          selectedCategory && selectedCategory.label.length > 14
+                        }
                       />
                       <Dropdown
                         label="Indicator"
@@ -158,7 +160,10 @@ function NDCSExploreMap(props) {
                         value={selectedIndicator}
                         hideResetButton
                         plain
-                        showTooltip
+                        showTooltip={
+                          selectedIndicator &&
+                          selectedIndicator.label.length > 14
+                        }
                       />
                     </div>
                     {isTablet &&
