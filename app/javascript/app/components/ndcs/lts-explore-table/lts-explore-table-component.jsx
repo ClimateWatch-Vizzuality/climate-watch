@@ -54,6 +54,7 @@ const LTSExploreTable = ({
                   ? exploreTableTwoHighlightedColumnsTheme
                   : exploreTableTheme
               }
+              tableHeight={650}
             />
           </div>
         )}

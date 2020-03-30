@@ -45,15 +45,20 @@ export const getDocumentLink = createSelector(
   }
 );
 
-export const addUrlToCountries = createSelector(
-  [getCountries, getCountry],
-  (countries, country) => {
-    if (!countries) return null;
+export const addUrlAndHasDataToCountries = createSelector(
+  [getCountries, getCountry, getIndicators],
+  (countries, country, indicators) => {
+    if (!countries || !indicators) return null;
+    const submissionIndicator = indicators.find(
+      i => i.slug === 'lts_submission'
+    );
     return countries
       .filter(c => c.iso_code3 !== country.iso_code3)
       .map(c => ({
         value: c.iso_code3,
-        label: c.wri_standard_name
+        label: c.wri_standard_name,
+        hasData:
+          submissionIndicator && submissionIndicator.locations[c.iso_code3]
       }));
   }
 );

@@ -53,6 +53,13 @@ class LTSCountry extends PureComponent {
     );
   }
 
+  renderCountryOption = option => (
+    <div
+      className={cx('simple-option', { [styles.boldOption]: !!option.hasData })}
+    >
+      {option.label}
+    </div>
+  );
   render() {
     const {
       country,
@@ -82,6 +89,7 @@ class LTSCountry extends PureComponent {
             onValueChange={handleCountryLink}
             hideResetButton
             theme={countryDropdownTheme}
+            renderOption={this.renderCountryOption}
           />
         }
       />

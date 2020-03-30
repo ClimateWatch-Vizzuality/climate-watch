@@ -11,7 +11,7 @@ import {
   getCountry,
   getAnchorLinks,
   getDocumentLink,
-  addUrlToCountries
+  addUrlAndHasDataToCountries
 } from './lts-country-selectors';
 
 const mapStateToProps = (state, { match, location, route }) => {
@@ -37,7 +37,7 @@ const mapStateToProps = (state, { match, location, route }) => {
     country: getCountry(stateData),
     search: search.search,
     anchorLinks: getAnchorLinks(stateData),
-    countriesOptions: addUrlToCountries(stateData),
+    countriesOptions: addUrlAndHasDataToCountries(stateData),
     documentLink: getDocumentLink(stateData),
     notSummary
   };
