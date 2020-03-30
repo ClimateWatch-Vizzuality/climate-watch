@@ -286,9 +286,9 @@ export const getEmissionsCardData = createSelector(
 );
 
 export const getSummaryCardData = createSelector(
-  [getMaximumCountries, getIndicatorsData, getIsEUUSubmitted],
-  (maximumCountries, indicators, isEUUsubmitted) => {
-    if (!indicators || !maximumCountries) return null;
+  [getIndicatorsData, getIsEUUSubmitted],
+  (indicators, isEUUsubmitted) => {
+    if (!indicators) return null;
     const LTSIndicator = indicators.find(i => i.slug === 'lts_document');
     if (!LTSIndicator) return null;
     let countriesNumber = Object.values(LTSIndicator.locations).filter(
@@ -303,12 +303,12 @@ export const getSummaryCardData = createSelector(
         europeanCountries.length - europeanCountriesWithSubmission.length; // To avoid double counting
       return {
         value: partiesNumber,
-        description: `out of ${maximumCountries} parties representing ${countriesNumber} countries have submitted long-term strategies`
+        description: ` parties have submitted a long-term strategy document, representing ${countriesNumber} countries`
       };
     }
     return {
       value: countriesNumber,
-      description: `out of ${maximumCountries} countries have submitted long-term strategies`
+      description: ' countries have submitted a long-term strategy document'
     };
   }
 );
