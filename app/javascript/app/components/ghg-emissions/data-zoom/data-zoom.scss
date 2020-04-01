@@ -1,0 +1,42 @@
+@import '~styles/layout.scss';
+
+.dataZoom {
+  position: relative;
+
+  .selector {
+    position: absolute;
+    display: flex;
+    width: calc(100% - 10px);
+    height: 100%;
+    margin: 0 5px;
+    z-index: $z-index-over-base;
+
+    .handle {
+      position: absolute;
+      width: 10px;
+      height: 100%;
+      background-color: $black;
+    }
+
+    .veil {
+      position: relative;
+      width: 0;
+      height: 100%;
+      background-color: $white;
+      opacity: 60%;
+      border-bottom: 1px solid $gray1;
+
+      &.right {
+        right: 0;
+      }
+    }
+
+    .selectedPart {
+      width: 30%;
+      height: 100%;
+      left: 30%;
+      border: solid $gray1;
+      border-width: 1px 1px 0;
+    }
+  }
+}
