@@ -4,7 +4,6 @@ import startCase from 'lodash/startCase';
 import isArray from 'lodash/isArray';
 import { isPageContained } from 'utils/navigation';
 import cx from 'classnames';
-
 import { GHG_TABLE_HEADER } from 'data/constants';
 import {
   Chart,
@@ -30,8 +29,11 @@ import percentageIcon from 'assets/icons/icon-percentage-chart.svg';
 import dropdownTheme from 'styles/themes/dropdown/react-selectize.scss';
 import multiLevelDropdownTheme from 'styles/themes/dropdown/multi-level-dropdown.scss';
 import legendChartTheme from 'styles/themes/chart/legend-chart.scss';
+import DataZoom from './data-zoom';
 
 import styles from './ghg-emissions-styles.scss';
+
+const FEATURE_NEW_GHG = process.env.FEATURE_NEW_GHG === 'true';
 
 const getValues = value => (value && (isArray(value) ? value : [value])) || [];
 
@@ -85,6 +87,7 @@ class GhgEmissions extends PureComponent {
       loading,
       providerFilters,
       selected: selectedOptions,
+      dataZoomData,
       tableData
     } = this.props;
     const { chartTypeSelected } = selectedOptions;
@@ -142,6 +145,7 @@ class GhgEmissions extends PureComponent {
           onLegendChange={v => handleChange(toPlural(fieldToBreakBy), v)}
           hideRemoveOptions={hideRemoveOptions}
         />
+        {FEATURE_NEW_GHG && !loading && <DataZoom data={dataZoomData} />}
         {tableDataReady && (
           <Table
             data={tableData}
@@ -288,6 +292,7 @@ class GhgEmissions extends PureComponent {
 GhgEmissions.propTypes = {
   data: PropTypes.array,
   tableData: PropTypes.array,
+  dataZoomData: PropTypes.array,
   domain: PropTypes.object,
   config: PropTypes.object,
   options: PropTypes.object,
