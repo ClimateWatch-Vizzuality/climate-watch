@@ -49,27 +49,38 @@ function DataZoom(props) {
       [handleType]: position[handleType] + ui.deltaX
     });
 
-  const renderDraggable = handleType => (
-    <Draggable
-      axis="x"
-      handle={`#handle${handleType}`}
-      grid={[steps, 0]}
-      defaultPosition={{ x: position[handleType], y: 0 }}
-      position={{ x: position[handleType], y: 0 }}
-      onStop={handleStop}
-      onDrag={(_, ui) => handleDrag(ui, handleType)}
-      bounds={{ left: 0, right: width - PADDING }}
-    >
-      <div id={`handle${handleType}`} className={styles.handle} />
-    </Draggable>
-  );
+  const renderDraggable = handleType => {
+    const leftBound = handleType === 'min' ? 0 : position.min + 25;
+    const rightBound =
+      handleType === 'min' ? position.max - 25 : width - PADDING;
+    return (
+      <Draggable
+        axis="x"
+        handle={`#handle${handleType}`}
+        grid={[steps, 0]}
+        defaultPosition={{ x: position[handleType], y: 0 }}
+        position={{ x: position[handleType], y: 0 }}
+        onStop={handleStop}
+        onDrag={(_, ui) => handleDrag(ui, handleType)}
+        bounds={{ left: leftBound, right: rightBound }}
+      >
+        <div id={`handle${handleType}`} className={styles.handle} />
+      </Draggable>
+    );
+  };
   return (
     <div className={styles.dataZoom} ref={dataZoomRef}>
       <div className={styles.selector}>
-        <div className={styles.veil} />
+        <div className={styles.veil} style={{ width: position.min }} />
         {renderDraggable('min')}
-        <div className={styles.selectedPart} />
-        <div className={cx(styles.veil, styles.right)} />
+        <div
+          className={styles.selectedPart}
+          style={{ width: position.max - position.min, left: position.min }}
+        />
+        <div
+          className={cx(styles.veil, styles.right)}
+          style={{ width: width - PADDING - position.max }}
+        />
         {renderDraggable('max')}
       </div>
       <ResponsiveContainer height={35}>

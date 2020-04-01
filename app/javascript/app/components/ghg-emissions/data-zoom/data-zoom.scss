@@ -9,9 +9,9 @@
     width: calc(100% - 10px);
     height: 100%;
     margin: 0 5px;
-    z-index: $z-index-over-base;
 
     .handle {
+      z-index: $z-index-over-base;
       position: absolute;
       width: 10px;
       height: 100%;
@@ -19,8 +19,8 @@
     }
 
     .veil {
-      position: relative;
-      width: 0;
+      z-index: $z-index-over-base;
+      position: absolute;
       height: 100%;
       background-color: $white;
       opacity: 60%;
@@ -32,9 +32,8 @@
     }
 
     .selectedPart {
-      width: 30%;
+      position: absolute;
       height: 100%;
-      left: 30%;
       border: solid $gray1;
       border-width: 1px 1px 0;
     }
