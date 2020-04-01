@@ -4,8 +4,6 @@ class Ndc < ApplicationRecord
   belongs_to :location
   has_many :ndc_targets, class_name: 'NdcSdg::NdcTarget', dependent: :destroy
 
-  validates :document_type, inclusion: {in: %w(ndc indc ndc2)}
-
   attr_accessor :linkages
 
   PG_SEARCH_HIGHLIGHT_START = '<span class="highlight">'.freeze

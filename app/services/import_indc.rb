@@ -114,6 +114,7 @@ class ImportIndc
   end
 
   def value_ndc_attributes(row, location, indicator)
+    doc_slug = row[:document]&.parameterize&.gsub('-', '_')
     {
       location: location,
       indicator: indicator,
@@ -122,24 +123,26 @@ class ImportIndc
         indicator: indicator
       ),
       value: row[:"#{indicator.slug}"],
-      document: Indc::Document.find_by(slug: row[:document]&.parameterize)
+      document: Indc::Document.find_by(slug: doc_slug)
     }
   end
 
   def value_wb_attributes(row, location, indicator)
+    doc_slug = row[:document]&.parameterize&.gsub('-', '_')
     {
       location: location,
       indicator: indicator,
       sector: @sectors_index[row[:subsector]],
       value: row[:responsetext],
-      document: Indc::Document.find_by(slug: row[:document]&.parameterize)
+      document: Indc::Document.find_by(slug: doc_slug)
     }
   end
 
   def document_attributes(doc)
+    doc_slug = doc[:slug]&.parameterize&.gsub('-', '_')
     {
       ordering: doc[:order_number],
-      slug: doc[:slug].parameterize,
+      slug: doc_slug,
       long_name: doc[:long_name],
       description: doc[:description]
     }
