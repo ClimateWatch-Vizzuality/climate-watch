@@ -13,18 +13,21 @@ function DataZoom(props) {
   const [width, setWidth] = useState(0);
   const PADDING = 20;
   const [position, setPosition] = useState({ min: 0, max: width - PADDING });
+
   useEffect(() => {
     if (dataZoomRef.current) {
       const debouncedSetWidth = debounce(
         () => setWidth(dataZoomRef.current.offsetWidth),
         500
       );
+
       const refWidth = dataZoomRef.current.offsetWidth;
       setWidth(refWidth);
       setPosition({
         ...position,
         max: refWidth - PADDING
       });
+
       window.addEventListener('resize', debouncedSetWidth);
       return () => {
         window.removeEventListener('resize', debouncedSetWidth);
@@ -50,9 +53,13 @@ function DataZoom(props) {
     });
 
   const renderDraggable = handleType => {
-    const leftBound = handleType === 'min' ? 0 : position.min + 25;
+    const GAP_BETWEEN_HANDLES = 25;
+    const leftBound =
+      handleType === 'min' ? 0 : position.min + GAP_BETWEEN_HANDLES;
     const rightBound =
-      handleType === 'min' ? position.max - 25 : width - PADDING;
+      handleType === 'min'
+        ? position.max - GAP_BETWEEN_HANDLES
+        : width - PADDING;
     return (
       <Draggable
         axis="x"
@@ -68,11 +75,11 @@ function DataZoom(props) {
       </Draggable>
     );
   };
+
   return (
     <div className={styles.dataZoom} ref={dataZoomRef}>
       <div className={styles.selector}>
         <div className={styles.veil} style={{ width: position.min }} />
-        {renderDraggable('min')}
         <div
           className={styles.selectedPart}
           style={{ width: position.max - position.min, left: position.min }}
@@ -81,6 +88,7 @@ function DataZoom(props) {
           className={cx(styles.veil, styles.right)}
           style={{ width: width - PADDING - position.max }}
         />
+        {renderDraggable('min')}
         {renderDraggable('max')}
       </div>
       <ResponsiveContainer height={35}>
