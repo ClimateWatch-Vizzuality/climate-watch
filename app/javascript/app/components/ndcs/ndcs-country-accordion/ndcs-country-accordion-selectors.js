@@ -21,7 +21,7 @@ export const getDocumentSlug = createSelector(
     if (!searchDocument || !documents) {
       return null;
     }
-    const selectedDocument = documents.find(
+    const selectedDocument = Object.values(documents).find(
       d => d.slug === searchDocument.split('-')[0]
     );
     return (selectedDocument && selectedDocument.slug) || null;

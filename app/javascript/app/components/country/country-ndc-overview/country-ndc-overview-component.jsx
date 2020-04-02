@@ -6,6 +6,7 @@ import CardRow from 'components/card/card-row';
 import Intro from 'components/intro';
 import Icon from 'components/icon';
 import cx from 'classnames';
+import upperCase from 'lodash/upperCase';
 import ModalMetadata from 'components/modal-metadata';
 import Loading from 'components/loading';
 import NoContent from 'components/no-content';
@@ -305,7 +306,7 @@ class CountryNdcOverview extends PureComponent {
     const summaryIntroText = !selectedDocument
       ? 'Summary'
       : `Summary of ${selectedDocument.document_type &&
-          selectedDocument.document_type.toUpperCase()}`;
+          upperCase(selectedDocument.document_type)}`;
     return (
       <div className={cx(styles.wrapper, { [styles.embededWrapper]: isEmbed })}>
         {FEATURE_LTS_EXPLORE &&

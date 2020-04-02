@@ -15,9 +15,7 @@ const fetchNdcsCountryAccordion = createThunkAction(
   'fetchNdcsCountryAccordion',
   params => dispatch => {
     const { locations, category, compare, lts, document } = params;
-    // Remove ndc filter when the data is ready
-    const documentParam =
-      document && document !== 'ndc' ? `?document=${document}` : '';
+    const documentParam = document ? `?document=${document}` : '';
     if (locations) {
       dispatch(fetchNdcsCountryAccordionInit());
       fetch(

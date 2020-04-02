@@ -16,7 +16,7 @@ export default {
       setLoading(
         {
           ...state,
-          data: [...payload]
+          data: payload
         },
         false
       ),

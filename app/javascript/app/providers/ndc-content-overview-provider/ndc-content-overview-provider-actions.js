@@ -11,9 +11,7 @@ const getNdcContentOverview = createThunkAction(
     const promises = [];
     const locationsWithPromise = [];
     locations.forEach(location => {
-      // Remove ndc filter when the data is ready
-      const documentParam =
-        document && document !== 'ndc' ? `?document=${document}` : '';
+      const documentParam = document ? `?document=${document}` : '';
       promises.push(
         fetch(`/api/v1/ndcs/${location}/content_overview${documentParam}`).then(
           response => {
