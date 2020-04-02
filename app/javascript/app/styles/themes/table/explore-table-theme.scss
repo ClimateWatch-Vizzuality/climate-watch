@@ -15,6 +15,13 @@
   }
 }
 
+.column {
+  a {
+    border-bottom: none !important;
+    text-decoration: underline !important;
+  }
+}
+
 .row {
   padding-top: 0 !important; // Due to the :global in styles
   padding-bottom: 0 !important; // Due to the :global in styles
