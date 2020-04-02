@@ -4,6 +4,7 @@ import { Area, AreaChart, ResponsiveContainer } from 'recharts';
 import Draggable from 'react-draggable';
 import cx from 'classnames';
 import debounce from 'lodash/debounce';
+import throttle from 'lodash/throttle';
 import Icon from 'components/icon';
 import handleIcon from 'assets/icons/handle.svg';
 import styles from './data-zoom.scss';
@@ -38,13 +39,13 @@ function DataZoom(props) {
     return undefined;
   }, [dataZoomRef]);
 
-  const handleStop = () => {
-    const getYear = handleType => {
-      const handleStep = (steps * position[handleType]) / (width - PADDING);
-      const stepData = data && data[Math.floor(handleStep)];
-      return stepData && stepData.x;
-    };
+  const getYear = handleType => {
+    const handleStep = (steps * position[handleType]) / (width - PADDING);
+    const stepData = data && data[Math.floor(handleStep)];
+    return stepData && stepData.x;
+  };
 
+  const handleStop = () => {
     onYearChange(getYear('min'), getYear('max'));
   };
 
@@ -55,7 +56,7 @@ function DataZoom(props) {
     });
 
   const renderDraggable = handleType => {
-    const GAP_BETWEEN_HANDLES = 25;
+    const GAP_BETWEEN_HANDLES = 15;
     const leftBound =
       handleType === 'min' ? 0 : position.min + GAP_BETWEEN_HANDLES;
     const rightBound =
@@ -66,11 +67,10 @@ function DataZoom(props) {
       <Draggable
         axis="x"
         handle={`#handle${handleType}`}
-        grid={[steps, 0]}
         defaultPosition={{ x: position[handleType], y: 0 }}
         position={{ x: position[handleType], y: 0 }}
         onStop={handleStop}
-        onDrag={(_, ui) => handleDrag(ui, handleType)}
+        onDrag={throttle((_, ui) => handleDrag(ui, handleType), 50)}
         bounds={{ left: leftBound, right: rightBound }}
       >
         <div id={`handle${handleType}`} className={styles.handle}>
