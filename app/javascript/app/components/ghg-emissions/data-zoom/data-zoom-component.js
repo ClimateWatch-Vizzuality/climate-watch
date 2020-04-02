@@ -4,10 +4,12 @@ import { Area, AreaChart, ResponsiveContainer } from 'recharts';
 import Draggable from 'react-draggable';
 import cx from 'classnames';
 import debounce from 'lodash/debounce';
+import Icon from 'components/icon';
+import handleIcon from 'assets/icons/handle.svg';
 import styles from './data-zoom.scss';
 
 function DataZoom(props) {
-  const { data } = props;
+  const { data, onYearChange } = props;
   const steps = data && data.length - 1;
   const dataZoomRef = useRef();
   const [width, setWidth] = useState(0);
@@ -43,7 +45,7 @@ function DataZoom(props) {
       return stepData && stepData.x;
     };
 
-    console.info(getYear('min'), getYear('max'));
+    onYearChange(getYear('min'), getYear('max'));
   };
 
   const handleDrag = (ui, handleType) =>
@@ -71,22 +73,34 @@ function DataZoom(props) {
         onDrag={(_, ui) => handleDrag(ui, handleType)}
         bounds={{ left: leftBound, right: rightBound }}
       >
-        <div id={`handle${handleType}`} className={styles.handle} />
+        <div id={`handle${handleType}`} className={styles.handle}>
+          <Icon icon={handleIcon} className={styles.handleIcon} />
+        </div>
       </Draggable>
     );
   };
 
+  if (!data) return null;
+  const CENTER_HANDLE_PADDING = 7.5;
   return (
     <div className={styles.dataZoom} ref={dataZoomRef}>
       <div className={styles.selector}>
-        <div className={styles.veil} style={{ width: position.min }} />
+        <div
+          className={styles.veil}
+          style={{ width: position.min + CENTER_HANDLE_PADDING }}
+        />
         <div
           className={styles.selectedPart}
-          style={{ width: position.max - position.min, left: position.min }}
+          style={{
+            width: position.max - position.min,
+            left: position.min + CENTER_HANDLE_PADDING
+          }}
         />
         <div
           className={cx(styles.veil, styles.right)}
-          style={{ width: width - PADDING - position.max }}
+          style={{
+            width: width + CENTER_HANDLE_PADDING / 3 - PADDING - position.max
+          }}
         />
         {renderDraggable('min')}
         {renderDraggable('max')}
@@ -101,7 +115,8 @@ function DataZoom(props) {
 }
 
 DataZoom.propTypes = {
-  data: PropTypes.array
+  data: PropTypes.array,
+  onYearChange: PropTypes.func.isRequired
 };
 
 export default DataZoom;

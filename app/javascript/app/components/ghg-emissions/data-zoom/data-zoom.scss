@@ -13,9 +13,6 @@
     .handle {
       z-index: $z-index-over-base;
       position: absolute;
-      width: 10px;
-      height: 100%;
-      background-color: $black;
     }
 
     .veil {
@@ -37,5 +34,11 @@
       border: solid $gray1;
       border-width: 1px 1px 0;
     }
+  }
+
+  .handleIcon {
+    width: 16px;
+    height: 27px;
+    margin-top: 2px;
   }
 }

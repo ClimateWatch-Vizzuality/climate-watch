@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import startCase from 'lodash/startCase';
 import isArray from 'lodash/isArray';
@@ -85,6 +85,18 @@ function GhgEmissions(props) {
     downloadLink
   } = props;
 
+  const [years, setYears] = useState(null);
+  const [updatedData, setUpdatedData] = useState(data);
+  useEffect(() => {
+    if (data) {
+      if (years) {
+        setUpdatedData(data.filter(d => d.x >= years.min && d.x <= years.max));
+      } else {
+        setUpdatedData(data);
+      }
+    }
+  }, [years, data]);
+
   const handleDownloadDataClick = () => {
     const defaultColumnOrder = [GHG_TABLE_HEADER[fieldToBreakBy], 'unit'];
     const stripHtmlFromUnit = d => ({ ...d, unit: stripHTML(d.unit) });
@@ -153,6 +165,8 @@ function GhgEmissions(props) {
       return 200;
     };
 
+    const handleYearChange = (min, max) => setYears({ min, max });
+
     const tableDataReady = !loading && tableData && tableData.length;
 
     return (
@@ -162,7 +176,7 @@ function GhgEmissions(props) {
           type={chartTypeSelected && chartTypeSelected.value}
           theme={legendChartTheme}
           config={config}
-          data={data}
+          data={updatedData}
           domain={domain}
           dataOptions={legendOptions}
           dataSelected={legendSelected || []}
@@ -173,7 +187,9 @@ function GhgEmissions(props) {
           onLegendChange={v => handleChange(toPlural(fieldToBreakBy), v)}
           hideRemoveOptions={hideRemoveOptions}
         />
-        {FEATURE_NEW_GHG && !loading && <DataZoom data={dataZoomData} />}
+        {FEATURE_NEW_GHG && !loading && (
+          <DataZoom data={dataZoomData} onYearChange={handleYearChange} />
+        )}
         {tableDataReady && (
           <Table
             data={tableData}
