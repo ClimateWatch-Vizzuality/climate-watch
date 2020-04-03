@@ -33,13 +33,11 @@ const Cards = ({ cardData }) => (
                   <div className={styles.cardContent}>
                     <CardRow rowData={cardData.lts_target} />
                     <CardRow rowData={cardData.lts_m_tt} />
-                    <CardRow rowData={cardData.lts_zero} />
                   </div>
                 </Card>
-                <Card title="Modeling" theme={cardTheme} contentFirst>
+                <Card title="Adaptation" theme={cardTheme} contentFirst>
                   <div className={styles.cardContent}>
-                    <CardRow rowData={cardData.lts_m_sce_yn} />
-                    <CardRow rowData={cardData.lts_m_model} />
+                    <CardRow rowData={cardData.lts_a_otc} />
                   </div>
                 </Card>
               </div>
