@@ -186,10 +186,13 @@ function GhgEmissions(props) {
           showUnit
           onLegendChange={v => handleChange(toPlural(fieldToBreakBy), v)}
           hideRemoveOptions={hideRemoveOptions}
+          dataZoomComponent={
+            FEATURE_NEW_GHG &&
+            !loading && (
+              <DataZoom data={dataZoomData} onYearChange={handleYearChange} />
+            )
+          }
         />
-        {FEATURE_NEW_GHG && !loading && (
-          <DataZoom data={dataZoomData} onYearChange={handleYearChange} />
-        )}
         {tableDataReady && (
           <Table
             data={tableData}

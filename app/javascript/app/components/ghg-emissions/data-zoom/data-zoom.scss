@@ -2,6 +2,7 @@
 
 .dataZoom {
   position: relative;
+  margin-top: 20px;
 
   .selector {
     position: absolute;
@@ -22,7 +23,7 @@
       height: 100%;
       background-color: $white;
       opacity: 60%;
-      border-bottom: 1px solid $gray1;
+      border-bottom: 2px solid $gray2;
 
       &.right {
         right: 0;
@@ -32,14 +33,14 @@
     .selectedPart {
       position: absolute;
       height: 100%;
-      border: solid $gray1;
-      border-width: 1px 1px 0;
+      border: solid $gray2;
+      border-width: 2px 2px 0;
     }
   }
 
   .handleIcon {
     width: 16px;
     height: 27px;
-    margin-top: 2px;
+    margin-top: 4px;
   }
 }
