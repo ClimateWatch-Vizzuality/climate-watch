@@ -1,59 +1,23 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Area, AreaChart, ResponsiveContainer } from 'recharts';
 import Draggable from 'react-draggable';
 import cx from 'classnames';
-import debounce from 'lodash/debounce';
 import throttle from 'lodash/throttle';
 import Icon from 'components/icon';
 import handleIcon from 'assets/icons/handle.svg';
 import styles from './data-zoom.scss';
 
 function DataZoom(props) {
-  const { data, onYearChange } = props;
-  const steps = data && data.length - 1;
-  const dataZoomRef = useRef();
-  const [width, setWidth] = useState(0);
-  const PADDING = 20;
-  const [position, setPosition] = useState({ min: 0, max: width - PADDING });
-
-  useEffect(() => {
-    if (dataZoomRef.current) {
-      const debouncedSetWidth = debounce(
-        () => setWidth(dataZoomRef.current.offsetWidth),
-        500
-      );
-
-      const refWidth = dataZoomRef.current.offsetWidth;
-      setWidth(refWidth);
-      setPosition({
-        ...position,
-        max: refWidth - PADDING
-      });
-
-      window.addEventListener('resize', debouncedSetWidth);
-      return () => {
-        window.removeEventListener('resize', debouncedSetWidth);
-      };
-    }
-    return undefined;
-  }, [dataZoomRef]);
-
-  const getYear = handleType => {
-    const handleStep = (steps * position[handleType]) / (width - PADDING);
-    const stepData = data && data[Math.floor(handleStep)];
-    return stepData && stepData.x;
-  };
-
-  const handleStop = () => {
-    onYearChange(getYear('min'), getYear('max'));
-  };
-
-  const handleDrag = (ui, handleType) =>
-    setPosition({
-      ...position,
-      [handleType]: position[handleType] + ui.deltaX
-    });
+  const {
+    width,
+    position,
+    padding,
+    data,
+    handleDrag,
+    handleStop,
+    dataZoomRef
+  } = props;
 
   const renderDraggable = handleType => {
     const GAP_BETWEEN_HANDLES = 15;
@@ -62,7 +26,7 @@ function DataZoom(props) {
     const rightBound =
       handleType === 'min'
         ? position.max - GAP_BETWEEN_HANDLES
-        : width - PADDING;
+        : width - padding;
     return (
       <Draggable
         axis="x"
@@ -80,8 +44,9 @@ function DataZoom(props) {
     );
   };
 
-  if (!data) return null;
   const CENTER_HANDLE_PADDING = 7.5;
+
+  if (!data) return null;
   return (
     <div className={styles.dataZoom} ref={dataZoomRef}>
       <div className={styles.selector}>
@@ -99,7 +64,7 @@ function DataZoom(props) {
         <div
           className={cx(styles.veil, styles.right)}
           style={{
-            width: width + CENTER_HANDLE_PADDING / 3 - PADDING - position.max
+            width: width + CENTER_HANDLE_PADDING / 3 - padding - position.max
           }}
         />
         {renderDraggable('min')}
@@ -116,7 +81,12 @@ function DataZoom(props) {
 
 DataZoom.propTypes = {
   data: PropTypes.array,
-  onYearChange: PropTypes.func.isRequired
+  padding: PropTypes.number,
+  position: PropTypes.object,
+  width: PropTypes.number,
+  handleDrag: PropTypes.func.isRequired,
+  handleStop: PropTypes.func.isRequired,
+  dataZoomRef: PropTypes.object
 };
 
 export default DataZoom;
