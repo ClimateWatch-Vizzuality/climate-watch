@@ -196,6 +196,8 @@ class ImportIndc
   # rubocop:disable MethodLength
   def import_category_relations
     @metadata.each do |r|
+      next unless r[:global_category]
+
       global_category = Indc::Category.
         includes(:category_type).
         find_by(
@@ -303,7 +305,7 @@ class ImportIndc
 
   def import_values_ndc
     Indc::Indicator.
-      where(source: [@sources_index['CAIT'], @sources_index['NDC Explorer'], @sources_index['WB']]).
+      where(source: [@sources_index['CAIT'], @sources_index['NDC Explorer'], @sources_index['WB'], @sources_index['Net Zero Tracker']]).
       each do |indicator|
       (@single_version_data + @ndc_data).each do |r|
         location = @locations_by_iso3[r[:iso]]
