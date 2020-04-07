@@ -11,8 +11,8 @@ function DataZoomContainer(props) {
   const steps = data && data.length - 1;
 
   const dataZoomRef = useRef();
-  const [position, setPosition] = useState({ min: 0, max: width - PADDING });
   const [width, setWidth] = useState(0);
+  const [position, setPosition] = useState({ min: 0, max: width - PADDING });
 
   useEffect(() => {
     if (dataZoomRef.current) {

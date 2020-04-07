@@ -45,7 +45,6 @@ function DataZoom(props) {
   };
 
   const CENTER_HANDLE_PADDING = 7.5;
-
   if (!data) return null;
   return (
     <div className={styles.dataZoom} ref={dataZoomRef}>

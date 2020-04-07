@@ -1,13 +1,11 @@
-import React, { PureComponent } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 import { getLocationParamUpdated } from 'utils/navigation';
 import { handleAnalytics } from 'utils/analytics';
 import qs from 'query-string';
-import camelCase from 'lodash/camelCase';
 import castArray from 'lodash/castArray';
-import upperFirst from 'lodash/upperFirst';
 import { actions } from 'components/modal-metadata';
 
 import GhgEmissionsComponent from './ghg-emissions-component';
@@ -19,25 +17,17 @@ const mapStateToProps = (state, props) => {
   return getGHGEmissions(state, { ...props, search });
 };
 
-class GhgEmissionsContainer extends PureComponent {
-  componentDidUpdate() {
-    const { search, selected } = this.props;
+function GhgEmissionsContainer(props) {
+  const { search, selected, setModalMetadata, history, location } = props;
+  useEffect(() => {
     const { sourceSelected } = selected;
     if (!(search && search.source) && sourceSelected) {
-      this.updateUrlParam({ name: 'source', value: sourceSelected.value });
+      updateUrlParam({ name: 'source', value: sourceSelected.value });
     }
-  }
+  }, []);
 
-  handleChange = (field, selected) => {
-    if (['regions', 'sectors', 'gases'].includes(field)) {
-      return this.handleFilterChange(field, selected);
-    }
-    const functionName = `handle${upperFirst(camelCase(field))}Change`;
-    return this[functionName](selected);
-  };
-
-  handleSourcesChange = category => {
-    this.updateUrlParam([
+  const handleSourcesChange = category => {
+    updateUrlParam([
       { name: 'source', value: category.value },
       { name: 'sectors', value: null },
       { name: 'gases', value: null }
@@ -45,18 +35,18 @@ class GhgEmissionsContainer extends PureComponent {
     handleAnalytics('Historical Emissions', 'Source selected', category.label);
   };
 
-  handleBreakByChange = breakBy => {
-    this.updateUrlParam({ name: 'breakBy', value: breakBy.value });
+  const handleBreakByChange = breakBy => {
+    updateUrlParam({ name: 'breakBy', value: breakBy.value });
     handleAnalytics('Historical Emissions', 'Break by selected', breakBy.label);
   };
 
-  handleChartTypeChange = type => {
-    this.updateUrlParam({ name: 'chartType', value: type.value });
+  const handleChartTypeChange = type => {
+    updateUrlParam({ name: 'chartType', value: type.value });
     handleAnalytics('Chart Type', 'chart type selected', type.label);
   };
 
-  handleFilterChange = (field, filters) => {
-    this.updateUrlParam({
+  const handleFilterChange = (field, filters) => {
+    updateUrlParam({
       name: [field],
       value: castArray(filters)
         .map(v => v.value)
@@ -73,18 +63,28 @@ class GhgEmissionsContainer extends PureComponent {
     }
   };
 
-  updateUrlParam(params, clear) {
-    const { history, location } = this.props;
-    history.replace(getLocationParamUpdated(location, params, clear));
-  }
+  const handleChange = (field, optionSelected) => {
+    if (['regions', 'sectors', 'gases'].includes(field)) {
+      return handleFilterChange(field, optionSelected);
+    }
+    const changeFunctions = {
+      sources: handleSourcesChange,
+      breakBy: handleBreakByChange,
+      chartType: handleChartTypeChange
+    };
+    return changeFunctions[field](optionSelected);
+  };
 
-  handleInfoClick = () => {
-    const { selected } = this.props;
+  const updateUrlParam = (params, clear) => {
+    history.replace(getLocationParamUpdated(location, params, clear));
+  };
+
+  const handleInfoClick = () => {
     let { label: source } = selected.sourcesSelected || {};
     if (source) {
       if (source.startsWith('UNFCCC')) source = 'UNFCCC';
       const slugs = `historical_emissions_${source}`;
-      this.props.setModalMetadata({
+      setModalMetadata({
         category: 'Historical Emissions',
         slugs,
         open: true
@@ -92,21 +92,14 @@ class GhgEmissionsContainer extends PureComponent {
     }
   };
 
-  updateUrlParam = (params, clear) => {
-    const { history, location } = this.props;
-    history.replace(getLocationParamUpdated(location, params, clear));
-  };
-
-  render() {
-    return (
-      <GhgEmissionsComponent
-        {...this.props}
-        updateUrlParam={this.updateUrlParam}
-        handleChange={this.handleChange}
-        handleInfoClick={this.handleInfoClick}
-      />
-    );
-  }
+  return (
+    <GhgEmissionsComponent
+      {...props}
+      updateUrlParam={updateUrlParam}
+      handleChange={handleChange}
+      handleInfoClick={handleInfoClick}
+    />
+  );
 }
 
 GhgEmissionsContainer.propTypes = {
@@ -123,4 +116,6 @@ GhgEmissionsContainer.defaultProps = {
   search: undefined
 };
 
-export default withRouter(connect(mapStateToProps, actions)(GhgEmissionsContainer));
+export default withRouter(
+  connect(mapStateToProps, actions)(GhgEmissionsContainer)
+);
