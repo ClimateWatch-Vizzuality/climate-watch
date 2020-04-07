@@ -3,34 +3,13 @@ import PropTypes from 'prop-types';
 import { Column, Table, AutoSizer, ScrollSync } from 'react-virtualized';
 import MultiSelect from 'components/multiselect';
 import cx from 'classnames';
-import { pixelBreakpoints } from 'components/responsive';
 import difference from 'lodash/difference';
 import 'react-virtualized/styles.css'; // only needs to be imported once
 import cellRenderer from './cell-renderer-component';
 import headerRowRenderer from './header-row-renderer-component';
 import styles from './table-styles.scss';
 import { deburrCapitalize } from '../../utils/utils';
-
-const minColumnWidth = 180;
-const getResponsiveWidth = (columns, width) => {
-  if (columns.length === 1) return width;
-  const isMinColumSized = width / columns < minColumnWidth;
-
-  let responsiveRatio = 1.4; // Mobile
-  let responsiveColumnRatio = 0.2;
-  if (width > pixelBreakpoints.portrait && width < pixelBreakpoints.landscape) {
-    responsiveColumnRatio = 0.1;
-    responsiveRatio = 1.2; // Tablet
-  } else if (width > pixelBreakpoints.landscape) {
-    // Desktop
-    responsiveColumnRatio = 0.07;
-    responsiveRatio = 1;
-  }
-  const columnRatio = isMinColumSized ? responsiveColumnRatio : 0;
-  const columnExtraWidth = columnRatio * columns;
-
-  return width * responsiveRatio * (1 + columnExtraWidth);
-};
+import { getTableWidth, getResponsiveWidth } from './table-utils';
 
 class SimpleTable extends PureComponent {
   rowClassName = ({ index }) => {
@@ -78,11 +57,6 @@ class SimpleTable extends PureComponent {
     );
 
     const renderTable = ({ onScroll, scrollTop, position, width }) => {
-      const tableWidth = {
-        left: width * 0.1,
-        right: width * 0.9,
-        full: width
-      }[position];
       const splittedColumnData = {
         left: firstColumns,
         right: activeColumnNames,
@@ -90,13 +64,15 @@ class SimpleTable extends PureComponent {
       }[position];
       const splittedActiveColumns =
         position === 'left' ? firstColumns : activeColumns;
-
       return (
         <Table
           onScroll={position === 'full' ? undefined : onScroll}
           scrollTop={position === 'full' ? undefined : scrollTop}
           className={styles.table}
-          width={getResponsiveWidth(splittedActiveColumns.length, tableWidth)}
+          width={getResponsiveWidth(
+            splittedActiveColumns.length,
+            getTableWidth(position, width)
+          )}
           height={460}
           headerHeight={headerHeight}
           rowHeight={setRowsHeight(splittedActiveColumns)}
