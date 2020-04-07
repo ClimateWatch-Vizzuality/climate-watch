@@ -148,3 +148,12 @@
   margin-left: 3px;
   transform: translateY(-30%);
 }
+
+.scrollTable {
+  display: inline-flex;
+
+  .right {
+    overflow-x: auto;
+    width: 80%;
+  }
+}

@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Column, Table, AutoSizer } from 'react-virtualized';
+import { Column, Table, AutoSizer, ScrollSync } from 'react-virtualized';
 import MultiSelect from 'components/multiselect';
 import cx from 'classnames';
 import { pixelBreakpoints } from 'components/responsive';
@@ -53,7 +53,8 @@ class SimpleTable extends PureComponent {
       optionsOpen,
       horizontalScroll,
       firstColumnHeaders,
-      flexGrow
+      flexGrow,
+      splittedColumns
     } = this.props;
 
     if (!data.length) return null;
@@ -64,6 +65,55 @@ class SimpleTable extends PureComponent {
     const columnData = firstColumns.concat(
       difference(activeColumnNames, firstColumnHeaders)
     );
+
+    const renderTable = ({ onScroll, scrollTop, position, width }) => {
+      const tableWidth = {
+        left: width * 0.1,
+        right: width * 0.9,
+        full: width
+      }[position];
+      const splittedColumnData = {
+        left: firstColumns,
+        right: activeColumnNames,
+        full: columnData
+      }[position];
+      const splittedActiveColumns =
+        position === 'left' ? firstColumns : activeColumns;
+      return (
+        <Table
+          onScroll={position === 'full' ? undefined : onScroll}
+          scrollTop={position === 'full' ? undefined : scrollTop}
+          className={styles.table}
+          width={getResponsiveWidth(splittedActiveColumns.length, tableWidth)}
+          height={460}
+          headerHeight={headerHeight}
+          rowHeight={setRowsHeight(splittedActiveColumns)}
+          rowCount={data.length}
+          sort={handleSortChange}
+          sortBy={sortBy}
+          sortDirection={sortDirection}
+          rowGetter={({ index }) => data[index]}
+          headerRowRenderer={headerRowRenderer}
+        >
+          {splittedColumnData.map(column => (
+            <Column
+              className={cx(styles.column, {
+                [styles.ellipsis]:
+                  ellipsisColumns && ellipsisColumns.indexOf(column) > -1
+              })}
+              key={column}
+              label={deburrCapitalize(column)}
+              dataKey={column}
+              flexGrow={flexGrow}
+              maxWidth={setColumnWidth(column)}
+              width={setColumnWidth(column)}
+              cellRenderer={cell => cellRenderer({ props: this.props, cell })}
+            />
+          ))}
+        </Table>
+      );
+    };
+
     return (
       <div className={cx({ [styles.hasColumnSelect]: hasColumnSelect })}>
         {hasColumnSelectedOptions && (
@@ -89,42 +139,41 @@ class SimpleTable extends PureComponent {
         )}
         <div
           className={cx(styles.tableWrapper, {
-            [styles.horizontalScroll]: horizontalScroll
+            [styles.horizontalScroll]: !splittedColumns && horizontalScroll
           })}
         >
           <AutoSizer disableHeight>
-            {({ width }) => (
-              <Table
-                className={styles.table}
-                width={getResponsiveWidth(activeColumns.length, width)}
-                height={460}
-                headerHeight={headerHeight}
-                rowHeight={setRowsHeight(activeColumns)}
-                rowCount={data.length}
-                sort={handleSortChange}
-                sortBy={sortBy}
-                sortDirection={sortDirection}
-                rowGetter={({ index }) => data[index]}
-                headerRowRenderer={headerRowRenderer}
-              >
-                {columnData.map(column => (
-                  <Column
-                    className={cx(styles.column, {
-                      [styles.ellipsis]:
-                        ellipsisColumns && ellipsisColumns.indexOf(column) > -1
-                    })}
-                    key={column}
-                    label={deburrCapitalize(column)}
-                    dataKey={column}
-                    flexGrow={flexGrow}
-                    maxWidth={setColumnWidth(column)}
-                    width={setColumnWidth(column)}
-                    cellRenderer={cell =>
-                      cellRenderer({ props: this.props, cell })}
-                  />
-                ))}
-              </Table>
-            )}
+            {({ width }) =>
+              (splittedColumns ? (
+                <ScrollSync>
+                  {({ onScroll, scrollTop }) => (
+                    <div className={styles.scrollTable}>
+                      <div className={styles.left}>
+                        {renderTable({
+                          onScroll,
+                          scrollTop,
+                          position: 'left',
+                          width
+                        })}
+                      </div>
+                      <div className={styles.right}>
+                        {renderTable({
+                          onScroll,
+                          scrollTop,
+                          position: 'right',
+                          width
+                        })}
+                      </div>
+                    </div>
+                  )}
+                </ScrollSync>
+              ) : (
+                renderTable({
+                  position: 'full',
+                  width
+                })
+              ))
+            }
           </AutoSizer>
         </div>
       </div>
@@ -151,12 +200,14 @@ SimpleTable.propTypes = {
   toggleOptionsOpen: PropTypes.func.isRequired,
   ellipsisColumns: PropTypes.array, // 'Columns with ellipsis intext, not full columns'
   horizontalScroll: PropTypes.bool.isRequired,
+  splittedColumns: PropTypes.bool,
   firstColumnHeaders: PropTypes.array.isRequired
 };
 
 SimpleTable.defaultProps = {
   headerHeight: 30,
   horizontalScroll: false,
+  splittedColumns: false,
   firstColumnHeaders: [],
   flexGrow: 1
 };

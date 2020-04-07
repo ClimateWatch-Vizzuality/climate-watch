@@ -177,6 +177,7 @@ function GhgEmissions(props) {
             parseHtml
             setColumnWidth={setColumnWidth}
             emptyValueLabel="N/A"
+            splittedColumns
           />
         )}
       </React.Fragment>
