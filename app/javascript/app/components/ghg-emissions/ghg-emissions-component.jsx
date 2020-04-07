@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import startCase from 'lodash/startCase';
 import isArray from 'lodash/isArray';
@@ -20,8 +20,6 @@ import Table from 'components/table';
 import ModalMetadata from 'components/modal-metadata';
 import { TabletPortraitOnly, TabletLandscape } from 'components/responsive';
 import { toPlural } from 'utils/ghg-emissions';
-import { encodeAsCSVContent, invokeCSVDownload } from 'utils/csv';
-import { orderByColumns, stripHTML } from 'utils';
 
 import lineIcon from 'assets/icons/line_chart.svg';
 import areaIcon from 'assets/icons/area_chart.svg';
@@ -51,6 +49,7 @@ const regionGroups = [
     title: 'Countries'
   }
 ];
+
 const sectorGroups = [
   {
     groupId: 'totals',
@@ -73,6 +72,7 @@ function GhgEmissions(props) {
     handleChange,
     config,
     data,
+    setYears,
     domain,
     filtersConflicts,
     hideRemoveOptions,
@@ -81,32 +81,11 @@ function GhgEmissions(props) {
     loading,
     providerFilters,
     dataZoomData,
+    handleDownloadDataClick,
     handleInfoClick,
+    setColumnWidth,
     downloadLink
   } = props;
-
-  const [years, setYears] = useState(null);
-  const [updatedData, setUpdatedData] = useState(data);
-  useEffect(() => {
-    if (data) {
-      if (years) {
-        setUpdatedData(data.filter(d => d.x >= years.min && d.x <= years.max));
-      } else {
-        setUpdatedData(data);
-      }
-    }
-  }, [years, data]);
-
-  const handleDownloadDataClick = () => {
-    const defaultColumnOrder = [GHG_TABLE_HEADER[fieldToBreakBy], 'unit'];
-    const stripHtmlFromUnit = d => ({ ...d, unit: stripHTML(d.unit) });
-    const parsedTableData = tableData.map(stripHtmlFromUnit);
-    const csvContentEncoded = encodeAsCSVContent(
-      parsedTableData,
-      orderByColumns(defaultColumnOrder)
-    );
-    invokeCSVDownload(csvContentEncoded);
-  };
 
   const renderDropdown = (label, field, dropdownIcons, extraProps) => {
     const value = selectedOptions && selectedOptions[`${field}Selected`];
@@ -160,13 +139,6 @@ function GhgEmissions(props) {
       );
     }
 
-    const setColumnWidth = column => {
-      if (column === GHG_TABLE_HEADER[fieldToBreakBy]) return 300;
-      return 200;
-    };
-
-    const handleYearChange = (min, max) => setYears({ min, max });
-
     const tableDataReady = !loading && tableData && tableData.length;
 
     return (
@@ -176,7 +148,7 @@ function GhgEmissions(props) {
           type={chartTypeSelected && chartTypeSelected.value}
           theme={legendChartTheme}
           config={config}
-          data={updatedData}
+          data={data}
           domain={domain}
           dataOptions={legendOptions}
           dataSelected={legendSelected || []}
@@ -189,7 +161,10 @@ function GhgEmissions(props) {
           dataZoomComponent={
             FEATURE_NEW_GHG &&
             !loading && (
-              <DataZoom data={dataZoomData} onYearChange={handleYearChange} />
+              <DataZoom
+                data={dataZoomData}
+                onYearChange={(min, max) => setYears({ min, max })}
+              />
             )
           }
         />
@@ -314,6 +289,9 @@ GhgEmissions.propTypes = {
   legendSelected: PropTypes.array,
   handleChange: PropTypes.func.isRequired,
   handleInfoClick: PropTypes.func.isRequired,
+  handleDownloadDataClick: PropTypes.func.isRequired,
+  setYears: PropTypes.func.isRequired,
+  setColumnWidth: PropTypes.func.isRequired,
   providerFilters: PropTypes.object,
   loading: PropTypes.bool,
   downloadLink: PropTypes.string,

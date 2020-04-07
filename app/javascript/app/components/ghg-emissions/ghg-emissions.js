@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
@@ -7,7 +7,9 @@ import { handleAnalytics } from 'utils/analytics';
 import qs from 'query-string';
 import castArray from 'lodash/castArray';
 import { actions } from 'components/modal-metadata';
-
+import { encodeAsCSVContent, invokeCSVDownload } from 'utils/csv';
+import { orderByColumns, stripHTML } from 'utils';
+import { GHG_TABLE_HEADER } from 'data/constants';
 import GhgEmissionsComponent from './ghg-emissions-component';
 import { getGHGEmissions } from './ghg-emissions-selectors/ghg-emissions-selectors';
 
@@ -18,7 +20,16 @@ const mapStateToProps = (state, props) => {
 };
 
 function GhgEmissionsContainer(props) {
-  const { search, selected, setModalMetadata, history, location } = props;
+  const {
+    search,
+    selected,
+    setModalMetadata,
+    history,
+    location,
+    fieldToBreakBy,
+    tableData,
+    data
+  } = props;
   useEffect(() => {
     const { sourceSelected } = selected;
     if (!(search && search.source) && sourceSelected) {
@@ -92,12 +103,45 @@ function GhgEmissionsContainer(props) {
     }
   };
 
+  const handleDownloadDataClick = () => {
+    const defaultColumnOrder = [GHG_TABLE_HEADER[fieldToBreakBy], 'unit'];
+    const stripHtmlFromUnit = d => ({ ...d, unit: stripHTML(d.unit) });
+    const parsedTableData = tableData.map(stripHtmlFromUnit);
+    const csvContentEncoded = encodeAsCSVContent(
+      parsedTableData,
+      orderByColumns(defaultColumnOrder)
+    );
+    invokeCSVDownload(csvContentEncoded);
+  };
+
+  const setColumnWidth = column => {
+    if (column === GHG_TABLE_HEADER[fieldToBreakBy]) return 300;
+    return 200;
+  };
+
+  // Data Zoom Logic
+  const [years, setYears] = useState(null);
+  const [updatedData, setUpdatedData] = useState(data);
+  useEffect(() => {
+    if (data) {
+      if (years) {
+        setUpdatedData(data.filter(d => d.x >= years.min && d.x <= years.max));
+      } else {
+        setUpdatedData(data);
+      }
+    }
+  }, [years, data]);
+
   return (
     <GhgEmissionsComponent
       {...props}
+      data={updatedData}
       updateUrlParam={updateUrlParam}
       handleChange={handleChange}
       handleInfoClick={handleInfoClick}
+      handleDownloadDataClick={handleDownloadDataClick}
+      setColumnWidth={setColumnWidth}
+      setYears={setYears}
     />
   );
 }
@@ -108,6 +152,9 @@ GhgEmissionsContainer.propTypes = {
   setModalMetadata: PropTypes.func.isRequired,
   selected: PropTypes.object,
   legendSelected: PropTypes.array,
+  fieldToBreakBy: PropTypes.string,
+  tableData: PropTypes.array,
+  data: PropTypes.array,
   search: PropTypes.object
 };
 
