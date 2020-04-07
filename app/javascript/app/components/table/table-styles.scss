@@ -152,6 +152,10 @@
 .scrollTable {
   display: inline-flex;
 
+  .left {
+    border-right: 1px solid $gray1;
+  }
+
   .right {
     overflow-x: auto;
     width: 80%;

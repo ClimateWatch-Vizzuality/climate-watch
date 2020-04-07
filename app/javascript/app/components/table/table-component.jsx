@@ -33,6 +33,16 @@ const getResponsiveWidth = (columns, width) => {
 };
 
 class SimpleTable extends PureComponent {
+  rowClassName = ({ index }) => {
+    const { theme } = this.props;
+
+    if (index < 0) return cx(styles.headerRow, theme.headerRow);
+
+    return index % 2 === 0
+      ? cx(styles.evenRow, theme.row, theme.evenRow)
+      : cx(styles.oddRow, theme.row, theme.oddRow);
+  };
+
   render() {
     const {
       data,
@@ -54,7 +64,8 @@ class SimpleTable extends PureComponent {
       horizontalScroll,
       firstColumnHeaders,
       flexGrow,
-      splittedColumns
+      splittedColumns,
+      theme
     } = this.props;
 
     if (!data.length) return null;
@@ -79,6 +90,7 @@ class SimpleTable extends PureComponent {
       }[position];
       const splittedActiveColumns =
         position === 'left' ? firstColumns : activeColumns;
+
       return (
         <Table
           onScroll={position === 'full' ? undefined : onScroll}
@@ -89,18 +101,26 @@ class SimpleTable extends PureComponent {
           headerHeight={headerHeight}
           rowHeight={setRowsHeight(splittedActiveColumns)}
           rowCount={data.length}
+          rowClassName={this.rowClassName}
           sort={handleSortChange}
           sortBy={sortBy}
           sortDirection={sortDirection}
           rowGetter={({ index }) => data[index]}
-          headerRowRenderer={headerRowRenderer}
+          headerRowRenderer={({ className, columns, style }) =>
+            headerRowRenderer({ className, columns, style, theme })
+          }
         >
           {splittedColumnData.map(column => (
             <Column
-              className={cx(styles.column, {
-                [styles.ellipsis]:
-                  ellipsisColumns && ellipsisColumns.indexOf(column) > -1
-              })}
+              className={cx(
+                styles.column,
+                {
+                  [styles.ellipsis]:
+                    ellipsisColumns && ellipsisColumns.indexOf(column) > -1
+                },
+                theme.column
+              )}
+              headerClassName={cx(styles.columnHeader, theme.columnHeader)}
               key={column}
               label={deburrCapitalize(column)}
               dataKey={column}
@@ -120,7 +140,7 @@ class SimpleTable extends PureComponent {
           <div
             role="button"
             tabIndex={0}
-            className={styles.columnSelectorWrapper}
+            className={cx(styles.columnSelectorWrapper, theme.columnSelector)}
             onBlur={toggleOptionsOpen}
             onMouseEnter={setOptionsOpen}
             onMouseLeave={setOptionsClose}
@@ -138,9 +158,13 @@ class SimpleTable extends PureComponent {
           </div>
         )}
         <div
-          className={cx(styles.tableWrapper, {
-            [styles.horizontalScroll]: !splittedColumns && horizontalScroll
-          })}
+          className={cx(
+            styles.tableWrapper,
+            {
+              [styles.horizontalScroll]: !splittedColumns && horizontalScroll
+            },
+            theme.tableWrapper
+          )}
         >
           <AutoSizer disableHeight>
             {({ width }) =>
@@ -201,7 +225,8 @@ SimpleTable.propTypes = {
   ellipsisColumns: PropTypes.array, // 'Columns with ellipsis intext, not full columns'
   horizontalScroll: PropTypes.bool.isRequired,
   splittedColumns: PropTypes.bool,
-  firstColumnHeaders: PropTypes.array.isRequired
+  firstColumnHeaders: PropTypes.array.isRequired,
+  theme: PropTypes.object
 };
 
 SimpleTable.defaultProps = {
@@ -209,7 +234,8 @@ SimpleTable.defaultProps = {
   horizontalScroll: false,
   splittedColumns: false,
   firstColumnHeaders: [],
-  flexGrow: 1
+  flexGrow: 1,
+  theme: {}
 };
 
 export default SimpleTable;
