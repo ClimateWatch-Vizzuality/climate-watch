@@ -8,6 +8,8 @@ sudo: false
 language: ruby
 rvm:
 - 2.5.1
+services:
+  - postgres
 addons:
   postgresql: 11
 before_script:
