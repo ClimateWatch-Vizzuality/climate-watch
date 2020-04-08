@@ -69,14 +69,18 @@ export const commitmentsData = [
       {
         questionText: 'How many parties have a net zero emission target?',
         link: 'https://eciu.net/netzerotracker',
-        metadataSlug: 'net_zero',
+        slug: 'lts_zero',
+        answerLabel: 'Net-zero target in LTS',
+        metadataSlug: 'ndc_cw',
         hasExternalLink: true
       },
       {
         questionText:
           'How many parties have an economy-wide target in a national law or policy?',
+        answerLabel: ['In Policy Document', 'In Law'],
         link: 'https://climate-laws.org/',
-        metadataSlug: 'national_laws_policies',
+        slug: 'nz_status',
+        metadataSlug: 'ndc_cw',
         hasExternalLink: true
       }
     ]
