@@ -3,7 +3,7 @@ env:
     - CC_TEST_REPORTER_ID=010c7b37d1aaadcc84a23a3339f7c9a204c2117f7bd97a16de31017a38e5a758
     - GIT_COMMITTED_AT=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then git log -1 --pretty=format:%ct; else git log -1 --skip 1 --pretty=format:%ct; fi)
     - MAILER_DEFAULT_FROM=no-reply@example.com MAILER_DEFAULT_URL=example.com
-dist: trusty
+dist: bionic
 sudo: false
 language: ruby
 rvm:
