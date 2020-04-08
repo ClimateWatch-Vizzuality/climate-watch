@@ -7,6 +7,7 @@ export const getResponsiveWidth = (columns, width) => {
 
   let responsiveRatio = 1.4; // Mobile
   let responsiveColumnRatio = 0.2;
+
   if (width > pixelBreakpoints.portrait && width < pixelBreakpoints.landscape) {
     responsiveColumnRatio = 0.1;
     responsiveRatio = 1.2; // Tablet
@@ -15,6 +16,7 @@ export const getResponsiveWidth = (columns, width) => {
     responsiveColumnRatio = 0.07;
     responsiveRatio = 1;
   }
+
   const columnRatio = isMinColumSized ? responsiveColumnRatio : 0;
   const columnExtraWidth = columnRatio * columns;
   return width * responsiveRatio * (1 + columnExtraWidth);
@@ -24,16 +26,16 @@ export const getTableWidth = (position, width) => {
   if (position === 'full') return width;
   const tableWidths = {
     left: {
-      desktop: 0.1,
-      landscape: 0.15,
-      portrait: 0.2,
-      mobile: 0.25
+      desktop: 0.25,
+      landscape: 0.35,
+      portrait: 0.4,
+      mobile: 0.5
     },
     right: {
-      desktop: 0.9,
-      landscape: 0.85,
-      portrait: 0.8,
-      mobile: 0.75
+      desktop: 0.75,
+      landscape: 0.65,
+      portrait: 0.6,
+      mobile: 0.5
     }
   };
   if (width > pixelBreakpoints.desktop - 100) {

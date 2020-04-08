@@ -57,56 +57,67 @@ class SimpleTable extends PureComponent {
     );
 
     const renderTable = ({ onScroll, scrollTop, position, width }) => {
+      const yearColumns = activeColumnNames.filter(
+        c => !firstColumns.includes(c)
+      );
       const splittedColumnData = {
         left: firstColumns,
-        right: activeColumnNames,
+        right: yearColumns,
         full: columnData
       }[position];
-      const splittedActiveColumns =
-        position === 'left' ? firstColumns : activeColumns;
+      const tableWidth = getTableWidth(position, width);
+      const splittedActiveColumns = {
+        left: firstColumns,
+        right: yearColumns,
+        full: activeColumns
+      }[position];
+
       return (
-        <Table
-          onScroll={position === 'full' ? undefined : onScroll}
-          scrollTop={position === 'full' ? undefined : scrollTop}
-          className={styles.table}
-          width={getResponsiveWidth(
-            splittedActiveColumns.length,
-            getTableWidth(position, width)
-          )}
-          height={460}
-          headerHeight={headerHeight}
-          rowHeight={setRowsHeight(splittedActiveColumns)}
-          rowCount={data.length}
-          rowClassName={this.rowClassName}
-          sort={handleSortChange}
-          sortBy={sortBy}
-          sortDirection={sortDirection}
-          rowGetter={({ index }) => data[index]}
-          headerRowRenderer={({ className, columns, style }) =>
-            headerRowRenderer({ className, columns, style, theme })
-          }
-        >
-          {splittedColumnData.map(column => (
-            <Column
-              className={cx(
-                styles.column,
-                {
-                  [styles.ellipsis]:
-                    ellipsisColumns && ellipsisColumns.indexOf(column) > -1
-                },
-                theme.column
-              )}
-              headerClassName={cx(styles.columnHeader, theme.columnHeader)}
-              key={column}
-              label={deburrCapitalize(column)}
-              dataKey={column}
-              flexGrow={flexGrow}
-              maxWidth={setColumnWidth(column)}
-              width={setColumnWidth(column)}
-              cellRenderer={cell => cellRenderer({ props: this.props, cell })}
-            />
-          ))}
-        </Table>
+        <div className={styles[position]} style={{ width: tableWidth }}>
+          <Table
+            onScroll={position === 'full' ? undefined : onScroll}
+            scrollTop={position === 'full' ? undefined : scrollTop}
+            className={styles.table}
+            width={getResponsiveWidth(
+              splittedActiveColumns.length,
+              tableWidth,
+              position === 'left'
+            )}
+            height={460}
+            headerHeight={headerHeight}
+            rowHeight={setRowsHeight(splittedActiveColumns)}
+            rowCount={data.length}
+            rowClassName={this.rowClassName}
+            sort={handleSortChange}
+            sortBy={sortBy}
+            sortDirection={sortDirection}
+            rowGetter={({ index }) => data[index]}
+            headerRowRenderer={({ className, columns, style }) =>
+              headerRowRenderer({ className, columns, style, theme })
+            }
+          >
+            {splittedColumnData.map(column => (
+              <Column
+                className={cx(
+                  styles.column,
+                  {
+                    [styles.ellipsis]:
+                      ellipsisColumns && ellipsisColumns.indexOf(column) > -1
+                  },
+                  theme.column
+                )}
+                headerClassName={cx(styles.columnHeader, theme.columnHeader)}
+                key={column}
+                label={deburrCapitalize(column)}
+                dataKey={column}
+                flexGrow={flexGrow}
+                maxWidth={setColumnWidth(column)}
+                width={setColumnWidth(column)}
+                cellRenderer={cell => cellRenderer({ props: this.props, cell })}
+              />
+            ))}
+          </Table>
+        </div>
       );
     };
 
@@ -148,22 +159,18 @@ class SimpleTable extends PureComponent {
                 <ScrollSync>
                   {({ onScroll, scrollTop }) => (
                     <div className={styles.scrollTable}>
-                      <div className={styles.left}>
-                        {renderTable({
-                          onScroll,
-                          scrollTop,
-                          position: 'left',
-                          width
-                        })}
-                      </div>
-                      <div className={styles.right}>
-                        {renderTable({
-                          onScroll,
-                          scrollTop,
-                          position: 'right',
-                          width
-                        })}
-                      </div>
+                      {renderTable({
+                        onScroll,
+                        scrollTop,
+                        position: 'left',
+                        width
+                      })}
+                      {renderTable({
+                        onScroll,
+                        scrollTop,
+                        position: 'right',
+                        width
+                      })}
                     </div>
                   )}
                 </ScrollSync>
