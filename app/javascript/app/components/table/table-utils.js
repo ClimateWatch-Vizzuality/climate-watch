@@ -1,8 +1,9 @@
 import { pixelBreakpoints } from 'components/responsive';
 
 const minColumnWidth = 180;
-export const getResponsiveWidth = (columns, width) => {
+export const getResponsiveWidth = (columns, width, leftSplittedPosition) => {
   if (columns.length === 1) return width;
+  if (leftSplittedPosition) return width;
   const isMinColumSized = width / columns < minColumnWidth;
 
   let responsiveRatio = 1.4; // Mobile
