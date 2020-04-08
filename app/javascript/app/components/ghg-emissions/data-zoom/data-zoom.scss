@@ -1,0 +1,46 @@
+@import '~styles/layout.scss';
+
+.dataZoom {
+  position: relative;
+  margin-top: 20px;
+
+  .selector {
+    position: absolute;
+    display: flex;
+    width: calc(100% - 10px);
+    height: 100%;
+    margin: 0 5px;
+
+    .handle {
+      z-index: $z-index-over-base;
+      position: absolute;
+      cursor: grab;
+    }
+
+    .veil {
+      z-index: $z-index-over-base;
+      position: absolute;
+      height: 100%;
+      background-color: $white;
+      opacity: 60%;
+      border-bottom: 2px solid $gray2;
+
+      &.right {
+        right: 0;
+      }
+    }
+
+    .selectedPart {
+      position: absolute;
+      height: 100%;
+      border: solid $gray2;
+      border-width: 2px 2px 0;
+    }
+  }
+
+  .handleIcon {
+    width: 16px;
+    height: 27px;
+    margin-top: 4px;
+  }
+}

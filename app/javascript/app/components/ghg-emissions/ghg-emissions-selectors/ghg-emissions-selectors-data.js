@@ -508,6 +508,22 @@ export const getTableData = createSelector(
   }
 );
 
+export const getDataZoomData = createSelector([getChartData], data => {
+  if (!data) return null;
+  const t = data.map(d => {
+    const updatedD = {};
+    updatedD.x = d.x;
+    const intermediateD = { ...d };
+    delete intermediateD.x;
+    updatedD.total = Object.values(intermediateD).reduce(
+      (acc, value) => acc + value,
+      0
+    );
+    return updatedD;
+  });
+  return t;
+});
+
 export const getLoading = createSelector(
   [getChartConfig, state => state.ghgEmissionsMeta, state => state.emissions],
   (chartConfig, meta, data) =>
