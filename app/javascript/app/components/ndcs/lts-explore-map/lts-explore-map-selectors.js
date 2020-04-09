@@ -21,6 +21,11 @@ const getCategoriesData = state => state.categories || null;
 const getIndicatorsData = state => state.indicators || null;
 const getZoom = state => state.map.zoom || null;
 
+export const getIsShowEUCountriesChecked = createSelector(
+  getSearch,
+  search => search.showEUCountries === 'true'
+);
+
 export const getCategories = createSelector(getCategoriesData, categories =>
   (!categories
     ? null
@@ -121,11 +126,14 @@ export const getMapIndicator = createSelector(
 );
 
 export const getPathsWithStyles = createSelector(
-  [getMapIndicator, getZoom],
-  (indicator, zoom) => {
+  [getMapIndicator, getZoom, getIsShowEUCountriesChecked],
+  (indicator, zoom, showEUCountriesChecked) => {
     if (!indicator) return [];
     const paths = [];
-    worldPaths.forEach(path => {
+    const selectedWorldPaths = showEUCountriesChecked
+      ? worldPaths
+      : worldPaths.filter(p => !europeanCountries.includes(p.properties.id));
+    selectedWorldPaths.forEach(path => {
       if (shouldShowPath(path, zoom)) {
         const { locations, legendBuckets } = indicator;
 

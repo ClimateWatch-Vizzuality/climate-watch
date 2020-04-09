@@ -7,7 +7,7 @@ import ButtonGroup from 'components/button-group';
 import Loading from 'components/loading';
 import ModalMetadata from 'components/modal-metadata';
 import Dropdown from 'components/dropdown';
-import { PieChart } from 'cw-components';
+import { PieChart, CheckInput } from 'cw-components';
 import CustomTooltip from 'components/ndcs/shared/donut-tooltip';
 import HandIconInfo from 'components/ndcs/shared/hand-icon-info';
 import CustomInnerHoverLabel from 'components/ndcs/shared/donut-custom-label';
@@ -20,6 +20,7 @@ import cx from 'classnames';
 
 import layout from 'styles/layout.scss';
 import newMapTheme from 'styles/themes/map/map-new-zoom-controls.scss';
+import blueCheckboxTheme from 'styles/themes/checkbox/blue-checkbox.scss';
 import styles from './lts-explore-map-styles.scss';
 
 const renderButtonGroup = (clickHandler, downloadLink) => (
@@ -117,6 +118,8 @@ function LTSExploreMap(props) {
     handleCategoryChange,
     selectedCategory,
     handleIndicatorChange,
+    handleOnChangeChecked,
+    checked,
     tooltipValues
   } = props;
 
@@ -206,6 +209,12 @@ function LTSExploreMap(props) {
                         theme={newMapTheme}
                         className={styles.map}
                       />
+                      <CheckInput
+                        theme={blueCheckboxTheme}
+                        label="Visualize individual submissions of EU Members on the map"
+                        checked={checked}
+                        onChange={() => handleOnChangeChecked(!checked)}
+                      />
                       {countryData && (
                         <ExploreMapTooltip
                           id={TOOLTIP_ID}
@@ -247,6 +256,8 @@ LTSExploreMap.propTypes = {
   handleCategoryChange: PropTypes.func,
   selectedCategory: PropTypes.object,
   tooltipValues: PropTypes.object,
+  handleOnChangeChecked: PropTypes.func,
+  checked: PropTypes.bool,
   handleIndicatorChange: PropTypes.func
 };
 

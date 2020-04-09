@@ -22,7 +22,8 @@ import {
   getCategories,
   getCategoryIndicators,
   getSelectedCategory,
-  getTooltipCountryValues
+  getTooltipCountryValues,
+  getIsShowEUCountriesChecked
 } from './lts-explore-map-selectors';
 
 const actions = { ...fetchActions, ...modalActions };
@@ -57,7 +58,8 @@ const mapStateToProps = (state, { location }) => {
     downloadLink: getLinkToDataExplorer(LTSWithSelection),
     categories: getCategories(LTSWithSelection),
     indicators: getCategoryIndicators(LTSWithSelection),
-    selectedCategory: getSelectedCategory(LTSWithSelection)
+    selectedCategory: getSelectedCategory(LTSWithSelection),
+    checked: getIsShowEUCountriesChecked(LTSWithSelection)
   };
 };
 
@@ -73,6 +75,10 @@ class LTSExploreMapContainer extends PureComponent {
   componentWillMount() {
     this.props.fetchLTS();
   }
+
+  handleOnChangeChecked = query => {
+    this.updateUrlParam({ name: 'showEUCountries', value: query });
+  };
 
   handleSearchChange = query => {
     this.updateUrlParam({ name: 'search', value: query });
@@ -155,6 +161,8 @@ class LTSExploreMapContainer extends PureComponent {
       handleSearchChange: this.handleSearchChange,
       handleCategoryChange: this.handleCategoryChange,
       handleIndicatorChange: this.handleIndicatorChange,
+      handleOnChangeChecked: this.handleOnChangeChecked,
+      checked: this.props.checked,
       indicator: this.props.indicator,
       countryData: this.state.country,
       summaryData: this.props.summaryData,
@@ -172,7 +180,8 @@ LTSExploreMapContainer.propTypes = {
   query: PropTypes.string,
   summaryData: PropTypes.array,
   indicator: PropTypes.object,
-  tooltipCountryValues: PropTypes.object
+  tooltipCountryValues: PropTypes.object,
+  checked: PropTypes.bool
 };
 
 export default withRouter(

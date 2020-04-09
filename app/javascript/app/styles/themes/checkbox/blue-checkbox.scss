@@ -1,0 +1,49 @@
+@import '~styles/layout.scss';
+
+.switch {
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+  align-items: center;
+  margin: 10px 0;
+
+  @media #{$tablet-landscape} {
+    margin: 0 0 4px -40px;
+  }
+}
+
+.slider {
+  background-color: transparent;
+  margin-right: 10px;
+  border-radius: 5px !important;
+  height: 24px !important;
+  width: 24px !important;
+  border: 3px solid $theme-color-medium;
+
+  &::before {
+    border-radius: 0 !important;
+    background-color: transparent !important;
+  }
+}
+
+.label {
+  color: $theme-color;
+  font-size: $font-size;
+  font-weight: $font-weight;
+  margin-left: 10px;
+}
+
+input:checked ~ .slider {
+  background-color: $theme-color-medium;
+
+  &::before {
+    border: 3px solid $white;
+    border-top: 0;
+    border-left: 0;
+    left: 5.5px;
+    top: 1.5px;
+    width: 7px;
+    height: 12px;
+    transform: rotate(46deg);
+    transition: none;
+  }
+}
