@@ -12,6 +12,10 @@ services:
   - postgresql
 addons:
   postgresql: 12
+  apt:
+    packages:
+    - postgresql-12
+    - postgresql-client-12
 before_script:
   - bundle exec rake db:create db:structure:load RAILS_ENV=test
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
