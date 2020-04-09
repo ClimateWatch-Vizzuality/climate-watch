@@ -1,5 +1,4 @@
-dist: xenial
-os: linux
+dist: bionic
 language: ruby
 env:
   global:
@@ -25,7 +24,6 @@ before_install:
   - node -v
   - npm i -g yarn
 install:
-  - gem install bundler
   - bundle install --jobs=3 --retry=3
   - yarn
 before_script:
