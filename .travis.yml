@@ -21,7 +21,7 @@ addons:
     - postgresql-12
     - postgresql-client-12
 before_install:
-  - nvm install
+  - nvm install 8.10.0
   - node -v
   - npm i -g yarn
 install:
