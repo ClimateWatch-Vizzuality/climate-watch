@@ -9,25 +9,18 @@ spec:
   revisionHistoryLimit: 0
   template:
     metadata:
-      annotations:
-        chaos.alpha.kubernetes.io/enabled: "true"
       labels:
         name: climate-watch-staging
     spec:
-      tolerations:
-      - key: "type"
-        operator: "Equal"
-        value: "webapps"
-        effect: "NoSchedule"
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-            - matchExpressions:
-              - key: type
-                operator: In
-                values:
-                - webapps
+              - matchExpressions:
+                  - key: type
+                    operator: In
+                    values:
+                      - climate-watch
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
           - weight: 100

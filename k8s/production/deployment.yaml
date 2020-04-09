@@ -12,20 +12,15 @@ spec:
       labels:
         name: climate-watch
     spec:
-      tolerations:
-      - key: "type"
-        operator: "Equal"
-        value: "webapps"
-        effect: "NoSchedule"
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-            - matchExpressions:
-              - key: type
-                operator: In
-                values:
-                - webapps
+              - matchExpressions:
+                  - key: type
+                    operator: In
+                    values:
+                      - webapps
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
           - weight: 100
@@ -112,8 +107,10 @@ spec:
         imagePullPolicy: Always
         resources:
           requests:
+            cpu: "0.25"
             memory: "512Mi"
           limits:
+            cpu: "1"
             memory: "4Gi"
         args:
           - sidekiq
