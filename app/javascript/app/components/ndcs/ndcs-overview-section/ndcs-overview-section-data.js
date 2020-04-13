@@ -25,7 +25,7 @@ export const commitmentsData = [
       },
       {
         questionText: 'How many Parties have submitted Long-Term Strategies?',
-        link: '/lts-tracker',
+        link: '/lts-explore',
         slug: 'lts_submission',
         metadataSlug: 'ndc_cw',
         answerLabel: 'Long-term Strategy Submitted'
