@@ -77,7 +77,9 @@ class SimpleTable extends PureComponent {
           <Table
             onScroll={position === 'full' ? undefined : onScroll}
             scrollTop={position === 'full' ? undefined : scrollTop}
-            className={styles.table}
+            className={cx(styles.table, {
+              [styles.tableLeft]: position === 'left'
+            })}
             width={getResponsiveWidth(
               splittedActiveColumns.length,
               tableWidth,

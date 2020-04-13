@@ -65,6 +65,13 @@
   }
 }
 
+.tableLeft :global {
+  .ReactVirtualized__Grid,
+  .ReactVirtualized__Table__Grid {
+    border-right: 1px solid $gray1;
+  }
+}
+
 .column {
   white-space: normal;
   overflow: hidden;

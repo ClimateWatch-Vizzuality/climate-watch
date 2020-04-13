@@ -20,7 +20,11 @@ export const getResponsiveWidth = (columns, width, leftSplittedPosition) => {
 
   const columnRatio = isMinColumSized ? responsiveColumnRatio : 0;
   const columnExtraWidth = columnRatio * columns;
-  return width * responsiveRatio * (1 + columnExtraWidth);
+  const calculatedFullWidth = width * responsiveRatio * (1 + columnExtraWidth);
+  const minFullWidth = columns * minColumnWidth;
+  return calculatedFullWidth > minFullWidth
+    ? calculatedFullWidth
+    : minFullWidth;
 };
 
 export const getTableWidth = (position, width) => {
