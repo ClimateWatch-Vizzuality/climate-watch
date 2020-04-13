@@ -68,6 +68,7 @@ function GhgEmissions(props) {
   const {
     fieldToBreakBy,
     tableData,
+    titleLinks,
     selected: selectedOptions,
     options,
     handleChange,
@@ -180,6 +181,7 @@ function GhgEmissions(props) {
             setColumnWidth={setColumnWidth}
             emptyValueLabel="N/A"
             splittedColumns
+            titleLinks={titleLinks}
             theme={ghgTableTheme}
           />
         )}
@@ -283,6 +285,7 @@ GhgEmissions.propTypes = {
   data: PropTypes.array,
   tableData: PropTypes.array,
   dataZoomData: PropTypes.array,
+  titleLinks: PropTypes.array,
   domain: PropTypes.object,
   config: PropTypes.object,
   options: PropTypes.object,
