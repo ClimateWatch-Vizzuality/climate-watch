@@ -339,7 +339,7 @@ export const getSummaryCardData = createSelector(
       iso => LTSIndicator.locations[iso]
     );
     countriesNumber +=
-      europeanCountries.length - europeanCountriesWithSubmission.length; // To avoid double counting
+      europeanCountries.length - europeanCountriesWithSubmission.length - 1; // To avoid double counting, also substract the EUU 'country'
     return {
       value: partiesNumber,
       description: ` parties have submitted a long-term strategy document, representing ${countriesNumber} countries`
