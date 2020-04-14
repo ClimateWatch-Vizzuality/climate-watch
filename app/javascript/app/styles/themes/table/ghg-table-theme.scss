@@ -1,0 +1,49 @@
+@import '~styles/settings.scss';
+
+.column {
+  height: 100%;
+  display: flex;
+  align-items: center;
+
+  > div,
+  > a {
+    margin: auto 0;
+  }
+
+  &:first-of-type {
+    padding-left: 10px;
+    margin: 0;
+    font-weight: $font-weight !important;
+  }
+
+  padding: 0 10px;
+  margin: 0;
+}
+
+.headerRow {
+  padding: 10px 0 20px !important;
+}
+
+.column {
+  a {
+    border-bottom: none !important;
+    text-decoration: underline !important;
+  }
+}
+
+.row {
+  padding-top: 0 !important; // Due to the :global in styles
+  padding-bottom: 0 !important; // Due to the :global in styles
+}
+
+.evenRow {
+  .column {
+    background-color: $white;
+  }
+}
+
+.oddRow {
+  .column {
+    background-color: $lighter-blue;
+  }
+}

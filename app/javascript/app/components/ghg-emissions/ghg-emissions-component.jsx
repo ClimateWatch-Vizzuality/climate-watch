@@ -17,6 +17,7 @@ import RegionsProvider from 'providers/regions-provider';
 import WorldBankDataProvider from 'providers/wb-country-data-provider';
 import ButtonGroup from 'components/button-group';
 import Table from 'components/table';
+import ghgTableTheme from 'styles/themes/table/ghg-table-theme.scss';
 import ModalMetadata from 'components/modal-metadata';
 import { TabletPortraitOnly, TabletLandscape } from 'components/responsive';
 import { toPlural } from 'utils/ghg-emissions';
@@ -67,6 +68,7 @@ function GhgEmissions(props) {
   const {
     fieldToBreakBy,
     tableData,
+    titleLinks,
     selected: selectedOptions,
     options,
     handleChange,
@@ -174,9 +176,13 @@ function GhgEmissions(props) {
             horizontalScroll
             firstColumnHeaders={[GHG_TABLE_HEADER[fieldToBreakBy], 'unit']}
             flexGrow={0}
+            headerHeight={30}
             parseHtml
             setColumnWidth={setColumnWidth}
             emptyValueLabel="N/A"
+            splittedColumns
+            titleLinks={titleLinks}
+            theme={ghgTableTheme}
           />
         )}
       </React.Fragment>
@@ -279,6 +285,7 @@ GhgEmissions.propTypes = {
   data: PropTypes.array,
   tableData: PropTypes.array,
   dataZoomData: PropTypes.array,
+  titleLinks: PropTypes.array,
   domain: PropTypes.object,
   config: PropTypes.object,
   options: PropTypes.object,

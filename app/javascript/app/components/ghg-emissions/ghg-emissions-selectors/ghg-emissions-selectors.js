@@ -18,7 +18,8 @@ import {
   getLegendDataSelected,
   getLoading,
   getTableData,
-  getDataZoomData
+  getDataZoomData,
+  getTitleLinks
 } from './ghg-emissions-selectors-data';
 import { getProviderFilters } from './ghg-emissions-selectors-providers';
 
@@ -32,6 +33,7 @@ export const getGHGEmissions = createStructuredSelector({
   legendSelected: getLegendDataSelected,
   data: getChartData,
   tableData: getTableData,
+  titleLinks: getTitleLinks,
   domain: getChartDomain,
   config: getChartConfig,
   dataZoomData: getDataZoomData,

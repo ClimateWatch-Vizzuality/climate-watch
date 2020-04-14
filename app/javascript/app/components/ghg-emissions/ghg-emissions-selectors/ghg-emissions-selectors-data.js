@@ -23,7 +23,13 @@ import {
   CHART_COLORS_EXTRA,
   OTHER_COLOR
 } from 'data/constants';
-import { getWBData, getData, getRegions } from './ghg-emissions-selectors-get';
+import { europeSlug } from 'app/data/european-countries';
+import {
+  getWBData,
+  getData,
+  getRegions,
+  getCountries
+} from './ghg-emissions-selectors-get';
 import {
   getModelSelected,
   getMetricSelected,
@@ -491,8 +497,7 @@ export const getTableData = createSelector(
     const scaleString = isAbsoluteValue ? 'Mt' : 't';
     const formatValue = value => value && Number((value / scale).toFixed(2));
     const unit = `${scaleString}${getUnit(metric)}`;
-
-    const pivot = yColumnOptions.map(c => ({
+    const tableData = yColumnOptions.map(c => ({
       [GHG_TABLE_HEADER[model]]: c.label,
       unit,
       ...data.reduce(
@@ -503,8 +508,31 @@ export const getTableData = createSelector(
         {}
       )
     }));
+    return tableData;
+  }
+);
 
-    return pivot;
+export const getTitleLinks = createSelector(
+  [getTableData, getModelSelected, getRegions, getCountries],
+  (data, model, regions, countries) => {
+    if (!data || isEmpty(data) || !regions || !countries || model !== 'regions') { return null; }
+    const allRegions = regions
+      .filter(r => r.iso_code3 === europeSlug)
+      .concat(countries);
+    const returnData = data.map(d => {
+      const region = allRegions.find(
+        r => r.wri_standard_name === d[GHG_TABLE_HEADER.regions]
+      );
+      return region && region.iso_code3
+        ? [
+          {
+            columnName: GHG_TABLE_HEADER.regions,
+            url: `/countries/${region.iso_code3}`
+          }
+        ]
+        : [];
+    });
+    return returnData;
   }
 );
 
