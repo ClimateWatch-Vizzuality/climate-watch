@@ -515,7 +515,7 @@ export const getTableData = createSelector(
 export const getTitleLinks = createSelector(
   [getTableData, getModelSelected, getRegions, getCountries],
   (data, model, regions, countries) => {
-    if (!data || isEmpty(data) || model !== 'regions') return null;
+    if (!data || isEmpty(data) || !regions || !countries || model !== 'regions') { return null; }
     const allRegions = regions
       .filter(r => r.iso_code3 === europeSlug)
       .concat(countries);
