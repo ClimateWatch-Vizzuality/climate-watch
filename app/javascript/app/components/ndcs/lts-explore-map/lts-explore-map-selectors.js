@@ -6,7 +6,6 @@ import {
 } from 'utils/map';
 import uniqBy from 'lodash/uniqBy';
 import sortBy from 'lodash/sortBy';
-import camelCase from 'lodash/camelCase';
 import { generateLinkToDataExplorer } from 'utils/data-explorer';
 import worldPaths from 'app/data/world-50m-paths';
 import { COUNTRY_STYLES } from 'components/ndcs/shared/constants';
@@ -278,7 +277,7 @@ export const getIndicatorEmissionsData = (
     summedPercentage += legendItemValue;
 
     return {
-      name: camelCase(legendItem.name),
+      name: legendItem.name,
       value: legendItemValue
     };
   });

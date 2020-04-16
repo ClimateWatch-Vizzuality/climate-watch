@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
-import lowerCase from 'lodash/lowerCase';
-import capitalize from 'lodash/capitalize';
 import styles from './donut-tooltip-styles.scss';
 
 const DonutTooltip = props => {
@@ -15,8 +13,7 @@ const DonutTooltip = props => {
   if (!payload || !payload[0]) return null;
 
   const percentage = parseFloat(Math.round(payload[0].value * 10)) / 10;
-
-  const legendItemName = capitalize(lowerCase(payload[0].name));
+  const legendItemName = payload[0].name;
 
   const chartTop = chartReference && chartReference.getBoundingClientRect().top;
   const referenceTop = reference.getBoundingClientRect().top;
