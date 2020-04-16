@@ -25,7 +25,10 @@ const ExploreMapTooltip = props => {
           <div className={styles.tooltipCountry}>
             {tooltipValues.countryName}
           </div>
-          <div className={styles.tooltipValue}>{tooltipValues.value}</div>
+          <div
+            className={styles.tooltipValue}
+            dangerouslySetInnerHTML={{ __html: tooltipValues.value }} // eslint-disable-line
+          />
         </div>
       </Button>
     </ReactTooltip>
