@@ -20,14 +20,15 @@ const DonutTooltip = props => {
 
   const chartTop = chartReference && chartReference.getBoundingClientRect().top;
   const referenceTop = reference.getBoundingClientRect().top;
-  let top = chartTop - referenceTop + coordinate.y;
 
+  const top = chartTop - referenceTop + coordinate.y;
   // Avoid covering the label on the center
   const left = coordinate.x > 40 ? coordinate.x + 80 : coordinate.x;
-  if (top < 340 && left < 190) top += 80;
   return ReactDOM.createPortal(
     <div className={styles.tooltip} style={{ left, top }}>
-      {`${itemName} with ${legendItemName} represent ${percentage}% of global GHG emissions`}
+      {`${itemName} with `}
+      <span className={styles.legendItem}>{legendItemName}</span>
+      {` represent ${percentage}% of global GHG emissions`}
     </div>,
     reference
   );
