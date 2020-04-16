@@ -22,7 +22,7 @@ const fetchNdcsCountryAccordion = createThunkAction(
         `/api/v1/ndcs?location=${locations}&category=${category}${
           lts
             ? '&source=LTS'
-            : '&source[]=CAIT&source[]=WB&source[]=NDC Explore'
+            : '&source[]=CAIT&source[]=WB&source[]=NDC%20Explorer'
         }${documentParam}${!compare ? '&filter=overview' : ''}`
       )
         .then(response => {

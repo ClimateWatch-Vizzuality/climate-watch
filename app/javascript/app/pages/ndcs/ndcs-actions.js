@@ -23,7 +23,7 @@ const fetchNDCS = createThunkAction(
         `/api/v1/ndcs${
           overrideFilter
             ? ''
-            : '?filter=map&source[]=CAIT&source[]=WB&source[]=NDC'
+            : '?filter=map&source[]=CAIT&source[]=WB&source[]=NDC%20Explorer'
         }`
       )
         .then(response => {
