@@ -292,7 +292,7 @@ class CountryNdcOverview extends PureComponent {
     const { date: documentDate } = selectedDocument || {};
     const hasSectors = values && sectors;
     const description = hasSectors && (
-      <p
+      <div
         className={styles.descriptionContainer}
         // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{
