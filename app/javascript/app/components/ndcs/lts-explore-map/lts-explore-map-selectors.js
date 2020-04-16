@@ -342,7 +342,7 @@ export const getSummaryCardData = createSelector(
       europeanCountries.length - europeanCountriesWithSubmission.length - 1; // To avoid double counting, also substract the EUU 'country'
     return {
       value: partiesNumber,
-      description: ` parties have submitted a long-term strategy document, representing ${countriesNumber} countries`
+      description: ` Parties have submitted a long-term strategy document, representing ${countriesNumber} countries`
     };
   }
 );

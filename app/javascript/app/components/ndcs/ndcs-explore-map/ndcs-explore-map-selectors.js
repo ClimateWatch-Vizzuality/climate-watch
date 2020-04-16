@@ -272,11 +272,11 @@ export const getSummaryCardData = createSelector(
     return [
       {
         value: groupedSubmissions['First NDC Submitted'].length,
-        description: 'parties have submitted their first NDC'
+        description: 'Parties have submitted their first NDC'
       },
       {
         value: secondValue,
-        description: `part${
+        description: `Part${
           secondValue === 1 ? 'y has' : 'ies have'
         } submitted their second NDC`
       }
