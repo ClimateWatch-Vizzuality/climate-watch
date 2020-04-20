@@ -106,15 +106,20 @@ class NDCSExploreMapContainer extends PureComponent {
   handleCountryEnter = geography => {
     const { tooltipCountryValues } = this.props;
     const iso = geography.properties && geography.properties.id;
-    const tooltipValues = {
-      value:
-        tooltipCountryValues && tooltipCountryValues[iso]
-          ? tooltipCountryValues[iso].value
-          : 'Not Applicable',
-      countryName: geography.properties && geography.properties.name
-    };
+    if (iso === 'TWN') {
+      // We won't show Taiwan as an independent country
+      this.setState({ tooltipValues: null, country: null });
+    } else {
+      const tooltipValues = {
+        value:
+          tooltipCountryValues && tooltipCountryValues[iso]
+            ? tooltipCountryValues[iso].value
+            : 'Not Applicable',
+        countryName: geography.properties && geography.properties.name
+      };
 
-    this.setState({ tooltipValues, country: geography.properties });
+      this.setState({ tooltipValues, country: geography.properties });
+    }
   };
 
   handleSearchChange = query => {
