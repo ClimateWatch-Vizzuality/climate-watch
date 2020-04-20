@@ -160,6 +160,7 @@ export const getPathsWithStyles = createSelector(
             },
             hover: {
               ...COUNTRY_STYLES.hover,
+              cursor: 'pointer',
               fill: color,
               fillOpacity: 1
             }
