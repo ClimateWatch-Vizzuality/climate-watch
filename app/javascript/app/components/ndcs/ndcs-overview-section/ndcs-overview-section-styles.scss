@@ -7,10 +7,13 @@
 
 .section {
   display: flex;
-  padding: 64px 0;
   margin: 0;
 
   @include row(12);
+
+  &.padded {
+    padding: 64px 0;
+  }
 
   @media #{$tablet-landscape} {
     @include columns(6);
