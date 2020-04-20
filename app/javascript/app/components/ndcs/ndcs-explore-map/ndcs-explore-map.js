@@ -144,7 +144,7 @@ class NDCSExploreMapContainer extends PureComponent {
 
   handleInfoClick = () => {
     this.props.setModalMetadata({
-      customTitle: 'NDCS Explore',
+      customTitle: 'Explore NDCs',
       category: 'NDCS Explore Map',
       slugs: ['ndc_cw', 'ndc_wb', 'ndc_die'],
       open: true
