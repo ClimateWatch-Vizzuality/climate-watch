@@ -48,7 +48,7 @@ class CountriesActions extends PureComponent {
                 measures (i.e.: targets, policies, actions and plans).
               </p>
               <p>
-                Click on a country to see what agriculture actions have been
+                Click on a country to see what agriculture measures have been
                 proposed in their NDCs.
               </p>
             </div>
