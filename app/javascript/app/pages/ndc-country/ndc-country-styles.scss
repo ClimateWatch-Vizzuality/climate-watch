@@ -36,31 +36,35 @@
   @media #{$tablet-portrait} {
     @include row(6);
     @include xy-gutters($gutter-position: ('bottom'), $gutters: $gutter-padding);
-
-    &.withSearch {
-      @include row((6, 3, 3));
-    }
+    @include row((12, 6, 6));
 
     &.withoutBack {
-      @include row((12, 6, 6));
+      @include row((12, 6, 6, 6));
       @include xy-gutters($gutter-position: ('bottom'), $gutters: $gutter-padding);
-
-      &.withSearch {
-        @include row(6);
-        @include xy-gutters($gutter-position: ('bottom'), $gutters: $gutter-padding);
-      }
     }
   }
 
   @media #{$tablet-landscape} {
-    @include row((9, 3));
+    @include row((6, 3, 3));
 
-    &.withSearch,
     &.withoutBack {
-      @include row((6, 3, 3));
+      @include row((12, 4, 4, 4));
     }
 
     z-index: $z-index-base;
+  }
+}
+
+.search {
+  @include row();
+
+  margin-top: 10px;
+
+  @media #{$tablet-portrait} {
+    @include row(6);
+
+    justify-content: flex-end;
+    margin-top: 10px;
   }
 }
 

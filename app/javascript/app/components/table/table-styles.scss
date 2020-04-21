@@ -65,6 +65,13 @@
   }
 }
 
+.tableLeft :global {
+  .ReactVirtualized__Grid,
+  .ReactVirtualized__Table__Grid {
+    border-right: 1px solid $gray1;
+  }
+}
+
 .column {
   white-space: normal;
   overflow: hidden;
@@ -147,4 +154,16 @@
   height: 8px;
   margin-left: 3px;
   transform: translateY(-30%);
+}
+
+.scrollTable {
+  display: inline-flex;
+
+  .left {
+    border-right: 1px solid $gray1;
+  }
+
+  .right {
+    overflow-x: auto;
+  }
 }

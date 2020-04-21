@@ -4,6 +4,7 @@ import Accordion from 'components/accordion';
 import NoContent from 'components/no-content';
 import Loading from 'components/loading';
 import DefinitionList from 'components/definition-list';
+import NdcsDocumentsProvider from 'providers/documents-provider';
 
 import layout from 'styles/layout.scss';
 import styles from './ndcs-country-accordion-styles.scss';
@@ -30,6 +31,7 @@ class NdcsCountryAccordion extends PureComponent {
     const showData = !loading && ndcsData && ndcsData.length > 0;
     return (
       <div className={styles.wrapper}>
+        <NdcsDocumentsProvider />
         {loading && <Loading light className={styles.loader} />}
         {showNoContent && (
           <NoContent message={message} className={styles.noContent} />
@@ -45,30 +47,29 @@ class NdcsCountryAccordion extends PureComponent {
               >
                 {ndcsData &&
                   ndcsData.length > 0 &&
-                  ndcsData.map(
-                    section =>
-                      (section.sectors && section.sectors.length > 0 ? (
-                        <Accordion
-                          key={section.slug}
-                          isChild
-                          className={styles.subAccordion}
-                          param="sector"
-                          data={section.sectors}
-                        >
-                          {section.sectors.map(desc => (
-                            <div
-                              key={desc.title}
-                              className={styles.definitionList}
-                            >
-                              <DefinitionList
-                                className={layout.content}
-                                definitions={desc.definitions}
-                                compare={compare}
-                              />
-                            </div>
-                          ))}
-                        </Accordion>
-                      ) : null)
+                  ndcsData.map(section =>
+                    (section.sectors && section.sectors.length > 0 ? (
+                      <Accordion
+                        key={section.slug}
+                        isChild
+                        className={styles.subAccordion}
+                        param="sector"
+                        data={section.sectors}
+                      >
+                        {section.sectors.map(desc => (
+                          <div
+                            key={desc.title}
+                            className={styles.definitionList}
+                          >
+                            <DefinitionList
+                              className={layout.content}
+                              definitions={desc.definitions}
+                              compare={compare}
+                            />
+                          </div>
+                        ))}
+                      </Accordion>
+                    ) : null)
                   )}
               </Accordion>
             ) : (

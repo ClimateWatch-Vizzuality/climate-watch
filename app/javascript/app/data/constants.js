@@ -201,25 +201,6 @@ export const CLIMATE_VULNERABILITY_DEFINITIONS = {
 
 export const DISCLAIMER_SHOWN = 'disclaimerShown';
 
-export const NDC_DOCUMENT_OPTIONS = [
-  {
-    label: 'All documents',
-    value: 'all'
-  },
-  {
-    label: 'NDC',
-    value: 'ndc'
-  },
-  {
-    label: 'INDC',
-    value: 'indc'
-  },
-  {
-    label: 'Second NDC',
-    value: 'ndc2'
-  }
-];
-
 export const CONTAINED_PATHNAME = 'contained';
 
 export const LENSES_SELECTOR_INFO = {

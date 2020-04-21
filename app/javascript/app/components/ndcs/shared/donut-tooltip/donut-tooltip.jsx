@@ -27,7 +27,7 @@ const DonutTooltip = props => {
   if (top < 340 && left < 190) top += 80;
   return ReactDOM.createPortal(
     <div className={styles.tooltip} style={{ left, top }}>
-      {`${itemName} with ${legendItemName} represent ${percentage}% of global emissions`}
+      {`${itemName} with ${legendItemName} represent ${percentage}% of global GHG emissions`}
     </div>,
     reference
   );

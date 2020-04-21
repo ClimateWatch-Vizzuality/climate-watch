@@ -4,7 +4,8 @@ import qs from 'query-string';
 
 const getCountries = state => state.countries || null;
 const getRegions = state => state.regions || null;
-const getSourceSelection = state => (state.location && state.location.search) || null;
+const getSourceSelection = state =>
+  (state.location && state.location.search) || null;
 const getLocationsWithData = state =>
   get(state, 'agricultureEmissions.meta.emission_locations_with_data', null);
 
@@ -50,12 +51,16 @@ export const getEmissionCountrySelected = createSelector(
   [getSourceSelection, getLocationsOptionsUnfiltered],
   (selectedEmissionOption, countriesOptions) => {
     if (!countriesOptions) return null;
-    const defaultCountry = countriesOptions.find(({ value }) => value === 'WORLD');
+    const defaultCountry = countriesOptions.find(
+      ({ value }) => value === 'WORLD'
+    );
     if (!selectedEmissionOption) {
-      return defaultCountry || countriesOptions[0];
+      return defaultCountry || null;
     }
     const { emissionsCountry } = qs.parse(selectedEmissionOption);
-    const selectedCountry = countriesOptions.find(({ value }) => value === emissionsCountry);
+    const selectedCountry = countriesOptions.find(
+      ({ value }) => value === emissionsCountry
+    );
     return selectedCountry || defaultCountry;
   }
 );

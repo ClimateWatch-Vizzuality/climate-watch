@@ -41,6 +41,7 @@ Rails.application.routes.draw do
           action: :content_overview
         get :linkages_dataset, on: :collection, controller: :ndc_sdgs,
           action: :linkages_dataset, defaults: { format: :csv }
+        get :countries_documents, on: :collection, controller: :ndc_documents, action: :index
       end
 
       resources :adaptations, only: [:index]
@@ -90,6 +91,7 @@ Rails.application.routes.draw do
           resources :categories, only: [:index]
           resources :labels, only: [:index]
           resources :sectors, only: [:index]
+          resources :documents, only: [:index]
         end
         resources :lts_content, only: [:index] do
           get :download, on: :collection, defaults: { format: 'zip' }

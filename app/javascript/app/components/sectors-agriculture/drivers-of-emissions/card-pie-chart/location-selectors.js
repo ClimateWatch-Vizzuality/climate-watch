@@ -7,5 +7,5 @@ const getIsoCodeFromSearch = (state, props) =>
 export default createSelector([getIsoCodeFromSearch], search => {
   if (!search) return 'WORLD';
   const { emissionsCountry } = search && qs.parse(search);
-  return (emissionsCountry && emissionsCountry) || 'WORLD';
+  return emissionsCountry || 'WORLD';
 });

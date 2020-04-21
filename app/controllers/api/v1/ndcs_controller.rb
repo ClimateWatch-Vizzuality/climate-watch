@@ -49,6 +49,7 @@ module Api
           includes(:category_type).
           order(:order)
 
+        # params[:filter] -> ['map', 'table']
         if params[:filter]
           categories = categories.where(
             indc_category_types: {name: params[:filter]}
@@ -56,10 +57,9 @@ module Api
         end
 
         indicators = ::Indc::Indicator.
-          includes(
-            :labels, :source, :categories,
-            values: [:sector, :label, :location]
-        ).order(:order)
+          includes(:labels, :source, :categories,
+                   values: [:sector, :label, :location, :document]).
+          order(:order)
 
         # params[:source] -> one of ["CAIT", "LTS", "WB", "NDC Explorer"]
         if params[:source]
@@ -89,6 +89,11 @@ module Api
           )
         end
 
+        if params[:document]
+          indicators = indicators.
+            where(values: {indc_documents: {slug: [params[:document], nil]}})
+        end
+
         render json: NdcIndicators.new(indicators, categories, sectors),
                serializer: Api::V1::Indc::NdcIndicatorsSerializer
       end
@@ -112,8 +117,17 @@ module Api
           joins(:values).
           where(slug: SECTORS_INDICATORS).
           where(indc_values: {location_id: location.id}).
-          where.not(indc_values: {value: "No specified measure"}).
-          order('indc_indicators.name').pluck(:name)
+          where.not(indc_values: {value: "No specified measure"})
+
+        if params[:document]
+          values = values.joins(:document).
+            where(indc_documents: {slug: [params[:document], nil]})
+
+          sectors = sectors.joins(values: :document).
+            where(indc_documents: {slug: [params[:document], nil]})
+        end
+       sectors = sectors.order('indc_indicators.name').pluck(:name)
+
 
         render json: NdcOverview.new(values, sectors),
                serializer: Api::V1::Indc::OverviewSerializer

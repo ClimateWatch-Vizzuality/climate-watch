@@ -7,7 +7,7 @@ import ButtonGroup from 'components/button-group';
 import Loading from 'components/loading';
 import ModalMetadata from 'components/modal-metadata';
 import Dropdown from 'components/dropdown';
-import { PieChart } from 'cw-components';
+import { PieChart, CheckInput } from 'cw-components';
 import CustomTooltip from 'components/ndcs/shared/donut-tooltip';
 import HandIconInfo from 'components/ndcs/shared/hand-icon-info';
 import CustomInnerHoverLabel from 'components/ndcs/shared/donut-custom-label';
@@ -20,6 +20,7 @@ import cx from 'classnames';
 
 import layout from 'styles/layout.scss';
 import newMapTheme from 'styles/themes/map/map-new-zoom-controls.scss';
+import blueCheckboxTheme from 'styles/themes/checkbox/blue-checkbox.scss';
 import styles from './lts-explore-map-styles.scss';
 
 const renderButtonGroup = (clickHandler, downloadLink) => (
@@ -59,7 +60,7 @@ const renderSummary = summaryData => (
   </div>
 );
 
-const renderLegend = (legendData, isEUUSubmitted) => (
+const renderLegend = legendData => (
   <div className={styles.legendCardContainer}>
     <div className={styles.legendContainer}>
       {legendData &&
@@ -67,7 +68,6 @@ const renderLegend = (legendData, isEUUSubmitted) => (
           <LegendItem
             key={l.name}
             name={l.name}
-            itemsName={isEUUSubmitted ? undefined : ['country', 'countries']}
             number={l.countriesNumber}
             value={l.value}
             color={l.color}
@@ -81,7 +81,7 @@ function LTSExploreMap(props) {
   const tooltipParentRef = useRef(null);
   const pieChartRef = useRef(null);
   const [stickyStatus, setStickyStatus] = useState(Sticky.STATUS_ORIGINAL);
-  const renderDonutChart = (emissionsCardData, isEUUSubmitted) => (
+  const renderDonutChart = emissionsCardData => (
     <div className={styles.donutContainer} ref={pieChartRef}>
       <PieChart
         data={emissionsCardData.data}
@@ -92,7 +92,7 @@ function LTSExploreMap(props) {
             reference={tooltipParentRef.current}
             chartReference={pieChartRef.current}
             data={emissionsCardData.data}
-            itemName={isEUUSubmitted ? 'Parties' : undefined}
+            itemName={'Parties'}
           />
         }
         customInnerHoverLabel={CustomInnerHoverLabel}
@@ -118,8 +118,9 @@ function LTSExploreMap(props) {
     handleCategoryChange,
     selectedCategory,
     handleIndicatorChange,
-    tooltipValues,
-    isEUUSubmitted
+    handleOnChangeChecked,
+    checked,
+    tooltipValues
   } = props;
 
   const TOOLTIP_ID = 'lts-map-tooltip';
@@ -150,6 +151,9 @@ function LTSExploreMap(props) {
                         value={selectedCategory}
                         hideResetButton
                         plain
+                        showTooltip={
+                          selectedCategory && selectedCategory.label.length > 14
+                        }
                       />
                       <Dropdown
                         label="Indicator"
@@ -158,6 +162,10 @@ function LTSExploreMap(props) {
                         value={selectedIndicator}
                         hideResetButton
                         plain
+                        showTooltip={
+                          selectedIndicator &&
+                          selectedIndicator.label.length > 14
+                        }
                       />
                     </div>
                     {isTablet &&
@@ -179,12 +187,8 @@ function LTSExploreMap(props) {
                         <React.Fragment>
                           {summaryCardData && renderSummary(summaryCardData)}
                           {emissionsCardData &&
-                            renderDonutChart(
-                              emissionsCardData,
-                              isEUUSubmitted
-                            )}
-                          {legendData &&
-                            renderLegend(legendData, isEUUSubmitted)}
+                            renderDonutChart(emissionsCardData)}
+                          {legendData && renderLegend(legendData)}
                         </React.Fragment>
                       )}
                     </div>
@@ -204,6 +208,12 @@ function LTSExploreMap(props) {
                         customCenter={isTablet ? [20, 20] : [10, 20]}
                         theme={newMapTheme}
                         className={styles.map}
+                      />
+                      <CheckInput
+                        theme={blueCheckboxTheme}
+                        label="Visualize individual submissions of EU Members on the map"
+                        checked={checked}
+                        onChange={() => handleOnChangeChecked(!checked)}
                       />
                       {countryData && (
                         <ExploreMapTooltip
@@ -246,8 +256,9 @@ LTSExploreMap.propTypes = {
   handleCategoryChange: PropTypes.func,
   selectedCategory: PropTypes.object,
   tooltipValues: PropTypes.object,
-  handleIndicatorChange: PropTypes.func,
-  isEUUSubmitted: PropTypes.bool
+  handleOnChangeChecked: PropTypes.func,
+  checked: PropTypes.bool,
+  handleIndicatorChange: PropTypes.func
 };
 
 export default LTSExploreMap;

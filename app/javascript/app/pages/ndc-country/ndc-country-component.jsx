@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { renderRoutes } from 'react-router-config';
 import Header from 'components/header';
@@ -17,43 +17,54 @@ import { MetaDescription, SocialMetadata } from 'components/seo';
 import { TabletPortrait, MobileOnly } from 'components/responsive';
 
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
-import dropdownLinksTheme from 'styles/themes/dropdown/dropdown-links.scss';
 import countryDropdownTheme from 'styles/themes/dropdown/dropdown-country.scss';
 import styles from './ndc-country-styles.scss';
 
 const FEATURE_LTS_EXPLORE = process.env.FEATURE_LTS_EXPLORE === 'true';
 
-class NDCCountry extends PureComponent {
-  renderFullTextDropdown() {
-    const { match, documentsOptions, handleDropDownChange } = this.props;
-    return (
-      documentsOptions &&
-      (documentsOptions.length > 1 ? (
-        <Dropdown
-          className={cx(
-            dropdownLinksTheme.dropdownOptionWithArrow,
-            styles.countryDropdown
-          )}
-          placeholder="View full text"
-          options={documentsOptions}
-          onValueChange={handleDropDownChange}
-          white
-          hideResetButton
-        />
-      ) : (
-        <Button
-          variant="secondary"
-          link={`/ndcs/country/${match.params.iso}/full`}
-          className={styles.viewDocumentButton}
-        >
-          {`View ${documentsOptions[0].label} Document`}
-        </Button>
-      ))
-    );
-  }
+function NDCCountry(props) {
+  const {
+    country,
+    onSearchChange,
+    search,
+    route,
+    anchorLinks,
+    notSummary,
+    location,
+    countriesOptions,
+    handleCountryLink,
+    documentsOptions,
+    documentSelected,
+    handleDropDownChange,
+    match
+  } = props;
 
-  renderCompareButton() {
-    const { match } = this.props;
+  const renderDocumentsDropdown = () => (
+    <Dropdown
+      className={cx(styles.countryDropdown)}
+      options={documentsOptions}
+      value={documentSelected}
+      onValueChange={handleDropDownChange}
+      white
+      hideResetButton
+      disabled={!documentsOptions}
+    />
+  );
+
+  const renderFullTextButton = () => (
+    <Button
+      variant="secondary"
+      link={`/ndcs/country/${
+        match.params.iso
+      }/full?document=${documentSelected && documentSelected.value}`}
+      className={styles.viewDocumentButton}
+      disabled={!documentsOptions}
+    >
+      View Full Text
+    </Button>
+  );
+
+  const renderCompareButton = () => {
     if (!FEATURE_LTS_EXPLORE) {
       return (
         <Button
@@ -75,117 +86,107 @@ class NDCCountry extends PureComponent {
         </Button>
       </div>
     );
-  }
+  };
 
-  render() {
-    const {
-      country,
-      onSearchChange,
-      search,
-      route,
-      anchorLinks,
-      notSummary,
-      location,
-      countriesOptions,
-      handleCountryLink
-    } = this.props;
+  const countryName = country && `${country.wri_standard_name}`;
+  const hasSearch = notSummary;
 
-    const countryName = country && `${country.wri_standard_name}`;
-    const hasSearch = notSummary;
-
-    const renderIntroDropdown = () => (
-      <Intro
-        title={
-          <CWDropdown
-            value={
-              country && {
-                label: country.wri_standard_name,
-                value: country.iso_code3
-              }
+  const renderIntroDropdown = () => (
+    <Intro
+      title={
+        <CWDropdown
+          value={
+            country && {
+              label: country.wri_standard_name,
+              value: country.iso_code3
             }
-            options={countriesOptions}
-            onValueChange={handleCountryLink}
-            hideResetButton
-            theme={countryDropdownTheme}
-          />
-        }
-      />
-    );
+          }
+          options={countriesOptions}
+          onValueChange={handleCountryLink}
+          hideResetButton
+          theme={countryDropdownTheme}
+        />
+      }
+    />
+  );
 
-    return (
-      <div>
-        <MetaDescription
-          descriptionContext={NDC_COUNTRY({ countryName })}
-          subtitle={countryName}
-        />
-        <SocialMetadata
-          descriptionContext={NDC_COUNTRY({ countryName })}
-          href={location.href}
-        />
-        <NdcsDocumentsMetaProvider />
-        {country && (
-          <Header route={route}>
-            <div className={styles.header}>
-              <div
-                className={cx(styles.actionsContainer, {
-                  [styles.withSearch]: hasSearch,
-                  [styles.withoutBack]: !FEATURE_LTS_EXPLORE
-                })}
-              >
-                {!FEATURE_LTS_EXPLORE && renderIntroDropdown()}
-                {FEATURE_LTS_EXPLORE && (
-                  <BackButton
-                    backLabel="Explore NDCs"
-                    pathname="/ndcs-explore"
-                  />
-                )}
-                <TabletPortrait>
-                  {this.renderFullTextDropdown()}
-                  {!FEATURE_LTS_EXPLORE && this.renderCompareButton()}
-                  {hasSearch && (
-                    <Search
-                      variant="transparent"
-                      placeholder="Search"
-                      value={search}
-                      onChange={onSearchChange}
-                    />
-                  )}
-                </TabletPortrait>
-              </div>
+  return (
+    <div>
+      <MetaDescription
+        descriptionContext={NDC_COUNTRY({ countryName })}
+        subtitle={countryName}
+      />
+      <SocialMetadata
+        descriptionContext={NDC_COUNTRY({ countryName })}
+        href={location.href}
+      />
+      <NdcsDocumentsMetaProvider />
+      {country && (
+        <Header route={route}>
+          <div className={styles.header}>
+            <div
+              className={cx(styles.actionsContainer, {
+                [styles.withSearch]: hasSearch,
+                [styles.withoutBack]: !FEATURE_LTS_EXPLORE
+              })}
+            >
+              {!FEATURE_LTS_EXPLORE && renderIntroDropdown()}
               {FEATURE_LTS_EXPLORE && (
-                <div className={styles.title}>{renderIntroDropdown()}</div>
+                <BackButton backLabel="Explore NDCs" pathname="/ndcs-explore" />
               )}
-              <MobileOnly>
-                <div className={styles.mobileActions}>
-                  {this.renderFullTextDropdown()}
-                  {hasSearch && (
-                    <Search
-                      variant="transparent"
-                      placeholder="Search"
-                      value={search}
-                      onChange={onSearchChange}
-                    />
-                  )}
-                </div>
-              </MobileOnly>
               <TabletPortrait>
-                {FEATURE_LTS_EXPLORE && this.renderCompareButton()}
+                {renderDocumentsDropdown()}
+                {renderFullTextButton()}
+                {!FEATURE_LTS_EXPLORE && renderCompareButton()}
               </TabletPortrait>
             </div>
-            <Sticky activeClass="sticky -ndcs" top="#navBarMobile">
-              <AnchorNav
-                useRoutes
-                links={anchorLinks}
-                className={styles.anchorNav}
-                theme={anchorNavRegularTheme}
-              />
-            </Sticky>
-          </Header>
-        )}
-        <div className={styles.wrapper}>{renderRoutes(route.routes)}</div>
-      </div>
-    );
-  }
+            <TabletPortrait>
+              {hasSearch && (
+                <div className={styles.search}>
+                  <Search
+                    variant="transparent"
+                    placeholder="Search"
+                    value={search}
+                    onChange={onSearchChange}
+                  />
+                </div>
+              )}
+            </TabletPortrait>
+            {FEATURE_LTS_EXPLORE && (
+              <div className={styles.title}>{renderIntroDropdown()}</div>
+            )}
+            <MobileOnly>
+              <div className={styles.mobileActions}>
+                {renderDocumentsDropdown()}
+                {hasSearch && (
+                  <div className={styles.search}>
+                    <Search
+                      variant="transparent"
+                      placeholder="Search"
+                      value={search}
+                      onChange={onSearchChange}
+                    />
+                  </div>
+                )}
+              </div>
+            </MobileOnly>
+            <TabletPortrait>
+              {FEATURE_LTS_EXPLORE && renderCompareButton()}
+            </TabletPortrait>
+          </div>
+          <Sticky activeClass="sticky -ndcs" top="#navBarMobile">
+            <AnchorNav
+              useRoutes
+              links={anchorLinks}
+              className={styles.anchorNav}
+              theme={anchorNavRegularTheme}
+            />
+          </Sticky>
+        </Header>
+      )}
+      <div className={styles.wrapper}>{renderRoutes(route.routes)}</div>
+    </div>
+  );
 }
 
 NDCCountry.propTypes = {
@@ -197,6 +198,7 @@ NDCCountry.propTypes = {
   search: PropTypes.string,
   anchorLinks: PropTypes.array,
   documentsOptions: PropTypes.array,
+  documentSelected: PropTypes.object,
   countriesOptions: PropTypes.array,
   handleDropDownChange: PropTypes.func,
   location: PropTypes.object,

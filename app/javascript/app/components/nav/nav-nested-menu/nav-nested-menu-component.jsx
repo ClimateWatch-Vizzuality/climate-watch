@@ -84,7 +84,7 @@ NavNestedMenuComponent.propTypes = {
   theme: PropTypes.object
 };
 
-NavNestedMenuComponent.propTypes = {
+NavNestedMenuComponent.defaultProps = {
   theme: {}
 };
 
