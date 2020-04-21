@@ -5,7 +5,7 @@ import isEmpty from 'lodash/isEmpty';
 import kebabCase from 'lodash/kebabCase';
 import uniq from 'lodash/uniq';
 import { arrayToSentence } from 'utils';
-import { getGhgEmissionDefaults, toPlural } from 'utils/ghg-emissions';
+import { getGhgEmissionDefaultSlugs, toPlural } from 'utils/ghg-emissions';
 import { sortLabelByAlpha } from 'utils/graphs';
 import {
   GAS_AGGREGATES,
@@ -222,7 +222,7 @@ const getDefaults = createSelector(
   (sourceSelected, meta) => {
     if (!sourceSelected || !meta) return null;
 
-    return getGhgEmissionDefaults(sourceSelected, meta);
+    return getGhgEmissionDefaultSlugs(sourceSelected, meta);
   }
 );
 
