@@ -23,7 +23,7 @@ import {
   getCategoryIndicators,
   getSelectedCategory,
   getTooltipCountryValues,
-  getIsEUUSubmitted
+  getIsShowEUCountriesChecked
 } from './lts-explore-map-selectors';
 
 const actions = { ...fetchActions, ...modalActions };
@@ -50,7 +50,6 @@ const mapStateToProps = (state, { location }) => {
     query: LTSWithSelection.query,
     paths: getPathsWithStyles(LTSWithSelection),
     isoCountries: getISOCountries(LTSWithSelection),
-    isEUUSubmitted: getIsEUUSubmitted(LTSWithSelection),
     selectedIndicator: getMapIndicator(LTSWithSelection),
     emissionsCardData: getEmissionsCardData(LTSWithSelection),
     tooltipCountryValues: getTooltipCountryValues(LTSWithSelection),
@@ -59,7 +58,8 @@ const mapStateToProps = (state, { location }) => {
     downloadLink: getLinkToDataExplorer(LTSWithSelection),
     categories: getCategories(LTSWithSelection),
     indicators: getCategoryIndicators(LTSWithSelection),
-    selectedCategory: getSelectedCategory(LTSWithSelection)
+    selectedCategory: getSelectedCategory(LTSWithSelection),
+    checked: getIsShowEUCountriesChecked(LTSWithSelection)
   };
 };
 
@@ -75,6 +75,10 @@ class LTSExploreMapContainer extends PureComponent {
   componentWillMount() {
     this.props.fetchLTS();
   }
+
+  handleOnChangeChecked = query => {
+    this.updateUrlParam({ name: 'showEUCountries', value: query });
+  };
 
   handleSearchChange = query => {
     this.updateUrlParam({ name: 'search', value: query });
@@ -103,10 +107,6 @@ class LTSExploreMapContainer extends PureComponent {
         tooltipCountryValues && tooltipCountryValues[iso]
           ? tooltipCountryValues[iso].value
           : 'No Document Submitted',
-      emissionsValue:
-        tooltipCountryValues &&
-        tooltipCountryValues[iso] &&
-        tooltipCountryValues[iso].emissionsValue,
       countryName: geography.properties && geography.properties.name
     };
 
@@ -137,7 +137,7 @@ class LTSExploreMapContainer extends PureComponent {
     this.props.setModalMetadata({
       customTitle: 'LTS Explore',
       category: 'LTS Explore Map',
-      slugs: ['ndc_cw'],
+      slugs: ['ndc_lts'],
       open: true
     });
   };
@@ -161,6 +161,8 @@ class LTSExploreMapContainer extends PureComponent {
       handleSearchChange: this.handleSearchChange,
       handleCategoryChange: this.handleCategoryChange,
       handleIndicatorChange: this.handleIndicatorChange,
+      handleOnChangeChecked: this.handleOnChangeChecked,
+      checked: this.props.checked,
       indicator: this.props.indicator,
       countryData: this.state.country,
       summaryData: this.props.summaryData,
@@ -178,7 +180,8 @@ LTSExploreMapContainer.propTypes = {
   query: PropTypes.string,
   summaryData: PropTypes.array,
   indicator: PropTypes.object,
-  tooltipCountryValues: PropTypes.object
+  tooltipCountryValues: PropTypes.object,
+  checked: PropTypes.bool
 };
 
 export default withRouter(

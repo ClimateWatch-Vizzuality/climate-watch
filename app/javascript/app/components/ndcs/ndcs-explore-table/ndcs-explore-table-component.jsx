@@ -48,6 +48,7 @@ const NDCSExploreTable = ({
               defaultColumns={columns}
               theme={exploreTableTheme}
               titleLinks={titleLinks}
+              tableHeight={650}
             />
           </div>
         )}

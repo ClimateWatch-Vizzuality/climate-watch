@@ -10,7 +10,8 @@ import reducers, { initialState } from './ndcs-country-accordion-reducers';
 import NdcsCountryAccordionComponent from './ndcs-country-accordion-component';
 import {
   filterNDCs,
-  filterSectoralNDCs
+  filterSectoralNDCs,
+  getDocumentSlug
 } from './ndcs-country-accordion-selectors';
 
 const mapStateToProps = (state, { match, location, category }) => {
@@ -19,46 +20,54 @@ const mapStateToProps = (state, { match, location, category }) => {
   const locations = search.locations ? search.locations.split(',') : null;
   const ndcsData = {
     data: state.ndcCountryAccordion.data,
-    search: search.search,
     countries: match.params.iso ? [match.params.iso] : locations
   };
   return {
     loading: state.ndcCountryAccordion.loading,
     ndcsData:
       category === 'sectoral_information'
-        ? filterSectoralNDCs(ndcsData)
-        : filterNDCs(ndcsData),
+        ? filterSectoralNDCs(ndcsData, { search })
+        : filterNDCs(ndcsData, { search }),
     search,
+    document: getDocumentSlug(state, { search }),
     iso,
     locations
   };
 };
 
 class NdcsCountryAccordionContainer extends PureComponent {
-  componentWillMount() {
+  componentDidMount() {
     const {
       iso,
       fetchNdcsCountryAccordion,
       category,
       search,
       compare,
-      lts
+      lts,
+      document
     } = this.props;
     const locations = iso || search.locations;
-    fetchNdcsCountryAccordion({ locations, category, compare, lts });
+    fetchNdcsCountryAccordion({ locations, category, compare, lts, document });
   }
 
   componentWillReceiveProps(nextProps) {
-    const { fetchNdcsCountryAccordion, compare, lts, iso } = this.props;
+    const {
+      fetchNdcsCountryAccordion,
+      compare,
+      lts,
+      iso,
+      document
+    } = this.props;
     const newLocations =
       nextProps.iso || qs.parse(nextProps.location.search).locations;
     const oldLocations = iso || qs.parse(this.props.location.search).locations;
-    if (newLocations !== oldLocations) {
+    if (newLocations !== oldLocations || document !== nextProps.document) {
       fetchNdcsCountryAccordion({
         locations: newLocations,
         category: nextProps.category,
         compare,
-        lts
+        lts,
+        document: nextProps.document
       });
     }
   }
@@ -73,6 +82,7 @@ class NdcsCountryAccordionContainer extends PureComponent {
 NdcsCountryAccordionContainer.propTypes = {
   fetchNdcsCountryAccordion: PropTypes.func,
   iso: PropTypes.string,
+  document: PropTypes.string,
   category: PropTypes.string,
   search: PropTypes.object,
   location: PropTypes.object,

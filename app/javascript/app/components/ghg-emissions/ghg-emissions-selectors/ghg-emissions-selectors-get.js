@@ -7,7 +7,12 @@ export const getData = ({ emissions }) => (emissions && emissions.data) || [];
 export const getMeta = ({ ghgEmissionsMeta }) =>
   (ghgEmissionsMeta && ghgEmissionsMeta.meta) || null;
 export const getRegions = ({ regions }) => (regions && regions.data) || null;
-export const getSources = createSelector(getMeta, meta => (meta && meta.data_source) || null);
+export const getCountries = ({ countries }) =>
+  (countries && countries.data) || null;
+export const getSources = createSelector(
+  getMeta,
+  meta => (meta && meta.data_source) || null
+);
 export const getWBData = ({ wbCountryData }) => wbCountryData.data || null;
 
 // values from search

@@ -9,7 +9,24 @@ const getCountries = state => state.countries;
 const getAllIndicators = state => (state.data ? state.data.indicators : {});
 const getCategories = state => (state.data ? state.data.categories : {});
 const getSectors = state => (state.data ? state.data.sectors : {});
-const getSearch = state => deburrUpper(state.search);
+const getSearch = (state, { search }) =>
+  (search ? deburrUpper(search.search) : null);
+const getSearchDocument = (state, { search }) =>
+  (search && search.document) || null;
+const getDocuments = state => state.documents && state.documents.data;
+
+export const getDocumentSlug = createSelector(
+  [getDocuments, getSearchDocument],
+  (documents, searchDocument) => {
+    if (!searchDocument || !documents) {
+      return null;
+    }
+    const selectedDocument = Object.values(documents).find(
+      d => d.slug === searchDocument.split('-')[0]
+    );
+    return (selectedDocument && selectedDocument.slug) || null;
+  }
+);
 
 export const parseIndicatorsDefs = createSelector(
   [getAllIndicators, getCategories, getCountries],

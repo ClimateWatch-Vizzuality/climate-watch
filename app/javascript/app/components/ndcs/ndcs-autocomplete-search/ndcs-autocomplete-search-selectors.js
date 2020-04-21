@@ -1,12 +1,35 @@
 import { createSelector } from 'reselect';
 import { compareIndexByKey } from 'utils/utils';
-import { NDC_DOCUMENT_OPTIONS } from 'data/constants';
 
+const getSearch = (state, search) => search || null;
 const getSDGs = state => state.sdgs || null;
 const getTargets = state => state.data.targets || null;
 const getGoals = state => state.data.goals || null;
-const getSearch = state => state.search || null;
-const getDocSelected = state => state.search.document || null;
+const getDocuments = state => state.documents && state.documents.data;
+
+export const getDocumentOptions = createSelector([getDocuments], documents => {
+  const allDocumentOption = [
+    {
+      label: 'All documents',
+      value: 'all'
+    }
+  ];
+  if (!documents) return allDocumentOption;
+  const documentsOptions = Object.values(documents).map(d => ({
+    label: d.long_name,
+    value: d.slug
+  }));
+  return [...allDocumentOption, ...documentsOptions];
+});
+
+export const getDocumentSelected = createSelector(
+  [getDocumentOptions, getSearch],
+  (documentOptions, search) => {
+    const { document: documentSelected } = search || {};
+    if (!documentSelected) return documentOptions[0];
+    return documentOptions.find(d => d.value === documentSelected);
+  }
+);
 
 export const getGoalsMapped = createSelector([getSDGs], sdgs => {
   if (!sdgs) return null;
@@ -77,14 +100,6 @@ export const getOptionSelectedMeta = createSelector(
     if (!options || !search) return null;
     if (search.searchBy === 'query') return null;
     return options.find(option => option.value === search.query);
-  }
-);
-
-export const getDocumentSelected = createSelector(
-  [getDocSelected],
-  documentSelected => {
-    if (!documentSelected) return NDC_DOCUMENT_OPTIONS[0];
-    return NDC_DOCUMENT_OPTIONS.find(d => d.value === documentSelected);
   }
 );
 

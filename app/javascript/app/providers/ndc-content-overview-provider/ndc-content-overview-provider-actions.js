@@ -6,23 +6,23 @@ const getNdcContentOverviewFail = createAction('getNdcContentOverviewFail');
 const getNdcContentOverviewReady = createAction('getNdcContentOverviewReady');
 const getNdcContentOverview = createThunkAction(
   'getNdcContentOverview',
-  locations => (dispatch, getState) => {
+  ({ locations, document }) => dispatch => {
     dispatch(getNdcContentOverviewInit());
     const promises = [];
     const locationsWithPromise = [];
-    const { data } = getState().ndcContentOverview;
     locations.forEach(location => {
-      if (!data || !data.locations[location]) {
-        promises.push(
-          fetch(`/api/v1/ndcs/${location}/content_overview`).then(response => {
+      const documentParam = document ? `?document=${document}` : '';
+      promises.push(
+        fetch(`/api/v1/ndcs/${location}/content_overview${documentParam}`).then(
+          response => {
             if (response.ok) {
               return response.json();
             }
             throw Error(response.statusText);
-          })
-        );
-        locationsWithPromise.push(location);
-      }
+          }
+        )
+      );
+      locationsWithPromise.push(location);
     });
     Promise.all(promises)
       .then(response => {

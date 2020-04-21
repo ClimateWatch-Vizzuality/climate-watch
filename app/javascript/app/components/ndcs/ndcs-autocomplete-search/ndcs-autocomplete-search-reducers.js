@@ -2,7 +2,7 @@ export const initialState = {
   loading: false,
   loaded: false,
   error: false,
-  data: {}
+  data: null
 };
 
 const setLoading = (state, loading) => ({ ...state, loading });
@@ -10,8 +10,8 @@ const setError = (state, error) => ({ ...state, error });
 const setLoaded = (state, loaded) => ({ ...state, loaded });
 
 export default {
-  fetchNDCSLTSInit: state => setLoading(state, true),
-  fetchNDCSLTSReady: (state, { payload }) =>
+  fetchNDCSDocumentsInit: state => setLoading(state, true),
+  fetchNDCSDocumentsReady: (state, { payload }) =>
     setLoaded(
       setLoading(
         {
@@ -25,5 +25,5 @@ export default {
       ),
       true
     ),
-  fetchNDCSLTSFail: state => setError(state, true)
+  fetchNDCSDocumentsFail: state => setError(state, true)
 };

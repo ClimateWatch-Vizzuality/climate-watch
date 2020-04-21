@@ -1,10 +1,12 @@
 import React, { PureComponent } from 'react';
 import { SimpleSelect } from 'react-selectize'; // eslint-disable-line
 import PropTypes from 'prop-types';
+import ReactTooltip from 'react-tooltip';
 import Icon from 'components/icon';
 import { themr } from 'react-css-themr';
 import cx from 'classnames';
 import Loading from 'components/loading';
+import get from 'lodash/get';
 
 import dropdownArrow from 'assets/icons/dropdown-arrow.svg';
 import infoIcon from 'assets/icons/info.svg';
@@ -17,6 +19,7 @@ class Dropdown extends PureComponent {
   componentDidUpdate() {
     this.selectorElement.highlightFirstSelectableOption();
   }
+
   render() {
     const {
       white,
@@ -34,11 +37,26 @@ class Dropdown extends PureComponent {
       required,
       optional,
       disclaimer,
-      hasSearch
+      hasSearch,
+      value,
+      showTooltip
     } = this.props;
     const arrow = this.props.white ? dropdownArrowWhite : dropdownArrow;
     const hasNotValue = this.props.value && !this.props.value.value;
     const isRequired = hasNotValue && required;
+
+    const tooltipId = `multiselectOptionsTooltip${label}`;
+
+    const setTooltip = (element, selectedOption, id) => {
+      const controlElement = get(element, 'refs.select.refs.control');
+
+      if (controlElement && selectedOption) {
+        controlElement.setAttribute('data-tip', selectedOption.label);
+        controlElement.setAttribute('data-for', id);
+        ReactTooltip.rebuild();
+      }
+    };
+
     return (
       <div
         className={cx(
@@ -82,6 +100,9 @@ class Dropdown extends PureComponent {
             <SimpleSelect
               ref={el => {
                 this.selectorElement = el;
+                if (showTooltip) {
+                  setTooltip(el, value, tooltipId);
+                }
               }}
               className={cx(className, disabled, {
                 [styles.withDot]: colorDot
@@ -100,9 +121,11 @@ class Dropdown extends PureComponent {
               )}
               {...this.props}
             />
+
             {disclaimer && <p className={styles.disclaimer}>{disclaimer}</p>}
           </div>
         </div>
+        {showTooltip && <ReactTooltip id={tooltipId} effect="solid" />}
       </div>
     );
   }
@@ -129,7 +152,8 @@ Dropdown.propTypes = {
   required: PropTypes.bool,
   optional: PropTypes.bool,
   value: PropTypes.object,
-  disclaimer: PropTypes.string
+  disclaimer: PropTypes.string,
+  showTooltip: PropTypes.bool
 };
 
 export default themr('Dropdown', styles)(Dropdown);

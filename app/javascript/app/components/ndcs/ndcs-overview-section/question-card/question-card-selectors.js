@@ -1,4 +1,5 @@
 import { createSelector } from 'reselect';
+import isArray from 'lodash/isArray';
 
 const getIndicators = state =>
   (state.ndcs && state.ndcs.data.indicators) || null;
@@ -14,8 +15,11 @@ const getPositiveAnswerIsos = createSelector(
     if (!indicators || !slug || !answerLabel) return null;
     const indicator = indicators.find(i => i.slug === slug);
     if (!indicator) return null;
-    return Object.keys(indicator.locations).filter(
-      k => indicator.locations[k].value === answerLabel
+    const moreThanOneTrueAnswer = isArray(answerLabel);
+    return Object.keys(indicator.locations).filter(k =>
+      (moreThanOneTrueAnswer
+        ? answerLabel.includes(indicator.locations[k].value)
+        : indicator.locations[k].value === answerLabel)
     );
   }
 );

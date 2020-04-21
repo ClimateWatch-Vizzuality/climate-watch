@@ -213,16 +213,12 @@ export const getTooltipCountryValues = createSelector(
     if (!indicators || !selectedIndicator) {
       return null;
     }
-    const emissionsIndicator = indicators.find(i => i.slug === 'ndce_ghg');
     const tooltipCountryValues = {};
     Object.keys(selectedIndicator.locations).forEach(iso => {
       tooltipCountryValues[iso] = {
         value:
           selectedIndicator.locations[iso] &&
-          selectedIndicator.locations[iso].value,
-        emissionsValue:
-          emissionsIndicator.locations[iso] &&
-          emissionsIndicator.locations[iso].value
+          selectedIndicator.locations[iso].value
       };
     });
     return tooltipCountryValues;
@@ -236,6 +232,7 @@ export const getEmissionsCardData = createSelector(
       return null;
     }
     const emissionsIndicator = indicators.find(i => i.slug === 'ndce_ghg');
+    if (!emissionsIndicator) return null;
     const data = getIndicatorEmissionsData(
       emissionsIndicator,
       selectedIndicator,

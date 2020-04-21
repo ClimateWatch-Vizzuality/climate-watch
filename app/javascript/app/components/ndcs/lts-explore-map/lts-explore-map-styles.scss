@@ -7,6 +7,7 @@
 
 .map {
   height: 100%;
+  cursor: pointer;
 
   > svg {
     height: 100%;
@@ -215,12 +216,6 @@
 
   @media #{$tablet-landscape} {
     width: 150px;
-  }
-}
-
-:global .sticky {
-  .buttonGroupContainer {
-    background-color: red;
   }
 }
 

@@ -6,9 +6,7 @@ const SUBMISSION_SLUGS = [
   'lts_date',
   'lts_target',
   'lts_m_tt',
-  'lts_zero',
-  'lts_m_sce_yn',
-  'lts_m_model'
+  'lts_a_otc'
 ];
 
 const getIndicators = ({ state }) =>

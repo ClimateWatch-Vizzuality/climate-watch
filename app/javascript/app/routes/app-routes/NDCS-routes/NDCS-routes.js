@@ -34,11 +34,6 @@ export default [
     activeId
   },
   (FEATURE_ALL_COMMITMENTS_MENU_ITEMS || !FEATURE_LTS_EXPLORE) && {
-    path: '/lts-tracker',
-    label: 'Long-Term Strategy Tracker',
-    activeId
-  },
-  (FEATURE_ALL_COMMITMENTS_MENU_ITEMS || !FEATURE_LTS_EXPLORE) && {
     path: '/ndcs/compare',
     label: 'NDC Comparison',
     activeId

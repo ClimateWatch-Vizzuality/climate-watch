@@ -6,6 +6,7 @@ import CardRow from 'components/card/card-row';
 import Intro from 'components/intro';
 import Icon from 'components/icon';
 import cx from 'classnames';
+import upperCase from 'lodash/upperCase';
 import ModalMetadata from 'components/modal-metadata';
 import Loading from 'components/loading';
 import NoContent from 'components/no-content';
@@ -267,18 +268,16 @@ class CountryNdcOverview extends PureComponent {
     );
   }
 
-  // We can only show the alert when we have the filtered by NDC content
-  renderAlertText = () =>
-    null && (
-      <div className={styles.alertContainer}>
-        <div className={styles.alert}>
-          <Icon icon={alertIcon} className={styles.alertIcon} />
-          <span className={styles.alertText}>
-            The information shown below only reflects the latest NDC submission.
-          </span>
-        </div>
+  renderAlertText = () => (
+    <div className={styles.alertContainer}>
+      <div className={styles.alert}>
+        <Icon icon={alertIcon} className={styles.alertIcon} />
+        <span className={styles.alertText}>
+          The information shown below only reflects the selected NDC submission.
+        </span>
       </div>
-    );
+    </div>
+  );
 
   render() {
     const {
@@ -288,9 +287,9 @@ class CountryNdcOverview extends PureComponent {
       actions,
       iso,
       isEmbed,
-      lastDocument
+      selectedDocument
     } = this.props;
-    const { date: documentDate } = lastDocument || {};
+    const { date: documentDate } = selectedDocument || {};
     const hasSectors = values && sectors;
     const description = hasSectors && (
       <p
@@ -304,17 +303,20 @@ class CountryNdcOverview extends PureComponent {
         }}
       />
     );
-    const summaryIntroText = !lastDocument
+    const summaryIntroText = !selectedDocument
       ? 'Summary'
-      : `Summary of ${lastDocument.document_type &&
-          lastDocument.document_type.toUpperCase()}`;
+      : `Summary of ${selectedDocument.document_type &&
+          upperCase(selectedDocument.document_type)}`;
     return (
       <div className={cx(styles.wrapper, { [styles.embededWrapper]: isEmbed })}>
         {FEATURE_LTS_EXPLORE &&
           hasSectors &&
           !loading &&
           this.renderAlertText()}
-        <NdcContentOverviewProvider locations={[iso]} />
+        <NdcContentOverviewProvider
+          locations={[iso]}
+          document={selectedDocument && selectedDocument.document_type}
+        />
         {!hasSectors && !loading ? (
           <NoContent
             message="No overview content data"
@@ -376,7 +378,7 @@ CountryNdcOverview.propTypes = {
   isNdcp: PropTypes.bool,
   isEmbed: PropTypes.bool,
   handleInfoClick: PropTypes.func.isRequired,
-  lastDocument: PropTypes.object,
+  selectedDocument: PropTypes.object,
   handleAnalyticsClick: PropTypes.func.isRequired
 };
 
