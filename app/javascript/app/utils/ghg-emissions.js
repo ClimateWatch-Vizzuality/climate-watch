@@ -1,4 +1,8 @@
-import { DEFAULT_EMISSIONS_SELECTIONS, CALCULATION_OPTIONS } from 'data/constants';
+import {
+  DEFAULT_EMISSIONS_SELECTIONS,
+  CALCULATION_OPTIONS
+} from 'data/constants';
+import kebabCase from 'lodash/kebabCase';
 
 export const getGhgEmissionDefaults = (source, meta) => {
   const sourceName = source.name || source.label;
@@ -9,6 +13,19 @@ export const getGhgEmissionDefaults = (source, meta) => {
   return {
     gas: (meta.gas.find(g => g.label === defaults.gas) || {}).value,
     sector: (meta.sector.find(s => s.label === sectorDefaults) || {}).value,
+    location: defaults.location
+  };
+};
+
+export const getGhgEmissionDefaultSlugs = (source, meta) => {
+  const sourceName = source.name || source.label;
+  const defaults = DEFAULT_EMISSIONS_SELECTIONS[sourceName];
+  if (!defaults) return {};
+  const gas = meta.gas.find(g => g.label === defaults.gas);
+  const sector = meta.sector.find(s => s.label === defaults.sector);
+  return {
+    gas: gas && kebabCase(gas.label),
+    sector: sector && kebabCase(sector.label),
     location: defaults.location
   };
 };

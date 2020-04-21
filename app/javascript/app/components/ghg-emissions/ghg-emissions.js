@@ -6,6 +6,7 @@ import { getLocationParamUpdated } from 'utils/navigation';
 import { handleAnalytics } from 'utils/analytics';
 import qs from 'query-string';
 import castArray from 'lodash/castArray';
+import kebabCase from 'lodash/kebabCase';
 import { actions } from 'components/modal-metadata';
 import { encodeAsCSVContent, invokeCSVDownload } from 'utils/csv';
 import { orderByColumns, stripHTML } from 'utils';
@@ -33,13 +34,13 @@ function GhgEmissionsContainer(props) {
   useEffect(() => {
     const { sourceSelected } = selected;
     if (!(search && search.source) && sourceSelected) {
-      updateUrlParam({ name: 'source', value: sourceSelected.value });
+      updateUrlParam({ name: 'source', value: sourceSelected.name });
     }
   }, []);
 
   const handleSourcesChange = category => {
     updateUrlParam([
-      { name: 'source', value: category.value },
+      { name: 'source', value: category.name },
       { name: 'sectors', value: null },
       { name: 'gases', value: null }
     ]);
@@ -56,14 +57,18 @@ function GhgEmissionsContainer(props) {
     handleAnalytics('Chart Type', 'chart type selected', type.label);
   };
 
-  const handleFilterChange = (field, filters) => {
+  const handleRegionsChange = filters => {
     updateUrlParam({
-      name: [field],
+      name: 'regions',
       value: castArray(filters)
         .map(v => v.value)
         .join(',')
     });
 
+    sendToAnalitics('regions', filters);
+  };
+
+  const sendToAnalitics = (field, filters) => {
     const selectedFilterLabels = filters.map(f => f.label);
     if (selectedFilterLabels.length > 0) {
       handleAnalytics(
@@ -74,11 +79,22 @@ function GhgEmissionsContainer(props) {
     }
   };
 
+  const handleFilterChange = (field, filters) => {
+    updateUrlParam({
+      name: [field],
+      value: castArray(filters)
+        .map(v => kebabCase(v.label))
+        .join(',')
+    });
+    sendToAnalitics(field, filters);
+  };
+
   const handleChange = (field, optionSelected) => {
-    if (['regions', 'sectors', 'gases'].includes(field)) {
+    if (['sectors', 'gases'].includes(field)) {
       return handleFilterChange(field, optionSelected);
     }
     const changeFunctions = {
+      regions: handleRegionsChange,
       sources: handleSourcesChange,
       breakBy: handleBreakByChange,
       chartType: handleChartTypeChange
