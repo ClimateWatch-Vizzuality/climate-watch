@@ -7,6 +7,7 @@ import { NDCS_OVERVIEW } from 'data/SEO';
 import { MetaDescription, SocialMetadata } from 'components/seo';
 import { renderRoutes } from 'react-router-config';
 import ModalShare from 'components/modal-share';
+import ModalMetadata from 'components/modal-metadata';
 import styles from './ndc-overview-styles.scss';
 
 const NdcOverview = ({ route }) => (
@@ -30,6 +31,7 @@ const NdcOverview = ({ route }) => (
     </Header>
     {renderRoutes(route.routes)}
     <ModalShare analyticsName="NDC Overview" />
+    <ModalMetadata />
   </div>
 );
 

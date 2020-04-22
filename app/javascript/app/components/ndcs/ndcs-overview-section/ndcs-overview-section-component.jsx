@@ -18,7 +18,7 @@ const NdcsOverviewSection = ({ data, section, location, handleInfoClick }) => {
       })}
     >
       <div className={layout.content}>
-        <div className={styles.section}>
+        <div className={cx(styles.section, { [styles.padded]: !isEmbed })}>
           <div className={styles.commitmentWrapper}>
             <div className={styles.commitmentText}>
               <div>
