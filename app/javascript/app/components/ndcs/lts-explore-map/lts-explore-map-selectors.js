@@ -156,12 +156,15 @@ export const getPathsWithStyles = createSelector(
             default: {
               ...COUNTRY_STYLES.default,
               fill: color,
-              fillOpacity: 1
+              fillOpacity: 1,
+              'stroke-width': zoom > 2 ? 0.1 : 0.5
             },
             hover: {
               ...COUNTRY_STYLES.hover,
+              cursor: 'pointer',
               fill: color,
-              fillOpacity: 1
+              fillOpacity: 1,
+              'stroke-width': zoom > 2 ? 0.1 : 0.5
             }
           };
         }
