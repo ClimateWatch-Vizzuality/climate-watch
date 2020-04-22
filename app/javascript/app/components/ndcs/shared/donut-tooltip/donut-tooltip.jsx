@@ -18,7 +18,11 @@ const DonutTooltip = props => {
   const chartTop = chartReference && chartReference.getBoundingClientRect().top;
   const referenceTop = reference.getBoundingClientRect().top;
 
-  const top = chartTop - referenceTop + coordinate.y;
+  const DEFAULT_OFFSET = 210; // If the parent reference is not loaded
+  const top = chartTop
+    ? chartTop - referenceTop + coordinate.y
+    : DEFAULT_OFFSET + coordinate.y;
+
   // Avoid covering the label on the center
   const left = coordinate.x > 40 ? coordinate.x + 80 : coordinate.x;
   return ReactDOM.createPortal(
