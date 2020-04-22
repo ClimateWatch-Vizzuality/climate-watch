@@ -51,8 +51,12 @@ const getSourceSelected = createSelector(
 // BreakBy selectors
 const BREAK_BY_OPTIONS = [
   {
-    label: 'Regions-Totals',
+    label: 'Regions',
     value: `regions-${CALCULATION_OPTIONS.ABSOLUTE_VALUE.value}`
+  },
+  {
+    label: 'Regions-Total Aggregated',
+    value: `regions-${CALCULATION_OPTIONS.ABSOLUTE_VALUE.value}-aggregated`
   },
   {
     label: 'Regions-Per Capita',
@@ -84,7 +88,11 @@ const getBreakBySelected = createSelector(
   breakBySelected => {
     if (!breakBySelected) return null;
     const breakByArray = breakBySelected.value.split('-');
-    return { modelSelected: breakByArray[0], metricSelected: breakByArray[1] };
+    return {
+      modelSelected: breakByArray[0],
+      metricSelected: breakByArray[1],
+      isAggregated: breakByArray[2] === 'aggregated'
+    };
   }
 );
 
@@ -95,6 +103,10 @@ export const getModelSelected = createSelector(
 export const getMetricSelected = createSelector(
   getBreakBySelected,
   breakBySelected => (breakBySelected && breakBySelected.metricSelected) || null
+);
+export const getIsRegionAggregated = createSelector(
+  getBreakBySelected,
+  breakBySelected => (breakBySelected && breakBySelected.isAggregated) || null
 );
 
 const filterOptionsBySource = field =>

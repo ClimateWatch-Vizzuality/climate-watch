@@ -34,6 +34,7 @@ import {
   getModelSelected,
   getMetricSelected,
   getOptionsSelected,
+  getIsRegionAggregated,
   getOptions
 } from './ghg-emissions-selectors-filters';
 
@@ -41,12 +42,18 @@ const LEGEND_LIMIT = 10;
 
 const getShouldExpand = filter =>
   createSelector(
-    [getModelSelected, getOptionsSelected],
-    (modelSelected, selectedOptions) => {
+    [getModelSelected, getOptionsSelected, getIsRegionAggregated],
+    (modelSelected, selectedOptions, isRegionAggregated) => {
       const model = modelSelected && toPlural(modelSelected);
       const dataSelected = selectedOptions[`${filter}Selected`];
 
-      if (!selectedOptions || !model || model !== filter || !dataSelected) {
+      if (
+        isRegionAggregated ||
+        !selectedOptions ||
+        !model ||
+        model !== filter ||
+        !dataSelected
+      ) {
         return false;
       }
 
@@ -515,7 +522,15 @@ export const getTableData = createSelector(
 export const getTitleLinks = createSelector(
   [getTableData, getModelSelected, getRegions, getCountries],
   (data, model, regions, countries) => {
-    if (!data || isEmpty(data) || !regions || !countries || model !== 'regions') { return null; }
+    if (
+      !data ||
+      isEmpty(data) ||
+      !regions ||
+      !countries ||
+      model !== 'regions'
+    ) {
+      return null;
+    }
     const allRegions = regions
       .filter(r => r.iso_code3 === europeSlug)
       .concat(countries);
