@@ -27,7 +27,7 @@ LegendItem.propTypes = {
 };
 
 LegendItem.defaultProps = {
-  itemsName: ['party', 'parties']
+  itemsName: ['Party', 'Parties']
 };
 
 export default LegendItem;

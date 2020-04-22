@@ -34,7 +34,7 @@ export const getIndicatorEmissionsData = (
     summedPercentage += legendItemValue;
 
     return {
-      name: camelCase(legendItem.name),
+      name: legendItem.name,
       value: legendItemValue
     };
   });

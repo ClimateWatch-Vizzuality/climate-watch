@@ -6,7 +6,6 @@ import {
 } from 'utils/map';
 import uniqBy from 'lodash/uniqBy';
 import sortBy from 'lodash/sortBy';
-import camelCase from 'lodash/camelCase';
 import { generateLinkToDataExplorer } from 'utils/data-explorer';
 import worldPaths from 'app/data/world-50m-paths';
 import { COUNTRY_STYLES } from 'components/ndcs/shared/constants';
@@ -278,7 +277,7 @@ export const getIndicatorEmissionsData = (
     summedPercentage += legendItemValue;
 
     return {
-      name: camelCase(legendItem.name),
+      name: legendItem.name,
       value: legendItemValue
     };
   });
@@ -342,7 +341,7 @@ export const getSummaryCardData = createSelector(
       europeanCountries.length - europeanCountriesWithSubmission.length - 1; // To avoid double counting, also substract the EUU 'country'
     return {
       value: partiesNumber,
-      description: ` parties have submitted a long-term strategy document, representing ${countriesNumber} countries`
+      description: ` Parties have submitted a long-term strategy document, representing ${countriesNumber} countries`
     };
   }
 );

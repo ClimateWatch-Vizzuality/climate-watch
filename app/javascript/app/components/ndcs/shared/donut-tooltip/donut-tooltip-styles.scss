@@ -5,5 +5,12 @@
   position: absolute;
   background: $white;
   box-shadow: $box-shadow-light;
+  font-size: $font-size-sm;
   padding: 15px;
+}
+
+.legendItem {
+  font-family: $font-family-1;
+  font-weight: $font-weight-bold;
+  font-style: $font-style-italic;
 }
