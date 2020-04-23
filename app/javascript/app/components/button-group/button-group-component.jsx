@@ -10,6 +10,7 @@ import iconEdit from 'assets/icons/edit.svg';
 import iconDelete from 'assets/icons/delete.svg';
 import PropTypes from 'prop-types';
 import ShareMenu from 'components/share-menu';
+import SimpleMenu from 'components/simple-menu';
 import ReactTooltip from 'react-tooltip';
 import { isPageContained } from 'utils/navigation';
 
@@ -19,12 +20,14 @@ const tooltipText = {
   share: 'Share',
   info: 'Information',
   download: 'Download data',
+  downloadCombo: 'Download data',
   addToUser: 'Add to user'
 };
 
 const iconsMap = {
   info: iconInfo,
   download: iconDownload,
+  downloadCombo: iconDownload,
   downloadCSV: iconDownloadCSV,
   addToUser: iconAddToUser,
   edit: iconEdit,
@@ -55,19 +58,17 @@ const renderButton = (buttonConfig, currentPathname) => {
           dataTip={dataTip}
         />
       );
-    case 'download-combo':
+    case 'downloadCombo':
       return (
-        <ShareMenu
-          key={buttonConfig.type}
-          className={cx(styles.button, styles.share)}
-          path={buttonConfig.shareUrl}
-          shouldEmbedQueryParams={buttonConfig.shouldEmbedQueryParams}
-          inButtonGroup
-          analyticsGraphName={buttonConfig.analyticsGraphName}
+        <SimpleMenu
+          {...this.props}
+          buttonClassName={cx(styles.button, styles.download)}
+          options={buttonConfig.options}
+          icon={iconsMap[buttonConfig.type]}
           reverse={buttonConfig.reverseDropdown}
-          positionRight={buttonConfig.positionRight}
           dataFor="tooltip"
           dataTip={dataTip}
+          inButtonGroup
         />
       );
     default:

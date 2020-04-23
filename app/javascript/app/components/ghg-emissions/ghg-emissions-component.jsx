@@ -85,7 +85,7 @@ function GhgEmissions(props) {
     loading,
     providerFilters,
     dataZoomData,
-    // handleDownloadDataClick,
+    handleDownloadDataClick,
     handleInfoClick,
     setColumnWidth,
     downloadLink
@@ -97,11 +97,22 @@ function GhgEmissions(props) {
       onClick: handleInfoClick
     },
     {
-      type: 'download-combo',
-      section: 'ghg-emissions',
-      link: downloadLink,
-      tooltipText: 'View or download raw data',
-      positionRight: true
+      type: 'downloadCombo',
+      options: [
+        {
+          label: 'Download current data (CSV)',
+          action: handleDownloadDataClick
+        },
+        {
+          label: 'Save as image (PNG)',
+          action: () => {}
+        },
+        {
+          label: 'Go to data explorer',
+          link: downloadLink
+        }
+      ],
+      reverseDropdown: false
     },
     {
       type: 'addToUser'
@@ -234,6 +245,19 @@ function GhgEmissions(props) {
             sharePath={'/embed/ghg-emissions'}
           />
         </TabletLandscape>
+        <p className={styles.bodyText}>
+          Explore GHG emissions from multiple data source (CAIT, PIK, UNFCCC)
+          and understand their differences in the
+          <a
+            className={styles.link}
+            href="about/faq/ghg"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {' '}
+            FAQ
+          </a>
+        </p>
       </div>
       <WorldBankDataProvider />
       <RegionsProvider />
@@ -305,7 +329,7 @@ GhgEmissions.propTypes = {
   legendSelected: PropTypes.array,
   handleChange: PropTypes.func.isRequired,
   handleInfoClick: PropTypes.func.isRequired,
-  // handleDownloadDataClick: PropTypes.func.isRequired,
+  handleDownloadDataClick: PropTypes.func.isRequired,
   setYears: PropTypes.func.isRequired,
   setColumnWidth: PropTypes.func.isRequired,
   providerFilters: PropTypes.object,
