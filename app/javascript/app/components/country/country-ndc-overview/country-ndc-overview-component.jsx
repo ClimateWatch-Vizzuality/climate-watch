@@ -21,6 +21,7 @@ import NdcContentOverviewProvider from 'providers/ndc-content-overview-provider'
 import styles from './country-ndc-overview-styles.scss';
 
 const FEATURE_LTS_EXPLORE = process.env.FEATURE_LTS_EXPLORE === 'true';
+const FEATURE_NDC_FILTERING = process.env.FEATURE_NDC_FILTERING === 'true';
 
 class CountryNdcOverview extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
@@ -273,7 +274,8 @@ class CountryNdcOverview extends PureComponent {
       <div className={styles.alert}>
         <Icon icon={alertIcon} className={styles.alertIcon} />
         <span className={styles.alertText}>
-          The information shown below only reflects the selected NDC submission.
+          The information shown below only reflects the{' '}
+          {FEATURE_NDC_FILTERING ? 'selected' : 'last'} NDC submission.
         </span>
       </div>
     </div>
@@ -303,19 +305,24 @@ class CountryNdcOverview extends PureComponent {
         }}
       />
     );
-    const summaryIntroText = !selectedDocument
-      ? 'Summary'
-      : `Summary of ${selectedDocument.document_type &&
-          upperCase(selectedDocument.document_type)}`;
+    const summaryIntroText =
+      !FEATURE_NDC_FILTERING || !selectedDocument
+        ? 'Summary'
+        : `Summary of ${selectedDocument.document_type &&
+            upperCase(selectedDocument.document_type)}`;
     return (
       <div className={cx(styles.wrapper, { [styles.embededWrapper]: isEmbed })}>
-        {FEATURE_LTS_EXPLORE &&
+        {(FEATURE_LTS_EXPLORE || !FEATURE_NDC_FILTERING) &&
           hasSectors &&
           !loading &&
           this.renderAlertText()}
         <NdcContentOverviewProvider
           locations={[iso]}
-          document={selectedDocument && selectedDocument.document_type}
+          document={
+            FEATURE_NDC_FILTERING &&
+            selectedDocument &&
+            selectedDocument.document_type
+          }
         />
         {!hasSectors && !loading ? (
           <NoContent

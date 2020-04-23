@@ -1,6 +1,8 @@
 import { createAction } from 'redux-actions';
 import { createThunkAction } from 'utils/redux';
 
+const FEATURE_NDC_FILTERING = process.env.FEATURE_NDC_FILTERING === 'true';
+
 const fetchNdcsCountryAccordionInit = createAction(
   'fetchNdcsCountryAccordionInit'
 );
@@ -15,7 +17,8 @@ const fetchNdcsCountryAccordion = createThunkAction(
   'fetchNdcsCountryAccordion',
   params => dispatch => {
     const { locations, category, compare, lts, document } = params;
-    const documentParam = document ? `&document=${document}` : '';
+    const documentParam =
+      FEATURE_NDC_FILTERING && document ? `&document=${document}` : '';
     if (locations) {
       dispatch(fetchNdcsCountryAccordionInit());
       fetch(
