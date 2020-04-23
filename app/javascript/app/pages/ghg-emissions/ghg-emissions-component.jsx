@@ -29,7 +29,10 @@ class GhgEmissions extends PureComponent {
         {!isPageContained && (
           <Header route={route}>
             <div className={cx(layout.content, styles.header)}>
-              <Intro title="Historical GHG Emissions" />
+              <Intro
+                title="Historical GHG Emissions"
+                description="Climate change causing greenhouse gas emissions have increased 50 fold since the late 1800s. Energy makes up nearly two-thirds of global emissions, followed by agriculture. Within the energy sector, electricity and heat generation make up the largest portion of emissions, followed by transportation and manufacturing. In 2014, 60% of global greenhouse gas emissions came from just 10 countries, while the 100 least-emitting contributed less than 3%. "
+              />
             </div>
           </Header>
         )}
