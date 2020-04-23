@@ -20,7 +20,8 @@ import {
 } from './ghg-emissions-selectors-get';
 
 const DEFAULTS = {
-  breakBy: `regions-${CALCULATION_OPTIONS.ABSOLUTE_VALUE.value}`
+  breakBy: 'regions',
+  calculation: CALCULATION_OPTIONS.ABSOLUTE_VALUE.value
 };
 
 const getOptionSelectedFunction = filter => (options, selected) => {
@@ -29,6 +30,13 @@ const getOptionSelectedFunction = filter => (options, selected) => {
     const defaultOption = options.find(b => b.value === DEFAULTS[filter]);
     return defaultOption || options[0];
   }
+
+  if (filter === 'breakBy') {
+    return options.find(
+      o => o.value === selected || selected.startsWith(o.value) // to support legacy URL
+    );
+  }
+
   return options.find(o => o.value === selected || o.name === selected);
 };
 
@@ -48,23 +56,31 @@ const getSourceSelected = createSelector(
   getOptionSelectedFunction('source')
 );
 
+// Calculation selectors
+const getCalculationOptions = () => [
+  {
+    label: 'Total',
+    value: CALCULATION_OPTIONS.ABSOLUTE_VALUE.value
+  },
+  {
+    label: 'Per Capita',
+    value: CALCULATION_OPTIONS.PER_CAPITA.value
+  },
+  {
+    label: 'Per GDP',
+    value: CALCULATION_OPTIONS.PER_GDP.value
+  }
+];
+
 // BreakBy selectors
-const BREAK_BY_OPTIONS = [
+const getBreakByOptions = () => [
   {
     label: 'Regions',
-    value: `regions-${CALCULATION_OPTIONS.ABSOLUTE_VALUE.value}`
+    value: 'regions'
   },
   {
     label: 'Regions-Total Aggregated',
-    value: `regions-${CALCULATION_OPTIONS.ABSOLUTE_VALUE.value}-aggregated`
-  },
-  {
-    label: 'Regions-Per Capita',
-    value: `regions-${CALCULATION_OPTIONS.PER_CAPITA.value}`
-  },
-  {
-    label: 'Regions-Per GDP',
-    value: `regions-${CALCULATION_OPTIONS.PER_GDP.value}`
+    value: 'aggregated'
   },
   {
     label: 'Sectors',
@@ -76,7 +92,10 @@ const BREAK_BY_OPTIONS = [
   }
 ];
 
-const getBreakByOptions = () => BREAK_BY_OPTIONS;
+const getCalculationSelected = createSelector(
+  [getCalculationOptions, getSelection('calculation')],
+  getOptionSelectedFunction('calculation')
+);
 
 const getBreakByOptionSelected = createSelector(
   [getBreakByOptions, getSelection('breakBy')],
@@ -84,14 +103,16 @@ const getBreakByOptionSelected = createSelector(
 );
 
 const getBreakBySelected = createSelector(
-  getBreakByOptionSelected,
+  [getBreakByOptionSelected],
   breakBySelected => {
     if (!breakBySelected) return null;
     const breakByArray = breakBySelected.value.split('-');
+    const isAggregated = breakByArray[0] === 'aggregated';
+    // The second breakByArray is there to support legacy URLs. They used to be like: "regions-PER_CAPITA"
     return {
-      modelSelected: breakByArray[0],
+      modelSelected: isAggregated ? 'regions' : breakByArray[0],
       metricSelected: breakByArray[1],
-      isAggregated: breakByArray[2] === 'aggregated'
+      isAggregated
     };
   }
 );
@@ -101,8 +122,11 @@ export const getModelSelected = createSelector(
   breakBySelected => (breakBySelected && breakBySelected.modelSelected) || null
 );
 export const getMetricSelected = createSelector(
-  getBreakBySelected,
-  breakBySelected => (breakBySelected && breakBySelected.metricSelected) || null
+  [getBreakBySelected, getCalculationSelected],
+  (breakBySelected, calculationSelected) =>
+    (breakBySelected && breakBySelected.metricSelected) ||
+    (calculationSelected && calculationSelected.value) ||
+    null
 );
 export const getIsRegionAggregated = createSelector(
   getBreakBySelected,
@@ -224,6 +248,7 @@ export const getOptions = createStructuredSelector({
   sources: getSourceOptions,
   chartType: getChartTypeOptions,
   breakBy: getBreakByOptions,
+  calculation: getCalculationOptions,
   regions: getRegionOptions,
   sectors: getSectorOptions,
   gases: getGasOptions
@@ -437,5 +462,6 @@ export const getOptionsSelected = createStructuredSelector({
   sectorsSelected: getFiltersSelected('sector'),
   gasesSelected: getFiltersSelected('gas'),
   breakBySelected: getBreakByOptionSelected,
+  calculationSelected: getCalculationSelected,
   chartTypeSelected: getChartTypeSelected
 });

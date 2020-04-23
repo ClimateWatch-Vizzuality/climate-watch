@@ -52,9 +52,18 @@ function GhgEmissionsContainer(props) {
     handleAnalytics('Historical Emissions', 'Break by selected', breakBy.label);
   };
 
+  const handleCalculationChange = calculation => {
+    updateUrlParam({ name: 'calculation', value: calculation.value });
+    handleAnalytics(
+      'Historical Emissions',
+      'Calculation selected',
+      calculation.label
+    );
+  };
+
   const handleChartTypeChange = type => {
     updateUrlParam({ name: 'chartType', value: type.value });
-    handleAnalytics('Chart Type', 'chart type selected', type.label);
+    handleAnalytics('Chart Type', 'Chart type selected', type.label);
   };
 
   const handleRegionsChange = filters => {
@@ -97,6 +106,7 @@ function GhgEmissionsContainer(props) {
       regions: handleRegionsChange,
       sources: handleSourcesChange,
       breakBy: handleBreakByChange,
+      calculation: handleCalculationChange,
       chartType: handleChartTypeChange
     };
     return changeFunctions[field](optionSelected);

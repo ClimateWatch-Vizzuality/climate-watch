@@ -266,6 +266,7 @@ function GhgEmissions(props) {
           onValueChange={selected => handleChange('gases', selected)}
           theme={dropdownTheme}
         />
+        {renderDropdown('Calculations', 'calculation')}
         {renderDropdown('Show data by', 'breakBy')}
         {renderDropdown(null, 'chartType', icons, {
           variant: 'icons-labels',
