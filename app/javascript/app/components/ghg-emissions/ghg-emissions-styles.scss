@@ -50,7 +50,11 @@ $min-height: 500px;
   }
 
   @media #{$tablet-landscape} {
-    @include columns((1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.2));
+    @include columns((2.1, 2.1, 2.1, 2.1, 2.1, 1.4));
+
+    &.newGHG {
+      @include columns((1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.2));
+    }
 
     align-items: flex-end;
   }

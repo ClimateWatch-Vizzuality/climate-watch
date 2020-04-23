@@ -19,8 +19,12 @@ import {
   getSelection
 } from './ghg-emissions-selectors-get';
 
+const FEATURE_NEW_GHG = process.env.FEATURE_NEW_GHG === 'true';
+
 const DEFAULTS = {
-  breakBy: 'regions',
+  breakBy: FEATURE_NEW_GHG
+    ? 'regions'
+    : `regions-${CALCULATION_OPTIONS.ABSOLUTE_VALUE.value}`,
   calculation: CALCULATION_OPTIONS.ABSOLUTE_VALUE.value
 };
 
@@ -31,7 +35,7 @@ const getOptionSelectedFunction = filter => (options, selected) => {
     return defaultOption || options[0];
   }
 
-  if (filter === 'breakBy') {
+  if (FEATURE_NEW_GHG && filter === 'breakBy') {
     return options.find(
       o => o.value === selected || selected.startsWith(o.value) // to support legacy URL
     );
@@ -73,24 +77,48 @@ const getCalculationOptions = () => [
 ];
 
 // BreakBy selectors
-const getBreakByOptions = () => [
-  {
-    label: 'Regions',
-    value: 'regions'
-  },
-  {
-    label: 'Regions-Total Aggregated',
-    value: 'aggregated'
-  },
-  {
-    label: 'Sectors',
-    value: 'sector'
-  },
-  {
-    label: 'Gases',
-    value: 'gas'
-  }
-];
+const getBreakByOptions = () =>
+  (FEATURE_NEW_GHG
+    ? [
+      {
+        label: 'Regions',
+        value: 'regions'
+      },
+      {
+        label: 'Regions-Total Aggregated',
+        value: 'aggregated'
+      },
+      {
+        label: 'Sectors',
+        value: 'sector'
+      },
+      {
+        label: 'Gases',
+        value: 'gas'
+      }
+    ]
+    : [
+      {
+        label: 'Regions',
+        value: `regions-${CALCULATION_OPTIONS.ABSOLUTE_VALUE.value}`
+      },
+      {
+        label: 'Regions-Per Capita',
+        value: `regions-${CALCULATION_OPTIONS.PER_CAPITA.value}`
+      },
+      {
+        label: 'Regions-Per GDP',
+        value: `regions-${CALCULATION_OPTIONS.PER_GDP.value}`
+      },
+      {
+        label: 'Sectors',
+        value: 'sector'
+      },
+      {
+        label: 'Gases',
+        value: 'gas'
+      }
+    ]);
 
 const getCalculationSelected = createSelector(
   [getCalculationOptions, getSelection('calculation')],
