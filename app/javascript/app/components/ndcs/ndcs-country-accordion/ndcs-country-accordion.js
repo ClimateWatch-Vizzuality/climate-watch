@@ -14,6 +14,8 @@ import {
   getDocumentSlug
 } from './ndcs-country-accordion-selectors';
 
+const FEATURE_NDC_FILTERING = process.env.FEATURE_NDC_FILTERING === 'true';
+
 const mapStateToProps = (state, { match, location, category }) => {
   const { iso } = match.params;
   const search = qs.parse(location.search);
@@ -61,7 +63,10 @@ class NdcsCountryAccordionContainer extends PureComponent {
     const newLocations =
       nextProps.iso || qs.parse(nextProps.location.search).locations;
     const oldLocations = iso || qs.parse(this.props.location.search).locations;
-    if (newLocations !== oldLocations || document !== nextProps.document) {
+    if (
+      newLocations !== oldLocations ||
+      (FEATURE_NDC_FILTERING && document !== nextProps.document)
+    ) {
       fetchNdcsCountryAccordion({
         locations: newLocations,
         category: nextProps.category,
