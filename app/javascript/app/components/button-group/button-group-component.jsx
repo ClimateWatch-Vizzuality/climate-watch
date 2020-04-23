@@ -55,6 +55,21 @@ const renderButton = (buttonConfig, currentPathname) => {
           dataTip={dataTip}
         />
       );
+    case 'download-combo':
+      return (
+        <ShareMenu
+          key={buttonConfig.type}
+          className={cx(styles.button, styles.share)}
+          path={buttonConfig.shareUrl}
+          shouldEmbedQueryParams={buttonConfig.shouldEmbedQueryParams}
+          inButtonGroup
+          analyticsGraphName={buttonConfig.analyticsGraphName}
+          reverse={buttonConfig.reverseDropdown}
+          positionRight={buttonConfig.positionRight}
+          dataFor="tooltip"
+          dataTip={dataTip}
+        />
+      );
     default:
       return (
         <Button

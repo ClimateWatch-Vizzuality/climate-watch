@@ -5,34 +5,45 @@ $min-height: 500px;
 .titleContainer {
   @include columns((12, 12));
 
-  @media #{$tablet-landscape} {
-    @include columns((9.4, 2.5));
-  }
+  align-items: center;
 
-  .colEnd {
-    @media #{$tablet-landscape} {
-      margin-top: $gutter-padding;
-    }
+  @media #{$tablet-landscape} {
+    @include columns((8, 2, 2));
   }
 
   &.containedButtonGroup {
     display: inline-block;
     width: 100%;
 
-    .buttonGroup {
+    .buttonGroupContainer {
       float: right;
-      width: 225px;
+      width: 152px;
       margin: 0;
     }
   }
 }
 
-.buttonGroup {
+.buttonGroupContainer {
   display: flex;
-  padding-bottom: 30px;
+}
 
-  > div {
-    width: 100%;
+.buttonGroup {
+  width: 100%;
+}
+
+.shareButton {
+  width: 120px;
+}
+
+.actionsContainer {
+  @include columns((12,12));
+
+  > * {
+    @include xy-gutters(30px, $gutter-position: 'top');
+  }
+
+  @media #{$tablet-portrait} {
+    @include columns((6, 6));
   }
 }
 

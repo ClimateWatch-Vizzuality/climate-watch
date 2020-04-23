@@ -16,9 +16,11 @@ import EmissionsProvider from 'providers/emissions-provider';
 import RegionsProvider from 'providers/regions-provider';
 import WorldBankDataProvider from 'providers/wb-country-data-provider';
 import ButtonGroup from 'components/button-group';
+import ShareButton from 'components/button/share-button';
 import Table from 'components/table';
 import ghgTableTheme from 'styles/themes/table/ghg-table-theme.scss';
 import ModalMetadata from 'components/modal-metadata';
+import ModalShare from 'components/modal-share';
 import { TabletPortraitOnly, TabletLandscape } from 'components/responsive';
 import { toPlural } from 'utils/ghg-emissions';
 
@@ -83,11 +85,28 @@ function GhgEmissions(props) {
     loading,
     providerFilters,
     dataZoomData,
-    handleDownloadDataClick,
+    // handleDownloadDataClick,
     handleInfoClick,
     setColumnWidth,
     downloadLink
   } = props;
+
+  const buttonGroupConfig = [
+    {
+      type: 'info',
+      onClick: handleInfoClick
+    },
+    {
+      type: 'download-combo',
+      section: 'ghg-emissions',
+      link: downloadLink,
+      tooltipText: 'View or download raw data',
+      positionRight: true
+    },
+    {
+      type: 'addToUser'
+    }
+  ];
 
   const renderDropdown = (label, field, dropdownIcons, extraProps) => {
     const value = selectedOptions && selectedOptions[`${field}Selected`];
@@ -191,33 +210,8 @@ function GhgEmissions(props) {
 
   const renderButtonGroup = () => (
     <ButtonGroup
-      className={styles.colEnd}
-      buttonsConfig={[
-        {
-          type: 'info',
-          onClick: handleInfoClick
-        },
-        {
-          type: 'share',
-          shareUrl: '/embed/ghg-emissions',
-          analyticsGraphName: 'Ghg-emissions',
-          positionRight: true
-        },
-        {
-          type: 'download',
-          section: 'ghg-emissions',
-          link: downloadLink,
-          tooltipText: 'View or download raw data'
-        },
-        {
-          type: 'downloadCSV',
-          tooltipText: 'Download data in csv',
-          onClick: handleDownloadDataClick
-        },
-        {
-          type: 'addToUser'
-        }
-      ]}
+      className={styles.buttonGroup}
+      buttonsConfig={buttonGroupConfig}
     />
   );
 
@@ -232,7 +226,13 @@ function GhgEmissions(props) {
           <h2 className={styles.title}>Global Historical Emissions</h2>
         )}
         <TabletLandscape>
-          <div className={styles.buttonGroup}>{renderButtonGroup()}</div>
+          <div className={styles.buttonGroupContainer}>
+            {renderButtonGroup()}
+          </div>
+          <ShareButton
+            className={styles.shareButton}
+            sharePath={'/embed/ghg-emissions'}
+          />
         </TabletLandscape>
       </div>
       <WorldBankDataProvider />
@@ -274,9 +274,18 @@ function GhgEmissions(props) {
       </div>
       {renderChart()}
       <TabletPortraitOnly>
-        <div className={styles.buttonGroup}>{renderButtonGroup(true)}</div>
+        <div className={styles.actionsContainer}>
+          <div className={styles.buttonGroupContainer}>
+            {renderButtonGroup()}
+          </div>
+          <ShareButton
+            className={styles.shareButton}
+            sharePath={'/embed/ghg-emissions'}
+          />
+        </div>
       </TabletPortraitOnly>
       <ModalMetadata />
+      <ModalShare />
     </div>
   );
 }
@@ -296,7 +305,7 @@ GhgEmissions.propTypes = {
   legendSelected: PropTypes.array,
   handleChange: PropTypes.func.isRequired,
   handleInfoClick: PropTypes.func.isRequired,
-  handleDownloadDataClick: PropTypes.func.isRequired,
+  // handleDownloadDataClick: PropTypes.func.isRequired,
   setYears: PropTypes.func.isRequired,
   setColumnWidth: PropTypes.func.isRequired,
   providerFilters: PropTypes.object,
