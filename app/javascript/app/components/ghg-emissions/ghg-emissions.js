@@ -14,6 +14,8 @@ import { GHG_TABLE_HEADER } from 'data/constants';
 import GhgEmissionsComponent from './ghg-emissions-component';
 import { getGHGEmissions } from './ghg-emissions-selectors/ghg-emissions-selectors';
 
+const FEATURE_NEW_GHG = process.env.FEATURE_NEW_GHG === 'true';
+
 const mapStateToProps = (state, props) => {
   const { location } = props;
   const search = location && location.search && qs.parse(location.search);
@@ -34,13 +36,19 @@ function GhgEmissionsContainer(props) {
   useEffect(() => {
     const { sourceSelected } = selected;
     if (!(search && search.source) && sourceSelected) {
-      updateUrlParam({ name: 'source', value: sourceSelected.name });
+      updateUrlParam({
+        name: 'source',
+        value: FEATURE_NEW_GHG ? sourceSelected.name : sourceSelected.value
+      });
     }
   }, []);
 
   const handleSourcesChange = category => {
     updateUrlParam([
-      { name: 'source', value: category.name },
+      {
+        name: 'source',
+        value: FEATURE_NEW_GHG ? category.name : category.value
+      },
       { name: 'sectors', value: null },
       { name: 'gases', value: null }
     ]);
@@ -83,7 +91,7 @@ function GhgEmissionsContainer(props) {
     updateUrlParam({
       name: [field],
       value: castArray(filters)
-        .map(v => kebabCase(v.label))
+        .map(v => (FEATURE_NEW_GHG ? kebabCase(v.label) : v.value))
         .join(',')
     });
     sendToAnalitics(field, filters);

@@ -33,6 +33,8 @@ import {
 
 const actions = { ...ownActions, ...modalActions };
 
+const FEATURE_NEW_GHG = process.env.FEATURE_NEW_GHG === 'true';
+
 const mapStateToProps = (state, { location, match }) => {
   const { data, quantifications } = state.countryGhgEmissions;
   const calculationData = state.wbCountryData.data;
@@ -133,7 +135,10 @@ class CountryGhgEmissionsContainer extends PureComponent {
     if (category) {
       this.updateUrlParam(
         [
-          { name: 'source', value: category.name },
+          {
+            name: 'source',
+            value: FEATURE_NEW_GHG ? category.name : category.value
+          },
           { name: 'sector', value: searchQuery.sector },
           { name: 'calculation', value: searchQuery.calculation }
         ],
