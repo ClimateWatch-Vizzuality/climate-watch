@@ -5,7 +5,11 @@ import isEmpty from 'lodash/isEmpty';
 import kebabCase from 'lodash/kebabCase';
 import uniq from 'lodash/uniq';
 import { arrayToSentence } from 'utils';
-import { getGhgEmissionDefaultSlugs, toPlural } from 'utils/ghg-emissions';
+import {
+  getGhgEmissionDefaultSlugs,
+  getGhgEmissionDefaults,
+  toPlural
+} from 'utils/ghg-emissions';
 import { sortLabelByAlpha } from 'utils/graphs';
 import {
   GAS_AGGREGATES,
@@ -18,6 +22,8 @@ import {
   getSources,
   getSelection
 } from './ghg-emissions-selectors-get';
+
+const FEATURE_NEW_GHG = process.env.FEATURE_NEW_GHG === 'true';
 
 const DEFAULTS = {
   breakBy: `regions-${CALCULATION_OPTIONS.ABSOLUTE_VALUE.value}`
@@ -233,8 +239,10 @@ const getDefaults = createSelector(
   [getSourceSelected, getMeta],
   (sourceSelected, meta) => {
     if (!sourceSelected || !meta) return null;
-
-    return getGhgEmissionDefaultSlugs(sourceSelected, meta);
+    if (FEATURE_NEW_GHG) {
+      return getGhgEmissionDefaultSlugs(sourceSelected, meta);
+    }
+    return getGhgEmissionDefaults(sourceSelected, meta);
   }
 );
 
@@ -269,7 +277,10 @@ const getFiltersSelected = field =>
       if (selection) {
         const selectedValues = selection.split(',');
         selectedFilters = fieldOptions.filter(filter =>
-          isIncluded(field, selectedValues, filter)
+          (FEATURE_NEW_GHG
+            ? isIncluded(field, selectedValues, filter)
+            : selectedValues.includes(String(filter.value)) ||
+              selectedValues.includes(filter.iso_code3))
         );
       }
 
