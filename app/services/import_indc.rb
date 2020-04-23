@@ -115,8 +115,8 @@ class ImportIndc
 
   # for datasets that don't have multiple files we can pass the doc_slug
   # as a param, for example for LTS
-  def value_ndc_attributes(row, location, indicator, doc_slug=nil)
-    doc_slug = doc_slug || row[:document]&.parameterize&.gsub('-', '_')
+  def value_ndc_attributes(row, location, indicator, doc_slug = nil)
+    doc_slug ||= row[:document]&.parameterize&.gsub('-', '_')
     {
       location: location,
       indicator: indicator,
