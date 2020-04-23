@@ -2,9 +2,10 @@ import { createSelector, createStructuredSelector } from 'reselect';
 import difference from 'lodash/difference';
 import intersection from 'lodash/intersection';
 import isEmpty from 'lodash/isEmpty';
+import kebabCase from 'lodash/kebabCase';
 import uniq from 'lodash/uniq';
 import { arrayToSentence } from 'utils';
-import { getGhgEmissionDefaults, toPlural } from 'utils/ghg-emissions';
+import { getGhgEmissionDefaultSlugs, toPlural } from 'utils/ghg-emissions';
 import { sortLabelByAlpha } from 'utils/graphs';
 import {
   GAS_AGGREGATES,
@@ -28,7 +29,7 @@ const getOptionSelectedFunction = filter => (options, selected) => {
     const defaultOption = options.find(b => b.value === DEFAULTS[filter]);
     return defaultOption || options[0];
   }
-  return options.find(o => o.value === selected);
+  return options.find(o => o.value === selected || o.name === selected);
 };
 
 // Sources selectors
@@ -50,8 +51,12 @@ const getSourceSelected = createSelector(
 // BreakBy selectors
 const BREAK_BY_OPTIONS = [
   {
-    label: 'Regions-Totals',
+    label: 'Regions',
     value: `regions-${CALCULATION_OPTIONS.ABSOLUTE_VALUE.value}`
+  },
+  {
+    label: 'Regions-Total Aggregated',
+    value: `regions-${CALCULATION_OPTIONS.ABSOLUTE_VALUE.value}-aggregated`
   },
   {
     label: 'Regions-Per Capita',
@@ -83,7 +88,11 @@ const getBreakBySelected = createSelector(
   breakBySelected => {
     if (!breakBySelected) return null;
     const breakByArray = breakBySelected.value.split('-');
-    return { modelSelected: breakByArray[0], metricSelected: breakByArray[1] };
+    return {
+      modelSelected: breakByArray[0],
+      metricSelected: breakByArray[1],
+      isAggregated: breakByArray[2] === 'aggregated'
+    };
   }
 );
 
@@ -94,6 +103,10 @@ export const getModelSelected = createSelector(
 export const getMetricSelected = createSelector(
   getBreakBySelected,
   breakBySelected => (breakBySelected && breakBySelected.metricSelected) || null
+);
+export const getIsRegionAggregated = createSelector(
+  getBreakBySelected,
+  breakBySelected => (breakBySelected && breakBySelected.isAggregated) || null
 );
 
 const filterOptionsBySource = field =>
@@ -125,7 +138,9 @@ const getRegionOptions = createSelector(
       if (
         sourceSelected.name.startsWith('UNFCCC') &&
         region.iso_code3 === 'WORLD'
-      ) { return; }
+      ) {
+        return;
+      }
       const regionMembers = region.members.map(m => m.iso_code3);
       regionOptions.push({
         label: region.wri_standard_name,
@@ -219,9 +234,22 @@ const getDefaults = createSelector(
   (sourceSelected, meta) => {
     if (!sourceSelected || !meta) return null;
 
-    return getGhgEmissionDefaults(sourceSelected, meta);
+    return getGhgEmissionDefaultSlugs(sourceSelected, meta);
   }
 );
+
+const isIncluded = (field, selectedValues, filter) => {
+  const kebabInclude = selectedValues.includes(kebabCase(filter.label));
+  const valueOrIsoInclude =
+    selectedValues.includes(String(filter.value)) ||
+    selectedValues.includes(filter.iso_code3);
+
+  return {
+    location: valueOrIsoInclude,
+    gas: kebabInclude,
+    sector: kebabInclude
+  }[field];
+};
 
 const getFiltersSelected = field =>
   createSelector(
@@ -236,15 +264,12 @@ const getFiltersSelected = field =>
 
       // empty filter selected deliberately
       if (selected === '') return [];
-
       const selection = selected || defaultSelection;
       let selectedFilters = [];
       if (selection) {
         const selectedValues = selection.split(',');
-        selectedFilters = fieldOptions.filter(
-          filter =>
-            selectedValues.includes(String(filter.value)) ||
-            selectedValues.includes(filter.iso_code3)
+        selectedFilters = fieldOptions.filter(filter =>
+          isIncluded(field, selectedValues, filter)
         );
       }
 

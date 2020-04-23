@@ -57,7 +57,7 @@ const CountryLtsOverview = props => {
   const { sectors, loading, actions, iso, isEmbed, cardData } = props;
   const hasSectors = !!sectors;
   const description = hasSectors && (
-    <p
+    <div
       className={styles.descriptionContainer}
       // eslint-disable-next-line react/no-danger
       dangerouslySetInnerHTML={{
