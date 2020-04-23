@@ -922,7 +922,8 @@ CREATE TABLE public.indc_documents (
     long_name character varying,
     description text,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    is_ndc boolean
 );
 
 
@@ -4238,6 +4239,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190725143552'),
 ('20200317204602'),
 ('20200317210227'),
-('20200317210928');
+('20200317210928'),
+('20200423085052');
 
 
