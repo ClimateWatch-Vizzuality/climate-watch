@@ -5,7 +5,8 @@ $min-height: 500px;
 
 .titleContainer {
   @include columns((12, 12));
-  margin: $gutter-padding 0px;
+
+  margin: $gutter-padding 0;
   align-items: center;
 
   @media #{$tablet-landscape} {
@@ -30,6 +31,7 @@ $min-height: 500px;
 
 .buttonGroup {
   width: 100%;
+
   @media #{$tablet-landscape} {
     width: 150px;
   }
@@ -73,12 +75,14 @@ $min-height: 500px;
 
 .title {
   @extend %headline;
+
   color: $theme-color;
   line-height: 45px;
 }
 
 .bodyText {
   @extend %bodyText;
+
   color: $theme-color;
   margin-top: $gutter-padding;
 }
