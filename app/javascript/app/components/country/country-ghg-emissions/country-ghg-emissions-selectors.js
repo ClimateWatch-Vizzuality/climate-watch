@@ -95,7 +95,7 @@ export const getSourceSelected = createSelector(
       const defaultSource = sources.find(s => s.name === 'CAIT');
       return defaultSource || sources[0];
     }
-    return sources.find(category => category.value === selected);
+    return sources.find(category => category.name === selected);
   }
 );
 

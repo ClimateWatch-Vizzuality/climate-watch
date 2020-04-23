@@ -133,7 +133,7 @@ class CountryGhgEmissionsContainer extends PureComponent {
     if (category) {
       this.updateUrlParam(
         [
-          { name: 'source', value: category.value },
+          { name: 'source', value: category.name },
           { name: 'sector', value: searchQuery.sector },
           { name: 'calculation', value: searchQuery.calculation }
         ],

@@ -22,8 +22,12 @@ import newMapTheme from 'styles/themes/map/map-new-zoom-controls.scss';
 import layout from 'styles/layout.scss';
 import styles from './ndcs-explore-map-styles.scss';
 
-const renderButtonGroup = (clickHandler, downloadLink) => (
-  <div className={styles.buttonGroupContainer}>
+const renderButtonGroup = (clickHandler, downloadLink, stickyStatus) => (
+  <div
+    className={cx(styles.buttonGroupContainer, {
+      [styles.padded]: stickyStatus !== Sticky.STATUS_ORIGINAL
+    })}
+  >
     <ButtonGroup
       className={styles.buttonGroup}
       buttonsConfig={[
@@ -167,8 +171,11 @@ function NDCSExploreMap(props) {
                       />
                     </div>
                     {isTablet &&
-                      stickyStatus === Sticky.STATUS_ORIGINAL &&
-                      renderButtonGroup(handleInfoClick, downloadLink)}
+                      renderButtonGroup(
+                        handleInfoClick,
+                        downloadLink,
+                        stickyStatus
+                      )}
                   </div>
                 </div>
               </div>

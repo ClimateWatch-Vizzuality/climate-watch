@@ -34,16 +34,25 @@ export const getIndicatorEmissionsData = (
     summedPercentage += legendItemValue;
 
     return {
-      name: camelCase(legendItem.name),
+      name: legendItem.name,
       value: legendItemValue
     };
   });
 
   if (summedPercentage < 100) {
-    data.push({
-      name: noInformationLabel,
-      value: 100 - summedPercentage
-    });
+    const notApplicableDataItem = data.find(d => d.name === 'Not Applicable');
+    if (notApplicableDataItem) {
+      const notApplicablePosition = data.indexOf(notApplicableDataItem);
+      data[notApplicablePosition] = {
+        name: noInformationLabel,
+        value: notApplicableDataItem.value + (100 - summedPercentage)
+      };
+    } else {
+      data.push({
+        name: noInformationLabel,
+        value: 100 - summedPercentage
+      });
+    }
   }
   return data;
 };

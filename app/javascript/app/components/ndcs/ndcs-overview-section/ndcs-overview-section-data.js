@@ -18,16 +18,16 @@ export const commitmentsData = [
       {
         questionText:
           'How many Parties submitted first Nationally Determined Contributions?',
-        link: '/ndcs-explore',
+        link: '/ndcs-explore?indicator=submission',
         slug: 'submission',
         metadataSlug: 'ndc_cw',
         answerLabel: 'First NDC Submitted'
       },
       {
         questionText: 'How many Parties have submitted Long-Term Strategies?',
-        link: '/lts-explore',
+        link: '/lts-explore?indicator=lts_submission ',
         slug: 'lts_submission',
-        metadataSlug: 'ndc_cw',
+        metadataSlug: 'ndc_lts',
         answerLabel: 'Long-term Strategy Submitted'
       }
     ]
@@ -43,7 +43,7 @@ export const commitmentsData = [
       {
         questionText:
           'How many Parties intend to enhance ambition or action in their NDCs?',
-        link: '/ndcs-explore',
+        link: '/2020-ndc-tracker',
         slug: 'ndce_status_2020',
         metadataSlug: 'ndc_cw',
         answerLabel: 'Intends to Enhance Ambition or Action in 2020 NDC'
@@ -51,7 +51,7 @@ export const commitmentsData = [
       {
         questionText:
           'How many Parties have submitted an updated or second NDC?',
-        link: '/ndcs-explore',
+        link: '/2020-ndc-tracker',
         slug: 'ndce_status_2020',
         metadataSlug: 'ndc_cw',
         answerLabel: '2020 NDC Submitted'
