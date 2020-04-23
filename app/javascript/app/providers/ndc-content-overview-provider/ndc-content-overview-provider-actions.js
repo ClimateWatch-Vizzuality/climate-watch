@@ -4,6 +4,8 @@ import { createThunkAction } from 'utils/redux';
 const getNdcContentOverviewInit = createAction('getNdcContentOverviewInit');
 const getNdcContentOverviewFail = createAction('getNdcContentOverviewFail');
 const getNdcContentOverviewReady = createAction('getNdcContentOverviewReady');
+const FEATURE_NDC_FILTERING = process.env.FEATURE_NDC_FILTERING === 'true';
+
 const getNdcContentOverview = createThunkAction(
   'getNdcContentOverview',
   ({ locations, document }) => dispatch => {
@@ -11,7 +13,8 @@ const getNdcContentOverview = createThunkAction(
     const promises = [];
     const locationsWithPromise = [];
     locations.forEach(location => {
-      const documentParam = document ? `?document=${document}` : '';
+      const documentParam =
+        FEATURE_NDC_FILTERING && document ? `?document=${document}` : '';
       promises.push(
         fetch(`/api/v1/ndcs/${location}/content_overview${documentParam}`).then(
           response => {
