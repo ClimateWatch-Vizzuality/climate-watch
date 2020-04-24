@@ -121,8 +121,23 @@ const getBreakByOptions = () =>
     ]);
 
 const getCalculationSelected = createSelector(
-  [getCalculationOptions, getSelection('calculation')],
-  getOptionSelectedFunction('calculation')
+  [getCalculationOptions, getSelection('calculation'), getSelection('breakBy')],
+  (options, selected, breakBySelected) => {
+    if (!options) return null;
+    if (!selected) {
+      const breakByArray = breakBySelected && breakBySelected.split('-');
+      if (breakByArray && breakByArray[1]) {
+        return options.find(
+          o => o.value === breakByArray[1] // to support legacy URLs
+        );
+      }
+
+      const defaultOption = options.find(b => b.value === DEFAULTS.calculation);
+      return defaultOption || options[0];
+    }
+
+    return options.find(o => o.value === selected);
+  }
 );
 
 const getBreakByOptionSelected = createSelector(
@@ -134,12 +149,10 @@ const getBreakBySelected = createSelector(
   [getBreakByOptionSelected],
   breakBySelected => {
     if (!breakBySelected) return null;
-    const breakByArray = breakBySelected.value.split('-');
-    const isAggregated = breakByArray[0] === 'aggregated';
-    // The second breakByArray is there to support legacy URLs. They used to be like: "regions-PER_CAPITA"
+    const selected = breakBySelected.value.split('-')[0];
+    const isAggregated = selected === 'aggregated';
     return {
-      modelSelected: isAggregated ? 'regions' : breakByArray[0],
-      metricSelected: breakByArray[1],
+      modelSelected: isAggregated ? 'regions' : selected,
       isAggregated
     };
   }
@@ -150,11 +163,9 @@ export const getModelSelected = createSelector(
   breakBySelected => (breakBySelected && breakBySelected.modelSelected) || null
 );
 export const getMetricSelected = createSelector(
-  [getBreakBySelected, getCalculationSelected],
-  (breakBySelected, calculationSelected) =>
-    (breakBySelected && breakBySelected.metricSelected) ||
-    (calculationSelected && calculationSelected.value) ||
-    null
+  [getCalculationSelected],
+  calculationSelected =>
+    (calculationSelected && calculationSelected.value) || null
 );
 export const getIsRegionAggregated = createSelector(
   getBreakBySelected,
