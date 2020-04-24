@@ -1,0 +1,18 @@
+@import '~styles/settings.scss';
+
+.content {
+  @media #{$tablet-landscape} {
+  }
+}
+
+.title {
+  @media #{$tablet-landscape} {
+    font-weight: $font-weight-bold;
+    margin-left: 0;
+  }
+}
+
+.header {
+  background-color: $gray3;
+  height: 100px;
+}

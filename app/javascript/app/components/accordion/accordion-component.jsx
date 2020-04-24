@@ -46,7 +46,11 @@ const Accordion = props => {
               className={styles.accordion}
             >
               <button
-                className={cx(styles.header, isChild ? styles.subHeader : '')}
+                className={cx(
+                  styles.header,
+                  isChild ? styles.subHeader : '',
+                  theme.header
+                )}
                 onClick={() => handleOnClick(section.slug, isOpen)}
               >
                 <div className={cx(layout.content, theme.content)}>

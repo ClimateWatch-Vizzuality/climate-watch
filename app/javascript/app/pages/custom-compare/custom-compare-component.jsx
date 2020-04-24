@@ -8,10 +8,10 @@ import AnchorNav from 'components/anchor-nav';
 import BackButton from 'components/back-button';
 import Dropdown from 'components/dropdown';
 import NdcCompareAllTargetsProvider from 'providers/ndc-compare-all-targets-provider';
-
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
-
 import layout from 'styles/layout.scss';
+
+import CustomCompareAccordion from './custom-compare-accordion';
 import styles from './custom-compare-styles.scss';
 
 const COUNTRY_PLACEHOLDERS = [
@@ -105,9 +105,7 @@ const CustomComparisonComponent = props => {
           </div>
         </div>
       </div>
-      <div className={styles.content}>
-        <div className={styles.accordions}>CONTENT HERE</div>
-      </div>
+      <CustomCompareAccordion className={styles.accordions} />
       <NdcCompareAllTargetsProvider />
     </div>
   );
