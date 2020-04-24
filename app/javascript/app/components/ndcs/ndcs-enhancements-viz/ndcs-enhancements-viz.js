@@ -79,7 +79,7 @@ class NDCSEnhancementsVizContainer extends PureComponent {
       let tooltipTxt;
       switch (indicator.locations[id].label_slug) {
         case 'submitted_2020':
-          tooltipTxt = `Submitted a 2020 NDC on ${dateIndicator.locations[id].value}.`;
+          tooltipTxt = `Submitted a 2020 NDC on ${dateIndicator.locations[id].value}.\n\n${statementIndicator.locations[id].value}`;
           break;
         case 'no_info_2020':
           break;
