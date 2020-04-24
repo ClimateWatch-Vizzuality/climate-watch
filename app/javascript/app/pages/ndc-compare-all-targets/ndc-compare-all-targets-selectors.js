@@ -26,23 +26,25 @@ const getData = createSelector(
         if (conditionIntends) return 'intends';
         return 'no';
       };
+
+      const isLTSSubmitted =
+        countryLTS && countryLTS.value === 'Long-term Strategy Submitted';
+      const isSecondNDCSubmitted =
+        countryNDC && countryNDC.value === 'Second NDC Submitted';
+      const isNDCSubmitted =
+        countryNDC &&
+        (countryNDC.value === 'First NDC Submitted' || isSecondNDCSubmitted);
+      const isINDCSubmitted =
+        countryNDC && (countryNDC.value === 'INDC Submitted' || isNDCSubmitted);
+
       return {
         Country: { name: c.wri_standard_name, iso: c.iso_code3 },
         'Share of global GHG emissions':
           countryEmissions && countryEmissions.value,
-        INDC: getIconValue(
-          countryNDC.value === 'INDC Submitted' ||
-            countryNDC.value === 'First NDC Submitted' ||
-            countryNDC.value === 'Second NDC Submitted'
-        ),
-        NDC: getIconValue(
-          countryNDC.value === 'First NDC Submitted' ||
-            countryNDC.value === 'Second NDC Submitted'
-        ),
-        '2nd NDC': getIconValue(countryNDC.value === 'Second NDC Submitted'),
-        LTS: getIconValue(
-          countryLTS && countryLTS.value === 'Long-term Strategy Submitted'
-        )
+        INDC: getIconValue(isINDCSubmitted),
+        NDC: getIconValue(isNDCSubmitted),
+        '2nd NDC': getIconValue(isSecondNDCSubmitted),
+        LTS: getIconValue(isLTSSubmitted)
       };
     });
     return rows;
