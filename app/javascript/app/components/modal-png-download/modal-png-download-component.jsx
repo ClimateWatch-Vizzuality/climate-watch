@@ -2,27 +2,51 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Modal from 'components/modal/modal-component';
 import ModalHeader from 'components/modal/modal-header-component';
+import Button from 'components/button';
+import Icon from 'components/icon';
+import cwLogo from 'assets/icons/cw-logo.svg';
+import styles from './modal-png-download-styles';
 
 const modalPngDownloadComponent = ({
   isOpen,
   header,
-  description,
+  children,
+  title,
+  selectionSubtitle,
   onRequestClose
 }) => (
   <Modal
+    theme={styles}
     isOpen={isOpen}
     onRequestClose={onRequestClose}
     header={<ModalHeader title={header} />}
   >
-    <div>{description}</div>
-    <div>THE CHART</div>
+    <Icon className={styles.logo} icon={cwLogo} />
+    <div className={styles.title}>{title}</div>
+    <div className={styles.chartParamsWrapper}>
+      {selectionSubtitle && (
+        <span className={styles.chartParams}>{selectionSubtitle}</span>
+      )}
+    </div>
+    <div className={styles.chartWrapper}>{children}</div>
+    <Button
+      className={styles.saveButton}
+      onClick={() => {
+        // TODO download image
+      }}
+      variant="primary"
+    >
+      <span className={styles.shareText}>Save</span>
+    </Button>
   </Modal>
 );
 
 modalPngDownloadComponent.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   header: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
+  children: PropTypes.node,
+  title: PropTypes.string.isRequired,
+  selectionSubtitle: PropTypes.string,
   onRequestClose: PropTypes.func.isRequired
 };
 

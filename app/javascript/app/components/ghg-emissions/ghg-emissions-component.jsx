@@ -161,6 +161,28 @@ function GhgEmissions(props) {
     );
   };
 
+  const renderPngChart = () => {
+    const { chartTypeSelected } = selectedOptions;
+    return (
+      <Chart
+        className={styles.chartWrapper}
+        type={chartTypeSelected && chartTypeSelected.value}
+        theme={legendChartTheme}
+        config={config}
+        data={data}
+        domain={domain}
+        dataOptions={legendOptions}
+        dataSelected={legendSelected || []}
+        height={250}
+        loading={loading}
+        lineType="linear"
+        showUnit
+        onLegendChange={v => handleChange(toPlural(fieldToBreakBy), v)}
+        hideRemoveOptions={hideRemoveOptions}
+      />
+    );
+  };
+
   const renderChart = () => {
     const { chartTypeSelected } = selectedOptions;
 
@@ -330,7 +352,9 @@ function GhgEmissions(props) {
           />
         </div>
       </TabletPortraitOnly>
-      <ModalPngDownload />
+      <ModalPngDownload chartParams={selectedOptions}>
+        {renderPngChart()}
+      </ModalPngDownload>
       <ModalMetadata />
       <ModalShare />
     </div>
