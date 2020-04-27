@@ -97,6 +97,27 @@ function GhgEmissions(props) {
       onClick: handleInfoClick
     },
     {
+      type: 'download',
+      section: 'ghg-emissions',
+      link: downloadLink,
+      tooltipText: 'View or download raw data'
+    },
+    {
+      type: 'downloadCSV',
+      tooltipText: 'Download data in csv',
+      onClick: handleDownloadDataClick
+    },
+    {
+      type: 'addToUser'
+    }
+  ];
+
+  const buttonGroupGHGemissions = [
+    {
+      type: 'info',
+      onClick: handleInfoClick
+    },
+    {
       type: 'downloadCombo',
       options: [
         {
@@ -222,7 +243,9 @@ function GhgEmissions(props) {
   const renderButtonGroup = () => (
     <ButtonGroup
       className={styles.buttonGroup}
-      buttonsConfig={buttonGroupConfig}
+      buttonsConfig={
+        FEATURE_NEW_GHG ? buttonGroupGHGemissions : buttonGroupConfig
+      }
     />
   );
 
@@ -245,19 +268,16 @@ function GhgEmissions(props) {
             sharePath={'/embed/ghg-emissions'}
           />
         </TabletLandscape>
-        <p className={styles.bodyText}>
-          Explore GHG emissions from multiple data source (CAIT, PIK, UNFCCC)
-          and understand their differences in the
-          <a
-            className={styles.link}
-            href="about/faq/ghg"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {' '}
-            FAQ
-          </a>
-        </p>
+        {FEATURE_NEW_GHG && (
+          <p className={styles.bodyText}>
+            Explore GHG emissions from multiple data source (CAIT, PIK, UNFCCC)
+            and understand their differences in the
+            <a className={styles.link} href="about/faq/ghg">
+              {' '}
+              FAQ
+            </a>
+          </p>
+        )}
       </div>
       <WorldBankDataProvider />
       <RegionsProvider />
