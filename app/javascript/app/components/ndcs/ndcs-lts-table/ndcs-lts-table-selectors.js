@@ -21,7 +21,8 @@ export const getIndicatorsParsed = createSelector(
       // Need to get the NDC Enhancement data category to borrow the emissions figure from that dataset for consistency
       id =>
         categories[id].slug === 'longterm_strategy' ||
-        categories[id].slug === 'ndc_enhancement'
+        categories[id].slug === 'ndc_enhancement' ||
+        categories[id].slug === 'summary_information'
     );
     const preppedIndicators = sortBy(
       uniqBy(
