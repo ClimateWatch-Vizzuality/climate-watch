@@ -8,6 +8,7 @@ import qs from 'query-string';
 import castArray from 'lodash/castArray';
 import kebabCase from 'lodash/kebabCase';
 import { actions } from 'components/modal-metadata';
+import { actions as pngModalActions } from 'components/modal-png-download';
 import { encodeAsCSVContent, invokeCSVDownload } from 'utils/csv';
 import { orderByColumns, stripHTML } from 'utils';
 import { GHG_TABLE_HEADER } from 'data/constants';
@@ -130,6 +131,11 @@ function GhgEmissionsContainer(props) {
     invokeCSVDownload(csvContentEncoded);
   };
 
+  const handlePngDownloadModal = () => {
+    const { toggleModalPngDownload } = props;
+    toggleModalPngDownload({ open: true });
+  };
+
   const setColumnWidth = column => {
     if (column === GHG_TABLE_HEADER[fieldToBreakBy]) return 300;
     return 200;
@@ -156,6 +162,7 @@ function GhgEmissionsContainer(props) {
       handleChange={handleChange}
       handleInfoClick={handleInfoClick}
       handleDownloadDataClick={handleDownloadDataClick}
+      handlePngDownloadModal={handlePngDownloadModal}
       setColumnWidth={setColumnWidth}
       setYears={setYears}
     />
@@ -180,5 +187,7 @@ GhgEmissionsContainer.defaultProps = {
 };
 
 export default withRouter(
-  connect(mapStateToProps, actions)(GhgEmissionsContainer)
+  connect(mapStateToProps, { ...actions, ...pngModalActions })(
+    GhgEmissionsContainer
+  )
 );

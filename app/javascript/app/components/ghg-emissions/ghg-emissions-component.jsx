@@ -19,6 +19,7 @@ import ButtonGroup from 'components/button-group';
 import ShareButton from 'components/button/share-button';
 import Table from 'components/table';
 import ghgTableTheme from 'styles/themes/table/ghg-table-theme.scss';
+import ModalPngDownload from 'components/modal-png-download';
 import ModalMetadata from 'components/modal-metadata';
 import ModalShare from 'components/modal-share';
 import { TabletPortraitOnly, TabletLandscape } from 'components/responsive';
@@ -85,6 +86,7 @@ function GhgEmissions(props) {
     loading,
     providerFilters,
     dataZoomData,
+    handlePngDownloadModal,
     handleDownloadDataClick,
     handleInfoClick,
     setColumnWidth,
@@ -126,7 +128,7 @@ function GhgEmissions(props) {
         },
         {
           label: 'Save as image (PNG)',
-          action: () => {}
+          action: handlePngDownloadModal
         },
         {
           label: 'Go to data explorer',
@@ -328,6 +330,7 @@ function GhgEmissions(props) {
           />
         </div>
       </TabletPortraitOnly>
+      <ModalPngDownload />
       <ModalMetadata />
       <ModalShare />
     </div>
@@ -350,6 +353,7 @@ GhgEmissions.propTypes = {
   handleChange: PropTypes.func.isRequired,
   handleInfoClick: PropTypes.func.isRequired,
   handleDownloadDataClick: PropTypes.func.isRequired,
+  handlePngDownloadModal: PropTypes.func.isRequired,
   setYears: PropTypes.func.isRequired,
   setColumnWidth: PropTypes.func.isRequired,
   providerFilters: PropTypes.object,
