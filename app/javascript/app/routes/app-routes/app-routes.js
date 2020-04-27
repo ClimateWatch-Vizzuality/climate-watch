@@ -14,6 +14,7 @@ import NDCCompare from 'pages/ndc-compare';
 import NDCCompareAll from 'pages/ndc-compare-all-targets';
 import NDCS from 'pages/ndcs';
 import NDCSEnhancements from 'pages/ndcs-enhancements';
+import NDCSLTS from 'pages/ndcs-lts';
 import NDCSDG from 'pages/ndc-sdg';
 import Country from 'pages/country';
 import EmissionPathways from 'pages/emission-pathways';
@@ -56,6 +57,7 @@ import emissionPathwaysSections from './emission-pathways-sections';
 import countryCompareSections from './country-compare-sections';
 import agricultureSections from './sectors-agriculture-sections';
 import ndcsEnhancementsSections from './ndcs-enhancements-sections';
+import ndcsLTSSections from './lts-tracker-sections';
 import LTSExploreSections from './lts-explore-sections';
 import NDCSExploreSections from './ndcs-explore-sections';
 import NDCOverviewRoutes from './ndcs-overview-routes';
@@ -174,10 +176,6 @@ export default [
     sections: LTSExploreSections,
     headerGradient: HEADER_GRADIENTS.commitments
   },
-  {
-    path: '/lts-tracker', // This was used in social media and blogs
-    component: () => createElement(Redirect, { to: '/lts-explore' })
-  },
   FEATURE_LTS_EXPLORE && {
     path: '/ndcs-explore',
     component: NDCSExplore,
@@ -190,6 +188,13 @@ export default [
     component: NDCSEnhancements,
     headerImage: 'ndc',
     sections: ndcsEnhancementsSections,
+    headerGradient: HEADER_GRADIENTS.commitments
+  },
+  {
+    path: '/lts-tracker',
+    component: NDCSLTS,
+    headerImage: 'ndc',
+    sections: ndcsLTSSections,
     headerGradient: HEADER_GRADIENTS.commitments
   },
   {

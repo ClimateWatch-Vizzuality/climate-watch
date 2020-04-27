@@ -1,0 +1,182 @@
+@import '~styles/layout.scss';
+@import '~styles/settings.scss';
+
+.wrapper {
+  position: relative;
+  margin-bottom: 40px;
+}
+
+.column {
+  @include columns();
+}
+
+.buttonGroup {
+  width: auto;
+  margin-top: 1em;
+  min-width: 200px;
+  float: right;
+
+  .containerControls & {
+    @media #{$tablet-portrait} {
+      margin-top: 0;
+      width: 100%;
+      min-width: 0;
+    }
+  }
+}
+
+.containerControls {
+  @media #{$tablet-portrait} {
+    @include columns((8,4));
+  }
+
+  margin-bottom: 40px;
+  margin-top: 20px;
+
+  @include clearFix();
+}
+
+.searchBox {
+  @media #{$tablet-landscape} {
+    @include column-offset(9, $gutters: true);
+
+    margin-top: 20px;
+  }
+}
+
+.legend {
+  position: absolute;
+  left: 0;
+  bottom: 12%;
+  max-width: 100%;
+
+  @media #{$tablet-portrait} {
+    max-width: 160px;
+  }
+
+  @media #{$tablet-landscape} {
+    bottom: -2em;
+  }
+}
+
+:global .__react_component_tooltip {
+  max-width: 250px;
+  white-space: pre-line;
+}
+
+.loader {
+  min-height: 500px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: $z-index-loader;
+}
+
+.containerUpper,
+.containerCharts,
+.containerMap {
+  position: relative;
+}
+
+.containerMap {
+  @media #{$tablet-landscape} {
+    padding-left: calc(#{$gutter-padding} / 2);
+  }
+
+  padding-top: calc(#{$gutter-padding} / 2);
+}
+
+.containerUpper {
+  @media #{$tablet-landscape} {
+    @include columns((4,8));
+  }
+}
+
+.containerCharts {
+  box-shadow: 0 20px 20px -20px $theme-color;
+
+  > div {
+    @include columns(100%);
+  }
+
+  @media #{$tablet-portrait} {
+    > div {
+      @include columns(50%);
+    }
+  }
+
+  @media #{$tablet-landscape} {
+    box-shadow: 20px 0 20px -20px $theme-color;
+
+    &,
+    > div {
+      height: 100%;
+    }
+
+    > div {
+      @include columns(100%);
+    }
+  }
+}
+
+.circularChartContainer {
+  position: relative;
+  margin: -60px 0 0;
+  flex: 1;
+  height: 200px;
+  overflow: visible;
+  display: flex;
+  flex-direction: row;
+  font-size: 0.8em;
+
+  > div {
+    position: relative;
+
+    &:first-child {
+      max-width: 60%;
+    }
+  }
+
+  @media #{$tablet-portrait} {
+    font-size: 1em;
+    margin: 0 $card-content-margin $card-content-margin;
+    padding-right: calc(#{$gutter-padding} / 2);
+  }
+
+  [class*=circularChartWrapper] {
+    position: static;
+    margin: 0 auto;
+  }
+
+  svg {
+    height: 200px !important;
+  }
+
+  //Hiding circular charts for now because the number of countries will remain a small minority for some time
+  //Leaving emission chart and functionality in place in case the data should be shown in the future
+  &:first-child {
+    svg {
+      visibility: hidden;
+    }
+
+    .circularChartValues {
+      font-size: 4.5em;
+    }
+  }
+}
+
+.circularChartValues {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-weight: $font-weight-bold;
+  font-size: 2.4em;
+}
+
+.circularChartLabels {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: left;
+}
