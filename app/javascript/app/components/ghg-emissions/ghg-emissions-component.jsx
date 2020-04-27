@@ -16,9 +16,11 @@ import EmissionsProvider from 'providers/emissions-provider';
 import RegionsProvider from 'providers/regions-provider';
 import WorldBankDataProvider from 'providers/wb-country-data-provider';
 import ButtonGroup from 'components/button-group';
+import ShareButton from 'components/button/share-button';
 import Table from 'components/table';
 import ghgTableTheme from 'styles/themes/table/ghg-table-theme.scss';
 import ModalMetadata from 'components/modal-metadata';
+import ModalShare from 'components/modal-share';
 import { TabletPortraitOnly, TabletLandscape } from 'components/responsive';
 import { toPlural } from 'utils/ghg-emissions';
 
@@ -88,6 +90,55 @@ function GhgEmissions(props) {
     setColumnWidth,
     downloadLink
   } = props;
+
+  const buttonGroupConfig = [
+    {
+      type: 'info',
+      onClick: handleInfoClick
+    },
+    {
+      type: 'download',
+      section: 'ghg-emissions',
+      link: downloadLink,
+      tooltipText: 'View or download raw data'
+    },
+    {
+      type: 'downloadCSV',
+      tooltipText: 'Download data in csv',
+      onClick: handleDownloadDataClick
+    },
+    {
+      type: 'addToUser'
+    }
+  ];
+
+  const buttonGroupGHGemissions = [
+    {
+      type: 'info',
+      onClick: handleInfoClick
+    },
+    {
+      type: 'downloadCombo',
+      options: [
+        {
+          label: 'Download current data (CSV)',
+          action: handleDownloadDataClick
+        },
+        {
+          label: 'Save as image (PNG)',
+          action: () => {}
+        },
+        {
+          label: 'Go to data explorer',
+          link: downloadLink
+        }
+      ],
+      reverseDropdown: false
+    },
+    {
+      type: 'addToUser'
+    }
+  ];
 
   const renderDropdown = (label, field, dropdownIcons, extraProps) => {
     const value = selectedOptions && selectedOptions[`${field}Selected`];
@@ -191,33 +242,10 @@ function GhgEmissions(props) {
 
   const renderButtonGroup = () => (
     <ButtonGroup
-      className={styles.colEnd}
-      buttonsConfig={[
-        {
-          type: 'info',
-          onClick: handleInfoClick
-        },
-        {
-          type: 'share',
-          shareUrl: '/embed/ghg-emissions',
-          analyticsGraphName: 'Ghg-emissions',
-          positionRight: true
-        },
-        {
-          type: 'download',
-          section: 'ghg-emissions',
-          link: downloadLink,
-          tooltipText: 'View or download raw data'
-        },
-        {
-          type: 'downloadCSV',
-          tooltipText: 'Download data in csv',
-          onClick: handleDownloadDataClick
-        },
-        {
-          type: 'addToUser'
-        }
-      ]}
+      className={styles.buttonGroup}
+      buttonsConfig={
+        FEATURE_NEW_GHG ? buttonGroupGHGemissions : buttonGroupConfig
+      }
     />
   );
 
@@ -232,14 +260,30 @@ function GhgEmissions(props) {
           <h2 className={styles.title}>Global Historical Emissions</h2>
         )}
         <TabletLandscape>
-          <div className={styles.buttonGroup}>{renderButtonGroup()}</div>
+          <div className={styles.buttonGroupContainer}>
+            {renderButtonGroup()}
+          </div>
+          <ShareButton
+            className={styles.shareButton}
+            sharePath={'/embed/ghg-emissions'}
+          />
         </TabletLandscape>
+        {FEATURE_NEW_GHG && (
+          <p className={styles.bodyText}>
+            Explore GHG emissions from multiple data source (CAIT, PIK, UNFCCC)
+            and understand their differences in the
+            <a className={styles.link} href="about/faq/ghg">
+              {' '}
+              FAQ
+            </a>
+          </p>
+        )}
       </div>
       <WorldBankDataProvider />
       <RegionsProvider />
       <EmissionsMetaProvider />
       {providerFilters && <EmissionsProvider filters={providerFilters} />}
-      <div className={styles.col4}>
+      <div className={cx(styles.col4, { [styles.newGHG]: FEATURE_NEW_GHG })}>
         {renderDropdown('Data Source', 'sources')}
         <Multiselect
           label={'Countries/Regions'}
@@ -266,6 +310,7 @@ function GhgEmissions(props) {
           onValueChange={selected => handleChange('gases', selected)}
           theme={dropdownTheme}
         />
+        {FEATURE_NEW_GHG && renderDropdown('Calculations', 'calculation')}
         {renderDropdown('Show data by', 'breakBy')}
         {renderDropdown(null, 'chartType', icons, {
           variant: 'icons-labels',
@@ -274,9 +319,18 @@ function GhgEmissions(props) {
       </div>
       {renderChart()}
       <TabletPortraitOnly>
-        <div className={styles.buttonGroup}>{renderButtonGroup(true)}</div>
+        <div className={styles.actionsContainer}>
+          <div className={styles.buttonGroupContainer}>
+            {renderButtonGroup()}
+          </div>
+          <ShareButton
+            className={styles.shareButton}
+            sharePath={'/embed/ghg-emissions'}
+          />
+        </div>
       </TabletPortraitOnly>
       <ModalMetadata />
+      <ModalShare />
     </div>
   );
 }
