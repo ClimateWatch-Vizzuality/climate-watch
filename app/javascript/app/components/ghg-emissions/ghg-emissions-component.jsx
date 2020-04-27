@@ -283,7 +283,7 @@ function GhgEmissions(props) {
       <RegionsProvider />
       <EmissionsMetaProvider />
       {providerFilters && <EmissionsProvider filters={providerFilters} />}
-      <div className={styles.col4}>
+      <div className={cx(styles.col4, { [styles.newGHG]: FEATURE_NEW_GHG })}>
         {renderDropdown('Data Source', 'sources')}
         <Multiselect
           label={'Countries/Regions'}
@@ -310,6 +310,7 @@ function GhgEmissions(props) {
           onValueChange={selected => handleChange('gases', selected)}
           theme={dropdownTheme}
         />
+        {FEATURE_NEW_GHG && renderDropdown('Calculations', 'calculation')}
         {renderDropdown('Show data by', 'breakBy')}
         {renderDropdown(null, 'chartType', icons, {
           variant: 'icons-labels',
