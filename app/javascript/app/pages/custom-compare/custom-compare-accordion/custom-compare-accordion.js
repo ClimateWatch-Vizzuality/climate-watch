@@ -1,5 +1,6 @@
 import React from 'react';
-import CutomCompareAccrdionComponent from './custom-compare-accordion-component';
+import PropTypes from 'prop-types';
+import CutomCompareAccordionComponent from './custom-compare-accordion-component';
 
 const placeholderData = [
   {
@@ -40,8 +41,41 @@ const placeholderData = [
   }
 ];
 
-const CutomCompareAccrdion = () => (
-  <CutomCompareAccrdionComponent data={placeholderData} />
-);
+const sectoralInfoData = [
+  {
+    slug: 'planning_and_implementation',
+    title: 'Title 1',
+    sectors: [
+      {
+        ...placeholderData[0],
+        parent: { id: 1, name: 'Subtitle 1' }
+      },
+      {
+        ...placeholderData[1],
+        parent: { id: 2, name: 'Subtitle 2' }
+      }
+    ]
+  },
+  {
+    slug: 'summary_information',
+    title: 'Title 2'
+  }
+];
 
-export default CutomCompareAccrdion;
+const CutomCompareAccordion = props => {
+  const isSectoralInformation = props.category === 'sectoral_information';
+
+  return (
+    <CutomCompareAccordionComponent
+      {...props}
+      data={isSectoralInformation ? sectoralInfoData : placeholderData}
+      isSectoralInformation={isSectoralInformation}
+    />
+  );
+};
+
+CutomCompareAccordion.propTypes = {
+  category: PropTypes.string
+};
+
+export default CutomCompareAccordion;

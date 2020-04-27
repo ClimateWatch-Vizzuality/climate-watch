@@ -48,7 +48,7 @@ const Accordion = props => {
               <button
                 className={cx(
                   styles.header,
-                  isChild ? styles.subHeader : '',
+                  { [styles.subHeader]: isChild },
                   theme.header
                 )}
                 onClick={() => handleOnClick(section.slug, isOpen)}
@@ -58,9 +58,11 @@ const Accordion = props => {
                     {title}
                     <Icon
                       icon={dropdownArrow}
-                      className={cx(styles.iconArrow, {
-                        [styles.isOpen]: isOpen
-                      })}
+                      className={cx(
+                        styles.iconArrow,
+                        { [styles.isOpen]: isOpen },
+                        theme.arrow
+                      )}
                     />
                   </div>
                 </div>

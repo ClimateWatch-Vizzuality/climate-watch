@@ -1,14 +1,16 @@
+
 @import '~styles/settings.scss';
 
 .title {
+  margin-left: 0;
+
   @media #{$tablet-landscape} {
     font-weight: $font-weight-bold;
   }
 }
 
 .header {
-  background-color: $gray3;
-  height: 100px;
+  background-color: $white;
   border-bottom: 1px solid $gray1;
 }
 
