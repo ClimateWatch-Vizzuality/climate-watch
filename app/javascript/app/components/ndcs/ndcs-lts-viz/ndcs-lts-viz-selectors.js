@@ -10,6 +10,9 @@ import { generateLinkToDataExplorer } from 'utils/data-explorer';
 import worldPaths from 'app/data/world-50m-paths';
 import { COUNTRY_STYLES } from 'components/ndcs/shared/constants';
 
+const FEATURE_LTS_UPDATED_DATA =
+  process.env.FEATURE_LTS_UPDATED_DATA === 'true';
+
 const getSearch = state => state.search || null;
 const getCountries = state => state.countries || null;
 const getCategories = state => state.categories || null;
@@ -68,7 +71,9 @@ export const getMapIndicator = createSelector(
   [getIndicatorsParsed, getISOCountries],
   (indicators, isos) => {
     if (!indicators || !indicators.length) return null;
-    const mapIndicator = indicators.find(ind => ind.value === 'lts_submission');
+    const mapIndicator = indicators.find(
+      ind => ind.value === (FEATURE_LTS_UPDATED_DATA ? 'lts_submission' : 'lts')
+    );
     if (mapIndicator) {
       const noInfoId = Object.keys(mapIndicator.legendBuckets).find(
         id => mapIndicator.legendBuckets[id].label === 'No Document Submitted'
