@@ -7,8 +7,8 @@ import Component from './modal-png-download-component';
 
 const modalPngDownloadContainer = props => {
   const handleCloseModal = () => {
-    const { toggleModalPNGDownload } = props;
-    toggleModalPNGDownload({ open: false });
+    const { toggleModalPngDownload } = props;
+    toggleModalPngDownload({ open: false });
   };
 
   return <Component {...props} onRequestClose={handleCloseModal} />;
