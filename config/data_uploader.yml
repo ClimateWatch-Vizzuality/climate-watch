@@ -51,6 +51,7 @@ platforms:
           - NDC_metadata
           - NDC_single_version
           - NDC_documents
+          - pledges_data
       - name: locations
         importer: ImportLocations
         datasets:
