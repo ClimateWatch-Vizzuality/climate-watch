@@ -5,14 +5,13 @@ module Api
         attributes :documents, :laws, :policies, :data
 
         def data
-          result = object.data.map do |datum|
+          object.data.map do |datum|
             [datum.iso_code3,
              ::Indc::Document.joins(values: :location).
              where(locations: {iso_code3: datum.iso_code3}).
              order(:ordering).distinct.to_a
              ]
           end.to_h
-          result
         end
 
         def documents
