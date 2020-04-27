@@ -1,4 +1,3 @@
-@import '~styles/settings.scss';
 @import '~styles/layout.scss';
 
 .definitionCompare {
@@ -6,7 +5,7 @@
   @include xy-gutters(40px, $gutter-position: ('top', 'bottom'), $gutter-type: padding);
   @include xy-gutters(60px);
 
-  margin: auto;
+  border-bottom: solid 1px rgba(#9090b2, 0.15);
 }
 
 .definition {
@@ -16,6 +15,8 @@
   > *:first-child {
     @include xy-gutters($gutter-position: ('bottom'));
   }
+
+  border-bottom: solid 1px rgba(#9090b2, 0.15);
 
   @media #{$tablet-landscape} {
     @include columns((3, 9));
@@ -31,7 +32,6 @@
   color: $theme-color;
   font-weight: $font-weight-bold;
   font-family: $font-family-1;
-  margin-left: 0;
 }
 
 .definitionDesc {
@@ -48,10 +48,4 @@
     background-repeat: repeat-x;
     background-size: 10px 2px;
   }
-}
-
-.definitionRow {
-  border-bottom: 1px solid $gray1;
-  padding: 50px 0;
-  width: 100%;
 }

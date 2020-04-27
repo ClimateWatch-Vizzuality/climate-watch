@@ -89,7 +89,7 @@ const CustomComparisonComponent = props => {
           />
         </Sticky>
       </Header>
-      <div className={styles.filtersWrapper}>
+      <div>
         <div className={styles.content}>
           <div className={styles.filters}>
             {filtersData &&

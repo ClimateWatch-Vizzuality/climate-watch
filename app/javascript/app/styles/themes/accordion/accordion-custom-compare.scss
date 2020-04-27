@@ -15,4 +15,9 @@
 .header {
   background-color: $gray3;
   height: 100px;
+  border-bottom: 1px solid $gray1;
+
+  &:first-child {
+    border-top: 1px solid $gray1;
+  }
 }
