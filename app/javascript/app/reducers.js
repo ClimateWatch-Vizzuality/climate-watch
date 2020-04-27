@@ -102,6 +102,7 @@ import * as autocompleteSearchComponent from 'components/autocomplete-search';
 import * as ndcsAutocompleteSearchComponent from 'components/ndcs/ndcs-autocomplete-search';
 import * as countrySelectComponent from 'components/countries-select';
 import * as modalDownloadComponent from 'components/modal-download';
+import * as modalPngDownloadComponent from 'components/modal-png-download';
 import * as modalMetadataComponent from 'components/modal-metadata';
 import * as shareModalComponent from 'components/modal-share';
 import * as modalESPOverviewComponent from 'components/modal-overview';
@@ -123,6 +124,7 @@ const componentsReducers = {
   documents: handleActions(ndcsAutocompleteSearchComponent),
   countrySelect: handleActions(countrySelectComponent),
   modalDownload: handleActions(modalDownloadComponent),
+  modalPngDownload: handleActions(modalPngDownloadComponent),
   modalMetadata: handleActions(modalMetadataComponent),
   modalESPOverview: handleActions(modalESPOverviewComponent),
   modalShare: handleActions(shareModalComponent),
