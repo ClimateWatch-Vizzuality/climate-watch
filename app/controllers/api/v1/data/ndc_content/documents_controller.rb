@@ -4,7 +4,7 @@ module Api
       module NdcContent
         class DocumentsController < Api::V1::Data::ApiController
           def index
-            documents = ::Indc::Document.order(:ordering)
+            documents = ::Indc::Document.order(:ordering).where(is_ndc: true)
             render json: documents,
                    adapter: :json,
                    each_serializer: Api::V1::Data::NdcContent::DocumentSerializer,

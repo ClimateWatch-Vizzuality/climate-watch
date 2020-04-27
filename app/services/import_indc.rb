@@ -18,6 +18,7 @@ class ImportIndc
     "#{CW_FILES_PREFIX}indc/NDC_metadata.csv".freeze
   DOCUMENTS_FILEPATH =
     "#{CW_FILES_PREFIX}indc/NDC_documents.csv".freeze
+  PLEDGES_DATA_FILEPATH = "#{CW_FILES_PREFIX}indc/pledges_data.csv".freeze
 
   def call
     ActiveRecord::Base.transaction do
@@ -42,6 +43,8 @@ class ImportIndc
 
       import_sectors_wb
       import_values_wb
+
+      import_values_pledges
 
       reject_map_indicators_without_values_or_labels
       import_submissions
@@ -79,6 +82,7 @@ class ImportIndc
     @wb_sectoral_data = S3CSVReader.read(DATA_WB_SECTORAL_FILEPATH).map(&:to_h)
     @metadata = S3CSVReader.read(METADATA_FILEPATH).map(&:to_h)
     @submissions = S3CSVReader.read(SUBMISSIONS_FILEPATH).map(&:to_h)
+    @pledges_data = S3CSVReader.read(PLEDGES_DATA_FILEPATH).map(&:to_h)
   end
 
   def load_locations
@@ -113,8 +117,10 @@ class ImportIndc
     }
   end
 
-  def value_ndc_attributes(row, location, indicator)
-    doc_slug = row[:document]&.parameterize&.gsub('-', '_')
+  # for datasets that don't have multiple files we can pass the doc_slug
+  # as a param, for example for LTS
+  def value_ndc_attributes(row, location, indicator, doc_slug = nil)
+    doc_slug ||= row[:document]&.parameterize&.gsub('-', '_')
     {
       location: location,
       indicator: indicator,
@@ -144,7 +150,8 @@ class ImportIndc
       ordering: doc[:order_number],
       slug: doc_slug,
       long_name: doc[:long_name],
-      description: doc[:description]
+      description: doc[:description],
+      is_ndc: doc[:is_ndc]
     }
   end
 
@@ -304,8 +311,10 @@ class ImportIndc
   end
 
   def import_values_ndc
+    valid_sources = [@sources_index['CAIT'], @sources_index['NDC Explorer'],
+                     @sources_index['WB'], @sources_index['Net Zero Tracker']]
     Indc::Indicator.
-      where(source: [@sources_index['CAIT'], @sources_index['NDC Explorer'], @sources_index['WB'], @sources_index['Net Zero Tracker']]).
+      where(source: valid_sources).
       each do |indicator|
       (@single_version_data + @ndc_data).each do |r|
         location = @locations_by_iso3[r[:iso]]
@@ -336,7 +345,26 @@ class ImportIndc
         next unless r[:"#{indicator.slug}"].present?
 
         Indc::Value.create!(
-          value_ndc_attributes(r, location, indicator)
+          value_ndc_attributes(r, location, indicator, 'lts')
+        )
+      end
+    end
+  end
+
+  def import_values_pledges
+    Indc::Indicator.
+      where(source: @sources_index['Pledges']).each do |indicator|
+      @pledges_data.each do |r|
+        location = @locations_by_iso3[r[:iso]]
+        unless location
+          Rails.logger.error "location #{r[:country]} not found. Skipping."
+          next
+        end
+
+        next unless r[:"#{indicator.slug}"].present?
+
+        Indc::Value.create!(
+          value_ndc_attributes(r, location, indicator, 'pledges')
         )
       end
     end

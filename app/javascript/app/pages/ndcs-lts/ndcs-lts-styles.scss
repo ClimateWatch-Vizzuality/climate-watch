@@ -1,0 +1,20 @@
+@import '~styles/layout.scss';
+@import '~styles/settings.scss';
+
+.anchorNav {
+  @include row('shrink', $wrap: false);
+}
+
+.wrapper {
+  padding-top: $gutter-padding;
+  padding-bottom: $gutter-padding;
+  background-color: $gray3;
+}
+
+.headerLayout {
+  @include columns(12);
+
+  @media #{$tablet-landscape} {
+    @include columns(6);
+  }
+}

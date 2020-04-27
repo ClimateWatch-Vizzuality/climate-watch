@@ -26,7 +26,10 @@ import {
 const FEATURE_NEW_GHG = process.env.FEATURE_NEW_GHG === 'true';
 
 const DEFAULTS = {
-  breakBy: `regions-${CALCULATION_OPTIONS.ABSOLUTE_VALUE.value}`
+  breakBy: FEATURE_NEW_GHG
+    ? 'regions'
+    : `regions-${CALCULATION_OPTIONS.ABSOLUTE_VALUE.value}`,
+  calculation: CALCULATION_OPTIONS.ABSOLUTE_VALUE.value
 };
 
 const getOptionSelectedFunction = filter => (options, selected) => {
@@ -35,6 +38,13 @@ const getOptionSelectedFunction = filter => (options, selected) => {
     const defaultOption = options.find(b => b.value === DEFAULTS[filter]);
     return defaultOption || options[0];
   }
+
+  if (FEATURE_NEW_GHG && filter === 'breakBy') {
+    return options.find(
+      o => o.value === selected || selected.startsWith(o.value) // to support legacy URL
+    );
+  }
+
   return options.find(o => o.value === selected || o.name === selected);
 };
 
@@ -54,35 +64,85 @@ const getSourceSelected = createSelector(
   getOptionSelectedFunction('source')
 );
 
-// BreakBy selectors
-const BREAK_BY_OPTIONS = [
+// Calculation selectors
+const getCalculationOptions = () => [
   {
-    label: 'Regions',
-    value: `regions-${CALCULATION_OPTIONS.ABSOLUTE_VALUE.value}`
+    label: 'Total',
+    value: CALCULATION_OPTIONS.ABSOLUTE_VALUE.value
   },
   {
-    label: 'Regions-Total Aggregated',
-    value: `regions-${CALCULATION_OPTIONS.ABSOLUTE_VALUE.value}-aggregated`
+    label: 'Per Capita',
+    value: CALCULATION_OPTIONS.PER_CAPITA.value
   },
   {
-    label: 'Regions-Per Capita',
-    value: `regions-${CALCULATION_OPTIONS.PER_CAPITA.value}`
-  },
-  {
-    label: 'Regions-Per GDP',
-    value: `regions-${CALCULATION_OPTIONS.PER_GDP.value}`
-  },
-  {
-    label: 'Sectors',
-    value: 'sector'
-  },
-  {
-    label: 'Gases',
-    value: 'gas'
+    label: 'Per GDP',
+    value: CALCULATION_OPTIONS.PER_GDP.value
   }
 ];
 
-const getBreakByOptions = () => BREAK_BY_OPTIONS;
+// BreakBy selectors
+const getBreakByOptions = () =>
+  (FEATURE_NEW_GHG
+    ? [
+      {
+        label: 'Regions',
+        value: 'regions'
+      },
+      {
+        label: 'Regions-Total Aggregated',
+        value: 'aggregated'
+      },
+      {
+        label: 'Sectors',
+        value: 'sector'
+      },
+      {
+        label: 'Gases',
+        value: 'gas'
+      }
+    ]
+    : [
+      {
+        label: 'Regions',
+        value: `regions-${CALCULATION_OPTIONS.ABSOLUTE_VALUE.value}`
+      },
+      {
+        label: 'Regions-Per Capita',
+        value: `regions-${CALCULATION_OPTIONS.PER_CAPITA.value}`
+      },
+      {
+        label: 'Regions-Per GDP',
+        value: `regions-${CALCULATION_OPTIONS.PER_GDP.value}`
+      },
+      {
+        label: 'Sectors',
+        value: 'sector'
+      },
+      {
+        label: 'Gases',
+        value: 'gas'
+      }
+    ]);
+
+const getCalculationSelected = createSelector(
+  [getCalculationOptions, getSelection('calculation'), getSelection('breakBy')],
+  (options, selected, breakBySelected) => {
+    if (!options) return null;
+    if (!selected) {
+      const breakByArray = breakBySelected && breakBySelected.split('-');
+      if (breakByArray && breakByArray[1]) {
+        return options.find(
+          o => o.value === breakByArray[1] // to support legacy URLs
+        );
+      }
+
+      const defaultOption = options.find(b => b.value === DEFAULTS.calculation);
+      return defaultOption || options[0];
+    }
+
+    return options.find(o => o.value === selected);
+  }
+);
 
 const getBreakByOptionSelected = createSelector(
   [getBreakByOptions, getSelection('breakBy')],
@@ -90,14 +150,14 @@ const getBreakByOptionSelected = createSelector(
 );
 
 const getBreakBySelected = createSelector(
-  getBreakByOptionSelected,
+  [getBreakByOptionSelected],
   breakBySelected => {
     if (!breakBySelected) return null;
-    const breakByArray = breakBySelected.value.split('-');
+    const selected = breakBySelected.value.split('-')[0];
+    const isAggregated = selected === 'aggregated';
     return {
-      modelSelected: breakByArray[0],
-      metricSelected: breakByArray[1],
-      isAggregated: breakByArray[2] === 'aggregated'
+      modelSelected: isAggregated ? 'regions' : selected,
+      isAggregated
     };
   }
 );
@@ -107,8 +167,9 @@ export const getModelSelected = createSelector(
   breakBySelected => (breakBySelected && breakBySelected.modelSelected) || null
 );
 export const getMetricSelected = createSelector(
-  getBreakBySelected,
-  breakBySelected => (breakBySelected && breakBySelected.metricSelected) || null
+  [getCalculationSelected],
+  calculationSelected =>
+    (calculationSelected && calculationSelected.value) || null
 );
 export const getIsRegionAggregated = createSelector(
   getBreakBySelected,
@@ -230,6 +291,7 @@ export const getOptions = createStructuredSelector({
   sources: getSourceOptions,
   chartType: getChartTypeOptions,
   breakBy: getBreakByOptions,
+  calculation: getCalculationOptions,
   regions: getRegionOptions,
   sectors: getSectorOptions,
   gases: getGasOptions
@@ -448,5 +510,6 @@ export const getOptionsSelected = createStructuredSelector({
   sectorsSelected: getFiltersSelected('sector'),
   gasesSelected: getFiltersSelected('gas'),
   breakBySelected: getBreakByOptionSelected,
+  calculationSelected: getCalculationSelected,
   chartTypeSelected: getChartTypeSelected
 });
