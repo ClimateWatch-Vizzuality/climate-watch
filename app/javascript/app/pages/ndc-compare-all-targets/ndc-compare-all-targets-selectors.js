@@ -45,7 +45,7 @@ const getData = createSelector(
         INDC: getIconValue('indc'),
         NDC: getIconValue('first_ndc'),
         '2nd NDC': getIconValue('second_ndc'),
-        // 'Targets in National Policies', Missing
+        'Targets in National Policies': getIconValue('targets'),
         LTS: getIconValue('lts')
       };
     });

@@ -29,8 +29,6 @@
 .buttonAndSearch {
   justify-content: flex-end;
 
-  @include row(12);
-
   > * {
     @include xy-gutters($gutter-position: ('bottom'));
   }
