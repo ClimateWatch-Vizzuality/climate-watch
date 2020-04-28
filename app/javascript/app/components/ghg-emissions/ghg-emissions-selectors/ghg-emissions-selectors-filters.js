@@ -61,20 +61,15 @@ const getSourceSelected = createSelector(
 );
 
 // Calculation selectors
-const getCalculationOptions = () => [
-  {
-    label: 'Total',
-    value: CALCULATION_OPTIONS.ABSOLUTE_VALUE.value
-  },
-  {
-    label: 'Per Capita',
-    value: CALCULATION_OPTIONS.PER_CAPITA.value
-  },
-  {
-    label: 'Per GDP',
-    value: CALCULATION_OPTIONS.PER_GDP.value
-  }
-];
+const getCalculationOptions = () =>
+  Object.keys(CALCULATION_OPTIONS).reduce(
+    (acc, key) =>
+      acc.concat({
+        label: CALCULATION_OPTIONS[key].label,
+        value: CALCULATION_OPTIONS[key].value
+      }),
+    []
+  );
 
 // BreakBy selectors
 const getBreakByOptions = () =>
