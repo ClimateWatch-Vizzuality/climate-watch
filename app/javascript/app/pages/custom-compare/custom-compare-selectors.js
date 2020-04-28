@@ -108,16 +108,13 @@ export const getFiltersData = createSelector(
 );
 
 export const getAnchorLinks = createSelector(
-  [state => state.route.routes || [], state => state.location.search],
-  (routes, search) => {
-    const searchQuery = qs.parse(search);
-    const searchParams = { locations: searchQuery.locations };
-    return routes
+  [state => state.route.routes || [], getQuery],
+  (routes, query) =>
+    routes
       .filter(route => route.anchor)
       .map(route => ({
         label: route.label,
         path: `/custom-compare/${route.param ? route.param : ''}`,
-        search: `?${qs.stringify(searchParams)}`
-      }));
-  }
+        search: `?${qs.stringify(query)}`
+      }))
 );

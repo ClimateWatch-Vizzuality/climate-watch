@@ -24,7 +24,7 @@ const mapStateToProps = (state, { location, route }) => {
   };
 
   return {
-    anchorLinks: getAnchorLinks(routeData),
+    anchorLinks: getAnchorLinks(routeData, { search }),
     filtersData: getFiltersData(state, { search }),
     selectedTargets: getSelectedTargets(state, { search }),
     backButtonLink: getBackButtonLink(null, { search }),
@@ -57,7 +57,9 @@ const CustomCompare = props => {
         : newCountryDocuments[0];
 
     selectedTargets.forEach(({ key, country, document }) => {
-      if (key === targetKey) { newTargetParams.push(`${newCountry}-${defaultDocument || ''}`); } else if (country) newTargetParams.push(`${country}-${document}`);
+      if (key === targetKey) {
+        newTargetParams.push(`${newCountry}-${defaultDocument || ''}`);
+      } else if (country) newTargetParams.push(`${country}-${document}`);
     });
 
     updateTargetParams(newTargetParams);
