@@ -1,7 +1,7 @@
 import { createElement } from 'react';
 import { Redirect } from 'react-router-dom';
 
-import CompareAccordion from 'pages/custom-compare/custom-compare-accordion';
+import CompareAccordion from 'components/custom-compare-accordion';
 
 export default [
   {
