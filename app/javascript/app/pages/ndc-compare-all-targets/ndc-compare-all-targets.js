@@ -58,7 +58,7 @@ const NDCCompareAllContainer = props => {
   const handleTargetsChange = value => {
     updateUrlParam({
       name: 'targets',
-      value: value.toString()
+      value: value ? value.toString() : undefined
     });
   };
 

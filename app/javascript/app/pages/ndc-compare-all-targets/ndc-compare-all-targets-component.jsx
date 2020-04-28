@@ -91,6 +91,14 @@ const NDCCompareAllTargets = props => {
             {renderLegend()}
             <div className={styles.buttonAndSearch}>
               <Button
+                variant="secondary"
+                className={styles.compareButton}
+                disabled={selectedTargets.length === 0}
+                onClick={() => handleTargetsChange(null)}
+              >
+                Clear
+              </Button>
+              <Button
                 variant="primary"
                 className={styles.compareButton}
                 disabled={selectedTargets.length === 0}
