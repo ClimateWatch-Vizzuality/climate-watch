@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { renderRoutes } from 'react-router-config';
 import Header from 'components/header';
 import Intro from 'components/intro';
 import cx from 'classnames';
@@ -8,10 +9,9 @@ import AnchorNav from 'components/anchor-nav';
 import BackButton from 'components/back-button';
 import Dropdown from 'components/dropdown';
 import NdcCompareAllTargetsProvider from 'providers/ndc-compare-all-targets-provider';
-
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
-
 import layout from 'styles/layout.scss';
+
 import styles from './custom-compare-styles.scss';
 
 const COUNTRY_PLACEHOLDERS = [
@@ -89,25 +89,21 @@ const CustomComparisonComponent = props => {
           />
         </Sticky>
       </Header>
-      <div className={styles.filtersWrapper}>
-        <div className={styles.content}>
-          <div className={styles.filters}>
-            {filtersData &&
-              filtersData.map((data, i) => (
-                <FiltersGroup
-                  key={data.key}
-                  data={data}
-                  countryPlaceholder={COUNTRY_PLACEHOLDERS[i]}
-                  handleCountryFilterChange={handleCountryFilterChange}
-                  handleDocumentFilterChange={handleDocumentFilterChange}
-                />
-              ))}
-          </div>
+      <div className={styles.content}>
+        <div className={styles.filters}>
+          {filtersData &&
+            filtersData.map((data, i) => (
+              <FiltersGroup
+                key={data.key}
+                data={data}
+                countryPlaceholder={COUNTRY_PLACEHOLDERS[i]}
+                handleCountryFilterChange={handleCountryFilterChange}
+                handleDocumentFilterChange={handleDocumentFilterChange}
+              />
+            ))}
         </div>
       </div>
-      <div className={styles.content}>
-        <div className={styles.accordions}>CONTENT HERE</div>
-      </div>
+      {renderRoutes(route.routes)}
       <NdcCompareAllTargetsProvider />
     </div>
   );

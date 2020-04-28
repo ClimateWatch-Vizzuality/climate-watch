@@ -1,47 +1,45 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
+import layout from 'styles/layout.scss';
 
 import styles from './definition-list-styles.scss';
 
-class DefinitionList extends PureComponent {
-  // eslint-disable-line react/prefer-stateless-function
-  render() {
-    const { definitions, compare, className } = this.props;
-    return (
-      <dl className={className}>
-        {definitions &&
-          definitions.length > 0 &&
-          definitions.map(def => (
-            <div className="grid-column-item" key={def.slug}>
-              <div
-                key={`${def.slug}-${def.title}-${Math.random()}`}
-                className={cx(
-                  compare ? styles.definitionCompare : styles.definition
-                )}
-              >
-                <dt className={styles.definitionTitle}>{def.title}</dt>
-                {def.descriptions &&
-                  def.descriptions.map(desc => (
-                    <dd
-                      key={`${def.slug}-${desc.iso}`}
-                      className={styles.definitionDesc}
-                    >
-                      <div
-                        dangerouslySetInnerHTML={{ __html: desc.value }} // eslint-disable-line
-                      />
-                    </dd>
-                  ))}
-              </div>
-            </div>
-          ))}
-      </dl>
-    );
-  }
-}
+const DefinitionList = ({
+  className,
+  title: sectionTitle,
+  definitions,
+  compare
+}) => (
+  <dl className={className} key={sectionTitle}>
+    {definitions &&
+      definitions.map(({ slug, title, descriptions }) => (
+        <div className={styles.definitionRow} key={slug}>
+          <div
+            key={`${slug}-${title}-${sectionTitle}`}
+            className={cx(
+              layout.content,
+              compare ? styles.definitionCompare : styles.definition
+            )}
+          >
+            <dt className={styles.definitionTitle}>{title}:</dt>
+            {descriptions &&
+              descriptions.map(({ iso, value }) => (
+                <dd key={`${slug}-${iso}`} className={styles.definitionDesc}>
+                  <div
+                    dangerouslySetInnerHTML={{ __html: value }} // eslint-disable-line
+                  />
+                </dd>
+              ))}
+          </div>
+        </div>
+      ))}
+  </dl>
+);
 
 DefinitionList.propTypes = {
   className: PropTypes.string,
+  title: PropTypes.string,
   definitions: PropTypes.array,
   compare: PropTypes.bool
 };
