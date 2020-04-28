@@ -88,7 +88,9 @@ function GhgEmissions(props) {
     handleDownloadDataClick,
     handleInfoClick,
     setColumnWidth,
-    downloadLink
+    downloadLink,
+    dataZoomPosition,
+    setDataZoomPosition
   } = props;
 
   const buttonGroupConfig = [
@@ -216,6 +218,8 @@ function GhgEmissions(props) {
             !loading && (
               <DataZoom
                 data={dataZoomData}
+                position={dataZoomPosition}
+                setPosition={setDataZoomPosition}
                 onYearChange={(min, max) => setYears({ min, max })}
               />
             )
@@ -356,7 +360,9 @@ GhgEmissions.propTypes = {
   providerFilters: PropTypes.object,
   loading: PropTypes.bool,
   downloadLink: PropTypes.string,
-  hideRemoveOptions: PropTypes.bool
+  hideRemoveOptions: PropTypes.bool,
+  dataZoomPosition: PropTypes.object,
+  setDataZoomPosition: PropTypes.func.isRequired
 };
 
 export default GhgEmissions;
