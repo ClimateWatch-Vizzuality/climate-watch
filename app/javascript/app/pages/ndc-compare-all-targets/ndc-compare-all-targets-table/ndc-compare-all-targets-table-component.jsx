@@ -76,6 +76,7 @@ const CompareAllTable = ({
     {!loading && tableData && tableData.length > 0 && (
       <Table
         data={tableData}
+        tableHeight={550}
         horizontalScroll
         parseHtml
         dynamicRowsHeight

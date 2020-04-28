@@ -20,7 +20,7 @@
   }
 
   @media #{$tablet-landscape} {
-    @include columns((7, 5));
+    @include columns((5.5, 6.5));
   }
 
   margin-bottom: 20px;
@@ -29,18 +29,16 @@
 .buttonAndSearch {
   justify-content: flex-end;
 
-  @include row(12);
-
   > * {
     @include xy-gutters($gutter-position: ('bottom'));
   }
 
   @media #{$tablet-landscape} {
-    @include columns((6, 6));
+    @include columns((3.5, 3.5, 5));
   }
 }
 
-.compareButton {
+.actionButton {
   width: 100%;
 
   @media #{$tablet-landscape} {
