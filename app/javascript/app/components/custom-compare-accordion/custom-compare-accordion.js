@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import CutomCompareAccordionComponent from './custom-compare-accordion-component';
+import CustomCompareAccordionComponent from './custom-compare-accordion-component';
 
 const placeholderData = [
   {
@@ -62,11 +62,11 @@ const sectoralInfoData = [
   }
 ];
 
-const CutomCompareAccordion = props => {
+const CustomCompareAccordion = props => {
   const isSectoralInformation = props.category === 'sectoral_information';
 
   return (
-    <CutomCompareAccordionComponent
+    <CustomCompareAccordionComponent
       {...props}
       data={isSectoralInformation ? sectoralInfoData : placeholderData}
       isSectoralInformation={isSectoralInformation}
@@ -74,8 +74,8 @@ const CutomCompareAccordion = props => {
   );
 };
 
-CutomCompareAccordion.propTypes = {
+CustomCompareAccordion.propTypes = {
   category: PropTypes.string
 };
 
-export default CutomCompareAccordion;
+export default CustomCompareAccordion;
