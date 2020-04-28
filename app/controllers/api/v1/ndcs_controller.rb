@@ -145,9 +145,9 @@ module Api
       end
 
       def locations_documents
-        return nil unless params[:locations_docs].present?
+        return nil unless params[:locations_documents].present?
 
-        params[:locations_docs].split(',').map do |loc_doc|
+        params[:locations_documents].split(',').map do |loc_doc|
           loc_doc.split('-')
         end
       end
