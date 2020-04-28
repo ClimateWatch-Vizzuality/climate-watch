@@ -9,6 +9,8 @@ import AnchorNav from 'components/anchor-nav';
 import BackButton from 'components/back-button';
 import Dropdown from 'components/dropdown';
 import NdcCompareAllTargetsProvider from 'providers/ndc-compare-all-targets-provider';
+import CountriesDocumentsProvider from 'providers/countries-documents-provider';
+
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
 import layout from 'styles/layout.scss';
 
@@ -105,6 +107,7 @@ const CustomComparisonComponent = props => {
       </div>
       {renderRoutes(route.routes)}
       <NdcCompareAllTargetsProvider />
+      <CountriesDocumentsProvider />
     </div>
   );
 };

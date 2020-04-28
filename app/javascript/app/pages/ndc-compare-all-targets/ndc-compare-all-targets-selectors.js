@@ -41,12 +41,18 @@ const getData = createSelector(
         Country: { name: c.wri_standard_name, iso: c.iso_code3 },
         'Share of global GHG emissions':
           countryEmissions && countryEmissions.value,
-        'Pre-2020 Pledges': getIconValue('pledges'),
-        INDC: getIconValue('indc'),
-        NDC: getIconValue('first_ndc'),
-        '2nd NDC': getIconValue('second_ndc'),
-        'Targets in National Policies': getIconValue('targets'),
-        LTS: getIconValue('lts')
+        pledges: getIconValue('pledges'),
+        indc: getIconValue('indc'),
+        first_ndc: getIconValue('first_ndc'),
+        second_ndc: getIconValue('second_ndc'),
+        targets: getIconValue('targets'),
+        lts: getIconValue('lts')
+        // 'Pre-2020 Pledges': getIconValue('pledges'),
+        // INDC: getIconValue('indc'),
+        // NDC: getIconValue('first_ndc'),
+        // '2nd NDC': getIconValue('second_ndc'),
+        // 'Targets in National Policies': getIconValue('targets'),
+        // LTS: getIconValue('lts')
       };
     });
     return rows;

@@ -39,6 +39,7 @@ import * as agricultureMeatTradeProvider from 'providers/agriculture-meat-trade-
 import * as agricultureWorldMeatTradeProvider from 'providers/agriculture-world-meat-trade-provider';
 import * as ndcCountryAccordionProvider from 'providers/ndc-country-accordion-provider';
 import * as ndcCompareAllTargetsProvider from 'providers/ndc-compare-all-targets-provider';
+import * as customCompareAccordionProvider from 'providers/custom-compare-accordion-provider';
 
 const providersReducers = {
   login: handleActions(loginProvider),
@@ -78,7 +79,8 @@ const providersReducers = {
   meatTrade: handleActions(agricultureMeatTradeProvider),
   meatWorldTrade: handleActions(agricultureWorldMeatTradeProvider),
   ndcCountryAccordion: handleActions(ndcCountryAccordionProvider),
-  compareAll: handleActions(ndcCompareAllTargetsProvider)
+  compareAll: handleActions(ndcCompareAllTargetsProvider),
+  customCompateAccordon: handleActions(customCompareAccordionProvider)
 };
 
 // Pages
