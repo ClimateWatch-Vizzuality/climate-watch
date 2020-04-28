@@ -70,7 +70,7 @@ export const commitmentsData = [
         questionText: 'How many parties have a net zero emission target?',
         link: 'https://eciu.net/netzerotracker',
         slug: 'lts_zero',
-        answerLabel: 'Net-zero target in LTS',
+        answerLabel: 'Net-zero target included',
         metadataSlug: 'ndc_cw',
         hasExternalLink: true
       },
