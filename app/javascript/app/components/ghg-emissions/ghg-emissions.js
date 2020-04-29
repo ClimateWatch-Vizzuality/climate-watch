@@ -132,8 +132,8 @@ function GhgEmissionsContainer(props) {
   };
 
   const handlePngDownloadModal = () => {
-    const { toggleModalPngDownload } = props;
-    toggleModalPngDownload({ open: true });
+    const { setModalPngDownload } = props;
+    setModalPngDownload({ open: true });
   };
 
   const setColumnWidth = column => {

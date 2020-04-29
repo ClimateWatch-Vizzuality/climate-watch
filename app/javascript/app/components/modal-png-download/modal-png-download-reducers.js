@@ -11,12 +11,12 @@ const setModalPngDownloadParams = (state, { payload }) => ({
   description: payload.description
 });
 
-const toggleModalPngDownload = (state, { payload }) => ({
+const setModalPngDownload = (state, { payload }) => ({
   ...state,
   isOpen: payload.open
 });
 
 export default {
   setModalPngDownloadParams,
-  toggleModalPngDownload
+  setModalPngDownload
 };
