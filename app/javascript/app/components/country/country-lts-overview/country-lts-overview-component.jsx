@@ -58,7 +58,7 @@ const CountryLtsOverview = props => {
   const hasSectors = !!sectors;
   const description = hasSectors && (
     <div
-      className={styles.descriptionContainer}
+      className={cx(styles.descriptionContainer, layout.parsedHTML)}
       // eslint-disable-next-line react/no-danger
       dangerouslySetInnerHTML={{
         __html: cardData && cardData.lts_vision && cardData.lts_vision.value
