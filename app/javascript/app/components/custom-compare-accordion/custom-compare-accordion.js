@@ -5,38 +5,38 @@ import { withRouter } from 'react-router';
 import qs from 'query-string';
 import CustomCompareAccordionProvider from 'providers/custom-compare-accordion-provider';
 
-import { getData } from './custom-compare-accordion-selectors';
+import {
+  getData,
+  getSectoralInformationData
+} from './custom-compare-accordion-selectors';
 import CustomCompareAccordionComponent from './custom-compare-accordion-component';
 
 const mapStateToProps = (state, { location, category }) => {
   const search = qs.parse(location.search);
+  const isSectoralInformation = category === 'sectoral_information';
 
   return {
-    data: getData(state, { search, category }),
+    data: isSectoralInformation
+      ? getSectoralInformationData(state, { search, category })
+      : getData(state, { search, category }),
     loading:
       state.customCompareAccordion && state.customCompareAccordion.loading,
     search,
     category,
-    locationsAndDocuments: search && search.targets
+    locationsAndDocuments: search && search.targets,
+    isSectoralInformation
   };
 };
 
-const CustomCompareAccordion = props => {
-  const isSectoralInformation = props.category === 'sectoral_information';
-
-  return (
-    <div>
-      <CustomCompareAccordionComponent
-        {...props}
-        isSectoralInformation={isSectoralInformation}
-      />
-      <CustomCompareAccordionProvider
-        locationsDocuments={props.locationsAndDocuments}
-        category={props.category}
-      />
-    </div>
-  );
-};
+const CustomCompareAccordion = props => (
+  <React.Fragment>
+    <CustomCompareAccordionComponent {...props} />
+    <CustomCompareAccordionProvider
+      locationsDocuments={props.locationsAndDocuments}
+      category={props.category}
+    />
+  </React.Fragment>
+);
 
 CustomCompareAccordion.propTypes = {
   category: PropTypes.string,
@@ -46,65 +46,3 @@ CustomCompareAccordion.propTypes = {
 export default withRouter(
   connect(mapStateToProps, null)(CustomCompareAccordion)
 );
-
-// export default CustomCompareAccordion;
-
-// const placeholderData = [
-//   {
-//     slug: 'planning_and_implementation',
-//     title: 'Planning and Implementation',
-//     definitions: [
-//       {
-//         slug: 'finance_and_support',
-//         title: 'Finance and Support',
-//         descriptions: [
-//           { iso: 'ALB', value: 'No' },
-//           { iso: 'ATG', value: 'Yes' },
-//           { iso: 'AND', value: 'No' }
-//         ]
-//       },
-//       {
-//         slug: 'indc_summary',
-//         title: 'NDC summary',
-//         descriptions: [
-//           {
-//             iso: 'ALB',
-//             value:
-//               'Reduce CO2 emissions compared to the baseline scen…708 kT carbon-dioxide emission reduction in 2030.'
-//           },
-//           { iso: 'ATG', value: '-' },
-//           {
-//             iso: 'AND',
-//             value:
-//               '37% (193.73 Gg CO2eq) reduction in 2030 compared to the BAU scenario'
-//           }
-//         ]
-//       }
-//     ]
-//   },
-//   {
-//     slug: 'summary_information',
-//     title: 'Summary Information'
-//   }
-// ];
-
-// const sectoralInfoData = [
-//   {
-//     slug: 'planning_and_implementation',
-//     title: 'Title 1',
-//     sectors: [
-//       {
-//         ...placeholderData[0],
-//         parent: { id: 1, name: 'Subtitle 1' }
-//       },
-//       {
-//         ...placeholderData[1],
-//         parent: { id: 2, name: 'Subtitle 2' }
-//       }
-//     ]
-//   },
-//   {
-//     slug: 'summary_information',
-//     title: 'Title 2'
-//   }
-// ];

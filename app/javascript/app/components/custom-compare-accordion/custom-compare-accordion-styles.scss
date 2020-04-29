@@ -3,11 +3,20 @@
 
 .container {
   border-top: 1px solid $gray1;
-  min-height: 500px;
   display: flex;
+  align-items: center;
   justify-content: center;
+}
 
-  & > * {
-    width: 100%;
-  }
+.containerNoData {
+  border-bottom: 1px solid #757584;
+  min-height: 400px;
+}
+
+.loader {
+  width: 100%;
+}
+
+.accordion {
+  width: 100%;
 }

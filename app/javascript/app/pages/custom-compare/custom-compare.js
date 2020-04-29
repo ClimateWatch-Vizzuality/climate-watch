@@ -28,7 +28,9 @@ const mapStateToProps = (state, { location, route }) => {
     filtersData: getFiltersData(state, { search }),
     selectedTargets: getSelectedTargets(state, { search }),
     backButtonLink: getBackButtonLink(null, { search }),
-    documentsByCountry: getDocumentsOptionsByCountry(state, { search })
+    documentsByCountry: getDocumentsOptionsByCountry(state, { search }),
+    accordionDataLoading:
+      state.customCompareAccordion && state.customCompareAccordion.loading
   };
 };
 
