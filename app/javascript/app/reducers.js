@@ -80,7 +80,7 @@ const providersReducers = {
   meatWorldTrade: handleActions(agricultureWorldMeatTradeProvider),
   ndcCountryAccordion: handleActions(ndcCountryAccordionProvider),
   compareAll: handleActions(ndcCompareAllTargetsProvider),
-  customCompateAccordon: handleActions(customCompareAccordionProvider)
+  customCompareAccordion: handleActions(customCompareAccordionProvider)
 };
 
 // Pages

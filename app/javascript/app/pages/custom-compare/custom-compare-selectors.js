@@ -1,15 +1,7 @@
 import { createSelector } from 'reselect';
 import qs from 'query-string';
 import { uniq } from 'lodash';
-
-const DOCUMENT_SLUGS = [
-  'pledges',
-  'indc',
-  'first_ndc',
-  'second_ndc',
-  'targets',
-  'lts'
-];
+import { DOCUMENT_SLUGS } from 'data/country-documents';
 
 const getCountries = state => (state.countries && state.countries.data) || null;
 const getIndicatorsData = state =>
@@ -65,7 +57,7 @@ export const getDocumentsOptionsByCountry = createSelector(
         ...acc,
         [isoCode3]: documents
       };
-    });
+    }, {});
     return rows;
   }
 );

@@ -3,18 +3,18 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import qs from 'query-string';
-
 import CustomCompareAccordionProvider from 'providers/custom-compare-accordion-provider';
+
+import { getData } from './custom-compare-accordion-selectors';
 import CustomCompareAccordionComponent from './custom-compare-accordion-component';
 
 const mapStateToProps = (state, { location, category }) => {
   const search = qs.parse(location.search);
 
   return {
+    data: getData(state, { search, category }),
     loading:
       state.customCompareAccordion && state.customCompareAccordion.loading,
-    compareData:
-      state.customCompareAccordion && state.customCompareAccordion.data,
     search,
     category,
     locationsAndDocuments: search && search.targets
@@ -28,7 +28,6 @@ const CustomCompareAccordion = props => {
     <div>
       <CustomCompareAccordionComponent
         {...props}
-        data={[]}
         isSectoralInformation={isSectoralInformation}
       />
       <CustomCompareAccordionProvider

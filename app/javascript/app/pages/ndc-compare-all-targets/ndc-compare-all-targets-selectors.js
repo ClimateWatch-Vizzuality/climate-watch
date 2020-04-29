@@ -41,18 +41,12 @@ const getData = createSelector(
         Country: { name: c.wri_standard_name, iso: c.iso_code3 },
         'Share of global GHG emissions':
           countryEmissions && countryEmissions.value,
-        pledges: getIconValue('pledges'),
-        indc: getIconValue('indc'),
-        first_ndc: getIconValue('first_ndc'),
-        second_ndc: getIconValue('second_ndc'),
-        targets: getIconValue('targets'),
-        lts: getIconValue('lts')
-        // 'Pre-2020 Pledges': getIconValue('pledges'),
-        // INDC: getIconValue('indc'),
-        // NDC: getIconValue('first_ndc'),
-        // '2nd NDC': getIconValue('second_ndc'),
-        // 'Targets in National Policies': getIconValue('targets'),
-        // LTS: getIconValue('lts')
+        'Pre-2020 Pledges': getIconValue('pledges'),
+        INDC: getIconValue('indc'),
+        NDC: getIconValue('first_ndc'),
+        '2nd NDC': getIconValue('second_ndc'),
+        'Targets in National Policies': getIconValue('targets'),
+        LTS: getIconValue('lts')
       };
     });
     return rows;
@@ -61,7 +55,16 @@ const getData = createSelector(
 
 export const getColumns = createSelector([getData], rows => {
   if (!rows) return [];
-  return rows[0] && Object.keys(rows[0]);
+  return [
+    'Country',
+    'Share of global GHG emissions',
+    'Pre-2020 Pledges',
+    'INDC',
+    'NDC',
+    '2nd NDC',
+    'Targets in National Policies',
+    'LTS'
+  ];
 });
 
 export const getFilteredDataBySearch = createSelector(

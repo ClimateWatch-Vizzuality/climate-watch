@@ -3,4 +3,11 @@
 
 .container {
   border-top: 1px solid $gray1;
+  min-height: 500px;
+  display: flex;
+  justify-content: center;
+
+  & > * {
+    width: 100%;
+  }
 }
