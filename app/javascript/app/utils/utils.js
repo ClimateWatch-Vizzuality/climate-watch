@@ -105,8 +105,16 @@ export const sanitizeUrl = url =>
 // Detects if user browser is Edge or Explorer 11
 export const isMicrosoftBrowser = () => {
   const ua = navigator.userAgent;
-  return ua.indexOf('Edge') !== -1 || ua.indexOf('Trident/') !== -1;
+  return ua.indexOf('Edge') !== -1 || isInternetExplorer();
 };
+
+// Detects if user browser is Explorer 11
+export const isInternetExplorer = () =>
+  navigator.userAgent.indexOf('Trident/') !== -1;
+// Detects if user browser is Safari
+export const isSafariBrowser = () =>
+  navigator.userAgent.indexOf('Safari/') !== -1 &&
+  navigator.userAgent.indexOf('Chrome/') === -1;
 
 // Splits the long_string into an array of strings
 export const wordWrap = (long_string, max_char) => {
