@@ -115,7 +115,7 @@ const getBreakByOptions = () =>
       }
     ]);
 
-const getCalculationSelected = createSelector(
+export const getCalculationSelected = createSelector(
   [getCalculationOptions, getSelection('calculation'), getSelection('breakBy')],
   (options, selected, breakBySelected) => {
     if (!options) return null;

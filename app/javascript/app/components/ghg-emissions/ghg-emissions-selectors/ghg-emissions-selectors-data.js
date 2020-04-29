@@ -21,7 +21,8 @@ import {
   CHART_COLORS,
   CHART_COLORS_EXTENDED,
   CHART_COLORS_EXTRA,
-  OTHER_COLOR
+  OTHER_COLOR,
+  CALCULATION_OPTIONS
 } from 'data/constants';
 import { europeSlug } from 'app/data/european-countries';
 import {
@@ -33,6 +34,7 @@ import {
 import {
   getModelSelected,
   getMetricSelected,
+  getCalculationSelected,
   getOptionsSelected,
   getIsRegionAggregated,
   getOptions
@@ -308,16 +310,32 @@ export const getChartData = createSelector(
     getModelSelected,
     getYColumnOptions,
     getMetricSelected,
-    getCalculationData
+    getCalculationData,
+    getCalculationSelected
   ],
-  (data, regions, model, yColumnOptions, metric, calculationData) => {
-    if (!data || !data.length || !model || !calculationData || !regions) {
+  (
+    data,
+    regions,
+    model,
+    yColumnOptions,
+    metric,
+    calculationData,
+    calculationSelected
+  ) => {
+    if (
+      !data ||
+      !data.length ||
+      !model ||
+      !calculationData ||
+      !regions ||
+      !calculationSelected
+    ) {
       return null;
     }
     const yearValues = data[0].emissions.map(d => d.year);
     const metricField = {
-      PER_CAPITA: 'population',
-      PER_GDP: 'gdp'
+      [CALCULATION_OPTIONS.PER_CAPITA.value]: 'population',
+      [CALCULATION_OPTIONS.PER_GDP.value]: 'gdp'
     }[metric];
     const shouldHaveMetricData = !!metricField;
 
@@ -372,9 +390,30 @@ export const getChartData = createSelector(
       return metricData;
     };
 
-    const dataParsed = yearValues.map(year => {
-      const yItems = {};
+    const dataParsed = [];
+    const yItems = {};
+    const accumulatedValues = {};
 
+    const getItemValue = (totalValue, key, totalMetric) => {
+      let scaledValue = totalValue ? totalValue * DATA_SCALE : null;
+      if (calculationSelected.value === CALCULATION_OPTIONS.CUMULATIVE.value) {
+        if (scaledValue) {
+          if (accumulatedValues[key]) {
+            accumulatedValues[key] += scaledValue;
+          } else {
+            accumulatedValues[key] = scaledValue;
+          }
+        }
+        scaledValue = accumulatedValues[key] || null;
+      }
+
+      if (scaledValue !== null && totalMetric !== null) {
+        return scaledValue / totalMetric;
+      }
+      return null;
+    };
+
+    yearValues.forEach(year => {
       yColumnOptions.forEach(column => {
         const dataForColumn =
           groupedData[column.label] || expandedData(column) || [];
@@ -396,17 +435,13 @@ export const getChartData = createSelector(
           }
         });
 
-        if (totalValue !== null && totalMetric !== null) {
-          yItems[key] = totalValue * (DATA_SCALE / totalMetric);
-        } else {
-          yItems[key] = null;
-        }
+        yItems[key] = getItemValue(totalValue, key, totalMetric);
       });
 
-      return {
+      dataParsed.push({
         x: year,
         ...yItems
-      };
+      });
     });
 
     // if there is no value for any legend item
