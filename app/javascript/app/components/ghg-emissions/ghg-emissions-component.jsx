@@ -5,12 +5,9 @@ import isArray from 'lodash/isArray';
 import { isPageContained } from 'utils/navigation';
 import cx from 'classnames';
 import { GHG_TABLE_HEADER } from 'data/constants';
-import {
-  Chart,
-  Multiselect,
-  MultiLevelDropdown,
-  Dropdown
-} from 'cw-components';
+import { Multiselect, MultiLevelDropdown, Dropdown } from 'cw-components';
+import LegendChart from 'components/charts/legend-chart';
+import Chart from 'components/charts/chart';
 import EmissionsMetaProvider from 'providers/ghg-emissions-meta-provider';
 import EmissionsProvider from 'providers/emissions-provider';
 import RegionsProvider from 'providers/regions-provider';
@@ -165,14 +162,11 @@ function GhgEmissions(props) {
     const { chartTypeSelected } = selectedOptions;
     return (
       <Chart
-        className={styles.chartWrapper}
         type={chartTypeSelected && chartTypeSelected.value}
         theme={legendChartTheme}
         config={config}
         data={data}
         domain={domain}
-        dataOptions={legendOptions}
-        dataSelected={legendSelected || []}
         height={250}
         loading={loading}
         lineType="linear"
@@ -182,6 +176,16 @@ function GhgEmissions(props) {
       />
     );
   };
+
+  const renderPngLegend = () => (
+    <LegendChart
+      theme={styles}
+      config={config}
+      dataOptions={legendOptions}
+      dataSelected={legendOptions}
+      hideRemoveOptions={hideRemoveOptions}
+    />
+  );
 
   const renderChart = () => {
     const { chartTypeSelected } = selectedOptions;
@@ -354,6 +358,7 @@ function GhgEmissions(props) {
       </TabletPortraitOnly>
       <ModalPngDownload chartParams={selectedOptions}>
         {renderPngChart()}
+        {renderPngLegend()}
       </ModalPngDownload>
       <ModalMetadata />
       <ModalShare />
