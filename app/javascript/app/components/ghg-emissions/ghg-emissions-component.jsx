@@ -5,12 +5,9 @@ import isArray from 'lodash/isArray';
 import { isPageContained } from 'utils/navigation';
 import cx from 'classnames';
 import { GHG_TABLE_HEADER } from 'data/constants';
-import {
-  Chart,
-  Multiselect,
-  MultiLevelDropdown,
-  Dropdown
-} from 'cw-components';
+import { Multiselect, MultiLevelDropdown, Dropdown } from 'cw-components';
+import LegendChart from 'components/charts/legend-chart';
+import Chart from 'components/charts/chart';
 import EmissionsMetaProvider from 'providers/ghg-emissions-meta-provider';
 import EmissionsProvider from 'providers/emissions-provider';
 import RegionsProvider from 'providers/regions-provider';
@@ -19,6 +16,7 @@ import ButtonGroup from 'components/button-group';
 import ShareButton from 'components/button/share-button';
 import Table from 'components/table';
 import ghgTableTheme from 'styles/themes/table/ghg-table-theme.scss';
+import ModalPngDownload from 'components/modal-png-download';
 import ModalMetadata from 'components/modal-metadata';
 import ModalShare from 'components/modal-share';
 import { TabletPortraitOnly, TabletLandscape } from 'components/responsive';
@@ -85,6 +83,7 @@ function GhgEmissions(props) {
     loading,
     providerFilters,
     dataZoomData,
+    handlePngDownloadModal,
     handleDownloadDataClick,
     handleInfoClick,
     setColumnWidth,
@@ -128,7 +127,7 @@ function GhgEmissions(props) {
         },
         {
           label: 'Save as image (PNG)',
-          action: () => {}
+          action: handlePngDownloadModal
         },
         {
           label: 'Go to data explorer',
@@ -160,6 +159,35 @@ function GhgEmissions(props) {
       />
     );
   };
+
+  const renderPngChart = () => {
+    const { chartTypeSelected } = selectedOptions;
+    return (
+      <Chart
+        type={chartTypeSelected && chartTypeSelected.value}
+        theme={legendChartTheme}
+        config={config}
+        data={data}
+        domain={domain}
+        height={250}
+        loading={loading}
+        lineType="linear"
+        showUnit
+        onLegendChange={v => handleChange(toPlural(fieldToBreakBy), v)}
+        hideRemoveOptions={hideRemoveOptions}
+      />
+    );
+  };
+
+  const renderPngLegend = () => (
+    <LegendChart
+      theme={styles}
+      config={config}
+      dataOptions={legendOptions}
+      dataSelected={legendOptions}
+      hideRemoveOptions={hideRemoveOptions}
+    />
+  );
 
   const renderChart = () => {
     const { chartTypeSelected } = selectedOptions;
@@ -333,6 +361,10 @@ function GhgEmissions(props) {
           />
         </div>
       </TabletPortraitOnly>
+      <ModalPngDownload chartParams={selectedOptions}>
+        {renderPngChart()}
+        {renderPngLegend()}
+      </ModalPngDownload>
       <ModalMetadata />
       <ModalShare />
     </div>
@@ -355,6 +387,7 @@ GhgEmissions.propTypes = {
   handleChange: PropTypes.func.isRequired,
   handleInfoClick: PropTypes.func.isRequired,
   handleDownloadDataClick: PropTypes.func.isRequired,
+  handlePngDownloadModal: PropTypes.func.isRequired,
   setYears: PropTypes.func.isRequired,
   setColumnWidth: PropTypes.func.isRequired,
   providerFilters: PropTypes.object,

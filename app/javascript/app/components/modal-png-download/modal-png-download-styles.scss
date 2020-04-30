@@ -1,0 +1,47 @@
+@import '~styles/layout.scss';
+@import '~styles/ui-extends.scss';
+
+.logo {
+  width: 180px;
+  height: 25px;
+  float: right;
+}
+
+.title {
+  @extend %smallTitleLight;
+
+  color: $theme-color;
+  padding-bottom: 10px;
+}
+
+.chartParamsWrapper {
+  padding-bottom: $card-content-margin;
+}
+
+.chartParams {
+  @extend %annotation;
+
+  color: $theme-color;
+}
+
+.chartWrapper {
+  pointer-events: none;
+}
+
+.saveButton {
+  width: 120px;
+  float: right;
+
+  .saveText {
+    margin-left: 10px;
+  }
+
+  &Active {
+    fill: $theme-color;
+  }
+
+  &:hover {
+    box-shadow: none;
+    fill: $theme-color;
+  }
+}

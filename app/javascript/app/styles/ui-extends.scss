@@ -22,6 +22,14 @@
 }
 
 // h3
+%smallTitleLight {
+  @extend %texts-defaults;
+
+  font-size: $font-size-large;
+  font-weight: $font-weight-light;
+}
+
+// h3
 %smallTitle {
   @extend %texts-defaults;
 
@@ -34,5 +42,12 @@
   @extend %texts-defaults;
 
   font-size: $font-size;
+  font-weight: $font-weight;
+}
+
+%annotation {
+  @extend %texts-defaults;
+
+  font-size: $font-size-xs;
   font-weight: $font-weight;
 }

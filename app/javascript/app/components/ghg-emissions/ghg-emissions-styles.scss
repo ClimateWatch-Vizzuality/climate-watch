@@ -137,3 +137,22 @@ $min-height: 500px;
     }
   }
 }
+
+.tagsWrapper {
+  flex-wrap: wrap;
+  overflow: visible;
+  position: relative;
+  height: unset;
+}
+
+.tags {
+  position: relative;
+  margin-top: $card-content-margin;
+  flex-wrap: wrap;
+
+  li {
+    font-size: $font-size-xs;
+    height: 30px;
+    margin-bottom: $logos-top-bottom-margin;
+  }
+}

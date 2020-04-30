@@ -4,6 +4,7 @@ import MultiSelect from 'components/multiselect';
 import Tag from 'components/tag';
 import cx from 'classnames';
 import ReactTooltip from 'react-tooltip';
+import { themr } from 'react-css-themr';
 
 import plusIcon from 'assets/icons/plus.svg';
 import styles from './legend-chart-styles.scss';
@@ -22,7 +23,8 @@ class LegendChart extends PureComponent {
       handleRemove,
       hideRemoveOptions,
       handleAdd,
-      className
+      className,
+      theme
     } = this.props;
     const shouldShowMultiselect =
       dataOptions && dataSelected && dataSelected.length !== dataOptions.length;
@@ -33,8 +35,8 @@ class LegendChart extends PureComponent {
       <div className={styles.legendChart}>
         <div className={styles.legendContainer}>
           <div className={styles.tagsContainer}>
-            <div className={styles.tagsWrapper}>
-              <ul className={cx(styles.tags, className)}>
+            <div className={cx(styles.tagsWrapper, theme.tagsWrapper)}>
+              <ul className={cx(styles.tags, className, theme.tags)}>
                 {hasColumns &&
                   config.columns.y.map(column => (
                     <Tag
@@ -99,7 +101,8 @@ LegendChart.propTypes = {
   dataSelected: PropTypes.array,
   model: PropTypes.object,
   hideRemoveOptions: PropTypes.bool,
-  className: PropTypes.string
+  className: PropTypes.string,
+  theme: PropTypes.object
 };
 
-export default LegendChart;
+export default themr('LegendChart', styles)(LegendChart);
