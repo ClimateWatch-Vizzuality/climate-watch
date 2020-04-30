@@ -2,6 +2,7 @@ import { createSelector } from 'reselect';
 import { filterQuery } from 'app/utils';
 import deburr from 'lodash/deburr';
 import isEmpty from 'lodash/isEmpty';
+import { DOCUMENTS_NAMES } from 'data/country-documents';
 
 const getCountries = state => (state.countries && state.countries.data) || null;
 const getCountriesDocuments = state =>
@@ -54,16 +55,7 @@ const getData = createSelector(
 
 export const getColumns = createSelector([getData], rows => {
   if (!rows) return [];
-  return [
-    'Country',
-    'Share of global GHG emissions',
-    'Pre-2020 Pledges',
-    'INDC',
-    'NDC',
-    '2nd NDC',
-    'Targets in National Policies',
-    'LTS'
-  ];
+  return ['Country', 'Share of global GHG emissions', ...DOCUMENTS_NAMES];
 });
 
 export const getFilteredDataBySearch = createSelector(

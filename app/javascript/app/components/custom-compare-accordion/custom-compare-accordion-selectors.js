@@ -1,7 +1,5 @@
 import { createSelector } from 'reselect';
-import uniq from 'lodash/uniq';
-import sortBy from 'lodash/sortBy';
-import snakeCase from 'lodash/snakeCase';
+import { uniq, sortBy, snakeCase } from 'lodash';
 
 const getIndicators = state =>
   (state.customCompareAccordion && state.customCompareAccordion.data
@@ -28,17 +26,6 @@ export const getSelectedCategoryKeys = createSelector(
   }
 );
 
-export const getSelectedCountries = createSelector([getSearch], search => {
-  if (!search) return null;
-  const queryTargets = search.targets ? search.targets.split(',') : [];
-  return [1, 2, 3].map((value, i) => {
-    const target =
-      queryTargets && queryTargets[i] && queryTargets[i].split('-');
-    const country = target && target[0];
-    return country;
-  });
-});
-
 export const getSelectedTargets = createSelector([getSearch], search => {
   if (!search) return null;
   const queryTargets = search.targets ? search.targets.split(',') : [];
@@ -50,6 +37,14 @@ export const getSelectedTargets = createSelector([getSearch], search => {
     return { country, document };
   });
 });
+
+export const getSelectedCountries = createSelector(
+  [getSelectedTargets],
+  selectedTargets => {
+    if (!selectedTargets) return null;
+    return selectedTargets.map(({ country }) => country);
+  }
+);
 
 export const parseIndicatorsDefs = createSelector(
   [getIndicators, getSelectedCategoryKeys, getSelectedTargets],
@@ -90,7 +85,7 @@ export const parseIndicatorsDefs = createSelector(
 export const getData = createSelector(
   [getCategories, getSelectedCategoryKeys, parseIndicatorsDefs],
   (categories, categoriesKeys, indicators) => {
-    if (!categories || !categoriesKeys || !indicators) return [];
+    if (!categories || !categoriesKeys || !indicators) return null;
     const ndcs = categoriesKeys.map(category => ({
       title: categories[category].name,
       slug: categories[category].slug,
@@ -104,7 +99,6 @@ export const groupIndicatorsByCategory = createSelector(
   [getIndicators, getCategories, getSelectedCategoryKeys],
   (indicators, categories, selectedCategoryKeys) => {
     if (!indicators || !categories || !selectedCategoryKeys) return null;
-
     return selectedCategoryKeys
       .map(cat => ({
         ...categories[cat],
@@ -141,7 +135,7 @@ export const getCategoriesWithSectors = createSelector(
 export const getSectoralInformationData = createSelector(
   [getCategoriesWithSectors, getSectors, getSelectedCountries],
   (categoriesWithSectors, sectors, selectedCountries) => {
-    if (!categoriesWithSectors || !sectors || !selectedCountries) return [];
+    if (!categoriesWithSectors || !sectors || !selectedCountries) return null;
     const sectoralInformationData = categoriesWithSectors.map(cat => {
       const sectorsParsed = sortBy(
         cat.sectors &&

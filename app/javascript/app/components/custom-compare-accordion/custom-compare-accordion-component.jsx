@@ -11,9 +11,9 @@ import subAccordionTheme from 'styles/themes/accordion/sub-accordion-custom-comp
 
 import styles from './custom-compare-accordion-styles.scss';
 
-const getNoContentMessage = (compare, search) => {
-  if (compare && !search.targets) { return 'Select a country and a document to start'; }
-  if (search.targets) return 'No content for that search or category';
+const getNoContentMessage = (compare, targets) => {
+  if (compare && !targets) return 'Select a country and a document to start';
+  if (targets) return 'No content for that search or category';
   return 'No content for this category';
 };
 
@@ -21,11 +21,11 @@ const CustomCompareAccordionComponent = ({
   data,
   compare,
   isSectoralInformation,
-  search,
+  locationsAndDocuments,
   loading
 }) => {
-  const message = getNoContentMessage(compare, search);
-  const hasContent = !loading && data && data.length;
+  const message = getNoContentMessage(compare, locationsAndDocuments);
+  const hasContent = !loading && !!data && !!data.length;
   const noContent = !loading && (!data || !data.length);
 
   return (
@@ -77,7 +77,7 @@ CustomCompareAccordionComponent.propTypes = {
   compare: PropTypes.bool,
   isSectoralInformation: PropTypes.bool,
   loading: PropTypes.bool,
-  search: PropTypes.object
+  locationsAndDocuments: PropTypes.string
 };
 
 export default CustomCompareAccordionComponent;

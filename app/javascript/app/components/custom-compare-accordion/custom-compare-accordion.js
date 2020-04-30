@@ -20,7 +20,6 @@ const mapStateToProps = (state, { location, category }) => {
       : getData(state, { search, category }),
     loading:
       state.customCompareAccordion && state.customCompareAccordion.loading,
-    search,
     category,
     locationsAndDocuments: search && search.targets,
     isSectoralInformation
