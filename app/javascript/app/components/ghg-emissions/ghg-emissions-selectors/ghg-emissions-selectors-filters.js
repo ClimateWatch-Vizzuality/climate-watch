@@ -5,11 +5,7 @@ import isEmpty from 'lodash/isEmpty';
 import kebabCase from 'lodash/kebabCase';
 import uniq from 'lodash/uniq';
 import { arrayToSentence } from 'utils';
-import {
-  getGhgEmissionDefaultSlugs,
-  getGhgEmissionDefaults,
-  toPlural
-} from 'utils/ghg-emissions';
+import { getGhgEmissionDefaultSlugs, toPlural } from 'utils/ghg-emissions';
 import { sortLabelByAlpha } from 'utils/graphs';
 import {
   GAS_AGGREGATES,
@@ -301,10 +297,7 @@ const getDefaults = createSelector(
   [getSourceSelected, getMeta],
   (sourceSelected, meta) => {
     if (!sourceSelected || !meta) return null;
-    if (FEATURE_NEW_GHG) {
-      return getGhgEmissionDefaultSlugs(sourceSelected, meta);
-    }
-    return getGhgEmissionDefaults(sourceSelected, meta);
+    return getGhgEmissionDefaultSlugs(sourceSelected, meta);
   }
 );
 
@@ -339,10 +332,7 @@ const getFiltersSelected = field =>
       if (selection) {
         const selectedValues = selection.split(',');
         selectedFilters = fieldOptions.filter(filter =>
-          (FEATURE_NEW_GHG
-            ? isIncluded(field, selectedValues, filter)
-            : selectedValues.includes(String(filter.value)) ||
-              selectedValues.includes(filter.iso_code3))
+          isIncluded(field, selectedValues, filter)
         );
       }
 
