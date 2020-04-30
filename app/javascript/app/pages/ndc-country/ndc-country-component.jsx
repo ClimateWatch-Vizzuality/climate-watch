@@ -145,7 +145,7 @@ function NDCCountry(props) {
                 <div className={styles.search}>
                   <Search
                     variant="transparent"
-                    placeholder="Search"
+                    placeholder="Filter"
                     value={search}
                     onChange={onSearchChange}
                   />
@@ -162,7 +162,7 @@ function NDCCountry(props) {
                   <div className={styles.search}>
                     <Search
                       variant="transparent"
-                      placeholder="Search"
+                      placeholder="Filter"
                       value={search}
                       onChange={onSearchChange}
                     />

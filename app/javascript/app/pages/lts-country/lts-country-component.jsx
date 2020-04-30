@@ -118,7 +118,7 @@ class LTSCountry extends PureComponent {
                   {this.renderFullTextDropdown()}
                   {hasSearch && (
                     <Search
-                      placeholder="Search"
+                      placeholder="Filter"
                       value={search}
                       onChange={onSearchChange}
                       variant="transparent"
@@ -132,7 +132,7 @@ class LTSCountry extends PureComponent {
                   {this.renderFullTextDropdown()}
                   {hasSearch && (
                     <Search
-                      placeholder="Search"
+                      placeholder="Filter"
                       value={search}
                       onChange={onSearchChange}
                       variant="transparent"
