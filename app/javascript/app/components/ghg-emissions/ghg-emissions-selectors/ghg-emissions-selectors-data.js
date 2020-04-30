@@ -393,9 +393,11 @@ export const getChartData = createSelector(
     const dataParsed = [];
     const yItems = {};
     const accumulatedValues = {};
+    const previousYearValues = {};
 
     const getItemValue = (totalValue, key, totalMetric) => {
       let scaledValue = totalValue ? totalValue * DATA_SCALE : null;
+
       if (calculationSelected.value === CALCULATION_OPTIONS.CUMULATIVE.value) {
         if (scaledValue) {
           if (accumulatedValues[key]) {
@@ -405,6 +407,21 @@ export const getChartData = createSelector(
           }
         }
         scaledValue = accumulatedValues[key] || null;
+      }
+
+      if (
+        calculationSelected.value ===
+        CALCULATION_OPTIONS.PERCENTAGE_CHANGE.value
+      ) {
+        const currentYearValue = scaledValue || 0;
+        if (scaledValue) {
+          const previousValue = previousYearValues[key];
+          scaledValue = previousValue
+            ? ((scaledValue - previousYearValues[key]) * 100) /
+              previousYearValues[key]
+            : 0;
+        }
+        previousYearValues[key] = currentYearValue;
       }
 
       if (scaledValue !== null && totalMetric !== null) {
@@ -497,10 +514,17 @@ const getUnit = metric => {
 };
 
 export const getChartConfig = createSelector(
-  [getModelSelected, getMetricSelected, getYColumnOptions],
-  (model, metric, yColumns) => {
+  [
+    getModelSelected,
+    getMetricSelected,
+    getYColumnOptions,
+    getCalculationSelected
+  ],
+  (model, metric, yColumns, calculationSelected) => {
     if (!model || !yColumns) return null;
     const colorPalette = getColorPalette(yColumns);
+    const isPercentageChangeCalculation =
+      calculationSelected.value === CALCULATION_OPTIONS.PERCENTAGE_CHANGE.value;
     colorThemeCache = getThemeConfig(yColumns, colorPalette, colorThemeCache);
     const tooltip = getTooltipConfig(yColumns.filter(c => c && !c.hideLegend));
     const unit = getUnit(metric);
@@ -510,7 +534,7 @@ export const getChartConfig = createSelector(
         yLeft: {
           ...DEFAULT_AXES_CONFIG.yLeft,
           unit,
-          suffix: 't'
+          suffix: isPercentageChangeCalculation ? '%' : 't'
         }
       },
       theme: colorThemeCache,

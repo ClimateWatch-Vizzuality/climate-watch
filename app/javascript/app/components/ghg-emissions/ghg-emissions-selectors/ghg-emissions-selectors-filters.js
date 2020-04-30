@@ -400,7 +400,7 @@ const getChartConflicts = (metricSelected, chartSelected) => {
   const conflicts = [];
 
   if (
-    ['PER_CAPITA', 'PER_GDP'].includes(metricSelected) &&
+    ['PER_CAPITA', 'PER_GDP', 'PERCENTAGE_CHANGE'].includes(metricSelected) &&
     chartSelected.value !== 'line'
   ) {
     const metricOption = CALCULATION_OPTIONS[metricSelected];
