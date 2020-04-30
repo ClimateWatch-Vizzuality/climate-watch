@@ -7,6 +7,7 @@ import * as loginProvider from 'providers/login-provider';
 import * as countriesProvider from 'providers/countries-provider';
 import * as regionsProvider from 'providers/regions-provider';
 import * as documentsProvider from 'providers/documents-provider';
+import * as countriesDocumentsProvider from 'providers/countries-documents-provider';
 import * as espLocationsProvider from 'providers/esp-locations-provider';
 import * as espTimeSeriesProvider from 'providers/esp-time-series-provider';
 import * as adaptationsProvider from 'providers/adaptations-provider';
@@ -38,12 +39,14 @@ import * as agricultureMeatTradeProvider from 'providers/agriculture-meat-trade-
 import * as agricultureWorldMeatTradeProvider from 'providers/agriculture-world-meat-trade-provider';
 import * as ndcCountryAccordionProvider from 'providers/ndc-country-accordion-provider';
 import * as ndcCompareAllTargetsProvider from 'providers/ndc-compare-all-targets-provider';
+import * as customCompareAccordionProvider from 'providers/custom-compare-accordion-provider';
 
 const providersReducers = {
   login: handleActions(loginProvider),
   countries: handleActions(countriesProvider),
   regions: handleActions(regionsProvider),
   documents: handleActions(documentsProvider),
+  countriesDocuments: handleActions(countriesDocumentsProvider),
   adaptations: handleActions(adaptationsProvider),
   emissions: handleActions(emissionsProvider),
   ndcsSdgsMeta: handleActions(ndcsSdgsMetaProvider),
@@ -76,7 +79,8 @@ const providersReducers = {
   meatTrade: handleActions(agricultureMeatTradeProvider),
   meatWorldTrade: handleActions(agricultureWorldMeatTradeProvider),
   ndcCountryAccordion: handleActions(ndcCountryAccordionProvider),
-  compareAll: handleActions(ndcCompareAllTargetsProvider)
+  compareAll: handleActions(ndcCompareAllTargetsProvider),
+  customCompareAccordion: handleActions(customCompareAccordionProvider)
 };
 
 // Pages
@@ -104,6 +108,7 @@ import * as autocompleteSearchComponent from 'components/autocomplete-search';
 import * as ndcsAutocompleteSearchComponent from 'components/ndcs/ndcs-autocomplete-search';
 import * as countrySelectComponent from 'components/countries-select';
 import * as modalDownloadComponent from 'components/modal-download';
+import * as modalPngDownloadComponent from 'components/modal-png-download';
 import * as modalMetadataComponent from 'components/modal-metadata';
 import * as shareModalComponent from 'components/modal-share';
 import * as modalESPOverviewComponent from 'components/modal-overview';
@@ -125,6 +130,7 @@ const componentsReducers = {
   documents: handleActions(ndcsAutocompleteSearchComponent),
   countrySelect: handleActions(countrySelectComponent),
   modalDownload: handleActions(modalDownloadComponent),
+  modalPngDownload: handleActions(modalPngDownloadComponent),
   modalMetadata: handleActions(modalMetadataComponent),
   modalESPOverview: handleActions(modalESPOverviewComponent),
   modalShare: handleActions(shareModalComponent),

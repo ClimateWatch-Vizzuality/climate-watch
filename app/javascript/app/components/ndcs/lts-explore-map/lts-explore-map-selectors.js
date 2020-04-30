@@ -286,11 +286,23 @@ export const getIndicatorEmissionsData = (
   });
 
   if (summedPercentage < 100) {
-    data.push({
-      name: NO_DOCUMENT_SUBMITTED,
-      value: 100 - summedPercentage
-    });
+    const notSubmittedDataItem = data.find(
+      d => d.name === NO_DOCUMENT_SUBMITTED
+    );
+    if (notSubmittedDataItem) {
+      const notApplicablePosition = data.indexOf(notSubmittedDataItem);
+      data[notApplicablePosition] = {
+        name: NO_DOCUMENT_SUBMITTED,
+        value: notSubmittedDataItem.value + (100 - summedPercentage)
+      };
+    } else {
+      data.push({
+        name: NO_DOCUMENT_SUBMITTED,
+        value: 100 - summedPercentage
+      });
+    }
   }
+
   return data;
 };
 

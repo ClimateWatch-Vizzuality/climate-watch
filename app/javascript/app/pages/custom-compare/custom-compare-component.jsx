@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { renderRoutes } from 'react-router-config';
 import Header from 'components/header';
 import Intro from 'components/intro';
 import cx from 'classnames';
@@ -8,10 +9,11 @@ import AnchorNav from 'components/anchor-nav';
 import BackButton from 'components/back-button';
 import Dropdown from 'components/dropdown';
 import NdcCompareAllTargetsProvider from 'providers/ndc-compare-all-targets-provider';
+import CountriesDocumentsProvider from 'providers/countries-documents-provider';
 
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
-
 import layout from 'styles/layout.scss';
+
 import styles from './custom-compare-styles.scss';
 
 const COUNTRY_PLACEHOLDERS = [
@@ -24,7 +26,8 @@ const FiltersGroup = ({
   data,
   countryPlaceholder,
   handleCountryFilterChange,
-  handleDocumentFilterChange
+  handleDocumentFilterChange,
+  disabled
 }) => {
   const {
     key,
@@ -45,6 +48,7 @@ const FiltersGroup = ({
         placeholder={countryPlaceholder}
         hideResetButton
         noAutoSort
+        disabled={disabled}
       />
       <Dropdown
         key={`${key}-document`}
@@ -54,6 +58,7 @@ const FiltersGroup = ({
         placeholder="Choose a submission"
         hideResetButton
         noAutoSort
+        disabled={disabled}
       />
     </div>
   );
@@ -66,7 +71,8 @@ const CustomComparisonComponent = props => {
     handleCountryFilterChange,
     handleDocumentFilterChange,
     filtersData,
-    backButtonLink
+    backButtonLink,
+    accordionDataLoading
   } = props;
   return (
     <div>
@@ -89,26 +95,24 @@ const CustomComparisonComponent = props => {
           />
         </Sticky>
       </Header>
-      <div className={styles.filtersWrapper}>
-        <div className={styles.content}>
-          <div className={styles.filters}>
-            {filtersData &&
-              filtersData.map((data, i) => (
-                <FiltersGroup
-                  key={data.key}
-                  data={data}
-                  countryPlaceholder={COUNTRY_PLACEHOLDERS[i]}
-                  handleCountryFilterChange={handleCountryFilterChange}
-                  handleDocumentFilterChange={handleDocumentFilterChange}
-                />
-              ))}
-          </div>
+      <div className={styles.content}>
+        <div className={styles.filters}>
+          {filtersData &&
+            filtersData.map((data, i) => (
+              <FiltersGroup
+                key={data.key}
+                data={data}
+                countryPlaceholder={COUNTRY_PLACEHOLDERS[i]}
+                handleCountryFilterChange={handleCountryFilterChange}
+                handleDocumentFilterChange={handleDocumentFilterChange}
+                disabled={accordionDataLoading}
+              />
+            ))}
         </div>
       </div>
-      <div className={styles.content}>
-        <div className={styles.accordions}>CONTENT HERE</div>
-      </div>
+      {renderRoutes(route.routes)}
       <NdcCompareAllTargetsProvider />
+      <CountriesDocumentsProvider />
     </div>
   );
 };
@@ -140,7 +144,8 @@ FiltersGroup.propTypes = {
   }),
   countryPlaceholder: PropTypes.string,
   handleCountryFilterChange: PropTypes.func,
-  handleDocumentFilterChange: PropTypes.func
+  handleDocumentFilterChange: PropTypes.func,
+  disabled: PropTypes.bool
 };
 
 CustomComparisonComponent.propTypes = {
@@ -149,7 +154,8 @@ CustomComparisonComponent.propTypes = {
   filtersData: PropTypes.array,
   handleCountryFilterChange: PropTypes.func,
   handleDocumentFilterChange: PropTypes.func,
-  backButtonLink: PropTypes.string
+  backButtonLink: PropTypes.string,
+  accordionDataLoading: PropTypes.bool
 };
 
 export default CustomComparisonComponent;

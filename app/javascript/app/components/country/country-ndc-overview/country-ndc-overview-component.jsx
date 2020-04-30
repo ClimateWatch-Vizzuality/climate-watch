@@ -295,7 +295,7 @@ class CountryNdcOverview extends PureComponent {
     const hasSectors = values && sectors;
     const description = hasSectors && (
       <div
-        className={styles.descriptionContainer}
+        className={cx(styles.descriptionContainer, layout.parsedHTML)}
         // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{
           __html:

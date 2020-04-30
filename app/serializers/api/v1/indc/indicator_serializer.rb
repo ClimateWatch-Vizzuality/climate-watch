@@ -24,8 +24,13 @@ module Api
         end
 
         def locations
+          values = if instance_options[:locations_documents]
+                     object.values_for instance_options[:locations_documents]
+                   else
+                     object.values
+                   end
           IndexedSerializer.serialize_collection(
-            object.values,
+            values,
             serializer: ValueSerializer
           ) do |v|
             v.location.iso_code3

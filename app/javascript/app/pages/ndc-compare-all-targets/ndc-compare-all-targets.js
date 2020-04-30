@@ -40,7 +40,7 @@ const NDCCompareAllContainer = props => {
       tableWidth: 1170,
       narrowColumnWidth: 134,
       wideColumnWidth: 200,
-      narrowColumns: [0, 2, 3, 4, 5],
+      narrowColumns: [0, 2, 3, 4, 5, 6],
       wideColumns: [1]
     });
 
@@ -58,7 +58,7 @@ const NDCCompareAllContainer = props => {
   const handleTargetsChange = value => {
     updateUrlParam({
       name: 'targets',
-      value: value.toString()
+      value: value ? value.toString() : undefined
     });
   };
 

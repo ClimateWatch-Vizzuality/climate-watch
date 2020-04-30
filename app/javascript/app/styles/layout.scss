@@ -123,3 +123,14 @@ $grid-padding-gutters: $gutter-padding;
   background-color: rgba(0, 0, 0, 0.25);
   z-index: $z-index-loading-modal;
 }
+
+.parsedHTML {
+  ul {
+    list-style: disc;
+  }
+
+  ul,
+  ol {
+    margin: 1em 0 0 1em;
+  }
+}

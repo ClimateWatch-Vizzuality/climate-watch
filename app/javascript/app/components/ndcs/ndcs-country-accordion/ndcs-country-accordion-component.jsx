@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Accordion from 'components/accordion';
 import NoContent from 'components/no-content';
 import Loading from 'components/loading';
-import DefinitionList from 'components/definition-list';
+import DefinitionList from 'components/definition-list-legacy';
 import NdcsDocumentsProvider from 'providers/documents-provider';
 
 import layout from 'styles/layout.scss';

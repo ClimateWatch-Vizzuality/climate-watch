@@ -95,7 +95,8 @@ module Api
         end
 
         render json: NdcIndicators.new(indicators, categories, sectors),
-               serializer: Api::V1::Indc::NdcIndicatorsSerializer
+               serializer: Api::V1::Indc::NdcIndicatorsSerializer,
+               locations_documents: locations_documents
       end
       # rubocop:enable MethodLength, AbcSize
 
@@ -140,6 +141,14 @@ module Api
           nil
         else
           params[:location].split(',')
+        end
+      end
+
+      def locations_documents
+        return nil unless params[:locations_documents].present?
+
+        params[:locations_documents].split(',').map do |loc_doc|
+          loc_doc.split('-')
         end
       end
     end

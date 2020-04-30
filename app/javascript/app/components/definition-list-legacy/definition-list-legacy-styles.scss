@@ -1,0 +1,51 @@
+@import '~styles/layout.scss';
+
+.definitionCompare {
+  @include columns((3, 3, 3, 3));
+  @include xy-gutters(40px, $gutter-position: ('top', 'bottom'), $gutter-type: padding);
+  @include xy-gutters(60px);
+
+  border-bottom: solid 1px rgba(#9090b2, 0.15);
+}
+
+.definition {
+  @include columns(12);
+  @include xy-gutters(40px, $gutter-position: ('top', 'bottom'), $gutter-type: padding);
+
+  > *:first-child {
+    @include xy-gutters($gutter-position: ('bottom'));
+  }
+
+  border-bottom: solid 1px rgba(#9090b2, 0.15);
+
+  @media #{$tablet-landscape} {
+    @include columns((3, 9));
+    @include xy-gutters(60px);
+
+    > * {
+      @include xy-gutters($gutter-position: ('bottom'), $gutters: 0);
+    }
+  }
+}
+
+.definitionTitle {
+  color: $theme-color;
+  font-weight: $font-weight-bold;
+  font-family: $font-family-1;
+}
+
+.definitionDesc {
+  color: $theme-color;
+  font-family: $font-family-1;
+  line-height: 1.4em;
+  word-break: break-word;
+
+  a {
+    color: $theme-color;
+    word-wrap: break-word;
+    background-image: linear-gradient(to right, $theme-secondary 100%, transparent 100%);
+    background-position: 0 1.07em;
+    background-repeat: repeat-x;
+    background-size: 10px 2px;
+  }
+}
