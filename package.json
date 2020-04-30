@@ -37,7 +37,7 @@
     "copy-to-clipboard": "3.0.8",
     "core-js": "2.5.3",
     "css-loader": "0.28.7",
-    "cw-components": "github:ClimateWatch-Vizzuality/climate-watch-components#1.60.0",
+    "cw-components": "github:ClimateWatch-Vizzuality/climate-watch-components#1.61.0",
     "d3-format": "1.2.0",
     "d3-scale": "1.0.6",
     "d3-time-format": "^2.1.3",
