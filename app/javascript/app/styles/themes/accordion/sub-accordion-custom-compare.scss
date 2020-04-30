@@ -1,0 +1,23 @@
+
+@import '~styles/settings.scss';
+
+.title {
+  margin-left: 0;
+
+  @media #{$tablet-landscape} {
+    font-weight: $font-weight-bold;
+  }
+}
+
+.header {
+  background-color: $white;
+  border-bottom: 1px solid $gray1;
+}
+
+.arrow {
+  @media #{$tablet-landscape} {
+    right: unset;
+    margin-left: 10px;
+    width: 10px;
+  }
+}

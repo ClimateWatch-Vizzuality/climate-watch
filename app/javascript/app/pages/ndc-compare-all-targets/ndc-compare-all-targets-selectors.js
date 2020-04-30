@@ -2,49 +2,51 @@ import { createSelector } from 'reselect';
 import { filterQuery } from 'app/utils';
 import deburr from 'lodash/deburr';
 import isEmpty from 'lodash/isEmpty';
+import { DOCUMENTS_NAMES } from 'data/country-documents';
 
 const getCountries = state => (state.countries && state.countries.data) || null;
+const getCountriesDocuments = state =>
+  (state.countriesDocuments && state.countriesDocuments.data) || null;
+
 const getIndicatorsData = state =>
   (state.compareAll.data && state.compareAll.data.indicators) || null;
-export const getLoading = state => state.compareAll.loading || null;
+export const getLoading = state =>
+  state.compareAll.loading || state.countriesDocuments.loading || null;
 export const getSearch = (state, { search }) => deburr(search.search) || '';
 export const getQuery = (state, { search }) => search || '';
 
 const getData = createSelector(
-  [getCountries, getIndicatorsData],
-  (countries, indicators) => {
-    if (!countries || !indicators || !indicators.length) return null;
-    const ndcIndicator = indicators.find(i => i.slug === 'submission');
+  [getCountries, getIndicatorsData, getCountriesDocuments],
+  (countries, indicators, countriesDocuments) => {
+    if (
+      !countries ||
+      !indicators ||
+      !indicators.length ||
+      !countriesDocuments
+    ) {
+      return null;
+    }
     const emissionsIndicator = indicators.find(i => i.slug === 'ndce_ghg');
-    const ltsIndicator = indicators.find(i => i.slug === 'lts_submission');
     const rows = countries.map(c => {
-      const countryNDC = ndcIndicator.locations[c.iso_code3];
-      const countryLTS = ltsIndicator.locations[c.iso_code3];
       const countryEmissions = emissionsIndicator.locations[c.iso_code3];
-      const getIconValue = (conditionYes, conditionIntends) => {
-        if (conditionYes) return 'yes';
-        if (conditionIntends) return 'intends';
-        return 'no';
-      };
-
-      const isLTSSubmitted =
-        countryLTS && countryLTS.value === 'Long-term Strategy Submitted';
-      const isSecondNDCSubmitted =
-        countryNDC && countryNDC.value === 'Second NDC Submitted';
-      const isNDCSubmitted =
-        countryNDC &&
-        (countryNDC.value === 'First NDC Submitted' || isSecondNDCSubmitted);
-      const isINDCSubmitted =
-        countryNDC && (countryNDC.value === 'INDC Submitted' || isNDCSubmitted);
+      const countryDocuments =
+        countriesDocuments && countriesDocuments[c.iso_code3];
+      const getIconValue = slug =>
+        // TODO: Intends submisstion return 'intends'
+        (countryDocuments && countryDocuments.find(d => d.slug === slug)
+          ? 'yes'
+          : 'no');
 
       return {
         Country: { name: c.wri_standard_name, iso: c.iso_code3 },
         'Share of global GHG emissions':
           countryEmissions && countryEmissions.value,
-        INDC: getIconValue(isINDCSubmitted),
-        NDC: getIconValue(isNDCSubmitted),
-        '2nd NDC': getIconValue(isSecondNDCSubmitted),
-        LTS: getIconValue(isLTSSubmitted)
+        'Pre-2020 Pledges': getIconValue('pledges'),
+        INDC: getIconValue('indc'),
+        NDC: getIconValue('first_ndc'),
+        '2nd NDC': getIconValue('second_ndc'),
+        'Targets in National Policies': getIconValue('targets'),
+        LTS: getIconValue('lts')
       };
     });
     return rows;
@@ -53,15 +55,7 @@ const getData = createSelector(
 
 export const getColumns = createSelector([getData], rows => {
   if (!rows) return [];
-  //   'Country', X
-  //   'Share of global GHG emissions', X
-  //   'Pre-2020 pledge', Missing
-  //   'INDC', X
-  //   'NDC', X
-  //   '2nd NDC', X
-  //   'Targets in National Policies', Missing
-  //   'LTS' X
-  return rows[0] && Object.keys(rows[0]);
+  return ['Country', 'Share of global GHG emissions', ...DOCUMENTS_NAMES];
 });
 
 export const getFilteredDataBySearch = createSelector(

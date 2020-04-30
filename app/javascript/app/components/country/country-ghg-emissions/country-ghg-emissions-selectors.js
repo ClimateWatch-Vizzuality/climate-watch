@@ -25,8 +25,6 @@ import {
   DATA_SCALE
 } from 'data/constants';
 
-const FEATURE_NEW_GHG = process.env.FEATURE_NEW_GHG === 'true';
-
 // constants needed for data parsing
 const BASE_COLORS = ['#25597C', '#DFE9ED'];
 
@@ -98,10 +96,7 @@ export const getSourceSelected = createSelector(
       return defaultSource || sources[0];
     }
 
-    if (FEATURE_NEW_GHG) {
-      return sources.find(category => category.name === selected);
-    }
-    return sources.find(category => category.value === selected);
+    return sources.find(category => category.name === selected);
   }
 );
 

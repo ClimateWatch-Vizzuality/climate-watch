@@ -15,6 +15,8 @@ import Search from 'components/search';
 import { NCS_COMPARE_ALL } from 'data/SEO';
 import { MetaDescription, SocialMetadata } from 'components/seo';
 import NdcCompareAllTargetsProvider from 'providers/ndc-compare-all-targets-provider';
+import CountriesDocumentsProvider from 'providers/countries-documents-provider';
+
 import CompareAllTable from './ndc-compare-all-targets-table/ndc-compare-all-targets-table';
 import styles from './ndc-compare-all-targets-styles.scss';
 
@@ -89,10 +91,20 @@ const NDCCompareAllTargets = props => {
             {renderLegend()}
             <div className={styles.buttonAndSearch}>
               <Button
-                variant="primary"
-                className={styles.compareButton}
+                variant="secondary"
+                className={styles.actionButton}
                 disabled={selectedTargets.length === 0}
-                link={`/custom-compare?targets=${selectedTargets.join(',')}`}
+                onClick={() => handleTargetsChange(null)}
+              >
+                Clear
+              </Button>
+              <Button
+                variant="primary"
+                className={styles.actionButton}
+                disabled={selectedTargets.length === 0}
+                link={`/custom-compare/overview?targets=${selectedTargets.join(
+                  ','
+                )}`}
               >
                 {`Compare${
                   selectedTargets.length === 0
@@ -119,6 +131,7 @@ const NDCCompareAllTargets = props => {
         </div>
       </div>
       <NdcCompareAllTargetsProvider />
+      <CountriesDocumentsProvider />
     </React.Fragment>
   );
 };

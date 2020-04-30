@@ -50,15 +50,6 @@
   column-count: 1;
   column-gap: $gutter-padding;
   margin-bottom: 60px;
-
-  > ul {
-    list-style: disc;
-  }
-
-  > ul,
-  ol {
-    margin: 1em 0 0 1em;
-  }
 }
 
 .subtitles {

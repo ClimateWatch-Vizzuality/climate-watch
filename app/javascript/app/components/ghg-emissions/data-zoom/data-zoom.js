@@ -6,14 +6,12 @@ import DataZoomComponent from './data-zoom-component';
 const PADDING = 20;
 
 function DataZoomContainer(props) {
-  const { data, onYearChange } = props;
+  const { data, onYearChange, position, setPosition } = props;
 
   const steps = data && data.length - 1;
 
   const dataZoomRef = useRef();
   const [width, setWidth] = useState(0);
-  const [position, setPosition] = useState({ min: 0, max: width - PADDING });
-
   useEffect(() => {
     if (dataZoomRef.current) {
       const debouncedSetWidth = debounce(
@@ -65,7 +63,9 @@ function DataZoomContainer(props) {
 
 DataZoomContainer.propTypes = {
   data: PropTypes.array,
-  onYearChange: PropTypes.func.isRequired
+  onYearChange: PropTypes.func.isRequired,
+  position: PropTypes.object.isRequired,
+  setPosition: PropTypes.func.isRequired
 };
 
 export default DataZoomContainer;

@@ -1,0 +1,22 @@
+@import '~styles/settings.scss';
+@import '~styles/layout.scss';
+
+.container {
+  border-top: 1px solid $gray1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.containerNoData {
+  border-bottom: 1px solid $gray1;
+  min-height: 400px;
+}
+
+.loader {
+  width: 100%;
+}
+
+.accordion {
+  width: 100%;
+}

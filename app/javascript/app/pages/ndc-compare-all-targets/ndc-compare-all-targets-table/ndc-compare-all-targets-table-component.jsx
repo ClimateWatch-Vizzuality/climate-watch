@@ -10,11 +10,13 @@ import { Table } from 'cw-components';
 import NoContent from 'components/no-content';
 import Loading from 'components/loading';
 import compareTableTheme from 'styles/themes/table/compare-table-theme.scss';
+import { DOCUMENTS_NAME_SLUG } from 'data/country-documents';
+
 import styles from './ndc-compare-all-targets-table-styles.scss';
 
 const cellRenderer = (cell, selectedTargets, columns, setSelectedTargets) => {
   const { cellData, dataKey, columnIndex, rowData } = cell;
-  const id = `${rowData.Country.iso}-${dataKey}`;
+  const id = `${rowData.Country.iso}-${DOCUMENTS_NAME_SLUG[dataKey]}`;
   const isActive = selectedTargets.includes(id);
   const isLastColumn = columnIndex === columns.length - 1;
 
@@ -76,6 +78,7 @@ const CompareAllTable = ({
     {!loading && tableData && tableData.length > 0 && (
       <Table
         data={tableData}
+        tableHeight={550}
         horizontalScroll
         parseHtml
         dynamicRowsHeight

@@ -1,0 +1,21 @@
+@import '~styles/settings.scss';
+
+.title {
+  @media #{$tablet-landscape} {
+    font-weight: $font-weight-bold;
+  }
+}
+
+.header {
+  background-color: $gray3;
+  height: 100px;
+  border-bottom: 1px solid $gray1;
+}
+
+.arrow {
+  @media #{$tablet-landscape} {
+    right: unset;
+    margin-left: 10px;
+    width: 10px;
+  }
+}
