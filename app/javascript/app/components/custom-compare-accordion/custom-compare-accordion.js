@@ -14,7 +14,6 @@ import CustomCompareAccordionComponent from './custom-compare-accordion-componen
 const mapStateToProps = (state, { location, category }) => {
   const search = qs.parse(location.search);
   const isSectoralInformation = category === 'sectoral_information';
-
   return {
     data: isSectoralInformation
       ? getSectoralInformationData(state, { search, category })

@@ -13,7 +13,6 @@ const CustomCompareAccordionProvider = ({
 }) => {
   useEffect(() => {
     if (locationsDocuments && category) {
-      // console.log('FETCH');
       fetchCustomCompareAccordion({ locationsDocuments, category });
     }
   }, [locationsDocuments]);

@@ -30,10 +30,9 @@ const getData = createSelector(
       const countryEmissions = emissionsIndicator.locations[c.iso_code3];
       const countryDocuments =
         countriesDocuments && countriesDocuments[c.iso_code3];
-
       const getIconValue = slug =>
         // TODO: Intends submisstion return 'intends'
-        (countriesDocuments && countryDocuments.find(d => d.slug === slug)
+        (countryDocuments && countryDocuments.find(d => d.slug === slug)
           ? 'yes'
           : 'no');
 

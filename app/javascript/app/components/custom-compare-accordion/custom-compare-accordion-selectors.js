@@ -39,22 +39,39 @@ export const getSelectedCountries = createSelector([getSearch], search => {
   });
 });
 
+export const getSelectedTargets = createSelector([getSearch], search => {
+  if (!search) return null;
+  const queryTargets = search.targets ? search.targets.split(',') : [];
+  return [1, 2, 3].map((value, i) => {
+    const target =
+      queryTargets && queryTargets[i] && queryTargets[i].split('-');
+    const country = target && target[0];
+    const document = target && target[1];
+    return { country, document };
+  });
+});
+
 export const parseIndicatorsDefs = createSelector(
-  [getIndicators, getSelectedCategoryKeys, getSelectedCountries],
-  (indicators, categoryKeys, selectedCountries) => {
-    if (!indicators || !categoryKeys || !selectedCountries) return null;
+  [getIndicators, getSelectedCategoryKeys, getSelectedTargets],
+  (indicators, categoryKeys, selectedTargets) => {
+    if (!indicators || !categoryKeys || !selectedTargets) return null;
     const parsedIndicators = {};
     categoryKeys.forEach(category => {
       const categoryIndicators = indicators.filter(
         indicator => indicator.category_ids.indexOf(parseInt(category, 10)) > -1
       );
       const parsedDefinitions = categoryIndicators.map(def => {
-        const descriptions = selectedCountries.map(isoCode3 => ({
-          iso: isoCode3,
-          value: def.locations[isoCode3]
-            ? def.locations[isoCode3][0].value
-            : '-'
-        }));
+        const descriptions = selectedTargets.map(({ country, document }) => {
+          const valueByDocument = def.locations[country]
+            ? def.locations[country].find(
+              ({ document_slug }) => document_slug === document
+            )
+            : null;
+          return {
+            iso: country,
+            value: valueByDocument ? valueByDocument.value : '-'
+          };
+        });
         return {
           title: def.name,
           slug: def.slug,
@@ -87,6 +104,7 @@ export const groupIndicatorsByCategory = createSelector(
   [getIndicators, getCategories, getSelectedCategoryKeys],
   (indicators, categories, selectedCategoryKeys) => {
     if (!indicators || !categories || !selectedCategoryKeys) return null;
+
     return selectedCategoryKeys
       .map(cat => ({
         ...categories[cat],
@@ -122,9 +140,9 @@ export const getCategoriesWithSectors = createSelector(
 // data for section 'SectoralInformation'
 export const getSectoralInformationData = createSelector(
   [getCategoriesWithSectors, getSectors, getSelectedCountries],
-  (categories, sectors, selectedCountries) => {
-    if (!categories || !sectors || !selectedCountries) return [];
-    return categories.map(cat => {
+  (categoriesWithSectors, sectors, selectedCountries) => {
+    if (!categoriesWithSectors || !sectors || !selectedCountries) return [];
+    const sectoralInformationData = categoriesWithSectors.map(cat => {
       const sectorsParsed = sortBy(
         cat.sectors &&
           cat.sectors.length &&
@@ -166,5 +184,9 @@ export const getSectoralInformationData = createSelector(
         sectors: sectorsParsed
       };
     });
+    const sectoralInformationDataWithSectors = sectoralInformationData.filter(
+      ({ sectors: _sectors }) => _sectors && _sectors.length
+    );
+    return sectoralInformationDataWithSectors;
   }
 );

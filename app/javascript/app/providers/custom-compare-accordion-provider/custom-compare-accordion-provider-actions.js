@@ -10,7 +10,6 @@ const fetchCustomCompareAccordionReady = createAction(
 const fetchCustomCompareAccordionFailed = createAction(
   'fetchCustomCompareAccordionFailed'
 );
-// http://localhost:3000/api/v1/ndcs?locations_documents=DZA-indc,ALB-first_ndc&category=overview&source[]=CAIT&source[]=WB&source[]=NDC%20Explorer
 const fetchCustomCompareAccordion = createThunkAction(
   'fetchCustomCompareAccordion',
   params => dispatch => {
@@ -19,7 +18,6 @@ const fetchCustomCompareAccordion = createThunkAction(
       dispatch(fetchCustomCompareAccordionInit());
       fetch(
         `/api/v1/ndcs?locations_documents=${locationsDocuments}&category=${category}&source[]=CAIT&source[]=WB&source[]=NDC%20Explorer`
-        // }${!compare ? '&filter=overview' : ''}`
       )
         .then(response => {
           if (response.ok) return response.json();
