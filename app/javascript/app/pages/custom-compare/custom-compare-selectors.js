@@ -1,13 +1,13 @@
 import { createSelector } from 'reselect';
 import qs from 'query-string';
 import { uniq } from 'lodash';
-
-const INDC = ['INDC Submitted', 'First NDC Submitted', 'Second NDC Submitted'];
-const NDC = ['First NDC Submitted', 'Second NDC Submitted'];
+import { DOCUMENT_SLUGS } from 'data/country-documents';
 
 const getCountries = state => (state.countries && state.countries.data) || null;
 const getIndicatorsData = state =>
   (state.compareAll.data && state.compareAll.data.indicators) || null;
+const getCountriesDocuments = state =>
+  (state.countriesDocuments && state.countriesDocuments.data) || null;
 const getQuery = (state, { search }) => search || '';
 
 export const getBackButtonLink = createSelector([getQuery], query => {
@@ -28,39 +28,34 @@ const getCountryOptions = createSelector([getCountries], countries => {
 });
 
 export const getDocumentsOptionsByCountry = createSelector(
-  [getCountryOptions, getIndicatorsData],
-  (countries, indicators) => {
-    if (!countries || !countries.length || !indicators || !indicators.length) {
+  [getCountryOptions, getIndicatorsData, getCountriesDocuments],
+  (countries, indicators, countriesDocuments) => {
+    if (
+      !countries ||
+      !countries.length ||
+      !indicators ||
+      !indicators.length ||
+      !countriesDocuments
+    ) {
       return null;
     }
+    const rows = countries.reduce((acc, { value: isoCode3 }) => {
+      if (!isoCode3) return acc;
+      const countryDocuments =
+        countriesDocuments && countriesDocuments[isoCode3];
 
-    const ndcIndicator = indicators.find(i => i.slug === 'submission');
-    const ltsIndicator = indicators.find(i => i.slug === 'lts_submission');
-
-    const rows = countries.reduce((acc, { value: country }) => {
-      if (!country) return acc;
-
-      const countryNDC = ndcIndicator.locations[country] || {};
-      const countryLTS = ltsIndicator.locations[country] || {};
-
-      let documents = [];
-
-      if (INDC.includes(countryNDC.value)) {
-        documents = [...documents, { label: 'INDC', value: 'INDC' }];
-      }
-      if (NDC.includes(countryNDC.value)) {
-        documents = [...documents, { label: 'NDC', value: 'NDC' }];
-      }
-      if (countryNDC.value === 'Second NDC Submitted') {
-        documents = [...documents, { label: '2nd NDC', value: '2nd NDC' }];
-      }
-      if (countryLTS && countryLTS.value === 'Long-term Strategy Submitted') {
-        documents = [...documents, { label: 'LTS', value: 'LTS' }];
-      }
+      const documents = DOCUMENT_SLUGS.map(slug => {
+        const countryDocument =
+          countriesDocuments && countryDocuments.find(d => d.slug === slug);
+        if (countryDocument) {
+          return { label: countryDocument.long_name, value: slug };
+        }
+        return null;
+      }).filter(Boolean);
 
       return {
         ...acc,
-        [country]: documents
+        [isoCode3]: documents
       };
     }, {});
     return rows;
@@ -108,16 +103,13 @@ export const getFiltersData = createSelector(
 );
 
 export const getAnchorLinks = createSelector(
-  [state => state.route.routes || [], state => state.location.search],
-  (routes, search) => {
-    const searchQuery = qs.parse(search);
-    const searchParams = { locations: searchQuery.locations };
-    return routes
+  [state => state.route.routes || [], getQuery],
+  (routes, query) =>
+    routes
       .filter(route => route.anchor)
       .map(route => ({
         label: route.label,
         path: `/custom-compare/${route.param ? route.param : ''}`,
-        search: `?${qs.stringify(searchParams)}`
-      }));
-  }
+        search: `?${qs.stringify(query)}`
+      }))
 );

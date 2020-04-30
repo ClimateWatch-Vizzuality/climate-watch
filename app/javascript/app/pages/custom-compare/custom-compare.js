@@ -24,11 +24,13 @@ const mapStateToProps = (state, { location, route }) => {
   };
 
   return {
-    anchorLinks: getAnchorLinks(routeData),
+    anchorLinks: getAnchorLinks(routeData, { search }),
     filtersData: getFiltersData(state, { search }),
     selectedTargets: getSelectedTargets(state, { search }),
     backButtonLink: getBackButtonLink(null, { search }),
-    documentsByCountry: getDocumentsOptionsByCountry(state, { search })
+    documentsByCountry: getDocumentsOptionsByCountry(state, { search }),
+    accordionDataLoading:
+      state.customCompareAccordion && state.customCompareAccordion.loading
   };
 };
 
@@ -57,7 +59,9 @@ const CustomCompare = props => {
         : newCountryDocuments[0];
 
     selectedTargets.forEach(({ key, country, document }) => {
-      if (key === targetKey) { newTargetParams.push(`${newCountry}-${defaultDocument || ''}`); } else if (country) newTargetParams.push(`${country}-${document}`);
+      if (key === targetKey) {
+        newTargetParams.push(`${newCountry}-${defaultDocument || ''}`);
+      } else if (country) newTargetParams.push(`${country}-${document}`);
     });
 
     updateTargetParams(newTargetParams);
