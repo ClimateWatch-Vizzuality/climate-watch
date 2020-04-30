@@ -14,17 +14,6 @@ const getSectors = state =>
     ? state.customCompareAccordion.data.sectors
     : {});
 const getSearch = (state, { search }) => search;
-const getSelectedSection = (state, { category }) => category;
-
-export const getSelectedCategoryKeys = createSelector(
-  [getCategories, getSelectedSection],
-  (categories, selectedSection) => {
-    if (!categories || !selectedSection) return null;
-    return Object.keys(categories).filter(
-      key => categories[key].type !== 'map'
-    );
-  }
-);
 
 export const getSelectedTargets = createSelector([getSearch], search => {
   if (!search) return null;
@@ -47,11 +36,11 @@ export const getSelectedCountries = createSelector(
 );
 
 export const parseIndicatorsDefs = createSelector(
-  [getIndicators, getSelectedCategoryKeys, getSelectedTargets],
-  (indicators, categoryKeys, selectedTargets) => {
-    if (!indicators || !categoryKeys || !selectedTargets) return null;
+  [getIndicators, getCategories, getSelectedTargets],
+  (indicators, categories, selectedTargets) => {
+    if (!indicators || !categories || !selectedTargets) return null;
     const parsedIndicators = {};
-    categoryKeys.forEach(category => {
+    Object.keys(categories).forEach(category => {
       const categoryIndicators = indicators.filter(
         indicator => indicator.category_ids.indexOf(parseInt(category, 10)) > -1
       );
@@ -83,10 +72,10 @@ export const parseIndicatorsDefs = createSelector(
 
 // data for section 'Overview', 'Mitigation', 'Adaptation'
 export const getData = createSelector(
-  [getCategories, getSelectedCategoryKeys, parseIndicatorsDefs],
-  (categories, categoriesKeys, indicators) => {
-    if (!categories || !categoriesKeys || !indicators) return null;
-    const ndcs = categoriesKeys.map(category => ({
+  [getCategories, parseIndicatorsDefs],
+  (categories, indicators) => {
+    if (!categories || !indicators) return null;
+    const ndcs = Object.keys(categories).map(category => ({
       title: categories[category].name,
       slug: categories[category].slug,
       definitions: indicators[category] ? indicators[category] : []
@@ -96,10 +85,10 @@ export const getData = createSelector(
 );
 
 export const groupIndicatorsByCategory = createSelector(
-  [getIndicators, getCategories, getSelectedCategoryKeys],
-  (indicators, categories, selectedCategoryKeys) => {
-    if (!indicators || !categories || !selectedCategoryKeys) return null;
-    return selectedCategoryKeys
+  [getIndicators, getCategories],
+  (indicators, categories) => {
+    if (!indicators || !categories) return null;
+    return Object.keys(categories)
       .map(cat => ({
         ...categories[cat],
         indicators: indicators.filter(
