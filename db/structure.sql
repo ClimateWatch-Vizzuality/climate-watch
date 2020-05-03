@@ -959,7 +959,9 @@ CREATE TABLE public.indc_indicators (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     "order" integer,
-    multiple_versions boolean
+    multiple_versions boolean,
+    normalized_slug character varying,
+    normalized_label character varying
 );
 
 
@@ -4240,6 +4242,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200317204602'),
 ('20200317210227'),
 ('20200317210928'),
-('20200423085052');
+('20200423085052'),
+('20200503165104');
 
 
