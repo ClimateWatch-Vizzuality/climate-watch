@@ -127,6 +127,12 @@ module Api
             where(locations: {iso_code3: locations_documents.map(&:first)},
                   indc_documents: {slug: locations_documents.map(&:second)})
         end
+
+        if params[:category]
+          parent = ::Indc::Category.includes(:category_type).
+            where(indc_category_types: {name: 'global'}, slug: params[:category])
+          indicators = indicators.joins(:categories).where(indc_categories: {parent_id: parent.map(&:id)})
+        end
         indicators.sort_by{|i| i.order}
       end
 
