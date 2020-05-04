@@ -77,7 +77,8 @@ const GhgMultiselectDropdow = ({
   return (
     <div className={styles.container}>
       <div {...getComboboxProps()}>
-        <label className={styles.label}>{label}
+        <label className={styles.label}>
+          {label}
           <input
             className={styles.input}
             {...getInputProps(getDropdownProps({ preventKeyAction: isOpen }))}
