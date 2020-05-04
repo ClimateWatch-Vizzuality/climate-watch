@@ -1,0 +1,38 @@
+@import '~styles/settings.scss';
+
+$height: 45px;
+
+.container {
+  width: 100%;
+  position: relative;
+}
+
+.label {
+  display: inline-block;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: $theme-color;
+  margin-bottom: 4px;
+}
+
+.input {
+  width: 100%;
+  border-radius: 3px;
+  color: $theme-color;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding: 0;
+  padding-left: 10px;
+  padding-right: 5px;
+  height: $height;
+  overflow: hidden;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.09);;
+  transition: box-shadow 150ms ease-out;
+  border: $dropdown-border;
+
+  &:hover {
+    box-shadow: none;
+  }
+}
