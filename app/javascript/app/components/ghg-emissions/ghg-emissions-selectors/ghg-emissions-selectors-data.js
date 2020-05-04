@@ -419,7 +419,7 @@ export const getChartData = createSelector(
           scaledValue = previousValue
             ? ((scaledValue - previousYearValues[key]) * 100) /
               previousYearValues[key]
-            : 0;
+            : 'n/a';
         }
         previousYearValues[key] = currentYearValue;
       }
@@ -534,7 +534,7 @@ export const getChartConfig = createSelector(
         yLeft: {
           ...DEFAULT_AXES_CONFIG.yLeft,
           unit,
-          suffix: isPercentageChangeCalculation ? '%' : 't'
+          suffix: isPercentageChangeCalculation ? '' : 't'
         }
       },
       theme: colorThemeCache,

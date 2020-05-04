@@ -226,8 +226,14 @@ function GhgEmissions(props) {
     const isPercentageChangeCalculation =
       selectedOptions.calculationSelected.value ===
       CALCULATION_OPTIONS.PERCENTAGE_CHANGE.value;
-    const percentageChangeCustomLabelFormat = value =>
-      (value ? `${format('.2r')(value)}` : 0);
+
+    const percentageChangeCustomLabelFormat = value => {
+      if (value === undefined) {
+        return 'n/a';
+      }
+      return value ? `${format('.2r')(value)}%` : '0%';
+    };
+
     return (
       <React.Fragment>
         <Chart
