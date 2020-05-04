@@ -10,6 +10,7 @@ import { sortLabelByAlpha } from 'utils/graphs';
 import {
   GAS_AGGREGATES,
   TOP_EMITTERS_OPTION,
+  TOP_EMITTERS_REGION_COUNTRIES,
   CALCULATION_OPTIONS
 } from 'data/constants';
 import {
@@ -195,7 +196,7 @@ const getRegionOptions = createSelector(
   [getRegions, getSourceSelected, getFieldOptions('location')],
   (regions, sourceSelected, options) => {
     if (!regions || !sourceSelected) return null;
-
+    TOP_EMITTERS_OPTION.expandsTo = TOP_EMITTERS_REGION_COUNTRIES;
     const regionOptions = [TOP_EMITTERS_OPTION];
     regions.forEach(region => {
       if (
@@ -204,7 +205,10 @@ const getRegionOptions = createSelector(
       ) {
         return;
       }
-      const regionMembers = region.members.map(m => m.iso_code3);
+      const regionMembers = region.members.map(m => ({
+        iso: m.iso_code3,
+        label: m.wri_standard_name
+      }));
       regionOptions.push({
         label: region.wri_standard_name,
         value: region.iso_code3,
