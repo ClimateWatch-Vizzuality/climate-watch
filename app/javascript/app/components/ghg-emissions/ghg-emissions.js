@@ -7,13 +7,15 @@ import { handleAnalytics } from 'utils/analytics';
 import qs from 'query-string';
 import castArray from 'lodash/castArray';
 import kebabCase from 'lodash/kebabCase';
-import { actions } from 'components/modal-metadata';
+import { actions as modalActions } from 'components/modal-metadata';
 import { actions as pngModalActions } from 'components/modal-png-download';
 import { encodeAsCSVContent, invokeCSVDownload } from 'utils/csv';
 import { orderByColumns, stripHTML } from 'utils';
 import { GHG_TABLE_HEADER } from 'data/constants';
 import GhgEmissionsComponent from './ghg-emissions-component';
 import { getGHGEmissions } from './ghg-emissions-selectors/ghg-emissions-selectors';
+import actions from './data-zoom/data-zoom-actions';
+import reducers, { initialState } from './data-zoom/data-zoom-reducers';
 
 const mapStateToProps = (state, props) => {
   const { location } = props;
@@ -30,10 +32,13 @@ function GhgEmissionsContainer(props) {
     location,
     fieldToBreakBy,
     tableData,
-    data
+    data,
+    setYears,
+    dataZoomYears
   } = props;
 
   // Data Zoom Logic
+  const [updatedData, setUpdatedData] = useState(data);
   const DATA_ZOOM_START_POSITION = {
     min: 0,
     max: 0
@@ -41,23 +46,21 @@ function GhgEmissionsContainer(props) {
   const [dataZoomPosition, setDataZoomPosition] = useState(
     DATA_ZOOM_START_POSITION
   );
-  const [years, setYears] = useState(null);
-  const [updatedData, setUpdatedData] = useState(data);
-
-  const resetDataZoom = () => {
-    setDataZoomPosition(DATA_ZOOM_START_POSITION);
-    setYears(null);
-  };
-
   useEffect(() => {
     if (data) {
-      if (years) {
-        setUpdatedData(data.filter(d => d.x >= years.min && d.x <= years.max));
+      if (dataZoomYears) {
+        setUpdatedData(
+          data.filter(d => d.x >= dataZoomYears.min && d.x <= dataZoomYears.max)
+        );
       } else {
         setUpdatedData(data);
       }
     }
-  }, [years, data]);
+  }, [dataZoomYears, data]);
+  const resetDataZoom = () => {
+    setDataZoomPosition(DATA_ZOOM_START_POSITION);
+    setYears(null);
+  };
 
   useEffect(() => {
     const { sourceSelected } = selected;
@@ -206,6 +209,8 @@ GhgEmissionsContainer.propTypes = {
   history: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
   setModalMetadata: PropTypes.func.isRequired,
+  setYears: PropTypes.func.isRequired,
+  dataZoomYears: PropTypes.object,
   selected: PropTypes.object,
   legendSelected: PropTypes.array,
   fieldToBreakBy: PropTypes.string,
@@ -219,8 +224,10 @@ GhgEmissionsContainer.defaultProps = {
   search: undefined
 };
 
+export { actions, reducers, initialState };
+
 export default withRouter(
-  connect(mapStateToProps, { ...actions, ...pngModalActions })(
+  connect(mapStateToProps, { ...actions, ...modalActions, ...pngModalActions })(
     GhgEmissionsContainer
   )
 );

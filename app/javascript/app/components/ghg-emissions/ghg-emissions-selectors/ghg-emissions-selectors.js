@@ -1,7 +1,8 @@
 import { createStructuredSelector } from 'reselect';
 import {
   getSearch,
-  getLinkToDataExplorer
+  getLinkToDataExplorer,
+  getDataZoomYears
 } from './ghg-emissions-selectors-get';
 import {
   getOptions,
@@ -37,6 +38,7 @@ export const getGHGEmissions = createStructuredSelector({
   domain: getChartDomain,
   config: getChartConfig,
   dataZoomData: getDataZoomData,
+  dataZoomYears: getDataZoomYears,
   loading: getLoading,
   fieldToBreakBy: getModelSelected,
   hideRemoveOptions: getHideRemoveOptions,

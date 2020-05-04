@@ -29,7 +29,8 @@ import {
   getWBData,
   getData,
   getRegions,
-  getCountries
+  getCountries,
+  getDataZoomYears
 } from './ghg-emissions-selectors-get';
 import {
   getModelSelected,
@@ -311,7 +312,8 @@ export const getChartData = createSelector(
     getYColumnOptions,
     getMetricSelected,
     getCalculationData,
-    getCalculationSelected
+    getCalculationSelected,
+    getDataZoomYears
   ],
   (
     data,
@@ -320,7 +322,8 @@ export const getChartData = createSelector(
     yColumnOptions,
     metric,
     calculationData,
-    calculationSelected
+    calculationSelected,
+    dataZoomYears
   ) => {
     if (
       !data ||
@@ -395,13 +398,15 @@ export const getChartData = createSelector(
     const accumulatedValues = {};
     const previousYearValues = {};
 
-    const getItemValue = (totalValue, key, totalMetric) => {
+    const getItemValue = (totalValue, key, totalMetric, year) => {
       let scaledValue = totalValue ? totalValue * DATA_SCALE : null;
 
       if (calculationSelected.value === CALCULATION_OPTIONS.CUMULATIVE.value) {
         if (scaledValue) {
           if (accumulatedValues[key]) {
-            accumulatedValues[key] += scaledValue;
+            if (!dataZoomYears || year > dataZoomYears.min) {
+              accumulatedValues[key] += scaledValue;
+            }
           } else {
             accumulatedValues[key] = scaledValue;
           }
@@ -452,7 +457,7 @@ export const getChartData = createSelector(
           }
         });
 
-        yItems[key] = getItemValue(totalValue, key, totalMetric);
+        yItems[key] = getItemValue(totalValue, key, totalMetric, year);
       });
 
       dataParsed.push({
