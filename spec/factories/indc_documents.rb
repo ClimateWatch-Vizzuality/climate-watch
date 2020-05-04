@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :indc_document, class: 'Indc::Document' do
-    ordering { "" }
-    slug { "MyString" }
+    sequence(:ordering) { |n| n }
+    sequence(:slug) { |n| "#{n}_document" }
     long_name { "MyString" }
     description { "MyText" }
   end
