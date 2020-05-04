@@ -40,65 +40,15 @@ module Api
     end
 
     class NdcsController < ApiController
-      # rubocop:disable MethodLength, AbcSize
       def index
-        sectors = ::Indc::Sector.
-          all
-
-        categories = ::Indc::Category.
-          includes(:category_type).
-          order(:order)
-
-        # params[:filter] -> ['map', 'table']
-        if params[:filter]
-          categories = categories.where(
-            indc_category_types: {name: params[:filter]}
-          )
-        end
-
-        indicators = ::Indc::Indicator.
-          includes(:labels, :source, :categories,
-                   values: [:sector, :label, :location, :document]).
-          order(:order)
-
-        # params[:source] -> one of ["CAIT", "LTS", "WB", "NDC Explorer"]
-        if params[:source]
-          source = ::Indc::Source.where(name: params[:source])
-          indicators = indicators.where(source_id: source.map(&:id))
-        end
-
-        if params[:category]
-          parent = ::Indc::Category.
-            includes(:category_type).
-            where(
-              indc_category_types: {name: 'global'},
-              slug: params[:category]
-            )
-
-          categories = categories.
-            where(
-              parent_id: parent.map(&:id)
-            )
-        end
-
-        categories = categories.where(id: indicators.flat_map(&:category_ids).uniq)
-
-        if location_list
-          indicators = indicators.where(
-            values: {locations: {iso_code3: location_list}}
-          )
-        end
-
-        if params[:document]
-          indicators = indicators.
-            where(values: {indc_documents: {slug: [params[:document], nil]}})
-        end
+        sectors = ::Indc::Sector.all
+        indicators = filtered_indicators
+        categories = filtered_categories(indicators)
 
         render json: NdcIndicators.new(indicators, categories, sectors),
                serializer: Api::V1::Indc::NdcIndicatorsSerializer,
                locations_documents: locations_documents
       end
-      # rubocop:enable MethodLength, AbcSize
 
       def content_overview
         location = Location.find_by!(iso_code3: params[:code])
@@ -150,6 +100,58 @@ module Api
         params[:locations_documents].split(',').map do |loc_doc|
           loc_doc.split('-')
         end
+      end
+
+      def filtered_indicators
+        indicators = ::Indc::Indicator.includes(:labels, :source, :categories,
+                                                values: [:sector, :label, :location,
+                                                         :document])
+
+        if location_list
+          indicators = indicators.where(values: {locations: {iso_code3: location_list}})
+        end
+
+        if params[:document]
+          indicators = indicators.where(values: {indc_documents: {slug: [params[:document], nil]}})
+        end
+
+        # params[:source] -> one of ["CAIT", "LTS", "WB", "NDC Explorer"]
+        if params[:source]
+          source = ::Indc::Source.where(name: params[:source])
+          indicators = indicators.where(source_id: source.map(&:id))
+        end
+
+        if locations_documents
+          indicators = indicators.select('DISTINCT ON(COALESCE("normalized_slug", indc_indicators.slug)) indc_indicators.*')
+          indicators = indicators.joins(values: [:location, :document]).
+            where(locations: {iso_code3: locations_documents.map(&:first)},
+                  indc_documents: {slug: locations_documents.map(&:second)})
+        end
+
+        if params[:category]
+          parent = ::Indc::Category.includes(:category_type).
+            where(indc_category_types: {name: 'global'}, slug: params[:category])
+          indicators = indicators.joins(:categories).where(indc_categories: {parent_id: parent.map(&:id)})
+        end
+        indicators.sort_by{|i| i.order}
+      end
+
+      def filtered_categories(indicators)
+        categories = ::Indc::Category.includes(:category_type).order(:order)
+
+        # params[:filter] -> ['map', 'table']
+        if params[:filter]
+          categories = categories.where(indc_category_types: {name: params[:filter]})
+        end
+
+        if params[:category]
+          parent = ::Indc::Category.includes(:category_type).
+            where(indc_category_types: {name: 'global'}, slug: params[:category])
+
+          categories = categories.where(parent_id: parent.map(&:id))
+        end
+
+        categories.where(id: indicators.flat_map(&:category_ids).uniq)
       end
     end
   end
