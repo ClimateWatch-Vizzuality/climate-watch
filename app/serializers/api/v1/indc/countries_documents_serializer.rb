@@ -16,6 +16,14 @@ module Api
 
         def documents
           ::Indc::Document.order(:ordering).map do |d|
+            locs = Location.where(id: ::Indc::Value.select(:location_id).where(document_id: d.id).distinct.pluck(:location_id))
+            total_countries = if locs.where(iso_code3: 'EUU').any?
+                                # sum the 26 countries plus EUU entry to sum 27 countries in the EU
+                                # to avoid double counting
+                                locs.where(is_in_eu: [nil, false]).count + 26
+                              else
+                                locs.count
+                              end
             {
               id: d.id,
               ordering: d.ordering,
@@ -23,7 +31,7 @@ module Api
               long_name: d.long_name,
               description: d.description,
               is_ndc: d.is_ndc,
-              total_countries: d.locations.distinct.count
+              total_countries: total_countries
             }
           end
         end
