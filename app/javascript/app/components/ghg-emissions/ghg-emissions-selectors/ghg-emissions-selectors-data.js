@@ -21,18 +21,21 @@ import {
   CHART_COLORS,
   CHART_COLORS_EXTENDED,
   CHART_COLORS_EXTRA,
-  OTHER_COLOR
+  OTHER_COLOR,
+  CALCULATION_OPTIONS
 } from 'data/constants';
 import { europeSlug } from 'app/data/european-countries';
 import {
   getWBData,
   getData,
   getRegions,
-  getCountries
+  getCountries,
+  getDataZoomYears
 } from './ghg-emissions-selectors-get';
 import {
   getModelSelected,
   getMetricSelected,
+  getCalculationSelected,
   getOptionsSelected,
   getIsRegionAggregated,
   getOptions
@@ -308,16 +311,34 @@ export const getChartData = createSelector(
     getModelSelected,
     getYColumnOptions,
     getMetricSelected,
-    getCalculationData
+    getCalculationData,
+    getCalculationSelected,
+    getDataZoomYears
   ],
-  (data, regions, model, yColumnOptions, metric, calculationData) => {
-    if (!data || !data.length || !model || !calculationData || !regions) {
+  (
+    data,
+    regions,
+    model,
+    yColumnOptions,
+    metric,
+    calculationData,
+    calculationSelected,
+    dataZoomYears
+  ) => {
+    if (
+      !data ||
+      !data.length ||
+      !model ||
+      !calculationData ||
+      !regions ||
+      !calculationSelected
+    ) {
       return null;
     }
     const yearValues = data[0].emissions.map(d => d.year);
     const metricField = {
-      PER_CAPITA: 'population',
-      PER_GDP: 'gdp'
+      [CALCULATION_OPTIONS.PER_CAPITA.value]: 'population',
+      [CALCULATION_OPTIONS.PER_GDP.value]: 'gdp'
     }[metric];
     const shouldHaveMetricData = !!metricField;
 
@@ -372,9 +393,49 @@ export const getChartData = createSelector(
       return metricData;
     };
 
-    const dataParsed = yearValues.map(year => {
-      const yItems = {};
+    const dataParsed = [];
+    const yItems = {};
+    const accumulatedValues = {};
+    const previousYearValues = {};
 
+    const getItemValue = (totalValue, key, totalMetric, year) => {
+      let scaledValue = totalValue ? totalValue * DATA_SCALE : null;
+
+      if (calculationSelected.value === CALCULATION_OPTIONS.CUMULATIVE.value) {
+        if (scaledValue) {
+          if (accumulatedValues[key]) {
+            if (!dataZoomYears || year > dataZoomYears.min) {
+              accumulatedValues[key] += scaledValue;
+            }
+          } else {
+            accumulatedValues[key] = scaledValue;
+          }
+        }
+        scaledValue = accumulatedValues[key] || null;
+      }
+
+      if (
+        calculationSelected.value ===
+        CALCULATION_OPTIONS.PERCENTAGE_CHANGE.value
+      ) {
+        const currentYearValue = scaledValue || 0;
+        if (scaledValue) {
+          const previousValue = previousYearValues[key];
+          scaledValue = previousValue
+            ? ((scaledValue - previousYearValues[key]) * 100) /
+              previousYearValues[key]
+            : 'n/a';
+        }
+        previousYearValues[key] = currentYearValue;
+      }
+
+      if (scaledValue !== null && totalMetric !== null) {
+        return scaledValue / totalMetric;
+      }
+      return null;
+    };
+
+    yearValues.forEach(year => {
       yColumnOptions.forEach(column => {
         const dataForColumn =
           groupedData[column.label] || expandedData(column) || [];
@@ -396,17 +457,13 @@ export const getChartData = createSelector(
           }
         });
 
-        if (totalValue !== null && totalMetric !== null) {
-          yItems[key] = totalValue * (DATA_SCALE / totalMetric);
-        } else {
-          yItems[key] = null;
-        }
+        yItems[key] = getItemValue(totalValue, key, totalMetric, year);
       });
 
-      return {
+      dataParsed.push({
         x: year,
         ...yItems
-      };
+      });
     });
 
     // if there is no value for any legend item
@@ -462,10 +519,17 @@ const getUnit = metric => {
 };
 
 export const getChartConfig = createSelector(
-  [getModelSelected, getMetricSelected, getYColumnOptions],
-  (model, metric, yColumns) => {
+  [
+    getModelSelected,
+    getMetricSelected,
+    getYColumnOptions,
+    getCalculationSelected
+  ],
+  (model, metric, yColumns, calculationSelected) => {
     if (!model || !yColumns) return null;
     const colorPalette = getColorPalette(yColumns);
+    const isPercentageChangeCalculation =
+      calculationSelected.value === CALCULATION_OPTIONS.PERCENTAGE_CHANGE.value;
     colorThemeCache = getThemeConfig(yColumns, colorPalette, colorThemeCache);
     const tooltip = getTooltipConfig(yColumns.filter(c => c && !c.hideLegend));
     const unit = getUnit(metric);
@@ -475,7 +539,7 @@ export const getChartConfig = createSelector(
         yLeft: {
           ...DEFAULT_AXES_CONFIG.yLeft,
           unit,
-          suffix: 't'
+          suffix: isPercentageChangeCalculation ? '' : 't'
         }
       },
       theme: colorThemeCache,
