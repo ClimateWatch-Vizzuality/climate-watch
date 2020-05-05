@@ -5,7 +5,12 @@ import isArray from 'lodash/isArray';
 import { isPageContained } from 'utils/navigation';
 import cx from 'classnames';
 import { GHG_TABLE_HEADER, CALCULATION_OPTIONS } from 'data/constants';
-import { Chart, Multiselect, MultiLevelDropdown, Dropdown } from 'cw-components';
+import {
+  Chart,
+  Multiselect,
+  MultiLevelDropdown,
+  Dropdown
+} from 'cw-components';
 import LegendChart from 'components/charts/legend-chart';
 import EmissionsMetaProvider from 'providers/ghg-emissions-meta-provider';
 import EmissionsProvider from 'providers/emissions-provider';
@@ -312,7 +317,7 @@ function GhgEmissions(props) {
           </div>
           <ShareButton
             className={styles.shareButton}
-            sharePath={'/embed/ghg-emissions'}
+            sharePath={'/ghg-emissions'}
           />
         </TabletLandscape>
         {FEATURE_NEW_GHG && (
@@ -372,7 +377,7 @@ function GhgEmissions(props) {
           </div>
           <ShareButton
             className={styles.shareButton}
-            sharePath={'/embed/ghg-emissions'}
+            sharePath={'/ghg-emissions'}
           />
         </div>
       </TabletPortraitOnly>
