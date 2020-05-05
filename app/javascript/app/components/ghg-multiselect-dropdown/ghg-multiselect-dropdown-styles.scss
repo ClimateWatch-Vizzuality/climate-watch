@@ -1,6 +1,7 @@
 @import '~styles/settings.scss';
 
 $height: 45px;
+$container-padding: 15px;
 
 .container {
   width: 100%;
@@ -9,30 +10,172 @@ $height: 45px;
 
 .label {
   display: inline-block;
-  font-size: 0.8125rem;
-  font-weight: 600;
+  font-size: $font-size-s;
+  font-weight: $font-weight-bold;
   color: $theme-color;
   margin-bottom: 4px;
 }
 
-.input {
+.boxToggle {
   width: 100%;
   border-radius: 3px;
   color: $theme-color;
   cursor: pointer;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   position: relative;
-  padding: 0;
   padding-left: 10px;
-  padding-right: 5px;
+  padding-right: 10px;
   height: $height;
   overflow: hidden;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.09);;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.09);
   transition: box-shadow 150ms ease-out;
   border: $dropdown-border;
 
   &:hover {
     box-shadow: none;
   }
+}
+
+.dropdownArrow {
+  width: 10px;
+  height: 10px;
+  fill: $theme-color;
+  stroke: $theme-color;
+}
+
+.menuContainer {
+  position: absolute;
+  width: 100px;
+  height: 0;
+  max-height: 0;
+  top: -$container-padding;
+  left: -17px;
+  transition: max-height 0.3s ease-in;
+  z-index: calc(#{$z-index-multiselect} + 1);
+}
+
+.menuHeader {
+  cursor: pointer;
+  padding: $container-padding;
+  display: flex;
+  justify-content: space-between;
+
+  .label {
+    margin: 0;
+  }
+
+  .dropdownArrow {
+    width: 12px;
+    transform: rotate(180deg);
+  }
+}
+
+.input {
+  color: $theme-color;
+  caret-color: $theme-color;
+  font-size: $font-size-m;
+  border: none;
+  border-bottom: 1px solid $gray3;
+  width: 100%;
+  padding: $container-padding;
+  margin-bottom: $container-padding;
+}
+
+.menuOpen {
+  width: 550px;
+  height: auto;
+  max-height: 600px;
+  background-color: white;
+  border: $dropdown-border;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.09);
+  overflow: hidden;
+}
+
+.optionsContainer {
+  padding: 0 $container-padding $container-padding;
+  height: auto;
+  max-height: 400px;
+  overflow: auto;
+}
+
+.optionsSection {
+  margin-bottom: $container-padding;
+}
+
+.sectionTitle {
+  font-size: $font-size;
+  font-weight: $font-weight-bold;
+  text-transform: uppercase;
+  color: $theme-color;
+  padding-bottom: $container-padding;
+}
+
+.menuOption {
+  cursor: pointer;
+  position: relative;
+  margin-left: 70px;
+  color: $gray1;
+  font-size: $font-size;
+  line-height: 25px;
+  padding-bottom: $container-padding;
+
+  &::before {
+    content: '';
+    position: absolute;
+    border: 1px solid $gray2;
+    width: 25px;
+    height: 25px;
+    left: -40px;
+    top: 0;
+    border-radius: 3px;
+    transition: border 0.3s ease-in;
+  }
+
+  &.selected {
+    &::before {
+      border: 3px solid $theme-color;
+    }
+  }
+}
+
+.regionOptionContainer {
+  position: relative;
+}
+
+.regionButton {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  position: absolute;
+  top: 2px;
+}
+
+.regionArrow {
+  width: 12px;
+  height: 10px;
+  top: 6px;
+  transform: rotate(-90deg);
+  transition: transform 0.2s ease-in;
+
+  &.regionExpanded {
+    transform: rotate(0);
+  }
+}
+
+.expandedRegionsContainer {
+  padding: 0 20px 35px 0;
+  margin-left: 70px;
+  color: $gray1;
+  font-size: $font-size-s;
+  display: flex;
+  flex-flow: column wrap;
+  height: auto;
+  max-width: 100%;
+  max-height: 300px;
+}
+
+.regionName {
+  max-width: 20%;
 }
