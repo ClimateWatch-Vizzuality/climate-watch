@@ -248,6 +248,7 @@ export const TOP_EMITTERS_OPTION = {
   label: 'Top Emitters',
   value: 'TOP',
   expandsTo: TOP_EMITTERS,
+  regionCountries: TOP_EMITTERS_REGION_COUNTRIES,
   groupId: 'regions'
 };
 
