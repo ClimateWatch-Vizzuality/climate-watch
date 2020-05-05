@@ -9,26 +9,27 @@ import tooltipTheme from 'styles/themes/map-tooltip/map-tooltip.scss';
 import styles from 'components/ndcs/ndcs-enhancements-viz/ndcs-enhancements-tooltip/ndcs-enhancements-tooltip-styles.scss';
 
 const NDCSEnhancementsTooltip = props => {
-  const {
-    isTablet,
-    tooltipValues,
-    id
-  } = props;
+  const { isTablet, tooltipValues, id } = props;
   return (
-    <ReactTooltip 
+    <ReactTooltip
       className={cx(tooltipTheme.tooltipContainer, styles.tooltipContainer)}
       id={id}
-      delayHide={isTablet ? 0 : 3000}>
-        <div className={tooltipTheme.countryName}>{tooltipValues.label}</div>
-        {tooltipValues.value && 
-          <p className={tooltipTheme.text}><strong>{tooltipValues.value}</strong></p>
-        }
-        {tooltipValues.statement && 
-          <p className={tooltipTheme.text}>{tooltipValues.statement}</p>
-        }
-        {tooltipValues.note && 
-          <em className={tooltipTheme.text}>{tooltipValues.note}</em>
-        }
+      delayHide={isTablet ? 0 : 3000}
+    >
+      <div className={tooltipTheme.countryName}>{tooltipValues.label}</div>
+      {tooltipValues.value && (
+        <p className={tooltipTheme.text}>
+          <strong>{tooltipValues.value}</strong>
+        </p>
+      )}
+      {tooltipValues.statement && (
+        <p className={tooltipTheme.text}>{tooltipValues.statement}</p>
+      )}
+      {tooltipValues.note && (
+        <p className={cx(tooltipTheme.text, styles.tooltipNote)}>
+          {tooltipValues.note}
+        </p>
+      )}
       <Icon icon={accordionArrow} className={tooltipTheme.icon} />
     </ReactTooltip>
   );
