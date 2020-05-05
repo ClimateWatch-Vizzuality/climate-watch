@@ -18,8 +18,8 @@ const NDCSEnhancementsTooltip = props => {
     >
       <div className={tooltipTheme.countryName}>{tooltipValues.label}</div>
       {tooltipValues.value && (
-        <p className={tooltipTheme.text}>
-          <strong>{tooltipValues.value}</strong>
+        <p className={cx(tooltipTheme.text, styles.tooltipValue)}>
+          {tooltipValues.value}
         </p>
       )}
       {tooltipValues.statement && (
