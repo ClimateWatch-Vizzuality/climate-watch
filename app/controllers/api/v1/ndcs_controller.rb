@@ -115,7 +115,7 @@ module Api
           indicators = indicators.where(values: {indc_documents: {slug: [params[:document], nil]}})
         end
 
-        # params[:source] -> one of ["CAIT", "LTS", "WB", "NDC Explorer"]
+        # params[:source] -> one of ["CAIT", "LTS", "WB", "NDC Explorer", "Pledges"]
         if params[:source]
           source = ::Indc::Source.where(name: params[:source])
           indicators = indicators.where(source_id: source.map(&:id))
