@@ -17,7 +17,7 @@ const fetchCustomCompareAccordion = createThunkAction(
     if (locationsDocuments) {
       dispatch(fetchCustomCompareAccordionInit());
       fetch(
-        `/api/v1/ndcs?locations_documents=${locationsDocuments}&category=${category}&filter=overview&source[]=CAIT&source[]=WB&source[]=NDC%20Explorer`
+        `/api/v1/ndcs?locations_documents=${locationsDocuments}&category=${category}&filter=overview`
       )
         .then(response => {
           if (response.ok) return response.json();

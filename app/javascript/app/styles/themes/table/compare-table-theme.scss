@@ -5,6 +5,11 @@
   display: flex;
   align-items: center;
   margin-right: 0 !important; // Due to the :global in styles
+
+  a {
+    border-bottom: none !important;
+    text-decoration: underline !important;
+  }
 }
 
 .headerRow {
