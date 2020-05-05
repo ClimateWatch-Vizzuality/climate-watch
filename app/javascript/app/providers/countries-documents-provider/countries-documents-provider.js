@@ -8,17 +8,24 @@ import * as actions from './countries-documents-provider-actions';
 
 class CountriesDocumentsProvider extends PureComponent {
   componentDidMount() {
-    const { fetchCountriesDocuments } = this.props;
-    fetchCountriesDocuments();
+    const { fetchCountriesDocuments, location } = this.props;
+    fetchCountriesDocuments(location);
   }
 
+  componentDidUpdate(prevProps) {
+    const { fetchCountriesDocuments, location } = this.props;
+    const { location: prevLocation } = prevProps;
+
+    if (prevLocation !== location) fetchCountriesDocuments(location);
+  }
   render() {
     return null;
   }
 }
 
 CountriesDocumentsProvider.propTypes = {
-  fetchCountriesDocuments: PropTypes.func.isRequired
+  fetchCountriesDocuments: PropTypes.func.isRequired,
+  location: PropTypes.string
 };
 
 export { actions, reducers, initialState };

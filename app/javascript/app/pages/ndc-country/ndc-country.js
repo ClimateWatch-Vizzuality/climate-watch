@@ -17,20 +17,11 @@ import {
 const mapStateToProps = (state, { match, location, route }) => {
   const { iso } = match.params;
   const search = qs.parse(location.search);
-  const countryData = {
-    countries: state.countries.data,
-    iso: match.params.iso,
-    location
-  };
-  const routeData = {
+  const stateData = {
     iso,
+    route,
     location,
-    route
-  };
-  const documentsData = {
-    iso,
-    data: state.ndcsDocumentsMeta.data,
-    location
+    ...state
   };
   const pathname = location.pathname.split('/');
   const notSummary = [
@@ -41,12 +32,12 @@ const mapStateToProps = (state, { match, location, route }) => {
   ].includes(pathname[pathname.length - 1]);
 
   return {
-    countriesOptions: addUrlToCountries(countryData),
-    country: getCountry(countryData),
+    countriesOptions: addUrlToCountries(stateData),
+    country: getCountry(stateData),
     search: search.search,
-    anchorLinks: getAnchorLinks(routeData),
-    documentsOptions: getDocumentsOptions(documentsData),
-    documentSelected: getDocumentSelected(documentsData),
+    anchorLinks: getAnchorLinks(stateData),
+    documentsOptions: getDocumentsOptions(stateData),
+    documentSelected: getDocumentSelected(stateData),
     notSummary
   };
 };
