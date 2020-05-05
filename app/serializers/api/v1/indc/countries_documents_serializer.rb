@@ -15,7 +15,17 @@ module Api
         end
 
         def documents
-          ::Indc::Document.order(:ordering)
+          ::Indc::Document.order(:ordering).map do |d|
+            {
+              id: d.id,
+              ordering: d.ordering,
+              slug: d.slug,
+              long_name: d.long_name,
+              description: d.description,
+              is_ndc: d.is_ndc,
+              total_countries: d.locations.distinct.count
+            }
+          end
         end
 
         def laws
