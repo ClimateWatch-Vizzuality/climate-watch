@@ -16,7 +16,7 @@ import {
   getIndicatorEmissionsData,
   getLabels
 } from 'components/ndcs/shared/utils';
-import { europeanSlug, europeanCountries } from 'app/data/european-countries';
+import { europeSlug, europeanCountries } from 'app/data/european-countries';
 
 const NOT_APPLICABLE_LABEL = 'Not Applicable';
 
@@ -265,7 +265,7 @@ const getCountriesAndParties = submissions => {
   const partiesNumber = submissions.length;
   let countriesNumber = submissions.length;
   const submissionIsos = submissions.map(s => s.iso_code3);
-  if (!submissionIsos.includes(europeanSlug)) {
+  if (!submissionIsos.includes(europeSlug)) {
     return { partiesNumber, countriesNumber };
   }
   const europeanCountriesWithSubmission = intersection(
