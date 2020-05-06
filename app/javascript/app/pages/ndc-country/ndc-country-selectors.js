@@ -19,7 +19,7 @@ const getCountries = state => {
 };
 
 const getCountryByIso = (countries, iso) =>
-  countries.find(country => country.iso_code3 === iso);
+  (countries ? countries.find(country => country.iso_code3 === iso) : null);
 
 const getSearch = state => {
   const { search } = state.location;
