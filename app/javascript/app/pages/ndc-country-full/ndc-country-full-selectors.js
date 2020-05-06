@@ -1,12 +1,14 @@
 import { createSelector } from 'reselect';
 import uniqBy from 'lodash/uniqBy';
 
+const DEFAULT_LANGUAGE = 'EN';
+
 const getCountries = state => state.countries.data;
 const getSelected = state => state.document || null;
 const getContent = state => state.content || null;
 
 export const getCountry = createSelector(
-  [getCountries, (countries, iso) => iso],
+  [getCountries, (_, iso) => iso],
   (countries, iso) => countries.find(country => country.iso_code3 === iso)
 );
 
@@ -19,7 +21,7 @@ export const getSelectedContent = createSelector(
     return content.find(
       item =>
         item.document_type === splitSelected[0] &&
-        item.language === splitSelected[1],
+        (item.language === splitSelected[1] || DEFAULT_LANGUAGE),
       10
     );
   }
@@ -42,7 +44,14 @@ export const getContentOptionSelected = createSelector(
   [getSelected, getContentOptions],
   (selected, options) => {
     if (!selected) return options[0];
-    return options.find(option => option.value === selected);
+    // Allow finding document only by document name and default to English
+    return (
+      options.find(option => option.value === selected) ||
+      options.find(
+        option => option.value === `${selected}-${DEFAULT_LANGUAGE}`
+      ) ||
+      options.find(option => option.value.startsWith(selected))
+    );
   }
 );
 

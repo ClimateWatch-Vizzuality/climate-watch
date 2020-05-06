@@ -62,34 +62,34 @@ class NDCSEnhancementsVizContainer extends PureComponent {
     this.props.fetchNDCSEnhancements();
   }
 
-  getTooltipText() {
+  getTooltipValues() {
     const { geometryIdHover } = this.state;
     const { indicator, indicators } = this.props;
-    if (!geometryIdHover || !indicator) return '';
+    if (!geometryIdHover || !indicator) return null;
 
     const isEuropeanCountry = europeanCountries.includes(geometryIdHover);
     const id = isEuropeanCountry ? europeSlug : geometryIdHover;
 
     const dateIndicator = indicators.find(i => i.value === 'ndce_date');
-    const statementIndicator = indicators.find(
-      i => i.value === 'ndce_statement'
-    );
+    const statementIndicator = indicators.find(i => i.value === 'ndce_statement');
 
-    if (indicator.locations && indicator.locations[id]) {
-      let tooltipTxt;
-      switch (indicator.locations[id].label_slug) {
-        case 'submitted_2020':
-          tooltipTxt = `Submitted a 2020 NDC on ${dateIndicator.locations[id].value}.`;
-          break;
-        case 'no_info_2020':
-          break;
-        default:
-          tooltipTxt = `${indicator.locations[id].value}\n\n${statementIndicator.locations[id].value}`;
-          break;
-      }
-      return tooltipTxt ? `${tooltipTxt}\n\nLearn more in table below.` : '';
+    if (indicator.locations 
+      && indicator.locations[id] 
+      && indicator.locations[id].label_slug !== 'no_info_2020') {
+      let tooltipValues = {
+        label: this.getTooltipLabel(),
+        value: undefined,
+        statement: undefined,
+        note: "Learn more in table below"
+      };
+      if (statementIndicator.locations[id]) tooltipValues.statement = `${statementIndicator.locations[id].value}`;
+      tooltipValues.value = indicator.locations[id].label_slug === 'submitted_2020' 
+        ? `Submitted a 2020 NDC on ${dateIndicator.locations[id].value}.`
+        : `${indicator.locations[id].value}`;
+      
+      return tooltipValues;
     }
-    return '';
+    return null;
   }
 
   getTooltipLabel() {
@@ -146,16 +146,14 @@ class NDCSEnhancementsVizContainer extends PureComponent {
   }
 
   render() {
-    const tooltipTxt = this.getTooltipText();
-    const tooltipLabel = this.getTooltipLabel();
+    const tooltipValues = this.getTooltipValues();
     const { query } = this.props;
     const noContentMsg = query
       ? 'No results found'
       : 'There is no data for this indicator';
     return createElement(Component, {
       ...this.props,
-      tooltipTxt,
-      tooltipLabel,
+      tooltipValues,
       handleCountryClick: this.handleCountryClick,
       handleCountryEnter: this.handleCountryEnter,
       handleInfoClick: this.handleInfoClick,
@@ -170,7 +168,7 @@ class NDCSEnhancementsVizContainer extends PureComponent {
 
 NDCSEnhancementsVizContainer.propTypes = {
   history: PropTypes.object.isRequired,
-  query: PropTypes.string.isRequired,
+  query: PropTypes.string,
   indicator: PropTypes.object,
   indicators: PropTypes.array,
   summaryData: PropTypes.object,

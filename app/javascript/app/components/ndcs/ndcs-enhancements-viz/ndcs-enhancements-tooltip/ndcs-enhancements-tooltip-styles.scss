@@ -1,0 +1,15 @@
+@import '~styles/settings.scss';
+
+.tooltipContainer {
+  p {
+    margin-bottom: 1em;
+  }
+}
+
+.tooltipValue {
+	font-weight: bold;
+}
+
+.tooltipNote {
+  font-style: italic;
+}

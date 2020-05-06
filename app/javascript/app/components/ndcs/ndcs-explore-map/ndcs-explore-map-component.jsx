@@ -17,6 +17,7 @@ import ShareButton from 'components/button/share-button';
 import ModalShare from 'components/modal-share';
 import Sticky from 'react-stickynode';
 import cx from 'classnames';
+import CountriesDocumentsProvider from 'providers/countries-documents-provider';
 
 import newMapTheme from 'styles/themes/map/map-new-zoom-controls.scss';
 import layout from 'styles/layout.scss';
@@ -129,6 +130,7 @@ function NDCSExploreMap(props) {
 
   return (
     <div>
+      <CountriesDocumentsProvider />
       <TabletLandscape>
         {isTablet => (
           <div className={styles.wrapper}>

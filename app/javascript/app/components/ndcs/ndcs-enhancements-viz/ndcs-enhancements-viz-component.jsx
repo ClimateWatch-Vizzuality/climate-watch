@@ -1,29 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ReactTooltip from 'react-tooltip';
-import { Link } from 'react-router-dom';
 import { TabletLandscape } from 'components/responsive';
 import Map from 'components/map';
 import MapLegend from 'components/map-legend';
 import ButtonGroup from 'components/button-group';
-import Icon from 'components/icon';
-import accordionArrow from 'assets/icons/accordion-arrow.svg';
 import Loading from 'components/loading';
 import ModalMetadata from 'components/modal-metadata';
 import CircularChart from 'components/circular-chart';
+import NDCSEnhancementsTooltip from 'components/ndcs/ndcs-enhancements-viz/ndcs-enhancements-tooltip';
 
-import tooltipTheme from 'styles/themes/map-tooltip/map-tooltip.scss';
 import styles from './ndcs-enhancements-viz-styles.scss';
-
-const getTooltip = (country, tooltipTxt, tooltipLabel) => (
-  <Link className={tooltipTheme.container} to={`/ndcs/country/${country.id}`}>
-    <div className={tooltipTheme.info}>
-      <div className={tooltipTheme.countryName}>{tooltipLabel}</div>
-      <p className={tooltipTheme.text}>{tooltipTxt}</p>
-    </div>
-    <Icon icon={accordionArrow} className={tooltipTheme.icon} />
-  </Link>
-);
 
 const renderButtonGroup = (clickHandler, downloadLink) => (
   <div className={styles.containerControls}>
@@ -98,12 +84,13 @@ const renderCircular = datum => (
   </div>
 );
 
+const TOOLTIP_ID = 'ndcs-map-tooltip';
+
 const NDCSEnhancementsViz = ({
   loading,
   indicator,
   paths,
-  tooltipTxt,
-  tooltipLabel,
+  tooltipValues,
   downloadLink,
   countryData,
   summaryData,
@@ -134,20 +121,17 @@ const NDCSEnhancementsViz = ({
               {!isTablet && renderButtonGroup(handleInfoClick, downloadLink)}
               <Map
                 paths={paths}
-                tooltipId="ndcs-map-tooltip"
+                tooltipId={TOOLTIP_ID}
                 onCountryEnter={handleCountryEnter}
                 onCountryFocus={handleCountryEnter}
                 dragEnable={false}
                 customCenter={!isTablet ? [10, -10] : null}
               />
-              {countryData && tooltipTxt.length > 0 && (
-                <ReactTooltip
-                  className={styles.tooltipContainer}
-                  id="ndcs-map-tooltip"
-                  delayHide={isTablet ? 0 : 3000}
-                >
-                  {getTooltip(countryData, tooltipTxt, tooltipLabel)}
-                </ReactTooltip>
+              {countryData && tooltipValues && (
+                <NDCSEnhancementsTooltip
+                  id={TOOLTIP_ID}
+                  tooltipValues={tooltipValues}>
+                </NDCSEnhancementsTooltip>
               )}
               {indicator && (
                 <MapLegend
@@ -170,8 +154,7 @@ NDCSEnhancementsViz.propTypes = {
   loading: PropTypes.bool,
   indicator: PropTypes.object,
   paths: PropTypes.array.isRequired,
-  tooltipTxt: PropTypes.string,
-  tooltipLabel: PropTypes.string,
+  tooltipValues: PropTypes.object,
   downloadLink: PropTypes.string,
   countryData: PropTypes.object,
   summaryData: PropTypes.object,

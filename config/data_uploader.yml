@@ -52,6 +52,7 @@ platforms:
           - NDC_single_version
           - NDC_documents
           - pledges_data
+          - comparison_matrix
       - name: locations
         importer: ImportLocations
         datasets:
