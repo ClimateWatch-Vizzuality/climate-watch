@@ -4,6 +4,7 @@ FactoryBot.define do
     association :indicator, factory: :indc_indicator
     association :label, factory: :indc_label
     association :sector, factory: :indc_sector
+    association :document, factory: :indc_document
     value { 'myvalue' }
   end
 end

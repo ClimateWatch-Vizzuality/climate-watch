@@ -9,7 +9,7 @@ import Search from 'components/search';
 import cx from 'classnames';
 import Sticky from 'react-stickynode';
 import AnchorNav from 'components/anchor-nav';
-import NdcsDocumentsMetaProvider from 'providers/ndcs-documents-meta-provider';
+import CountriesDocumentsProvider from 'providers/countries-documents-provider';
 import Dropdown from 'components/dropdown';
 import { Dropdown as CWDropdown } from 'cw-components';
 import { NDC_COUNTRY } from 'data/SEO';
@@ -39,6 +39,8 @@ function NDCCountry(props) {
     match
   } = props;
 
+  const { iso } = match.params;
+
   const renderDocumentsDropdown = () => (
     <Dropdown
       className={cx(styles.countryDropdown)}
@@ -54,9 +56,8 @@ function NDCCountry(props) {
   const renderFullTextButton = () => (
     <Button
       variant="secondary"
-      link={`/ndcs/country/${
-        match.params.iso
-      }/full?document=${documentSelected && documentSelected.value}`}
+      link={`/ndcs/country/${iso}/full?document=${documentSelected &&
+        documentSelected.value}`}
       className={styles.viewDocumentButton}
       disabled={!documentsOptions}
     >
@@ -69,7 +70,7 @@ function NDCCountry(props) {
       return (
         <Button
           variant="primary"
-          link={`/ndcs/compare/mitigation?locations=${match.params.iso}`}
+          link={`/ndcs/compare/mitigation?locations=${iso}`}
         >
           Compare
         </Button>
@@ -79,7 +80,7 @@ function NDCCountry(props) {
       <div className={styles.compareButtonContainer}>
         <Button
           variant="primary"
-          link={`/ndcs/compare/mitigation?locations=${match.params.iso}`}
+          link={`/ndcs/compare/mitigation?locations=${iso}`}
           className={styles.compareButton}
         >
           Compare Countries and Submissions
@@ -120,7 +121,7 @@ function NDCCountry(props) {
         descriptionContext={NDC_COUNTRY({ countryName })}
         href={location.href}
       />
-      <NdcsDocumentsMetaProvider />
+      <CountriesDocumentsProvider location={iso} />
       {country && (
         <Header route={route}>
           <div className={styles.header}>

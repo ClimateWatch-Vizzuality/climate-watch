@@ -21,7 +21,7 @@ const CustomCompareAccordionProvider = ({
 };
 
 CustomCompareAccordionProvider.propTypes = {
-  locationsDocuments: PropTypes.array,
+  locationsDocuments: PropTypes.string,
   category: PropTypes.string,
   fetchCustomCompareAccordion: PropTypes.func.isRequired
 };

@@ -61,20 +61,15 @@ const getSourceSelected = createSelector(
 );
 
 // Calculation selectors
-const getCalculationOptions = () => [
-  {
-    label: 'Total',
-    value: CALCULATION_OPTIONS.ABSOLUTE_VALUE.value
-  },
-  {
-    label: 'Per Capita',
-    value: CALCULATION_OPTIONS.PER_CAPITA.value
-  },
-  {
-    label: 'Per GDP',
-    value: CALCULATION_OPTIONS.PER_GDP.value
-  }
-];
+const getCalculationOptions = () =>
+  Object.keys(CALCULATION_OPTIONS).reduce(
+    (acc, key) =>
+      acc.concat({
+        label: CALCULATION_OPTIONS[key].label,
+        value: CALCULATION_OPTIONS[key].value
+      }),
+    []
+  );
 
 // BreakBy selectors
 const getBreakByOptions = () =>
@@ -120,7 +115,7 @@ const getBreakByOptions = () =>
       }
     ]);
 
-const getCalculationSelected = createSelector(
+export const getCalculationSelected = createSelector(
   [getCalculationOptions, getSelection('calculation'), getSelection('breakBy')],
   (options, selected, breakBySelected) => {
     if (!options) return null;
@@ -405,7 +400,7 @@ const getChartConflicts = (metricSelected, chartSelected) => {
   const conflicts = [];
 
   if (
-    ['PER_CAPITA', 'PER_GDP'].includes(metricSelected) &&
+    ['PER_CAPITA', 'PER_GDP', 'PERCENTAGE_CHANGE'].includes(metricSelected) &&
     chartSelected.value !== 'line'
   ) {
     const metricOption = CALCULATION_OPTIONS[metricSelected];

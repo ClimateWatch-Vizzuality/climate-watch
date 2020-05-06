@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import { isEmbededComponent } from 'utils/navigation';
+import CountriesDocumentsProvider from 'providers/countries-documents-provider';
 import layout from 'styles/layout.scss';
 import ShareButton from 'components/button/share-button';
 import ModalShare from 'components/modal-share';
@@ -17,6 +18,7 @@ const NdcsOverviewSection = ({ data, section, location, handleInfoClick }) => {
         [styles.commitmentContainer]: !isEmbed
       })}
     >
+      {section === 1 && <CountriesDocumentsProvider />}
       <div className={layout.content}>
         <div className={cx(styles.section, { [styles.padded]: !isEmbed })}>
           <div className={styles.commitmentWrapper}>
@@ -52,6 +54,7 @@ const NdcsOverviewSection = ({ data, section, location, handleInfoClick }) => {
                 color={color}
                 questionText={question.questionText}
                 answerLabel={question.answerLabel}
+                source={question.source}
                 handleInfoClick={handleInfoClick}
                 hasExternalLink={question.hasExternalLink}
               />

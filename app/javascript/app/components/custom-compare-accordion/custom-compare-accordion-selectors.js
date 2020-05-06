@@ -27,14 +27,6 @@ export const getSelectedTargets = createSelector([getSearch], search => {
   });
 });
 
-export const getSelectedCountries = createSelector(
-  [getSelectedTargets],
-  selectedTargets => {
-    if (!selectedTargets) return null;
-    return selectedTargets.map(({ country }) => country);
-  }
-);
-
 export const parseIndicatorsDefs = createSelector(
   [getIndicators, getCategories, getSelectedTargets],
   (indicators, categories, selectedTargets) => {
@@ -122,9 +114,9 @@ export const getCategoriesWithSectors = createSelector(
 
 // data for section 'SectoralInformation'
 export const getSectoralInformationData = createSelector(
-  [getCategoriesWithSectors, getSectors, getSelectedCountries],
-  (categoriesWithSectors, sectors, selectedCountries) => {
-    if (!categoriesWithSectors || !sectors || !selectedCountries) return null;
+  [getCategoriesWithSectors, getSectors, getSelectedTargets],
+  (categoriesWithSectors, sectors, selectedTargets) => {
+    if (!categoriesWithSectors || !sectors || !selectedTargets) return null;
     const sectoralInformationData = categoriesWithSectors.map(cat => {
       const sectorsParsed = sortBy(
         cat.sectors &&
@@ -132,18 +124,22 @@ export const getSectoralInformationData = createSelector(
           cat.sectors.map(sec => {
             const definitions = [];
             cat.indicators.forEach(ind => {
-              const descriptions = selectedCountries.map(loc => {
-                const valueObject = ind.locations[loc]
-                  ? ind.locations[loc].find(v => v.sector_id === sec)
-                  : null;
-                const value =
-                  (valueObject && valueObject.value) ||
-                  (isNaN(parseInt(loc, 10)) ? '-' : null);
-                return {
-                  iso: loc,
-                  value
-                };
-              });
+              const descriptions = selectedTargets.map(
+                ({ country, document }) => {
+                  const valueObject = ind.locations[country]
+                    ? ind.locations[country].find(
+                      v => v.sector_id === sec && v.document_slug === document
+                    )
+                    : null;
+                  const value =
+                    (valueObject && valueObject.value) ||
+                    (isNaN(parseInt(country, 10)) ? '-' : null);
+                  return {
+                    iso: country,
+                    value
+                  };
+                }
+              );
               definitions.push({
                 title: ind.name,
                 slug: ind.slug,
