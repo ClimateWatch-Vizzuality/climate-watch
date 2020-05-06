@@ -181,7 +181,14 @@ const GhgMultiselectDropdowComponent = ({
                         {region.label}
                       </div>
                       {isRegionExpanded(region.label) && (
-                        <div className={styles.expandedRegionsContainer}>
+                        <div
+                          className={cx(styles.expandedRegionsContainer, {
+                            [styles.expandedMediumRegionContainer]:
+                              region.label === 'G77',
+                            [styles.expandedHighRegionContainer]:
+                              region.label === 'World'
+                          })}
+                        >
                           {region.regionCountries.map(country => (
                             <p key={country.iso} className={styles.regionName}>
                               {country.label}

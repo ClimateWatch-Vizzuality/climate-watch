@@ -223,6 +223,14 @@ $container-padding: 15px;
   max-height: 300px;
 }
 
+.expandedMediumRegionContainer {
+  max-height: 700px;
+}
+
+.expandedHighRegionContainer {
+  max-height: 1200px;
+}
+
 .regionName {
   max-width: 20%;
 }
