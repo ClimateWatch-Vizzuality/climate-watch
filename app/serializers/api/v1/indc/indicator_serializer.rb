@@ -12,11 +12,11 @@ module Api
         attribute :locations
 
         def name
-          object.normalized_label.presence || object.name
+          (instance_options[:locations_documents] && object.normalized_label.presence) || object.name
         end
 
         def slug
-          object.normalized_slug.presence || object.slug
+          (instance_options[:locations_documents] && object.normalized_slug.presence) || object.slug
         end
 
         def source
@@ -24,7 +24,7 @@ module Api
         end
 
         def labels
-          labels = if object.normalized_slug
+          labels = if instance_options[:locations_documents] && object.normalized_slug
                      ::Indc::Label.joins(:indicator).
                        where(indc_indicators: {normalized_slug: object.normalized_slug})
                    else

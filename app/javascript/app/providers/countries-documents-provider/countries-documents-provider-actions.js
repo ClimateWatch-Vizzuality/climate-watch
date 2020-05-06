@@ -14,15 +14,18 @@ export const fetchCountriesDocumentsFail = createAction(
 
 export const fetchCountriesDocuments = createThunkAction(
   'fetchCountriesDocuments',
-  () => (dispatch, state) => {
+  location => (dispatch, state) => {
     const { countriesDocuments } = state();
     if (
-      countriesDocuments &&
-      isEmpty(countriesDocuments.data) &&
-      !countriesDocuments.loading
+      !countriesDocuments.loading &&
+      (isEmpty(countriesDocuments.data) ||
+        (!!location && isEmpty(countriesDocuments.data[location])))
     ) {
+      const url = `/api/v1/ndcs/countries_documents${
+        location ? `?location=${location}` : ''
+      }`;
       dispatch(fetchCountriesDocumentsInit());
-      fetch('/api/v1/ndcs/countries_documents')
+      fetch(url)
         .then(response => {
           if (response.ok) return response.json();
           throw Error(response.statusText);
