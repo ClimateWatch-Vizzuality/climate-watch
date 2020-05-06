@@ -338,13 +338,24 @@ function GhgEmissions(props) {
       {providerFilters && <EmissionsProvider filters={providerFilters} />}
       <div className={cx(styles.col4, { [styles.newGHG]: FEATURE_NEW_GHG })}>
         {renderDropdown('Data Source', 'sources')}
-        <GhgMultiselectDropdown
-          label={'Countries/Regions'}
-          groups={regionGroups}
-          options={options.regions || []}
-          values={getValues(selectedOptions.regionsSelected)}
-          onSelectionChange={selected => handleChange('regions', selected)}
-        />
+        {FEATURE_NEW_GHG ? (
+          <GhgMultiselectDropdown
+            label={'Countries/Regions'}
+            groups={regionGroups}
+            options={options.regions || []}
+            values={getValues(selectedOptions.regionsSelected)}
+            onSelectionChange={selected => handleChange('regions', selected)}
+          />
+        ) : (
+          <Multiselect
+            label={'Countries/Regions'}
+            groups={regionGroups}
+            options={options.regions || []}
+            values={getValues(selectedOptions.regionsSelected)}
+            onValueChange={selected => handleChange('regions', selected)}
+            theme={dropdownTheme}
+          />
+        )}
         <MultiLevelDropdown
           label="Sectors/Subsectors"
           optGroups={sectorGroups}
