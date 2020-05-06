@@ -13,7 +13,13 @@ module Indc
     # format of the expected params is:
     # [[iso_code3, doc_slug], [iso_code3, doc_slug]]
     def values_for(locations_documents)
-      result = values.includes(:document, :location).joins(:document, :location)
+      result = if normalized_slug
+                 Indc::Value.joins(:indicator).
+                   where(indc_indicators: {normalized_slug: normalized_slug})
+               else
+                 values
+               end
+      result = result.includes(:document, :location).joins(:document, :location)
       where_clause = locations_documents.map do |loc, doc|
         "(locations.iso_code3 = '#{loc}' AND indc_documents.slug = '#{doc}')"
       end.join(' OR ')

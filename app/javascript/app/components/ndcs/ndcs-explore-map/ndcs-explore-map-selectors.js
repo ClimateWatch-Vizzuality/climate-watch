@@ -7,6 +7,7 @@ import {
 import uniqBy from 'lodash/uniqBy';
 import sortBy from 'lodash/sortBy';
 import groupBy from 'lodash/groupBy';
+import intersection from 'lodash/intersection';
 import { generateLinkToDataExplorer } from 'utils/data-explorer';
 import worldPaths from 'app/data/world-50m-paths';
 import { COUNTRY_STYLES } from 'components/ndcs/shared/constants';
@@ -15,6 +16,7 @@ import {
   getIndicatorEmissionsData,
   getLabels
 } from 'components/ndcs/shared/utils';
+import { europeSlug, europeanCountries } from 'app/data/european-countries';
 
 const NOT_APPLICABLE_LABEL = 'Not Applicable';
 
@@ -138,26 +140,26 @@ export const getPathsWithStyles = createSelector(
 
         const iso = path.properties && path.properties.id;
         const countryData = locations[iso];
-        let style = COUNTRY_STYLES;
+        const strokeWidth = zoom > 2 ? (1 / zoom) * 2 : 0.5;
+        const style = {
+          ...COUNTRY_STYLES,
+          default: {
+            ...COUNTRY_STYLES.default,
+            'stroke-width': strokeWidth,
+            fillOpacity: 1
+          },
+          hover: {
+            ...COUNTRY_STYLES.hover,
+            cursor: 'pointer',
+            'stroke-width': strokeWidth,
+            fillOpacity: 1
+          }
+        };
         if (countryData && countryData.label_id) {
           const legendIndex = legendBuckets[countryData.label_id].index;
           const color = getColorByIndex(legendBuckets, legendIndex);
-          style = {
-            ...COUNTRY_STYLES,
-            default: {
-              ...COUNTRY_STYLES.default,
-              fill: color,
-              fillOpacity: 1,
-              'stroke-width': zoom > 2 ? 0.1 : 0.5
-            },
-            hover: {
-              ...COUNTRY_STYLES.hover,
-              cursor: 'pointer',
-              fill: color,
-              fillOpacity: 1,
-              'stroke-width': zoom > 2 ? 0.1 : 0.5
-            }
-          };
+          style.default.fill = color;
+          style.hover.fill = color;
         }
 
         paths.push({
@@ -259,6 +261,22 @@ export const getEmissionsCardData = createSelector(
   }
 );
 
+const getCountriesAndParties = submissions => {
+  const partiesNumber = submissions.length;
+  let countriesNumber = submissions.length;
+  const submissionIsos = submissions.map(s => s.iso_code3);
+  if (!submissionIsos.includes(europeSlug)) {
+    return { partiesNumber, countriesNumber };
+  }
+  const europeanCountriesWithSubmission = intersection(
+    europeanCountries,
+    submissions.map(s => s.iso_code3)
+  );
+  countriesNumber +=
+    europeanCountries.length - europeanCountriesWithSubmission.length - 1;
+  return { partiesNumber, countriesNumber };
+};
+
 export const getSummaryCardData = createSelector(
   [getIndicatorsData],
   indicators => {
@@ -266,21 +284,33 @@ export const getSummaryCardData = createSelector(
     const latestSubmissionIndicator = indicators.find(
       i => i.slug === 'submission'
     );
-    const groupedSubmissions = groupBy(
-      latestSubmissionIndicator.locations,
-      'value'
+    const locationSubmissions = Object.keys(
+      latestSubmissionIndicator.locations
+    ).map(key => ({
+      iso_code3: key,
+      value: latestSubmissionIndicator.locations[key].value
+    }));
+    const groupedSubmissions = groupBy(locationSubmissions, 'value');
+    const firstNDCCountriesAndParties = getCountriesAndParties(
+      groupedSubmissions['First NDC Submitted']
     );
-    const secondValue = groupedSubmissions['Second NDC Submitted'].length;
+    const secondNDCCountriesAndParties = getCountriesAndParties(
+      groupedSubmissions['Second NDC Submitted']
+    );
     return [
       {
-        value: groupedSubmissions['First NDC Submitted'].length,
-        description: 'Parties have submitted their first NDC'
+        value: firstNDCCountriesAndParties.partiesNumber,
+        description: ` Parties have submitted their first NDC, representing ${firstNDCCountriesAndParties.countriesNumber} countries`
       },
       {
-        value: secondValue,
-        description: `Part${
-          secondValue === 1 ? 'y has' : 'ies have'
-        } submitted their second NDC`
+        value: secondNDCCountriesAndParties.partiesNumber,
+        description: ` Part${
+          secondNDCCountriesAndParties.partiesNumber === 1
+            ? 'y has'
+            : 'ies have'
+        } submitted their second NDC, representing ${
+          secondNDCCountriesAndParties.countriesNumber
+        } countries`
       }
     ];
   }

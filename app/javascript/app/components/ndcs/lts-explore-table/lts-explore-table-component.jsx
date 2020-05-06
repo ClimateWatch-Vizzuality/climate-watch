@@ -46,6 +46,12 @@ const LTSExploreTable = ({
               horizontalScroll
               parseHtml
               dynamicRowsHeight
+              dynamicRowsConfig={{
+                fontWidth: 10,
+                fontSize: 14,
+                extraMargin: 0,
+                lineHeight: 1.25
+              }}
               setColumnWidth={setColumnWidth}
               defaultColumns={columns}
               titleLinks={titleLinks}

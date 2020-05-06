@@ -11,11 +11,25 @@ module Api
         attribute :labels
         attribute :locations
 
+        def name
+          (instance_options[:locations_documents] && object.normalized_label.presence) || object.name
+        end
+
+        def slug
+          (instance_options[:locations_documents] && object.normalized_slug.presence) || object.slug
+        end
+
         def source
           object.source.name
         end
 
         def labels
+          labels = if instance_options[:locations_documents] && object.normalized_slug
+                     ::Indc::Label.joins(:indicator).
+                       where(indc_indicators: {normalized_slug: object.normalized_slug})
+                   else
+                     object.labels
+                   end
           IndexedSerializer.serialize(
             object.labels,
             serializer: LabelSerializer,

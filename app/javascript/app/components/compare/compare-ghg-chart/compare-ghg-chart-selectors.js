@@ -38,13 +38,17 @@ const getCalculation = state => state.search.calculation || null;
 const getSectorSelection = state =>
   (state.search.sectors && state.search.sectors.split(',')) || null;
 const getSelectedLocations = state => state.selectedLocations || null;
-const getQuantifications = state => state.quantifications || null;
 const getCalculationData = state => state.calculationData || null;
 const getCountriesData = state => state.countriesData || null;
 
 export const parseLocations = parseSelectedLocations(getSelectedLocations);
-export const getLocationsFilter = getSelectedLocationsFilter(getSelectedLocations);
-export const addNameToLocations = addSelectedNameToLocations(getCountriesData, parseLocations);
+export const getLocationsFilter = getSelectedLocationsFilter(
+  getSelectedLocations
+);
+export const addNameToLocations = addSelectedNameToLocations(
+  getCountriesData,
+  parseLocations
+);
 
 const parseLocationCalculationData = createSelector(
   [getCalculationData, parseLocations],
@@ -63,10 +67,13 @@ export const getChartDomain = createSelector(getData, data => {
 });
 
 // Sources selectors
-export const getCalculationSelected = createSelector(getCalculation, calculation => {
-  if (!calculation) return CALCULATION_OPTIONS.ABSOLUTE_VALUE;
-  return CALCULATION_OPTIONS[calculation];
-});
+export const getCalculationSelected = createSelector(
+  getCalculation,
+  calculation => {
+    if (!calculation) return CALCULATION_OPTIONS.ABSOLUTE_VALUE;
+    return CALCULATION_OPTIONS[calculation];
+  }
+);
 
 export const getSourceOptions = createSelector(getSources, sources => {
   if (!sources) return null;
@@ -122,24 +129,27 @@ export const getFiltersSelected = createSelector(
   }
 );
 
-export const calculationOptions = Object.keys(CALCULATION_OPTIONS).map(o => CALCULATION_OPTIONS[o]);
+export const calculationOptions = Object.keys(CALCULATION_OPTIONS).map(
+  o => CALCULATION_OPTIONS[o]
+);
 
 export const filterData = createSelector(
   [
     getData,
     getSourceSelected,
-    getCalculationSelected,
     addNameToLocations,
     getSectorOptions,
     getSectorsSelected
   ],
-  (data, source, calculation, locations, sectorOptions, sectors) => {
+  (data, source, locations, sectorOptions, sectors) => {
     if (!data || !data.length) return [];
     let filteredData = data;
 
     // Filter by source and gas
     filteredData = filteredData.filter(
-      d => d.source === source.label && (d.gas === 'All GHG' || d.gas === 'Aggregate GHGs')
+      d =>
+        d.source === source.label &&
+        (d.gas === 'All GHG' || d.gas === 'Aggregate GHGs')
     );
 
     // Filter by sector
@@ -148,10 +158,14 @@ export const filterData = createSelector(
       sectors && sectors.length && sectorOptions.length !== sectors.length
         ? sectors.map(s => s.label)
         : defaultSector;
-    filteredData = filteredData.filter(d => sectorFilters.indexOf(d.sector) !== -1);
+    filteredData = filteredData.filter(
+      d => sectorFilters.indexOf(d.sector) !== -1
+    );
     if (!locations || !locations.length) return null;
     const locationDataGroupedByYear = locations.map(l => {
-      const locationData = filteredData.filter(d => d.iso_code3 === l.iso_code3);
+      const locationData = filteredData.filter(
+        d => d.iso_code3 === l.iso_code3
+      );
       return groupBy(flatten(locationData.map(d => d.emissions)), 'year');
     });
     const locationDataSummed = locationDataGroupedByYear.map(l =>
@@ -172,7 +186,11 @@ export const filterData = createSelector(
   }
 );
 
-const getYearsForLocation = (data, absoluteValueIsSelected, locationCalculationData) => {
+const getYearsForLocation = (
+  data,
+  absoluteValueIsSelected,
+  locationCalculationData
+) => {
   let yearsForLocation = [];
   yearsForLocation = data.map(location => location.emissions.map(d => d.year));
   if (!absoluteValueIsSelected) {
@@ -180,7 +198,11 @@ const getYearsForLocation = (data, absoluteValueIsSelected, locationCalculationD
     yearsForLocation = yearsForLocation.map((locationValues, i) =>
       intersection(
         locationValues,
-        flatten(Object.keys(locationCalculationData[i] || []).map(y => parseInt(y, 10)))
+        flatten(
+          Object.keys(locationCalculationData[i] || []).map(y =>
+            parseInt(y, 10)
+          )
+        )
       )
     );
   }
@@ -193,37 +215,47 @@ export const getChartData = createSelector(
     getFiltersSelected,
     parseLocationCalculationData,
     parseLocations,
-    getCalculationSelected,
-    getQuantifications
+    getCalculationSelected
   ],
-  (data, filters, locationCalculationData, selectedLocations, calculationSelected) => {
-    const absoluteValueIsSelected =
-      calculationSelected && calculationSelected.value === CALCULATION_OPTIONS.ABSOLUTE_VALUE.value;
+  (
+    data,
+    filters,
+    locationCalculationData,
+    selectedLocations,
+    calculationSelected
+  ) => {
+    const oneOfAbsoluteValueCalculationsIsSelected = [
+      CALCULATION_OPTIONS.ABSOLUTE_VALUE.value,
+      CALCULATION_OPTIONS.CUMULATIVE.value,
+      CALCULATION_OPTIONS.PERCENTAGE_CHANGE.value
+    ].includes(calculationSelected && calculationSelected.value);
     if (
       !data ||
       !data.length ||
       !filters ||
       !calculationSelected ||
       !selectedLocations ||
-      (!absoluteValueIsSelected && !locationCalculationData)
+      (!oneOfAbsoluteValueCalculationsIsSelected && !locationCalculationData)
     ) {
       return [];
     }
 
     const yearsForLocation = getYearsForLocation(
       data,
-      absoluteValueIsSelected,
+      oneOfAbsoluteValueCalculationsIsSelected,
       locationCalculationData
     );
     const yearData = [];
     data.forEach(d => {
       const yLocationKey = getYColumnValue(d.location);
-      const locationIndex = selectedLocations.map(l => l.iso_code3).indexOf(d.iso_code3);
+      const locationIndex = selectedLocations
+        .map(l => l.iso_code3)
+        .indexOf(d.iso_code3);
       const yearsWithData = yearsForLocation[locationIndex] || [];
       yearsWithData.forEach(year => {
         const yData = d.emissions.find(e => e.year === year);
         if (yData) {
-          const calculationRatio = absoluteValueIsSelected
+          const calculationRatio = oneOfAbsoluteValueCalculationsIsSelected
             ? 1
             : calculatedRatio(
               calculationSelected.value,
@@ -233,7 +265,8 @@ export const getChartData = createSelector(
           const scaledYData = yData.value * DATA_SCALE;
           const yKey = { [yLocationKey]: scaledYData / calculationRatio };
           if (yData.value) {
-            const existingYearData = yearData.length && yearData.find(yearD => yearD.x === year);
+            const existingYearData =
+              yearData.length && yearData.find(yearD => yearD.x === year);
             if (existingYearData) {
               yearData[yearData.indexOf(existingYearData)] = {
                 ...existingYearData,
@@ -250,28 +283,31 @@ export const getChartData = createSelector(
   }
 );
 
-export const getChartConfig = createSelector([getData, addNameToLocations], (data, locations) => {
-  if (!data || isEmpty(data) || !locations) return null;
+export const getChartConfig = createSelector(
+  [getData, addNameToLocations],
+  (data, locations) => {
+    if (!data || isEmpty(data) || !locations) return null;
 
-  const yColumns = locations.map(l => ({
-    label: l.name,
-    value: getYColumnValue(l.name),
-    index: l.index
-  }));
-  const theme = getThemeConfig(yColumns, COUNTRY_COMPARE_COLORS);
-  const tooltip = getTooltipConfig(yColumns);
+    const yColumns = locations.map(l => ({
+      label: l.name,
+      value: getYColumnValue(l.name),
+      index: l.index
+    }));
+    const theme = getThemeConfig(yColumns, COUNTRY_COMPARE_COLORS);
+    const tooltip = getTooltipConfig(yColumns);
 
-  return {
-    axes: DEFAULT_AXES_CONFIG,
-    theme,
-    tooltip,
-    animation: false,
-    columns: {
-      x: [{ label: 'year', value: 'x' }],
-      y: yColumns
-    }
-  };
-});
+    return {
+      axes: DEFAULT_AXES_CONFIG,
+      theme,
+      tooltip,
+      animation: false,
+      columns: {
+        x: [{ label: 'year', value: 'x' }],
+        y: yColumns
+      }
+    };
+  }
+);
 
 export default {
   getSourceOptions,

@@ -1,13 +1,22 @@
 import { createSelector } from 'reselect';
 import isEmpty from 'lodash/isEmpty';
 import sortBy from 'lodash/sortBy';
-import groupBy from 'lodash/groupBy';
-import upperCase from 'lodash/upperCase';
 import qs from 'query-string';
 
 const getIso = state => state.iso || null;
-const getDocuments = state => state.data || null;
-const getCountries = state => sortBy(state.countries, 'wri_standard_name');
+const getDocuments = state => {
+  if (!state.countriesDocuments || !state.countriesDocuments.data) {
+    return null;
+  }
+  return state.countriesDocuments.data || null;
+};
+
+const getCountries = state => {
+  if (!state.countries || !state.countries.data) {
+    return null;
+  }
+  return sortBy(state.countries.data, 'wri_standard_name');
+};
 
 const getCountryByIso = (countries, iso) =>
   countries.find(country => country.iso_code3 === iso);
@@ -47,23 +56,18 @@ const getCountryDocuments = createSelector(
   }
 );
 
-const documentValue = document =>
-  `${document.document_type}-${document.language}`;
-
 const documentOption = document => ({
-  label: upperCase(document.document_type),
-  value: documentValue(document)
+  label: document.long_name,
+  value: document.slug
 });
 
 export const getDocumentsOptions = createSelector(
   [getCountryDocuments],
   documents => {
     if (isEmpty(documents)) return null;
-    const groupedDocuments = groupBy(documents, 'document_type');
-    const englishDocuments = Object.values(groupedDocuments).map(
-      docs => docs.find(d => d.language === 'EN') || docs[0]
-    );
-    return englishDocuments.map(document => documentOption(document));
+    return documents
+      .filter(d => d.is_ndc)
+      .map(document => documentOption(document));
   }
 );
 
@@ -72,9 +76,7 @@ export const getDocumentSelected = createSelector(
   (documents, search) => {
     if (isEmpty(documents)) return null;
     if (!search || !search.document) return documentOption(documents[0]);
-    const selectedDocument = documents.find(
-      d => documentValue(d) === search.document
-    );
+    const selectedDocument = documents.find(d => d.slug === search.document);
     return selectedDocument ? documentOption(selectedDocument) : null;
   }
 );

@@ -146,27 +146,26 @@ export const getPathsWithStyles = createSelector(
 
         const iso = path.properties && path.properties.id;
         const countryData = locations[iso];
-
-        let style = COUNTRY_STYLES;
+        const strokeWidth = zoom > 2 ? (1 / zoom) * 2 : 0.5;
+        const style = {
+          ...COUNTRY_STYLES,
+          default: {
+            ...COUNTRY_STYLES.default,
+            'stroke-width': strokeWidth,
+            fillOpacity: 1
+          },
+          hover: {
+            ...COUNTRY_STYLES.hover,
+            cursor: 'pointer',
+            'stroke-width': strokeWidth,
+            fillOpacity: 1
+          }
+        };
         if (countryData && countryData.label_id) {
           const legendIndex = legendBuckets[countryData.label_id].index;
           const color = getColorByIndex(legendBuckets, legendIndex);
-          style = {
-            ...COUNTRY_STYLES,
-            default: {
-              ...COUNTRY_STYLES.default,
-              fill: color,
-              fillOpacity: 1,
-              'stroke-width': zoom > 2 ? 0.1 : 0.5
-            },
-            hover: {
-              ...COUNTRY_STYLES.hover,
-              cursor: 'pointer',
-              fill: color,
-              fillOpacity: 1,
-              'stroke-width': zoom > 2 ? 0.1 : 0.5
-            }
-          };
+          style.default.fill = color;
+          style.hover.fill = color;
         }
 
         paths.push({
@@ -286,11 +285,23 @@ export const getIndicatorEmissionsData = (
   });
 
   if (summedPercentage < 100) {
-    data.push({
-      name: NO_DOCUMENT_SUBMITTED,
-      value: 100 - summedPercentage
-    });
+    const notSubmittedDataItem = data.find(
+      d => d.name === NO_DOCUMENT_SUBMITTED
+    );
+    if (notSubmittedDataItem) {
+      const notApplicablePosition = data.indexOf(notSubmittedDataItem);
+      data[notApplicablePosition] = {
+        name: NO_DOCUMENT_SUBMITTED,
+        value: notSubmittedDataItem.value + (100 - summedPercentage)
+      };
+    } else {
+      data.push({
+        name: NO_DOCUMENT_SUBMITTED,
+        value: 100 - summedPercentage
+      });
+    }
   }
+
   return data;
 };
 

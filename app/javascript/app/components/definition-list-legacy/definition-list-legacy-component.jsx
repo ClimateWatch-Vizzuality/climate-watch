@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
+import layoutStyles from 'app/styles/layout.scss';
 
 import styles from './definition-list-legacy-styles.scss';
 
@@ -28,6 +29,7 @@ class DefinitionList extends PureComponent {
                       className={styles.definitionDesc}
                     >
                       <div
+                        className={layoutStyles.parsedHTML}
                         dangerouslySetInnerHTML={{ __html: desc.value }} // eslint-disable-line
                       />
                     </dd>

@@ -19,6 +19,7 @@ class ImportIndc
   DOCUMENTS_FILEPATH =
     "#{CW_FILES_PREFIX}indc/NDC_documents.csv".freeze
   PLEDGES_DATA_FILEPATH = "#{CW_FILES_PREFIX}indc/pledges_data.csv".freeze
+  COMPARISON_FILEPATH = "#{CW_FILES_PREFIX}indc/comparison_matrix.csv".freeze
 
   def call
     ActiveRecord::Base.transaction do
@@ -48,6 +49,7 @@ class ImportIndc
 
       reject_map_indicators_without_values_or_labels
       import_submissions
+      import_comparison_slugs
       Indc::SearchableValue.refresh
     end
   end
@@ -83,6 +85,7 @@ class ImportIndc
     @metadata = S3CSVReader.read(METADATA_FILEPATH).map(&:to_h)
     @submissions = S3CSVReader.read(SUBMISSIONS_FILEPATH).map(&:to_h)
     @pledges_data = S3CSVReader.read(PLEDGES_DATA_FILEPATH).map(&:to_h)
+    @comparison_indicators = S3CSVReader.read(COMPARISON_FILEPATH).map(&:to_h)
   end
 
   def load_locations
@@ -478,6 +481,14 @@ class ImportIndc
         Indc::Submission.create!(submission_attributes(location, sub))
       rescue
       end
+    end
+  end
+
+  def import_comparison_slugs
+    @comparison_indicators.each do |ind|
+      slugs = [ind[:pledges_slug], ind[:ndc_slug], ind[:lts_slug]]
+      Indc::Indicator.where(slug: slugs).update_all(normalized_label: ind[:normalized_label],
+                                                    normalized_slug: ind[:normalized_slug])
     end
   end
 

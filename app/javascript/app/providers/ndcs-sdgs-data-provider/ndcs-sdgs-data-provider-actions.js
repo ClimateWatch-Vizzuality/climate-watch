@@ -10,12 +10,14 @@ const getNdcsSdgsData = createThunkAction(
     const { ndcsSdgsData } = state();
     if (ndcsSdgsData) {
       dispatch(getNdcsSdgsDataInit());
-      const documentFilter = document
-        ? `?document_type=${document.split('-')[0]}&language=${document.split(
-          '-'
-        )[1]}`
-        : '';
-      fetch(`/api/v1/ndcs/${iso}/sdgs${documentFilter}`)
+      const getDocumentFilter = () => {
+        if (!document) return '';
+        const [documentType, documentLanguage] = document.split('-');
+        return `?document_type=${documentType}&language=${documentLanguage ||
+          'EN'}`;
+      };
+
+      fetch(`/api/v1/ndcs/${iso}/sdgs${getDocumentFilter()}`)
         .then(response => {
           if (response.ok) return response.json();
           throw Error(response.statusText);

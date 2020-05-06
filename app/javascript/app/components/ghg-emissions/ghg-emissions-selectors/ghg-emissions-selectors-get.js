@@ -7,6 +7,8 @@ export const getData = ({ emissions }) => (emissions && emissions.data) || [];
 export const getMeta = ({ ghgEmissionsMeta }) =>
   (ghgEmissionsMeta && ghgEmissionsMeta.meta) || null;
 export const getRegions = ({ regions }) => (regions && regions.data) || null;
+export const getDataZoomYears = ({ dataZoom }) =>
+  (dataZoom && dataZoom.years) || null;
 export const getCountries = ({ countries }) =>
   (countries && countries.data) || null;
 export const getSources = createSelector(

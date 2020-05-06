@@ -18,7 +18,7 @@ export const SOCIAL_APP_NAMES = ['twitter', 'facebook', 'google'];
 
 export const CALCULATION_OPTIONS = {
   ABSOLUTE_VALUE: {
-    label: 'Absolute value',
+    label: 'Total',
     value: 'ABSOLUTE_VALUE'
   },
   PER_CAPITA: {
@@ -28,6 +28,14 @@ export const CALCULATION_OPTIONS = {
   PER_GDP: {
     label: 'per GDP',
     value: 'PER_GDP'
+  },
+  CUMULATIVE: {
+    label: 'Cumulative across available years',
+    value: 'CUMULATIVE'
+  },
+  PERCENTAGE_CHANGE: {
+    label: 'Percentage change from prior year',
+    value: 'PERCENTAGE_CHANGE'
   }
 };
 
