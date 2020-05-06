@@ -21,9 +21,7 @@ $container-padding: 15px;
   border-radius: 3px;
   color: $theme-color;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  display: block;
   position: relative;
   padding-left: 10px;
   padding-right: 10px;
@@ -36,13 +34,36 @@ $container-padding: 15px;
   &:hover {
     box-shadow: none;
   }
+
+  .dropdownArrow {
+    position: absolute;
+    right: 13px;
+    top: calc(50% - 5px);
+    width: 10px;
+    height: 10px;
+    fill: $theme-color;
+    stroke: $theme-color;
+  }
 }
 
-.dropdownArrow {
+.selectedLabel {
+  display: inline-block;
+  overflow: hidden;
+  height: 19px;
+  word-wrap: break-word;
+  text-overflow: ellipsis;
+  position: absolute;
+  top: calc(48% - 8px);
+  padding-right: 1rem;
+  max-width: 70%;
+}
+
+.closeIcon {
+  position: absolute;
+  top: calc(50% - 7px);
+  right: 30px;
   width: 10px;
-  height: 10px;
-  fill: $theme-color;
-  stroke: $theme-color;
+  fill: $gray1;
 }
 
 .menuContainer {
@@ -52,6 +73,7 @@ $container-padding: 15px;
   max-height: 0;
   top: -$container-padding;
   left: -17px;
+  border-radius: 5px;
   transition: max-height 0.3s ease-in;
   z-index: calc(#{$z-index-multiselect} + 1);
 }
@@ -68,6 +90,10 @@ $container-padding: 15px;
 
   .dropdownArrow {
     width: 12px;
+    top: -2px;
+    position: relative;
+    fill: $theme-color;
+    stroke: $theme-color;
     transform: rotate(180deg);
   }
 }
@@ -81,15 +107,19 @@ $container-padding: 15px;
   width: 100%;
   padding: $container-padding;
   margin-bottom: $container-padding;
+
+  &::placeholder {
+    color: $gray1;
+    font-size: $font-size-s;
+  }
 }
 
 .menuOpen {
   width: 550px;
   height: auto;
   max-height: 600px;
-  background-color: white;
-  border: $dropdown-border;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.09);
+  background-color: $white;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.1);
   overflow: hidden;
 }
 
@@ -115,27 +145,47 @@ $container-padding: 15px;
 .menuOption {
   cursor: pointer;
   position: relative;
-  margin-left: 70px;
+  margin-left: 50px;
   color: $gray1;
   font-size: $font-size;
   line-height: 25px;
   padding-bottom: $container-padding;
 
-  &::before {
-    content: '';
+  &:hover,
+  &:focus {
+    color: $theme-color;
+  }
+
+  .checkbox {
     position: absolute;
     border: 1px solid $gray2;
-    width: 25px;
-    height: 25px;
-    left: -40px;
-    top: 0;
+    width: 15px;
+    height: 15px;
+    left: -25px;
+    top: 4px;
     border-radius: 3px;
-    transition: border 0.3s ease-in;
   }
 
   &.selected {
+    color: $theme-color;
+
+    .checkbox {
+      background-color: $theme-color-medium;
+      border: none;
+    }
+
     &::before {
-      border: 3px solid $theme-color;
+      content: "\2714";
+      position: absolute;
+      display: block;
+      color: $white;
+      left: -22px;
+      top: -1px;
+      font-size: 12px;
+      font-size: 0.75rem;
+      width: 15px;
+      height: 15px;
+      z-index: 1;
     }
   }
 }
@@ -149,7 +199,6 @@ $container-padding: 15px;
   height: 20px;
   cursor: pointer;
   position: absolute;
-  top: 2px;
 }
 
 .regionArrow {
