@@ -3,8 +3,19 @@ import Progress from 'components/progress';
 import PropTypes from 'prop-types';
 import styles from './legend-item-styles.scss';
 
-const LegendItem = ({ name, number, value, color, itemsName }) => (
-  <div className={styles.legendItem}>
+const LegendItem = ({
+  name,
+  number,
+  value,
+  color,
+  itemsName,
+  index,
+  selectActiveDonutIndex
+}) => (
+  <div
+    className={styles.legendItem}
+    onMouseEnter={() => selectActiveDonutIndex(index)}
+  >
     <div className={styles.legendName}>
       <span className={styles.legendDot} style={{ backgroundColor: color }} />
       <span>{name}</span>
@@ -23,7 +34,9 @@ LegendItem.propTypes = {
   number: PropTypes.number,
   itemsName: PropTypes.array,
   value: PropTypes.number,
-  color: PropTypes.string
+  index: PropTypes.number.isRequired,
+  color: PropTypes.string,
+  selectActiveDonutIndex: PropTypes.func.isRequired
 };
 
 LegendItem.defaultProps = {

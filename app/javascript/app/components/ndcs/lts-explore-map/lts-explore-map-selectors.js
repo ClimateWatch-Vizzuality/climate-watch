@@ -19,6 +19,8 @@ const getCountries = state => state.countries || null;
 const getCategoriesData = state => state.categories || null;
 const getIndicatorsData = state => state.indicators || null;
 const getZoom = state => state.map.zoom || null;
+export const getDonutActiveIndex = state =>
+  state.exploreMap.activeIndex || null;
 
 export const getIsShowEUCountriesChecked = createSelector(
   getSearch,
@@ -234,11 +236,14 @@ export const getTooltipCountryValues = createSelector(
 
     const tooltipCountryValues = {};
     Object.keys(updatedSelectedIndicator.locations).forEach(iso => {
-      tooltipCountryValues[iso] = {
-        value:
-          updatedSelectedIndicator.locations[iso] &&
-          updatedSelectedIndicator.locations[iso].value
-      };
+      const location = updatedSelectedIndicator.locations[iso];
+      const originalIndicatorLocation = selectedIndicator.locations[iso];
+      if (location) {
+        tooltipCountryValues[iso] = {
+          labelId: originalIndicatorLocation.label_id,
+          value: location.value
+        };
+      }
     });
     return tooltipCountryValues;
   }

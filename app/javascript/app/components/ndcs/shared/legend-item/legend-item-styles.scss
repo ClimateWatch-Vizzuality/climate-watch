@@ -3,6 +3,8 @@
 $progress-bar-width: 180px;
 
 .legendItem {
+  cursor: default;
+
   &:not(:last-child) {
     margin-bottom: 10px;
   }
