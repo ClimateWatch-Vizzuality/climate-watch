@@ -83,9 +83,11 @@ $container-padding: 15px;
   background-color: $white;
   box-shadow: $box-shadow-flying-dropdown;
   overflow: hidden;
+
   @media #{$tablet-portrait} {
     left: calc(-100% - 60px);
   }
+
   @media #{$tablet-landscape} {
     width: 550px;
     left: -17px;
