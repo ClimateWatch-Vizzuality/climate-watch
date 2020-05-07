@@ -103,14 +103,13 @@ function GhgEmissionsContainer(props) {
   };
 
   const handleRegionsChange = filters => {
+    const filtersArray = castArray(filters);
     updateUrlParam({
       name: 'regions',
-      value: castArray(filters)
-        .map(v => v.value)
-        .join(',')
+      value: filtersArray.map(v => v.value).join(',')
     });
 
-    sendToAnalitics('regions', filters);
+    sendToAnalitics('regions', filtersArray);
   };
 
   const sendToAnalitics = (field, filters) => {
