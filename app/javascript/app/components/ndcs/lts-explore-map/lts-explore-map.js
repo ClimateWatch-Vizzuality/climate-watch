@@ -120,7 +120,7 @@ class LTSExploreMapContainer extends PureComponent {
           l => parseInt(l.id, 10) === tooltipValue.labelId
         );
         if (hoveredlegendData) {
-          selectActiveDonutIndex(hoveredlegendData.index - 1);
+          selectActiveDonutIndex(legendData.indexOf(hoveredlegendData));
         }
       } else {
         // This is the last legend item aggregating all the no data geographies
