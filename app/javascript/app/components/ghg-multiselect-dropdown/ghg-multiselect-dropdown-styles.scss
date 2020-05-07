@@ -70,10 +70,26 @@ $container-padding: 15px;
   height: 0;
   max-height: 0;
   top: -$container-padding;
-  left: -17px;
+  left: -25px;
   border-radius: 5px;
   transition: max-height 0.3s ease-in;
   z-index: calc(#{$z-index-multiselect} + 1);
+}
+
+.menuOpen {
+  width: 100vw;
+  height: auto;
+  max-height: 600px;
+  background-color: $white;
+  box-shadow: $box-shadow-flying-dropdown;
+  overflow: hidden;
+  @media #{$tablet-portrait} {
+    left: calc(-100% - 60px);
+  }
+  @media #{$tablet-landscape} {
+    width: 550px;
+    left: -17px;
+  }
 }
 
 .menuHeader {
@@ -110,15 +126,6 @@ $container-padding: 15px;
     color: $gray1;
     font-size: $font-size-s;
   }
-}
-
-.menuOpen {
-  width: 550px;
-  height: auto;
-  max-height: 600px;
-  background-color: $white;
-  box-shadow: $box-shadow-flying-dropdown;
-  overflow: hidden;
 }
 
 .optionsContainer {
