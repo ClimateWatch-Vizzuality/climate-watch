@@ -19,9 +19,9 @@ export const commitmentsData = [
         questionText:
           'How many Parties submitted first Nationally Determined Contributions?',
         link: '/ndcs-explore?indicator=submission',
-        slug: 'submission',
         metadataSlug: 'ndc_cw',
-        answerLabel: 'First NDC Submitted'
+        source: 'countriesDocuments',
+        answerLabel: 'first_ndc'
       },
       {
         questionText: 'How many Parties have submitted Long-Term Strategies?',

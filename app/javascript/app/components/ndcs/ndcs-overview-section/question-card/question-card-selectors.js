@@ -5,13 +5,26 @@ const getIndicators = state =>
   (state.ndcs && state.ndcs.data.indicators) || null;
 const getSlug = (state, { slug }) => slug || null;
 const getAnswerLabel = (state, { answerLabel }) => answerLabel || null;
+const getSource = (state, { source }) => source || null;
+const getCountriesDocuments = state => state.countriesDocuments.data || null;
 
 export const getTotalCountriesNumber = state =>
   (state.countries && state.countries.data.length) || null;
 
+const getFirstNDCSubmittedIsos = createSelector(
+  [getSource, getCountriesDocuments, getAnswerLabel],
+  (source, countriesDocuments, answerLabel) => {
+    if (!source || !countriesDocuments) return null;
+    return Object.keys(countriesDocuments).filter(iso =>
+      countriesDocuments[iso].some(doc => doc.slug === answerLabel)
+    );
+  }
+);
+
 const getPositiveAnswerIsos = createSelector(
-  [getIndicators, getSlug, getAnswerLabel],
-  (indicators, slug, answerLabel) => {
+  [getIndicators, getSlug, getAnswerLabel, getFirstNDCSubmittedIsos],
+  (indicators, slug, answerLabel, firstNDCSubmittedIsos) => {
+    if (firstNDCSubmittedIsos) return firstNDCSubmittedIsos;
     if (!indicators || !slug || !answerLabel) return null;
     const indicator = indicators.find(i => i.slug === slug);
     if (!indicator) return null;

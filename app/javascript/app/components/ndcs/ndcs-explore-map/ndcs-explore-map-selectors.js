@@ -6,7 +6,6 @@ import {
 } from 'utils/map';
 import uniqBy from 'lodash/uniqBy';
 import sortBy from 'lodash/sortBy';
-import groupBy from 'lodash/groupBy';
 import intersection from 'lodash/intersection';
 import { generateLinkToDataExplorer } from 'utils/data-explorer';
 import worldPaths from 'app/data/world-50m-paths';
@@ -24,6 +23,8 @@ const getSearch = state => state.search || null;
 const getCountries = state => state.countries || null;
 const getCategoriesData = state => state.categories || null;
 const getIndicatorsData = state => state.indicators || null;
+const getCountriesDocumentsData = state =>
+  state.countriesDocuments.data || null;
 const getZoom = state => state.map.zoom || null;
 
 export const getCategories = createSelector(getCategoriesData, categories =>
@@ -264,38 +265,33 @@ export const getEmissionsCardData = createSelector(
 const getCountriesAndParties = submissions => {
   const partiesNumber = submissions.length;
   let countriesNumber = submissions.length;
-  const submissionIsos = submissions.map(s => s.iso_code3);
-  if (!submissionIsos.includes(europeSlug)) {
+
+  if (!submissions.includes(europeSlug)) {
     return { partiesNumber, countriesNumber };
   }
   const europeanCountriesWithSubmission = intersection(
     europeanCountries,
-    submissions.map(s => s.iso_code3)
+    submissions
   );
+
   countriesNumber +=
     europeanCountries.length - europeanCountriesWithSubmission.length - 1;
   return { partiesNumber, countriesNumber };
 };
 
 export const getSummaryCardData = createSelector(
-  [getIndicatorsData],
-  indicators => {
-    if (!indicators) return null;
-    const latestSubmissionIndicator = indicators.find(
-      i => i.slug === 'submission'
-    );
-    const locationSubmissions = Object.keys(
-      latestSubmissionIndicator.locations
-    ).map(key => ({
-      iso_code3: key,
-      value: latestSubmissionIndicator.locations[key].value
-    }));
-    const groupedSubmissions = groupBy(locationSubmissions, 'value');
+  [getIndicatorsData, getCountriesDocumentsData],
+  (indicators, countriesDocuments) => {
+    if (!indicators || !countriesDocuments) return null;
+    const getSubmissionIsos = slug =>
+      Object.keys(countriesDocuments).filter(iso =>
+        countriesDocuments[iso].some(doc => doc.slug === slug)
+      );
     const firstNDCCountriesAndParties = getCountriesAndParties(
-      groupedSubmissions['First NDC Submitted']
+      getSubmissionIsos('first_ndc')
     );
     const secondNDCCountriesAndParties = getCountriesAndParties(
-      groupedSubmissions['Second NDC Submitted']
+      getSubmissionIsos('second_ndc')
     );
     return [
       {

@@ -27,7 +27,7 @@ class CustomModal extends PureComponent {
     } = this.props;
     const defaultStyles = {
       overlay: {
-        zIndex: 20,
+        zIndex: 23,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
