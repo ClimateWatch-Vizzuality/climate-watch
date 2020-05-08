@@ -5,6 +5,8 @@ import { Dropdown } from 'cw-components';
 import { TabletLandscape } from 'components/responsive';
 import ButtonGroup from 'components/button-group';
 import NoContent from 'components/no-content';
+import ShareButton from 'components/button/share-button';
+import ModalShare from 'components/modal-share';
 import dropdownTheme from 'styles/themes/dropdown/react-selectize.scss';
 
 import IndicatorCards from './indicator-card';
@@ -12,7 +14,6 @@ import LandArea from './land-area';
 import MeatData from './meat-data';
 
 import styles from './context-by-country-styles.scss';
-
 
 const ContextByCountryComponent = ({
   cards,
@@ -28,11 +29,6 @@ const ContextByCountryComponent = ({
     {
       type: 'info',
       onClick: handleInfoClick
-    },
-    {
-      type: 'share',
-      analyticsGraphName: 'Country/Ghg-emissions',
-      positionRight: true
     },
     {
       type: 'download',
@@ -59,36 +55,39 @@ const ContextByCountryComponent = ({
                   theme={dropdownTheme}
                 />
               )}
-              {
-                !isEmpty(years) &&
-                selectedYear && (
-                  <Dropdown
-                    label={'Year'}
-                    value={selectedYear}
-                    options={years}
-                    onValueChange={updateCountryYearFilter}
-                    hideResetButton
-                    theme={dropdownTheme}
-                  />
-                )
-              }
+              {!isEmpty(years) && selectedYear && (
+                <Dropdown
+                  label={'Year'}
+                  value={selectedYear}
+                  options={years}
+                  onValueChange={updateCountryYearFilter}
+                  hideResetButton
+                  theme={dropdownTheme}
+                />
+              )}
             </div>
             {isTablet && (
-              <ButtonGroup className={styles.btnGroup} buttonsConfig={buttonGroupConfig} />
+              <React.Fragment>
+                <ButtonGroup
+                  className={styles.btnGroup}
+                  buttonsConfig={buttonGroupConfig}
+                />
+                <ShareButton
+                  className={styles.shareButton}
+                  analyticsName="Country/Ghg-emissions"
+                />
+              </React.Fragment>
             )}
           </div>
           {!isEmpty(years) ? (
             <div>
-              {
-                selectedCountry &&
-                selectedYear && (
-                  <React.Fragment>
-                    <IndicatorCards selectedYear={selectedYear} cards={cards} />
-                    <LandArea />
-                    <MeatData />
-                  </React.Fragment>
-                )
-              }
+              {selectedCountry && selectedYear && (
+                <React.Fragment>
+                  <IndicatorCards selectedYear={selectedYear} cards={cards} />
+                  <LandArea />
+                  <MeatData />
+                </React.Fragment>
+              )}
             </div>
           ) : (
             <NoContent
@@ -98,8 +97,18 @@ const ContextByCountryComponent = ({
             />
           )}
           {!isTablet && (
-            <ButtonGroup className={styles.btnGroup} buttonsConfig={buttonGroupConfig} />
+            <React.Fragment>
+              <ButtonGroup
+                className={styles.btnGroup}
+                buttonsConfig={buttonGroupConfig}
+              />
+              <ShareButton
+                className={styles.shareButton}
+                analyticsName="Country/Ghg-emissions"
+              />
+            </React.Fragment>
           )}
+          <ModalShare analyticsName="Agriculture by country" />
         </React.Fragment>
       )}
     </TabletLandscape>

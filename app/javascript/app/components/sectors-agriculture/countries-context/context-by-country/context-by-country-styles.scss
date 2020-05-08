@@ -33,6 +33,10 @@
   @include xy-gutters(30px, $gutter-position: 'bottom');
 }
 
+.shareButton {
+  @include xy-gutters(30px, $gutter-position: 'bottom');
+}
+
 @media #{$tablet-portrait} {
   .filtersGroup {
     @include columns((6,6));
@@ -51,7 +55,7 @@
   }
 
   .actionsContainer {
-    @include columns((10, 2));
+    @include columns((8,2 , 2));
   }
 }
 
