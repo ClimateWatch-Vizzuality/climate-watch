@@ -4,6 +4,7 @@ import GHGCountryEmissions from 'components/country/country-ghg';
 import NDCSDGLinkages from 'components/country/country-ndc-sdg-linkages';
 import ClimateVulnerability from 'components/country/country-climate-vulnerability';
 import CountryNdcOverview from 'components/country/country-ndc-overview';
+import CountryLtsOverview from 'components/country/country-lts-overview';
 import LawsAndPolicies from 'components/country/laws-and-policies';
 
 const routes = [
@@ -23,7 +24,13 @@ const routes = [
     hash: 'ndc-content-overview',
     label: 'NDC Content Overview',
     anchor: true,
-    component: () => createElement(CountryNdcOverview, { actions: true })
+    component: () => createElement(CountryNdcOverview, { isCountryPage: true })
+  },
+  {
+    hash: 'lts-content-overview',
+    label: 'LTS Content Overview',
+    anchor: true,
+    component: () => createElement(CountryLtsOverview, { isCountryPage: true })
   },
   {
     hash: 'ndc-sdg-linkages',
