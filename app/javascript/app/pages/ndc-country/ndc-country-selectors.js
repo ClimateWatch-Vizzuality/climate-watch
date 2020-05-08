@@ -98,7 +98,7 @@ export const getDocumentSelected = createSelector(
   (documents, search) => {
     if (!documents || isEmpty(documents)) return null;
     if (FEATURE_NDC_FILTERING) {
-      if (!search.document) {
+      if (!search || !search.document) {
         return documentOption(documents[0]);
       }
       const selectedDocument = documents.find(d => d.slug === search.document);
