@@ -22,6 +22,7 @@
 
 .containerControls {
   @include columns((12,6, 6));
+
   @media #{$tablet-landscape} {
     @include columns((8,2, 2));
   }
