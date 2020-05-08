@@ -10,30 +10,24 @@
   @include columns();
 }
 
-.buttonGroup {
-  width: auto;
-  margin-top: 1em;
-  min-width: 200px;
-  float: right;
+.buttonGroup,
+.shareButton {
+  width: 100%;
+  margin-top: $gutter-padding;
 
-  .containerControls & {
-    @media #{$tablet-portrait} {
-      margin-top: 0;
-      width: 100%;
-      min-width: 0;
-    }
+  @media #{$tablet-landscape} {
+    margin-top: 0;
   }
 }
 
 .containerControls {
-  @media #{$tablet-portrait} {
-    @include columns((8,4));
+  @include columns((12,6, 6));
+  @media #{$tablet-landscape} {
+    @include columns((8,2, 2));
   }
 
   margin-bottom: 40px;
   margin-top: 20px;
-
-  @include clearFix();
 }
 
 .searchBox {
