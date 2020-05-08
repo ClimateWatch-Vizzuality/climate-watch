@@ -47,14 +47,12 @@ function GhgEmissionsContainer(props) {
     DATA_ZOOM_START_POSITION
   );
   useEffect(() => {
-    if (data) {
-      if (dataZoomYears) {
-        setUpdatedData(
-          data.filter(d => d.x >= dataZoomYears.min && d.x <= dataZoomYears.max)
-        );
-      } else {
-        setUpdatedData(data);
-      }
+    if (dataZoomYears) {
+      setUpdatedData(
+        data.filter(d => d.x >= dataZoomYears.min && d.x <= dataZoomYears.max)
+      );
+    } else {
+      setUpdatedData(data);
     }
   }, [dataZoomYears, data]);
   const resetDataZoom = () => {
@@ -105,14 +103,13 @@ function GhgEmissionsContainer(props) {
   };
 
   const handleRegionsChange = filters => {
+    const filtersArray = castArray(filters);
     updateUrlParam({
       name: 'regions',
-      value: castArray(filters)
-        .map(v => v.value)
-        .join(',')
+      value: filtersArray.map(v => v.value).join(',')
     });
 
-    sendToAnalitics('regions', filters);
+    sendToAnalitics('regions', filtersArray);
   };
 
   const sendToAnalitics = (field, filters) => {

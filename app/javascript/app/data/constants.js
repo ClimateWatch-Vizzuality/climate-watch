@@ -100,6 +100,19 @@ export const TOP_EMITTERS = [
   'MEX'
 ];
 
+export const TOP_EMITTERS_REGION_COUNTRIES = [
+  { iso: 'CHN', label: 'China' },
+  { iso: 'USA', label: 'United States' },
+  { iso: 'EUU', label: 'European Union' },
+  { iso: 'IND', label: 'India' },
+  { iso: 'RUS', label: 'Rusia' },
+  { iso: 'JPN', label: 'Japan' },
+  { iso: 'BRA', label: 'Brasil' },
+  { iso: 'IDN', label: 'Indonesia' },
+  { iso: 'CAN', label: 'Canada' },
+  { iso: 'MEX', label: 'Mexico' }
+];
+
 export const OTHER_COLOR = CHART_NAMED_GRAY_COLORS.grayColor1;
 
 export const CHART_COLORS = Object.values(CHART_NAMED_COLORS);
@@ -243,6 +256,7 @@ export const TOP_EMITTERS_OPTION = {
   label: 'Top Emitters',
   value: 'TOP',
   expandsTo: TOP_EMITTERS,
+  regionCountries: TOP_EMITTERS_REGION_COUNTRIES,
   groupId: 'regions'
 };
 

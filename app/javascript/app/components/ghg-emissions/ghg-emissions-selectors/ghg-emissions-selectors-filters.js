@@ -205,6 +205,10 @@ const getRegionOptions = createSelector(
         value: region.iso_code3,
         iso: region.iso_code3,
         expandsTo: regionMembers,
+        regionCountries: region.members.map(country => ({
+          label: country.wri_standard_name,
+          iso: country.iso_code3
+        })),
         groupId: 'regions'
       });
     });
