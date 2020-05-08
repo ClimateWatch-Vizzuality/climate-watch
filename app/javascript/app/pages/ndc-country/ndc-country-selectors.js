@@ -1,14 +1,21 @@
 import { createSelector } from 'reselect';
 import isEmpty from 'lodash/isEmpty';
 import sortBy from 'lodash/sortBy';
+import groupBy from 'lodash/groupBy';
 import qs from 'query-string';
+import upperCase from 'lodash/upperCase';
+
+const FEATURE_NDC_FILTERING = process.env.FEATURE_NDC_FILTERING === 'true';
 
 const getIso = state => state.iso || null;
 const getDocuments = state => {
-  if (!state.countriesDocuments || !state.countriesDocuments.data) {
-    return null;
+  if (FEATURE_NDC_FILTERING) {
+    if (!state.countriesDocuments || !state.countriesDocuments.data) {
+      return null;
+    }
+    return state.countriesDocuments.data || null;
   }
-  return state.countriesDocuments.data || null;
+  return state.ndcsDocumentsMeta.data || null;
 };
 
 const getCountries = state => {
@@ -61,23 +68,55 @@ const documentOption = document => ({
   value: document.slug
 });
 
+const legacyDocumentValue = document =>
+  `${document.document_type}-${document.language}`;
+
+const legacyDocumentOption = document => ({
+  label: upperCase(document.document_type),
+  value: legacyDocumentValue(document)
+});
+
 export const getDocumentsOptions = createSelector(
   [getCountryDocuments],
   documents => {
     if (isEmpty(documents)) return null;
-    return documents
-      .filter(d => d.is_ndc)
-      .map(document => documentOption(document));
+    if (FEATURE_NDC_FILTERING) {
+      return documents
+        .filter(d => d.is_ndc)
+        .map(document => documentOption(document));
+    }
+    const groupedDocuments = groupBy(documents, 'document_type');
+    const englishDocuments = Object.values(groupedDocuments).map(
+      docs => docs.find(d => d.language === 'EN') || docs[0]
+    );
+    return englishDocuments.map(document => legacyDocumentOption(document));
   }
 );
 
 export const getDocumentSelected = createSelector(
   [getCountryDocuments, getSearch],
   (documents, search) => {
-    if (isEmpty(documents)) return null;
-    if (!search || !search.document) return documentOption(documents[0]);
-    const selectedDocument = documents.find(d => d.slug === search.document);
-    return selectedDocument ? documentOption(selectedDocument) : null;
+    if (!documents || isEmpty(documents)) return null;
+    if (FEATURE_NDC_FILTERING) {
+      if (!search || !search.document) {
+        return documentOption(documents[0]);
+      }
+      const selectedDocument = documents.find(d => d.slug === search.document);
+      return selectedDocument
+        ? documentOption(selectedDocument)
+        : documentOption(documents[0]);
+    }
+
+    if (!search || !search.document) {
+      return legacyDocumentOption(documents[0]);
+    }
+    const selectedDocument = documents.find(
+      d => legacyDocumentValue(d) === search.document
+    );
+
+    return selectedDocument
+      ? legacyDocumentOption(selectedDocument)
+      : legacyDocumentOption(documents[0]);
   }
 );
 
