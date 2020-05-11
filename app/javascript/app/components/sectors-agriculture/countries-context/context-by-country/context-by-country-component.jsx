@@ -40,34 +40,65 @@ const ContextByCountryComponent = ({
   ];
 
   return (
-    <TabletLandscape>
-      {isTablet => (
-        <React.Fragment>
-          <div className={styles.actionsContainer}>
-            <div className={styles.filtersGroup}>
-              {countries && (
-                <Dropdown
-                  label={'Country'}
-                  value={selectedCountry}
-                  options={countries}
-                  onValueChange={updateCountryFilter}
-                  hideResetButton
-                  theme={dropdownTheme}
-                />
-              )}
-              {!isEmpty(years) && selectedYear && (
-                <Dropdown
-                  label={'Year'}
-                  value={selectedYear}
-                  options={years}
-                  onValueChange={updateCountryYearFilter}
-                  hideResetButton
-                  theme={dropdownTheme}
-                />
+    <div clasName={styles.container}>
+      <TabletLandscape>
+        {isTablet => (
+          <React.Fragment>
+            <div className={styles.actionsContainer}>
+              <div className={styles.filtersGroup}>
+                {countries && (
+                  <Dropdown
+                    label={'Country'}
+                    value={selectedCountry}
+                    options={countries}
+                    onValueChange={updateCountryFilter}
+                    hideResetButton
+                    theme={dropdownTheme}
+                  />
+                )}
+                {!isEmpty(years) && selectedYear && (
+                  <Dropdown
+                    label={'Year'}
+                    value={selectedYear}
+                    options={years}
+                    onValueChange={updateCountryYearFilter}
+                    hideResetButton
+                    theme={dropdownTheme}
+                  />
+                )}
+              </div>
+              {isTablet && (
+                <React.Fragment>
+                  <ButtonGroup
+                    className={styles.btnGroup}
+                    buttonsConfig={buttonGroupConfig}
+                  />
+                  <ShareButton
+                    className={styles.shareButton}
+                    analyticsName="Country/Ghg-emissions"
+                  />
+                </React.Fragment>
               )}
             </div>
-            {isTablet && (
-              <React.Fragment>
+            {!isEmpty(years) ? (
+              <div>
+                {selectedCountry && selectedYear && (
+                  <React.Fragment>
+                    <IndicatorCards selectedYear={selectedYear} cards={cards} />
+                    <LandArea />
+                    <MeatData />
+                  </React.Fragment>
+                )}
+              </div>
+            ) : (
+              <NoContent
+                message={`No data for ${selectedCountry.label}, please select another country`}
+                className={styles.noContent}
+                minHeight={300}
+              />
+            )}
+            {!isTablet && (
+              <div className={styles.buttonsContainer}>
                 <ButtonGroup
                   className={styles.btnGroup}
                   buttonsConfig={buttonGroupConfig}
@@ -76,42 +107,13 @@ const ContextByCountryComponent = ({
                   className={styles.shareButton}
                   analyticsName="Country/Ghg-emissions"
                 />
-              </React.Fragment>
+              </div>
             )}
-          </div>
-          {!isEmpty(years) ? (
-            <div>
-              {selectedCountry && selectedYear && (
-                <React.Fragment>
-                  <IndicatorCards selectedYear={selectedYear} cards={cards} />
-                  <LandArea />
-                  <MeatData />
-                </React.Fragment>
-              )}
-            </div>
-          ) : (
-            <NoContent
-              message={`No data for ${selectedCountry.label}, please select another country`}
-              className={styles.noContent}
-              minHeight={300}
-            />
-          )}
-          {!isTablet && (
-            <React.Fragment>
-              <ButtonGroup
-                className={styles.btnGroup}
-                buttonsConfig={buttonGroupConfig}
-              />
-              <ShareButton
-                className={styles.shareButton}
-                analyticsName="Country/Ghg-emissions"
-              />
-            </React.Fragment>
-          )}
-          <ModalShare analyticsName="Agriculture by country" />
-        </React.Fragment>
-      )}
-    </TabletLandscape>
+            <ModalShare analyticsName="Agriculture by country" />
+          </React.Fragment>
+        )}
+      </TabletLandscape>
+    </div>
   );
 };
 

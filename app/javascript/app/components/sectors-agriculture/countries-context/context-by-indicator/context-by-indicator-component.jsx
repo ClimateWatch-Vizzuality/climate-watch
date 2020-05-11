@@ -84,11 +84,6 @@ class ContextByIndicatorComponent extends Component {
         onClick: handleInfoClick
       },
       {
-        type: 'share',
-        analyticsGraphName: 'Country/Ghg-emissions',
-        positionRight: true
-      },
-      {
         type: 'download',
         section: 'ghg-emissions'
       },
@@ -182,7 +177,11 @@ class ContextByIndicatorComponent extends Component {
                 </div>
               )}
             </div>
-            {!isTablet && this.renderButtonGroup(buttonGroupConfig)}
+            {!isTablet && (
+              <div className={styles.buttonsContainer}>
+                {this.renderButtonGroup(buttonGroupConfig)}
+              </div>
+            )}
             {countryData && (
               <ReactTooltip>
                 {getTooltip(countryData, tooltipTxt, selectedIndicator)}

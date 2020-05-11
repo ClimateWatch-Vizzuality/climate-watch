@@ -27,6 +27,10 @@
   }
 }
 
+.buttonsContainer {
+  @include columns((6, 6));
+}
+
 .btnGroup {
   width: 100%;
 
