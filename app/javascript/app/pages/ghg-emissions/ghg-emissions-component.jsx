@@ -5,6 +5,8 @@ import PropTypes from 'prop-types';
 import Header from 'components/header';
 import Intro from 'components/intro';
 import GhgEmissionsGraph from 'components/ghg-emissions';
+import ModalShare from 'components/modal-share';
+import ModalMetadata from 'components/modal-metadata';
 import { HISTORICAL_GHG_EMISIONS } from 'data/SEO';
 import { MetaDescription, SocialMetadata } from 'components/seo';
 import { isPageContained } from 'utils/navigation';
@@ -46,6 +48,8 @@ class GhgEmissions extends PureComponent {
             <GhgEmissionsGraph />
           </div>
         </div>
+        <ModalShare analyticsName={'GHG Emissions'} />
+        <ModalMetadata />
       </div>
     );
   }

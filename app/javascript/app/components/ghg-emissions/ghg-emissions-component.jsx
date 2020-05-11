@@ -22,8 +22,6 @@ import Table from 'components/table';
 import GhgMultiselectDropdown from 'components/ghg-multiselect-dropdown';
 import ghgTableTheme from 'styles/themes/table/ghg-table-theme.scss';
 import ModalPngDownload from 'components/modal-png-download';
-import ModalMetadata from 'components/modal-metadata';
-import ModalShare from 'components/modal-share';
 import { TabletPortraitOnly, TabletLandscape } from 'components/responsive';
 import { toPlural } from 'utils/ghg-emissions';
 import { format } from 'd3-format';
@@ -397,8 +395,6 @@ function GhgEmissions(props) {
         {renderPngChart()}
         {renderPngLegend()}
       </ModalPngDownload>
-      <ModalMetadata />
-      <ModalShare />
     </div>
   );
 }

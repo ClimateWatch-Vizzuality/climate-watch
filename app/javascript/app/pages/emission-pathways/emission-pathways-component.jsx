@@ -5,6 +5,7 @@ import Waypoint from 'react-waypoint';
 import Header from 'components/header';
 import Intro from 'components/intro';
 import AnchorNav from 'components/anchor-nav';
+import ModalShare from 'components/modal-share';
 import Sticky from 'react-stickynode';
 import EspModelsProvider from 'providers/esp-models-provider';
 import EspScenariosProvider from 'providers/esp-scenarios-provider';
@@ -74,6 +75,7 @@ class EmissionPathways extends PureComponent {
             </Waypoint>
           ))}
         {renderRoutes(route.routes)}
+        <ModalShare analyticsName="Pathways" />
       </div>
     );
   }

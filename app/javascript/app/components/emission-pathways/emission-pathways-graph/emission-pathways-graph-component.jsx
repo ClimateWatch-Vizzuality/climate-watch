@@ -10,7 +10,6 @@ import ModalOverview from 'components/modal-overview';
 import Dropdown from 'components/dropdown';
 import Chart from 'components/charts/chart';
 import ShareButton from 'components/button/share-button';
-import ModalShare from 'components/modal-share';
 import { TabletLandscape, TabletPortraitOnly } from 'components/responsive';
 
 import layout from 'styles/layout.scss';
@@ -208,7 +207,6 @@ class EmissionPathwayGraph extends PureComponent {
               filtersSelected.indicator ? 'Indicator' : null
             ]}
           />
-          <ModalShare analyticsName="NDC Explore" />
         </div>
       </div>
     );

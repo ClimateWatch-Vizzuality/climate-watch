@@ -5,7 +5,6 @@ import { TabletLandscape } from 'components/responsive';
 import Map from 'components/map';
 import ButtonGroup from 'components/button-group';
 import Loading from 'components/loading';
-import ModalMetadata from 'components/modal-metadata';
 import Dropdown from 'components/dropdown';
 import { PieChart } from 'cw-components';
 import CustomTooltip from 'components/ndcs/shared/donut-tooltip';
@@ -14,7 +13,6 @@ import HandIconInfo from 'components/ndcs/shared/hand-icon-info';
 import CustomInnerHoverLabel from 'components/ndcs/shared/donut-custom-label';
 import LegendItem from 'components/ndcs/shared/legend-item';
 import ShareButton from 'components/button/share-button';
-import ModalShare from 'components/modal-share';
 import Sticky from 'react-stickynode';
 import cx from 'classnames';
 import CountriesDocumentsProvider from 'providers/countries-documents-provider';
@@ -47,7 +45,6 @@ const renderButtonGroup = (clickHandler, downloadLink, stickyStatus) => (
       ]}
     />
     <ShareButton />
-    <ModalShare analyticsName="NDC Explore" />
   </div>
 );
 
@@ -232,7 +229,6 @@ function NDCSExploreMap(props) {
                 </div>
               </div>
             </div>
-            <ModalMetadata />
           </div>
         )}
       </TabletLandscape>
