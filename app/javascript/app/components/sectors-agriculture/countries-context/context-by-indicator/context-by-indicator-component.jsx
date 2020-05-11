@@ -9,7 +9,6 @@ import MapLegend from 'components/map-legend';
 import ButtonGroup from 'components/button-group';
 import Icon from 'components/icon';
 import ShareButton from 'components/button/share-button';
-import ModalShare from 'components/modal-share';
 import accordionArrow from 'assets/icons/accordion-arrow.svg';
 import tooltipTheme from 'styles/themes/map-tooltip/map-tooltip.scss';
 import dropdownTheme from 'styles/themes/dropdown/react-selectize.scss';
@@ -56,7 +55,6 @@ class ContextByIndicatorComponent extends Component {
         className={styles.shareButton}
         analyticsName="Country/Ghg-emissions"
       />
-      <ModalShare />
     </React.Fragment>
   );
 

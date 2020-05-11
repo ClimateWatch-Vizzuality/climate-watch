@@ -6,6 +6,7 @@ import Header from 'components/header';
 import Intro from 'components/intro';
 import AnchorNav from 'components/anchor-nav';
 import ModalMetadata from 'components/modal-metadata';
+import ModalShare from 'components/modal-share';
 import Sticky from 'react-stickynode';
 import cx from 'classnames';
 import { updateUrlHash } from 'utils/navigation';
@@ -66,6 +67,7 @@ class SectorsAgriculture extends PureComponent {
                 <div id={section.hash} className={styles.sectionHash} />
                 <section.component />
                 <ModalMetadata />
+                <ModalShare analyticsName={`Agriculture ${section.hash}`} />
               </div>
             </Waypoint>
           ))}

@@ -6,7 +6,6 @@ import { TabletLandscape } from 'components/responsive';
 import ButtonGroup from 'components/button-group';
 import NoContent from 'components/no-content';
 import ShareButton from 'components/button/share-button';
-import ModalShare from 'components/modal-share';
 import dropdownTheme from 'styles/themes/dropdown/react-selectize.scss';
 
 import IndicatorCards from './indicator-card';
@@ -103,13 +102,9 @@ const ContextByCountryComponent = ({
                   className={styles.btnGroup}
                   buttonsConfig={buttonGroupConfig}
                 />
-                <ShareButton
-                  className={styles.shareButton}
-                  analyticsName="Country/Ghg-emissions"
-                />
+                <ShareButton className={styles.shareButton} />
               </div>
             )}
-            <ModalShare analyticsName="Agriculture by country" />
           </React.Fragment>
         )}
       </TabletLandscape>
