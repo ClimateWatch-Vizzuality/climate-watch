@@ -1,0 +1,251 @@
+@import '~styles/settings.scss';
+
+$height: 45px;
+$container-padding: 15px;
+
+.container {
+  width: 100%;
+  position: relative;
+}
+
+.label {
+  display: inline-block;
+  font-size: $font-size-s;
+  font-weight: $font-weight-bold;
+  color: $theme-color;
+  margin-bottom: 4px;
+}
+
+.boxToggle {
+  width: 100%;
+  border-radius: 3px;
+  color: $theme-color;
+  cursor: pointer;
+  display: block;
+  position: relative;
+  padding-left: 10px;
+  padding-right: 10px;
+  height: $height;
+  overflow: hidden;
+  border: $dropdown-border;
+
+  &:hover {
+    box-shadow: none;
+  }
+
+  .dropdownArrow {
+    position: absolute;
+    right: 13px;
+    top: calc(50% - 5px);
+    width: 10px;
+    height: 10px;
+    fill: $theme-color;
+    stroke: $theme-color;
+  }
+}
+
+.selectedLabel {
+  display: inline-block;
+  overflow: hidden;
+  height: 19px;
+  word-wrap: break-word;
+  text-overflow: ellipsis;
+  position: absolute;
+  top: calc(48% - 8px);
+  padding-right: 1rem;
+  max-width: 70%;
+}
+
+.closeIcon {
+  position: absolute;
+  top: calc(50% - 7px);
+  right: 30px;
+  width: 10px;
+  fill: $gray1;
+}
+
+.menuContainer {
+  position: absolute;
+  width: 100px;
+  height: 0;
+  max-height: 0;
+  top: -$container-padding;
+  left: -25px;
+  border-radius: 5px;
+  transition: max-height 0.3s ease-in;
+  z-index: calc(#{$z-index-multiselect} + 1);
+}
+
+.menuOpen {
+  width: 100vw;
+  height: auto;
+  max-height: 600px;
+  background-color: $white;
+  box-shadow: $box-shadow-flying-dropdown;
+  overflow: hidden;
+
+  @media #{$tablet-portrait} {
+    left: calc(-100% - 60px);
+  }
+
+  @media #{$tablet-landscape} {
+    width: 550px;
+    left: -15px;
+    top: -13px;
+  }
+}
+
+.menuHeader {
+  cursor: pointer;
+  padding: $container-padding;
+  display: flex;
+  justify-content: space-between;
+
+  .label {
+    margin: 0;
+  }
+
+  .dropdownArrow {
+    width: 12px;
+    top: -2px;
+    position: relative;
+    fill: $theme-color;
+    stroke: $theme-color;
+    transform: rotate(180deg);
+  }
+}
+
+.input {
+  color: $theme-color;
+  caret-color: $theme-color;
+  font-size: $font-size-m;
+  border: none;
+  border-bottom: 1px solid $gray3;
+  width: 100%;
+  padding: $container-padding;
+  margin-bottom: $container-padding;
+
+  &::placeholder {
+    color: $gray1;
+    font-size: $font-size-s;
+  }
+}
+
+.optionsContainer {
+  padding: 0 $container-padding $container-padding;
+  height: auto;
+  max-height: 400px;
+  overflow: auto;
+}
+
+.optionsSection {
+  margin-bottom: $container-padding;
+}
+
+.sectionTitle {
+  font-size: $font-size;
+  font-weight: $font-weight-bold;
+  text-transform: uppercase;
+  color: $theme-color;
+  padding-bottom: $container-padding;
+}
+
+.menuOption {
+  cursor: pointer;
+  position: relative;
+  margin-left: 50px;
+  color: $gray1;
+  font-size: $font-size;
+  line-height: 25px;
+  padding-bottom: $container-padding;
+
+  &:hover,
+  &:focus {
+    color: $theme-color;
+  }
+
+  .checkbox {
+    position: absolute;
+    border: 1px solid $gray2;
+    width: 15px;
+    height: 15px;
+    left: -25px;
+    top: 4px;
+    border-radius: 3px;
+  }
+
+  &.selected {
+    color: $theme-color;
+
+    .checkbox {
+      background-color: $theme-color-medium;
+      border: none;
+    }
+
+    &::before {
+      content: "\2714";
+      position: absolute;
+      display: block;
+      color: $white;
+      left: -22px;
+      top: -1px;
+      font-size: 12px;
+      font-size: 0.75rem;
+      width: 15px;
+      height: 15px;
+      z-index: 1;
+    }
+  }
+}
+
+.regionOptionContainer {
+  position: relative;
+}
+
+.regionButton {
+  display: block;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  position: absolute;
+
+  @media #{$mobile-only} {
+    display: none;
+  }
+}
+
+.regionArrow {
+  width: 12px;
+  height: 10px;
+  top: 6px;
+  transform: rotate(-90deg);
+  transition: transform 0.2s ease-in;
+
+  &.regionExpanded {
+    transform: rotate(0);
+  }
+}
+
+.expandedRegionsContainer {
+  padding: 0 20px 35px 0;
+  margin-left: 70px;
+  color: $gray1;
+  font-size: $font-size-s;
+  display: flex;
+  flex-flow: column wrap;
+  height: auto;
+  max-width: 100%;
+  max-height: 300px;
+}
+
+.expandedMediumRegionContainer {
+  max-height: 700px;
+}
+
+.expandedHighRegionContainer {
+  max-height: 1200px;
+}
+
+.regionName {
+  max-width: 20%;
+}

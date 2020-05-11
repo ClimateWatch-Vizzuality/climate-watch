@@ -217,6 +217,10 @@
   @media #{$tablet-landscape} {
     width: 150px;
   }
+
+  &.padded {
+    padding-top: 10px;
+  }
 }
 
 .buttonGroup {

@@ -6,7 +6,6 @@ import CardRow from 'components/card/card-row';
 import Intro from 'components/intro';
 import Icon from 'components/icon';
 import cx from 'classnames';
-import upperCase from 'lodash/upperCase';
 import ModalMetadata from 'components/modal-metadata';
 import Loading from 'components/loading';
 import NoContent from 'components/no-content';
@@ -17,6 +16,7 @@ import layout from 'styles/layout.scss';
 import cardTheme from 'styles/themes/card/card-overflow-content.scss';
 import alertIcon from 'assets/icons/alert.svg';
 import NdcContentOverviewProvider from 'providers/ndc-content-overview-provider';
+import CountriesDocumentsProvider from 'providers/countries-documents-provider';
 
 import styles from './country-ndc-overview-styles.scss';
 
@@ -308,14 +308,15 @@ class CountryNdcOverview extends PureComponent {
     const summaryIntroText =
       !FEATURE_NDC_FILTERING || !selectedDocument
         ? 'Summary'
-        : `Summary of ${selectedDocument.document_type &&
-            upperCase(selectedDocument.document_type)}`;
+        : `Summary of ${selectedDocument.long_name}`;
+
     return (
       <div className={cx(styles.wrapper, { [styles.embededWrapper]: isEmbed })}>
         {(FEATURE_LTS_EXPLORE || !FEATURE_NDC_FILTERING) &&
           hasSectors &&
           !loading &&
           this.renderAlertText()}
+        {FEATURE_NDC_FILTERING && <CountriesDocumentsProvider location={iso} />}
         <NdcContentOverviewProvider
           locations={[iso]}
           document={

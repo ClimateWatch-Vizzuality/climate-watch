@@ -7,6 +7,7 @@
   //dropdown styles
   .cw__multi-level-dropdown-styles_selector {
     border: $dropdown-border !important;
+    box-shadow: none !important;
     padding-right: 20px;
   }
 
@@ -15,6 +16,7 @@
     border: $dropdown-border !important;
     border-radius: 0 0 4px 4px;
     margin-top: -3px;
+    z-index: 10;
   }
 
   //dropdown toggle arrow wrapper styles

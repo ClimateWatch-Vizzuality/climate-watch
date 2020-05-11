@@ -124,6 +124,7 @@ import * as ndcSdgLinkagesComponent from 'components/ndc-sdg/ndc-sdg-linkages-co
 import * as HamburgerComponent from 'components/hamburger';
 import * as GHGComponent from 'components/ghg-emissions/ghg-emissions';
 import * as AnchorNavComponent from 'components/anchor-nav';
+import * as ExploreMapShared from 'components/ndcs/shared/explore-map';
 
 const componentsReducers = {
   map: handleActions(mapComponent),
@@ -146,7 +147,8 @@ const componentsReducers = {
   ndcSdg: handleActions(ndcSdgLinkagesComponent),
   hamburger: handleActions(HamburgerComponent),
   dataZoom: handleActions(GHGComponent),
-  anchorNav: handleActions(AnchorNavComponent)
+  anchorNav: handleActions(AnchorNavComponent),
+  exploreMap: handleActions(ExploreMapShared)
 };
 
 export default combineReducers({
