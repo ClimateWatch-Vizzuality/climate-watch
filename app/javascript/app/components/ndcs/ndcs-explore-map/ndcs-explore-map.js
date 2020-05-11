@@ -116,7 +116,7 @@ class NDCSExploreMapContainer extends PureComponent {
     const iso = geography.properties && geography.properties.id;
 
     if (IGNORED_COUNTRIES_ISOS.includes(iso)) {
-      // We won't show Taiwan and Western Sahara an independent country
+      // We won't show Taiwan and Western Sahara as an independent country
       this.setState({ tooltipValues: null, country: null });
     } else {
       const tooltipValue = tooltipCountryValues && tooltipCountryValues[iso];
