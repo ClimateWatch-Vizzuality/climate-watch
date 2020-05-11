@@ -29,7 +29,6 @@
 
 .row {
   @include columns((8, 2, 2));
-
   @include xy-gutters($gutter-padding, $gutter-position: 'top');
 }
 

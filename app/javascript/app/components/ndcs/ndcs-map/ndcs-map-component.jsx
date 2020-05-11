@@ -12,7 +12,6 @@ import ShareButton from 'components/button/share-button';
 import accordionArrow from 'assets/icons/accordion-arrow.svg';
 import Loading from 'components/loading';
 import ModalMetadata from 'components/modal-metadata';
-import ModalShare from 'components/modal-share';
 
 import tooltipTheme from 'styles/themes/map-tooltip/map-tooltip.scss';
 import styles from './ndcs-map-styles.scss';
@@ -29,7 +28,7 @@ const getTooltip = (country, tooltipTxt) => (
 
 const renderButtonGroup = (clickHandler, downloadLink) => (
   <React.Fragment>
-    <div className={styles.buttonGroupContainer}>
+    <div>
       <ButtonGroup
         className={styles.buttonGroup}
         buttonsConfig={[
@@ -51,7 +50,6 @@ const renderButtonGroup = (clickHandler, downloadLink) => (
     <div className={styles.shareButtonContainer}>
       <ShareButton className={styles.shareButton} sharePath={'/ndcs-content'} />
     </div>
-    <ModalShare analyticsName="NDC Content" />
   </React.Fragment>
 );
 
@@ -93,9 +91,7 @@ const NDCMap = ({
             plain
           />
           <TabletLandscape>
-            <div className={styles.buttonGroupContainer}>
-              {renderButtonGroup(handleInfoClick, downloadLink)}
-            </div>
+            {renderButtonGroup(handleInfoClick, downloadLink)}
           </TabletLandscape>
         </div>
         {loading && <Loading light className={styles.loader} />}
@@ -109,16 +105,8 @@ const NDCMap = ({
           customCenter={!isTablet ? [10, -50] : null}
         />
         {!isTablet && (
-          <div className={styles.filtersLayout}>
-            <div className={styles.buttonGroupContainer}>
-              {renderButtonGroup(handleInfoClick, downloadLink)}
-            </div>
-            <div>
-              <ShareButton
-                className={styles.shareButton}
-                sharePath={'/ndcs-content'}
-              />
-            </div>
+          <div className={styles.buttonGroupContainer}>
+            {renderButtonGroup(handleInfoClick, downloadLink)}
           </div>
         )}
         {countryData && (
@@ -138,7 +126,6 @@ const NDCMap = ({
           />
         )}
         <ModalMetadata />
-        <ModalShare />
       </div>
     )}
   </TabletLandscape>
