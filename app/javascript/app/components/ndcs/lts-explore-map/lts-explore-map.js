@@ -6,7 +6,7 @@ import qs from 'query-string';
 import { handleAnalytics } from 'utils/analytics';
 import { isCountryIncluded } from 'app/utils';
 import { getLocationParamUpdated } from 'utils/navigation';
-import { IGNORED_COUNTRIES_ISOS } from 'data/country-codes';
+import { IGNORED_COUNTRIES_ISOS } from 'data/ignored-countries';
 import { actions as fetchActions } from 'pages/lts-explore';
 import { actions as modalActions } from 'components/modal-metadata';
 import exploreMapActions from 'components/ndcs/shared/explore-map/explore-map-actions';

@@ -6,7 +6,7 @@ import qs from 'query-string';
 import { handleAnalytics } from 'utils/analytics';
 import { isCountryIncluded } from 'app/utils';
 import { getLocationParamUpdated } from 'utils/navigation';
-import { IGNORED_COUNTRIES_ISOS } from 'data/country-codes';
+import { IGNORED_COUNTRIES_ISOS } from 'data/ignored-countries';
 
 import fetchActions from 'pages/ndcs/ndcs-actions';
 import { actions as modalActions } from 'components/modal-metadata';
