@@ -9,6 +9,7 @@ import { getLocationParamUpdated } from 'utils/navigation';
 
 import { actions as fetchActions } from 'pages/lts-explore';
 import { actions as modalActions } from 'components/modal-metadata';
+import exploreMapActions from 'components/ndcs/shared/explore-map/explore-map-actions';
 
 import Component from './lts-explore-map-component';
 import {
@@ -23,10 +24,11 @@ import {
   getCategoryIndicators,
   getSelectedCategory,
   getTooltipCountryValues,
+  getDonutActiveIndex,
   getIsShowEUCountriesChecked
 } from './lts-explore-map-selectors';
 
-const actions = { ...fetchActions, ...modalActions };
+const actions = { ...fetchActions, ...modalActions, ...exploreMapActions };
 
 const mapStateToProps = (state, { location }) => {
   const { data, loading } = state.LTS;
@@ -59,7 +61,8 @@ const mapStateToProps = (state, { location }) => {
     categories: getCategories(LTSWithSelection),
     indicators: getCategoryIndicators(LTSWithSelection),
     selectedCategory: getSelectedCategory(LTSWithSelection),
-    checked: getIsShowEUCountriesChecked(LTSWithSelection)
+    checked: getIsShowEUCountriesChecked(LTSWithSelection),
+    donutActiveIndex: getDonutActiveIndex(LTSWithSelection)
   };
 };
 
@@ -100,18 +103,32 @@ class LTSExploreMapContainer extends PureComponent {
   };
 
   handleCountryEnter = geography => {
-    const { tooltipCountryValues } = this.props;
+    const {
+      tooltipCountryValues,
+      legendData,
+      selectActiveDonutIndex
+    } = this.props;
     const iso = geography.properties && geography.properties.id;
 
     if (iso === 'TWN') {
       // We won't show Taiwan as an independent country
       this.setState({ tooltipValues: null, country: null });
     } else {
+      const tooltipValue = tooltipCountryValues && tooltipCountryValues[iso];
+      if (tooltipValue && tooltipValue.labelId) {
+        const hoveredlegendData = legendData.find(
+          l => parseInt(l.id, 10) === tooltipValue.labelId
+        );
+        if (hoveredlegendData) {
+          selectActiveDonutIndex(legendData.indexOf(hoveredlegendData));
+        }
+      } else {
+        // This is the last legend item aggregating all the no data geographies
+        selectActiveDonutIndex(legendData.length - 1);
+      }
+
       const tooltipValues = {
-        value:
-          tooltipCountryValues && tooltipCountryValues[iso]
-            ? tooltipCountryValues[iso].value
-            : 'No Document Submitted',
+        value: (tooltipValue && tooltipValue.value) || 'No Document Submitted',
         countryName: geography.properties && geography.properties.name
       };
 
@@ -187,6 +204,8 @@ LTSExploreMapContainer.propTypes = {
   summaryData: PropTypes.array,
   indicator: PropTypes.object,
   tooltipCountryValues: PropTypes.object,
+  selectActiveDonutIndex: PropTypes.func.isRequired,
+  legendData: PropTypes.array,
   checked: PropTypes.bool
 };
 

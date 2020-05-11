@@ -68,9 +68,10 @@ const renderLegend = legendData => (
   <div className={styles.legendCardContainer}>
     <div className={styles.legendContainer}>
       {legendData &&
-        legendData.map(l => (
+        legendData.map((l, index) => (
           <LegendItem
             key={l.name}
+            index={index}
             name={l.name}
             number={l.countriesNumber}
             value={l.value}
@@ -82,29 +83,6 @@ const renderLegend = legendData => (
 );
 
 function LTSExploreMap(props) {
-  const tooltipParentRef = useRef(null);
-  const pieChartRef = useRef(null);
-  const [stickyStatus, setStickyStatus] = useState(Sticky.STATUS_ORIGINAL);
-  const renderDonutChart = emissionsCardData => (
-    <div className={styles.donutContainer} ref={pieChartRef}>
-      <PieChart
-        data={emissionsCardData.data}
-        width={200}
-        config={emissionsCardData.config}
-        customTooltip={
-          <CustomTooltip
-            reference={tooltipParentRef.current}
-            chartReference={pieChartRef.current}
-            data={emissionsCardData.data}
-            itemName={'Parties'}
-          />
-        }
-        customInnerHoverLabel={CustomInnerHoverLabel}
-        theme={{ pieChart: styles.pieChart }}
-      />
-    </div>
-  );
-
   const {
     loading,
     paths,
@@ -124,8 +102,34 @@ function LTSExploreMap(props) {
     handleIndicatorChange,
     handleOnChangeChecked,
     checked,
-    tooltipValues
+    tooltipValues,
+    donutActiveIndex,
+    selectActiveDonutIndex
   } = props;
+  const tooltipParentRef = useRef(null);
+  const pieChartRef = useRef(null);
+  const [stickyStatus, setStickyStatus] = useState(Sticky.STATUS_ORIGINAL);
+  const renderDonutChart = () => (
+    <div className={styles.donutContainer} ref={pieChartRef}>
+      <PieChart
+        customActiveIndex={donutActiveIndex}
+        onHover={(_, index) => selectActiveDonutIndex(index)}
+        data={emissionsCardData.data}
+        width={200}
+        config={emissionsCardData.config}
+        customTooltip={
+          <CustomTooltip
+            reference={tooltipParentRef.current}
+            chartReference={pieChartRef.current}
+            data={emissionsCardData.data}
+            itemName={'Parties'}
+          />
+        }
+        customInnerHoverLabel={CustomInnerHoverLabel}
+        theme={{ pieChart: styles.pieChart }}
+      />
+    </div>
+  );
 
   const TOOLTIP_ID = 'lts-map-tooltip';
 
@@ -265,7 +269,9 @@ LTSExploreMap.propTypes = {
   tooltipValues: PropTypes.object,
   handleOnChangeChecked: PropTypes.func,
   checked: PropTypes.bool,
-  handleIndicatorChange: PropTypes.func
+  handleIndicatorChange: PropTypes.func,
+  selectActiveDonutIndex: PropTypes.func.isRequired,
+  donutActiveIndex: PropTypes.number
 };
 
 export default LTSExploreMap;

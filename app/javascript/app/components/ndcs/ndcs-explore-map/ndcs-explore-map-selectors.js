@@ -26,6 +26,8 @@ const getIndicatorsData = state => state.indicators || null;
 const getCountriesDocumentsData = state =>
   state.countriesDocuments.data || null;
 const getZoom = state => state.map.zoom || null;
+export const getDonutActiveIndex = state =>
+  state.exploreMap.activeIndex || null;
 
 export const getCategories = createSelector(getCategoriesData, categories =>
   (!categories
@@ -220,11 +222,13 @@ export const getTooltipCountryValues = createSelector(
     }
     const tooltipCountryValues = {};
     Object.keys(selectedIndicator.locations).forEach(iso => {
-      tooltipCountryValues[iso] = {
-        value:
-          selectedIndicator.locations[iso] &&
-          selectedIndicator.locations[iso].value
-      };
+      const location = selectedIndicator.locations[iso];
+      if (location) {
+        tooltipCountryValues[iso] = {
+          labelId: location.label_id,
+          value: location.value
+        };
+      }
     });
     return tooltipCountryValues;
   }
