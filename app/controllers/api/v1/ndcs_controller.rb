@@ -41,7 +41,7 @@ module Api
 
     class NdcsController < ApiController
       def index
-        sectors = ::Indc::Sector.all
+        sectors = ::Indc::Sector.includes(values: :indicator)
         indicators = filtered_indicators
         categories = filtered_categories(indicators)
 
