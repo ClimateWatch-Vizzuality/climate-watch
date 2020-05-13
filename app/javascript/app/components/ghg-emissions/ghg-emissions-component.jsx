@@ -19,6 +19,7 @@ import WorldBankDataProvider from 'providers/wb-country-data-provider';
 import ButtonGroup from 'components/button-group';
 import ShareButton from 'components/button/share-button';
 import Table from 'components/table';
+import GhgMultiselectDropdown from 'components/ghg-multiselect-dropdown';
 import ghgTableTheme from 'styles/themes/table/ghg-table-theme.scss';
 import ModalPngDownload from 'components/modal-png-download';
 import ModalMetadata from 'components/modal-metadata';
@@ -31,6 +32,7 @@ import lineIcon from 'assets/icons/line_chart.svg';
 import areaIcon from 'assets/icons/area_chart.svg';
 import percentageIcon from 'assets/icons/icon-percentage-chart.svg';
 import dropdownTheme from 'styles/themes/dropdown/react-selectize.scss';
+import multiSelectTheme from 'styles/themes/dropdown/multiselect-dropdown.scss';
 import multiLevelDropdownTheme from 'styles/themes/dropdown/multi-level-dropdown.scss';
 import legendChartTheme from 'styles/themes/chart/legend-chart.scss';
 import DataZoom from './data-zoom';
@@ -337,14 +339,24 @@ function GhgEmissions(props) {
       {providerFilters && <EmissionsProvider filters={providerFilters} />}
       <div className={cx(styles.col4, { [styles.newGHG]: FEATURE_NEW_GHG })}>
         {renderDropdown('Data Source', 'sources')}
-        <Multiselect
-          label={'Countries/Regions'}
-          groups={regionGroups}
-          options={options.regions || []}
-          values={getValues(selectedOptions.regionsSelected)}
-          onValueChange={selected => handleChange('regions', selected)}
-          theme={dropdownTheme}
-        />
+        {FEATURE_NEW_GHG ? (
+          <GhgMultiselectDropdown
+            label={'Countries/Regions'}
+            groups={regionGroups}
+            options={options.regions || []}
+            values={getValues(selectedOptions.regionsSelected)}
+            onSelectionChange={selected => handleChange('regions', selected)}
+          />
+        ) : (
+          <Multiselect
+            label={'Countries/Regions'}
+            groups={regionGroups}
+            options={options.regions || []}
+            values={getValues(selectedOptions.regionsSelected)}
+            onValueChange={selected => handleChange('regions', selected)}
+            theme={multiSelectTheme}
+          />
+        )}
         <MultiLevelDropdown
           label="Sectors/Subsectors"
           optGroups={sectorGroups}
@@ -360,7 +372,7 @@ function GhgEmissions(props) {
           options={options.gases}
           values={getValues(selectedOptions.gasesSelected)}
           onValueChange={selected => handleChange('gases', selected)}
-          theme={dropdownTheme}
+          theme={multiSelectTheme}
         />
         {FEATURE_NEW_GHG && renderDropdown('Calculations', 'calculation')}
         {renderDropdown('Show data by', 'breakBy')}

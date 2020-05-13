@@ -70,9 +70,10 @@ const renderLegend = legendData => (
   <div className={styles.legendCardContainer}>
     <div className={styles.legendContainer}>
       {legendData &&
-        legendData.map(l => (
+        legendData.map((l, index) => (
           <LegendItem
             key={l.name}
+            index={index}
             name={l.name}
             number={l.partiesNumber}
             value={l.value}
@@ -84,28 +85,6 @@ const renderLegend = legendData => (
 );
 
 function NDCSExploreMap(props) {
-  const tooltipParentRef = useRef(null);
-  const pieChartRef = useRef(null);
-  const [stickyStatus, setStickyStatus] = useState(Sticky.STATUS_ORIGINAL);
-  const renderDonutChart = emissionsCardData => (
-    <div className={styles.donutContainer} ref={pieChartRef}>
-      <PieChart
-        data={emissionsCardData.data}
-        width={200}
-        config={emissionsCardData.config}
-        customTooltip={
-          <CustomTooltip
-            reference={tooltipParentRef.current}
-            chartReference={pieChartRef.current}
-            data={emissionsCardData.data}
-          />
-        }
-        customInnerHoverLabel={CustomInnerHoverLabel}
-        theme={{ pieChart: styles.pieChart }}
-      />
-    </div>
-  );
-
   const {
     loading,
     paths,
@@ -123,8 +102,34 @@ function NDCSExploreMap(props) {
     handleCategoryChange,
     selectedCategory,
     handleIndicatorChange,
-    tooltipValues
+    tooltipValues,
+    selectActiveDonutIndex,
+    donutActiveIndex
   } = props;
+
+  const tooltipParentRef = useRef(null);
+  const pieChartRef = useRef(null);
+  const [stickyStatus, setStickyStatus] = useState(Sticky.STATUS_ORIGINAL);
+  const renderDonutChart = () => (
+    <div className={styles.donutContainer} ref={pieChartRef}>
+      <PieChart
+        customActiveIndex={donutActiveIndex}
+        onHover={(_, index) => selectActiveDonutIndex(index)}
+        data={emissionsCardData.data}
+        width={200}
+        config={emissionsCardData.config}
+        customTooltip={
+          <CustomTooltip
+            reference={tooltipParentRef.current}
+            chartReference={pieChartRef.current}
+            data={emissionsCardData.data}
+          />
+        }
+        customInnerHoverLabel={CustomInnerHoverLabel}
+        theme={{ pieChart: styles.pieChart }}
+      />
+    </div>
+  );
 
   const TOOLTIP_ID = 'ndcs-map-tooltip';
 
@@ -257,7 +262,9 @@ NDCSExploreMap.propTypes = {
   handleCategoryChange: PropTypes.func,
   selectedCategory: PropTypes.object,
   tooltipValues: PropTypes.object,
-  handleIndicatorChange: PropTypes.func
+  handleIndicatorChange: PropTypes.func,
+  selectActiveDonutIndex: PropTypes.func.isRequired,
+  donutActiveIndex: PropTypes.number
 };
 
 export default NDCSExploreMap;

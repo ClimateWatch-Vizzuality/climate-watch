@@ -29,12 +29,8 @@ $height: 45px;
         padding-right: 5px;
         height: $height;
         overflow: hidden;
-        transition: box-shadow 150ms ease-out;
+        box-shadow: none !important;
         border: $dropdown-border;
-
-        &:hover {
-          box-shadow: none !important;
-        }
 
         .react-selectize-placeholder {
           line-height: 45px;
