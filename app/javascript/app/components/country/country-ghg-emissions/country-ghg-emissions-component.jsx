@@ -52,7 +52,8 @@ class CountryGhgEmissions extends PureComponent {
       handleInfoClick,
       handleAnalyticsClick,
       isEmbed,
-      isNdcp
+      isNdcp,
+      downloadLink
     } = this.props;
 
     const buttonGroupConfig = isEmbed
@@ -70,7 +71,8 @@ class CountryGhgEmissions extends PureComponent {
         },
         {
           type: 'download',
-          section: 'ghg-emissions'
+          section: 'ghg-emissions',
+          link: downloadLink
         },
         {
           type: 'addToUser'
@@ -222,7 +224,8 @@ CountryGhgEmissions.propTypes = {
   handleAnalyticsClick: PropTypes.func.isRequired,
   handleYearHover: PropTypes.func,
   handleSourceChange: PropTypes.func.isRequired,
-  handleCalculationChange: PropTypes.func.isRequired
+  handleCalculationChange: PropTypes.func.isRequired,
+  downloadLink: PropTypes.string
 };
 
 CountryGhgEmissions.defaultProps = {
