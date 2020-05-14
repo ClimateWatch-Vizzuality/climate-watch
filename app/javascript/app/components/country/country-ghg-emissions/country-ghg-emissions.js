@@ -28,7 +28,8 @@ import {
   getQuantificationsData,
   getQuantificationsTagsConfig,
   getFilterOptions,
-  getFiltersSelected
+  getFiltersSelected,
+  getDownloadLink
 } from './country-ghg-emissions-selectors';
 
 const actions = { ...ownActions, ...modalActions };
@@ -67,7 +68,8 @@ const mapStateToProps = (state, { location, match }) => {
     filtersOptions: getFilterOptions(countryGhg),
     filtersSelected: getFiltersSelected(countryGhg),
     config: getChartConfig(countryGhg),
-    selectorDefaults: getSelectorDefaults(countryGhg)
+    selectorDefaults: getSelectorDefaults(countryGhg),
+    downloadLink: getDownloadLink(countryGhg)
   };
 };
 
