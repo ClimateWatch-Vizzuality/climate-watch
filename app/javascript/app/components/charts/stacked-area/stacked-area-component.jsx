@@ -23,10 +23,13 @@ import {
   ResponsiveContainer
 } from 'recharts';
 import TooltipChart from 'components/charts/tooltip-chart';
-import { format } from 'd3-format';
+import { formatSIwithDecimals } from 'utils/d3-custom-format';
 
 import { QUANTIFICATION_COLORS } from 'data/constants';
 import DividerLine from './divider-line';
+
+const NUMBER_PRECISION = '2';
+const formatLabel = value => formatSIwithDecimals(value, NUMBER_PRECISION, 't');
 
 class ChartStackedArea extends PureComponent {
   constructor() {
@@ -73,8 +76,7 @@ class ChartStackedArea extends PureComponent {
       points.length > 0 &&
       points.map(point => {
         const isActivePoint =
-          activePoint &&
-          (point.x === activePoint.x && point.y === activePoint.y);
+          activePoint && point.x === activePoint.x && point.y === activePoint.y;
         let colorPoint = point.label.includes('BAU')
           ? QUANTIFICATION_COLORS.BAU
           : QUANTIFICATION_COLORS.QUANTIFIED;
@@ -122,8 +124,8 @@ class ChartStackedArea extends PureComponent {
 
         // value label
         const valueLabelValue = point.isRange
-          ? `${format('.3s')(point.y[0])}t - ${format('.3s')(point.y[1])}t`
-          : `${format('.3s')(point.y)}t`;
+          ? `${formatLabel(point.y[0])} - ${formatLabel(point.y[1])}`
+          : `${formatLabel(point.y)}`;
         const valueLabel = (
           <Label
             value={valueLabelValue}
@@ -139,9 +141,9 @@ class ChartStackedArea extends PureComponent {
         // RANGES AND POINTS
         const isNotQuantifiable = point.y === null;
         if (point.isRange || isNotQuantifiable) {
-          const key = `${point.label}-${point.y
-            ? point.x + point.y[0] + point.y[1]
-            : point.x}`;
+          const key = `${point.label}-${
+            point.y ? point.x + point.y[0] + point.y[1] : point.x
+          }`;
           return (
             <ReferenceArea
               key={key}
@@ -211,7 +213,7 @@ class ChartStackedArea extends PureComponent {
           style={{ paintOrder: 'stroke' }}
         />
         <Label
-          value={`${format('.3s')(lastData.y)}t`}
+          value={`${formatLabel(lastData.y)}`}
           position="top"
           fill="#113750"
           fontSize="18px"
@@ -285,7 +287,12 @@ class ChartStackedArea extends PureComponent {
               isAnimationActive={false}
               cursor={{ stroke: '#113750', strokeWidth: 2 }}
               content={content => (
-                <TooltipChart content={content} config={config} showTotal />
+                <TooltipChart
+                  content={content}
+                  config={config}
+                  showTotal
+                  customFormatFunction={value => formatLabel(value)}
+                />
               )}
               filterNull={false}
             />

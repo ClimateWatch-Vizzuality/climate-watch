@@ -6,6 +6,7 @@ import qs from 'query-string';
 import { handleAnalytics } from 'utils/analytics';
 import { isCountryIncluded } from 'app/utils';
 import { getLocationParamUpdated } from 'utils/navigation';
+import { IGNORED_COUNTRIES_ISOS } from 'data/ignored-countries';
 
 import fetchActions from 'pages/ndcs/ndcs-actions';
 import { actions as modalActions } from 'components/modal-metadata';
@@ -114,8 +115,8 @@ class NDCSExploreMapContainer extends PureComponent {
     } = this.props;
     const iso = geography.properties && geography.properties.id;
 
-    if (iso === 'TWN') {
-      // We won't show Taiwan as an independent country
+    if (IGNORED_COUNTRIES_ISOS.includes(iso)) {
+      // We won't show Taiwan and Western Sahara as an independent country
       this.setState({ tooltipValues: null, country: null });
     } else {
       const tooltipValue = tooltipCountryValues && tooltipCountryValues[iso];
