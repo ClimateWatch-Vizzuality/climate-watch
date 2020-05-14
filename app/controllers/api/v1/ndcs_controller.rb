@@ -1,6 +1,6 @@
 module Api
   module V1
-    OVERVIEW_INDICATORS = [
+    SUMMARY_INDICATORS = [
       'ghg_target_type',
       'time_target_year',
       'non_ghg_target',
@@ -57,28 +57,31 @@ module Api
           includes(:indicator, :location).
           where(
             indc_indicators: {
-              slug: OVERVIEW_INDICATORS
+              slug: SUMMARY_INDICATORS
             }, locations: {
               iso_code3: params[:code]
             }
           ).
           order('indc_indicators.name')
 
-        sectors = ::Indc::Indicator.
-          joins(:values).
-          where(slug: SECTORS_INDICATORS).
-          where(indc_values: {location_id: location.id}).
-          where.not(indc_values: {value: "No specified measure"})
-
         if params[:document]
           values = values.joins(:document).
             where(indc_documents: {slug: [params[:document], nil]})
-
-          sectors = sectors.joins(values: :document).
-            where(indc_documents: {slug: [params[:document], nil]})
         end
-       sectors = sectors.order('indc_indicators.name').pluck(:name)
 
+        if SECTORS_INDICATORS.present?
+          sectors = ::Indc::Indicator.
+            joins(:values).
+            where(slug: SECTORS_INDICATORS).
+            where(indc_values: {location_id: location.id}).
+            where.not(indc_values: {value: "No specified measure"})
+
+          if params[:document]
+            sectors = sectors.joins(values: :document).
+              where(indc_documents: {slug: [params[:document], nil]})
+          end
+          sectors = sectors.order('indc_indicators.name').pluck(:name)
+        end
 
         render json: NdcOverview.new(values, sectors),
                serializer: Api::V1::Indc::OverviewSerializer

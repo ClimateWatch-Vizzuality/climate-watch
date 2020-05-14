@@ -44,6 +44,11 @@ Rails.application.routes.draw do
         get :countries_documents, on: :collection, controller: :ndc_documents, action: :index
       end
 
+      resources :lts, param: :code, only: [:index] do
+        get :content_overview, on: :member, controller: :lts,
+          action: :content_overview
+      end
+
       resources :adaptations, only: [:index]
       resources :quantifications, only: [:index]
 
