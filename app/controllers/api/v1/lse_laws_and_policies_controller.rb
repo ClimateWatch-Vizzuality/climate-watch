@@ -4,7 +4,9 @@ module Api
       LSE_API = 'https://climate-laws.org/cclow/api/targets'.freeze
 
       def show
-        laws_and_policies = SingleRecordFetcher.new(LSE_API, params[:id]).call
+        id = params[:id] == 'EUU' ? 'EUR' : params[:id]
+
+        laws_and_policies = SingleRecordFetcher.new(LSE_API, id).call
         render json: laws_and_policies
       end
     end
