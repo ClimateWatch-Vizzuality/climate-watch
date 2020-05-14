@@ -121,7 +121,9 @@ const getFilteredCalculationOptions = createSelector(
   (calculationOptions, sourceSelected) => {
     if (!calculationOptions || !sourceSelected) return null;
     if (sourceSelected.name === 'UNFCCC_NAI') {
-      return calculationOptions.filter(({ value }) => value !== 'CUMULATIVE');
+      return calculationOptions.filter(
+        ({ value }) => value !== CALCULATION_OPTIONS.CUMULATIVE.value
+      );
     }
     return calculationOptions;
   }
