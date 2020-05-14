@@ -122,7 +122,7 @@ const getFilteredCalculationOptions = createSelector(
     if (!calculationOptions || !sourceSelected) return null;
     if (sourceSelected.name === 'UNFCCC_NAI') {
       return calculationOptions.filter(
-        ({ value }) => value !== CALCULATION_OPTIONS.CUMULATIVE.value
+        ({ value }) => value !== GHG_CALCULATION_OPTIONS.CUMULATIVE.value
       );
     }
     return calculationOptions;
