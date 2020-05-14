@@ -41,9 +41,15 @@ module Api
 
     class NdcsController < ApiController
       def index
-        sectors = ::Indc::Sector.includes(values: :indicator)
         indicators = filtered_indicators
         categories = filtered_categories(indicators)
+        sectors = ::Indc::Sector.joins(values: :indicator).
+          where(indc_indicators: {id: indicators.map(&:id)})
+        parents = ::Indc::Sector.where(parent_id: nil).
+          joins("INNER JOIN indc_sectors AS children ON children.parent_id = indc_sectors.id").where(children: {id: sectors.pluck(:id).uniq})
+
+        sectors = ::Indc::Sector.from("(#{sectors.to_sql} UNION #{parents.to_sql}) AS indc_sectors").
+          includes(values: :indicator)
 
         render json: NdcIndicators.new(indicators, categories, sectors),
                serializer: Api::V1::Indc::NdcIndicatorsSerializer,
