@@ -22,7 +22,7 @@ import {
   CHART_COLORS_EXTENDED,
   CHART_COLORS_EXTRA,
   OTHER_COLOR,
-  CALCULATION_OPTIONS
+  GHG_CALCULATION_OPTIONS
 } from 'data/constants';
 import { europeSlug } from 'app/data/european-countries';
 import {
@@ -337,8 +337,8 @@ export const getChartData = createSelector(
     }
     const yearValues = data[0].emissions.map(d => d.year);
     const metricField = {
-      [CALCULATION_OPTIONS.PER_CAPITA.value]: 'population',
-      [CALCULATION_OPTIONS.PER_GDP.value]: 'gdp'
+      [GHG_CALCULATION_OPTIONS.PER_CAPITA.value]: 'population',
+      [GHG_CALCULATION_OPTIONS.PER_GDP.value]: 'gdp'
     }[metric];
     const shouldHaveMetricData = !!metricField;
 
@@ -401,7 +401,9 @@ export const getChartData = createSelector(
     const getItemValue = (totalValue, key, totalMetric, year) => {
       let scaledValue = totalValue ? totalValue * DATA_SCALE : null;
 
-      if (calculationSelected.value === CALCULATION_OPTIONS.CUMULATIVE.value) {
+      if (
+        calculationSelected.value === GHG_CALCULATION_OPTIONS.CUMULATIVE.value
+      ) {
         if (scaledValue) {
           if (accumulatedValues[key]) {
             if (!dataZoomYears || year > dataZoomYears.min) {
@@ -416,7 +418,7 @@ export const getChartData = createSelector(
 
       if (
         calculationSelected.value ===
-        CALCULATION_OPTIONS.PERCENTAGE_CHANGE.value
+        GHG_CALCULATION_OPTIONS.PERCENTAGE_CHANGE.value
       ) {
         const currentYearValue = scaledValue || 0;
         if (scaledValue) {
@@ -529,7 +531,8 @@ export const getChartConfig = createSelector(
     if (!model || !yColumns) return null;
     const colorPalette = getColorPalette(yColumns);
     const isPercentageChangeCalculation =
-      calculationSelected.value === CALCULATION_OPTIONS.PERCENTAGE_CHANGE.value;
+      calculationSelected.value ===
+      GHG_CALCULATION_OPTIONS.PERCENTAGE_CHANGE.value;
     colorThemeCache = getThemeConfig(yColumns, colorPalette, colorThemeCache);
     const tooltip = getTooltipConfig(yColumns.filter(c => c && !c.hideLegend));
     const unit = getUnit(metric);

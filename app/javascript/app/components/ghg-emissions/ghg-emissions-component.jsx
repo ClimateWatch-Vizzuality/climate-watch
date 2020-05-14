@@ -4,7 +4,7 @@ import startCase from 'lodash/startCase';
 import isArray from 'lodash/isArray';
 import { isPageContained } from 'utils/navigation';
 import cx from 'classnames';
-import { GHG_TABLE_HEADER, CALCULATION_OPTIONS } from 'data/constants';
+import { GHG_TABLE_HEADER, GHG_CALCULATION_OPTIONS } from 'data/constants';
 import {
   Chart,
   Multiselect,
@@ -232,7 +232,7 @@ function GhgEmissions(props) {
     const tableDataReady = !loading && tableData && tableData.length;
     const isPercentageChangeCalculation =
       selectedOptions.calculationSelected.value ===
-      CALCULATION_OPTIONS.PERCENTAGE_CHANGE.value;
+      GHG_CALCULATION_OPTIONS.PERCENTAGE_CHANGE.value;
 
     const percentageChangeCustomLabelFormat = value => {
       if (value === undefined) {

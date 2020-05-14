@@ -10,7 +10,7 @@ import { sortLabelByAlpha } from 'utils/graphs';
 import {
   GAS_AGGREGATES,
   TOP_EMITTERS_OPTION,
-  CALCULATION_OPTIONS
+  GHG_CALCULATION_OPTIONS
 } from 'data/constants';
 import {
   getMeta,
@@ -24,8 +24,8 @@ const FEATURE_NEW_GHG = process.env.FEATURE_NEW_GHG === 'true';
 const DEFAULTS = {
   breakBy: FEATURE_NEW_GHG
     ? 'regions'
-    : `regions-${CALCULATION_OPTIONS.ABSOLUTE_VALUE.value}`,
-  calculation: CALCULATION_OPTIONS.ABSOLUTE_VALUE.value
+    : `regions-${GHG_CALCULATION_OPTIONS.ABSOLUTE_VALUE.value}`,
+  calculation: GHG_CALCULATION_OPTIONS.ABSOLUTE_VALUE.value
 };
 
 const getOptionSelectedFunction = filter => (options, selected) => {
@@ -62,11 +62,11 @@ const getSourceSelected = createSelector(
 
 // Calculation selectors
 const getCalculationOptions = () =>
-  Object.keys(CALCULATION_OPTIONS).reduce(
+  Object.keys(GHG_CALCULATION_OPTIONS).reduce(
     (acc, key) =>
       acc.concat({
-        label: CALCULATION_OPTIONS[key].label,
-        value: CALCULATION_OPTIONS[key].value
+        label: GHG_CALCULATION_OPTIONS[key].label,
+        value: GHG_CALCULATION_OPTIONS[key].value
       }),
     []
   );
@@ -95,15 +95,15 @@ const getBreakByOptions = () =>
     : [
       {
         label: 'Regions',
-        value: `regions-${CALCULATION_OPTIONS.ABSOLUTE_VALUE.value}`
+        value: `regions-${GHG_CALCULATION_OPTIONS.ABSOLUTE_VALUE.value}`
       },
       {
         label: 'Regions-Per Capita',
-        value: `regions-${CALCULATION_OPTIONS.PER_CAPITA.value}`
+        value: `regions-${GHG_CALCULATION_OPTIONS.PER_CAPITA.value}`
       },
       {
         label: 'Regions-Per GDP',
-        value: `regions-${CALCULATION_OPTIONS.PER_GDP.value}`
+        value: `regions-${GHG_CALCULATION_OPTIONS.PER_GDP.value}`
       },
       {
         label: 'Sectors',
@@ -407,7 +407,7 @@ const getChartConflicts = (metricSelected, chartSelected) => {
     ['PER_CAPITA', 'PER_GDP', 'PERCENTAGE_CHANGE'].includes(metricSelected) &&
     chartSelected.value !== 'line'
   ) {
-    const metricOption = CALCULATION_OPTIONS[metricSelected];
+    const metricOption = GHG_CALCULATION_OPTIONS[metricSelected];
     conflicts.push(
       `${metricOption.label} metric is not allowed with ${chartSelected.label} chart`
     );

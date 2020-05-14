@@ -1,6 +1,6 @@
 import {
   DEFAULT_EMISSIONS_SELECTIONS,
-  CALCULATION_OPTIONS
+  GHG_CALCULATION_OPTIONS
 } from 'data/constants';
 import kebabCase from 'lodash/kebabCase';
 
@@ -32,11 +32,11 @@ export const getGhgEmissionDefaultSlugs = (source, meta) => {
 
 export const calculatedRatio = (selected, calculationData, x) => {
   if (!calculationData || !calculationData[x]) return 1;
-  if (selected === CALCULATION_OPTIONS.PER_GDP.value) {
+  if (selected === GHG_CALCULATION_OPTIONS.PER_GDP.value) {
     // GDP is in dollars and we want to display it in million dollars
     return calculationData[x][0].gdp / 1000000;
   }
-  if (selected === CALCULATION_OPTIONS.PER_CAPITA.value) {
+  if (selected === GHG_CALCULATION_OPTIONS.PER_CAPITA.value) {
     return calculationData[x][0].population;
   }
   return 1;

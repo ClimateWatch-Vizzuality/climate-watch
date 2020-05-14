@@ -16,7 +16,7 @@ export const ESP_HOST = ESP_API.replace('/api/v1', '');
 
 export const SOCIAL_APP_NAMES = ['twitter', 'facebook', 'google'];
 
-export const CALCULATION_OPTIONS = {
+export const GHG_CALCULATION_OPTIONS = {
   ABSOLUTE_VALUE: {
     label: 'Total',
     value: 'ABSOLUTE_VALUE'
@@ -36,6 +36,21 @@ export const CALCULATION_OPTIONS = {
   PERCENTAGE_CHANGE: {
     label: 'Percentage change from prior year',
     value: 'PERCENTAGE_CHANGE'
+  }
+};
+
+export const CALCULATION_OPTIONS = {
+  ABSOLUTE_VALUE: {
+    label: 'Total',
+    value: 'ABSOLUTE_VALUE'
+  },
+  PER_CAPITA: {
+    label: 'per Capita',
+    value: 'PER_CAPITA'
+  },
+  PER_GDP: {
+    label: 'per GDP',
+    value: 'PER_GDP'
   }
 };
 
