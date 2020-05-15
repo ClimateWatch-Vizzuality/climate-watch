@@ -224,25 +224,23 @@ export const getChartData = createSelector(
     selectedLocations,
     calculationSelected
   ) => {
-    const oneOfAbsoluteValueCalculationsIsSelected = [
-      CALCULATION_OPTIONS.ABSOLUTE_VALUE.value,
-      CALCULATION_OPTIONS.CUMULATIVE.value,
-      CALCULATION_OPTIONS.PERCENTAGE_CHANGE.value
-    ].includes(calculationSelected && calculationSelected.value);
+    const AbsoluteValueCalculationIsSelected =
+      calculationSelected &&
+      calculationSelected.value === CALCULATION_OPTIONS.ABSOLUTE_VALUE.value;
     if (
       !data ||
       !data.length ||
       !filters ||
       !calculationSelected ||
       !selectedLocations ||
-      (!oneOfAbsoluteValueCalculationsIsSelected && !locationCalculationData)
+      (!AbsoluteValueCalculationIsSelected && !locationCalculationData)
     ) {
       return [];
     }
 
     const yearsForLocation = getYearsForLocation(
       data,
-      oneOfAbsoluteValueCalculationsIsSelected,
+      AbsoluteValueCalculationIsSelected,
       locationCalculationData
     );
     const yearData = [];
@@ -255,7 +253,7 @@ export const getChartData = createSelector(
       yearsWithData.forEach(year => {
         const yData = d.emissions.find(e => e.year === year);
         if (yData) {
-          const calculationRatio = oneOfAbsoluteValueCalculationsIsSelected
+          const calculationRatio = AbsoluteValueCalculationIsSelected
             ? 1
             : calculatedRatio(
               calculationSelected.value,
