@@ -115,10 +115,31 @@ const getBreakByOptions = () =>
       }
     ]);
 
+// Filtered calculation selectors
+const getFilteredCalculationOptions = createSelector(
+  [getCalculationOptions, getSourceSelected],
+  (calculationOptions, sourceSelected) => {
+    if (!calculationOptions || !sourceSelected) return null;
+    if (sourceSelected.name === 'UNFCCC_NAI') {
+      return calculationOptions.filter(
+        ({ value }) => value !== GHG_CALCULATION_OPTIONS.CUMULATIVE.value
+      );
+    }
+    return calculationOptions;
+  }
+);
+
 export const getCalculationSelected = createSelector(
-  [getCalculationOptions, getSelection('calculation'), getSelection('breakBy')],
+  [
+    getFilteredCalculationOptions,
+    getSelection('calculation'),
+    getSelection('breakBy')
+  ],
   (options, selected, breakBySelected) => {
     if (!options) return null;
+    const defaultOption = options.find(
+      ({ value }) => value === DEFAULTS.calculation
+    );
     if (!selected) {
       const breakByArray = breakBySelected && breakBySelected.split('-');
       if (breakByArray && breakByArray[1]) {
@@ -126,12 +147,10 @@ export const getCalculationSelected = createSelector(
           o => o.value === breakByArray[1] // to support legacy URLs
         );
       }
-
-      const defaultOption = options.find(b => b.value === DEFAULTS.calculation);
       return defaultOption || options[0];
     }
-
-    return options.find(o => o.value === selected);
+    const selectedCalculation = options.find(o => o.value === selected);
+    return selectedCalculation || defaultOption;
   }
 );
 
@@ -286,7 +305,7 @@ export const getOptions = createStructuredSelector({
   sources: getSourceOptions,
   chartType: getChartTypeOptions,
   breakBy: getBreakByOptions,
-  calculation: getCalculationOptions,
+  calculation: getFilteredCalculationOptions,
   regions: getRegionOptions,
   sectors: getSectorOptions,
   gases: getGasOptions
@@ -334,7 +353,6 @@ const getFiltersSelected = field =>
           isIncluded(field, selectedValues, filter)
         );
       }
-
       return selectedFilters;
     }
   );
