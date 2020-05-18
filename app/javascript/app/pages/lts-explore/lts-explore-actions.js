@@ -17,7 +17,7 @@ const fetchLTS = createThunkAction('fetchLTS', () => (dispatch, state) => {
     !LTS.loading
   ) {
     dispatch(fetchLTSInit());
-    fetch('/api/v1/ndcs?source=LTS&filter=map')
+    fetch('/api/v1/lts?source=LTS&filter=map')
       .then(response => {
         if (response.ok) return response.json();
         throw Error(response.statusText);
