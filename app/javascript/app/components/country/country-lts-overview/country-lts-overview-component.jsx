@@ -11,7 +11,7 @@ import { TabletLandscape, TabletPortraitOnly } from 'components/responsive';
 import introTheme from 'styles/themes/intro/intro-simple.scss';
 import cardTheme from 'styles/themes/card/card-overflow-content.scss';
 import layout from 'styles/layout.scss';
-import NdcCountryAccordionProvider from 'providers/ndc-country-accordion-provider';
+import LtsContentOverviewProvider from 'providers/lts-content-overview-provider';
 
 import styles from './country-lts-overview-styles.scss';
 
@@ -54,9 +54,8 @@ const Cards = ({ cardData }) => (
 const CountryLtsOverview = props => {
   // eslint-disable-line react/prefer-stateless-function
 
-  const { sectors, loading, actions, iso, isEmbed, cardData } = props;
-  const hasSectors = !!sectors;
-  const description = hasSectors && (
+  const { loading, actions, iso, isEmbed, cardData } = props;
+  const description = !!cardData && (
     <div
       className={cx(styles.descriptionContainer, layout.parsedHTML)}
       // eslint-disable-next-line react/no-danger
@@ -68,16 +67,13 @@ const CountryLtsOverview = props => {
 
   return (
     <div className={cx(styles.wrapper, { [styles.embededWrapper]: isEmbed })}>
-      <NdcCountryAccordionProvider locations={[iso]} category={'summary'} lts />
-      {!hasSectors && !loading ? (
-        <NoContent
-          message="No overview content data"
-          className={styles.noContentWrapper}
-        />
+      <LtsContentOverviewProvider locations={[iso]} />
+      {!loading && !cardData ? (
+        <NoContent message="No data" className={styles.noContentWrapper} />
       ) : (
         <div className="layout-container">
           {loading && <Loading light className={styles.loader} />}
-          {hasSectors && (
+          {
             <div className={layout.content}>
               <div className="grid-column-item">
                 <div className={cx(styles.header, actions ? styles.col2 : '')}>
@@ -88,7 +84,7 @@ const CountryLtsOverview = props => {
                 <Cards cardData={cardData} />
               </div>
             </div>
-          )}
+          }
         </div>
       )}
       <ModalMetadata />
@@ -106,7 +102,6 @@ Cards.propTypes = {
 
 CountryLtsOverview.propTypes = {
   iso: PropTypes.string,
-  sectors: PropTypes.object,
   cardData: PropTypes.object,
   loading: PropTypes.bool,
   actions: PropTypes.bool,

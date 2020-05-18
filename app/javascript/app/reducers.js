@@ -14,6 +14,7 @@ import * as adaptationsProvider from 'providers/adaptations-provider';
 import * as ndcsSdgsMetaProvider from 'providers/ndcs-sdgs-meta-provider';
 import * as ndcsSdgsDataProvider from 'providers/ndcs-sdgs-data-provider';
 import * as ndcContentOverviewProvider from 'providers/ndc-content-overview-provider';
+import * as ltsContentOverviewProvider from 'providers/lts-content-overview-provider';
 import * as ghgEmissionsProvider from 'providers/ghg-emissions-meta-provider';
 import * as wbCountryProvider from 'providers/wb-country-data-provider';
 import * as timelineProvider from 'providers/timeline-provider';
@@ -57,6 +58,7 @@ const providersReducers = {
   timeline: handleActions(timelineProvider),
   ndcsDocumentsMeta: handleActions(ndcsDocumentsMetaProvider),
   ndcContentOverview: handleActions(ndcContentOverviewProvider),
+  ltsContentOverview: handleActions(ltsContentOverviewProvider),
   espModels: handleActions(espModelsProvider),
   espScenarios: handleActions(espScenariosProvider),
   espIndicators: handleActions(espIndicatorsProvider),
