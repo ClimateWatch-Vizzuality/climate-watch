@@ -38,7 +38,6 @@ import * as agricultureMeatProductionProvider from 'providers/agriculture-meat-p
 import * as agricultureWorldMeatProductionProvider from 'providers/agriculture-world-meat-production-provider';
 import * as agricultureMeatTradeProvider from 'providers/agriculture-meat-trade-provider';
 import * as agricultureWorldMeatTradeProvider from 'providers/agriculture-world-meat-trade-provider';
-import * as ndcCountryAccordionProvider from 'providers/ndc-country-accordion-provider';
 import * as ndcCompareAllTargetsProvider from 'providers/ndc-compare-all-targets-provider';
 import * as customCompareAccordionProvider from 'providers/custom-compare-accordion-provider';
 
@@ -80,7 +79,6 @@ const providersReducers = {
   meatWorldProduction: handleActions(agricultureWorldMeatProductionProvider),
   meatTrade: handleActions(agricultureMeatTradeProvider),
   meatWorldTrade: handleActions(agricultureWorldMeatTradeProvider),
-  ndcCountryAccordion: handleActions(ndcCountryAccordionProvider),
   compareAll: handleActions(ndcCompareAllTargetsProvider),
   customCompareAccordion: handleActions(customCompareAccordionProvider)
 };
@@ -127,6 +125,7 @@ import * as HamburgerComponent from 'components/hamburger';
 import * as GHGComponent from 'components/ghg-emissions/ghg-emissions';
 import * as AnchorNavComponent from 'components/anchor-nav';
 import * as ExploreMapShared from 'components/ndcs/shared/explore-map';
+import * as ndcCountryAccordionComponent from 'components/ndcs/ndcs-country-accordion';
 
 const componentsReducers = {
   map: handleActions(mapComponent),
@@ -150,7 +149,8 @@ const componentsReducers = {
   hamburger: handleActions(HamburgerComponent),
   dataZoom: handleActions(GHGComponent),
   anchorNav: handleActions(AnchorNavComponent),
-  exploreMap: handleActions(ExploreMapShared)
+  exploreMap: handleActions(ExploreMapShared),
+  ndcCountryAccordion: handleActions(ndcCountryAccordionComponent)
 };
 
 export default combineReducers({
