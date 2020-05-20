@@ -107,6 +107,12 @@ export default [
   },
   {
     path: '/',
-    component: () => createElement(Redirect, { to: '/' })
+    component: ({ location }) => {
+      let redirectPath = '/';
+      if (location.pathname && location.pathname.startsWith('/embed')) {
+        redirectPath = decodeURIComponent(location.pathname);
+      }
+      return createElement(Redirect, { to: redirectPath });
+    }
   }
 ];
