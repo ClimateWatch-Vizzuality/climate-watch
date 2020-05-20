@@ -6,6 +6,10 @@
   min-height: 450px;
 }
 
+.noMinHeight {
+  min-height: 0;
+}
+
 .embededWrapper {
   border: none;
 }
@@ -97,6 +101,14 @@
 
 .noContentWrapper {
   min-height: 450px;
+}
+
+.noMinHeight {
+  .noContentWrapper {
+    min-height: 100px;
+    align-items: start;
+    margin-top: 50px;
+  }
 }
 
 .cardRow {

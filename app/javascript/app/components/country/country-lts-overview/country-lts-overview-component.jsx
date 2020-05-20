@@ -127,59 +127,55 @@ const CountryLtsOverview = props => {
     />
   );
 
-  const renderNoContent = () =>
-    (isCountryPage ? null : (
-      <NoContent message="No data" className={styles.noContentWrapper} />
-    ));
   return (
     <div
       className={cx(
-        { [styles.wrapper]: !isCountryPage || loading || cardData },
+        styles.wrapper,
+        { [styles.noMinHeight]: isCountryPage && !cardData },
         { [styles.embededWrapper]: isEmbed }
       )}
     >
       <LtsContentOverviewProvider locations={[iso]} />
-      {!loading && !cardData ? (
-        renderNoContent()
-      ) : (
-        <div className="layout-container">
-          {loading && <Loading light className={styles.loader} />}
-          {
-            <div className={layout.content}>
-              <div className="grid-column-item">
-                <div
-                  className={cx(styles.header, {
-                    [styles.col2]: isCountryPage
-                  })}
-                >
-                  <Intro
-                    theme={introTheme}
-                    title={
-                      isCountryPage
-                        ? 'Long-term Strategies (LTS) Overview'
-                        : 'Long-term vision'
-                    }
-                  />
-                  {isCountryPage && (
-                    <div className="grid-column-item">
-                      <div className={styles.actions}>
-                        {renderInfoButton()}
-                        {renderCompareButton()}
-                        <TabletLandscape>
-                          {renderExploreButton()}
-                        </TabletLandscape>
-                      </div>
-                    </div>
-                  )}
-                  <TabletPortraitOnly>{description}</TabletPortraitOnly>
+      <div className="layout-container">
+        {loading && <Loading light className={styles.loader} />}
+        <div className={layout.content}>
+          <div className="grid-column-item">
+            <div
+              className={cx(styles.header, {
+                [styles.col2]: isCountryPage && cardData
+              })}
+            >
+              <Intro
+                theme={introTheme}
+                title={
+                  isCountryPage
+                    ? 'Long-term Strategies (LTS) Overview'
+                    : 'Long-term vision'
+                }
+              />
+              {cardData && isCountryPage && (
+                <div className="grid-column-item">
+                  <div className={styles.actions}>
+                    {renderInfoButton()}
+                    {renderCompareButton()}
+                    <TabletLandscape>{renderExploreButton()}</TabletLandscape>
+                  </div>
                 </div>
-                <TabletLandscape>{description}</TabletLandscape>
-                <Cards cardData={cardData} />
-              </div>
+              )}
+              <TabletPortraitOnly>{description}</TabletPortraitOnly>
             </div>
-          }
+            <TabletLandscape>{description}</TabletLandscape>
+            {cardData ? (
+              <Cards cardData={cardData} />
+            ) : (
+              <NoContent
+                message="This country hasn't submitted any Long Term Strategies"
+                className={styles.noContentWrapper}
+              />
+            )}
+          </div>
         </div>
-      )}
+      </div>
       <ModalMetadata />
     </div>
   );
