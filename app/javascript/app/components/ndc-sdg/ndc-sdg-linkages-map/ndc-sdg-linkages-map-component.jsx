@@ -81,7 +81,7 @@ class NdcSdgLinkagesMap extends PureComponent {
             }
           ]}
         />
-        <ShareButton sharePath={'/embed/ndcs-sdg'} />
+        <ShareButton sharePath={'/ndcs-sdg'} />
       </React.Fragment>
     );
 
