@@ -81,7 +81,8 @@ export const getSourceOptions = createSelector(getSources, sources => {
     label: d.label,
     value: d.value,
     source: d.source,
-    sectors: d.sector
+    sectors: d.sector,
+    name: d.name
   }));
 });
 
@@ -148,12 +149,14 @@ export const filterData = createSelector(
     // Filter by source and gas
     filteredData = filteredData.filter(
       d =>
-        d.source === source.label &&
+        d.source === source.name &&
         (d.gas === 'All GHG' || d.gas === 'Aggregate GHGs')
     );
 
     // Filter by sector
-    const defaultSector = [DEFAULT_EMISSIONS_SELECTIONS[source.label].sector];
+    const defaultSector = DEFAULT_EMISSIONS_SELECTIONS[source.name]
+      ? [DEFAULT_EMISSIONS_SELECTIONS[source.name].sector]
+      : [];
     const sectorFilters =
       sectors && sectors.length && sectorOptions.length !== sectors.length
         ? sectors.map(s => s.label)
