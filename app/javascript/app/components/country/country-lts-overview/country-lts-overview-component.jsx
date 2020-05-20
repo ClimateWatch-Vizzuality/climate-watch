@@ -131,7 +131,7 @@ const CountryLtsOverview = props => {
     <div
       className={cx(
         styles.wrapper,
-        { [styles.noMinHeight]: isCountryPage && !cardData },
+        { [styles.noContentHeight]: isCountryPage && !cardData },
         { [styles.embededWrapper]: isEmbed }
       )}
     >
@@ -169,7 +169,7 @@ const CountryLtsOverview = props => {
               <Cards cardData={cardData} />
             ) : (
               <NoContent
-                message="This country hasn't submitted any Long Term Strategies"
+                message="This country hasn't submitted any Long-term Strategies"
                 className={styles.noContentWrapper}
               />
             )}
