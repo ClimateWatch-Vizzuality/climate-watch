@@ -46,7 +46,7 @@ export const getDocumentsOptionsByCountry = createSelector(
 
       const documents = DOCUMENT_SLUGS.map(slug => {
         const countryDocument =
-          countriesDocuments && countryDocuments.find(d => d.slug === slug);
+          countryDocuments && countryDocuments.find(d => d.slug === slug);
         if (countryDocument) {
           return { label: countryDocument.long_name, value: slug };
         }
