@@ -127,11 +127,20 @@ const CountryLtsOverview = props => {
     />
   );
 
+  const renderNoContent = () =>
+    (isCountryPage ? null : (
+      <NoContent message="No data" className={styles.noContentWrapper} />
+    ));
   return (
-    <div className={cx(styles.wrapper, { [styles.embededWrapper]: isEmbed })}>
+    <div
+      className={cx(
+        { [styles.wrapper]: !isCountryPage || loading || cardData },
+        { [styles.embededWrapper]: isEmbed }
+      )}
+    >
       <LtsContentOverviewProvider locations={[iso]} />
       {!loading && !cardData ? (
-        <NoContent message="No data" className={styles.noContentWrapper} />
+        renderNoContent()
       ) : (
         <div className="layout-container">
           {loading && <Loading light className={styles.loader} />}
