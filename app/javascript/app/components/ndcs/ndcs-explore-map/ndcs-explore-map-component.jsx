@@ -6,6 +6,7 @@ import Map from 'components/map';
 import ButtonGroup from 'components/button-group';
 import Loading from 'components/loading';
 import Dropdown from 'components/dropdown';
+import ModalMetadata from 'components/modal-metadata';
 import { PieChart } from 'cw-components';
 import CustomTooltip from 'components/ndcs/shared/donut-tooltip';
 import ExploreMapTooltip from 'components/ndcs/shared/explore-map-tooltip';
@@ -16,6 +17,7 @@ import ShareButton from 'components/button/share-button';
 import Sticky from 'react-stickynode';
 import cx from 'classnames';
 import CountriesDocumentsProvider from 'providers/countries-documents-provider';
+import ModalShare from 'components/modal-share';
 
 import newMapTheme from 'styles/themes/map/map-new-zoom-controls.scss';
 import layout from 'styles/layout.scss';
@@ -45,6 +47,7 @@ const renderButtonGroup = (clickHandler, downloadLink, stickyStatus) => (
       ]}
     />
     <ShareButton />
+    <ModalShare analyticsName="NDC Explore" />
   </div>
 );
 
@@ -232,6 +235,7 @@ function NDCSExploreMap(props) {
           </div>
         )}
       </TabletLandscape>
+      <ModalMetadata />
     </div>
   );
 }

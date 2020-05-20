@@ -9,6 +9,7 @@ import ReactTooltip from 'react-tooltip';
 import ButtonGroup from 'components/button-group';
 import ShareButton from 'components/button/share-button';
 import { TabletLandscape } from 'components/responsive';
+import ModalShare from 'components/modal-share';
 import tooltipTheme from 'styles/themes/map-tooltip/map-tooltip.scss';
 import AutocompleteSearch from 'components/autocomplete-search';
 import { isPageContained } from 'utils/navigation';
@@ -135,6 +136,7 @@ class NdcSdgLinkagesMap extends PureComponent {
             >
               {this.getTooltip()}
             </ReactTooltip>
+            <ModalShare analyticsName={'Ndcs-Sdgs'} />
           </div>
         )}
       </TabletLandscape>

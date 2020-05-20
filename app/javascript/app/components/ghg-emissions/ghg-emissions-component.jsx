@@ -25,7 +25,8 @@ import ModalPngDownload from 'components/modal-png-download';
 import { TabletPortraitOnly, TabletLandscape } from 'components/responsive';
 import { toPlural } from 'utils/ghg-emissions';
 import { format } from 'd3-format';
-
+import ModalShare from 'components/modal-share';
+import ModalMetadata from 'components/modal-metadata';
 import lineIcon from 'assets/icons/line_chart.svg';
 import areaIcon from 'assets/icons/area_chart.svg';
 import percentageIcon from 'assets/icons/icon-percentage-chart.svg';
@@ -395,6 +396,8 @@ function GhgEmissions(props) {
         {renderPngChart()}
         {renderPngLegend()}
       </ModalPngDownload>
+      <ModalShare analyticsName={'GHG Emissions'} />
+      <ModalMetadata />
     </div>
   );
 }

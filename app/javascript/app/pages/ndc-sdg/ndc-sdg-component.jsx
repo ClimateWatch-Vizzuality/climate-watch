@@ -8,7 +8,6 @@ import Header from 'components/header';
 import Intro from 'components/intro';
 import AutocompleteSearch from 'components/autocomplete-search';
 import NdcSdgLinkagesContent from 'components/ndc-sdg/ndc-sdg-linkages-content';
-import ModalShare from 'components/modal-share';
 import { NDC_SDG_LINKAGES } from 'data/SEO';
 import { MetaDescription, SocialMetadata } from 'components/seo';
 import { isPageContained } from 'utils/navigation';
@@ -53,7 +52,6 @@ class NdcSdg extends PureComponent {
         >
           <NdcSdgLinkagesContent />
         </div>
-        <ModalShare analyticsName={'Ndcs-Sdgs'} />
       </div>
     );
   }

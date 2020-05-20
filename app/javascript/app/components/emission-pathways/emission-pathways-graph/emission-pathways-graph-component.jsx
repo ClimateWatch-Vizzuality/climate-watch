@@ -9,6 +9,7 @@ import ButtonGroup from 'components/button-group';
 import ModalOverview from 'components/modal-overview';
 import Dropdown from 'components/dropdown';
 import Chart from 'components/charts/chart';
+import ModalShare from 'components/modal-share';
 import ShareButton from 'components/button/share-button';
 import { TabletLandscape, TabletPortraitOnly } from 'components/responsive';
 
@@ -211,6 +212,7 @@ class EmissionPathwayGraph extends PureComponent {
             ]}
           />
         </div>
+        <ModalShare analyticsName="Pathways" />
       </div>
     );
   }
