@@ -7,6 +7,7 @@ import GhgEmissionsGraph from 'components/ghg-emissions';
 import CompareGhgChart from 'components/compare/compare-ghg-chart';
 import CountryGhg from 'components/country/country-ghg';
 import CountryNdcOverview from 'components/country/country-ndc-overview';
+import CountryLtsOverview from 'components/country/country-lts-overview';
 import NDCSDGLinkages from 'components/country/country-ndc-sdg-linkages';
 import NdcSdgLinkagesContent from 'components/ndc-sdg/ndc-sdg-linkages-content';
 import EmissionPathwaysGraph from 'components/emission-pathways/emission-pathways-graph';
@@ -61,7 +62,12 @@ export default [
   {
     path: '/embed/countries/:iso/ndc-content-overview',
     exact: true,
-    component: () => createElement(CountryNdcOverview, { actions: true })
+    component: () => createElement(CountryNdcOverview, { isCountryPage: true })
+  },
+  {
+    path: '/embed/countries/:iso/lts-content-overview',
+    exact: true,
+    component: () => createElement(CountryLtsOverview, { isCountryPage: true })
   },
   {
     path: '/embed/countries/:iso/ndc-sdg-linkages',

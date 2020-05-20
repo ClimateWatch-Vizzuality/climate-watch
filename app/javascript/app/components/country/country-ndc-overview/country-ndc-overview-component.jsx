@@ -301,9 +301,9 @@ function CountryNdcOverview(props) {
     />
   );
   const summaryIntroText =
-      !FEATURE_NDC_FILTERING || !selectedDocument
-        ? 'Summary'
-        : `Summary of ${selectedDocument.long_name}`;
+    !FEATURE_NDC_FILTERING || !selectedDocument
+      ? 'Summary'
+      : `Summary of ${selectedDocument.long_name}`;
 
   return (
     <div className={cx(styles.wrapper, { [styles.embededWrapper]: isEmbed })}>
@@ -332,10 +332,9 @@ function CountryNdcOverview(props) {
             <div className={layout.content}>
               <div className="grid-column-item">
                 <div
-                  className={cx(
-                    styles.header,
-                    isCountryPage ? styles.col2 : ''
-                  )}
+                  className={cx(styles.header, {
+                    [styles.col2]: isCountryPage
+                  })}
                 >
                   <Intro
                     theme={introTheme}

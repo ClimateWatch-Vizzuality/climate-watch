@@ -107,3 +107,12 @@
     border-bottom: 2px solid $shadow-gray;
   }
 }
+
+.actions {
+  @include columns();
+  @include xy-gutters($gutter-position: ('bottom'));
+
+  @media #{$tablet-landscape} {
+    @include columns((2.4, 3.6, 6));
+  }
+}
