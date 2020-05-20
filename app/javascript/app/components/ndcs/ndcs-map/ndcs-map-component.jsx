@@ -47,7 +47,7 @@ const renderButtonGroup = (clickHandler, downloadLink) => (
       />
     </div>
     <div className={styles.shareButtonContainer}>
-      <ShareButton className={styles.shareButton} sharePath={'/ndcs-content'} />
+      <ShareButton className={styles.shareButton} sharePath={'/ndcs'} />
     </div>
   </React.Fragment>
 );

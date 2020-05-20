@@ -98,7 +98,10 @@ class EmissionPathwayGraph extends PureComponent {
                     }
                   ]}
                 />
-                <ShareButton className={styles.shareButton} />
+                <ShareButton
+                  className={styles.shareButton}
+                  sharePath={'/pathways'}
+                />
               </TabletLandscape>
             </div>
           </div>

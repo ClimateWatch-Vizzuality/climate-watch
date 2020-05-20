@@ -78,7 +78,7 @@ const NDCMap = ({
           {isTablet && (
             <Fragment>
               {renderButtonGroup(handleInfoClick, downloadLink)}
-              <ShareButton />
+              <ShareButton sharePath="/agriculture-emission/countries-actions" />
             </Fragment>
           )}
         </div>
@@ -95,7 +95,7 @@ const NDCMap = ({
         {!isTablet && (
           <div className={styles.buttonsContainer}>
             {renderButtonGroup(handleInfoClick, true)}
-            <ShareButton />
+            <ShareButton sharePath="/agriculture-emission/countries-actions" />
           </div>
         )}
         {countryData && (

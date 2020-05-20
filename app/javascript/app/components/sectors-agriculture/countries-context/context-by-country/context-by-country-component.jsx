@@ -75,6 +75,7 @@ const ContextByCountryComponent = ({
                   <ShareButton
                     className={styles.shareButton}
                     analyticsName="Country/Ghg-emissions"
+                    sharePath="/agriculture-emission/understand-countries-contexts"
                   />
                 </React.Fragment>
               )}

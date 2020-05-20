@@ -12,6 +12,8 @@ import NdcSdgLinkagesContent from 'components/ndc-sdg/ndc-sdg-linkages-content';
 import EmissionPathwaysGraph from 'components/emission-pathways/emission-pathways-graph';
 import MyVisualisationsGraphComponent from 'components/my-climate-watch/my-visualisations/my-cw-vis-graph';
 import AgricultureEmissionPieChart from 'components/sectors-agriculture/drivers-of-emissions/card-pie-chart/card-pie-chart';
+import CountriesContext from 'components/sectors-agriculture/countries-context';
+import CountriesActions from 'components/sectors-agriculture/countries-actions';
 import LTSExploreMap from 'components/ndcs/lts-explore-map';
 import NDCSExploreMap from 'components/ndcs/ndcs-explore-map';
 import NDCOverviewSection from 'components/ndcs/ndcs-overview-section';
@@ -81,6 +83,16 @@ export default [
   {
     path: '/embed/agriculture-emission',
     component: AgricultureEmissionPieChart,
+    exact: true
+  },
+  {
+    path: '/embed/agriculture-emission/understand-countries-contexts',
+    component: CountriesContext,
+    exact: true
+  },
+  {
+    path: '/embed/agriculture-emission/countries-actions',
+    component: CountriesActions,
     exact: true
   },
   {
