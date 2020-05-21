@@ -1,6 +1,7 @@
 module Indc
   class Submission < ApplicationRecord
     belongs_to :location
+    belongs_to :document, class_name: 'Indc::Document', optional: true
 
     validates :submission_type, presence: true
     validates :language, presence: true
