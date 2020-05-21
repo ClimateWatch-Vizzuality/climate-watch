@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import Button from 'components/button';
 import Card from 'components/card';
@@ -23,11 +23,21 @@ import styles from './country-ndc-overview-styles.scss';
 const FEATURE_LTS_EXPLORE = process.env.FEATURE_LTS_EXPLORE === 'true';
 const FEATURE_NDC_FILTERING = process.env.FEATURE_NDC_FILTERING === 'true';
 
-class CountryNdcOverview extends PureComponent {
-  // eslint-disable-line react/prefer-stateless-function
+function CountryNdcOverview(props) {
+  const {
+    sectors,
+    values,
+    loading,
+    isCountryPage,
+    iso,
+    isEmbed,
+    isNdcp,
+    handleInfoClick,
+    handleAnalyticsClick,
+    selectedDocument
+  } = props;
 
-  renderInfoButton() {
-    const { handleInfoClick, isEmbed, iso } = this.props;
+  const renderInfoButton = () => {
     const buttonGroupConfig = isEmbed
       ? [{ type: 'info', onClick: handleInfoClick }]
       : [
@@ -46,10 +56,9 @@ class CountryNdcOverview extends PureComponent {
         buttonsConfig={buttonGroupConfig}
       />
     );
-  }
+  };
 
-  renderCompareButton() {
-    const { iso, isNdcp } = this.props;
+  const renderCompareButton = () => {
     const href = `/contained/ndcs/compare/mitigation?locations=${iso}`;
     const link = `/ndcs/compare/mitigation?locations=${iso}`;
     return (
@@ -61,11 +70,9 @@ class CountryNdcOverview extends PureComponent {
         Compare
       </Button>
     );
-  }
+  };
 
-  renderExploreButton() {
-    const { iso, handleAnalyticsClick, isNdcp } = this.props;
-
+  const renderExploreButton = () => {
     const href = `/contained/ndcs/country/${iso}`;
     const link = `/ndcs/country/${iso}`;
 
@@ -80,10 +87,9 @@ class CountryNdcOverview extends PureComponent {
         Explore NDC content
       </Button>
     );
-  }
+  };
 
-  renderLegacyCards() {
-    const { sectors, values } = this.props;
+  const renderLegacyCards = () => {
     const renderSubtitle = (text, paddingLeft) => (
       <h4 className={cx(styles.subTitle, { [styles.paddedLeft]: paddingLeft })}>
         {text}
@@ -189,11 +195,10 @@ class CountryNdcOverview extends PureComponent {
         </div>
       </div>
     );
-  }
+  };
 
-  renderCards() {
-    const { values } = this.props;
-    return FEATURE_LTS_EXPLORE ? (
+  const renderCards = () =>
+    (FEATURE_LTS_EXPLORE ? (
       <div className={styles.cards}>
         <Card title="Contribution Type" theme={cardTheme} contentFirst>
           <div className={styles.cardContent}>
@@ -265,116 +270,107 @@ class CountryNdcOverview extends PureComponent {
         </Card>
       </div>
     ) : (
-      this.renderLegacyCards()
-    );
-  }
+      renderLegacyCards()
+    ));
 
-  renderAlertText = () => (
+  const renderAlertText = () => (
     <div className={styles.alertContainer}>
       <div className={styles.alert}>
         <Icon icon={alertIcon} className={styles.alertIcon} />
         <span className={styles.alertText}>
           The information shown below only reflects the{' '}
-          {FEATURE_NDC_FILTERING ? 'selected' : 'last'} NDC submission.
+          {FEATURE_NDC_FILTERING && !isCountryPage ? 'selected' : 'last'} NDC
+          submission.
         </span>
       </div>
     </div>
   );
 
-  render() {
-    const {
-      sectors,
-      values,
-      loading,
-      actions,
-      iso,
-      isEmbed,
-      selectedDocument
-    } = this.props;
-    const { date: documentDate } = selectedDocument || {};
-    const hasSectors = values && sectors;
-    const description = hasSectors && (
-      <div
-        className={cx(styles.descriptionContainer, layout.parsedHTML)}
-        // eslint-disable-next-line react/no-danger
-        dangerouslySetInnerHTML={{
-          __html:
-            values.indc_summary &&
-            values.indc_summary[0] &&
-            values.indc_summary[0].value
-        }}
-      />
-    );
-    const summaryIntroText =
-      !FEATURE_NDC_FILTERING || !selectedDocument
-        ? 'Summary'
-        : `Summary of ${selectedDocument.long_name}`;
+  const { date: documentDate } = selectedDocument || {};
+  const hasSectors = values && sectors;
+  const description = hasSectors && (
+    <div
+      className={cx(styles.descriptionContainer, layout.parsedHTML)}
+      // eslint-disable-next-line react/no-danger
+      dangerouslySetInnerHTML={{
+        __html:
+          values.indc_summary &&
+          values.indc_summary[0] &&
+          values.indc_summary[0].value
+      }}
+    />
+  );
+  const summaryIntroText =
+    !FEATURE_NDC_FILTERING || !selectedDocument
+      ? 'Summary'
+      : `Summary of ${selectedDocument.long_name}`;
 
-    return (
-      <div className={cx(styles.wrapper, { [styles.embededWrapper]: isEmbed })}>
-        {(FEATURE_LTS_EXPLORE || !FEATURE_NDC_FILTERING) &&
-          hasSectors &&
-          !loading &&
-          this.renderAlertText()}
-        {FEATURE_NDC_FILTERING && <CountriesDocumentsProvider location={iso} />}
-        <NdcContentOverviewProvider
-          locations={[iso]}
-          document={
-            FEATURE_NDC_FILTERING &&
-            selectedDocument &&
-            selectedDocument.document_type
-          }
+  return (
+    <div className={cx(styles.wrapper, { [styles.embededWrapper]: isEmbed })}>
+      {(FEATURE_LTS_EXPLORE || !FEATURE_NDC_FILTERING) &&
+        hasSectors &&
+        !loading &&
+        renderAlertText()}
+      {FEATURE_NDC_FILTERING && <CountriesDocumentsProvider location={iso} />}
+      <NdcContentOverviewProvider
+        locations={[iso]}
+        document={
+          FEATURE_NDC_FILTERING &&
+          selectedDocument &&
+          selectedDocument.document_type
+        }
+      />
+      {!hasSectors && !loading ? (
+        <NoContent
+          message="No overview content data"
+          className={styles.noContentWrapper}
         />
-        {!hasSectors && !loading ? (
-          <NoContent
-            message="No overview content data"
-            className={styles.noContentWrapper}
-          />
-        ) : (
-          <div className="layout-container">
-            {loading && <Loading light className={styles.loader} />}
-            {hasSectors && (
-              <div className={layout.content}>
-                <div className="grid-column-item">
-                  <div
-                    className={cx(styles.header, actions ? styles.col2 : '')}
-                  >
-                    <Intro
-                      theme={introTheme}
-                      title={
-                        actions
-                          ? 'Nationally Determined Contribution (NDC) Overview'
-                          : summaryIntroText
-                      }
-                      subtitle={documentDate && `(submitted[${documentDate}])`}
-                    />
-                    <TabletPortraitOnly>{description}</TabletPortraitOnly>
-                    {actions && (
-                      <div className="grid-column-item">
-                        <div className={styles.actions}>
-                          {this.renderInfoButton()}
-                          {this.renderCompareButton()}
-                          <TabletLandscape>
-                            {this.renderExploreButton()}
-                          </TabletLandscape>
-                        </div>
+      ) : (
+        <div className="layout-container">
+          {loading && <Loading light className={styles.loader} />}
+          {hasSectors && (
+            <div className={layout.content}>
+              <div className="grid-column-item">
+                <div
+                  className={cx(styles.header, {
+                    [styles.col2]: isCountryPage
+                  })}
+                >
+                  <Intro
+                    theme={introTheme}
+                    title={
+                      isCountryPage
+                        ? 'Nationally Determined Contribution (NDC) Overview'
+                        : summaryIntroText
+                    }
+                    subtitle={documentDate && `(submitted[${documentDate}])`}
+                  />
+                  <TabletPortraitOnly>{description}</TabletPortraitOnly>
+                  {isCountryPage && (
+                    <div className="grid-column-item">
+                      <div className={styles.actions}>
+                        {renderInfoButton()}
+                        {renderCompareButton()}
+                        <TabletLandscape>
+                          {renderExploreButton()}
+                        </TabletLandscape>
                       </div>
-                    )}
-                  </div>
-                  <TabletLandscape>{description}</TabletLandscape>
-                  {this.renderCards()}
-                  <TabletPortraitOnly>
-                    {actions && this.renderExploreButton()}
-                  </TabletPortraitOnly>
+                    </div>
+                  )}
                 </div>
+                <TabletLandscape>{description}</TabletLandscape>
+                {renderCards()}
+                <TabletPortraitOnly>
+                  {isCountryPage && renderExploreButton()}
+                </TabletPortraitOnly>
               </div>
-            )}
-          </div>
-        )}
-        <ModalMetadata />
-      </div>
-    );
-  }
+            </div>
+          )}
+        </div>
+      )}
+      <ModalMetadata />
+    </div>
+  );
 }
 
 CountryNdcOverview.propTypes = {
@@ -382,7 +378,7 @@ CountryNdcOverview.propTypes = {
   sectors: PropTypes.array,
   values: PropTypes.object,
   loading: PropTypes.bool,
-  actions: PropTypes.bool,
+  isCountryPage: PropTypes.bool,
   isNdcp: PropTypes.bool,
   isEmbed: PropTypes.bool,
   handleInfoClick: PropTypes.func.isRequired,
