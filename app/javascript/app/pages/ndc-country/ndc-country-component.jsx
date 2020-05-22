@@ -69,7 +69,7 @@ function NDCCountry(props) {
   );
 
   const renderCompareButton = () => {
-    if (!FEATURE_LTS_EXPLORE) {
+    if (!FEATURE_LTS_EXPLORE || FEATURE_COMMITMENTS_OVERVIEW) {
       return (
         <Button
           variant="primary"
@@ -83,11 +83,8 @@ function NDCCountry(props) {
       <div className={styles.compareButtonContainer}>
         <Button
           variant="primary"
-          link={
-            FEATURE_COMMITMENTS_OVERVIEW
-              ? `/custom-compare/overview?targets=${iso}-${documentSelected.value}`
-              : `/ndcs/compare/mitigation?locations=${iso}`
-          }
+          link={`/custom-compare/overview?targets=${iso}-${documentSelected &&
+            documentSelected.value}`}
           className={styles.compareButton}
         >
           Compare Countries and Submissions
