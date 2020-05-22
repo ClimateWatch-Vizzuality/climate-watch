@@ -36,6 +36,7 @@ const cellRenderer = (cell, selectedTargets, columns, setSelectedTargets) => {
     return cellData;
   }
   if (cellData === 'yes') {
+    const isDisabled = !isActive && !canSelect;
     return (
       <Button
         onClick={() => addSelectedTarget(id)}
@@ -45,7 +46,12 @@ const cellRenderer = (cell, selectedTargets, columns, setSelectedTargets) => {
           { [styles.lastColumn]: isLastColumn },
           { [styles.active]: isActive }
         )}
-        disabled={!isActive && !canSelect}
+        disabled={isDisabled}
+        title={
+          isDisabled
+            ? 'You can select a maximum of 3 documents'
+            : 'Select document to compare'
+        }
       >
         <Icon icon={compareSubmittedIcon} className={styles.submitIcon} />
       </Button>
