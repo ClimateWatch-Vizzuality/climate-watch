@@ -53,6 +53,7 @@ function NDCCountry(props) {
       white
       hideResetButton
       disabled={!documentsOptions}
+      noAutoSort
     />
   );
 
@@ -69,7 +70,7 @@ function NDCCountry(props) {
   );
 
   const renderCompareButton = () => {
-    if (!FEATURE_LTS_EXPLORE || FEATURE_COMMITMENTS_OVERVIEW) {
+    if (!FEATURE_LTS_EXPLORE || !FEATURE_COMMITMENTS_OVERVIEW) {
       return (
         <Button
           variant="primary"
