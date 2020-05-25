@@ -50,7 +50,7 @@ class EmissionPathwayGraph extends PureComponent {
       },
       {
         type: 'share',
-        analyticsGraphName: 'Drivers of Emissions',
+        shareUrl: '/embed/agriculture-emission/pathways',
         positionRight: true
       },
       {
