@@ -43,9 +43,8 @@ class LTSCountry extends PureComponent {
       <div className={styles.compareButtonContainer}>
         <Button
           variant="primary"
-          link={`/lts/compare/mitigation?locations=${match.params.iso}`}
+          link={`/custom-compare/overview?targets=${match.params.iso}-lts`}
           className={styles.compareButton}
-          disabled
         >
           Compare Countries and Submissions
         </Button>

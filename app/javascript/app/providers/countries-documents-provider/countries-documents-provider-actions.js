@@ -18,8 +18,8 @@ export const fetchCountriesDocuments = createThunkAction(
     const { countriesDocuments } = state();
     if (
       !countriesDocuments.loading &&
-      (isEmpty(countriesDocuments.data) ||
-        (!!location && isEmpty(countriesDocuments.data[location])))
+      (!location ||
+        !countriesDocuments.data || isEmpty(countriesDocuments.data[location]))
     ) {
       const url = `/api/v1/ndcs/countries_documents${
         location ? `?location=${location}` : ''

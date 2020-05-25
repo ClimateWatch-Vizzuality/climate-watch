@@ -22,6 +22,8 @@ import styles from './ndc-country-styles.scss';
 
 const FEATURE_LTS_EXPLORE = process.env.FEATURE_LTS_EXPLORE === 'true';
 const FEATURE_NDC_FILTERING = process.env.FEATURE_NDC_FILTERING === 'true';
+const FEATURE_COMMITMENTS_OVERVIEW =
+  process.env.FEATURE_COMMITMENTS_OVERVIEW === 'true';
 
 function NDCCountry(props) {
   const {
@@ -51,6 +53,7 @@ function NDCCountry(props) {
       white
       hideResetButton
       disabled={!documentsOptions}
+      noAutoSort
     />
   );
 
@@ -67,7 +70,7 @@ function NDCCountry(props) {
   );
 
   const renderCompareButton = () => {
-    if (!FEATURE_LTS_EXPLORE) {
+    if (!FEATURE_LTS_EXPLORE || !FEATURE_COMMITMENTS_OVERVIEW) {
       return (
         <Button
           variant="primary"
@@ -81,7 +84,8 @@ function NDCCountry(props) {
       <div className={styles.compareButtonContainer}>
         <Button
           variant="primary"
-          link={`/ndcs/compare/mitigation?locations=${iso}`}
+          link={`/custom-compare/overview?targets=${iso}-${documentSelected &&
+            documentSelected.value}`}
           className={styles.compareButton}
         >
           Compare Countries and Submissions
