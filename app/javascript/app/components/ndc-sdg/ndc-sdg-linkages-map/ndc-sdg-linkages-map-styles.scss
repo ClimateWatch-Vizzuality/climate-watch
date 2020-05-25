@@ -28,7 +28,8 @@
 }
 
 .row {
-  @include columns((8, 4));
+  @include columns((8, 2, 2));
+  @include xy-gutters($gutter-padding, $gutter-position: 'top');
 }
 
 // Heights of the map needed for IE
@@ -52,17 +53,13 @@
 }
 
 .buttons {
-  position: absolute;
-  right: 0;
-  top: $gutter-padding;
   z-index: $z-index-sticky;
   width: 100%;
 }
 
 .title {
-  position: absolute;
+  position: relative;
   left: $gutter-padding;
-  top: $gutter-padding;
   opacity: 1;
   width: 100%;
   font-weight: $font-weight;

@@ -22,12 +22,11 @@ import Table from 'components/table';
 import GhgMultiselectDropdown from 'components/ghg-multiselect-dropdown';
 import ghgTableTheme from 'styles/themes/table/ghg-table-theme.scss';
 import ModalPngDownload from 'components/modal-png-download';
-import ModalMetadata from 'components/modal-metadata';
-import ModalShare from 'components/modal-share';
 import { TabletPortraitOnly, TabletLandscape } from 'components/responsive';
 import { toPlural } from 'utils/ghg-emissions';
 import { format } from 'd3-format';
-
+import ModalShare from 'components/modal-share';
+import ModalMetadata from 'components/modal-metadata';
 import lineIcon from 'assets/icons/line_chart.svg';
 import areaIcon from 'assets/icons/area_chart.svg';
 import percentageIcon from 'assets/icons/icon-percentage-chart.svg';
@@ -397,8 +396,8 @@ function GhgEmissions(props) {
         {renderPngChart()}
         {renderPngLegend()}
       </ModalPngDownload>
+      <ModalShare analyticsName={'GHG Emissions'} />
       <ModalMetadata />
-      <ModalShare />
     </div>
   );
 }

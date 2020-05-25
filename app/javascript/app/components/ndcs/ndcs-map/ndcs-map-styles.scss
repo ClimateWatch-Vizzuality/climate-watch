@@ -12,7 +12,13 @@
   margin-bottom: 40px;
 
   @media #{$tablet-landscape} {
-    @include columns(3);
+    align-items: flex-end;
+
+    @include columns((3, 3, 1.5, 1.5));
+
+    > :nth-child(3) {
+      @include column-offset(3, $gutters: true);
+    }
   }
 }
 
@@ -20,12 +26,13 @@
   @include columns();
 }
 
-.buttonGroup {
-  @media #{$tablet-landscape} {
-    @include column-offset(3, $gutters: true);
+.buttonGroupContainer {
+  @include columns(6);
+}
 
-    margin-top: 20px;
-  }
+.buttonGroup,
+.shareButton {
+  width: 100%;
 }
 
 .legend {

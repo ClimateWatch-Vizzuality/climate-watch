@@ -8,6 +8,7 @@ import Map from 'components/map';
 import MapLegend from 'components/map-legend';
 import ButtonGroup from 'components/button-group';
 import Icon from 'components/icon';
+import ShareButton from 'components/button/share-button';
 import accordionArrow from 'assets/icons/accordion-arrow.svg';
 import tooltipTheme from 'styles/themes/map-tooltip/map-tooltip.scss';
 import dropdownTheme from 'styles/themes/dropdown/react-selectize.scss';
@@ -44,6 +45,20 @@ class ContextByIndicatorComponent extends Component {
     );
   };
 
+  renderButtonGroup = buttonGroupConfig => (
+    <React.Fragment>
+      <ButtonGroup
+        className={styles.btnGroup}
+        buttonsConfig={buttonGroupConfig}
+      />
+      <ShareButton
+        className={styles.shareButton}
+        analyticsName="Country/Ghg-emissions"
+        sharePath="/agriculture-emission/understand-countries-contexts"
+      />
+    </React.Fragment>
+  );
+
   render() {
     const {
       indicators,
@@ -66,11 +81,6 @@ class ContextByIndicatorComponent extends Component {
       {
         type: 'info',
         onClick: handleInfoClick
-      },
-      {
-        type: 'share',
-        analyticsGraphName: 'Country/Ghg-emissions',
-        positionRight: true
       },
       {
         type: 'download',
@@ -105,12 +115,7 @@ class ContextByIndicatorComponent extends Component {
                   theme={dropdownTheme}
                 />
               </div>
-              {isTablet && (
-                <ButtonGroup
-                  className={styles.btnGroup}
-                  buttonsConfig={buttonGroupConfig}
-                />
-              )}
+              {isTablet && this.renderButtonGroup(buttonGroupConfig)}
             </div>
             <div className={styles.visualizationsContainer}>
               <div className="layout-container">
@@ -172,17 +177,12 @@ class ContextByIndicatorComponent extends Component {
               )}
             </div>
             {!isTablet && (
-              <ButtonGroup
-                className={styles.btnGroup}
-                buttonsConfig={buttonGroupConfig}
-              />
+              <div className={styles.buttonsContainer}>
+                {this.renderButtonGroup(buttonGroupConfig)}
+              </div>
             )}
             {countryData && (
-              <ReactTooltip
-                className={styles.tooltipContainer}
-                id="cc-map-tooltip"
-                delayHide={isTablet ? 0 : 2000}
-              >
+              <ReactTooltip>
                 {getTooltip(countryData, tooltipTxt, selectedIndicator)}
               </ReactTooltip>
             )}

@@ -7,7 +7,9 @@ import accordionArrow from 'assets/icons/accordion-arrow.svg';
 import { Link } from 'react-router-dom';
 import ReactTooltip from 'react-tooltip';
 import ButtonGroup from 'components/button-group';
+import ShareButton from 'components/button/share-button';
 import { TabletLandscape } from 'components/responsive';
+import ModalShare from 'components/modal-share';
 import tooltipTheme from 'styles/themes/map-tooltip/map-tooltip.scss';
 import AutocompleteSearch from 'components/autocomplete-search';
 import { isPageContained } from 'utils/navigation';
@@ -60,31 +62,28 @@ class NdcSdgLinkagesMap extends PureComponent {
     this.setState({ country: country.properties });
 
   renderMapHeader({ isTablet }) {
-    const { downloadLink } = this.props;
+    const { downloadLink, handleInfoClick } = this.props;
     const buttonGroup = (
-      <ButtonGroup
-        className={styles.buttons}
-        buttonsConfig={[
-          {
-            type: 'info',
-            onClick: this.props.handleInfoClick
-          },
-          {
-            type: 'share',
-            shareUrl: '/embed/ndcs-sdg',
-            analyticsGraphName: 'Ndcs-Sdg',
-            positionRight: true
-          },
-          {
-            type: 'download',
-            section: 'ndcs-sdg',
-            link: downloadLink
-          },
-          {
-            type: 'addToUser'
-          }
-        ]}
-      />
+      <React.Fragment>
+        <ButtonGroup
+          className={styles.buttons}
+          buttonsConfig={[
+            {
+              type: 'info',
+              onClick: handleInfoClick
+            },
+            {
+              type: 'download',
+              section: 'ndcs-content',
+              link: downloadLink
+            },
+            {
+              type: 'addToUser'
+            }
+          ]}
+        />
+        <ShareButton sharePath={'/ndcs-sdg'} />
+      </React.Fragment>
     );
 
     if (isPageContained) {
@@ -137,6 +136,7 @@ class NdcSdgLinkagesMap extends PureComponent {
             >
               {this.getTooltip()}
             </ReactTooltip>
+            <ModalShare analyticsName={'Ndcs-Sdgs'} />
           </div>
         )}
       </TabletLandscape>

@@ -9,19 +9,15 @@ $min-height: 450px;
 }
 
 .titleAndBtnsWrapper {
-  @include columns(6);
+  @include columns((7.2, 2.4, 2.4));
 
   > * {
     @include xy-gutters($gutter-position: ('bottom'));
   }
+}
 
-  @media #{$tablet-landscape} {
-    > *:last-child {
-      @include column-offset(7.2, $gutters: true);
-    }
-
-    @include columns(2.4);
-  }
+.buttonsWrapper {
+  @include columns(6);
 }
 
 .selectorsWrapper {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import ReactTooltip from 'react-tooltip';
 import { Link } from 'react-router-dom';
@@ -7,10 +7,10 @@ import Map from 'components/map';
 import MapLegend from 'components/map-legend';
 import Dropdown from 'components/dropdown';
 import ButtonGroup from 'components/button-group';
+import ShareButton from 'components/button/share-button';
 import Icon from 'components/icon';
 import accordionArrow from 'assets/icons/accordion-arrow.svg';
 import Loading from 'components/loading';
-import ModalMetadata from 'components/modal-metadata';
 import DataExplorerFilters from 'providers/data-explorer-provider';
 import tooltipTheme from 'styles/themes/map-tooltip/map-tooltip.scss';
 import styles from './ndcs-map-styles.scss';
@@ -32,11 +32,6 @@ const renderButtonGroup = (clickHandler, downloadLink) => (
       {
         type: 'info',
         onClick: clickHandler
-      },
-      {
-        type: 'share',
-        analyticsGraphName: 'Ndcs',
-        positionRight: true
       },
       {
         type: 'download',
@@ -80,7 +75,12 @@ const NDCMap = ({
               plain
             />
           </div>
-          {isTablet && renderButtonGroup(handleInfoClick, downloadLink)}
+          {isTablet && (
+            <Fragment>
+              {renderButtonGroup(handleInfoClick, downloadLink)}
+              <ShareButton sharePath="/agriculture-emission/countries-actions" />
+            </Fragment>
+          )}
         </div>
         {loading && <Loading light className={styles.loader} />}
         <Map
@@ -93,8 +93,9 @@ const NDCMap = ({
           customCenter={!isTablet ? [10, -50] : null}
         />
         {!isTablet && (
-          <div className={styles.column}>
+          <div className={styles.buttonsContainer}>
             {renderButtonGroup(handleInfoClick, true)}
+            <ShareButton sharePath="/agriculture-emission/countries-actions" />
           </div>
         )}
         {countryData && (
@@ -114,7 +115,6 @@ const NDCMap = ({
             buckets={selectedIndicator.legendBuckets}
           />
         )}
-        <ModalMetadata />
         <DataExplorerFilters section={'ndc-content'} />
       </div>
     )}

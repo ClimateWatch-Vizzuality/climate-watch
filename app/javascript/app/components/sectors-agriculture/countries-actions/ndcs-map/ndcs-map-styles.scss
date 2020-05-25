@@ -10,8 +10,8 @@
   margin-bottom: 40px;
 }
 
-.column {
-  @include columns();
+.buttonsContainer {
+  @include columns((6, 6));
 }
 
 .legend {
@@ -40,7 +40,9 @@
 
 @media #{$tablet-landscape} {
   .filtersLayout {
-    @include columns((10,2));
+    @include columns((8, 2, 2));
+
+    align-items: flex-end;
   }
 
   .filtersGroup {

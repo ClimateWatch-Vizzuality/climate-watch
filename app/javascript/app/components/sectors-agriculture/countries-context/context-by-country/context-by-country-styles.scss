@@ -27,9 +27,17 @@
   }
 }
 
+.buttonsContainer {
+  @include columns((6, 6));
+}
+
 .btnGroup {
   width: 100%;
 
+  @include xy-gutters(30px, $gutter-position: 'bottom');
+}
+
+.shareButton {
   @include xy-gutters(30px, $gutter-position: 'bottom');
 }
 
@@ -51,7 +59,7 @@
   }
 
   .actionsContainer {
-    @include columns((10, 2));
+    @include columns((8,2 , 2));
   }
 }
 

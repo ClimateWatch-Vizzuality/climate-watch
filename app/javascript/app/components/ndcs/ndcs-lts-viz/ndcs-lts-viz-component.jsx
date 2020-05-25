@@ -12,6 +12,8 @@ import accordionArrow from 'assets/icons/accordion-arrow.svg';
 import Loading from 'components/loading';
 import ModalMetadata from 'components/modal-metadata';
 import CircularChart from 'components/circular-chart';
+import ShareButton from 'components/button/share-button';
+import ModalShare from 'components/modal-share';
 
 import tooltipTheme from 'styles/themes/map-tooltip/map-tooltip.scss';
 import styles from './ndcs-lts-viz-styles.scss';
@@ -49,12 +51,6 @@ const renderButtonGroup = (clickHandler, downloadLink) => (
             onClick: clickHandler
           },
           {
-            type: 'share',
-            shareUrl: '/embed/lts-tracker',
-            analyticsGraphName: 'Ndcs',
-            positionRight: true
-          },
-          {
             type: 'download',
             section: 'ndcs-content',
             link: downloadLink
@@ -65,6 +61,8 @@ const renderButtonGroup = (clickHandler, downloadLink) => (
         ]}
       />
     </div>
+    <ShareButton className={styles.shareButton} />
+    <ModalShare analyticsName="NDC Explore" />
   </div>
 );
 
