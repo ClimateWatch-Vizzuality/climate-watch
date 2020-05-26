@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Switch } from 'cw-components';
+import ModalMetadata from 'components/modal-metadata';
+import ModalShare from 'components/modal-share';
 import NdcsMap from './ndcs-map';
 import NdcsTable from './ndcs-table';
 import styles from './countries-actions-styles';
@@ -28,8 +30,10 @@ class CountriesActions extends PureComponent {
     const {
       handleSwitchClick,
       query,
-      countriesCountWithProposedActions
+      countriesCountWithProposedActions,
+      location
     } = this.props;
+
     const switchOption = query.display || 'map';
     const Component = SwitchOptions[switchOption];
     const { m_agriculture, a_agriculture } = countriesCountWithProposedActions;
@@ -64,6 +68,10 @@ class CountriesActions extends PureComponent {
             />
           </div>
           <Component />
+          <ModalMetadata />
+          <ModalShare
+            analyticsName={`Agriculture countries ${location.hash}`}
+          />
         </div>
       </React.Fragment>
     );
@@ -73,6 +81,7 @@ class CountriesActions extends PureComponent {
 CountriesActions.propTypes = {
   handleSwitchClick: PropTypes.func.isRequired,
   query: PropTypes.object.isRequired,
+  location: PropTypes.object,
   countriesCountWithProposedActions: PropTypes.number
 };
 
