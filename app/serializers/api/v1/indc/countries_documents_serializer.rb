@@ -55,11 +55,37 @@ module Api
         end
 
         def laws
-          {}
+          return {} unless object.laws_and_policies && object.laws_and_policies['targets']
+
+          object.laws_and_policies['targets'].map do |target|
+            next if target['sources'].empty? || target['sources'].first['type'] != 'law'
+
+            source = target['sources'].first
+
+            {
+              id: source['id'],
+              slug: source['title'].parameterize,
+              long_name: source['title'],
+              url: source['link']
+            }
+          end.compact.uniq
         end
 
         def policies
-          {}
+          return {} unless object.laws_and_policies && object.laws_and_policies['targets']
+
+          object.laws_and_policies['targets'].map do |target|
+            next if target['sources'].empty? || target['sources'].first['type'] == 'law'
+
+            source = target['sources'].first
+
+            {
+              id: source['id'],
+              slug: source['title'].parameterize,
+              long_name: source['title'],
+              url: source['link']
+            }
+          end.compact.uniq
         end
       end
     end
