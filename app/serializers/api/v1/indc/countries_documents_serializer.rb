@@ -23,7 +23,8 @@ module Api
                   slug: key.gsub('in_', ''),
                   long_name: key.gsub('in_', '').titleize,
                   description: "Targets in #{key.gsub('in_', '').titleize}",
-                  is_ndc: false
+                  is_ndc: false,
+                  submission_date: nil
                 }
               end.compact
             end
