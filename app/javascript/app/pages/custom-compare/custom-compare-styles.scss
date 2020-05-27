@@ -21,15 +21,11 @@
   }
 
   @media #{$tablet-landscape} {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: 0.6fr repeat(3, 1fr);
     grid-template-rows: auto;
     grid-gap: unset;
     margin: 0;
     min-height: 174px;
-  }
-
-  @media #{$desktop} {
-    grid-template-columns: 0.6fr repeat(3, 1fr);
 
     > :nth-child(1) {
       grid-column: 2;
