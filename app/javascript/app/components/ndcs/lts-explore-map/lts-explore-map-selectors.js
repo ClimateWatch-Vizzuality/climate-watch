@@ -260,29 +260,18 @@ export const getIndicatorEmissionsData = (
   const data = legend.map(legendItem => {
     let legendItemValue = 0;
     const locationEntries = Object.entries(selectedIndicator.locations);
-    const europeanLocationIsos = Object.keys(
-      selectedIndicator.locations
-    ).filter(iso => europeanCountries.includes(iso));
     locationEntries.forEach(entry => {
       const [locationIso, { label_id: labelId }] = entry;
       if (
         labelId === parseInt(legendItem.id, 10) &&
         emissionPercentages[locationIso]
       ) {
-        if (locationIso === europeSlug) {
-          const EUTotal = parseFloat(emissionPercentages[europeSlug].value);
-          const europeanLocationsValue = europeanLocationIsos.reduce(
-            (acc, iso) => acc + parseFloat(emissionPercentages[iso].value),
-            0
-          );
-          legendItemValue += EUTotal - europeanLocationsValue; // To avoid double counting
-        } else {
+        if (locationIso !== europeSlug) {
           legendItemValue += parseFloat(emissionPercentages[locationIso].value);
         }
       }
     });
     summedPercentage += legendItemValue;
-
     return {
       name: legendItem.name,
       value: legendItemValue
@@ -335,7 +324,6 @@ export const getEmissionsCardData = createSelector(
       minAngle: 3,
       ...getLabels(legend, NO_DOCUMENT_SUBMITTED, true)
     };
-
     return {
       config,
       data
