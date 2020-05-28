@@ -32,7 +32,7 @@ const getData = createSelector(
       const countryDocuments =
         countriesDocuments && countriesDocuments[c.iso_code3];
       const getIconValue = slug =>
-        // TODO: Intends submisstion return 'intends'
+        // TODO: Intends submission return 'intends'
         (countryDocuments && countryDocuments.find(d => d.slug === slug)
           ? 'yes'
           : 'no');

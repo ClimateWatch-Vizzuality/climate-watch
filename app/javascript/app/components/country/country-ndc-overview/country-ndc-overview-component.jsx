@@ -6,6 +6,7 @@ import CardRow from 'components/card/card-row';
 import Intro from 'components/intro';
 import Icon from 'components/icon';
 import cx from 'classnames';
+import moment from 'moment';
 import ModalMetadata from 'components/modal-metadata';
 import Loading from 'components/loading';
 import NoContent from 'components/no-content';
@@ -286,7 +287,7 @@ function CountryNdcOverview(props) {
     </div>
   );
 
-  const { date: documentDate } = selectedDocument || {};
+  const { submission_date: documentDate } = selectedDocument || {};
   const hasSectors = values && sectors;
   const description = hasSectors && (
     <div
@@ -343,7 +344,10 @@ function CountryNdcOverview(props) {
                         ? 'Nationally Determined Contribution (NDC) Overview'
                         : summaryIntroText
                     }
-                    subtitle={documentDate && `(submitted[${documentDate}])`}
+                    subtitle={
+                      documentDate &&
+                      `(submitted ${moment(documentDate).format('MM/DD/YYYY')})`
+                    }
                   />
                   <TabletPortraitOnly>{description}</TabletPortraitOnly>
                   {isCountryPage && (
