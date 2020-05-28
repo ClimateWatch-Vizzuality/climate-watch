@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
 import qs from 'query-string';
 import { uniq } from 'lodash';
-import { DOCUMENT_SLUGS } from 'data/country-documents';
+import { DOCUMENT_COLUMNS_SLUGS } from 'data/country-documents';
 
 const getCountries = state => (state.countries && state.countries.data) || null;
 const getIndicatorsData = state =>
@@ -44,14 +44,16 @@ export const getDocumentsOptionsByCountry = createSelector(
       const countryDocuments =
         countriesDocuments && countriesDocuments[isoCode3];
 
-      const documents = DOCUMENT_SLUGS.map(slug => {
-        const countryDocument =
-          countryDocuments && countryDocuments.find(d => d.slug === slug);
-        if (countryDocument) {
-          return { label: countryDocument.long_name, value: slug };
-        }
-        return null;
-      }).filter(Boolean);
+      const documents = Object.values(DOCUMENT_COLUMNS_SLUGS)
+        .map(slug => {
+          const countryDocument =
+            countryDocuments && countryDocuments.find(d => d.slug === slug);
+          if (countryDocument) {
+            return { label: countryDocument.long_name, value: slug };
+          }
+          return null;
+        })
+        .filter(Boolean);
 
       return {
         ...acc,
