@@ -58,8 +58,8 @@ const getData = createSelector(
 
 export const getColumns = createSelector([getData], rows => {
   if (!rows) return [];
-  const docoumentColumnNames = Object.keys(DOCUMENT_COLUMNS_SLUGS);
-  return ['Country', 'Share of global GHG emissions', ...docoumentColumnNames];
+  const documentColumnNames = Object.keys(DOCUMENT_COLUMNS_SLUGS);
+  return ['Country', 'Share of global GHG emissions', ...documentColumnNames];
 });
 
 export const getFilteredDataBySearch = createSelector(
