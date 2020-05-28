@@ -3,7 +3,11 @@ module Api
     module Data
       module HistoricalEmissions
         class GasSerializer < ActiveModel::Serializer
-          attributes :id, :name
+          attributes :id, :name, :slug
+
+          def slug
+            object.name.parameterize
+          end
         end
       end
     end

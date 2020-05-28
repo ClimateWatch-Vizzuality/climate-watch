@@ -3,7 +3,11 @@ module Api
     module Data
       module NdcContent
         class DataSourceSerializer < ActiveModel::Serializer
-          attributes :id, :name
+          attributes :id, :name, :slug
+
+          def slug
+            object.name.parameterize
+          end
         end
       end
     end
