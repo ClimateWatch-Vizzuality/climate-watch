@@ -232,7 +232,7 @@ GEM
       activerecord (>= 5.2.1)
     powerpack (0.1.2)
     public_suffix (3.0.3)
-    puma (3.12.4)
+    puma (3.12.6)
     rack (2.2.2)
     rack-protection (2.0.8.1)
       rack
@@ -422,7 +422,7 @@ DEPENDENCIES
   oj
   pg (~> 0.20)
   pg_search
-  puma (~> 3.12.4)
+  puma (~> 3.12.6)
   rails (= 5.2.2)
   rails-controller-testing
   rspec-collection_matchers
