@@ -316,7 +316,10 @@ export const getEmissionsCardData = createSelector(
     if (!legend || !selectedIndicator || !indicators) {
       return null;
     }
+
     const emissionsIndicator = indicators.find(i => i.slug === 'lts_ghg');
+    if (!emissionsIndicator) return null;
+
     let data = getIndicatorEmissionsData(
       emissionsIndicator,
       selectedIndicator,

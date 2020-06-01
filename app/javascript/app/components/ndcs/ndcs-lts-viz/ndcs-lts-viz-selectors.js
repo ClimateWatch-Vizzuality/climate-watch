@@ -9,6 +9,7 @@ import sortBy from 'lodash/sortBy';
 import { generateLinkToDataExplorer } from 'utils/data-explorer';
 import worldPaths from 'app/data/world-50m-paths';
 import { COUNTRY_STYLES } from 'components/ndcs/shared/constants';
+import { europeSlug, europeanCountries } from 'app/data/european-countries';
 
 const FEATURE_LTS_UPDATED_DATA =
   process.env.FEATURE_LTS_UPDATED_DATA === 'true';
@@ -210,7 +211,10 @@ export const summarizeIndicators = createSelector(
         }
       };
     });
-    const emissionsIndicator = indicators.find(ind => ind.value === 'ndce_ghg');
+    const emissionsIndicator = indicators.find(ind => ind.value === 'lts_ghg');
+    const europeanLocationIsos = Object.keys(indicator.locations).filter(iso =>
+      europeanCountries.includes(iso)
+    );
     Object.keys(indicator.locations).forEach(l => {
       const location = indicator.locations[l];
       const type =
@@ -220,9 +224,23 @@ export const summarizeIndicators = createSelector(
       if (type) {
         summaryData[type].countries.value += 1;
         if (emissionsIndicator && emissionsIndicator.locations[l]) {
-          summaryData[type].emissions.value += parseFloat(
-            emissionsIndicator.locations[l].value
-          );
+          // To avoid double counting in EUU
+          if (l === europeSlug) {
+            const EUTotal = parseFloat(
+              emissionsIndicator.locations[europeSlug].value
+            );
+            const europeanLocationsValue = europeanLocationIsos.reduce(
+              (acc, i) =>
+                acc + parseFloat(emissionsIndicator.locations[i].value),
+              0
+            );
+            summaryData[type].emissions.value +=
+              EUTotal - europeanLocationsValue;
+          } else {
+            summaryData[type].emissions.value += parseFloat(
+              emissionsIndicator.locations[l].value
+            );
+          }
         }
       }
     });
