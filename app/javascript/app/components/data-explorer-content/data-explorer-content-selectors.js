@@ -1,15 +1,18 @@
 import { createSelector } from 'reselect';
-import remove from 'lodash/remove';
-import isEmpty from 'lodash/isEmpty';
-import isArray from 'lodash/isArray';
-import pick from 'lodash/pick';
-import flatten from 'lodash/flatten';
+import {
+  remove,
+  isEmpty,
+  isArray,
+  pick,
+  flatten,
+  kebabCase,
+  sortBy
+} from 'lodash';
 import qs from 'query-string';
 import { findEqual, isANumber, noEmptyValues } from 'utils/utils';
 import { isNoColumnField } from 'utils/data-explorer';
 import { isPageContained } from 'utils/navigation';
 
-import sortBy from 'lodash/sortBy';
 import {
   DATA_EXPLORER_BLACKLIST,
   DATA_EXPLORER_METHODOLOGY_SOURCE,
@@ -65,20 +68,24 @@ const getMetaForNoModelFilters = createSelector(
     sectionFilters.forEach(field => {
       noModelFiltersMeta[field] = dataSection.meta[field].map(v => ({
         id: v,
-        title: v
+        title: v,
+        slug: kebabCase(v)
       }));
     });
+    // console.log('noModelFiltersMeta:', noModelFiltersMeta);
     return noModelFiltersMeta;
   }
 );
 
 const getSectionMeta = createSelector(
+  // HERE WE HAVE FILTERS!!!
   [getMeta, getRegions, getCountries, getSection, getMetaForNoModelFilters],
   (meta, regions, countries, section, noModelFiltersMeta) => {
     if (!meta || !meta[section] || !regions || !countries || !section) {
       return null;
     }
     const sectionMeta = { ...meta[section], ...noModelFiltersMeta };
+
     if (DATA_EXPLORER_FILTERS[section].includes('regions')) {
       return { ...sectionMeta, regions, countries };
     } else if (DATA_EXPLORER_FILTERS[section].includes('countries')) {
@@ -117,6 +124,12 @@ export const getSourceOptions = createSelector(
     ) {
       return null;
     }
+    // console.log('getSourceOptions()',sectionMeta.data_sources.map(option => {
+    //   const updatedOption = option;
+    //   updatedOption.dataSourceId = option.id;
+    //   updatedOption.name = option.display_name;
+    //   return updatedOption;
+    // }));
     return sectionMeta.data_sources.map(option => {
       const updatedOption = option;
       updatedOption.dataSourceId = option.id;
@@ -136,13 +149,16 @@ const removeFiltersPrefix = (selectedFields, prefix) => {
 };
 
 const findSelectedValueObject = (meta, selectedId) =>
+  // console.log('meta: ', meta, ' selectedId: ', selectedId);
   meta.find(
     option =>
       option.iso_code === selectedId ||
       option.iso_code3 === selectedId ||
       option.name === selectedId ||
+      String(option.slug) === selectedId ||
       String(option.id) === selectedId
-  );
+  )
+;
 
 const addTopEmittersMembers = (isosArray, regions, key) => {
   if (key === FILTER_NAMES.regions && isosArray.includes('TOP')) {
@@ -172,7 +188,7 @@ function extractFilterIds(parsedFilters, metadata, isLinkQuery = false) {
       metadata.regions,
       key
     );
-
+    // console.log('selectedIds: ', selectedIds);
     const filters = [];
     if (metadataWithSubcategories[parsedKey]) {
       selectedIds.forEach(selectedId => {
@@ -183,6 +199,8 @@ function extractFilterIds(parsedFilters, metadata, isLinkQuery = false) {
         if (foundSelectedOption) filters.push(foundSelectedOption);
       });
     }
+    // console.log('filters: ', filters);
+
     if (filters && filters.length > 0) {
       filterIds[parsedKey] = filters.map(
         f => f.id || f.iso_code || f.iso_code3
@@ -431,6 +449,7 @@ export const getFilterOptions = createSelector(
         filterOptions[f] = optionsArray;
       }
     });
+    // console.log('filterOptions: ', filterOptions);
     return filterOptions;
   }
 );
@@ -474,6 +493,7 @@ const parseGroupsInOptions = createSelector(
         updatedOptions[key] = parseMultipleLevelOptions(updatedOptions[key]);
       }
     });
+
     return updatedOptions;
   }
 );
@@ -517,17 +537,20 @@ export const parseExternalParams = createSelector(
         parsedFields[keyWithoutPrefix] = selectedIds.join(',');
       }
     });
+    // console.log('parsedFields: ', parsedFields);
     return parsedFields;
   }
 );
 
 const findFilterOptions = (options, selectedFilters) =>
+  // console.log('options:', options, ' selectedFilters:', selectedFilters);
   options.filter(f =>
     POSSIBLE_VALUE_FIELDS.find(field => {
       const value = f[field] && String(f[field]);
       return selectedFilters.includes(value);
     })
-  );
+  )
+;
 
 export const getSelectedFilters = createSelector(
   [getSearch, getSection, getFilterOptions],
@@ -561,7 +584,7 @@ export const getSelectedFilters = createSelector(
         );
       }
     });
-
+    // console.log('selectedFilterObjects: ', selectedFilterObjects);
     return selectedFilterObjects;
   }
 );
@@ -755,6 +778,7 @@ export const getSelectedOptions = createSelector(
         }));
       }
     });
+    // console.log('selectedOptions: ',selectedOptions)
 
     return selectedOptions;
   }
@@ -794,6 +818,10 @@ const getYearColumnKeys = createSelector(
   [parseData, getSection],
   (data, section) => {
     if (!data || !data.length || !section) return null;
+    // console.log(
+    //   'Object.keys(data[0]).filter(k => isANumber(k)): ',
+    //   Object.keys(data[0]).filter(k => isANumber(k))
+    // );
     return Object.keys(data[0]).filter(k => isANumber(k));
   }
 );

@@ -87,6 +87,9 @@ const getParamsToUpdate = (updatedFilters, section) => {
   const paramsToUpdate = [];
   Object.keys(updatedFilters).forEach(filterName => {
     const value = updatedFilters[filterName];
+    // console.log('updatedFilters: ', updatedFilters);
+    // console.log('filterName: ', filterName);
+
     const parsedValue = isArray(value) ? parsedMultipleValues(value) : value;
     const blankValue = NON_COLUMN_KEYS.includes(filterName) ? '' : ALL_SELECTED;
     paramsToUpdate.push({
