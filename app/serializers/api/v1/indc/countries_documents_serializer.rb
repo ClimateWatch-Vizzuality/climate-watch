@@ -17,12 +17,13 @@ module Api
               docs += object.laws_info[datum.iso_code3].map do |key, val|
                 next unless val
                 ordering += 1
+                title = key == 'in_framework' ? 'Climate Framework Laws or Policies' : 'Sectoral Laws or Policies'
                 {
                   id: nil,
                   ordering: ordering,
                   slug: key.gsub('in_', ''),
-                  long_name: key.gsub('in_', '').titleize,
-                  description: "Targets in #{key.gsub('in_', '').titleize}",
+                  long_name: title,
+                  description: title,
                   is_ndc: false,
                   submission_date: nil
                 }
