@@ -66,6 +66,7 @@
     "js-yaml": "3.13.1",
     "lodash": "4.17.4",
     "lodash-inflection": "1.5.0",
+    "moment": "^2.26.0",
     "node-sass": "4.5.3",
     "path-complete-extname": "^1.0.0",
     "post-robot": "8.0.26",
