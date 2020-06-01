@@ -3,8 +3,7 @@ export const DOCUMENT_COLUMNS_SLUGS = {
   INDC: 'indc',
   NDC: 'first_ndc',
   '2nd NDC': 'second_ndc',
-  'Targets in National Policies': 'targets',
   LTS: 'lts',
-  'Targets in Laws': 'laws',
-  'Targets in Policies': 'policies'
+  'Climate Framework Laws or Policies': 'laws',
+  'Sectoral Laws or Policies': 'policies'
 };
