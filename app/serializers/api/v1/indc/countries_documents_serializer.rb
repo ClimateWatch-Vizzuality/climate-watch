@@ -2,7 +2,7 @@ module Api
   module V1
     module Indc
       class CountriesDocumentsSerializer < ActiveModel::Serializer
-        attributes :documents, :laws, :policies, :data
+        attributes :documents, :framework, :sectoral, :data
 
         def data
           object.data.map do |datum|
@@ -17,12 +17,13 @@ module Api
               docs += object.laws_info[datum.iso_code3].map do |key, val|
                 next unless val
                 ordering += 1
+                title = key == 'in_framework' ? 'Climate Framework Laws or Policies' : 'Sectoral Laws or Policies'
                 {
                   id: nil,
                   ordering: ordering,
                   slug: key.gsub('in_', ''),
-                  long_name: key.gsub('in_', '').titleize,
-                  description: "Targets in #{key.gsub('in_', '').titleize}",
+                  long_name: title,
+                  description: title,
                   is_ndc: false,
                   submission_date: nil
                 }
@@ -55,11 +56,11 @@ module Api
           end
         end
 
-        def laws
+        def framework
           return {} unless object.laws_and_policies && object.laws_and_policies['targets']
 
           object.laws_and_policies['targets'].map do |target|
-            next if target['sources'].empty? || target['sources'].first['type'] != 'law'
+            next if target['sources'].empty? || !target['sources'].first['framework']
 
             source = target['sources'].first
 
@@ -72,11 +73,11 @@ module Api
           end.compact.uniq
         end
 
-        def policies
+        def sectoral
           return {} unless object.laws_and_policies && object.laws_and_policies['targets']
 
           object.laws_and_policies['targets'].map do |target|
-            next if target['sources'].empty? || target['sources'].first['type'] == 'law'
+            next if target['sources'].empty? || !target['sources'].first['sectoral']
 
             source = target['sources'].first
 
