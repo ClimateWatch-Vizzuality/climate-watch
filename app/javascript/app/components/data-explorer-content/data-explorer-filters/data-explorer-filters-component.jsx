@@ -47,8 +47,6 @@ class DataExplorerFilters extends PureComponent {
     const value = isColumnField
       ? selectedOptions && selectedOptions[field] && selectedOptions[field][0]
       : selectedOptions && selectedOptions[field];
-    console.log('value: ', value, ' selectedOptions[field]: ', selectedOptions);
-    // console.log('options: ', getOptions(filterOptions, field));
     return (
       <Dropdown
         key={label}
@@ -56,7 +54,6 @@ class DataExplorerFilters extends PureComponent {
         placeholder={`Filter by ${deburrCapitalize(label)}`}
         options={getOptions(filterOptions, field)}
         onValueChange={selected => {
-          console.log('selected: ', selected);
           handleFiltersChange({
             [field]: (selected && selected.slug) || selected.value
           });

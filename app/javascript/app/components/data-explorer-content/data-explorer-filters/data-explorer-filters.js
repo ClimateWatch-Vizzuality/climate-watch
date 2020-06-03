@@ -87,9 +87,6 @@ const getParamsToUpdate = (updatedFilters, section) => {
   const paramsToUpdate = [];
   Object.keys(updatedFilters).forEach(filterName => {
     const value = updatedFilters[filterName];
-    // console.log('updatedFilters: ', updatedFilters);
-    // console.log('filterName: ', filterName);
-
     const parsedValue = isArray(value) ? parsedMultipleValues(value) : value;
     const blankValue = NON_COLUMN_KEYS.includes(filterName) ? '' : ALL_SELECTED;
     paramsToUpdate.push({
@@ -123,7 +120,6 @@ class DataExplorerFiltersContainer extends PureComponent {
           defaultOptionsToUpdate[key] = FILTER_DEFAULTS[section][key];
         } else {
           const defaultValues = FILTER_DEFAULTS[section][key].split(',');
-          console.log('[updateDefaultFilters]: filterOptions[key]: ',filterOptions[key])
           const defaultOptions = filterOptions[key].filter(
             f =>
               defaultValues.includes(f.slug) || defaultValues.includes(f.label)
@@ -140,7 +136,6 @@ class DataExplorerFiltersContainer extends PureComponent {
         }
       }
     });
-    console.log('[updateDefaultFilters]: defaultOptionsToUpdate: ',defaultOptionsToUpdate)
     this.handleFiltersChange(defaultOptionsToUpdate, true);
   }
 
