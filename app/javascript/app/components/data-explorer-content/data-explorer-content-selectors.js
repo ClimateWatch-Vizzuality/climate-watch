@@ -77,7 +77,6 @@ const getMetaForNoModelFilters = createSelector(
 );
 
 const getSectionMeta = createSelector(
-  // HERE WE HAVE FILTERS!!!
   [getMeta, getRegions, getCountries, getSection, getMetaForNoModelFilters],
   (meta, regions, countries, section, noModelFiltersMeta) => {
     if (!meta || !meta[section] || !regions || !countries || !section) {
