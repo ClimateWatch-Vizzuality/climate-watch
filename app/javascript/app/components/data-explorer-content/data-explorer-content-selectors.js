@@ -560,6 +560,7 @@ export const getSelectedFilters = createSelector(
         selectedFilterObjects[filterKey] = filterId;
       } else if (isNoModelColumnKey) {
         const noModelOptions =
+          noModelFiltersMeta &&
           noModelFiltersMeta[filterKey] &&
           noModelFiltersMeta[filterKey]
             .filter(f => f.slug === filterId)
