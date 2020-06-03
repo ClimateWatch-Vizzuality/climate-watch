@@ -72,7 +72,6 @@ const getMetaForNoModelFilters = createSelector(
         slug: kebabCase(v)
       }));
     });
-    // console.log('noModelFiltersMeta:', noModelFiltersMeta);
     return noModelFiltersMeta;
   }
 );
@@ -124,12 +123,6 @@ export const getSourceOptions = createSelector(
     ) {
       return null;
     }
-    // console.log('getSourceOptions()',sectionMeta.data_sources.map(option => {
-    //   const updatedOption = option;
-    //   updatedOption.dataSourceId = option.id;
-    //   updatedOption.name = option.display_name;
-    //   return updatedOption;
-    // }));
     return sectionMeta.data_sources.map(option => {
       const updatedOption = option;
       updatedOption.dataSourceId = option.id;
@@ -149,7 +142,6 @@ const removeFiltersPrefix = (selectedFields, prefix) => {
 };
 
 const findSelectedValueObject = (meta, selectedId) =>
-  // console.log('meta: ', meta, ' selectedId: ', selectedId);
   meta.find(
     option =>
       option.iso_code === selectedId ||
@@ -157,9 +149,7 @@ const findSelectedValueObject = (meta, selectedId) =>
       option.name === selectedId ||
       String(option.slug) === selectedId ||
       String(option.id) === selectedId
-  )
-;
-
+  );
 const addTopEmittersMembers = (isosArray, regions, key) => {
   if (key === FILTER_NAMES.regions && isosArray.includes('TOP')) {
     const topRegion = regions.find(r => r.iso === 'TOP');
@@ -188,7 +178,6 @@ function extractFilterIds(parsedFilters, metadata, isLinkQuery = false) {
       metadata.regions,
       key
     );
-    // console.log('selectedIds: ', selectedIds);
     const filters = [];
     if (metadataWithSubcategories[parsedKey]) {
       selectedIds.forEach(selectedId => {
@@ -199,7 +188,6 @@ function extractFilterIds(parsedFilters, metadata, isLinkQuery = false) {
         if (foundSelectedOption) filters.push(foundSelectedOption);
       });
     }
-    // console.log('filters: ', filters);
 
     if (filters && filters.length > 0) {
       filterIds[parsedKey] = filters.map(
@@ -234,12 +222,9 @@ export const getFilterQuery = createSelector(
     const noExternalParams = !searchKeys.some(s =>
       s.startsWith(DATA_EXPLORER_EXTERNAL_PREFIX)
     );
-    console.log('filterDefaultKeys: ',filterDefaultKeys)
     const checkedDefaultParams = filterDefaultKeys.every(defaultKey =>
       parsedSearchKeys.includes(defaultKey, section)
     );
-    console.log('checkedDefaultParams: ',checkedDefaultParams)
-
     const isReadyForFetch = noExternalParams && checkedDefaultParams;
     if (!isReadyForFetch) return null;
     return filterQueryIds(sectionMeta, search, section, false);
@@ -308,7 +293,6 @@ const parseQuery = (filterQuery, section, sectionMeta, nonColumnQuery) => {
       if (id) parsedQuery[parsedKey] = id;
     });
   }
-  console.log('parsedQuery: ',parsedQuery)
   return parsedQuery;
 };
 
@@ -328,9 +312,7 @@ export const getLink = createSelector(
       DATA_EXPLORER_SECTIONS[section].linkName ||
       DATA_EXPLORER_SECTIONS[section].moduleName;
     const subSection = moduleName === 'pathways' ? '/models' : '';
-    console.log(`/${
-      isPageContained ? `${CONTAINED_PATHNAME}/` : ''
-    }${moduleName}${subSection}${urlParameters}`)
+
     return `/${
       isPageContained ? `${CONTAINED_PATHNAME}/` : ''
     }${moduleName}${subSection}${urlParameters}`;
@@ -472,7 +454,6 @@ export const getFilterOptions = createSelector(
         filterOptions[f] = optionsArray;
       }
     });
-    // console.log('filterOptions: ', filterOptions);
     return filterOptions;
   }
 );
@@ -562,24 +543,21 @@ export const parseExternalParams = createSelector(
         parsedFields[keyWithoutPrefix] = selectedIds.join(',');
       }
     });
-    // console.log('parsedFields: ', parsedFields);
     return parsedFields;
   }
 );
 
 const findFilterOptions = (options, selectedFilters) =>
-  // console.log('options:', options, ' selectedFilters:', selectedFilters);
-  options && options.filter(f =>
+  options &&
+  options.filter(f =>
     POSSIBLE_VALUE_FIELDS.find(field => {
       const value = f[field] && String(f[field]);
       return selectedFilters.includes(value);
     })
-  )
-;
-
+  );
 export const getSelectedFilters = createSelector(
-  [getSearch, getSection, getFilterOptions],
-  (search, section, filterOptions) => {
+  [getSearch, getSection, getFilterOptions, getMetaForNoModelFilters],
+  (search, section, filterOptions, noModelFiltersMeta) => {
     if (!search || !section || !filterOptions) return null;
     const selectedFields = search;
     const nonExternalKeys = Object.keys(selectedFields).filter(
@@ -591,14 +569,19 @@ export const getSelectedFilters = createSelector(
       sectionRelatedFields,
       section
     );
-    console.log('[getSelectedFilters()]:parsedSelectedFilters:',parsedSelectedFilters)
     const selectedFilterObjects = {};
     Object.keys(parsedSelectedFilters).forEach(filterKey => {
-      
       const filterId = parsedSelectedFilters[filterKey];
       const isNoModelColumnKey = isNoColumnField(section, filterKey);
-      if (isNonColumnKey(filterKey) || isNoModelColumnKey) {
+      if (isNonColumnKey(filterKey)) {
         selectedFilterObjects[filterKey] = filterId;
+      } else if (isNoModelColumnKey) {
+        const noModelOptions =
+          noModelFiltersMeta[filterKey] &&
+          noModelFiltersMeta[filterKey]
+            .filter(f => f.slug === filterId)
+            .map(f => ({ label: f.title, value: f.slug }));
+        selectedFilterObjects[filterKey] = noModelOptions;
       } else if (filterId === ALL_SELECTED) {
         selectedFilterObjects[filterKey] = [ALL_SELECTED_OPTION];
       } else {
@@ -609,7 +592,6 @@ export const getSelectedFilters = createSelector(
         );
       }
     });
-    console.log('[getSelectedFilters()]:selectedFilterObjects: ', selectedFilterObjects);
     return selectedFilterObjects;
   }
 );
@@ -787,11 +769,17 @@ export const getSelectedOptions = createSelector(
     if (!selectedFields) return null;
     const selectedOptions = {};
     Object.keys(selectedFields).forEach(key => {
-      if (isNonColumnKey(key) || isNoColumnField(section, key)) {
+      if (isNonColumnKey(key)) {
         selectedOptions[key] = {
           value: selectedFields[key],
           label: selectedFields[key]
         };
+      } else if (isNoColumnField(section, key)) {
+        selectedOptions[key] = selectedFields[key] &&
+          selectedFields[key][0] && {
+            value: selectedFields[key][0].value,
+            label: selectedFields[key][0].label
+          };
       } else {
         selectedOptions[key] = parseMultipleLevelOptions(
           selectedFields[key]
@@ -803,8 +791,6 @@ export const getSelectedOptions = createSelector(
         }));
       }
     });
-    console.log('selectedOptions: ',selectedOptions)
-
     return selectedOptions;
   }
 );
@@ -843,10 +829,6 @@ const getYearColumnKeys = createSelector(
   [parseData, getSection],
   (data, section) => {
     if (!data || !data.length || !section) return null;
-    // console.log(
-    //   'Object.keys(data[0]).filter(k => isANumber(k)): ',
-    //   Object.keys(data[0]).filter(k => isANumber(k))
-    // );
     return Object.keys(data[0]).filter(k => isANumber(k));
   }
 );
