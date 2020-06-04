@@ -381,6 +381,7 @@ const getValue = option =>
   option.iso ||
   option.iso_code ||
   option.iso_code3 ||
+  option.slug ||
   (option.id && String(option.id)) ||
   (option.dataSourceId && String(option.dataSourceId));
 
