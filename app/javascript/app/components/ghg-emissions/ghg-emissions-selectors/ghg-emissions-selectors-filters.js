@@ -6,6 +6,7 @@ import kebabCase from 'lodash/kebabCase';
 import uniq from 'lodash/uniq';
 import { arrayToSentence } from 'utils';
 import { getGhgEmissionDefaultSlugs, toPlural } from 'utils/ghg-emissions';
+import { generateLinkToDataExplorer } from 'utils/data-explorer';
 import { sortLabelByAlpha } from 'utils/graphs';
 import {
   GAS_AGGREGATES,
@@ -524,3 +525,19 @@ export const getOptionsSelected = createStructuredSelector({
   calculationSelected: getCalculationSelected,
   chartTypeSelected: getChartTypeSelected
 });
+
+export const getLinkToDataExplorer = createSelector(
+  [getOptionsSelected],
+  (/* search, */ optionsSelected) => {
+    const section = 'historical-emissions';
+    let dataExplorerSearch = search || {};
+    if (selectedCategory && selectedIndicator) {
+      dataExplorerSearch = {
+        category: selectedCategory.value,
+        gases: gasesSelected.value,
+        ...search
+      };
+    }
+    return generateLinkToDataExplorer({}, section);
+  }
+);
