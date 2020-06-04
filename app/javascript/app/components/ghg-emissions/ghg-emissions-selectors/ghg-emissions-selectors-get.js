@@ -1,6 +1,5 @@
 import { createSelector } from 'reselect';
 import { toPlural } from 'utils/ghg-emissions';
-import { generateLinkToDataExplorer } from 'utils/data-explorer';
 
 // meta data for selectors
 export const getData = ({ emissions }) => (emissions && emissions.data) || [];
@@ -26,7 +25,23 @@ export const getSelection = field =>
     return search[field] || search[toPlural(field)];
   });
 
-export const getLinkToDataExplorer = createSelector([getSearch], search => {
-  const section = 'historical-emissions';
-  return generateLinkToDataExplorer(search, section);
-});
+// export const getLinkToDataExplorer = createSelector([getSearch], search => {
+//   const section = 'historical-emissions';
+//   return generateLinkToDataExplorer(search, section);
+// });
+
+// export const getLinkToDataExplorer = createSelector(
+//   [getSearch, getSelectedCategory, getSelectedIndicator],
+//   (search, selectedCategory, selectedIndicator) => {
+//     const section = 'historical-emissions';
+//     let dataExplorerSearch = search || {};
+//     if (selectedCategory && selectedIndicator) {
+//       dataExplorerSearch = {
+//         category: selectedCategory.value,
+//         indicator: selectedIndicator.value,
+//         ...search
+//       };
+//     }
+//     return generateLinkToDataExplorer(dataExplorerSearch, section);
+//   }
+// );
