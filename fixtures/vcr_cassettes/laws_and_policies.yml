@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: http://www.lse.ac.uk/GranthamInstitute/wp-json/wri/v1/targets/ARG
+    uri: https://climate-laws.org/cclow/api/targets/ARG
     body:
       encoding: US-ASCII
       string: ''
@@ -14,63 +14,69 @@ http_interactions:
       User-Agent:
       - Ruby
       Host:
-      - www.lse.ac.uk
+      - climate-laws.org
   response:
     status:
       code: 200
       message: OK
     headers:
       Date:
-      - Wed, 31 Oct 2018 16:23:12 GMT
+      - Sun, 07 Jun 2020 15:13:53 GMT
+      Server:
+      - Apache
+      Cache-Control:
+      - max-age=0, private, must-revalidate
       Strict-Transport-Security:
-      - max-age=63072000; preload
-      X-Frame-Options:
-      - SAMEORIGIN
+      - max-age=31536000; includeSubDomains
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      X-Permitted-Cross-Domain-Policies:
+      - none
       X-Xss-Protection:
       - 1; mode=block
+      X-Request-Id:
+      - dda112b8-0f0e-4380-842d-d23e46c4bd51
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Runtime:
+      - '0.043687'
       X-Content-Type-Options:
       - nosniff
-      - nosniff
-      Vary:
-      - Accept-Encoding,Cookie
-      X-Robots-Tag:
-      - noindex
-      Link:
-      - <http://www.lse.ac.uk/GranthamInstitute/wp-json/>; rel="https://api.w.org/"
-      Access-Control-Expose-Headers:
-      - X-WP-Total, X-WP-TotalPages
-      Access-Control-Allow-Headers:
-      - Authorization, Content-Type
-      Cache-Control:
-      - max-age=0
-      Expires:
-      - Wed, 31 Oct 2018 16:23:12 GMT
-      Access-Control-Allow-Origin:
-      - "*"
-      Access-Control-Allow-Methods:
-      - POST, GET, OPTIONS, PUT, DELETE
-      Access-Control-Allow-Credentials:
-      - 'true'
-      Content-Length:
-      - '2251'
+      X-Powered-By:
+      - Phusion Passenger 6.0.4
+      Set-Cookie:
+      - _passenger_route=1519455965; Path=/
+      Upgrade:
+      - h2
+      Etag:
+      - W/"8777fa70ddb0b573b263131865515db6"
+      Status:
+      - 200 OK
+      Transfer-Encoding:
+      - chunked
       Content-Type:
-      - application/json; charset=UTF-8
+      - application/json; charset=utf-8
     body:
       encoding: UTF-8
-      string: '{"targets":[{"id":39163,"iso_code3":"ARG","country":"Argentina","doc_type":"law","type":"Fixed
-        Level Target","scope":"Renewable Energy","sector":"energy","description":"Wind
-        farms to be installed (10 MW in 2013, 2x 20 MW in 2015, total 2030 of 1 700
-        MW)","sources":[{"id":"36894","title":"Law 26.190 Regimen for the National
-        Promotion for the Production and Use of Renewable Sources of Electric Energy","link":"http:\/\/www.lse.ac.uk\/GranthamInstitute\/law\/law-26-190-regimen-for-the-national-promotion-for-the-production-and-use-of-renewable-sources-of-electric-energy\/"}]},{"id":39164,"iso_code3":"ARG","country":"Argentina","doc_type":"law","type":"Fixed
-        Level Target","scope":"Renewable Energy","sector":"energy","description":"Uptake
-        of share of national industrial capacity in the PV solar sector (targets set
-        for 60 % at 2013, 80 % at 2020, over 80 % at 2030)","sources":[{"id":"36895","title":"Law
-        27191 on Renewable Energy","link":"http:\/\/www.lse.ac.uk\/GranthamInstitute\/law\/law-27191-on-renewable-energy\/"}]},{"id":40107,"iso_code3":"ARG","country":"Argentina","doc_type":"ndc","type":"Fixed
-        Level Target","scope":"Economy Wide","sector":"economy-wide","description":"50%
-        of the managed waste fraction diverted from landfill to composting","sources":[{"title":null,"link":"http:\/\/www4.unfccc.int\/ndcregistry\/pages\/Party.aspx?party=ARG"}]}],"sectors":[{"key":"agriculture","title":"Agriculture"},{"key":"buildings","title":"Buildings"},{"key":"coastal-zones","title":"Coastal
-        Zones"},{"key":"cross-cutting-area","title":"Cross-Cutting Area"},{"key":"disaster-risk-management-drm","title":"Disaster
-        Risk Management (DRM)"},{"key":"economy-wide","title":"Economy Wide"},{"key":"energy","title":"Energy"},{"key":"environment","title":"Environment"},{"key":"health","title":"Health"},{"key":"industry","title":"Industry"},{"key":"lulucf","title":"LULUCF"},{"key":"social-development","title":"Social
-        Development"},{"key":"tourism","title":"Tourism"},{"key":"transportation","title":"Transportation"},{"key":"urban","title":"Urban"},{"key":"waste","title":"Waste"},{"key":"water","title":"Water"}],"country_meta":{"ARG":{"country_profile":"http:\/\/www.lse.ac.uk\/GranthamInstitute\/country-profiles\/argentina\/","lnp_count":"13"}}}'
+      string: '{"targets":[{"id":1014,"iso_code3":"ARG","country":"Argentina","doc_type":"law","type":"Fixed
+        level target","scope":"Renewable Energy","sector":"energy","description":"8%
+        share of renewable sources in electric generation by 2016","sources":[{"id":2007,"title":"Law
+        26.190 Regime for the National Promotion for the Production and Use of Renewable
+        Sources of Electric Energy","type":"law","framework":false,"sectoral":true,"link":"http://climate-laws.org/cclow/geographies/argentina/laws/law-26-190-regime-for-the-national-promotion-for-the-production-and-use-of-renewable-sources-of-electric-energy"}]},{"id":1015,"iso_code3":"ARG","country":"Argentina","doc_type":"law","type":"Fixed
+        level target","scope":"Renewable Energy","sector":"energy","description":"8%
+        share of renewable sources in electric generation by 2017, 12% by 2019, 16%
+        by 2021; 18% by 2023 and 20% by 2025","sources":[{"id":2008,"title":"Law 27191
+        on Renewable Energy","type":"law","framework":false,"sectoral":true,"link":"http://climate-laws.org/cclow/geographies/argentina/laws/law-27191-on-renewable-energy"}]},{"id":1963,"iso_code3":"ARG","country":"Argentina","doc_type":"ndc","type":"Fixed
+        level target","scope":"Economy Wide","sector":"economy-wide","description":"Not
+        exceed a net emission of 483 (unconditional) million tCO2eq by the year 2030;
+        conditional measures, if jointly implemented could bring emissions to 369
+        million tCO2eq for 2030.","sources":[]}],"sectors":[{"key":"agriculture","title":"Agriculture"},{"key":"buildings","title":"Buildings"},{"key":"coastal-zones","title":"Coastal
+        zones"},{"key":"cross-cutting-area","title":"Cross Cutting Area"},{"key":"disaster-risk-management-drm","title":"Disaster
+        Risk Management (Drm)"},{"key":"economy-wide","title":"Economy-wide"},{"key":"energy","title":"Energy"},{"key":"environment","title":"Environment"},{"key":"health","title":"Health"},{"key":"industry","title":"Industry"},{"key":"lulucf","title":"LULUCF"},{"key":"other","title":"Other"},{"key":"residential-and-commercial","title":"Residential
+        and Commercial"},{"key":"rural","title":"Rural"},{"key":"social-development","title":"Social
+        development"},{"key":"tourism","title":"Tourism"},{"key":"transportation","title":"Transportation"},{"key":"urban","title":"Urban"},{"key":"waste","title":"Waste"},{"key":"water","title":"Water"}],"country_meta":{"ARG":{"country_profile":"https://climate-laws.org/cclow/geographies/7","lnp_count":18}}}'
     http_version: 
-  recorded_at: Wed, 31 Oct 2018 16:23:13 GMT
+  recorded_at: Sun, 07 Jun 2020 15:13:53 GMT
 recorded_with: VCR 4.0.0
