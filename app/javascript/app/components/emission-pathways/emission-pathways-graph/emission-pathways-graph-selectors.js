@@ -209,7 +209,6 @@ export const getCategoryOptions = createSelector(
   [getIndicatorsWithData],
   indicators => {
     if (!indicators) return null;
-    // console.log('indicators: ',indicators)
     const categories = indicators
       .filter(i => i.category)
       .map(i => ({
@@ -588,9 +587,6 @@ export const getLinkToDataExplorer = createSelector(
     const section = 'emission-pathways';
     let dataExplorerSearch = search || {};
     if (!categorySelected || !allScenarios.length) return null;
-
-    dataExplorerSearch.categories = categorySelected.value || '';
-
     if (!search.scenario && search.model) {
       // Adds the first scenario belonging to the selected model to populate
       // Data Explorer dropdown and table in case there's no scenario selected

@@ -145,8 +145,8 @@ const findSelectedValueObject = (meta, selectedId) =>
     option =>
       option.iso_code === selectedId ||
       option.iso_code3 === selectedId ||
+      option.slug === selectedId ||
       option.name === selectedId ||
-      String(option.slug) === selectedId ||
       String(option.id) === selectedId
   );
 const addTopEmittersMembers = (isosArray, regions, key) => {
