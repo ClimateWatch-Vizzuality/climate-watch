@@ -530,14 +530,14 @@ export const getLinkToDataExplorer = createSelector(
   [getOptionsSelected],
   (/* search, */ optionsSelected) => {
     const section = 'historical-emissions';
-    let dataExplorerSearch = search || {};
-    if (selectedCategory && selectedIndicator) {
-      dataExplorerSearch = {
-        category: selectedCategory.value,
-        gases: gasesSelected.value,
-        ...search
-      };
-    }
+    // let dataExplorerSearch = search || {};
+    // if (selectedCategory && selectedIndicator) {
+    //   dataExplorerSearch = {
+    //     category: selectedCategory.value,
+    //     gases: gasesSelected.value,
+    //     ...search
+    //   };
+    // }
     return generateLinkToDataExplorer({}, section);
   }
 );
