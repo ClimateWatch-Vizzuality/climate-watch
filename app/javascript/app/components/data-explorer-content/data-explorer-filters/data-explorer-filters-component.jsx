@@ -54,7 +54,9 @@ class DataExplorerFilters extends PureComponent {
         placeholder={`Filter by ${deburrCapitalize(label)}`}
         options={getOptions(filterOptions, field)}
         onValueChange={selected => {
-          handleFiltersChange({ [field]: selected && selected.value });
+          handleFiltersChange({
+            [field]: (selected && selected.slug) || selected.value
+          });
           handleChangeSelectorAnalytics();
         }}
         value={value || null}
@@ -91,11 +93,11 @@ class DataExplorerFilters extends PureComponent {
             return option.length > 0 && last(option).value === ALL_SELECTED
               ? ALL_SELECTED
               : option
-                .map(o => o.value)
+                .map(o => o.slug)
                 .filter(v => v !== ALL_SELECTED)
                 .join();
           }
-          return option && option.value;
+          return option && option.slug;
         };
 
         return (

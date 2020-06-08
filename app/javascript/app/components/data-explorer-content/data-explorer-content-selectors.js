@@ -1,15 +1,18 @@
 import { createSelector } from 'reselect';
-import remove from 'lodash/remove';
-import isEmpty from 'lodash/isEmpty';
-import isArray from 'lodash/isArray';
-import pick from 'lodash/pick';
-import flatten from 'lodash/flatten';
+import {
+  remove,
+  isEmpty,
+  isArray,
+  pick,
+  flatten,
+  kebabCase,
+  sortBy
+} from 'lodash';
 import qs from 'query-string';
 import { findEqual, isANumber, noEmptyValues } from 'utils/utils';
 import { isNoColumnField } from 'utils/data-explorer';
 import { isPageContained } from 'utils/navigation';
 
-import sortBy from 'lodash/sortBy';
 import {
   DATA_EXPLORER_BLACKLIST,
   DATA_EXPLORER_METHODOLOGY_SOURCE,
@@ -65,7 +68,8 @@ const getMetaForNoModelFilters = createSelector(
     sectionFilters.forEach(field => {
       noModelFiltersMeta[field] = dataSection.meta[field].map(v => ({
         id: v,
-        title: v
+        title: v,
+        slug: kebabCase(v)
       }));
     });
     return noModelFiltersMeta;
@@ -79,6 +83,7 @@ const getSectionMeta = createSelector(
       return null;
     }
     const sectionMeta = { ...meta[section], ...noModelFiltersMeta };
+
     if (DATA_EXPLORER_FILTERS[section].includes('regions')) {
       return { ...sectionMeta, regions, countries };
     } else if (DATA_EXPLORER_FILTERS[section].includes('countries')) {
@@ -141,9 +146,9 @@ const findSelectedValueObject = (meta, selectedId) =>
       option.iso_code === selectedId ||
       option.iso_code3 === selectedId ||
       option.name === selectedId ||
+      String(option.slug) === selectedId ||
       String(option.id) === selectedId
   );
-
 const addTopEmittersMembers = (isosArray, regions, key) => {
   if (key === FILTER_NAMES.regions && isosArray.includes('TOP')) {
     const topRegion = regions.find(r => r.iso === 'TOP');
@@ -172,7 +177,6 @@ function extractFilterIds(parsedFilters, metadata, isLinkQuery = false) {
       metadata.regions,
       key
     );
-
     const filters = [];
     if (metadataWithSubcategories[parsedKey]) {
       selectedIds.forEach(selectedId => {
@@ -183,6 +187,7 @@ function extractFilterIds(parsedFilters, metadata, isLinkQuery = false) {
         if (foundSelectedOption) filters.push(foundSelectedOption);
       });
     }
+
     if (filters && filters.length > 0) {
       filterIds[parsedKey] = filters.map(
         f => f.id || f.iso_code || f.iso_code3
@@ -290,6 +295,7 @@ export const getLink = createSelector(
       DATA_EXPLORER_SECTIONS[section].linkName ||
       DATA_EXPLORER_SECTIONS[section].moduleName;
     const subSection = moduleName === 'pathways' ? '/models' : '';
+
     return `/${
       isPageContained ? `${CONTAINED_PATHNAME}/` : ''
     }${moduleName}${subSection}${urlParameters}`;
@@ -359,6 +365,7 @@ const getValue = option =>
   option.iso ||
   option.iso_code ||
   option.iso_code3 ||
+  option.slug ||
   (option.id && String(option.id)) ||
   (option.dataSourceId && String(option.dataSourceId));
 
@@ -474,6 +481,7 @@ const parseGroupsInOptions = createSelector(
         updatedOptions[key] = parseMultipleLevelOptions(updatedOptions[key]);
       }
     });
+
     return updatedOptions;
   }
 );
@@ -522,16 +530,16 @@ export const parseExternalParams = createSelector(
 );
 
 const findFilterOptions = (options, selectedFilters) =>
+  options &&
   options.filter(f =>
     POSSIBLE_VALUE_FIELDS.find(field => {
       const value = f[field] && String(f[field]);
       return selectedFilters.includes(value);
     })
   );
-
 export const getSelectedFilters = createSelector(
-  [getSearch, getSection, getFilterOptions],
-  (search, section, filterOptions) => {
+  [getSearch, getSection, getFilterOptions, getMetaForNoModelFilters],
+  (search, section, filterOptions, noModelFiltersMeta) => {
     if (!search || !section || !filterOptions) return null;
     const selectedFields = search;
     const nonExternalKeys = Object.keys(selectedFields).filter(
@@ -543,14 +551,21 @@ export const getSelectedFilters = createSelector(
       sectionRelatedFields,
       section
     );
-
     const selectedFilterObjects = {};
     Object.keys(parsedSelectedFilters).forEach(filterKey => {
       const filterId = parsedSelectedFilters[filterKey];
       const isNonColumnKey = NON_COLUMN_KEYS.includes(filterKey);
       const isNoModelColumnKey = isNoColumnField(section, filterKey);
-      if (isNonColumnKey || isNoModelColumnKey) {
+      if (isNonColumnKey) {
         selectedFilterObjects[filterKey] = filterId;
+      } else if (isNoModelColumnKey) {
+        const noModelOptions =
+          noModelFiltersMeta &&
+          noModelFiltersMeta[filterKey] &&
+          noModelFiltersMeta[filterKey]
+            .filter(f => f.slug === filterId)
+            .map(f => ({ label: f.title, value: f.slug }));
+        selectedFilterObjects[filterKey] = noModelOptions;
       } else if (filterId === ALL_SELECTED) {
         selectedFilterObjects[filterKey] = [ALL_SELECTED_OPTION];
       } else {
@@ -561,7 +576,6 @@ export const getSelectedFilters = createSelector(
         );
       }
     });
-
     return selectedFilterObjects;
   }
 );
@@ -739,11 +753,17 @@ export const getSelectedOptions = createSelector(
     if (!selectedFields) return null;
     const selectedOptions = {};
     Object.keys(selectedFields).forEach(key => {
-      if (NON_COLUMN_KEYS.includes(key) || isNoColumnField(section, key)) {
+      if (NON_COLUMN_KEYS.includes(key)) {
         selectedOptions[key] = {
           value: selectedFields[key],
           label: selectedFields[key]
         };
+      } else if (isNoColumnField(section, key)) {
+        selectedOptions[key] = selectedFields[key] &&
+          selectedFields[key][0] && {
+            value: selectedFields[key][0].value,
+            label: selectedFields[key][0].label
+          };
       } else {
         selectedOptions[key] = parseMultipleLevelOptions(
           selectedFields[key]
@@ -755,7 +775,6 @@ export const getSelectedOptions = createSelector(
         }));
       }
     });
-
     return selectedOptions;
   }
 );
