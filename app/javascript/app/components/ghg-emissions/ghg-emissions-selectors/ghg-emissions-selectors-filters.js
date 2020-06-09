@@ -17,7 +17,8 @@ import {
   getMeta,
   getRegions,
   getSources,
-  getSelection
+  getSelection,
+  getSearch
 } from './ghg-emissions-selectors-get';
 
 const FEATURE_NEW_GHG = process.env.FEATURE_NEW_GHG === 'true';
@@ -523,8 +524,8 @@ export const getOptionsSelected = createStructuredSelector({
 });
 
 export const getLinkToDataExplorer = createSelector(
-  [getOptionsSelected],
-  (/* search, */ optionsSelected) => {
+  [getSearch, getOptionsSelected],
+  (search, optionsSelected) => {
     const section = 'historical-emissions';
     // let dataExplorerSearch = search || {};
     // if (selectedCategory && selectedIndicator) {
@@ -534,6 +535,7 @@ export const getLinkToDataExplorer = createSelector(
     //     ...search
     //   };
     // }
-    return generateLinkToDataExplorer({}, section);
+    console.log('getLinkToDataExplorer: ',generateLinkToDataExplorer(search, section))
+    return generateLinkToDataExplorer(search, section);
   }
 );

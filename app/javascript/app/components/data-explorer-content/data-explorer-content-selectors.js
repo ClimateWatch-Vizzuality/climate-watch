@@ -507,6 +507,7 @@ export const parseExternalParams = createSelector(
       if (metaMatchingKey !== 'undefined') {
         if (metaMatchingKey === 'subcategories') metaMatchingKey = 'categories';
         const ids = externalFields[k].split(',');
+        console.log('ids: ',ids, ' sectionMeta[metaMatchingKey]: ',sectionMeta[metaMatchingKey])
         const filterObjects = sectionMeta[metaMatchingKey].filter(
           i =>
             ids.map(f => parseInt(f, 10)).includes(i.id) ||
@@ -515,6 +516,7 @@ export const parseExternalParams = createSelector(
             ids.includes(i.iso) ||
             ids.includes(i.slug)
         );
+        console.log('filterObjects: ',filterObjects)
 
         const selectedIds = filterObjects.map(labelObject => {
           const label = POSSIBLE_VALUE_FIELDS.find(
@@ -525,6 +527,7 @@ export const parseExternalParams = createSelector(
         parsedFields[keyWithoutPrefix] = selectedIds.join(',');
       }
     });
+    console.log('parseExternalParams: ',parsedFields)
     return parsedFields;
   }
 );
