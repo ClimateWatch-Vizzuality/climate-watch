@@ -1,7 +1,7 @@
 export const setColumnWidth = ({
   column,
   columns,
-  tableWidth,
+  tableWidth = 1000,
   narrowColumnWidth = 180,
   narrowColumns = [],
   wideColumnWidth = 300,
