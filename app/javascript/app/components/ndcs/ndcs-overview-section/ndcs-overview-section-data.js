@@ -71,7 +71,7 @@ export const commitmentsData = [
         link: 'https://eciu.net/netzerotracker',
         slug: 'lts_zero',
         answerLabel: 'Net-zero target included',
-        metadataSlug: 'ndc_cw',
+        metadataSlug: 'eciu',
         hasExternalLink: true
       },
       {
