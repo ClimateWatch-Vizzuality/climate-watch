@@ -94,6 +94,7 @@ function GhgEmissions(props) {
     handleInfoClick,
     setColumnWidth,
     downloadLink,
+    dataZoomYears,
     dataZoomPosition,
     setDataZoomPosition
   } = props;
@@ -268,6 +269,7 @@ function GhgEmissions(props) {
               <DataZoom
                 data={dataZoomData}
                 position={dataZoomPosition}
+                years={dataZoomYears}
                 setPosition={setDataZoomPosition}
                 onYearChange={(min, max) => setYears({ min, max })}
               />
@@ -426,6 +428,7 @@ GhgEmissions.propTypes = {
   downloadLink: PropTypes.string,
   hideRemoveOptions: PropTypes.bool,
   dataZoomPosition: PropTypes.object,
+  dataZoomYears: PropTypes.object,
   setDataZoomPosition: PropTypes.func.isRequired
 };
 
