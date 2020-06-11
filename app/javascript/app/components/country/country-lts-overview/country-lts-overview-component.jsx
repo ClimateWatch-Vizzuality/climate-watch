@@ -10,6 +10,7 @@ import ModalMetadata from 'components/modal-metadata';
 import Loading from 'components/loading';
 import NoContent from 'components/no-content';
 import { TabletLandscape, TabletPortraitOnly } from 'components/responsive';
+import introSmallTheme from 'styles/themes/intro/intro-simple-small.scss';
 import introTheme from 'styles/themes/intro/intro-simple.scss';
 import cardTheme from 'styles/themes/card/card-overflow-content.scss';
 import layout from 'styles/layout.scss';
@@ -146,7 +147,7 @@ const CountryLtsOverview = props => {
               })}
             >
               <Intro
-                theme={introTheme}
+                theme={isCountryPage ? introSmallTheme : introTheme}
                 title={
                   isCountryPage
                     ? 'Long-term Strategies (LTS) Overview'

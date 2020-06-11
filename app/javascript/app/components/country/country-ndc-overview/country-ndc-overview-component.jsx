@@ -12,6 +12,7 @@ import Loading from 'components/loading';
 import NoContent from 'components/no-content';
 import ButtonGroup from 'components/button-group';
 import { TabletLandscape, TabletPortraitOnly } from 'components/responsive';
+import introSmallTheme from 'styles/themes/intro/intro-simple-small.scss';
 import introTheme from 'styles/themes/intro/intro-simple.scss';
 import layout from 'styles/layout.scss';
 import cardTheme from 'styles/themes/card/card-overflow-content.scss';
@@ -338,7 +339,7 @@ function CountryNdcOverview(props) {
                   })}
                 >
                   <Intro
-                    theme={introTheme}
+                    theme={isCountryPage ? introSmallTheme : introTheme}
                     title={
                       isCountryPage
                         ? 'Nationally Determined Contribution (NDC) Overview'

@@ -44,7 +44,8 @@ class SimpleTable extends PureComponent {
       firstColumnHeaders,
       flexGrow,
       splittedColumns,
-      theme
+      theme,
+      titleLinks
     } = this.props;
 
     if (!data.length) return null;
@@ -115,7 +116,12 @@ class SimpleTable extends PureComponent {
                 flexGrow={flexGrow}
                 maxWidth={setColumnWidth(column)}
                 width={setColumnWidth(column)}
-                cellRenderer={cell => cellRenderer({ props: this.props, cell })}
+                cellRenderer={cell =>
+                  cellRenderer({
+                    props: { ...this.props, titleLinks },
+                    cell
+                  })
+                }
               />
             ))}
           </Table>
@@ -211,7 +217,8 @@ SimpleTable.propTypes = {
   horizontalScroll: PropTypes.bool.isRequired,
   splittedColumns: PropTypes.bool,
   firstColumnHeaders: PropTypes.array.isRequired,
-  theme: PropTypes.object
+  theme: PropTypes.object,
+  titleLinks: PropTypes.array
 };
 
 SimpleTable.defaultProps = {
