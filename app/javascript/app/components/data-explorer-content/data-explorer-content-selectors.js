@@ -260,8 +260,19 @@ const getParsedFilterId = (
   return isArray(id) ? id.join(',') : id;
 };
 
-const parseQuery = (filterQuery, section, sectionMeta) => {
+const parseQuery = (filterQuery, section, sectionMeta, nonColumnQuery) => {
   const parsedQuery = {};
+
+  const nonColumnQueryKeys = Object.keys(nonColumnQuery);
+  if (nonColumnQueryKeys.length) {
+    nonColumnQueryKeys.forEach(key => {
+      const parsedKeyData = DATA_EXPLORER_TO_MODULES_PARAMS[section][key];
+      if (parsedKeyData) {
+        parsedQuery[key] = nonColumnQuery[key];
+      }
+    });
+  }
+
   if (filterQuery && !isEmpty(filterQuery)) {
     Object.keys(filterQuery).forEach(key => {
       const parsedKeyData = DATA_EXPLORER_TO_MODULES_PARAMS[section][key];
@@ -280,10 +291,15 @@ const parseQuery = (filterQuery, section, sectionMeta) => {
 };
 
 export const getLink = createSelector(
-  [getLinkFilterQuery, getSection, getSectionMeta],
-  (filterQuery, section, sectionMeta) => {
+  [getLinkFilterQuery, getNonColumnQuery, getSection, getSectionMeta],
+  (filterQuery, nonColumnQuery, section, sectionMeta) => {
     if (!section) return null;
-    const parsedQuery = parseQuery(filterQuery, section, sectionMeta);
+    const parsedQuery = parseQuery(
+      filterQuery,
+      section,
+      sectionMeta,
+      nonColumnQuery
+    );
     const stringifiedQuery = qs.stringify(parsedQuery);
     const urlParameters = stringifiedQuery ? `?${stringifiedQuery}` : '';
     const moduleName =
