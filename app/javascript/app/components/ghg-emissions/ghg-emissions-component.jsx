@@ -138,7 +138,8 @@ function GhgEmissions(props) {
         },
         {
           label: 'Go to data explorer',
-          link: downloadLink
+          link: downloadLink,
+          target: '_self'
         }
       ],
       reverseDropdown: false
