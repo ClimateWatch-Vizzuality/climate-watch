@@ -181,19 +181,14 @@ export const DATA_EXPLORER_DEPENDENCIES = {
 };
 
 export const DATA_EXPLORER_EXTERNAL_PREFIX = 'external';
-export const MODULES_TO_DATA_EXPLORER_PARAMS = {
-  'historical-emissions': {
-    filter: 'filter',
-    source: 'data-sources',
-    breakBy: 'breakBy'
-  }
-};
 export const DATA_EXPLORER_TO_MODULES_PARAMS = {
   'historical-emissions': {
     data_sources: { key: 'source' },
     gases: { key: 'gases' },
     sectors: { key: 'sectors' },
-    regions: { key: 'regions' }
+    regions: { key: 'regions' },
+    start_year: { key: 'start_year' },
+    end_year: { key: 'end_year' }
   },
   'ndc-sdg-linkages': {
     goals: {

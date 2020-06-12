@@ -26,7 +26,7 @@ export const getSelection = field =>
 
 export const getDataZoomYears = createSelector(getSearch, search => {
   if (!search) return null;
-  return { min: search['start-year'], max: search['end-year'] };
+  return { min: search.start_year, max: search.end_year };
 });
 
 export const getLinkToDataExplorer = createSelector([getSearch], search => {

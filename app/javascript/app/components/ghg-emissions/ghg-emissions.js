@@ -37,11 +37,11 @@ function GhgEmissionsContainer(props) {
     const { min, max } = years || {};
     updateUrlParam([
       {
-        name: 'start-year',
+        name: 'start_year',
         value: min
       },
       {
-        name: 'end-year',
+        name: 'end_year',
         value: max
       }
     ]);
@@ -93,11 +93,11 @@ function GhgEmissionsContainer(props) {
       { name: 'sectors', value: null },
       { name: 'gases', value: null },
       {
-        name: 'start-year',
+        name: 'start_year',
         value: undefined
       },
       {
-        name: 'end-year',
+        name: 'end_year',
         value: undefined
       }
     ]);
