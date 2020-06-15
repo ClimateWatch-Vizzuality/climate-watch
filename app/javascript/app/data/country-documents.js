@@ -4,6 +4,6 @@ export const DOCUMENT_COLUMNS_SLUGS = {
   NDC: 'first_ndc',
   '2nd NDC': 'second_ndc',
   LTS: 'lts',
-  'Climate Framework Laws or Policies': 'laws',
-  'Sectoral Laws or Policies': 'policies'
+  'Climate Framework Laws or Policies': 'framework',
+  'Sectoral Laws or Policies': 'sectoral'
 };
