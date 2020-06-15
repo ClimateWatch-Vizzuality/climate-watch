@@ -120,12 +120,12 @@ module Api
           indicators = indicators.where(values: {locations: {iso_code3: location_list}})
         end
 
-        if params[:document]
+        if params[:document].present?
           indicators = indicators.where(values: {indc_documents: {slug: [params[:document], nil]}})
         end
 
         # params[:source] -> one of ["CAIT", "LTS", "WB", "NDC Explorer", "Pledges"]
-        if params[:source]
+        if params[:source].present?
           source = ::Indc::Source.where(name: params[:source])
           indicators = indicators.where(source_id: source.map(&:id))
         end
@@ -137,7 +137,11 @@ module Api
                   indc_documents: {slug: locations_documents.map(&:second)})
         end
 
-        if params[:category]
+        if params[:indicators].present?
+          indicators = indicators.where(slug: params[:indicators].split(','))
+        end
+
+        if params[:category].present?
           parent = ::Indc::Category.includes(:category_type).
             where(indc_category_types: {name: 'global'}, slug: params[:category])
           indicators = indicators.joins(:categories).where(indc_categories: {parent_id: parent.map(&:id)})
@@ -149,11 +153,11 @@ module Api
         categories = ::Indc::Category.includes(:category_type).order(:order)
 
         # params[:filter] -> ['map', 'table']
-        if params[:filter]
+        if params[:filter].present?
           categories = categories.where(indc_category_types: {name: params[:filter]})
         end
 
-        if params[:category]
+        if params[:category].present?
           parent = ::Indc::Category.includes(:category_type).
             where(indc_category_types: {name: 'global'}, slug: params[:category])
 
