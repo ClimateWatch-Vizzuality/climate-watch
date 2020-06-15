@@ -37,8 +37,7 @@ const NDCCompareAllContainer = props => {
     setColumnWidthUtil({
       column,
       columns,
-      tableWidth: 1120,
-      narrowColumnWidth: 116,
+      narrowColumnWidth: 115,
       wideColumnWidth: 130,
       narrowColumns: [0, 2, 3, 4, 5, 6, 7, 8, 9],
       wideColumns: [1]
