@@ -16,14 +16,17 @@ const selectChartParams = createSelector([getChartParams], chartParams => {
     regionsSelected,
     sectorsSelected,
     gasesSelected,
+    calculationSelected,
     breakBySelected
   } = chartParams;
   const source = `Data source: ${sourcesSelected && sourcesSelected.label}`;
   const regions = createChartParamsString(regionsSelected);
   const sectors = createChartParamsString(sectorsSelected);
   const gases = createChartParamsString(gasesSelected);
+  const calculation = `Calculation: ${calculationSelected &&
+    calculationSelected.label}`;
   const dataBy = `Show data by ${breakBySelected && breakBySelected.label}`;
-  return `${source}; ${regions}; ${sectors}; ${gases}; ${dataBy}.`;
+  return `${source}; Countries/Regions: ${regions}; Sectors/Subsectors: ${sectors}; Gases: ${gases}; ${calculation}; ${dataBy}.`;
 });
 
 export default createStructuredSelector({
