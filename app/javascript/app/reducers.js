@@ -122,7 +122,6 @@ import * as myVisualisationsCreator from 'components/my-climate-watch/viz-creato
 import * as myVisualisationsGraphComponent from 'components/my-climate-watch/my-visualisations/my-cw-vis-graph';
 import * as ndcSdgLinkagesComponent from 'components/ndc-sdg/ndc-sdg-linkages-content';
 import * as HamburgerComponent from 'components/hamburger';
-import * as GHGComponent from 'components/ghg-emissions/ghg-emissions';
 import * as AnchorNavComponent from 'components/anchor-nav';
 import * as ExploreMapShared from 'components/ndcs/shared/explore-map';
 import * as ndcCountryAccordionComponent from 'components/ndcs/ndcs-country-accordion';
@@ -147,7 +146,6 @@ const componentsReducers = {
   espGraph: handleActions(espGraphComponent),
   ndcSdg: handleActions(ndcSdgLinkagesComponent),
   hamburger: handleActions(HamburgerComponent),
-  dataZoom: handleActions(GHGComponent),
   anchorNav: handleActions(AnchorNavComponent),
   exploreMap: handleActions(ExploreMapShared),
   ndcCountryAccordion: handleActions(ndcCountryAccordionComponent)
