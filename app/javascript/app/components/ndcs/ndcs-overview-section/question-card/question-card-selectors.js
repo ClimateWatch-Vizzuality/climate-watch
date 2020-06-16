@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect';
 import isArray from 'lodash/isArray';
+import intersection from 'lodash/intersection';
 import { europeSlug, europeanCountries } from 'app/data/european-countries';
 
 const getIndicators = state =>
@@ -58,7 +59,11 @@ export const getEmissionsPercentage = createSelector(
         // To avoid double counting in EUU
         if (iso === europeSlug) {
           const EUTotal = parseFloat(emissionPercentages[europeSlug].value);
-          const europeanLocationsValue = europeanLocationIsos.reduce(
+          const europeanLocationIsosInAnswer = intersection(
+            europeanLocationIsos,
+            positiveAnswerIsos
+          );
+          const europeanLocationsValue = europeanLocationIsosInAnswer.reduce(
             (acc, i) => acc + parseFloat(emissionPercentages[i].value),
             0
           );
