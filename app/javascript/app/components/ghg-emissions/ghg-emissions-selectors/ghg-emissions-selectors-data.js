@@ -562,8 +562,14 @@ export const getChartConfig = createSelector(
 );
 
 export const getTableData = createSelector(
-  [getChartData, getMetricSelected, getModelSelected, getYColumnOptions],
-  (data, metric, model, yColumnOptions) => {
+  [
+    getChartData,
+    getMetricSelected,
+    getModelSelected,
+    getYColumnOptions,
+    getDataZoomYears
+  ],
+  (data, metric, model, yColumnOptions, dataZoomSelectedYears) => {
     if (!data || !model || !data.length || !yColumnOptions) return null;
 
     const isAbsoluteValue = metric === 'ABSOLUTE_VALUE';
@@ -571,18 +577,26 @@ export const getTableData = createSelector(
     const scaleString = isAbsoluteValue ? 'Mt' : 't';
     const formatValue = value => value && Number((value / scale).toFixed(2));
     const unit = `${scaleString}${getUnit(metric)}`;
-    const tableData = yColumnOptions.map(c => ({
+    const filteredYearValue = (d, c) => {
+      if (dataZoomSelectedYears) {
+        const { min, max } = dataZoomSelectedYears;
+        if ((min && d.x < min) || (max && d.x > max)) {
+          return {};
+        }
+      }
+      return { [String(d.x)]: formatValue(d[c.value]) }; // year: value
+    };
+    return yColumnOptions.map(c => ({
       [GHG_TABLE_HEADER[model]]: c.label,
       unit,
       ...data.reduce(
         (acc, d) => ({
           ...acc,
-          [String(d.x)]: formatValue(d[c.value]) // year: value
+          ...filteredYearValue(d, c)
         }),
         {}
       )
     }));
-    return tableData;
   }
 );
 
