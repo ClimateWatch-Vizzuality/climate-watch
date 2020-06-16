@@ -1,11 +1,14 @@
 import { createStructuredSelector } from 'reselect';
-import { getSearch, getDataZoomYears } from './ghg-emissions-selectors-get';
+import {
+  getSearch,
+  getDataZoomYears,
+  getLinkToDataExplorer
+} from './ghg-emissions-selectors-get';
 import {
   getOptions,
   getOptionsSelected,
   getFiltersConflicts,
-  getModelSelected,
-  getLinkToDataExplorer
+  getModelSelected
 } from './ghg-emissions-selectors-filters';
 import {
   getChartConfig,

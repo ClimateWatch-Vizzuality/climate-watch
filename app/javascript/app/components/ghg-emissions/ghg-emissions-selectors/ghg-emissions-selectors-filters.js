@@ -6,7 +6,6 @@ import kebabCase from 'lodash/kebabCase';
 import uniq from 'lodash/uniq';
 import { arrayToSentence } from 'utils';
 import { getGhgEmissionDefaultSlugs, toPlural } from 'utils/ghg-emissions';
-import { generateLinkToDataExplorer } from 'utils/data-explorer';
 import { sortLabelByAlpha } from 'utils/graphs';
 import {
   GAS_AGGREGATES,
@@ -17,8 +16,7 @@ import {
   getMeta,
   getRegions,
   getSources,
-  getSelection,
-  getSearch
+  getSelection
 } from './ghg-emissions-selectors-get';
 
 const FEATURE_NEW_GHG = process.env.FEATURE_NEW_GHG === 'true';
@@ -286,7 +284,6 @@ const getGasOptions = createSelector([getFieldOptions('gas')], options => {
   if (!options) return [];
 
   const valueByLabel = g => (options.find(opt => opt.label === g) || {}).value;
-
   return options.map(o => ({
     ...o,
     expandsTo:
@@ -339,7 +336,6 @@ const getFiltersSelected = field =>
     [getOptions, getSelection(field), getDefaults],
     (options, selected, defaults) => {
       if (!options || !defaults) return null;
-
       const fieldOptions =
         field === 'location' ? options.regions : options[toPlural(field)];
       const defaultSelection =
@@ -522,20 +518,3 @@ export const getOptionsSelected = createStructuredSelector({
   calculationSelected: getCalculationSelected,
   chartTypeSelected: getChartTypeSelected
 });
-
-export const getLinkToDataExplorer = createSelector(
-  [getSearch, getOptionsSelected],
-  (search, optionsSelected) => {
-    const section = 'historical-emissions';
-    // let dataExplorerSearch = search || {};
-    // if (selectedCategory && selectedIndicator) {
-    //   dataExplorerSearch = {
-    //     category: selectedCategory.value,
-    //     gases: gasesSelected.value,
-    //     ...search
-    //   };
-    // }
-    console.log('getLinkToDataExplorer: ',generateLinkToDataExplorer(search, section))
-    return generateLinkToDataExplorer(search, section);
-  }
-);
