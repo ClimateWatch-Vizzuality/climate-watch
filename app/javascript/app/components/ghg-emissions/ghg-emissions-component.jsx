@@ -326,10 +326,9 @@ function GhgEmissions(props) {
         </TabletLandscape>
         {FEATURE_NEW_GHG && (
           <p className={styles.bodyText}>
-            Explore GHG emissions from multiple data source (CAIT, PIK, UNFCCC)
-            and understand their differences in the
+            Explore GHG emissions from multiple data source (CAIT, PIK, UNFCCC,
+            GCP) and understand their differences in the{' '}
             <a className={styles.link} href="about/faq/ghg">
-              {' '}
               FAQ
             </a>
           </p>
