@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 import { toPlural } from 'utils/ghg-emissions';
-
+import { generateLinkToDataExplorer } from 'utils/data-explorer';
 // meta data for selectors
 export const getData = state =>
   (state && state.emissions && state.emissions.data) || [];
@@ -29,4 +29,9 @@ export const getSelection = field =>
 export const getDataZoomYears = createSelector(getSearch, search => {
   if (!search) return null;
   return { min: search.start_year, max: search.end_year };
+});
+
+export const getLinkToDataExplorer = createSelector([getSearch], search => {
+  const section = 'historical-emissions';
+  return generateLinkToDataExplorer(search, section);
 });
