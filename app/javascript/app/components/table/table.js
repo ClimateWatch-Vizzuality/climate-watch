@@ -15,6 +15,16 @@ import {
 
 import Component from './table-component';
 
+const filterColumns = columns =>
+  (columns
+    ? columns
+      .filter(d => !d.endsWith('NotShow'))
+      .map(d => ({
+        label: toStartCase(d),
+        value: d
+      }))
+    : []);
+
 class TableContainer extends PureComponent {
   constructor(props) {
     super(props);
@@ -33,12 +43,7 @@ class TableContainer extends PureComponent {
       forcedColumnWidth,
       sortBy: sortBy || Object.keys(data[0])[0],
       sortDirection,
-      activeColumns: columns
-        .filter(d => !d.endsWith('NotShow'))
-        .map(d => ({
-          label: toStartCase(d),
-          value: d
-        })),
+      activeColumns: filterColumns(columns),
       columnsOptions: Object.keys(data[0])
         .filter(d => !d.endsWith('NotShow'))
         .map(d => ({
@@ -51,11 +56,16 @@ class TableContainer extends PureComponent {
 
   componentWillReceiveProps(nextProps) {
     const { data, titleLinks } = this.props;
+    const columns = data ? Object.keys(data[0]) : [];
     if (
       !isEqual(nextProps.data !== data) ||
       !isEqual(nextProps.titleLinks, titleLinks)
     ) {
-      this.setState({ data: nextProps.data, titleLinks: nextProps.titleLinks });
+      this.setState({
+        data: nextProps.data,
+        titleLinks: nextProps.titleLinks,
+        activeColumns: filterColumns(columns)
+      });
     }
   }
 
@@ -105,7 +115,9 @@ class TableContainer extends PureComponent {
     const dataWithTitleLinks = [...data];
     this.setState({ data: sortedData, sortBy, sortDirection });
     data.forEach((d, i) => {
-      dataWithTitleLinks[i].titleLink = titleLinks[i];
+      if (titleLinks) {
+        dataWithTitleLinks[i].titleLink = titleLinks[i];
+      }
     });
     const sortedData = this.getDataSorted(
       dataWithTitleLinks,

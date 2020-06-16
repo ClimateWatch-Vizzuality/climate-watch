@@ -48,7 +48,7 @@ class SimpleTable extends PureComponent {
       titleLinks
     } = this.props;
 
-    if (!data.length) return null;
+    if (!data || !data.length) return null;
     const hasColumnSelectedOptions = hasColumnSelect && columnsOptions;
     const activeColumnNames = activeColumns.map(c => c.value);
     const firstColumns =
