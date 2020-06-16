@@ -190,9 +190,35 @@ function GhgEmissionsContainer(props) {
     const defaultColumnOrder = [GHG_TABLE_HEADER[fieldToBreakBy], 'unit'];
     const stripHtmlFromUnit = d => ({ ...d, unit: stripHTML(d.unit) });
     const parsedTableData = tableData.map(stripHtmlFromUnit);
+    const encodeParam = param =>
+      param &&
+      castArray(param)
+        .map(r => r.label)
+        .join(', ');
+    const {
+      sourcesSelected,
+      regionsSelected,
+      sectorsSelected,
+      gasesSelected,
+      calculationSelected,
+      breakBySelected
+    } = selected;
+    const filterSelectionLabels = `Countries/Regions: ${encodeParam(
+      regionsSelected
+    )}. Sectors/Subsectors: ${encodeParam(
+      sectorsSelected
+    )}. Gases: ${encodeParam(gasesSelected)}. Calculation: ${encodeParam(
+      calculationSelected
+    )}. Show data by ${encodeParam(breakBySelected)}`;
+    const metadata = {
+      'Data source': selected && sourcesSelected.label,
+      'Data for': filterSelectionLabels
+    };
+
     const csvContentEncoded = encodeAsCSVContent(
       parsedTableData,
-      orderByColumns(defaultColumnOrder)
+      orderByColumns(defaultColumnOrder),
+      metadata
     );
     invokeCSVDownload(csvContentEncoded);
   };
