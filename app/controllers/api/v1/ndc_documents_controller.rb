@@ -9,7 +9,7 @@ module Api
       def index
         laws_info = SingleRecordFetcher.new(LSE_API, 'laws-info').call
 
-        laws_and_policies = fetch_laws_and_policies if params[:locations].present?
+        laws_and_policies = fetch_laws_and_policies if params[:location].present?
 
         render json: CountriesDocuments.new(set_locations(params), laws_info, laws_and_policies),
                serializer: Api::V1::Indc::CountriesDocumentsSerializer
@@ -19,14 +19,14 @@ module Api
 
       def set_locations(params)
         locs = Location.order(:wri_standard_name)
-        locs = locs.where(iso_code3: params[:locations].split(',')) if params[:locations].present?
+        locs = locs.where(iso_code3: params[:location].split(',')) if params[:location].present?
         locs
       end
 
       def fetch_laws_and_policies
         laws_and_policies = {}
         laws_and_policies['targets'] = []
-        params[:locations].split(',').each do |iso|
+        params[:location].split(',').each do |iso|
           iso = iso == 'EUU' ? 'EUR' : iso
           data = SingleRecordFetcher.new(LSE_API, iso, iso).call
           laws_and_policies['targets'] += data['targets']
