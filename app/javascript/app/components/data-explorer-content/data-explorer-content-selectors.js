@@ -262,6 +262,7 @@ const getParsedFilterId = (
       findEqual(m, ['id', currentId], filterQuery[key][0])
     )[idLabel]
     : filterQuery[key];
+
   return isArray(id) ? id.join(',') : id;
 };
 
@@ -299,12 +300,26 @@ export const getLink = createSelector(
   [getLinkFilterQuery, getNonColumnQuery, getSection, getSectionMeta],
   (filterQuery, nonColumnQuery, section, sectionMeta) => {
     if (!section) return null;
-    const parsedQuery = parseQuery(
-      filterQuery,
-      section,
-      sectionMeta,
-      nonColumnQuery
-    );
+
+    const slugSections = ['lts-content', 'ndc-content'];
+    let query = filterQuery;
+    if (slugSections.includes(section)) {
+      const slugQuery =
+        filterQuery &&
+        Object.keys(filterQuery).reduce((acc, nextFilter) => {
+          const selectedFilter = sectionMeta[nextFilter]
+            ? sectionMeta[nextFilter].find(
+              ({ id }) => id === filterQuery[nextFilter][0]
+            )
+            : null;
+          return {
+            ...acc,
+            [nextFilter]: selectedFilter ? [selectedFilter.slug] : []
+          };
+        }, {});
+      query = slugQuery;
+    }
+    const parsedQuery = parseQuery(query, section, sectionMeta, nonColumnQuery);
     const stringifiedQuery = qs.stringify(parsedQuery);
     const urlParameters = stringifiedQuery ? `?${stringifiedQuery}` : '';
     const moduleName =
@@ -312,9 +327,10 @@ export const getLink = createSelector(
       DATA_EXPLORER_SECTIONS[section].moduleName;
     const subSection = moduleName === 'pathways' ? '/models' : '';
 
-    return `/${
+    const link = `/${
       isPageContained ? `${CONTAINED_PATHNAME}/` : ''
     }${moduleName}${subSection}${urlParameters}`;
+    return link;
   }
 );
 
