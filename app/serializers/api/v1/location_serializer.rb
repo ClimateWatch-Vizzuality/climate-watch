@@ -15,6 +15,11 @@ module Api
                if: -> { object.location_type != 'COUNTRY' }
 
       attribute :topojson, if: -> { instance_options[:topojson] }
+      attribute :ghg_sources, if: -> { instance_options[:ghg_sources] }
+
+      def ghg_sources
+        object.data_sources&.distinct&.pluck(:name)
+      end
     end
   end
 end
