@@ -18,10 +18,12 @@ import {
   getLegendDataOptions,
   getLegendDataSelected,
   getLoading,
-  getTableData,
-  getDataZoomData,
-  getTitleLinks
+  getDataZoomData
 } from './ghg-emissions-selectors-data';
+import {
+  getTableData,
+  getTitleLinks
+} from './ghg-emissions-selectors-table-data';
 import { getProviderFilters } from './ghg-emissions-selectors-providers';
 
 export const getGHGEmissions = createStructuredSelector({
