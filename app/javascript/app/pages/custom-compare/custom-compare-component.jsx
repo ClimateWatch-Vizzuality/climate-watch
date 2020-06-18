@@ -72,8 +72,10 @@ const CustomComparisonComponent = props => {
     handleDocumentFilterChange,
     filtersData,
     backButtonLink,
-    accordionDataLoading
+    accordionDataLoading,
+    selectedCountries
   } = props;
+
   return (
     <div>
       <Header route={route}>
@@ -112,7 +114,7 @@ const CustomComparisonComponent = props => {
       </div>
       {renderRoutes(route.routes)}
       <NdcCompareAllTargetsProvider />
-      <CountriesDocumentsProvider />
+      <CountriesDocumentsProvider location={selectedCountries} />
     </div>
   );
 };
@@ -155,7 +157,8 @@ CustomComparisonComponent.propTypes = {
   handleCountryFilterChange: PropTypes.func,
   handleDocumentFilterChange: PropTypes.func,
   backButtonLink: PropTypes.string,
-  accordionDataLoading: PropTypes.bool
+  accordionDataLoading: PropTypes.bool,
+  selectedCountries: PropTypes.string
 };
 
 export default CustomComparisonComponent;

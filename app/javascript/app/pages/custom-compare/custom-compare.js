@@ -11,7 +11,8 @@ import {
   getFiltersData,
   getSelectedTargets,
   getBackButtonLink,
-  getDocumentsOptionsByCountry
+  getDocumentsOptionsByCountry,
+  getSelectedCountries
 } from './custom-compare-selectors';
 
 const DEFAULT_DOCUMENT = 'NDC';
@@ -29,6 +30,7 @@ const mapStateToProps = (state, { location, route }) => {
     selectedTargets: getSelectedTargets(state, { search }),
     backButtonLink: getBackButtonLink(null, { search }),
     documentsByCountry: getDocumentsOptionsByCountry(state, { search }),
+    selectedCountries: getSelectedCountries(state, { search }),
     accordionDataLoading:
       state.customCompareAccordion && state.customCompareAccordion.loading
   };

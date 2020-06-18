@@ -1,13 +1,25 @@
 import { createSelector } from 'reselect';
 import qs from 'query-string';
 import { uniq } from 'lodash';
-import { DOCUMENT_COLUMNS_SLUGS } from 'data/country-documents';
+// import { DOCUMENT_COLUMNS_SLUGS } from 'data/country-documents';
 
 const getCountries = state => (state.countries && state.countries.data) || null;
 const getIndicatorsData = state =>
   (state.compareAll.data && state.compareAll.data.indicators) || null;
-const getCountriesDocuments = state =>
-  (state.countriesDocuments && state.countriesDocuments.data) || null;
+const getCountriesDocuments = state => {
+  if (!state.countriesDocuments || !state.countriesDocuments.data) return null;
+  const {
+    documents = [],
+    framework = [],
+    sectoral = []
+  } = state.countriesDocuments.data;
+  return { documents, framework, sectoral };
+};
+const getCountriesDocumentsData = state =>
+  (state.countriesDocuments &&
+    state.countriesDocuments.data &&
+    state.countriesDocuments.data.data) ||
+  null;
 const getQuery = (state, { search }) => search || '';
 
 export const getBackButtonLink = createSelector([getQuery], query => {
@@ -27,42 +39,13 @@ const getCountryOptions = createSelector([getCountries], countries => {
   }));
 });
 
-export const getDocumentsOptionsByCountry = createSelector(
-  [getCountryOptions, getIndicatorsData, getCountriesDocuments],
-  (countries, indicators, countriesDocuments) => {
-    if (
-      !countries ||
-      !countries.length ||
-      !indicators ||
-      !indicators.length ||
-      !countriesDocuments
-    ) {
-      return null;
-    }
-    const rows = countries.reduce((acc, { value: isoCode3 }) => {
-      if (!isoCode3) return acc;
-      const countryDocuments =
-        countriesDocuments && countriesDocuments[isoCode3];
-
-      const documents = Object.values(DOCUMENT_COLUMNS_SLUGS)
-        .map(slug => {
-          const countryDocument =
-            countryDocuments && countryDocuments.find(d => d.slug === slug);
-          if (countryDocument) {
-            return { label: countryDocument.long_name, value: slug };
-          }
-          return null;
-        })
-        .filter(Boolean);
-
-      return {
-        ...acc,
-        [isoCode3]: documents
-      };
-    }, {});
-    return rows;
-  }
-);
+export const DOCUMENT_COLUMNS_SLUGS = {
+  'Pre-2020 Pledges': 'pledges',
+  INDC: 'indc',
+  NDC: 'first_ndc',
+  '2nd NDC': 'second_ndc',
+  LTS: 'lts'
+};
 
 export const getSelectedTargets = createSelector([getQuery], query => {
   if (!query) return null;
@@ -76,6 +59,67 @@ export const getSelectedTargets = createSelector([getQuery], query => {
     return { key: `target${i}`, country, document };
   });
 });
+
+export const getSelectedCountries = createSelector(
+  [getSelectedTargets],
+  selectedTargets => {
+    if (!selectedTargets) return null;
+    const selectedCountries = selectedTargets
+      .map(({ country }) => country)
+      .join(',');
+    return selectedCountries;
+  }
+);
+
+export const getDocumentsOptionsByCountry = createSelector(
+  [
+    getCountryOptions,
+    getIndicatorsData,
+    getCountriesDocuments,
+    getCountriesDocumentsData
+  ],
+  (countries, indicators, countriesDocuments, countriesDocumentsData) => {
+    if (
+      !countries ||
+      !countries.length ||
+      !indicators ||
+      !indicators.length ||
+      !countriesDocuments ||
+      !countriesDocumentsData
+    ) {
+      return null;
+    }
+
+    const selectedCountries = Object.keys(countriesDocumentsData);
+    const rows = selectedCountries.reduce((acc, iso3) => {
+      const documents = Object.values(DOCUMENT_COLUMNS_SLUGS)
+        .map(slug => {
+          const countryDocument =
+            countriesDocumentsData &&
+            countriesDocumentsData[iso3].find(d => d.slug === slug);
+          if (countryDocument) {
+            return { label: countryDocument.long_name, value: slug };
+          }
+          return null;
+        })
+        .filter(Boolean);
+
+      const { framework, sectoral } = countriesDocuments;
+      const frameworkDocuments = framework
+        .filter(doc => doc.iso === iso3)
+        .map(doc => ({ label: doc.long_name, value: doc.slug, id: doc.id }));
+      const sectoralDocuments = sectoral
+        .filter(doc => doc.iso === iso3)
+        .map(doc => ({ label: doc.long_name, value: doc.slug, id: doc.id }));
+
+      return {
+        ...acc,
+        [iso3]: [...documents, ...frameworkDocuments, ...sectoralDocuments]
+      };
+    }, {});
+    return rows;
+  }
+);
 
 export const getFiltersData = createSelector(
   [getCountryOptions, getDocumentsOptionsByCountry, getSelectedTargets],
