@@ -205,6 +205,7 @@ function filterQueryIds(sectionMeta, search, section, isLinkQuery) {
     sectionMeta,
     isLinkQuery
   );
+
   return filterIds;
 }
 
@@ -285,29 +286,46 @@ const parseQuery = (filterQuery, section, sectionMeta) => {
   return parsedQuery;
 };
 
+const parseSlugParams = (filterQuery, section, sectionMeta) => {
+  const SLUG_SECTIONS = ['historical-emissions', 'lts-content', 'ndc-content'];
+  if (SLUG_SECTIONS.includes(section)) {
+    const slugFilterQuery =
+      filterQuery &&
+      Object.keys(filterQuery).reduce((acc, nextFilter) => {
+        const selectedFilters = sectionMeta[nextFilter]
+          ? sectionMeta[nextFilter].filter(f => {
+            const isoCode = f.iso || f.iso_code3 || f.id;
+            return filterQuery[nextFilter].includes(isoCode);
+          })
+          : [];
+
+        const selectedSlugs = selectedFilters
+          .map(({ slug, iso, iso_code3 }) => {
+            if (
+              section === 'historical-emissions' &&
+              nextFilter === 'data_sources'
+            ) {
+              return slug.toUpperCase();
+            }
+            return slug || iso || iso_code3;
+          })
+          .join(',');
+
+        return {
+          ...acc,
+          [nextFilter]: selectedSlugs
+        };
+      }, {});
+    return slugFilterQuery;
+  }
+  return filterQuery;
+};
+
 export const getLink = createSelector(
   [getLinkFilterQuery, getSection, getSectionMeta],
   (filterQuery, section, sectionMeta) => {
     if (!section) return null;
-    const slugSections = ['lts-content', 'ndc-content'];
-    let query = filterQuery;
-
-    if (slugSections.includes(section)) {
-      const slugQuery =
-        filterQuery &&
-        Object.keys(filterQuery).reduce((acc, nextFilter) => {
-          const selectedFilter = sectionMeta[nextFilter]
-            ? sectionMeta[nextFilter].find(
-              ({ id }) => id === filterQuery[nextFilter][0]
-            )
-            : null;
-          return {
-            ...acc,
-            [nextFilter]: selectedFilter ? [selectedFilter.slug] : []
-          };
-        }, {});
-      query = slugQuery;
-    }
+    const query = parseSlugParams(filterQuery, section, sectionMeta);
     const parsedQuery = parseQuery(query, section, sectionMeta);
     const stringifiedQuery = qs.stringify(parsedQuery);
     const urlParameters = stringifiedQuery ? `?${stringifiedQuery}` : '';
