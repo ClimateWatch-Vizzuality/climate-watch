@@ -61,14 +61,14 @@ module Api
 
           object.laws_and_policies['targets'].map do |target|
             next if target['sources'].empty? || !target['sources'].first['framework']
-
             source = target['sources'].first
 
             {
               id: source['id'],
               slug: source['title'].parameterize,
               long_name: source['title'],
-              url: source['link']
+              url: source['link'],
+              iso: target['iso_code3']
             }
           end.compact.uniq
         end
@@ -85,7 +85,8 @@ module Api
               id: source['id'],
               slug: source['title'].parameterize,
               long_name: source['title'],
-              url: source['link']
+              url: source['link'],
+              iso: target['iso_code3']
             }
           end.compact.uniq
         end
