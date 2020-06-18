@@ -144,7 +144,7 @@ class LawsAndPolicies extends PureComponent {
               <CardRow
                 rowData={{
                   title: 'Targets',
-                  subtitle: currentSector && currentSector.label,
+                  subtitle: ndcContent.scope,
                   value: ndcContent.description
                 }}
               />
