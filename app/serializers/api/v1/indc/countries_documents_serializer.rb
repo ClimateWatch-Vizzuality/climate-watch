@@ -14,9 +14,12 @@ module Api
 
             ordering = docs.empty? ? 0 : docs.last['ordering']
 
+            # if country hasn't submitted a second_ndc, but they have expressed
+            # the intention of doing so, by responding 'enhance_2020', or 'intend_2020'
+            # on indicator with slug: ndce_status_2020 / ndce_status_2020_label
             if docs.select{|t| t['slug'] == 'second_ndc'}.empty? &&
-                ::Indc::Label.joins(indc_values: :location).where(slug: ['enhance_2020', 'intend_2020']).
-                  where(locations: {iso_code3: datum.iso_code3}).any?
+                ::Indc::Label.joins(:indicator, indc_values: :location).where(slug: ['enhance_2020', 'intend_2020']).
+                where(locations: {iso_code3: datum.iso_code3}).where(indc_indicators: {slug: 'ndce_status_2020'}).any?
               docs += ::Indc::Document.select('indc_documents.*, NULL AS submission_date').
                 where(slug: 'second_ndc')
             end
