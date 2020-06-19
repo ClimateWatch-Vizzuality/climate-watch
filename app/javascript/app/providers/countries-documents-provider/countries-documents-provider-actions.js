@@ -32,7 +32,6 @@ export const fetchCountriesDocuments = createThunkAction(
           throw Error(response.statusText);
         })
         .then(data => {
-          // console.log('fetchCountriesDocumentsReady: ',data)
           dispatch(fetchCountriesDocumentsReady(data));
         })
         .catch(error => {

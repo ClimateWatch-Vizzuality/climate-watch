@@ -1,26 +1,32 @@
 import { createSelector } from 'reselect';
 import qs from 'query-string';
 import { uniq } from 'lodash';
-// import { DOCUMENT_COLUMNS_SLUGS } from 'data/country-documents';
 
 const getCountries = state => (state.countries && state.countries.data) || null;
 const getIndicatorsData = state =>
   (state.compareAll.data && state.compareAll.data.indicators) || null;
 const getCountriesDocuments = state => {
-  if (!state.countriesDocuments || !state.countriesDocuments.data) return null;
+  if (!state.countriesDocuments) return null;
   const {
     documents = [],
     framework = [],
     sectoral = []
-  } = state.countriesDocuments.data;
+  } = state.countriesDocuments;
   return { documents, framework, sectoral };
 };
 const getCountriesDocumentsData = state =>
-  (state.countriesDocuments &&
-    state.countriesDocuments.data &&
-    state.countriesDocuments.data.data) ||
-  null;
+  (state.countriesDocuments && state.countriesDocuments.data) || null;
 const getQuery = (state, { search }) => search || '';
+
+const createDropdownOption = (data, group) =>
+  (data
+    ? {
+      label: data.long_name,
+      value: data.slug,
+      id: data.id,
+      optGroup: group
+    }
+    : null);
 
 export const getBackButtonLink = createSelector([getQuery], query => {
   if (!query) return '/compare-all-targets';
@@ -53,7 +59,7 @@ export const getSelectedTargets = createSelector([getQuery], query => {
   return [1, 2, 3].map((value, i) => {
     // targets are saved as a string 'ISO3-DOCUMENT', e.g. 'USA-NDC'
     const target =
-      queryTargets && queryTargets[i] && queryTargets[i].split('-');
+      queryTargets && queryTargets[i] && queryTargets[i].split(/-(.+)/);
     const country = target && target[0];
     const document = target && target[1];
     return { key: `target${i}`, country, document };
@@ -72,16 +78,9 @@ export const getSelectedCountries = createSelector(
 );
 
 export const getDocumentsOptionsByCountry = createSelector(
-  [
-    getCountryOptions,
-    getIndicatorsData,
-    getCountriesDocuments,
-    getCountriesDocumentsData
-  ],
-  (countries, indicators, countriesDocuments, countriesDocumentsData) => {
+  [getIndicatorsData, getCountriesDocuments, getCountriesDocumentsData],
+  (indicators, countriesDocuments, countriesDocumentsData) => {
     if (
-      !countries ||
-      !countries.length ||
       !indicators ||
       !indicators.length ||
       !countriesDocuments ||
@@ -92,29 +91,28 @@ export const getDocumentsOptionsByCountry = createSelector(
 
     const selectedCountries = Object.keys(countriesDocumentsData);
     const rows = selectedCountries.reduce((acc, iso3) => {
-      const documents = Object.values(DOCUMENT_COLUMNS_SLUGS)
+      const otherDocuments = Object.values(DOCUMENT_COLUMNS_SLUGS)
         .map(slug => {
           const countryDocument =
             countriesDocumentsData &&
             countriesDocumentsData[iso3].find(d => d.slug === slug);
-          if (countryDocument) {
-            return { label: countryDocument.long_name, value: slug };
-          }
-          return null;
+          return createDropdownOption(countryDocument);
         })
         .filter(Boolean);
 
       const { framework, sectoral } = countriesDocuments;
+
       const frameworkDocuments = framework
         .filter(doc => doc.iso === iso3)
-        .map(doc => ({ label: doc.long_name, value: doc.slug, id: doc.id }));
+        .map(doc => createDropdownOption(doc, 'framework'));
+
       const sectoralDocuments = sectoral
         .filter(doc => doc.iso === iso3)
-        .map(doc => ({ label: doc.long_name, value: doc.slug, id: doc.id }));
+        .map(doc => createDropdownOption(doc, 'sectoral'));
 
       return {
         ...acc,
-        [iso3]: [...documents, ...frameworkDocuments, ...sectoralDocuments]
+        [iso3]: [...otherDocuments, ...frameworkDocuments, ...sectoralDocuments]
       };
     }, {});
     return rows;

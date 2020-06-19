@@ -8,10 +8,12 @@ import Sticky from 'react-stickynode';
 import AnchorNav from 'components/anchor-nav';
 import BackButton from 'components/back-button';
 import Dropdown from 'components/dropdown';
+import { MultiLevelDropdown } from 'cw-components';
 import NdcCompareAllTargetsProvider from 'providers/ndc-compare-all-targets-provider';
 import CountriesDocumentsProvider from 'providers/countries-documents-provider';
 
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
+import multiLevelDropdownTheme from 'styles/themes/dropdown/multi-level-dropdown.scss';
 import layout from 'styles/layout.scss';
 
 import styles from './custom-compare-styles.scss';
@@ -20,6 +22,11 @@ const COUNTRY_PLACEHOLDERS = [
   'Add a first country',
   'Add a second country',
   'Add a third country'
+];
+
+const DOCUMENT_DROPDOWN_GROUPS = [
+  { groupId: 'sectoral', title: 'Sectoral Laws or Policies' },
+  { groupId: 'framework', title: 'Climate Framework Laws or Policies' }
 ];
 
 const FiltersGroup = ({
@@ -50,15 +57,15 @@ const FiltersGroup = ({
         noAutoSort
         disabled={disabled}
       />
-      <Dropdown
+      <MultiLevelDropdown
         key={`${key}-document`}
+        optGroups={DOCUMENT_DROPDOWN_GROUPS}
         options={documentOptions}
-        onValueChange={({ value }) => handleDocumentFilterChange(key, value)}
-        value={documentValue}
-        placeholder="Choose a submission"
-        hideResetButton
-        noAutoSort
-        disabled={disabled}
+        values={documentValue ? [documentValue] : []}
+        onChange={({ value }) => handleDocumentFilterChange(key, value)}
+        clearable={false}
+        // multiselect
+        theme={multiLevelDropdownTheme}
       />
     </div>
   );
