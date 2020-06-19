@@ -88,13 +88,13 @@ export const getDocumentsOptionsByCountry = createSelector(
     ) {
       return null;
     }
-
     const selectedCountries = Object.keys(countriesDocumentsData);
     const rows = selectedCountries.reduce((acc, iso3) => {
       const otherDocuments = Object.values(DOCUMENT_COLUMNS_SLUGS)
         .map(slug => {
           const countryDocument =
             countriesDocumentsData &&
+            countriesDocumentsData[iso3] &&
             countriesDocumentsData[iso3].find(d => d.slug === slug);
           return createDropdownOption(countryDocument);
         })
