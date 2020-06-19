@@ -12,8 +12,16 @@ module Api
                select('indc_documents.*, indc_submissions.submission_date').
                order(:ordering).distinct.to_a
 
+            ordering = docs.empty? ? 0 : docs.last['ordering']
+
+            if docs.select{|t| t['slug'] == 'second_ndc'}.empty? &&
+                ::Indc::Label.joins(indc_values: :location).where(slug: ['enhance_2020', 'intend_2020']).
+                  where(locations: {iso_code3: datum.iso_code3}).any?
+              docs += ::Indc::Document.select('indc_documents.*, NULL AS submission_date').
+                where(slug: 'second_ndc')
+            end
+
             if object.laws_info[datum.iso_code3]
-              ordering = docs.empty? ? 0 : docs.last["ordering"]
               docs += object.laws_info[datum.iso_code3].map do |key, val|
                 next unless val
                 ordering += 1
