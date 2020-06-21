@@ -12,11 +12,11 @@ import {
 } from './ghg-emissions-selectors-filters';
 import {
   getChartConfig,
-  getChartData,
+  getSortedChartData,
   getChartDomain,
   getHideRemoveOptions,
-  getLegendDataOptions,
-  getLegendDataSelected,
+  getLegendDataOptionsWithOthers,
+  getLegendDataSelectedWithOthers,
   getLoading,
   getDataZoomData
 } from './ghg-emissions-selectors-data';
@@ -32,9 +32,9 @@ export const getGHGEmissions = createStructuredSelector({
   options: getOptions,
   selected: getOptionsSelected,
   filtersConflicts: getFiltersConflicts,
-  legendOptions: getLegendDataOptions,
-  legendSelected: getLegendDataSelected,
-  data: getChartData,
+  legendOptions: getLegendDataOptionsWithOthers,
+  legendSelected: getLegendDataSelectedWithOthers,
+  data: getSortedChartData,
   tableData: getTableData,
   titleLinks: getTitleLinks,
   domain: getChartDomain,
