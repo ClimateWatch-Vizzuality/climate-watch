@@ -43,7 +43,6 @@ const FiltersGroup = ({
     documentValue,
     documentOptions
   } = data;
-
   return (
     <div className={styles.filter}>
       <Dropdown
@@ -62,9 +61,11 @@ const FiltersGroup = ({
         optGroups={DOCUMENT_DROPDOWN_GROUPS}
         options={documentOptions}
         values={documentValue ? [documentValue] : []}
-        onChange={({ value }) => handleDocumentFilterChange(key, value)}
+        onChange={({ optGroup, value }) => {
+          const documentParam = optGroup ? `${optGroup}-${value}` : value;
+          handleDocumentFilterChange(key, documentParam);
+        }}
         clearable={false}
-        // multiselect
         theme={multiLevelDropdownTheme}
       />
     </div>

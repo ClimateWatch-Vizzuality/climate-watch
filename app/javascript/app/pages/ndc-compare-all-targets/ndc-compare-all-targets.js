@@ -13,6 +13,7 @@ import {
   getLoading,
   getSearch,
   getSelectedTargets,
+  getSelectedTableTargets,
   getQuery
 } from './ndc-compare-all-targets-selectors';
 
@@ -26,6 +27,7 @@ const mapStateToProps = (state, { location }) => {
       search
     }),
     selectedTargets: getSelectedTargets(state, { search }),
+    selectedTableTargets: getSelectedTableTargets(state, { search }),
     queryParams: getQuery(state, { search })
   };
 };

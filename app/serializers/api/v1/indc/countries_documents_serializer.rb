@@ -57,7 +57,7 @@ module Api
         end
 
         def framework
-          return {} unless object.laws_and_policies && object.laws_and_policies['targets']
+          return [] unless object.laws_and_policies && object.laws_and_policies['targets']
 
           object.laws_and_policies['targets'].map do |target|
             next if target['sources'].empty? || !target['sources'].first['framework']
@@ -74,7 +74,7 @@ module Api
         end
 
         def sectoral
-          return {} unless object.laws_and_policies && object.laws_and_policies['targets']
+          return [] unless object.laws_and_policies && object.laws_and_policies['targets']
 
           object.laws_and_policies['targets'].map do |target|
             next if target['sources'].empty? || !target['sources'].first['sectoral']

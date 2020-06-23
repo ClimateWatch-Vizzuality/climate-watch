@@ -50,7 +50,6 @@ const CustomCompare = props => {
   const handleCountryFilterChange = (targetKey, newCountry) => {
     const { selectedTargets, documentsByCountry } = props;
     const newTargetParams = [];
-
     const newCountryDocuments =
       documentsByCountry && documentsByCountry[newCountry]
         ? documentsByCountry[newCountry].map(({ value }) => value)

@@ -58,7 +58,8 @@ const NDCCompareAllTargets = props => {
     columns,
     setColumnWidth,
     handleTargetsChange,
-    selectedTargets
+    selectedTargets,
+    selectedTableTargets
   } = props;
   return (
     <React.Fragment>
@@ -125,7 +126,7 @@ const NDCCompareAllTargets = props => {
             noContentMsg={noContentMsg}
             columns={columns}
             setColumnWidth={setColumnWidth}
-            selectedTargets={selectedTargets}
+            selectedTargets={selectedTableTargets}
             setSelectedTargets={handleTargetsChange}
           />
         </div>
@@ -147,7 +148,8 @@ NDCCompareAllTargets.propTypes = {
   columns: PropTypes.array,
   setColumnWidth: PropTypes.func.isRequired,
   location: PropTypes.object,
-  selectedTargets: PropTypes.array
+  selectedTargets: PropTypes.array,
+  selectedTableTargets: PropTypes.array
 };
 
 export default NDCCompareAllTargets;

@@ -60,7 +60,7 @@ export const getSelectedTargets = createSelector([getQuery], query => {
     // targets are saved as a string 'ISO3-DOCUMENT', e.g. 'USA-NDC'
     const target =
       queryTargets && queryTargets[i] && queryTargets[i].split(/-(.+)/);
-    const country = target && target[0];
+    const country = target && target[0].replace('-', '');
     const document = target && target[1];
     return { key: `target${i}`, country, document };
   });
@@ -131,17 +131,27 @@ export const getFiltersData = createSelector(
       return null;
     }
 
-    const filtersData = targets.map(({ key, country, document }) => ({
-      key,
-      countryValue: countryOptions.find(({ value }) => country === value),
-      contriesOptions: countryOptions,
-      documentValue:
+    const filtersData = targets.map(({ key, country, document }) => {
+      const documentValue =
         documentOptions &&
         document &&
         documentOptions[country] &&
-        documentOptions[country].find(({ value }) => value === document),
-      documentOptions: documentOptions ? documentOptions[country] : []
-    }));
+        documentOptions[country].find(({ value, optGroup }) => {
+          const selectedDocument =
+            document.split(/-(.+)/).length > 1
+              ? document.split(/-(.+)/)[1]
+              : document;
+          return value === selectedDocument || optGroup === selectedDocument;
+        });
+
+      return {
+        key,
+        countryValue: countryOptions.find(({ value }) => country === value),
+        contriesOptions: countryOptions,
+        documentValue,
+        documentOptions: documentOptions ? documentOptions[country] : []
+      };
+    });
     return filtersData;
   }
 );
