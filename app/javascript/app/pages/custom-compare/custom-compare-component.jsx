@@ -63,9 +63,8 @@ const FiltersGroup = ({
         optGroups={DOCUMENT_DROPDOWN_GROUPS}
         options={documentOptions}
         values={documentValue ? [documentValue] : []}
-        onChange={({ optGroup, value }) => {
-          const documentParam = optGroup ? `${optGroup}-${value}` : value;
-          handleDocumentFilterChange(key, documentParam);
+        onChange={({ value }) => {
+          handleDocumentFilterChange(key, value);
         }}
         clearable={false}
         theme={multiLevelDropdownTheme}

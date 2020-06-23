@@ -132,23 +132,26 @@ export const getFiltersData = createSelector(
     }
 
     const filtersData = targets.map(({ key, country, document }) => {
-      const documentValue =
+      const selectedDocument =
         documentOptions &&
         document &&
         documentOptions[country] &&
-        documentOptions[country].find(({ value, optGroup }) => {
-          const selectedDocument =
-            document.split(/-(.+)/).length > 1
-              ? document.split(/-(.+)/)[1]
-              : document;
-          return value === selectedDocument || optGroup === selectedDocument;
+        documentOptions[country].find(({ value }) => value === document);
+
+      const defaultDocument =
+        documentOptions &&
+        document &&
+        documentOptions[country] &&
+        documentOptions[country].find(({ optGroup }) => {
+          const documentsGroup = document.split('-')[0];
+          return optGroup === documentsGroup;
         });
 
       return {
         key,
         countryValue: countryOptions.find(({ value }) => country === value),
         contriesOptions: countryOptions,
-        documentValue,
+        documentValue: selectedDocument || defaultDocument,
         documentOptions: documentOptions ? documentOptions[country] : []
       };
     });
