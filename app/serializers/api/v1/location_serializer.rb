@@ -21,7 +21,7 @@ module Api
         sources = object.data_sources.distinct.pluck(:name)
         return sources unless sources.empty? && object.members.any?
 
-        HistoricalEmissions::DataSource.joins(:records).
+        ::HistoricalEmissions::DataSource.joins(:records).
           where(historical_emissions_records: {location_id: object.members.map(&:id)}).
           distinct.pluck(:name)
       end
