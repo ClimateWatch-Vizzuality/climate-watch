@@ -181,11 +181,6 @@ export const getPathsWithStyles = createSelector(
   }
 );
 
-// export const getLinkToDataExplorer = createSelector([getSearch], search => {
-//   const section = 'lts-content';
-//   return generateLinkToDataExplorer(search, section);
-// });
-
 export const getLinkToDataExplorer = createSelector(
   [getSearch, getSelectedCategory, getSelectedIndicator],
   (search, selectedCategory, selectedIndicator) => {
