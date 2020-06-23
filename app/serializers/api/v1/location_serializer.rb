@@ -18,7 +18,12 @@ module Api
       attribute :ghg_sources, if: -> { instance_options[:ghg_sources] }
 
       def ghg_sources
-        object.data_sources&.distinct&.pluck(:name)
+        sources = object.data_sources.distinct.pluck(:name)
+        return sources unless sources.empty? && object.members.any?
+
+        HistoricalEmissions::DataSource.joins(:records).
+          where(historical_emissions_records: {location_id: object.members.map(&:id)}).
+          distinct.pluck(:name)
       end
     end
   end
