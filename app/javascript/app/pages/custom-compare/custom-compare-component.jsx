@@ -25,7 +25,7 @@ const COUNTRY_PLACEHOLDERS = [
 ];
 
 const DOCUMENT_DROPDOWN_GROUPS = [
-  { groupId: 'other', title: '' },
+  { groupId: '', title: '' },
   { groupId: 'sectoral', title: 'Sectoral Laws or Policies' },
   { groupId: 'framework', title: 'Climate Framework Laws or Policies' }
 ];

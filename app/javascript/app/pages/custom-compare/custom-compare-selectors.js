@@ -97,7 +97,7 @@ export const getDocumentsOptionsByCountry = createSelector(
           countriesDocumentsData &&
           countriesDocumentsData[iso3] &&
           countriesDocumentsData[iso3].find(d => d.slug === slug);
-        return createDropdownOption(countryDocument, 'other');
+        return createDropdownOption(countryDocument, '');
       }).filter(Boolean);
 
       const { framework, sectoral } = countriesDocuments;

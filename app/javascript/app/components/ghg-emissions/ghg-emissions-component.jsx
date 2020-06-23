@@ -365,7 +365,7 @@ function GhgEmissions(props) {
           values={selectedOptions.sectorsSelected || []}
           onChange={selected => handleChange('sectors', selected)}
           clearable
-          // multiselect
+          multiselect
           theme={multiLevelDropdownTheme}
         />
         <Multiselect
