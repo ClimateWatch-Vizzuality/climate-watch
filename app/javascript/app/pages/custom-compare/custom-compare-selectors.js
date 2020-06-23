@@ -2,6 +2,14 @@ import { createSelector } from 'reselect';
 import qs from 'query-string';
 import { uniq } from 'lodash';
 
+export const OTHER_DOCUMENTS_SLUGS = [
+  'pledges',
+  'indc',
+  'first_ndc',
+  'second_ndc',
+  'lts'
+];
+
 const getCountries = state => (state.countries && state.countries.data) || null;
 const getIndicatorsData = state =>
   (state.compareAll.data && state.compareAll.data.indicators) || null;
@@ -16,6 +24,8 @@ const getCountriesDocuments = state => {
 };
 const getCountriesDocumentsData = state =>
   (state.countriesDocuments && state.countriesDocuments.data) || null;
+export const getCountriesDocumentsLoading = state =>
+  (state.countriesDocuments && state.countriesDocuments.loading) || false;
 const getQuery = (state, { search }) => search || '';
 
 const createDropdownOption = (data, group) =>
@@ -44,14 +54,6 @@ const getCountryOptions = createSelector([getCountries], countries => {
     value: iso_code3
   }));
 });
-
-export const DOCUMENT_COLUMNS_SLUGS = {
-  'Pre-2020 Pledges': 'pledges',
-  INDC: 'indc',
-  NDC: 'first_ndc',
-  '2nd NDC': 'second_ndc',
-  LTS: 'lts'
-};
 
 export const getSelectedTargets = createSelector([getQuery], query => {
   if (!query) return null;
@@ -90,15 +92,13 @@ export const getDocumentsOptionsByCountry = createSelector(
     }
     const selectedCountries = Object.keys(countriesDocumentsData);
     const rows = selectedCountries.reduce((acc, iso3) => {
-      const otherDocuments = Object.values(DOCUMENT_COLUMNS_SLUGS)
-        .map(slug => {
-          const countryDocument =
-            countriesDocumentsData &&
-            countriesDocumentsData[iso3] &&
-            countriesDocumentsData[iso3].find(d => d.slug === slug);
-          return createDropdownOption(countryDocument);
-        })
-        .filter(Boolean);
+      const otherDocuments = OTHER_DOCUMENTS_SLUGS.map(slug => {
+        const countryDocument =
+          countriesDocumentsData &&
+          countriesDocumentsData[iso3] &&
+          countriesDocumentsData[iso3].find(d => d.slug === slug);
+        return createDropdownOption(countryDocument, 'other');
+      }).filter(Boolean);
 
       const { framework, sectoral } = countriesDocuments;
 

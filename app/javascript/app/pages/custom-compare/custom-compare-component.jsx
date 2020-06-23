@@ -13,7 +13,7 @@ import NdcCompareAllTargetsProvider from 'providers/ndc-compare-all-targets-prov
 import CountriesDocumentsProvider from 'providers/countries-documents-provider';
 
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
-import multiLevelDropdownTheme from 'styles/themes/dropdown/multi-level-dropdown.scss';
+import multiLevelDropdownTheme from 'styles/themes/dropdown/multi-level-dropdown-custom-compare.scss';
 import layout from 'styles/layout.scss';
 
 import styles from './custom-compare-styles.scss';
@@ -25,6 +25,7 @@ const COUNTRY_PLACEHOLDERS = [
 ];
 
 const DOCUMENT_DROPDOWN_GROUPS = [
+  { groupId: 'other', title: '' },
   { groupId: 'sectoral', title: 'Sectoral Laws or Policies' },
   { groupId: 'framework', title: 'Climate Framework Laws or Policies' }
 ];
@@ -34,7 +35,8 @@ const FiltersGroup = ({
   countryPlaceholder,
   handleCountryFilterChange,
   handleDocumentFilterChange,
-  disabled
+  countryFilterDisabled,
+  documentsFilterDisabled
 }) => {
   const {
     key,
@@ -54,7 +56,7 @@ const FiltersGroup = ({
         placeholder={countryPlaceholder}
         hideResetButton
         noAutoSort
-        disabled={disabled}
+        disabled={countryFilterDisabled}
       />
       <MultiLevelDropdown
         key={`${key}-document`}
@@ -67,6 +69,7 @@ const FiltersGroup = ({
         }}
         clearable={false}
         theme={multiLevelDropdownTheme}
+        disabled={documentsFilterDisabled}
       />
     </div>
   );
@@ -81,7 +84,8 @@ const CustomComparisonComponent = props => {
     filtersData,
     backButtonLink,
     accordionDataLoading,
-    selectedCountries
+    selectedCountries,
+    documentsListLoading
   } = props;
 
   return (
@@ -115,7 +119,10 @@ const CustomComparisonComponent = props => {
                 countryPlaceholder={COUNTRY_PLACEHOLDERS[i]}
                 handleCountryFilterChange={handleCountryFilterChange}
                 handleDocumentFilterChange={handleDocumentFilterChange}
-                disabled={accordionDataLoading}
+                countryFilterDisabled={accordionDataLoading}
+                documentsFilterDisabled={
+                  documentsListLoading || accordionDataLoading
+                }
               />
             ))}
         </div>
@@ -155,7 +162,8 @@ FiltersGroup.propTypes = {
   countryPlaceholder: PropTypes.string,
   handleCountryFilterChange: PropTypes.func,
   handleDocumentFilterChange: PropTypes.func,
-  disabled: PropTypes.bool
+  countryFilterDisabled: PropTypes.bool,
+  documentsFilterDisabled: PropTypes.bool
 };
 
 CustomComparisonComponent.propTypes = {
@@ -166,7 +174,8 @@ CustomComparisonComponent.propTypes = {
   handleDocumentFilterChange: PropTypes.func,
   backButtonLink: PropTypes.string,
   accordionDataLoading: PropTypes.bool,
-  selectedCountries: PropTypes.string
+  selectedCountries: PropTypes.string,
+  documentsListLoading: PropTypes.bool
 };
 
 export default CustomComparisonComponent;
