@@ -65,7 +65,7 @@ module Api
 
             {
               id: source['id'],
-              slug: source['title'].parameterize,
+              slug: "framework-#{source['id']}",
               long_name: source['title'],
               url: source['link'],
               iso: target['iso_code3']
@@ -83,7 +83,7 @@ module Api
 
             {
               id: source['id'],
-              slug: source['title'].parameterize,
+              slug: "sectoral-#{source['id']}",
               long_name: source['title'],
               url: source['link'],
               iso: target['iso_code3']
