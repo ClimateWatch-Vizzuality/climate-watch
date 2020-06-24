@@ -1,5 +1,5 @@
 export const DOCUMENT_COLUMNS_SLUGS = {
-  'Pre-2020 Pledges': 'pledges',
+  'Pre-2020 Pledge': 'pledges',
   INDC: 'indc',
   NDC: 'first_ndc',
   '2nd NDC': 'second_ndc',

@@ -31,11 +31,19 @@ const getData = createSelector(
       const countryEmissions = emissionsIndicator.locations[c.iso_code3];
       const countryDocuments =
         countriesDocuments && countriesDocuments[c.iso_code3];
-      const getIconValue = slug =>
-        // TODO: Intends submission return 'intends'
-        (countryDocuments && countryDocuments.find(d => d.slug === slug)
-          ? 'yes'
-          : 'no');
+      const getIconValue = slug => {
+        const countryDocument =
+          countryDocuments && countryDocuments.find(d => d.slug === slug);
+        // Intend to submit documents are only Second NDC without submitted date
+        if (
+          slug === 'second_ndc' &&
+          countryDocument &&
+          !countryDocument.submission_date
+        ) {
+          return 'intends';
+        }
+        return countryDocument ? 'yes' : 'no';
+      };
 
       const documentsColumns = Object.keys(DOCUMENT_COLUMNS_SLUGS).reduce(
         (acc, nextColumn) => {
