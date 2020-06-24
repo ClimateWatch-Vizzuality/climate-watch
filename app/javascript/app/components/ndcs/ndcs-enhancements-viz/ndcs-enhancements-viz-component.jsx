@@ -124,14 +124,14 @@ const NDCSEnhancementsViz = ({
                 tooltipId={TOOLTIP_ID}
                 onCountryEnter={handleCountryEnter}
                 onCountryFocus={handleCountryEnter}
-                dragEnable={false}
+                zoomEnable
                 customCenter={!isTablet ? [10, -10] : null}
               />
               {countryData && tooltipValues && (
                 <NDCSEnhancementsTooltip
                   id={TOOLTIP_ID}
-                  tooltipValues={tooltipValues}>
-                </NDCSEnhancementsTooltip>
+                  tooltipValues={tooltipValues}
+                />
               )}
               {indicator && (
                 <MapLegend
