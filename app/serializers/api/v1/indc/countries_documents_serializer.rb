@@ -68,7 +68,7 @@ module Api
         end
 
         def framework
-          return {} unless object.laws_and_policies && object.laws_and_policies['targets']
+          return [] unless object.laws_and_policies && object.laws_and_policies['targets']
 
           object.laws_and_policies['targets'].map do |target|
             next if target['sources'].empty? || !target['sources'].first['framework']
@@ -76,7 +76,7 @@ module Api
 
             {
               id: source['id'],
-              slug: source['title'].parameterize,
+              slug: "framework-#{source['id']}",
               long_name: source['title'],
               url: source['link'],
               iso: target['iso_code3']
@@ -85,7 +85,7 @@ module Api
         end
 
         def sectoral
-          return {} unless object.laws_and_policies && object.laws_and_policies['targets']
+          return [] unless object.laws_and_policies && object.laws_and_policies['targets']
 
           object.laws_and_policies['targets'].map do |target|
             next if target['sources'].empty? || !target['sources'].first['sectoral']
@@ -94,7 +94,7 @@ module Api
 
             {
               id: source['id'],
-              slug: source['title'].parameterize,
+              slug: "sectoral-#{source['id']}",
               long_name: source['title'],
               url: source['link'],
               iso: target['iso_code3']

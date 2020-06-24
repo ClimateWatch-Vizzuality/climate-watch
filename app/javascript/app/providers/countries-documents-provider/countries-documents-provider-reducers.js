@@ -2,7 +2,9 @@ export const initialState = {
   loading: false,
   loaded: false,
   error: false,
-  data: null
+  data: null,
+  framework: null,
+  sectoral: null
 };
 
 const setLoading = (state, loading) => ({ ...state, loading });
@@ -16,7 +18,7 @@ export default {
       setLoading(
         {
           ...state,
-          data: payload
+          ...payload
         },
         false
       ),

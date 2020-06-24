@@ -80,6 +80,16 @@ export const getFilteredDataBySearch = createSelector(
 
 export const getSelectedTargets = createSelector([getQuery], query => {
   if (!query || !query.targets) return [];
-  const selectedTargets = query.targets.split(',');
-  return selectedTargets;
+  return query.targets.split(',');
 });
+
+export const getSelectedTableTargets = createSelector(
+  [getSelectedTargets],
+  selectedTargets => {
+    if (!selectedTargets) return [];
+    const selectedTableTargets = selectedTargets.map(target =>
+      target.split('-', 2).join('-')
+    );
+    return selectedTableTargets;
+  }
+);

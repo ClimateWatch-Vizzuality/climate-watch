@@ -1,0 +1,9 @@
+@import './multi-level-dropdown.scss';
+
+.wrapper :global {
+  .cw__multi-level-dropdown-styles_menu {
+    & > *:first-child {
+      display: none;
+    }
+  }
+}

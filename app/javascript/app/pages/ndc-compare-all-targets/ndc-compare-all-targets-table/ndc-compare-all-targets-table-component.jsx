@@ -15,7 +15,12 @@ import { DOCUMENT_COLUMNS_SLUGS } from 'data/country-documents';
 
 import styles from './ndc-compare-all-targets-table-styles.scss';
 
-const cellRenderer = (cell, selectedTargets, columns, setSelectedTargets) => {
+const cellRenderer = (
+  cell,
+  selectedTargets = [],
+  columns,
+  setSelectedTargets
+) => {
   const { cellData, dataKey, columnIndex, rowData } = cell;
   const id = `${rowData.Country.iso}-${DOCUMENT_COLUMNS_SLUGS[dataKey]}`;
   const isActive = selectedTargets.includes(id);

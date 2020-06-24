@@ -11,7 +11,9 @@ import {
   getFiltersData,
   getSelectedTargets,
   getBackButtonLink,
-  getDocumentsOptionsByCountry
+  getDocumentsOptionsByCountry,
+  getSelectedCountries,
+  getCountriesDocumentsLoading
 } from './custom-compare-selectors';
 
 const DEFAULT_DOCUMENT = 'NDC';
@@ -29,8 +31,10 @@ const mapStateToProps = (state, { location, route }) => {
     selectedTargets: getSelectedTargets(state, { search }),
     backButtonLink: getBackButtonLink(null, { search }),
     documentsByCountry: getDocumentsOptionsByCountry(state, { search }),
+    selectedCountries: getSelectedCountries(state, { search }),
     accordionDataLoading:
-      state.customCompareAccordion && state.customCompareAccordion.loading
+      state.customCompareAccordion && state.customCompareAccordion.loading,
+    documentsListLoading: getCountriesDocumentsLoading(state)
   };
 };
 
@@ -48,7 +52,6 @@ const CustomCompare = props => {
   const handleCountryFilterChange = (targetKey, newCountry) => {
     const { selectedTargets, documentsByCountry } = props;
     const newTargetParams = [];
-
     const newCountryDocuments =
       documentsByCountry && documentsByCountry[newCountry]
         ? documentsByCountry[newCountry].map(({ value }) => value)
