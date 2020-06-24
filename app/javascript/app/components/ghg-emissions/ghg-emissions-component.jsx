@@ -335,7 +335,7 @@ function GhgEmissions(props) {
         )}
       </div>
       <WorldBankDataProvider />
-      <RegionsProvider />
+      <RegionsProvider includeGHGSources />
       <EmissionsMetaProvider />
       {providerFilters && <EmissionsProvider filters={providerFilters} />}
       <div className={cx(styles.col4, { [styles.newGHG]: FEATURE_NEW_GHG })}>

@@ -213,8 +213,9 @@ const getRegionOptions = createSelector(
     const regionOptions = [TOP_EMITTERS_OPTION];
     regions.forEach(region => {
       if (
-        sourceSelected.name.startsWith('UNFCCC') &&
-        region.iso_code3 === 'WORLD'
+        (sourceSelected.name.startsWith('UNFCCC') &&
+          region.iso_code3 === 'WORLD') ||
+        !region.ghg_sources.includes(sourceSelected.name)
       ) {
         return;
       }
@@ -224,10 +225,12 @@ const getRegionOptions = createSelector(
         value: region.iso_code3,
         iso: region.iso_code3,
         expandsTo: regionMembers,
-        regionCountries: region.members.map(country => ({
-          label: country.wri_standard_name,
-          iso: country.iso_code3
-        })),
+        regionCountries: region.members
+          .filter(m => m.ghg_sources.includes(sourceSelected.name))
+          .map(country => ({
+            label: country.wri_standard_name,
+            iso: country.iso_code3
+          })),
         groupId: 'regions'
       });
     });
