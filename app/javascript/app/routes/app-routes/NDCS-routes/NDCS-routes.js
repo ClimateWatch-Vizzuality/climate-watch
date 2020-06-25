@@ -23,7 +23,7 @@ export default [
     label: 'Explore NDCS',
     activeId
   },
-  !FEATURE_LTS_EXPLORE && {
+  {
     path: '/2020-ndc-tracker',
     label: '2020 NDC Tracker',
     activeId
