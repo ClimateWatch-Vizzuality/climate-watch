@@ -5,78 +5,24 @@ import { europeSlug } from 'app/data/european-countries';
 import {
   getRegions,
   getCountries,
-  getData,
   getDataZoomYears
 } from './ghg-emissions-selectors-get';
 import {
   getModelSelected,
-  getMetricSelected,
-  getCalculationSelected,
-  getOptionsSelected,
-  getOptions
+  getMetricSelected
 } from './ghg-emissions-selectors-filters';
 import {
   getUnit,
-  getCalculationData,
-  getChartDataFunction,
-  getShouldExpandRegions,
-  getSortedDataFunction,
-  getYColumnOptionsFunction,
-  getLegendDataSelectedFunction,
-  getExpandedLegendSectorsSelected,
-  getExpandedLegendGasesSelected,
-  getExpandedLegendRegionsSelectedFunction
+  getChartData,
+  getYColumnOptions
 } from './ghg-emissions-selectors-data';
-
-// Reused selectors without Others option
-
-const getExpandedLegendRegionsSelected = createSelector(
-  [getOptions, getOptionsSelected, getShouldExpandRegions, getData],
-  getExpandedLegendRegionsSelectedFunction
-);
-
-const getLegendDataSelectedWithoutOthers = createSelector(
-  [
-    getModelSelected,
-    getOptions,
-    getOptionsSelected,
-    getExpandedLegendRegionsSelected,
-    getExpandedLegendSectorsSelected,
-    getExpandedLegendGasesSelected
-  ],
-  getLegendDataSelectedFunction
-);
-
-const getYColumnOptionsWithoutOthers = createSelector(
-  [getLegendDataSelectedWithoutOthers],
-  getYColumnOptionsFunction
-);
-const getSortedDataWithoutOthers = createSelector(
-  getData,
-  getSortedDataFunction
-);
-const getChartDataWithoutOthers = createSelector(
-  [
-    getSortedDataWithoutOthers,
-    getRegions,
-    getModelSelected,
-    getYColumnOptionsWithoutOthers,
-    getMetricSelected,
-    getCalculationData,
-    getCalculationSelected,
-    getDataZoomYears
-  ],
-  getChartDataFunction
-);
-
-// Table selectors
 
 export const getTableData = createSelector(
   [
-    getChartDataWithoutOthers,
+    getChartData,
     getMetricSelected,
     getModelSelected,
-    getYColumnOptionsWithoutOthers,
+    getYColumnOptions,
     getDataZoomYears
   ],
   (data, metric, model, yColumnOptions, dataZoomSelectedYears) => {

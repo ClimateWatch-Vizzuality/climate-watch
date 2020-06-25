@@ -168,6 +168,22 @@ function GhgEmissions(props) {
     );
   };
 
+  const handleLegendChange = v => {
+    // If there is only one region selected return the contracted region + new selected item
+    if (
+      toPlural(fieldToBreakBy) === 'regions' &&
+      selectedOptions.regionsSelected &&
+      selectedOptions.regionsSelected.length === 1
+    ) {
+      handleChange(
+        'regions',
+        selectedOptions.regionsSelected.concat(v[v.length - 1])
+      );
+    } else {
+      handleChange(toPlural(fieldToBreakBy), v);
+    }
+  };
+
   const renderPngChart = () => {
     const { chartTypeSelected } = selectedOptions;
     return (
@@ -181,8 +197,6 @@ function GhgEmissions(props) {
         loading={loading}
         lineType="linear"
         showUnit
-        onLegendChange={v => handleChange(toPlural(fieldToBreakBy), v)}
-        hideRemoveOptions={hideRemoveOptions}
       />
     );
   };
@@ -193,7 +207,7 @@ function GhgEmissions(props) {
       config={config}
       dataOptions={legendOptions}
       dataSelected={legendOptions}
-      hideRemoveOptions={hideRemoveOptions}
+      hideRemoveOptions
     />
   );
 
@@ -257,7 +271,7 @@ function GhgEmissions(props) {
           loading={loading}
           lineType="linear"
           showUnit
-          onLegendChange={v => handleChange(toPlural(fieldToBreakBy), v)}
+          onLegendChange={handleLegendChange}
           hideRemoveOptions={hideRemoveOptions}
           getCustomYLabelFormat={
             isPercentageChangeCalculation
