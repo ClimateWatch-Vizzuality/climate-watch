@@ -24,7 +24,7 @@
   }
 
   @media #{$tablet-landscape} {
-    grid-template-columns: 0.6fr repeat(3, 1fr);
+    grid-template-columns: 0.4fr repeat(3, 1fr);
     grid-template-rows: auto;
     grid-template-areas: ". filter-1 filter-2 filter-3"; /* stylelint-disable-line declaration-block-no-redundant-longhand-properties */
     margin: 0;
