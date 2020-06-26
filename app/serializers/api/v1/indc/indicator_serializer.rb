@@ -59,11 +59,19 @@ module Api
                 indexed_data[iso_code] ||= []
                 value = []
                 data.each do |target|
-                  next unless target['sources'].map{|p| p['id']}.include?(law_id.to_i)
-                  value  << target[LSE_INDICATORS_MAP[object.normalized_slug.to_sym]]
+                  next unless target['sources'].map{|p| p['id']}.include?(law_id.to_i) && target['sector'] != 'economy-wide'
+                  value << if object.normalized_slug == 'nrm_link'
+                             target['sources'].select{|t| t['id'] == law_id.to_i}.map{|t| t['link']}.join(',')
+                          elsif object.normalized_slug == 'nrm_type_of_commitment'
+                            target['ghg_target'] ? 'GHG target' : 'Non GHG target'
+                          elsif object.normalized_slug == 'nrm_target_multiplicity'
+                            target['single_year'] ? 'Single year' : 'Multiple years'
+                          else
+                            target[LSE_INDICATORS_MAP[object.normalized_slug.to_sym]]
+                          end
                 end
                 indexed_data[iso_code] << {
-                  value: value.join('<br>'),
+                  value: value.compact.uniq.join('<br>'),
                   document_slug: param_slug
                 }
               end
