@@ -124,8 +124,8 @@ module Api
         @locations_documents = params[:locations_documents].split(',').map do |loc_doc|
           loc_doc.split('-')
         end
-        @indc_locations_documents = @locations_documents.select{ |ld| ld.size == 2}.presence
-        @lse_locations_documents = @locations_documents.select{ |ld| ld.size == 3}.presence
+        @indc_locations_documents = @locations_documents.select{ |ld| !['framework', 'sectoral'].include?(ld[1].split('_').first)}.presence
+        @lse_locations_documents = @locations_documents.select{ |ld| ['framework', 'sectoral'].include?(ld[1].split('_').first)}.presence
       end
 
       def get_lse_data
