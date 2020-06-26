@@ -87,8 +87,8 @@ export const getSelectedTableTargets = createSelector(
   [getSelectedTargets],
   selectedTargets => {
     if (!selectedTargets) return [];
-    const selectedTableTargets = selectedTargets.map(target =>
-      target.split('-', 2).join('-')
+    const selectedTableTargets = selectedTargets.map(
+      target => target.split('_')[0]
     );
     return selectedTableTargets;
   }
