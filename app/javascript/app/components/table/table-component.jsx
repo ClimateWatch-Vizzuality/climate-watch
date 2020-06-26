@@ -39,7 +39,7 @@ function TableComponent(props) {
   const rightTable = useRef();
   useEffect(() => {
     rightTable.current.scrollLeft = rightTable.current.scrollWidth;
-  }, rightTable.current);
+  }, [rightTable.current]);
 
   const rowClassName = ({ index }) => {
     if (index < 0) return cx(styles.headerRow, theme.headerRow);
