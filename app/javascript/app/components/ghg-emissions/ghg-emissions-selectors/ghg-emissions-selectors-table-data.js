@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 import isEmpty from 'lodash/isEmpty';
-import { GHG_TABLE_HEADER } from 'data/constants';
+import { GHG_TABLE_HEADER, GHG_CALCULATION_OPTIONS } from 'data/constants';
 import { europeSlug } from 'app/data/european-countries';
 import {
   getRegions,
@@ -27,11 +27,19 @@ export const getTableData = createSelector(
   ],
   (data, metric, model, yColumnOptions, dataZoomSelectedYears) => {
     if (!data || !model || !data.length || !yColumnOptions) return null;
-    const isAbsoluteValue = metric === 'ABSOLUTE_VALUE';
-    const scale = isAbsoluteValue ? 1000000 : 1; // to convert tCO2e to MtCO2e if not gdp or population metric
-    const scaleString = isAbsoluteValue ? 'Mt' : 't';
+    const isMtCalculation = [
+      GHG_CALCULATION_OPTIONS.ABSOLUTE_VALUE.value,
+      GHG_CALCULATION_OPTIONS.CUMULATIVE.value
+    ].includes(metric);
+
+    const scale = isMtCalculation ? 1000000 : 1; // to convert tCO2e to MtCO2e if not gdp or population metric
+    const scaleString = isMtCalculation ? 'Mt' : 't';
+    const unit =
+      metric === GHG_CALCULATION_OPTIONS.PERCENTAGE_CHANGE.value
+        ? '%'
+        : `${scaleString}${getUnit(metric)}`;
+
     const formatValue = value => value && Number((value / scale).toFixed(2));
-    const unit = `${scaleString}${getUnit(metric)}`;
     const filteredYearValue = (d, c) => {
       if (dataZoomSelectedYears) {
         const { min, max } = dataZoomSelectedYears;
