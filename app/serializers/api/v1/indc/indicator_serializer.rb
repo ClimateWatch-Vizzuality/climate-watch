@@ -43,12 +43,29 @@ module Api
                    else
                      object.values
                    end
-          IndexedSerializer.serialize_collection(
+          indexed_data = IndexedSerializer.serialize_collection(
             values,
             serializer: ValueSerializer
           ) do |v|
             v.location.iso_code3
           end
+          if instance_options[:lse_data] && LSE_INDICATORS_MAP.keys.include?(object.normalized_slug&.to_sym)
+            instance_options[:locations_documents].select{|ld| ld.size == 3}.each do |iso, prefix, law_id|
+              instance_options[:lse_data].group_by{|lse| lse['iso_code3']}.each do |iso_code, data|
+                next unless iso == iso_code
+                indexed_data[iso_code] ||= []
+                value = []
+                data.each do |target|
+                  value  << target[LSE_INDICATORS_MAP[object.normalized_slug.to_sym]]
+                end
+                indexed_data[iso_code] << {
+                  value: value.join('<br>'),
+                  document_slug: "#{prefix}-#{law_id}"
+                }
+              end
+            end
+          end
+          indexed_data
         end
       end
     end
