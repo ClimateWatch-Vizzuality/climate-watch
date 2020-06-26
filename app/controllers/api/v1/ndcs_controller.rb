@@ -132,7 +132,8 @@ module Api
         return nil unless @lse_locations_documents
 
         lse_data = []
-        @lse_locations_documents.each do |iso, _, law_id|
+        @lse_locations_documents.each do |iso, data|
+          _, law_id = data.split('_')
           laws_and_policies = SingleRecordFetcher.new(LSE_API, iso, iso).call
           laws_and_policies["targets"].each do |t|
             if t["sources"].map{|p| p["id"]}.include?(law_id.to_i)
