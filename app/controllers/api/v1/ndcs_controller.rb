@@ -31,6 +31,18 @@ module Api
       'a_water'
     ].freeze
 
+    LSE_INDICATORS_MAP = {
+      nrm_summary: 'description',
+      nrm_type_of_commitment: 'ghg_target',
+      nrm_ghg_target_type: 'type',
+      nrm_base_year: 'base_year_period',
+      nrm_target_year: 'year',
+      nrm_target_multiplicity: 'single_year',
+      nrm_link: 'source'
+    }.freeze
+
+    LSE_API = 'https://climate-laws.org/cclow/api/targets'.freeze
+
     NdcIndicators = Struct.new(:indicators, :categories, :sectors) do
       alias_method :read_attribute_for_serialization, :send
     end
@@ -40,6 +52,8 @@ module Api
     end
 
     class NdcsController < ApiController
+      before_action :set_locations_documents, only: [:index]
+
       def index
         indicators = filtered_indicators
         categories = filtered_categories(indicators)
@@ -53,7 +67,8 @@ module Api
 
         render json: NdcIndicators.new(indicators, categories, sectors),
                serializer: Api::V1::Indc::NdcIndicatorsSerializer,
-               locations_documents: locations_documents
+               locations_documents: @locations_documents,
+               lse_data: get_lse_data
       end
 
       def content_overview
@@ -103,12 +118,30 @@ module Api
         end
       end
 
-      def locations_documents
+      def set_locations_documents
         return nil unless params[:locations_documents].present?
 
-        params[:locations_documents].split(',').map do |loc_doc|
+        @locations_documents = params[:locations_documents].split(',').map do |loc_doc|
           loc_doc.split('-')
         end
+        @indc_locations_documents = @locations_documents.select{ |ld| !['framework', 'sectoral'].include?(ld[1].split('_').first)}.presence
+        @lse_locations_documents = @locations_documents.select{ |ld| ['framework', 'sectoral'].include?(ld[1].split('_').first)}.presence
+      end
+
+      def get_lse_data
+        return nil unless @lse_locations_documents
+
+        lse_data = []
+        @lse_locations_documents.each do |iso, data|
+          _, law_id = data.split('_')
+          laws_and_policies = SingleRecordFetcher.new(LSE_API, iso, iso).call
+          laws_and_policies['targets'].each do |t|
+            if t['sources'].map{|p| p['id']}.include?(law_id.to_i)
+              lse_data << t
+            end
+          end
+        end
+        lse_data
       end
 
       def filtered_indicators
@@ -130,11 +163,18 @@ module Api
           indicators = indicators.where(source_id: source.map(&:id))
         end
 
-        if locations_documents
+        if @indc_locations_documents
           indicators = indicators.select('DISTINCT ON(COALESCE("normalized_slug", indc_indicators.slug)) indc_indicators.*')
           indicators = indicators.joins(values: [:location, :document]).
-            where(locations: {iso_code3: locations_documents.map(&:first)},
-                  indc_documents: {slug: locations_documents.map(&:second)})
+            where(locations: {iso_code3: @indc_locations_documents.map(&:first)},
+                  indc_documents: {slug: @indc_locations_documents.map(&:second)})
+        end
+
+        if !@indc_locations_documents && @lse_locations_documents
+          indicators = indicators.select('DISTINCT ON(COALESCE("normalized_slug", indc_indicators.slug)) indc_indicators.*')
+          indicators = indicators.joins(values: [:location]).
+            where(normalized_slug: LSE_INDICATORS_MAP.keys.map(&:to_s)).
+            where(locations: {iso_code3: @lse_locations_documents.map(&:first)})
         end
 
         if params[:indicators].present?

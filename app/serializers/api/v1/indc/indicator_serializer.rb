@@ -43,12 +43,33 @@ module Api
                    else
                      object.values
                    end
-          IndexedSerializer.serialize_collection(
+          indexed_data = IndexedSerializer.serialize_collection(
             values,
             serializer: ValueSerializer
           ) do |v|
             v.location.iso_code3
           end
+
+          # inject laws data
+          if instance_options[:lse_data] && LSE_INDICATORS_MAP.keys.include?(object.normalized_slug&.to_sym)
+            instance_options[:locations_documents].select{|ld| ['framework', 'sectoral'].include?(ld[1].split('_').first)}.each do |iso, param_slug|
+              law_id = param_slug.split('_').last
+              instance_options[:lse_data].group_by{|lse| lse['iso_code3']}.each do |iso_code, data|
+                next unless iso == iso_code
+                indexed_data[iso_code] ||= []
+                value = []
+                data.each do |target|
+                  next unless target['sources'].map{|p| p['id']}.include?(law_id.to_i)
+                  value  << target[LSE_INDICATORS_MAP[object.normalized_slug.to_sym]]
+                end
+                indexed_data[iso_code] << {
+                  value: value.join('<br>'),
+                  document_slug: param_slug
+                }
+              end
+            end
+          end
+          indexed_data
         end
       end
     end

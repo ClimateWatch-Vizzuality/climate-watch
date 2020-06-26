@@ -76,7 +76,7 @@ module Api
 
             {
               id: source['id'],
-              slug: "framework-#{source['id']}",
+              slug: "framework_#{source['id']}",
               long_name: source['title'],
               url: source['link'],
               iso: target['iso_code3']
@@ -94,7 +94,7 @@ module Api
 
             {
               id: source['id'],
-              slug: "sectoral-#{source['id']}",
+              slug: "sectoral_#{source['id']}",
               long_name: source['title'],
               url: source['link'],
               iso: target['iso_code3']
