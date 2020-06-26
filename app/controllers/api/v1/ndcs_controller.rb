@@ -135,8 +135,8 @@ module Api
         @lse_locations_documents.each do |iso, data|
           _, law_id = data.split('_')
           laws_and_policies = SingleRecordFetcher.new(LSE_API, iso, iso).call
-          laws_and_policies["targets"].each do |t|
-            if t["sources"].map{|p| p["id"]}.include?(law_id.to_i)
+          laws_and_policies['targets'].each do |t|
+            if t['sources'].map{|p| p['id']}.include?(law_id.to_i)
               lse_data << t
             end
           end
