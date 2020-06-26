@@ -32,13 +32,13 @@ module Api
     ].freeze
 
     LSE_INDICATORS_MAP = {
-      'nrm_summary': 'description',
-      'nrm_type_of_commitment': 'ghg_target',
-      'nrm_ghg_target_type': 'type',
-      'nrm_base_year': 'base_year_period',
-      'nrm_target_year': 'year',
-      'nrm_target_multiplicity': 'single_year',
-      'nrm_link': 'source'
+      nrm_summary: 'description',
+      nrm_type_of_commitment: 'ghg_target',
+      nrm_ghg_target_type: 'type',
+      nrm_base_year: 'base_year_period',
+      nrm_target_year: 'year',
+      nrm_target_multiplicity: 'single_year',
+      nrm_link: 'source'
     }.freeze
 
     LSE_API = 'https://climate-laws.org/cclow/api/targets'.freeze
@@ -171,8 +171,9 @@ module Api
         end
 
         if !@indc_locations_documents && @lse_locations_documents
+          indicators = indicators.select('DISTINCT ON(COALESCE("normalized_slug", indc_indicators.slug)) indc_indicators.*')
           indicators = indicators.joins(values: [:location]).
-            where(slug: LSE_INDICATORS_MAP.keys).
+            where(normalized_slug: LSE_INDICATORS_MAP.keys.map(&:to_s)).
             where(locations: {iso_code3: @lse_locations_documents.map(&:first)})
         end
 
