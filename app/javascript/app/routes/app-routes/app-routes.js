@@ -294,6 +294,10 @@ export default [
     label: 'DATA EXPLORER'
   },
   {
+    path: '/lts-tracker',
+    component: () => createElement(Redirect, { to: '/lts-explore' })
+  },
+  {
     path: '/',
     component: () => createElement(Redirect, { to: '/error-page' })
   }
