@@ -22,7 +22,6 @@ import CountriesDocumentsProvider from 'providers/countries-documents-provider';
 
 import styles from './country-ndc-overview-styles.scss';
 
-const FEATURE_LTS_EXPLORE = process.env.FEATURE_LTS_EXPLORE === 'true';
 const FEATURE_NDC_FILTERING = process.env.FEATURE_NDC_FILTERING === 'true';
 
 function CountryNdcOverview(props) {
@@ -91,189 +90,78 @@ function CountryNdcOverview(props) {
     );
   };
 
-  const renderLegacyCards = () => {
-    const renderSubtitle = (text, paddingLeft) => (
-      <h4 className={cx(styles.subTitle, { [styles.paddedLeft]: paddingLeft })}>
-        {text}
-      </h4>
-    );
-    return (
-      <div className="grid-column-item">
-        <div className={styles.row}>
-          <div className="layout-card-container">
-            <div className={styles.subtitles}>
-              {renderSubtitle('Mitigation contribution')}
-              <TabletLandscape>
-                {renderSubtitle('Adaptation contribution', true)}
-              </TabletLandscape>
-            </div>
-            <div className={styles.legacyCards}>
-              <div className="grid-column-item">
-                <div className={styles.legacyCardsRowContainer}>
-                  <Card title="GHG Target" contentFirst>
-                    <div className={styles.cardContent}>
-                      {values && values.ghg_target_type ? (
-                        <React.Fragment>
-                          <CardRow
-                            rowData={{
-                              title: 'Target type',
-                              value:
-                                values.ghg_target_type &&
-                                values.ghg_target_type[0].value
-                            }}
-                          />
-                          <CardRow
-                            rowData={{
-                              title: 'Target year',
-                              value:
-                                values.time_target_year &&
-                                values.time_target_year[0].value
-                            }}
-                          />
-                        </React.Fragment>
-                      ) : (
-                        <div className={styles.noContent}>Not included</div>
-                      )}
-                    </div>
-                  </Card>
-                  <Card title="Non-GHG Target" contentFirst>
-                    <div className={styles.cardContent}>
-                      {values && values.non_ghg_target ? (
-                        <CardRow
-                          rowData={{
-                            title: '',
-                            value: values.non_ghg_target[0].value
-                          }}
-                        />
-                      ) : (
-                        <div className={styles.noContent}>Not included</div>
-                      )}
-                    </div>
-                  </Card>
-                  <Card
-                    title="Identified Sectors for Mitigation Action"
-                    contentFirst
-                  >
-                    <div className={styles.cardContent}>
-                      {values && values.coverage_sectors ? (
-                        <CardRow
-                          rowData={{
-                            title: '',
-                            value: values.coverage_sectors[0].value
-                          }}
-                        />
-                      ) : (
-                        <div className={styles.noContent}>Not included</div>
-                      )}
-                    </div>
-                  </Card>
-                </div>
-              </div>
-              <TabletPortraitOnly>
-                {renderSubtitle('Adaptation contribution')}
-              </TabletPortraitOnly>
-              <div className={styles.adaptationList}>
-                <Card
-                  title="Identified Sectors for Adaptation Action"
-                  contentFirst
-                >
-                  <div className={styles.cardContent}>
-                    {sectors.length ? (
-                      <ul className={styles.list}>
-                        {sectors.map(sector => (
-                          <li key={sector} className={styles.listItem}>
-                            {sector}
-                          </li>
-                        ))}
-                      </ul>
-                    ) : (
-                      <div className={styles.noContent}>Not included</div>
-                    )}
-                  </div>
-                </Card>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  };
-
-  const renderCards = () =>
-    (FEATURE_LTS_EXPLORE ? (
-      <div className={styles.cards}>
-        <Card title="Contribution Type" theme={cardTheme} contentFirst>
-          <div className={styles.cardContent}>
-            {values && values.mitigation_contribution_type ? (
-              <React.Fragment>
-                <CardRow
-                  rowData={{
-                    title: 'Mitigation contribution type',
-                    value: values.mitigation_contribution_type[0].value
-                  }}
-                  theme={cardTheme}
-                />
-                <CardRow
-                  rowData={{
-                    title: 'Target type',
-                    value:
-                      values.ghg_target_type && values.ghg_target_type[0].value
-                  }}
-                  theme={cardTheme}
-                />
-                <CardRow
-                  rowData={{
-                    title: 'Adaptation included',
-                    value: values.adaptation[0].value
-                  }}
-                  theme={cardTheme}
-                />
-              </React.Fragment>
-            ) : (
-              <div className={styles.noContent}>Not included</div>
-            )}
-          </div>
-        </Card>
-        <Card title="GHG Target" theme={cardTheme} contentFirst>
-          <div className={styles.cardContent}>
-            {values && values.time_target_year ? (
-              <React.Fragment>
-                <CardRow
-                  rowData={{
-                    title: 'Target year',
-                    value: values.time_target_year[0].value
-                  }}
-                />
-                <CardRow
-                  rowData={{
-                    title: 'Sectors covered',
-                    value: values.coverage_sectors[0].value
-                  }}
-                />
-              </React.Fragment>
-            ) : (
-              <div className={styles.noContent}>Not included</div>
-            )}
-          </div>
-        </Card>
-        <Card title="Non-GHG Target" theme={cardTheme} contentFirst>
-          <div className={styles.cardContent}>
-            {values && values.non_ghg_target ? (
+  const renderCards = () => (
+    <div className={styles.cards}>
+      <Card title="Contribution Type" theme={cardTheme} contentFirst>
+        <div className={styles.cardContent}>
+          {values && values.mitigation_contribution_type ? (
+            <React.Fragment>
               <CardRow
                 rowData={{
-                  title: '',
-                  value: values.non_ghg_target[0].value
+                  title: 'Mitigation contribution type',
+                  value: values.mitigation_contribution_type[0].value
+                }}
+                theme={cardTheme}
+              />
+              <CardRow
+                rowData={{
+                  title: 'Target type',
+                  value:
+                    values.ghg_target_type && values.ghg_target_type[0].value
+                }}
+                theme={cardTheme}
+              />
+              <CardRow
+                rowData={{
+                  title: 'Adaptation included',
+                  value: values.adaptation[0].value
+                }}
+                theme={cardTheme}
+              />
+            </React.Fragment>
+          ) : (
+            <div className={styles.noContent}>Not included</div>
+          )}
+        </div>
+      </Card>
+      <Card title="GHG Target" theme={cardTheme} contentFirst>
+        <div className={styles.cardContent}>
+          {values && values.time_target_year ? (
+            <React.Fragment>
+              <CardRow
+                rowData={{
+                  title: 'Target year',
+                  value: values.time_target_year[0].value
                 }}
               />
-            ) : (
-              <div className={styles.noContent}>Not included</div>
-            )}
-          </div>
-        </Card>
-      </div>
-    ) : (
-      renderLegacyCards()
-    ));
+              <CardRow
+                rowData={{
+                  title: 'Sectors covered',
+                  value: values.coverage_sectors[0].value
+                }}
+              />
+            </React.Fragment>
+          ) : (
+            <div className={styles.noContent}>Not included</div>
+          )}
+        </div>
+      </Card>
+      <Card title="Non-GHG Target" theme={cardTheme} contentFirst>
+        <div className={styles.cardContent}>
+          {values && values.non_ghg_target ? (
+            <CardRow
+              rowData={{
+                title: '',
+                value: values.non_ghg_target[0].value
+              }}
+            />
+          ) : (
+            <div className={styles.noContent}>Not included</div>
+          )}
+        </div>
+      </Card>
+    </div>
+  );
 
   const renderAlertText = () => (
     <div className={styles.alertContainer}>
@@ -309,10 +197,7 @@ function CountryNdcOverview(props) {
 
   return (
     <div className={cx(styles.wrapper, { [styles.embededWrapper]: isEmbed })}>
-      {(FEATURE_LTS_EXPLORE || !FEATURE_NDC_FILTERING) &&
-        hasSectors &&
-        !loading &&
-        renderAlertText()}
+      {!FEATURE_NDC_FILTERING && hasSectors && !loading && renderAlertText()}
       {FEATURE_NDC_FILTERING && <CountriesDocumentsProvider location={iso} />}
       <NdcContentOverviewProvider
         locations={[iso]}
