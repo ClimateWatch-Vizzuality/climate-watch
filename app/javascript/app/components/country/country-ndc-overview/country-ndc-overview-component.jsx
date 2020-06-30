@@ -201,11 +201,7 @@ function CountryNdcOverview(props) {
       {FEATURE_NDC_FILTERING && <CountriesDocumentsProvider location={iso} />}
       <NdcContentOverviewProvider
         locations={[iso]}
-        document={
-          FEATURE_NDC_FILTERING &&
-          selectedDocument &&
-          selectedDocument.document_type
-        }
+        document={selectedDocument && selectedDocument.document_type}
       />
       {!hasSectors && !loading ? (
         <NoContent
