@@ -18,6 +18,8 @@ import NdcsAutocompleteSearch from 'components/ndcs/ndcs-autocomplete-search';
 import accordionTheme from 'styles/themes/accordion/accordion-ndc-search.scss';
 import styles from './ndc-search-styles.scss';
 
+const FEATURE_NDC_EXPLORE = process.env.FEATURE_NDC_EXPLORE === 'true';
+
 class SearchPage extends PureComponent {
   render() {
     const {
@@ -34,7 +36,9 @@ class SearchPage extends PureComponent {
       <div className={styles.page}>
         <Header route={route}>
           <div className={styles.headerCols}>
-            <BackButton pathname="/ndcs-explore" backLabel="Explore NDCs" />
+            {FEATURE_NDC_EXPLORE && (
+              <BackButton pathname="/ndcs-explore" backLabel="Explore NDCs" />
+            )}
             <Intro className={styles.intro} title="NDC Search" />
             <NdcsAutocompleteSearch
               className={styles.select}
