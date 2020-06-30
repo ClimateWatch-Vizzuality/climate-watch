@@ -6,7 +6,7 @@ import pick from 'lodash/pick';
 import flatten from 'lodash/flatten';
 import qs from 'query-string';
 import { findEqual, isANumber, noEmptyValues } from 'utils/utils';
-import { isNoColumnField } from 'utils/data-explorer';
+import { isNoColumnField, isNonColumnKey } from 'utils/data-explorer';
 import { isPageContained } from 'utils/navigation';
 
 import sortBy from 'lodash/sortBy';
@@ -260,8 +260,19 @@ const getParsedFilterId = (
   return isArray(id) ? id.join(',') : id;
 };
 
-const parseQuery = (filterQuery, section, sectionMeta) => {
+const parseQuery = (filterQuery, section, sectionMeta, nonColumnQuery) => {
   const parsedQuery = {};
+
+  const nonColumnQueryKeys = Object.keys(nonColumnQuery);
+  if (nonColumnQueryKeys.length) {
+    nonColumnQueryKeys.forEach(key => {
+      const parsedKeyData = DATA_EXPLORER_TO_MODULES_PARAMS[section][key];
+      if (parsedKeyData) {
+        parsedQuery[key] = nonColumnQuery[key];
+      }
+    });
+  }
+
   if (filterQuery && !isEmpty(filterQuery)) {
     Object.keys(filterQuery).forEach(key => {
       const parsedKeyData = DATA_EXPLORER_TO_MODULES_PARAMS[section][key];
@@ -280,10 +291,15 @@ const parseQuery = (filterQuery, section, sectionMeta) => {
 };
 
 export const getLink = createSelector(
-  [getLinkFilterQuery, getSection, getSectionMeta],
-  (filterQuery, section, sectionMeta) => {
+  [getLinkFilterQuery, getNonColumnQuery, getSection, getSectionMeta],
+  (filterQuery, nonColumnQuery, section, sectionMeta) => {
     if (!section) return null;
-    const parsedQuery = parseQuery(filterQuery, section, sectionMeta);
+    const parsedQuery = parseQuery(
+      filterQuery,
+      section,
+      sectionMeta,
+      nonColumnQuery
+    );
     const stringifiedQuery = qs.stringify(parsedQuery);
     const urlParameters = stringifiedQuery ? `?${stringifiedQuery}` : '';
     const moduleName =
@@ -496,7 +512,9 @@ export const parseExternalParams = createSelector(
       );
       const keyWithoutSection = keyWithoutPrefix.replace(`${section}-`, '');
       let metaMatchingKey = keyWithoutSection.replace('-', '_');
-      if (metaMatchingKey !== 'undefined') {
+      if (isNonColumnKey(keyWithoutSection)) {
+        parsedFields[`${section}-${metaMatchingKey}`] = externalFields[k];
+      } else if (metaMatchingKey !== 'undefined') {
         if (metaMatchingKey === 'subcategories') metaMatchingKey = 'categories';
         const ids = externalFields[k].split(',');
         const filterObjects = sectionMeta[metaMatchingKey].filter(
@@ -547,9 +565,8 @@ export const getSelectedFilters = createSelector(
     const selectedFilterObjects = {};
     Object.keys(parsedSelectedFilters).forEach(filterKey => {
       const filterId = parsedSelectedFilters[filterKey];
-      const isNonColumnKey = NON_COLUMN_KEYS.includes(filterKey);
       const isNoModelColumnKey = isNoColumnField(section, filterKey);
-      if (isNonColumnKey || isNoModelColumnKey) {
+      if (isNonColumnKey(filterKey) || isNoModelColumnKey) {
         selectedFilterObjects[filterKey] = filterId;
       } else if (filterId === ALL_SELECTED) {
         selectedFilterObjects[filterKey] = [ALL_SELECTED_OPTION];
@@ -739,7 +756,7 @@ export const getSelectedOptions = createSelector(
     if (!selectedFields) return null;
     const selectedOptions = {};
     Object.keys(selectedFields).forEach(key => {
-      if (NON_COLUMN_KEYS.includes(key) || isNoColumnField(section, key)) {
+      if (isNonColumnKey(key) || isNoColumnField(section, key)) {
         selectedOptions[key] = {
           value: selectedFields[key],
           label: selectedFields[key]

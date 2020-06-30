@@ -1,5 +1,7 @@
 import { createSelector } from 'reselect';
 import isArray from 'lodash/isArray';
+import intersection from 'lodash/intersection';
+import { europeSlug, europeanCountries } from 'app/data/european-countries';
 
 const getIndicators = state =>
   (state.ndcs && state.ndcs.data.indicators) || null;
@@ -46,11 +48,29 @@ export const getEmissionsPercentage = createSelector(
     const emissionsIndicator = indicators.find(i => i.slug === 'ndce_ghg');
     if (!emissionsIndicator) return null;
 
+    const europeanLocationIsos = Object.keys(
+      emissionsIndicator.locations
+    ).filter(iso => europeanCountries.includes(iso));
+
     const emissionPercentages = emissionsIndicator.locations;
     let summedPercentage = 0;
     positiveAnswerIsos.forEach(iso => {
       if (emissionPercentages[iso]) {
-        summedPercentage += parseFloat(emissionPercentages[iso].value);
+        // To avoid double counting in EUU
+        if (iso === europeSlug) {
+          const EUTotal = parseFloat(emissionPercentages[europeSlug].value);
+          const europeanLocationIsosInAnswer = intersection(
+            europeanLocationIsos,
+            positiveAnswerIsos
+          );
+          const europeanLocationsValue = europeanLocationIsosInAnswer.reduce(
+            (acc, i) => acc + parseFloat(emissionPercentages[i].value),
+            0
+          );
+          summedPercentage += EUTotal - europeanLocationsValue;
+        } else {
+          summedPercentage += parseFloat(emissionPercentages[iso].value);
+        }
       }
     });
     return summedPercentage;

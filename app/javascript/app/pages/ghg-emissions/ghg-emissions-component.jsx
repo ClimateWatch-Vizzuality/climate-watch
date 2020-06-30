@@ -18,6 +18,33 @@ class GhgEmissions extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
   render() {
     const { route } = this.props;
+    // Intro component is parsing html from the description so a react component won't work here
+    const renderLink = (text, title, link) =>
+      `<a href=${link} title="${title}">${text}</a>`;
+    const description =
+      FEATURE_NEW_GHG &&
+      `Climate change causing greenhouse gas emissions
+      ${renderLink(
+    'have increased 50 fold',
+    'Climate change causing greenhouse gas emissions have increased 50 fold',
+    '/ghg-emissions?chartType=area&source=PIK'
+  )}
+      since the late 1800s. Energy makes up ${renderLink(
+    'nearly two-thirds of global emissions, followed by agriculture.',
+    'Energy makes up nearly two-thirds of global emissions, followed by agriculture.',
+    '/ghg-emissions?breakBy=sector&chartType=percentage&source=CAIT'
+  )}
+        Within the energy sector, ${renderLink(
+    'electricity and heat generation make up the largest portion of emissions, followed by transportation and manufacturing.',
+    'Within the energy sector electricity and heat generation make up the largest portion of emissions, followed by transportation and manufacturing.',
+    '/ghg-emissions?breakBy=sector&chartType=percentage&sectors=building%2Cfugitive-emissions%2Cmanufacturing-construction%2Cother-fuel-combustion%2Ctransportation%2Celectricity-heat'
+  )}
+          In 2014, 60% of global greenhouse gas emissions came ${renderLink(
+    'from just 10 countries',
+    'In 2014, 60% of global greenhouse gas emissions came from just 10 countries',
+    '/ghg-emissions?chartType=percentage'
+  )}, while the 100 least-emitting contributed less than 3%.`;
+
     return (
       <div>
         <MetaDescription
@@ -33,10 +60,7 @@ class GhgEmissions extends PureComponent {
             <div className={cx(layout.content, styles.header)}>
               <Intro
                 title="Historical GHG Emissions"
-                description={
-                  FEATURE_NEW_GHG &&
-                  'Climate change causing greenhouse gas emissions have increased 50 fold since the late 1800s. Energy makes up nearly two-thirds of global emissions, followed by agriculture. Within the energy sector, electricity and heat generation make up the largest portion of emissions, followed by transportation and manufacturing. In 2014, 60% of global greenhouse gas emissions came from just 10 countries, while the 100 least-emitting contributed less than 3%. '
-                }
+                description={description}
               />
             </div>
           </Header>

@@ -12,6 +12,10 @@
   align-items: flex-end;
 }
 
+.buttonsContainer {
+  @include columns((6, 6));
+}
+
 .visualizationsContainer {
   @include columns();
 }
@@ -73,6 +77,10 @@
   @include xy-gutters(30px, $gutter-position: 'bottom');
 }
 
+.shareButton {
+  @include xy-gutters(30px, $gutter-position: 'bottom');
+}
+
 .legend {
   position: relative;
   left: 0;
@@ -109,7 +117,7 @@
 
 @media #{$tablet-landscape} {
   .actionsContainer {
-    @include columns((10, 2));
+    @include columns((8, 2, 2));
   }
 
   .filtersGroup {

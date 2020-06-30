@@ -159,12 +159,14 @@ class ImportIndc
   end
 
   def submission_attributes(location, submission)
+    doc_slug = submission[:type]&.parameterize&.gsub('-', '_')
     {
       location: location,
       submission_type: submission[:type],
       language: submission[:language],
       submission_date: submission[:date_of_submission],
-      url: submission[:url]
+      url: submission[:url],
+      document_id: ::Indc::Document.find_by(slug: doc_slug)&.id
     }
   end
 

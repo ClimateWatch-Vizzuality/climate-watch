@@ -7,8 +7,8 @@ import reducers, { initialState } from './regions-provider-reducers';
 
 class RegionsProvider extends PureComponent {
   componentDidMount() {
-    const { getRegions } = this.props;
-    getRegions();
+    const { getRegions, includeGHGSources } = this.props;
+    getRegions(includeGHGSources);
   }
 
   render() {
@@ -17,7 +17,8 @@ class RegionsProvider extends PureComponent {
 }
 
 RegionsProvider.propTypes = {
-  getRegions: PropTypes.func.isRequired
+  getRegions: PropTypes.func.isRequired,
+  includeGHGSources: PropTypes.bool
 };
 
 export { actions, reducers, initialState };

@@ -1,0 +1,14 @@
+@import '~styles/settings.scss';
+
+.title {
+  font-size: $font-size-large;
+  font-weight: $font-weight;
+  color: $theme-color;
+  display: flex;
+  align-items: center;
+}
+
+.description {
+  color: $theme-color;
+  line-height: 1.4;
+}

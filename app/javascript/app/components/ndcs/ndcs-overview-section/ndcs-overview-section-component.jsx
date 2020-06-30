@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 import cx from 'classnames';
 import { isEmbededComponent } from 'utils/navigation';
 import CountriesDocumentsProvider from 'providers/countries-documents-provider';
+import ModalShare from 'components/modal-share';
+import ModalMetadata from 'components/modal-metadata';
 import layout from 'styles/layout.scss';
 import ShareButton from 'components/button/share-button';
-import ModalShare from 'components/modal-share';
 import styles from './ndcs-overview-section-styles.scss';
 import QuestionCard from './question-card';
 
@@ -44,7 +45,6 @@ const NdcsOverviewSection = ({ data, section, location, handleInfoClick }) => {
               className={styles.shareButton}
               sharePath={`/ndc-overview/${section}`}
             />
-            <ModalShare analyticsName="NDC Overview" />
             {questions.map(question => (
               <QuestionCard
                 key={`${question.slug}${question.questionText}`}
@@ -62,6 +62,8 @@ const NdcsOverviewSection = ({ data, section, location, handleInfoClick }) => {
           </div>
         </div>
       </div>
+      <ModalShare analyticsName="NDC Overview" />
+      <ModalMetadata />
     </div>
   );
 };

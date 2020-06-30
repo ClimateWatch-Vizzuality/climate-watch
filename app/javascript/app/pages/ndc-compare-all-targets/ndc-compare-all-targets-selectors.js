@@ -2,7 +2,7 @@ import { createSelector } from 'reselect';
 import { filterQuery } from 'app/utils';
 import deburr from 'lodash/deburr';
 import isEmpty from 'lodash/isEmpty';
-import { DOCUMENTS_NAMES } from 'data/country-documents';
+import { DOCUMENT_COLUMNS_SLUGS } from 'data/country-documents';
 
 const getCountries = state => (state.countries && state.countries.data) || null;
 const getCountriesDocuments = state =>
@@ -31,22 +31,33 @@ const getData = createSelector(
       const countryEmissions = emissionsIndicator.locations[c.iso_code3];
       const countryDocuments =
         countriesDocuments && countriesDocuments[c.iso_code3];
-      const getIconValue = slug =>
-        // TODO: Intends submisstion return 'intends'
-        (countryDocuments && countryDocuments.find(d => d.slug === slug)
-          ? 'yes'
-          : 'no');
+      const getIconValue = slug => {
+        const countryDocument =
+          countryDocuments && countryDocuments.find(d => d.slug === slug);
+        // Intend to submit documents are only Second NDC without submitted date
+        if (
+          slug === 'second_ndc' &&
+          countryDocument &&
+          !countryDocument.submission_date
+        ) {
+          return 'intends';
+        }
+        return countryDocument ? 'yes' : 'no';
+      };
+
+      const documentsColumns = Object.keys(DOCUMENT_COLUMNS_SLUGS).reduce(
+        (acc, nextColumn) => {
+          const slug = DOCUMENT_COLUMNS_SLUGS[nextColumn];
+          return { ...acc, [nextColumn]: getIconValue(slug) };
+        },
+        {}
+      );
 
       return {
         Country: { name: c.wri_standard_name, iso: c.iso_code3 },
         'Share of global GHG emissions':
           countryEmissions && countryEmissions.value,
-        'Pre-2020 Pledges': getIconValue('pledges'),
-        INDC: getIconValue('indc'),
-        NDC: getIconValue('first_ndc'),
-        '2nd NDC': getIconValue('second_ndc'),
-        'Targets in National Policies': getIconValue('targets'),
-        LTS: getIconValue('lts')
+        ...documentsColumns
       };
     });
     return rows;
@@ -55,7 +66,8 @@ const getData = createSelector(
 
 export const getColumns = createSelector([getData], rows => {
   if (!rows) return [];
-  return ['Country', 'Share of global GHG emissions', ...DOCUMENTS_NAMES];
+  const documentColumnNames = Object.keys(DOCUMENT_COLUMNS_SLUGS);
+  return ['Country', 'Share of global GHG emissions', ...documentColumnNames];
 });
 
 export const getFilteredDataBySearch = createSelector(
@@ -68,6 +80,16 @@ export const getFilteredDataBySearch = createSelector(
 
 export const getSelectedTargets = createSelector([getQuery], query => {
   if (!query || !query.targets) return [];
-  const selectedTargets = query.targets.split(',');
-  return selectedTargets;
+  return query.targets.split(',');
 });
+
+export const getSelectedTableTargets = createSelector(
+  [getSelectedTargets],
+  selectedTargets => {
+    if (!selectedTargets) return [];
+    const selectedTableTargets = selectedTargets.map(
+      target => target.split('_')[0]
+    );
+    return selectedTableTargets;
+  }
+);

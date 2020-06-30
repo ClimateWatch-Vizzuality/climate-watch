@@ -5,6 +5,7 @@ import Header from 'components/header';
 import Intro from 'components/intro';
 import AutocompleteSearch from 'components/autocomplete-search';
 import AnchorNav from 'components/anchor-nav';
+
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
 import anchorNavContainedTheme from 'styles/themes/anchor-nav/anchor-nav-contained.scss';
 import { NDC_CONTENT } from 'data/SEO';

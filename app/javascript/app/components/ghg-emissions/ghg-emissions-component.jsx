@@ -22,12 +22,11 @@ import Table from 'components/table';
 import GhgMultiselectDropdown from 'components/ghg-multiselect-dropdown';
 import ghgTableTheme from 'styles/themes/table/ghg-table-theme.scss';
 import ModalPngDownload from 'components/modal-png-download';
-import ModalMetadata from 'components/modal-metadata';
-import ModalShare from 'components/modal-share';
 import { TabletPortraitOnly, TabletLandscape } from 'components/responsive';
 import { toPlural } from 'utils/ghg-emissions';
 import { format } from 'd3-format';
-
+import ModalShare from 'components/modal-share';
+import ModalMetadata from 'components/modal-metadata';
 import lineIcon from 'assets/icons/line_chart.svg';
 import areaIcon from 'assets/icons/area_chart.svg';
 import percentageIcon from 'assets/icons/icon-percentage-chart.svg';
@@ -95,6 +94,7 @@ function GhgEmissions(props) {
     handleInfoClick,
     setColumnWidth,
     downloadLink,
+    dataZoomYears,
     dataZoomPosition,
     setDataZoomPosition
   } = props;
@@ -138,7 +138,8 @@ function GhgEmissions(props) {
         },
         {
           label: 'Go to data explorer',
-          link: downloadLink
+          link: downloadLink,
+          target: '_self'
         }
       ],
       reverseDropdown: false
@@ -167,6 +168,22 @@ function GhgEmissions(props) {
     );
   };
 
+  const handleLegendChange = v => {
+    // If there is only one region selected return the contracted region + new selected item
+    if (
+      toPlural(fieldToBreakBy) === 'regions' &&
+      selectedOptions.regionsSelected &&
+      selectedOptions.regionsSelected.length === 1
+    ) {
+      handleChange(
+        'regions',
+        selectedOptions.regionsSelected.concat(v[v.length - 1])
+      );
+    } else {
+      handleChange(toPlural(fieldToBreakBy), v);
+    }
+  };
+
   const renderPngChart = () => {
     const { chartTypeSelected } = selectedOptions;
     return (
@@ -180,8 +197,6 @@ function GhgEmissions(props) {
         loading={loading}
         lineType="linear"
         showUnit
-        onLegendChange={v => handleChange(toPlural(fieldToBreakBy), v)}
-        hideRemoveOptions={hideRemoveOptions}
       />
     );
   };
@@ -192,7 +207,7 @@ function GhgEmissions(props) {
       config={config}
       dataOptions={legendOptions}
       dataSelected={legendOptions}
-      hideRemoveOptions={hideRemoveOptions}
+      hideRemoveOptions
     />
   );
 
@@ -256,7 +271,7 @@ function GhgEmissions(props) {
           loading={loading}
           lineType="linear"
           showUnit
-          onLegendChange={v => handleChange(toPlural(fieldToBreakBy), v)}
+          onLegendChange={handleLegendChange}
           hideRemoveOptions={hideRemoveOptions}
           getCustomYLabelFormat={
             isPercentageChangeCalculation
@@ -269,6 +284,7 @@ function GhgEmissions(props) {
               <DataZoom
                 data={dataZoomData}
                 position={dataZoomPosition}
+                years={dataZoomYears}
                 setPosition={setDataZoomPosition}
                 onYearChange={(min, max) => setYears({ min, max })}
               />
@@ -324,17 +340,16 @@ function GhgEmissions(props) {
         </TabletLandscape>
         {FEATURE_NEW_GHG && (
           <p className={styles.bodyText}>
-            Explore GHG emissions from multiple data source (CAIT, PIK, UNFCCC)
-            and understand their differences in the
+            Explore GHG emissions from multiple data source (CAIT, PIK, UNFCCC,
+            GCP) and understand their differences in the{' '}
             <a className={styles.link} href="about/faq/ghg">
-              {' '}
               FAQ
             </a>
           </p>
         )}
       </div>
       <WorldBankDataProvider />
-      <RegionsProvider />
+      <RegionsProvider includeGHGSources />
       <EmissionsMetaProvider />
       {providerFilters && <EmissionsProvider filters={providerFilters} />}
       <div className={cx(styles.col4, { [styles.newGHG]: FEATURE_NEW_GHG })}>
@@ -397,8 +412,8 @@ function GhgEmissions(props) {
         {renderPngChart()}
         {renderPngLegend()}
       </ModalPngDownload>
+      <ModalShare analyticsName={'GHG Emissions'} />
       <ModalMetadata />
-      <ModalShare />
     </div>
   );
 }
@@ -427,6 +442,7 @@ GhgEmissions.propTypes = {
   downloadLink: PropTypes.string,
   hideRemoveOptions: PropTypes.bool,
   dataZoomPosition: PropTypes.object,
+  dataZoomYears: PropTypes.object,
   setDataZoomPosition: PropTypes.func.isRequired
 };
 

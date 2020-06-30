@@ -71,7 +71,7 @@ export const commitmentsData = [
         link: 'https://eciu.net/netzerotracker',
         slug: 'lts_zero',
         answerLabel: 'Net-zero target included',
-        metadataSlug: 'ndc_cw',
+        metadataSlug: 'eciu',
         hasExternalLink: true
       },
       {
@@ -80,7 +80,7 @@ export const commitmentsData = [
         answerLabel: ['In Policy Document', 'In Law'],
         link: 'https://climate-laws.org/',
         slug: 'nz_status',
-        metadataSlug: 'ndc_cw',
+        metadataSlug: 'national_laws_politices',
         hasExternalLink: true
       }
     ]

@@ -9,7 +9,7 @@ describe Api::V1::LseLawsAndPoliciesController, type: :controller do
       it 'calls SingleRecordFetcher service' do
         fake_single_fetcher_record = double('fake_single_fetcher_record')
         expect(SingleRecordFetcher).
-          to receive(:new).with(url, iso).and_return(fake_single_fetcher_record)
+          to receive(:new).with(url, iso, iso).and_return(fake_single_fetcher_record)
         expect(fake_single_fetcher_record).to receive(:call)
         get(:show, params: {id: iso})
       end

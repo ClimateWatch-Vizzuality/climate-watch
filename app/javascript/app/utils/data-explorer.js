@@ -1,9 +1,11 @@
 import invertBy from 'lodash/invertBy';
+import snakeCase from 'lodash/snakeCase';
 import qs from 'querystring';
 import {
   DATA_EXPLORER_TO_MODULES_PARAMS,
   FILTERS_DATA_WITHOUT_MODEL,
-  DATA_EXPLORER_EXTERNAL_PREFIX
+  DATA_EXPLORER_EXTERNAL_PREFIX,
+  NON_COLUMN_KEYS
 } from 'data/data-explorer-constants';
 import { replaceAll } from 'utils/utils';
 import { getStorageWithExpiration } from 'utils/localStorage';
@@ -76,6 +78,8 @@ export const isNoColumnField = (section, key) =>
   FILTERS_DATA_WITHOUT_MODEL[section] &&
   FILTERS_DATA_WITHOUT_MODEL[section].includes(key);
 
+export const isNonColumnKey = key =>
+  NON_COLUMN_KEYS.some(k => snakeCase(key).endsWith(k));
 export default {
   parseQuery,
   openDownloadModal,

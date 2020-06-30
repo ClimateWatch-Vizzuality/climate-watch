@@ -24,7 +24,10 @@ export const getDocumentSlug = createSelector(
     const selectedDocument = Object.values(documents).find(
       d => d.slug === searchDocument.split('-')[0]
     );
-    return (selectedDocument && selectedDocument.slug) || null;
+    if (selectedDocument) return selectedDocument.slug;
+    const documentValues = Object.values(documents);
+    const lastDocument = documentValues[documentValues.length - 1];
+    return (lastDocument && lastDocument.slug) || null;
   }
 );
 

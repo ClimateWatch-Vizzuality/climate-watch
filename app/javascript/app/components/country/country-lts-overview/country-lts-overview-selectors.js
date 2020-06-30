@@ -1,41 +1,36 @@
 import { createSelector } from 'reselect';
 
-const SUBMISSION_SLUGS = [
-  'lts_document',
-  'lts_vision',
-  'lts_date',
-  'lts_target',
-  'lts_m_tt',
-  'lts_a_otc'
-];
+const getIndicatorsContentOverview = state =>
+  (state.ltsContentOverview.data && state.ltsContentOverview.data.locations) ||
+  null;
+const getIso = (state, { iso }) => iso || null;
 
-const getIndicators = ({ state }) =>
-  state &&
-  state.ndcCountryAccordion &&
-  state.ndcCountryAccordion.data &&
-  state.ndcCountryAccordion.data.indicators;
-const getIso = ({ iso }) => iso || null;
+const getIndicators = createSelector(
+  [getIndicatorsContentOverview, getIso],
+  (ltsContentOverviewLocations, iso) => {
+    if (!ltsContentOverviewLocations || !iso) return null;
+    return (
+      (ltsContentOverviewLocations[iso] &&
+        ltsContentOverviewLocations[iso].values) ||
+      null
+    );
+  }
+);
 
 export const getCardsData = createSelector(
   [getIndicators, getIso],
   (indicators, iso) => {
     if (!indicators || !indicators.length || !iso) return null;
-
-    const filteredIndicators = indicators.filter(({ slug }) =>
-      SUBMISSION_SLUGS.includes(slug)
-    );
-
-    const cardData = filteredIndicators.reduce((acc, nextIndicator) => {
-      const { slug, name, locations } = nextIndicator;
+    return indicators.reduce((acc, nextIndicator) => {
+      const { slug, name, value } = nextIndicator;
       return {
         ...acc,
         [slug]: {
           title: name,
-          value: locations[iso] && locations[iso][0] && locations[iso][0].value
+          value
         }
       };
     }, {});
-    return cardData;
   }
 );
 

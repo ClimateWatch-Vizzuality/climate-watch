@@ -5,6 +5,11 @@ module Api
         class SectorSerializer < ActiveModel::Serializer
           attribute :id
           attribute :name
+          attribute :slug
+
+          def slug
+            object.name.parameterize
+          end
         end
       end
     end

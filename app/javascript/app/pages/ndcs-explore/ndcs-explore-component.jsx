@@ -7,6 +7,8 @@ import Intro from 'components/intro';
 import { NDCS_EXPLORE } from 'data/SEO';
 import { MetaDescription, SocialMetadata } from 'components/seo';
 import AutocompleteSearch from 'components/autocomplete-search';
+import ModalMetadata from 'components/modal-metadata';
+import ModalShare from 'components/modal-share';
 
 import layout from 'styles/layout.scss';
 import styles from './ndcs-explore-styles.scss';
@@ -50,6 +52,8 @@ const NDCSExplore = ({ route }) => (
           </div>
         ))}
     </div>
+    <ModalMetadata />
+    <ModalShare analyticsName="NDC Explore" />
   </div>
 );
 

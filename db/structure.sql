@@ -30,7 +30,7 @@ CREATE FUNCTION public.emissions_filter_by_year_range(emissions jsonb, start_yea
 
 SET default_tablespace = '';
 
-SET default_with_oids = false;
+SET default_table_access_method = heap;
 
 --
 -- Name: active_storage_attachments; Type: TABLE; Schema: public; Owner: -
@@ -1125,7 +1125,8 @@ CREATE TABLE public.indc_submissions (
     submission_date date NOT NULL,
     url text NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    document_id bigint
 );
 
 
@@ -3400,6 +3401,13 @@ CREATE UNIQUE INDEX index_indc_sources_on_name ON public.indc_sources USING btre
 
 
 --
+-- Name: index_indc_submissions_on_document_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_indc_submissions_on_document_id ON public.indc_submissions USING btree (document_id);
+
+
+--
 -- Name: index_indc_submissions_on_location_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3711,6 +3719,14 @@ ALTER TABLE ONLY public.indc_sectors
 
 ALTER TABLE ONLY public.ndcs
     ADD CONSTRAINT fk_rails_19d1c9c3f7 FOREIGN KEY (location_id) REFERENCES public.locations(id) ON DELETE CASCADE;
+
+
+--
+-- Name: indc_submissions fk_rails_1d04ac5809; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.indc_submissions
+    ADD CONSTRAINT fk_rails_1d04ac5809 FOREIGN KEY (document_id) REFERENCES public.indc_documents(id);
 
 
 --
@@ -4243,6 +4259,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200317210227'),
 ('20200317210928'),
 ('20200423085052'),
-('20200503165104');
+('20200503165104'),
+('20200521120158');
 
 
