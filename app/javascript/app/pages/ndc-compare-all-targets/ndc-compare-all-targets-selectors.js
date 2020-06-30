@@ -88,8 +88,11 @@ export const getSelectedTableTargets = createSelector(
   selectedTargets => {
     if (!selectedTargets) return [];
     const selectedTableTargets = selectedTargets.map(target => {
-      const sp = target.split('-')[1].split('_');
-      if (sp.length > 1 && ['sectoral', 'framework'].includes(sp[0])) {
+      const documentTarget = target.split('-')[1].split('_');
+      if (
+        documentTarget.length > 1 &&
+        ['sectoral', 'framework'].includes(documentTarget[0])
+      ) {
         return target.split('_')[0];
       }
       return target;
