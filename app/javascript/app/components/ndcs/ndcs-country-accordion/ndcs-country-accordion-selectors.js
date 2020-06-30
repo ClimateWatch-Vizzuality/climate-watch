@@ -27,7 +27,7 @@ export const getDocumentSlug = createSelector(
     if (selectedDocument) return selectedDocument.slug;
     const documentValues = Object.values(documents);
     const lastDocument = documentValues[documentValues.length - 1];
-    return lastDocument?.slug || null;
+    return (lastDocument && lastDocument.slug) || null;
   }
 );
 
