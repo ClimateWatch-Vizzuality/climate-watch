@@ -19,17 +19,11 @@ import CountriesActions from 'components/sectors-agriculture/countries-actions';
 import LTSExploreMap from 'components/ndcs/lts-explore-map';
 import NDCSExploreMap from 'components/ndcs/ndcs-explore-map';
 import NDCOverviewSection from 'components/ndcs/ndcs-overview-section';
-import NDCSLTSViz from 'components/ndcs/ndcs-lts-viz';
 
 export default [
   {
     path: '/embed/ndcs',
     component: NDCMap,
-    exact: true
-  },
-  {
-    path: '/embed/lts-tracker',
-    component: NDCSLTSViz,
     exact: true
   },
   {

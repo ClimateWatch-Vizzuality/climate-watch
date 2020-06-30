@@ -38,8 +38,10 @@ function TableComponent(props) {
   } = props;
   const rightTable = useRef();
   useEffect(() => {
-    rightTable.current.scrollLeft = rightTable.current.scrollWidth;
-  }, [rightTable.current]);
+    if (rightTable && rightTable.current) {
+      rightTable.current.scrollLeft = rightTable.current.scrollWidth;
+    }
+  }, [rightTable]);
 
   const rowClassName = ({ index }) => {
     if (index < 0) return cx(styles.headerRow, theme.headerRow);

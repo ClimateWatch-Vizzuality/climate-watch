@@ -20,7 +20,7 @@ import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.s
 import countryDropdownTheme from 'styles/themes/dropdown/dropdown-country.scss';
 import styles from './ndc-country-styles.scss';
 
-const FEATURE_LTS_EXPLORE = process.env.FEATURE_LTS_EXPLORE === 'true';
+const FEATURE_NDC_EXPLORE = process.env.FEATURE_NDC_EXPLORE === 'true';
 const FEATURE_NDC_FILTERING = process.env.FEATURE_NDC_FILTERING === 'true';
 const FEATURE_COMMITMENTS_OVERVIEW =
   process.env.FEATURE_COMMITMENTS_OVERVIEW === 'true';
@@ -70,7 +70,7 @@ function NDCCountry(props) {
   );
 
   const renderCompareButton = () => {
-    if (!FEATURE_LTS_EXPLORE || !FEATURE_COMMITMENTS_OVERVIEW) {
+    if (!FEATURE_NDC_EXPLORE || !FEATURE_COMMITMENTS_OVERVIEW) {
       return (
         <Button
           variant="primary"
@@ -134,17 +134,16 @@ function NDCCountry(props) {
             <div
               className={cx(styles.actionsContainer, {
                 [styles.withSearch]: hasSearch,
-                [styles.withoutBack]: !FEATURE_LTS_EXPLORE
+                [styles.withoutBack]: !FEATURE_NDC_EXPLORE
               })}
             >
-              {!FEATURE_LTS_EXPLORE && renderIntroDropdown()}
-              {FEATURE_LTS_EXPLORE && (
+              {!FEATURE_NDC_EXPLORE && renderIntroDropdown()}
+              {FEATURE_NDC_EXPLORE && (
                 <BackButton backLabel="Explore NDCs" pathname="/ndcs-explore" />
               )}
               <TabletPortrait>
                 {renderDocumentsDropdown()}
                 {renderFullTextButton()}
-                {!FEATURE_LTS_EXPLORE && renderCompareButton()}
               </TabletPortrait>
             </div>
             <TabletPortrait>
@@ -159,7 +158,7 @@ function NDCCountry(props) {
                 </div>
               )}
             </TabletPortrait>
-            {FEATURE_LTS_EXPLORE && (
+            {FEATURE_NDC_EXPLORE && (
               <div className={styles.title}>{renderIntroDropdown()}</div>
             )}
             <MobileOnly>
@@ -178,7 +177,7 @@ function NDCCountry(props) {
               </div>
             </MobileOnly>
             <TabletPortrait>
-              {FEATURE_LTS_EXPLORE && renderCompareButton()}
+              {FEATURE_NDC_EXPLORE && renderCompareButton()}
             </TabletPortrait>
           </div>
           <Sticky activeClass="sticky -ndcs" top="#navBarMobile">

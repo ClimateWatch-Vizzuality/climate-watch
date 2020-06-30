@@ -86,7 +86,6 @@ const providersReducers = {
 // Pages
 import * as NDCSPage from 'pages/ndcs';
 import * as NDCSEnhancementsPage from 'pages/ndcs-enhancements';
-import * as NDCSLTSPage from 'pages/ndcs-lts';
 import * as LTSPage from 'pages/lts-explore';
 import * as countryNDCFullPage from 'pages/ndc-country-full';
 import * as ndcSearchPage from 'pages/ndc-search';
@@ -95,7 +94,6 @@ import * as myCWEditor from 'pages/my-climate-watch/my-cw-editor';
 const pagesReducers = {
   ndcs: handleActions(NDCSPage),
   ndcsEnhancements: handleActions(NDCSEnhancementsPage),
-  ndcsLTS: handleActions(NDCSLTSPage),
   LTS: handleActions(LTSPage),
   countryNDCFull: handleActions(countryNDCFullPage),
   ndcSearch: handleActions(ndcSearchPage),

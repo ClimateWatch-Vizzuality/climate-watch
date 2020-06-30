@@ -1,11 +1,10 @@
-const FEATURE_LTS_EXPLORE = process.env.FEATURE_LTS_EXPLORE === 'true';
-const exploreTools = FEATURE_LTS_EXPLORE
+const FEATURE_NDC_EXPLORE = process.env.FEATURE_NDC_EXPLORE === 'true';
+const exploreTools = FEATURE_NDC_EXPLORE
   ? [
     { title: 'Explore NDCs', href: '/ndcs-explore' },
     { title: 'Explore LTS', href: '/lts-explore' }
   ]
-  : [];
-
+  : [{ title: 'Explore LTS', href: '/lts-explore' }];
 export const siteMapData = [
   {
     title: 'Tools',
