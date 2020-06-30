@@ -84,7 +84,8 @@ const CustomComparisonComponent = props => {
     backButtonLink,
     accordionDataLoading,
     selectedCountries,
-    documentsListLoading
+    documentsListLoading,
+    selectedTargets
   } = props;
 
   return (
@@ -126,7 +127,7 @@ const CustomComparisonComponent = props => {
             ))}
         </div>
       </div>
-      {renderRoutes(route.routes)}
+      {renderRoutes(route.routes, { targets: selectedTargets })}
       <NdcCompareAllTargetsProvider />
       <CountriesDocumentsProvider location={selectedCountries} />
     </div>
@@ -174,7 +175,8 @@ CustomComparisonComponent.propTypes = {
   backButtonLink: PropTypes.string,
   accordionDataLoading: PropTypes.bool,
   selectedCountries: PropTypes.string,
-  documentsListLoading: PropTypes.bool
+  documentsListLoading: PropTypes.bool,
+  selectedTargets: PropTypes.array
 };
 
 export default CustomComparisonComponent;
