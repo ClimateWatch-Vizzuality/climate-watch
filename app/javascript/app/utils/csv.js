@@ -1,7 +1,8 @@
-export function encodeAsCSVContent(data, sortOrder) {
+export function encodeAsCSVContent(data, sortOrder, metadata) {
   let csvContent = 'data:text/csv;charset=utf-8,';
 
-  const escapeForCSV = value => (value && String(value).includes(',') ? `"${value}"` : value);
+  const escapeForCSV = value =>
+    (value && String(value).includes(',') ? `"${value}"` : value);
 
   const headers = Object.keys(data[0]).sort(sortOrder);
   const rows = [headers.join(',')];
@@ -9,6 +10,12 @@ export function encodeAsCSVContent(data, sortOrder) {
   data.forEach(row => {
     rows.push(headers.map(header => escapeForCSV(row[header])).join(','));
   });
+
+  if (metadata) {
+    Object.keys(metadata).forEach(key => {
+      rows.push([key, metadata[key]]);
+    });
+  }
 
   csvContent += rows.join('\r\n');
   return encodeURI(csvContent);

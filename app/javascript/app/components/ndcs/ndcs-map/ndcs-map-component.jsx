@@ -8,8 +8,10 @@ import MapLegend from 'components/map-legend';
 import Dropdown from 'components/dropdown';
 import ButtonGroup from 'components/button-group';
 import Icon from 'components/icon';
+import ShareButton from 'components/button/share-button';
 import accordionArrow from 'assets/icons/accordion-arrow.svg';
 import Loading from 'components/loading';
+import ModalShare from 'components/modal-share';
 import ModalMetadata from 'components/modal-metadata';
 
 import tooltipTheme from 'styles/themes/map-tooltip/map-tooltip.scss';
@@ -26,29 +28,30 @@ const getTooltip = (country, tooltipTxt) => (
 );
 
 const renderButtonGroup = (clickHandler, downloadLink) => (
-  <ButtonGroup
-    className={styles.buttonGroup}
-    buttonsConfig={[
-      {
-        type: 'info',
-        onClick: clickHandler
-      },
-      {
-        type: 'share',
-        shareUrl: '/embed/ndcs',
-        analyticsGraphName: 'Ndcs',
-        positionRight: true
-      },
-      {
-        type: 'download',
-        section: 'ndcs-content',
-        link: downloadLink
-      },
-      {
-        type: 'addToUser'
-      }
-    ]}
-  />
+  <React.Fragment>
+    <div>
+      <ButtonGroup
+        className={styles.buttonGroup}
+        buttonsConfig={[
+          {
+            type: 'info',
+            onClick: clickHandler
+          },
+          {
+            type: 'download',
+            section: 'ndcs-content',
+            link: downloadLink
+          },
+          {
+            type: 'addToUser'
+          }
+        ]}
+      />
+    </div>
+    <div className={styles.shareButtonContainer}>
+      <ShareButton className={styles.shareButton} sharePath={'/ndcs'} />
+    </div>
+  </React.Fragment>
 );
 
 const NDCMap = ({
@@ -88,7 +91,9 @@ const NDCMap = ({
             hideResetButton
             plain
           />
-          {isTablet && renderButtonGroup(handleInfoClick, downloadLink)}
+          <TabletLandscape>
+            {renderButtonGroup(handleInfoClick, downloadLink)}
+          </TabletLandscape>
         </div>
         {loading && <Loading light className={styles.loader} />}
         <Map
@@ -101,8 +106,8 @@ const NDCMap = ({
           customCenter={!isTablet ? [10, -50] : null}
         />
         {!isTablet && (
-          <div className={styles.column}>
-            {renderButtonGroup(handleInfoClick, true)}
+          <div className={styles.buttonGroupContainer}>
+            {renderButtonGroup(handleInfoClick, downloadLink)}
           </div>
         )}
         {countryData && (
@@ -122,6 +127,7 @@ const NDCMap = ({
           />
         )}
         <ModalMetadata />
+        <ModalShare analyticsName="NDC Content" />
       </div>
     )}
   </TabletLandscape>

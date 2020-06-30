@@ -7,8 +7,13 @@ module Api
           attribute :goal_id
           attribute :number
           attribute :title
+          attribute :slug
 
           has_many :sectors
+
+          def slug
+            object.title.parameterize
+          end
         end
       end
     end

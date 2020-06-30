@@ -2,6 +2,8 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Switch } from 'cw-components';
 import Loading from 'components/loading';
+import ModalMetadata from 'components/modal-metadata';
+import ModalShare from 'components/modal-share';
 import WbCountryDataProvider from 'providers/wb-country-data-provider';
 import AgricultureCountriesContextProvider from 'providers/agriculture-countries-context-provider';
 import ContextByCountry from './context-by-country';
@@ -28,7 +30,13 @@ const SwitchOptionsComponents = {
 
 class CountriesContext extends PureComponent {
   render() {
-    const { query, selectedCountry, handleSwitchClick, loading } = this.props;
+    const {
+      query,
+      selectedCountry,
+      handleSwitchClick,
+      loading,
+      location
+    } = this.props;
     const switchOption = (query && query.contextBy) || 'indicator';
 
     const Component = SwitchOptionsComponents[switchOption];
@@ -70,6 +78,8 @@ class CountriesContext extends PureComponent {
         <AgricultureCountriesContextProvider
           country={selectedCountry && selectedCountry.value}
         />
+        <ModalMetadata />
+        <ModalShare analyticsName={`Agriculture countries ${location.hash}`} />
       </div>
     );
   }
@@ -82,6 +92,7 @@ CountriesContext.propTypes = {
     label: PropTypes.string
   }),
   loading: PropTypes.bool,
+  location: PropTypes.object,
   handleSwitchClick: PropTypes.func.isRequired
 };
 

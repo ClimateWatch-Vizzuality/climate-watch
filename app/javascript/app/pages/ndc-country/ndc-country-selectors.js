@@ -81,9 +81,12 @@ export const getDocumentsOptions = createSelector(
   documents => {
     if (isEmpty(documents)) return null;
     if (FEATURE_NDC_FILTERING) {
-      return documents
-        .filter(d => d.is_ndc)
-        .map(document => documentOption(document));
+      return sortBy(
+        documents
+          .filter(d => d.is_ndc)
+          .map(document => documentOption(document)),
+        'ordering'
+      );
     }
     const groupedDocuments = groupBy(documents, 'document_type');
     const englishDocuments = Object.values(groupedDocuments).map(

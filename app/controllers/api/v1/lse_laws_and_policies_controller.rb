@@ -6,7 +6,7 @@ module Api
       def show
         id = params[:id] == 'EUU' ? 'EUR' : params[:id]
 
-        laws_and_policies = SingleRecordFetcher.new(LSE_API, id).call
+        laws_and_policies = SingleRecordFetcher.new(LSE_API, id, id).call
         render json: laws_and_policies
       end
     end

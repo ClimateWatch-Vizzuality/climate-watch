@@ -4,7 +4,8 @@ module Api
       def index
         total_ndc_count = Ndc.all.where(document_type: 'ndc').count
         total_indc_count = Ndc.all.where(document_type: 'indc').count
-        ndcs = Ndc.includes(:location)
+        doc_types = ::Indc::Document.select(:slug).distinct
+        ndcs = Ndc.includes(:location).where(document_type: doc_types)
         ndcs =
           if params[:target] || params[:goal] || params[:sector]
             with_linkage_highlights(ndcs, false)
@@ -26,7 +27,9 @@ module Api
       end
 
       def show
+        doc_types = ::Indc::Document.select(:slug).distinct
         ndcs = Ndc.joins(:location).where(
+          document_type: doc_types,
           locations: {iso_code3: params[:code].upcase}
         )
 

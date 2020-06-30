@@ -7,8 +7,13 @@ module Api
           attribute :number
           attribute :title
           attribute :cw_title
+          attribute :slug
 
           has_many :targets
+
+          def slug
+            object.cw_title.parameterize
+          end
         end
       end
     end

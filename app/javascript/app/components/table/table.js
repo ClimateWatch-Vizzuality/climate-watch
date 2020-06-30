@@ -2,7 +2,9 @@ import { PureComponent, createElement } from 'react';
 import PropTypes from 'prop-types';
 import { SortDirection } from 'react-virtualized';
 import _sortBy from 'lodash/sortBy';
+import omit from 'lodash/omit';
 import reverse from 'lodash/reverse';
+import isEqual from 'lodash/isEqual';
 import { toStartCase } from 'app/utils';
 import {
   ESP_HIGH_ROWS,
@@ -13,10 +15,27 @@ import {
 
 import Component from './table-component';
 
+const filterColumns = columns =>
+  (columns
+    ? columns
+      .filter(d => !d.endsWith('NotShow'))
+      .map(d => ({
+        label: toStartCase(d),
+        value: d
+      }))
+    : []);
+
 class TableContainer extends PureComponent {
   constructor(props) {
     super(props);
-    const { data, defaultColumns, sortBy, sortDirection, forcedColumnWidth } = props;
+    const {
+      data,
+      defaultColumns,
+      sortBy,
+      sortDirection,
+      forcedColumnWidth,
+      titleLinks
+    } = props;
     const columns = defaultColumns || Object.keys(data[0]);
     this.state = {
       data,
@@ -24,22 +43,29 @@ class TableContainer extends PureComponent {
       forcedColumnWidth,
       sortBy: sortBy || Object.keys(data[0])[0],
       sortDirection,
-      activeColumns: columns.filter(d => !d.endsWith('NotShow')).map(d => ({
-        label: toStartCase(d),
-        value: d
-      })),
+      activeColumns: filterColumns(columns),
       columnsOptions: Object.keys(data[0])
         .filter(d => !d.endsWith('NotShow'))
         .map(d => ({
           label: toStartCase(d),
           value: d
-        }))
+        })),
+      titleLinks
     };
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.data !== this.props.data) {
-      this.setState({ data: nextProps.data });
+    const { data, titleLinks } = this.props;
+    const columns = data ? Object.keys(data[0]) : [];
+    if (
+      !isEqual(nextProps.data !== data) ||
+      !isEqual(nextProps.titleLinks, titleLinks)
+    ) {
+      this.setState({
+        data: nextProps.data,
+        titleLinks: nextProps.titleLinks,
+        activeColumns: filterColumns(columns)
+      });
     }
   }
 
@@ -75,7 +101,9 @@ class TableContainer extends PureComponent {
 
   getDataSorted = (data, sortBy, sortDirection) => {
     const dataSorted = _sortBy(data, sortBy);
-    return sortDirection === SortDirection.DESC ? reverse(dataSorted) : dataSorted;
+    return sortDirection === SortDirection.DESC
+      ? reverse(dataSorted)
+      : dataSorted;
   };
 
   toggleOptionsOpen = () => {
@@ -83,9 +111,32 @@ class TableContainer extends PureComponent {
   };
 
   handleSortChange = ({ sortBy, sortDirection }) => {
-    const { data } = this.state;
-    const sortedData = this.getDataSorted(data, sortBy, sortDirection);
+    const { data, titleLinks } = this.state;
+    const dataWithTitleLinks = [...data];
     this.setState({ data: sortedData, sortBy, sortDirection });
+    data.forEach((d, i) => {
+      if (titleLinks) {
+        dataWithTitleLinks[i].titleLink = titleLinks[i];
+      }
+    });
+    const sortedData = this.getDataSorted(
+      dataWithTitleLinks,
+      sortBy,
+      sortDirection
+    );
+
+    const sortedDataWithoutTitleLinks = [];
+    const sortedTitleLinks = [];
+    sortedData.forEach(d => {
+      sortedDataWithoutTitleLinks.push(omit(d, ['titleLink']));
+      sortedTitleLinks.push(d.titleLink);
+    });
+    this.setState({
+      data: sortedDataWithoutTitleLinks,
+      titleLinks: sortedTitleLinks,
+      sortBy,
+      sortDirection
+    });
   };
 
   handleColumnChange = columns => {
@@ -93,11 +144,20 @@ class TableContainer extends PureComponent {
   };
 
   render() {
-    const { data, sortBy, sortDirection, activeColumns, columnsOptions, optionsOpen } = this.state;
+    const {
+      data,
+      titleLinks,
+      sortBy,
+      sortDirection,
+      activeColumns,
+      columnsOptions,
+      optionsOpen
+    } = this.state;
     const { handleSortChange, setRowsHeight, setColumnWidth } = this.props;
     return createElement(Component, {
       ...this.props,
       data,
+      titleLinks,
       sortBy,
       optionsOpen,
       sortDirection,
@@ -116,6 +176,7 @@ class TableContainer extends PureComponent {
 
 TableContainer.propTypes = {
   data: PropTypes.array.isRequired,
+  titleLinks: PropTypes.array,
   defaultColumns: PropTypes.array,
   handleSortChange: PropTypes.func,
   setRowsHeight: PropTypes.func,

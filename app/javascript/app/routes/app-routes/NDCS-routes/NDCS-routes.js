@@ -1,7 +1,7 @@
 import isEmpty from 'lodash/isEmpty';
 
 const activeId = 'ndc';
-const FEATURE_LTS_EXPLORE = process.env.FEATURE_LTS_EXPLORE === 'true';
+const FEATURE_NDC_EXPLORE = process.env.FEATURE_NDC_EXPLORE === 'true';
 const FEATURE_COMMITMENTS_OVERVIEW =
   process.env.FEATURE_COMMITMENTS_OVERVIEW === 'true';
 const FEATURE_ALL_COMMITMENTS_MENU_ITEMS =
@@ -13,37 +13,32 @@ export default [
     label: 'Overview',
     activeId
   },
-  (FEATURE_ALL_COMMITMENTS_MENU_ITEMS || !FEATURE_LTS_EXPLORE) && {
+  (FEATURE_ALL_COMMITMENTS_MENU_ITEMS || !FEATURE_NDC_EXPLORE) && {
     path: '/ndcs-content',
     label: 'NDC Content',
     activeId
   },
-  (FEATURE_ALL_COMMITMENTS_MENU_ITEMS || FEATURE_LTS_EXPLORE) && {
+  (FEATURE_ALL_COMMITMENTS_MENU_ITEMS || FEATURE_NDC_EXPLORE) && {
     path: '/ndcs-explore',
     label: 'Explore NDCS',
     activeId
   },
-  !FEATURE_LTS_EXPLORE && {
+  {
     path: '/2020-ndc-tracker',
     label: '2020 NDC Tracker',
     activeId
   },
-  (FEATURE_ALL_COMMITMENTS_MENU_ITEMS || FEATURE_LTS_EXPLORE) && {
+  {
     path: '/lts-explore',
     label: 'Explore LTS',
     activeId
   },
-  (FEATURE_ALL_COMMITMENTS_MENU_ITEMS || !FEATURE_LTS_EXPLORE) && {
-    path: '/lts-tracker',
-    label: 'Long-Term Strategy Tracker',
-    activeId
-  },
-  (FEATURE_ALL_COMMITMENTS_MENU_ITEMS || !FEATURE_LTS_EXPLORE) && {
+  (FEATURE_ALL_COMMITMENTS_MENU_ITEMS || !FEATURE_NDC_EXPLORE) && {
     path: '/ndcs/compare',
     label: 'NDC Comparison',
     activeId
   },
-  (FEATURE_ALL_COMMITMENTS_MENU_ITEMS || !FEATURE_LTS_EXPLORE) && {
+  (FEATURE_ALL_COMMITMENTS_MENU_ITEMS || !FEATURE_NDC_EXPLORE) && {
     path: '/ndc-search',
     label: 'NDC Search',
     activeId

@@ -13,6 +13,7 @@ import {
   getLoading,
   getSearch,
   getSelectedTargets,
+  getSelectedTableTargets,
   getQuery
 } from './ndc-compare-all-targets-selectors';
 
@@ -26,6 +27,7 @@ const mapStateToProps = (state, { location }) => {
       search
     }),
     selectedTargets: getSelectedTargets(state, { search }),
+    selectedTableTargets: getSelectedTableTargets(state, { search }),
     queryParams: getQuery(state, { search })
   };
 };
@@ -37,10 +39,9 @@ const NDCCompareAllContainer = props => {
     setColumnWidthUtil({
       column,
       columns,
-      tableWidth: 1170,
-      narrowColumnWidth: 134,
-      wideColumnWidth: 200,
-      narrowColumns: [0, 2, 3, 4, 5, 6],
+      narrowColumnWidth: 115,
+      wideColumnWidth: 130,
+      narrowColumns: [0, 2, 3, 4, 5, 6, 7, 8, 9],
       wideColumns: [1]
     });
 

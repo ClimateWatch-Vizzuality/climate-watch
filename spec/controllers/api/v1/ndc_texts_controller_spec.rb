@@ -1,6 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe Api::V1::NdcTextsController, type: :controller do
+  let!(:indc_document) {
+    FactoryBot.create(:indc_document, slug: 'ndc')
+  }
   let(:pol) {
     FactoryBot.create(:location, iso_code3: 'POL', location_type: 'COUNTRY')
   }

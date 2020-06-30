@@ -8,10 +8,12 @@ import Sticky from 'react-stickynode';
 import AnchorNav from 'components/anchor-nav';
 import BackButton from 'components/back-button';
 import Dropdown from 'components/dropdown';
+import { MultiLevelDropdown } from 'cw-components';
 import NdcCompareAllTargetsProvider from 'providers/ndc-compare-all-targets-provider';
 import CountriesDocumentsProvider from 'providers/countries-documents-provider';
 
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
+import multiLevelDropdownTheme from 'styles/themes/dropdown/multi-level-dropdown-custom-compare.scss';
 import layout from 'styles/layout.scss';
 
 import styles from './custom-compare-styles.scss';
@@ -22,12 +24,19 @@ const COUNTRY_PLACEHOLDERS = [
   'Add a third country'
 ];
 
+const DOCUMENT_DROPDOWN_GROUPS = [
+  { groupId: '', title: '' },
+  { groupId: 'sectoral', title: 'Sectoral Laws or Policies' },
+  { groupId: 'framework', title: 'Climate Framework Laws or Policies' }
+];
+
 const FiltersGroup = ({
   data,
   countryPlaceholder,
   handleCountryFilterChange,
   handleDocumentFilterChange,
-  disabled
+  countryFilterDisabled,
+  documentsFilterDisabled
 }) => {
   const {
     key,
@@ -36,7 +45,6 @@ const FiltersGroup = ({
     documentValue,
     documentOptions
   } = data;
-
   return (
     <div className={styles.filter}>
       <Dropdown
@@ -48,17 +56,19 @@ const FiltersGroup = ({
         placeholder={countryPlaceholder}
         hideResetButton
         noAutoSort
-        disabled={disabled}
+        disabled={countryFilterDisabled}
       />
-      <Dropdown
+      <MultiLevelDropdown
         key={`${key}-document`}
+        optGroups={DOCUMENT_DROPDOWN_GROUPS}
         options={documentOptions}
-        onValueChange={({ value }) => handleDocumentFilterChange(key, value)}
-        value={documentValue}
-        placeholder="Choose a submission"
-        hideResetButton
-        noAutoSort
-        disabled={disabled}
+        values={documentValue ? [documentValue] : []}
+        onChange={({ value }) => {
+          handleDocumentFilterChange(key, value);
+        }}
+        clearable={false}
+        theme={multiLevelDropdownTheme}
+        disabled={documentsFilterDisabled}
       />
     </div>
   );
@@ -72,8 +82,11 @@ const CustomComparisonComponent = props => {
     handleDocumentFilterChange,
     filtersData,
     backButtonLink,
-    accordionDataLoading
+    accordionDataLoading,
+    selectedCountries,
+    documentsListLoading
   } = props;
+
   return (
     <div>
       <Header route={route}>
@@ -105,14 +118,17 @@ const CustomComparisonComponent = props => {
                 countryPlaceholder={COUNTRY_PLACEHOLDERS[i]}
                 handleCountryFilterChange={handleCountryFilterChange}
                 handleDocumentFilterChange={handleDocumentFilterChange}
-                disabled={accordionDataLoading}
+                countryFilterDisabled={accordionDataLoading}
+                documentsFilterDisabled={
+                  documentsListLoading || accordionDataLoading
+                }
               />
             ))}
         </div>
       </div>
       {renderRoutes(route.routes)}
       <NdcCompareAllTargetsProvider />
-      <CountriesDocumentsProvider />
+      <CountriesDocumentsProvider location={selectedCountries} />
     </div>
   );
 };
@@ -145,7 +161,8 @@ FiltersGroup.propTypes = {
   countryPlaceholder: PropTypes.string,
   handleCountryFilterChange: PropTypes.func,
   handleDocumentFilterChange: PropTypes.func,
-  disabled: PropTypes.bool
+  countryFilterDisabled: PropTypes.bool,
+  documentsFilterDisabled: PropTypes.bool
 };
 
 CustomComparisonComponent.propTypes = {
@@ -155,7 +172,9 @@ CustomComparisonComponent.propTypes = {
   handleCountryFilterChange: PropTypes.func,
   handleDocumentFilterChange: PropTypes.func,
   backButtonLink: PropTypes.string,
-  accordionDataLoading: PropTypes.bool
+  accordionDataLoading: PropTypes.bool,
+  selectedCountries: PropTypes.string,
+  documentsListLoading: PropTypes.bool
 };
 
 export default CustomComparisonComponent;

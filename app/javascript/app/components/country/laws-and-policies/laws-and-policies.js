@@ -27,7 +27,7 @@ const mapStateToProps = (state, { location, match }) => {
   const getTargetsData = getAllData(lawsAndPoliciesData);
 
   const countryData = {
-    countries: state.countries.data,
+    countries: state.countries,
     iso
   };
 

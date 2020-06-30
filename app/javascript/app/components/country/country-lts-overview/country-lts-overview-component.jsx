@@ -3,15 +3,18 @@ import PropTypes from 'prop-types';
 import Card from 'components/card';
 import CardRow from 'components/card/card-row';
 import Intro from 'components/intro';
+import ButtonGroup from 'components/button-group';
+import Button from 'components/button';
 import cx from 'classnames';
 import ModalMetadata from 'components/modal-metadata';
 import Loading from 'components/loading';
 import NoContent from 'components/no-content';
 import { TabletLandscape, TabletPortraitOnly } from 'components/responsive';
+import introSmallTheme from 'styles/themes/intro/intro-simple-small.scss';
 import introTheme from 'styles/themes/intro/intro-simple.scss';
 import cardTheme from 'styles/themes/card/card-overflow-content.scss';
 import layout from 'styles/layout.scss';
-import NdcCountryAccordionProvider from 'providers/ndc-country-accordion-provider';
+import LtsContentOverviewProvider from 'providers/lts-content-overview-provider';
 
 import styles from './country-lts-overview-styles.scss';
 
@@ -52,11 +55,70 @@ const Cards = ({ cardData }) => (
 );
 
 const CountryLtsOverview = props => {
-  // eslint-disable-line react/prefer-stateless-function
+  const {
+    loading,
+    iso,
+    isEmbed,
+    isNdcp,
+    cardData,
+    isCountryPage,
+    handleInfoClick,
+    handleAnalyticsClick
+  } = props;
 
-  const { sectors, loading, actions, iso, isEmbed, cardData } = props;
-  const hasSectors = !!sectors;
-  const description = hasSectors && (
+  const renderInfoButton = () => {
+    const buttonGroupConfig = isEmbed
+      ? [{ type: 'info', onClick: handleInfoClick }]
+      : [
+        { type: 'info', onClick: handleInfoClick },
+        {
+          type: 'share',
+          shareUrl: `/embed/countries/${iso}/lts-content-overview`,
+          positionRight: true
+        }
+      ];
+
+    return (
+      <ButtonGroup
+        key="action1"
+        className={styles.exploreBtn}
+        buttonsConfig={buttonGroupConfig}
+      />
+    );
+  };
+
+  const renderCompareButton = () => {
+    const href = `/contained/custom-compare/overview?targets=${iso}-lts`;
+    const link = `/custom-compare/overview?targets=${iso}-lts`;
+    return (
+      <Button
+        variant="secondary"
+        href={isNdcp ? href : null}
+        link={isNdcp ? null : link}
+      >
+        Compare
+      </Button>
+    );
+  };
+
+  const renderExploreButton = () => {
+    const href = `/contained/lts/country/${iso}`;
+    const link = `/lts/country/${iso}`;
+
+    return (
+      <Button
+        className={styles.exploreBtn}
+        variant="primary"
+        href={isNdcp ? href : null}
+        link={isNdcp ? null : link}
+        onClick={handleAnalyticsClick}
+      >
+        Explore LTS content
+      </Button>
+    );
+  };
+
+  const description = !!cardData && (
     <div
       className={cx(styles.descriptionContainer, layout.parsedHTML)}
       // eslint-disable-next-line react/no-danger
@@ -67,30 +129,54 @@ const CountryLtsOverview = props => {
   );
 
   return (
-    <div className={cx(styles.wrapper, { [styles.embededWrapper]: isEmbed })}>
-      <NdcCountryAccordionProvider locations={[iso]} category={'summary'} lts />
-      {!hasSectors && !loading ? (
-        <NoContent
-          message="No overview content data"
-          className={styles.noContentWrapper}
-        />
-      ) : (
-        <div className="layout-container">
-          {loading && <Loading light className={styles.loader} />}
-          {hasSectors && (
-            <div className={layout.content}>
-              <div className="grid-column-item">
-                <div className={cx(styles.header, actions ? styles.col2 : '')}>
-                  <Intro theme={introTheme} title={'Long-term vision'} />
-                  <TabletPortraitOnly>{description}</TabletPortraitOnly>
-                </div>
-                <TabletLandscape>{description}</TabletLandscape>
-                <Cards cardData={cardData} />
-              </div>
-            </div>
-          )}
-        </div>
+    <div
+      className={cx(
+        styles.wrapper,
+        { [styles.noContentHeight]: isCountryPage && !cardData },
+        { [styles.embededWrapper]: isEmbed }
       )}
+    >
+      <LtsContentOverviewProvider locations={[iso]} />
+      <div className="layout-container">
+        {loading && <Loading light className={styles.loader} />}
+        <div className={layout.content}>
+          <div className="grid-column-item">
+            <div
+              className={cx(styles.header, {
+                [styles.col2]: isCountryPage && cardData
+              })}
+            >
+              <Intro
+                theme={isCountryPage ? introSmallTheme : introTheme}
+                title={
+                  isCountryPage
+                    ? 'Long-term Strategies (LTS) Overview'
+                    : 'Long-term vision'
+                }
+              />
+              {cardData && isCountryPage && (
+                <div className="grid-column-item">
+                  <div className={styles.actions}>
+                    {renderInfoButton()}
+                    {renderCompareButton()}
+                    <TabletLandscape>{renderExploreButton()}</TabletLandscape>
+                  </div>
+                </div>
+              )}
+              <TabletPortraitOnly>{description}</TabletPortraitOnly>
+            </div>
+            <TabletLandscape>{description}</TabletLandscape>
+            {cardData ? (
+              <Cards cardData={cardData} />
+            ) : (
+              <NoContent
+                message="This country hasn't submitted any Long-term Strategies"
+                className={styles.noContentWrapper}
+              />
+            )}
+          </div>
+        </div>
+      </div>
       <ModalMetadata />
     </div>
   );
@@ -106,11 +192,13 @@ Cards.propTypes = {
 
 CountryLtsOverview.propTypes = {
   iso: PropTypes.string,
-  sectors: PropTypes.object,
   cardData: PropTypes.object,
   loading: PropTypes.bool,
-  actions: PropTypes.bool,
-  isEmbed: PropTypes.bool
+  isNdcp: PropTypes.bool,
+  isEmbed: PropTypes.bool,
+  isCountryPage: PropTypes.bool,
+  handleInfoClick: PropTypes.func,
+  handleAnalyticsClick: PropTypes.func
 };
 
 export default CountryLtsOverview;

@@ -6,6 +6,10 @@
   min-height: 450px;
 }
 
+.noContentHeight {
+  min-height: 0;
+}
+
 .embededWrapper {
   border: none;
 }
@@ -96,7 +100,15 @@
 }
 
 .noContentWrapper {
-  min-height: 450px;
+  min-height: 250px;
+}
+
+.noContentHeight {
+  .noContentWrapper {
+    min-height: 100px;
+    align-items: start;
+    margin-top: 50px;
+  }
 }
 
 .cardRow {
@@ -105,5 +117,14 @@
 
   &:not(:last-child) {
     border-bottom: 2px solid $shadow-gray;
+  }
+}
+
+.actions {
+  @include columns();
+  @include xy-gutters($gutter-position: ('bottom'));
+
+  @media #{$tablet-landscape} {
+    @include columns((2.4, 3.6, 6));
   }
 }

@@ -5,6 +5,9 @@ class Location < ApplicationRecord
   has_many :historical_emissions,
            class_name: 'HistoricalEmissions::Record',
            dependent: :destroy
+  has_many :data_sources,
+           class_name: 'HistoricalEmissions::DataSource',
+           through: :historical_emissions
   has_many :values, class_name: 'Indc::Value'
   has_many :indicators,
            class_name: 'Indc::Indicator',

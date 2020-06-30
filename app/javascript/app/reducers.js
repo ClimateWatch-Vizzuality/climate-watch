@@ -14,6 +14,7 @@ import * as adaptationsProvider from 'providers/adaptations-provider';
 import * as ndcsSdgsMetaProvider from 'providers/ndcs-sdgs-meta-provider';
 import * as ndcsSdgsDataProvider from 'providers/ndcs-sdgs-data-provider';
 import * as ndcContentOverviewProvider from 'providers/ndc-content-overview-provider';
+import * as ltsContentOverviewProvider from 'providers/lts-content-overview-provider';
 import * as ghgEmissionsProvider from 'providers/ghg-emissions-meta-provider';
 import * as wbCountryProvider from 'providers/wb-country-data-provider';
 import * as timelineProvider from 'providers/timeline-provider';
@@ -37,7 +38,6 @@ import * as agricultureMeatProductionProvider from 'providers/agriculture-meat-p
 import * as agricultureWorldMeatProductionProvider from 'providers/agriculture-world-meat-production-provider';
 import * as agricultureMeatTradeProvider from 'providers/agriculture-meat-trade-provider';
 import * as agricultureWorldMeatTradeProvider from 'providers/agriculture-world-meat-trade-provider';
-import * as ndcCountryAccordionProvider from 'providers/ndc-country-accordion-provider';
 import * as ndcCompareAllTargetsProvider from 'providers/ndc-compare-all-targets-provider';
 import * as customCompareAccordionProvider from 'providers/custom-compare-accordion-provider';
 
@@ -57,6 +57,7 @@ const providersReducers = {
   timeline: handleActions(timelineProvider),
   ndcsDocumentsMeta: handleActions(ndcsDocumentsMetaProvider),
   ndcContentOverview: handleActions(ndcContentOverviewProvider),
+  ltsContentOverview: handleActions(ltsContentOverviewProvider),
   espModels: handleActions(espModelsProvider),
   espScenarios: handleActions(espScenariosProvider),
   espIndicators: handleActions(espIndicatorsProvider),
@@ -78,7 +79,6 @@ const providersReducers = {
   meatWorldProduction: handleActions(agricultureWorldMeatProductionProvider),
   meatTrade: handleActions(agricultureMeatTradeProvider),
   meatWorldTrade: handleActions(agricultureWorldMeatTradeProvider),
-  ndcCountryAccordion: handleActions(ndcCountryAccordionProvider),
   compareAll: handleActions(ndcCompareAllTargetsProvider),
   customCompareAccordion: handleActions(customCompareAccordionProvider)
 };
@@ -86,7 +86,6 @@ const providersReducers = {
 // Pages
 import * as NDCSPage from 'pages/ndcs';
 import * as NDCSEnhancementsPage from 'pages/ndcs-enhancements';
-import * as NDCSLTSPage from 'pages/ndcs-lts';
 import * as LTSPage from 'pages/lts-explore';
 import * as countryNDCFullPage from 'pages/ndc-country-full';
 import * as ndcSearchPage from 'pages/ndc-search';
@@ -95,7 +94,6 @@ import * as myCWEditor from 'pages/my-climate-watch/my-cw-editor';
 const pagesReducers = {
   ndcs: handleActions(NDCSPage),
   ndcsEnhancements: handleActions(NDCSEnhancementsPage),
-  ndcsLTS: handleActions(NDCSLTSPage),
   LTS: handleActions(LTSPage),
   countryNDCFull: handleActions(countryNDCFullPage),
   ndcSearch: handleActions(ndcSearchPage),
@@ -122,9 +120,9 @@ import * as myVisualisationsCreator from 'components/my-climate-watch/viz-creato
 import * as myVisualisationsGraphComponent from 'components/my-climate-watch/my-visualisations/my-cw-vis-graph';
 import * as ndcSdgLinkagesComponent from 'components/ndc-sdg/ndc-sdg-linkages-content';
 import * as HamburgerComponent from 'components/hamburger';
-import * as GHGComponent from 'components/ghg-emissions/ghg-emissions';
 import * as AnchorNavComponent from 'components/anchor-nav';
 import * as ExploreMapShared from 'components/ndcs/shared/explore-map';
+import * as ndcCountryAccordionComponent from 'components/ndcs/ndcs-country-accordion';
 
 const componentsReducers = {
   map: handleActions(mapComponent),
@@ -146,9 +144,9 @@ const componentsReducers = {
   espGraph: handleActions(espGraphComponent),
   ndcSdg: handleActions(ndcSdgLinkagesComponent),
   hamburger: handleActions(HamburgerComponent),
-  dataZoom: handleActions(GHGComponent),
   anchorNav: handleActions(AnchorNavComponent),
-  exploreMap: handleActions(ExploreMapShared)
+  exploreMap: handleActions(ExploreMapShared),
+  ndcCountryAccordion: handleActions(ndcCountryAccordionComponent)
 };
 
 export default combineReducers({

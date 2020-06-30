@@ -62,7 +62,7 @@ class NdcSdgLinkagesMapContainer extends PureComponent {
   handleInfoClick = () => {
     this.props.setModalMetadata({
       category: 'NDC Content Map',
-      slugs: 'ndc_sdc_all indicators',
+      slugs: 'ndc_sdg_all indicators',
       open: true
     });
   };

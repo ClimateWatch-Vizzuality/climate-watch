@@ -7,25 +7,23 @@ import GhgEmissionsGraph from 'components/ghg-emissions';
 import CompareGhgChart from 'components/compare/compare-ghg-chart';
 import CountryGhg from 'components/country/country-ghg';
 import CountryNdcOverview from 'components/country/country-ndc-overview';
+import CountryLtsOverview from 'components/country/country-lts-overview';
 import NDCSDGLinkages from 'components/country/country-ndc-sdg-linkages';
 import NdcSdgLinkagesContent from 'components/ndc-sdg/ndc-sdg-linkages-content';
 import EmissionPathwaysGraph from 'components/emission-pathways/emission-pathways-graph';
+import AgricultureEmissionPathwaysGraph from 'components/sectors-agriculture/drivers-of-emissions/emission-pathways-graph';
 import MyVisualisationsGraphComponent from 'components/my-climate-watch/my-visualisations/my-cw-vis-graph';
 import AgricultureEmissionPieChart from 'components/sectors-agriculture/drivers-of-emissions/card-pie-chart/card-pie-chart';
+import CountriesContext from 'components/sectors-agriculture/countries-context';
+import CountriesActions from 'components/sectors-agriculture/countries-actions';
 import LTSExploreMap from 'components/ndcs/lts-explore-map';
 import NDCSExploreMap from 'components/ndcs/ndcs-explore-map';
 import NDCOverviewSection from 'components/ndcs/ndcs-overview-section';
-import NDCSLTSViz from 'components/ndcs/ndcs-lts-viz';
 
 export default [
   {
     path: '/embed/ndcs',
     component: NDCMap,
-    exact: true
-  },
-  {
-    path: '/embed/lts-tracker',
-    component: NDCSLTSViz,
     exact: true
   },
   {
@@ -61,7 +59,12 @@ export default [
   {
     path: '/embed/countries/:iso/ndc-content-overview',
     exact: true,
-    component: () => createElement(CountryNdcOverview, { actions: true })
+    component: () => createElement(CountryNdcOverview, { isCountryPage: true })
+  },
+  {
+    path: '/embed/countries/:iso/lts-content-overview',
+    exact: true,
+    component: () => createElement(CountryLtsOverview, { isCountryPage: true })
   },
   {
     path: '/embed/countries/:iso/ndc-sdg-linkages',
@@ -84,6 +87,21 @@ export default [
     exact: true
   },
   {
+    path: '/embed/agriculture-emission/pathways',
+    component: AgricultureEmissionPathwaysGraph,
+    exact: true
+  },
+  {
+    path: '/embed/agriculture-emission/understand-countries-contexts',
+    component: CountriesContext,
+    exact: true
+  },
+  {
+    path: '/embed/agriculture-emission/countries-actions',
+    component: CountriesActions,
+    exact: true
+  },
+  {
     path: '/embed/my-visualizations/:id',
     component: MyVisualisationsGraphComponent,
     exact: true
@@ -95,6 +113,12 @@ export default [
   },
   {
     path: '/',
-    component: () => createElement(Redirect, { to: '/' })
+    component: ({ location }) => {
+      let redirectPath = '/';
+      if (location.pathname && location.pathname.startsWith('/embed')) {
+        redirectPath = decodeURIComponent(location.pathname);
+      }
+      return createElement(Redirect, { to: redirectPath });
+    }
   }
 ];

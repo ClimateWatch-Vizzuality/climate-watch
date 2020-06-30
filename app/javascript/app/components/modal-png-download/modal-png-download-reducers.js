@@ -1,7 +1,7 @@
 export const initialState = {
   isOpen: false,
   header: 'Save as image (PNG)',
-  title: 'Global historical emissions'
+  title: 'Historical GHG emissions'
 };
 
 const setModalPngDownloadParams = (state, { payload }) => ({

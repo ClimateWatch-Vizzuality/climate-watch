@@ -3,6 +3,7 @@
 .dataZoom {
   position: relative;
   margin-top: 20px;
+  z-index: $z-index-over-base;
 
   .selector {
     position: absolute;
