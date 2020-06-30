@@ -72,7 +72,13 @@ export const getDocumentsOptionsByCountry = createSelector(
         const countryDocument =
           countriesDocumentsData &&
           countriesDocumentsData[iso3] &&
-          countriesDocumentsData[iso3].find(d => d.slug === slug);
+          countriesDocumentsData[iso3]
+            .filter(
+              d =>
+                d.slug !== 'second_ndc' ||
+                (d.slug === 'second_ndc' && !!d.submission_date)
+            ) // filter out 'intends to submit' second NDC
+            .find(d => d.slug === slug);
         return createDropdownOption(countryDocument, '');
       }).filter(Boolean);
 
