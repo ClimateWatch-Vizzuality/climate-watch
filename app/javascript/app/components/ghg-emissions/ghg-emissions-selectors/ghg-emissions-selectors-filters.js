@@ -215,6 +215,7 @@ const getRegionOptions = createSelector(
       if (
         (sourceSelected.name.startsWith('UNFCCC') &&
           region.iso_code3 === 'WORLD') ||
+        !region.ghg_sources ||
         !region.ghg_sources.includes(sourceSelected.name)
       ) {
         return;
