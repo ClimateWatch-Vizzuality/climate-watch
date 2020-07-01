@@ -6,11 +6,11 @@ import CompareAccordion from 'components/custom-compare-accordion';
 export default [
   {
     path: '/custom-compare/overview',
-    component: () =>
-      createElement(CompareAccordion, {
-        category: 'overview',
-        compare: true
-      }),
+    component: ({ targets }) => createElement(CompareAccordion, {
+      category: 'overview',
+      compare: true,
+      targets
+    }),
     exact: true,
     anchor: true,
     label: 'Overview',
@@ -18,10 +18,11 @@ export default [
   },
   {
     path: '/custom-compare/mitigation',
-    component: () =>
+    component: ({ targets }) =>
       createElement(CompareAccordion, {
         category: 'mitigation',
-        compare: true
+        compare: true,
+        targets
       }),
     exact: true,
     anchor: true,
@@ -30,10 +31,11 @@ export default [
   },
   {
     path: '/custom-compare/adaptation',
-    component: () =>
+    component: ({ targets }) =>
       createElement(CompareAccordion, {
         category: 'adaptation',
-        compare: true
+        compare: true,
+        targets
       }),
     exact: true,
     anchor: true,
@@ -42,10 +44,11 @@ export default [
   },
   {
     path: '/custom-compare/sectoral-information',
-    component: () =>
+    component: ({ targets }) =>
       createElement(CompareAccordion, {
         category: 'sectoral_information',
-        compare: true
+        compare: true,
+        targets
       }),
     exact: true,
     anchor: true,

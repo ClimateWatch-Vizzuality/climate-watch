@@ -13,19 +13,7 @@ const getSectors = state =>
   (state.customCompareAccordion && state.customCompareAccordion.data
     ? state.customCompareAccordion.data.sectors
     : {});
-const getSearch = (state, { search }) => search;
-
-export const getSelectedTargets = createSelector([getSearch], search => {
-  if (!search) return null;
-  const queryTargets = search.targets ? search.targets.split(',') : [];
-  return [1, 2, 3].map((value, i) => {
-    const target =
-      queryTargets && queryTargets[i] && queryTargets[i].split('-');
-    const country = target && target[0];
-    const document = target && target[1];
-    return { country, document };
-  });
-});
+export const getSelectedTargets = (state, { targets }) => targets;
 
 export const parseIndicatorsDefs = createSelector(
   [getIndicators, getCategories, getSelectedTargets],
