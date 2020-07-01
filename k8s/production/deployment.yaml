@@ -38,7 +38,11 @@ spec:
         imagePullPolicy: Always
         resources:
           requests:
-            memory: "128Mi"
+            cpu: "0.5"
+            memory: "1G"
+          limits:
+            cpu: "1"
+            memory: "6G"
         args:
           - start
         env:
