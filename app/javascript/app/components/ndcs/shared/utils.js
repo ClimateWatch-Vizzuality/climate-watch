@@ -85,3 +85,11 @@ export const getLabels = (
     theme
   };
 };
+
+export const getHoverIndex = (emissionsCardData, hoveredlegendData) => {
+  const hoveredLegendName = hoveredlegendData.name;
+  const hoveredEmissionsItem = emissionsCardData.data.find(d =>
+    d.name.toLowerCase().startsWith(hoveredLegendName.toLowerCase())
+  );
+  return emissionsCardData.data.indexOf(hoveredEmissionsItem);
+};
