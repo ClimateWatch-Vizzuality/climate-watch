@@ -59,7 +59,11 @@ const getCountryDocuments = createSelector(
   [getDocuments, getIso],
   (documents, iso) => {
     if (isEmpty(documents) || !iso || !documents[iso]) return null;
-    return documents[iso];
+    const submittedDocuments = documents[iso].filter(
+      ({ slug, submission_date }) =>
+        !(slug === 'second_ndc' && !submission_date)
+    );
+    return submittedDocuments;
   }
 );
 

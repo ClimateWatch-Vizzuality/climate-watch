@@ -191,6 +191,7 @@ export const getLegend = createSelector(
     if (!indicator || !indicator.legendBuckets || !maximumCountries) {
       return null;
     }
+
     const bucketsWithId = Object.keys(indicator.legendBuckets).map(id => ({
       ...indicator.legendBuckets[id],
       id
@@ -287,16 +288,19 @@ export const getSummaryCardData = createSelector(
   [getIndicatorsData, getCountriesDocumentsData],
   (indicators, countriesDocuments) => {
     if (!indicators || !countriesDocuments) return null;
-    const getSubmissionIsos = slug =>
-      Object.keys(countriesDocuments).filter(iso =>
-        countriesDocuments[iso].some(doc => doc.slug === slug)
-      );
-    const firstNDCCountriesAndParties = getCountriesAndParties(
-      getSubmissionIsos('first_ndc')
+
+    const firstNDCIsos = Object.keys(countriesDocuments).filter(iso =>
+      countriesDocuments[iso].some(doc => doc.slug === 'first_ndc')
     );
-    const secondNDCCountriesAndParties = getCountriesAndParties(
-      getSubmissionIsos('second_ndc')
+    const firstNDCCountriesAndParties = getCountriesAndParties(firstNDCIsos);
+
+    const secondNDCIsos = Object.keys(countriesDocuments).filter(iso =>
+      countriesDocuments[iso].some(
+        doc => doc.slug === 'second_ndc' && !!doc.submission_date
+      )
     );
+    const secondNDCCountriesAndParties = getCountriesAndParties(secondNDCIsos);
+
     return [
       {
         value: firstNDCCountriesAndParties.partiesNumber,
