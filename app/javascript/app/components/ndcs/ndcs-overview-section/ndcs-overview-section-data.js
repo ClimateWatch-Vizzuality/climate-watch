@@ -24,7 +24,7 @@ export const commitmentsData = [
         answerLabel: 'first_ndc'
       },
       {
-        questionText: 'How many Parties have submitted Long-Term Strategies?',
+        questionText: 'How many Parties submitted Long-Term Strategies?',
         link: '/lts-explore?indicator=lts_submission ',
         slug: 'lts_submission',
         metadataSlug: 'ndc_lts',
@@ -68,18 +68,16 @@ export const commitmentsData = [
     questions: [
       {
         questionText: 'How many Parties have a net zero emission target?',
+        answerLabel: ['In Policy Document', 'In Law'],
         link: 'https://eciu.net/netzerotracker',
-        slug: 'lts_zero',
-        answerLabel: 'Net-zero target included',
+        slug: 'nz_status',
         metadataSlug: 'eciu',
         hasExternalLink: true
       },
       {
         questionText:
           'How many Parties have an economy-wide target in a national law or policy?',
-        answerLabel: ['In Policy Document', 'In Law'],
         link: 'https://climate-laws.org/',
-        slug: 'nz_status',
         metadataSlug: 'national_laws_politices',
         hasExternalLink: true
       }
