@@ -53,6 +53,7 @@ module Api
 
     class NdcsController < ApiController
       before_action :set_locations_documents, only: [:index]
+      before_action :set_document
 
       def index
         # params[:source] -> one of ["CAIT", "LTS", "WB", "NDC Explorer", "Pledges"]
@@ -73,7 +74,8 @@ module Api
         render json: NdcIndicators.new(indicators, categories, sectors),
                serializer: Api::V1::Indc::NdcIndicatorsSerializer,
                locations_documents: @locations_documents,
-               lse_data: get_lse_data
+               lse_data: get_lse_data,
+               documents: @documents
       end
 
       def content_overview
@@ -90,10 +92,7 @@ module Api
           ).
           order('indc_indicators.name')
 
-        if params[:document]
-          values = values.joins(:document).
-            where(indc_documents: {slug: [params[:document], nil]})
-        end
+        values = values.where(document_id: @documents)
 
         if SECTORS_INDICATORS.present?
           sectors = ::Indc::Indicator.
@@ -102,10 +101,7 @@ module Api
             where(indc_values: {location_id: location.id}).
             where.not(indc_values: {value: "No specified measure"})
 
-          if params[:document]
-            sectors = sectors.joins(values: :document).
-              where(indc_documents: {slug: [params[:document], nil]})
-          end
+          sectors = sectors.joins(:values).where(indc_values: {document_id: @documents})
           sectors = sectors.order('indc_indicators.name').pluck(:name)
         end
 
@@ -133,6 +129,12 @@ module Api
         @lse_locations_documents = @locations_documents.select{ |ld| ['framework', 'sectoral'].include?(ld[1].split('_').first)}.presence
       end
 
+      def set_document
+        slug = params[:document].presence || 'first_ndc'
+        @documents = ::Indc::Document.where(slug: slug.split(',')).pluck(:id)
+        @documents << nil
+      end
+
       def get_lse_data
         return nil unless @lse_locations_documents
 
@@ -158,9 +160,7 @@ module Api
           indicators = indicators.where(values: {locations: {iso_code3: location_list}})
         end
 
-        if params[:document].present?
-          indicators = indicators.where(values: {indc_documents: {slug: [params[:document], nil]}})
-        end
+        indicators = indicators.where(indc_values: {document_id: @documents})
 
         indicators = indicators.where(source_id: source.map(&:id)) if source
 

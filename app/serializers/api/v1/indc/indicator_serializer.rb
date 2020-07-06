@@ -41,7 +41,8 @@ module Api
           values = if instance_options[:locations_documents]
                      object.values_for instance_options[:locations_documents]
                    else
-                     object.values.includes(:location, :document, :label)
+                     object.values.includes(:location, :document, :label).
+                       where(document_id: instance_options[:documents])
                    end
           indexed_data = IndexedSerializer.serialize_collection(
             values,
