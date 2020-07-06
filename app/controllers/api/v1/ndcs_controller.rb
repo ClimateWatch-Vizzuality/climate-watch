@@ -55,10 +55,15 @@ module Api
       before_action :set_locations_documents, only: [:index]
 
       def index
-        indicators = filtered_indicators
-        categories = filtered_categories(indicators)
+        # params[:source] -> one of ["CAIT", "LTS", "WB", "NDC Explorer", "Pledges"]
+        if params[:source].present?
+          source = ::Indc::Source.where(name: params[:source])
+        end
+        indicators = filtered_indicators(source)
+        categories = filtered_categories(source)
         sectors = ::Indc::Sector.joins(values: :indicator).
           where(indc_indicators: {id: indicators.map(&:id)})
+
         parents = ::Indc::Sector.where(parent_id: nil).
           joins("INNER JOIN indc_sectors AS children ON children.parent_id = indc_sectors.id").where(children: {id: sectors.pluck(:id).uniq})
 
@@ -144,7 +149,7 @@ module Api
         lse_data
       end
 
-      def filtered_indicators
+      def filtered_indicators(source=nil)
         indicators = ::Indc::Indicator.includes(:labels, :source, :categories,
                                                 values: [:sector, :label, :location,
                                                          :document])
@@ -157,11 +162,7 @@ module Api
           indicators = indicators.where(values: {indc_documents: {slug: [params[:document], nil]}})
         end
 
-        # params[:source] -> one of ["CAIT", "LTS", "WB", "NDC Explorer", "Pledges"]
-        if params[:source].present?
-          source = ::Indc::Source.where(name: params[:source])
-          indicators = indicators.where(source_id: source.map(&:id))
-        end
+        indicators = indicators.where(source_id: source.map(&:id)) if source
 
         if @indc_locations_documents
           indicators = indicators.select('DISTINCT ON(COALESCE("normalized_slug", indc_indicators.slug)) indc_indicators.*')
@@ -186,10 +187,16 @@ module Api
             where(indc_category_types: {name: 'global'}, slug: params[:category])
           indicators = indicators.joins(:categories).where(indc_categories: {parent_id: parent.map(&:id)})
         end
+
+        if params[:subcategory].present?
+          indicators = indicators.joins(:categories).
+            where(indc_categories: {slug: params[:subcategory]})
+        end
+
         indicators.sort_by{|i| i.order}
       end
 
-      def filtered_categories(indicators)
+      def filtered_categories(source=nil)
         categories = ::Indc::Category.includes(:category_type).order(:order)
 
         # params[:filter] -> ['map', 'table']
@@ -204,7 +211,11 @@ module Api
           categories = categories.where(parent_id: parent.map(&:id))
         end
 
-        categories.where(id: indicators.flat_map(&:category_ids).uniq)
+        if source
+          categories = categories.joins(:indicators).
+            where(indc_indicators: {source_id: source.map(&:id)}).uniq
+        end
+        categories
       end
     end
   end
