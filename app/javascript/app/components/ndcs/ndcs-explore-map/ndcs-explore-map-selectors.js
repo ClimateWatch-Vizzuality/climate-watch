@@ -16,6 +16,7 @@ import {
   getLabels
 } from 'components/ndcs/shared/utils';
 import { europeSlug, europeanCountries } from 'app/data/european-countries';
+import { DEFAULT_CATEGORY_SLUG } from 'constants';
 
 const NOT_APPLICABLE_LABEL = 'Not Applicable';
 
@@ -26,6 +27,7 @@ const getIndicatorsData = state => state.indicators || null;
 const getCountriesDocumentsData = state =>
   state.countriesDocuments.data || null;
 const getZoom = state => state.map.zoom || null;
+
 export const getDonutActiveIndex = state =>
   state.exploreMap.activeIndex || null;
 
@@ -81,7 +83,8 @@ export const getSelectedCategory = createSelector(
   (selected, categories = []) => {
     if (!categories || !categories.length) return null;
     const defaultCategory =
-      categories.find(cat => cat.value === 'unfccc_process') || categories[0];
+      categories.find(cat => cat.value === DEFAULT_CATEGORY_SLUG) ||
+      categories[0];
     if (selected) {
       return (
         categories.find(category => category.value === selected) ||
@@ -218,7 +221,7 @@ export const getLegend = createSelector(
 export const getTooltipCountryValues = createSelector(
   [getIndicatorsData, getSelectedIndicator],
   (indicators, selectedIndicator) => {
-    if (!indicators || !selectedIndicator) {
+    if (!indicators || !selectedIndicator || !selectedIndicator.locations) {
       return null;
     }
     const tooltipCountryValues = {};

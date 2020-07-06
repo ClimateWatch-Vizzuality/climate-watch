@@ -8,7 +8,7 @@ import { isCountryIncluded } from 'app/utils';
 import { getLocationParamUpdated } from 'utils/navigation';
 import { IGNORED_COUNTRIES_ISOS } from 'data/ignored-countries';
 import { getHoverIndex } from 'components/ndcs/shared/utils';
-
+import { DEFAULT_CATEGORY_SLUG } from 'constants';
 import fetchActions from 'pages/ndcs/ndcs-actions';
 import { actions as modalActions } from 'components/modal-metadata';
 import exploreMapActions from 'components/ndcs/shared/explore-map/explore-map-actions';
@@ -85,8 +85,26 @@ class NDCSExploreMapContainer extends PureComponent {
     };
   }
 
-  componentWillMount() {
-    this.props.fetchNDCS();
+  componentDidMount() {
+    const { location } = this.props;
+    const search = qs.parse(location.search);
+
+    this.props.fetchNDCS({
+      subcategory: (search && search.category) || DEFAULT_CATEGORY_SLUG
+    });
+  }
+
+  componentDidUpdate(prevProps) {
+    const { selectedCategory: prevSelectedCategory } = prevProps;
+    const { selectedCategory } = this.props;
+
+    if (
+      selectedCategory &&
+      (prevSelectedCategory && prevSelectedCategory.value) !==
+        selectedCategory.value
+    ) {
+      this.props.fetchNDCS({ subcategory: selectedCategory.value });
+    }
   }
 
   handleSearchChange = query => {
@@ -210,6 +228,7 @@ NDCSExploreMapContainer.propTypes = {
   fetchNDCS: PropTypes.func.isRequired,
   query: PropTypes.object,
   summaryData: PropTypes.array,
+  selectedCategory: PropTypes.array,
   emissionsCardData: PropTypes.array,
   indicator: PropTypes.object,
   selectActiveDonutIndex: PropTypes.func.isRequired,

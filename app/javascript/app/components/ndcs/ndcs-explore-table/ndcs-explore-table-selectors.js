@@ -90,6 +90,7 @@ const addIndicatorColumn = createSelector(
       !data ||
       isEmpty(data) ||
       !selectedIndicator ||
+      !selectedIndicator.locations ||
       !selectedIndicatorHeader
     ) {
       return null;
