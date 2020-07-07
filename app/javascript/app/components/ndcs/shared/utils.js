@@ -87,9 +87,6 @@ export const getLabels = (
 };
 
 export const getHoverIndex = (emissionsCardData, hoveredlegendData) => {
-  if (!emissionsCardData || !emissionsCardData.length) {
-    return null;
-  }
   const hoveredLegendName = hoveredlegendData.name;
   const hoveredEmissionsItem = emissionsCardData.data.find(d =>
     d.name.toLowerCase().startsWith(hoveredLegendName.toLowerCase())
