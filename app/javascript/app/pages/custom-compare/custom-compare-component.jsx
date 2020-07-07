@@ -129,14 +129,14 @@ const CustomComparisonComponent = props => {
           />
         </Sticky>
       </Header>
-      <div className={styles.content}>
-        <TabletLandscape>
-          <Sticky activeClass="sticky -custom-compare" top={50}>
-            {renderFilters()}
-          </Sticky>
-        </TabletLandscape>
-        <TabletPortraitOnly>{renderFilters()}</TabletPortraitOnly>
-      </div>
+      <TabletLandscape>
+        <Sticky activeClass="sticky -custom-compare" top={50}>
+          <div className={styles.content}>{renderFilters()}</div>
+        </Sticky>
+      </TabletLandscape>
+      <TabletPortraitOnly>
+        <div className={styles.content}>{renderFilters()}</div>
+      </TabletPortraitOnly>
 
       {renderRoutes(route.routes, { targets: selectedTargets })}
       <NdcCompareAllTargetsProvider />
