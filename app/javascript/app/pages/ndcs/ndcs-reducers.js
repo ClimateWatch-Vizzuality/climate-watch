@@ -1,3 +1,5 @@
+import uniqBy from 'lodash/uniqBy';
+
 export const initialState = {
   loading: false,
   loaded: false,
@@ -12,18 +14,30 @@ const setLoaded = (state, loaded) => ({ ...state, loaded });
 export default {
   fetchNDCSInit: state => setLoading(state, true),
   fetchNDCSReady: (state, { payload }) =>
-    setLoaded(
-      setLoading(
-        {
-          ...state,
-          data: {
-            ...state.data,
-            ...payload
-          }
-        },
-        false
-      ),
-      true
-    ),
+    (!state.data || !payload
+      ? null
+      : setLoaded(
+        setLoading(
+          {
+            ...state,
+            data: {
+              categories: {
+                ...state.data.categories,
+                ...payload.categories
+              },
+              sectors: {
+                ...state.data.sectors,
+                ...payload.sectors
+              },
+              indicators: uniqBy(
+                (state.data.indicators || []).concat(payload.indicators),
+                'id'
+              )
+            }
+          },
+          false
+        ),
+        true
+      )),
   fetchNDCSFail: state => setError(state, true)
 };

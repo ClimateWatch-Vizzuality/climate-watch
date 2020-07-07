@@ -16,7 +16,7 @@ import {
   getLabels
 } from 'components/ndcs/shared/utils';
 import { europeSlug, europeanCountries } from 'app/data/european-countries';
-import { DEFAULT_CATEGORY_SLUG } from 'constants';
+import { DEFAULT_CATEGORY_SLUG } from 'data/constants';
 
 const NOT_APPLICABLE_LABEL = 'Not Applicable';
 
@@ -244,6 +244,7 @@ export const getEmissionsCardData = createSelector(
     if (!legend || !selectedIndicator || !indicators) {
       return null;
     }
+
     const emissionsIndicator = indicators.find(i => i.slug === 'ndce_ghg');
     if (!emissionsIndicator) return null;
     const data = sortBy(
