@@ -77,7 +77,7 @@ const NDCCompareAllTargets = props => {
             <Intro
               title="Compare all targets"
               description="It is important for countries’ various commitments, laws and policies align to achieve their climate objectives.
-  Explore a summary of which countries have submitted each type of target and compare all of them side-by-side."
+  Explore a summary of which countries have each type of target and compare all of them side-by-side."
             />
           </div>
         </div>

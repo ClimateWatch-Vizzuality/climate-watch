@@ -19,6 +19,16 @@
     &.-explore {
       .sticky-inner-wrapper {
         background-color: $white;
+        left: 0;
+        width: 100%;
+      }
+    }
+
+    &.-custom-compare {
+      .sticky-inner-wrapper {
+        background-color: $white;
+        left: 0;
+        width: 100% !important;
       }
     }
 
