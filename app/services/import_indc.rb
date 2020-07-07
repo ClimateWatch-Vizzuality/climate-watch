@@ -54,6 +54,61 @@ class ImportIndc
     end
   end
 
+  def setup_subsector_data
+    source = Indc::Source.find_by(name: 'WB')&.id
+    map_type = Indc::CategoryType.find_by(name: 'map')&.id
+    subsectors = Indc::Sector.where.not(parent_id: nil).order(:name).distinct
+    count = Indc::Value.count
+    puts "We had #{Indc::Value.count} values"
+    [['sectoral_mitigation_measures', 'm'], ['sectoral_adaptation_measures']].each do |slug, prefix|
+      sectoral_cat = Indc::Category.find_by(category_type_id: map_type, slug: slug)
+      next unless sectoral_cat
+
+      subsectors.each do |sector|
+        indicator = Indc::Indicator.find_or_create_by!(source_id: source,
+                                                      slug: [prefix, sector.name.parameterize.gsub('-', '_')].join('_'),
+                                                      name: sector.name,
+                                                      description: "Created automatically",
+                                                      multiple_versions: true)
+        label_yes = Indc::Label.find_or_create_by!(indicator_id: indicator.id,
+                                                  index: 0,
+                                                  value: 'Sectoral Measure Specified')
+        label_no = Indc::Label.find_or_create_by!(indicator_id: indicator.id,
+                                                 index: 1,
+                                                 value: 'No Sectoral Measure Specified')
+        label_no_doc = Indc::Label.find_or_create_by!(indicator_id: indicator.id,
+                                                     index: 2,
+                                                     value: 'No Document Submitted')
+        Location.where(location_type: 'COUNTRY').order(:wri_standard_name).each do |loc|
+          any_measure = false
+          sector.values.where(location_id: loc.id).
+            where.not("value ilike 'n/a'").select(:document_id).group(:document_id).each do |val|
+            any_measure = true
+            Indc::Value.find_or_create_by!(location_id: loc.id,
+                                          label_id: label_yes.id,
+                                          value: 'Sectoral Measure Specified',
+                                          document_id: val.document_id,
+                                          indicator_id: indicator.id,
+                                          sector_id: sector.id)
+          end
+          if !any_measure
+            sector.values.where(location_id: loc.id).
+              where("value ilike 'n/a'").select(:document_id).group(:document_id).each do |val|
+              Indc::Value.find_or_create_by!(location_id: loc.id,
+                                            label_id: label_yes.id,
+                                            value: 'No Sectoral Measure Specified',
+                                            document_id: val.document_id,
+                                            indicator_id: indicator.id,
+                                            sector_id: sector.id)
+            end
+          end
+          any_measure = false
+        end
+      end
+    end
+    puts "We added #{Indc::Value.count - count} new values"
+  end
+
   private
 
   def cleanup
@@ -383,10 +438,10 @@ class ImportIndc
     @sectors_index = {}
     sectors.uniq.each do |d|
       parent = Indc::Sector.find_or_create_by(
-        name: d[:sector]
+        name: d[:sector].titleize
       )
       sector = Indc::Sector.create!(
-        name: d[:subsector],
+        name: d[:subsector].titleize,
         parent: parent
       )
 
@@ -430,10 +485,10 @@ class ImportIndc
     @sectors_index = {}
     sectors.uniq.each do |d|
       parent = Indc::Sector.find_or_create_by(
-        name: d[:sector]
+        name: d[:sector].titleize
       )
       sector = Indc::Sector.create!(
-        name: d[:subsector],
+        name: d[:subsector].titleize,
         parent: parent
       )
 
