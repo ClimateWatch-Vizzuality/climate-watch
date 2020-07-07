@@ -104,18 +104,19 @@ export const getDocumentSelected = createSelector(
   [getCountryDocuments, getSearch],
   (documents, search) => {
     if (!documents || isEmpty(documents)) return null;
+    const lastDocument = documents[documents.length - 1];
     if (FEATURE_NDC_FILTERING) {
       if (!search || !search.document) {
-        return documentOption(documents[0]);
+        return documentOption(lastDocument);
       }
       const selectedDocument = documents.find(d => d.slug === search.document);
       return selectedDocument
         ? documentOption(selectedDocument)
-        : documentOption(documents[0]);
+        : documentOption(lastDocument);
     }
 
     if (!search || !search.document) {
-      return legacyDocumentOption(documents[0]);
+      return legacyDocumentOption(lastDocument);
     }
     const selectedDocument = documents.find(
       d => legacyDocumentValue(d) === search.document
@@ -123,7 +124,7 @@ export const getDocumentSelected = createSelector(
 
     return selectedDocument
       ? legacyDocumentOption(selectedDocument)
-      : legacyDocumentOption(documents[0]);
+      : legacyDocumentOption(lastDocument);
   }
 );
 
