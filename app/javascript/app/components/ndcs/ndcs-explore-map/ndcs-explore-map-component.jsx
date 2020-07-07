@@ -74,7 +74,11 @@ const renderLegend = (legendData, emissionsCardData) => (
         legendData.map(l => (
           <LegendItem
             key={l.name}
-            hoverIndex={getHoverIndex(emissionsCardData, l)}
+            hoverIndex={
+              emissionsCardData &&
+              emissionsCardData.data &&
+              getHoverIndex(emissionsCardData, l)
+            }
             name={l.name}
             number={l.partiesNumber}
             value={l.value}
@@ -162,7 +166,9 @@ function NDCSExploreMap(props) {
                         hideResetButton
                         plain
                         showTooltip={
-                          selectedCategory && selectedCategory.label.length > 14
+                          selectedCategory &&
+                          selectedCategory.label &&
+                          selectedCategory.label.length > 14
                         }
                       />
                       <Dropdown
@@ -174,6 +180,7 @@ function NDCSExploreMap(props) {
                         plain
                         showTooltip={
                           selectedIndicator &&
+                          selectedIndicator.label &&
                           selectedIndicator.label.length > 14
                         }
                       />

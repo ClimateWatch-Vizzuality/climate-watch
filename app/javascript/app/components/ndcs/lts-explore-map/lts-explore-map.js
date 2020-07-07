@@ -77,6 +77,8 @@ class LTSExploreMapContainer extends PureComponent {
   }
 
   componentWillMount() {
+    // Note: This fetch is not filtered by category like the NDC as the data is not so big
+    // If it starts getting big copy the logic in ndcs-explore-map.js with the lts emissions indicator
     this.props.fetchLTS();
   }
 
@@ -126,7 +128,7 @@ class LTSExploreMapContainer extends PureComponent {
             getHoverIndex(emissionsCardData, hoveredlegendData)
           );
         }
-      } else {
+      } else if (legendData) {
         // This is the last legend item aggregating all the no data geographies
         selectActiveDonutIndex(
           getHoverIndex(emissionsCardData, legendData[legendData.length - 1])

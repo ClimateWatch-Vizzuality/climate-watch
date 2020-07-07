@@ -355,3 +355,5 @@ export const AGRICULTURE_INDICATORS_MAP_BUCKETS = {
     5: { name: '> 50%', index: 4 }
   }
 };
+
+export const DEFAULT_CATEGORY_SLUG = 'unfccc_process';

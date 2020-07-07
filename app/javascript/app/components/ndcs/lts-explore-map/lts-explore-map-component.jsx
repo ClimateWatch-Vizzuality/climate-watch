@@ -72,7 +72,11 @@ const renderLegend = (legendData, emissionsCardData) => (
         legendData.map(l => (
           <LegendItem
             key={l.name}
-            hoverIndex={getHoverIndex(emissionsCardData, l)}
+            hoverIndex={
+              emissionsCardData &&
+              emissionsCardData.data &&
+              getHoverIndex(emissionsCardData, l)
+            }
             name={l.name}
             number={l.countriesNumber}
             value={l.value}
