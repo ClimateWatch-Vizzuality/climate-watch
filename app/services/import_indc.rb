@@ -65,8 +65,11 @@ class ImportIndc
       next unless sectoral_cat
 
       subsectors.each do |sector|
+        ind_slug = [prefix, sector.name.parameterize.gsub('-', '_')].join('_')
+        next if Indc::Indicator.find_by(slug: slug, source_id: source)
+
         indicator = Indc::Indicator.find_or_create_by!(source_id: source,
-                                                      slug: [prefix, sector.name.parameterize.gsub('-', '_')].join('_'),
+                                                      slug: slug,
                                                       name: sector.name,
                                                       description: "Created automatically",
                                                       multiple_versions: true)
@@ -438,10 +441,10 @@ class ImportIndc
     @sectors_index = {}
     sectors.uniq.each do |d|
       parent = Indc::Sector.find_or_create_by(
-        name: d[:sector].titleize
+        name: d[:sector]
       )
       sector = Indc::Sector.create!(
-        name: d[:subsector].titleize,
+        name: d[:subsector],
         parent: parent
       )
 
@@ -485,10 +488,10 @@ class ImportIndc
     @sectors_index = {}
     sectors.uniq.each do |d|
       parent = Indc::Sector.find_or_create_by(
-        name: d[:sector].titleize
+        name: d[:sector]
       )
       sector = Indc::Sector.create!(
-        name: d[:subsector].titleize,
+        name: d[:subsector],
         parent: parent
       )
 
