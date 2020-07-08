@@ -24,7 +24,7 @@ export const getMetricData = (
     calculationData[y] &&
     calculationData[y][r] &&
     calculationData[y][r][metricField];
-  let metricData = getMetricForYearAndRegion(year, column.iso_code3);
+  let metricData = getMetricForYearAndRegion(year, column.iso);
   // if no metric data for expandable column then use expanded regions to
   // calculate metric data
   if (!metricData && column.expandsTo && column.expandsTo.length) {
