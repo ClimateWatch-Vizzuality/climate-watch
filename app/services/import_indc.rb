@@ -63,6 +63,7 @@ class ImportIndc
     [['sectoral_mitigation_measures', 'm'], ['sectoral_adaptation_measures', 'a']].each do |slug, prefix|
       sectoral_cat = Indc::Category.find_by(category_type_id: map_type, slug: slug)
 
+      order = sectoral_cat.indicators.maximum(:order) || 0
       subsectors.each do |sector|
         ind_slug = [prefix, sector.name.parameterize.gsub('-', '_'), 'auto'].join('_')
         next if Indc::Indicator.find_by(slug: ind_slug, source_id: source)
@@ -73,6 +74,11 @@ class ImportIndc
                                                       description: "Created automatically",
                                                       multiple_versions: true)
         indicator.categories << sectoral_cat
+        if indicator.order.nil?
+          order += 1
+          indicator.order = order
+          indicator.save
+        end
         label_yes = Indc::Label.find_or_create_by!(indicator_id: indicator.id,
                                                   index: 0,
                                                   value: 'Sectoral Measure Specified')
