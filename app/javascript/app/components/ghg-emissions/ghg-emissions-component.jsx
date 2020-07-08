@@ -64,7 +64,7 @@ const sectorGroups = [
   },
   {
     groupId: 'sectors',
-    title: 'Sector&Sub-Sector'
+    title: 'Sector & Sub-Sector'
   }
 ];
 
@@ -255,7 +255,6 @@ function GhgEmissions(props) {
       }
       return value ? `${format('.2r')(value)}%` : '0%';
     };
-
     return (
       <React.Fragment>
         <Chart
