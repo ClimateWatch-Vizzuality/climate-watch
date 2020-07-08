@@ -23,25 +23,25 @@ class GhgEmissions extends PureComponent {
       `<a href=${link} title="${title}">${text}</a>`;
     const description =
       FEATURE_NEW_GHG &&
-      `Climate change causing greenhouse gas emissions
+      `Greenhouse gas (GHG) emissions which cause climate change
       ${renderLink(
-    'have increased 50 fold',
-    'Climate change causing greenhouse gas emissions have increased 50 fold',
+    'have increased 50 fold since the mid-1800s.',
+    'Greenhouse gas (GHG) emissions which cause climate change have increased 50 fold since the mid-1800s.',
     '/ghg-emissions?chartType=area&source=PIK'
   )}
-      since the late 1800s. Energy makes up ${renderLink(
-    'nearly two-thirds of global emissions, followed by agriculture.',
-    'Energy makes up nearly two-thirds of global emissions, followed by agriculture.',
+       Energy makes up
+      ${renderLink(
+    'nearly three-quarters of global emissions',
+    'Energy makes up nearly three-quarters of global emissions',
     '/ghg-emissions?breakBy=sector&chartType=percentage&source=CAIT'
-  )}
-        Within the energy sector, ${renderLink(
-    'electricity and heat generation make up the largest portion of emissions, followed by transportation and manufacturing.',
-    'Within the energy sector electricity and heat generation make up the largest portion of emissions, followed by transportation and manufacturing.',
-    '/ghg-emissions?breakBy=sector&chartType=percentage&sectors=building%2Cfugitive-emissions%2Cmanufacturing-construction%2Cother-fuel-combustion%2Ctransportation%2Celectricity-heat'
-  )}
-          In 2014, 60% of global greenhouse gas emissions came ${renderLink(
+  )}, followed by agriculture. Breaking down the energy sector into its sub-sectors, ${renderLink(
+  'electricity and heat generation make up the largest portion of emissions, followed by transportation and manufacturing.',
+  'Electricity and heat generation make up the largest portion of emissions, followed by transportation and manufacturing.',
+  '/ghg-emissions?breakBy=sector&chartType=percentage&sectors=agriculture%2Cbunker-fuels%2Cindustrial-processes%2Cland-use-change-and-forestry%2Cbuilding%2Celectricity-heat%2Cfugitive-emissions%2Cmanufacturing-construction%2Cother-fuel-combustion%2Ctransportation%2Cwaste'
+)}
+     64% of GHG emissions come ${renderLink(
     'from just 10 countries',
-    'In 2014, 60% of global greenhouse gas emissions came from just 10 countries',
+    '64% of GHG emissions come from just 10 countries',
     '/ghg-emissions?chartType=percentage'
   )}, while the 100 least-emitting contributed less than 3%.`;
 
