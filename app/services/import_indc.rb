@@ -80,38 +80,40 @@ class ImportIndc
           indicator.save
         end
         label_yes = Indc::Label.find_or_create_by!(indicator_id: indicator.id,
-                                                  index: 0,
+                                                  index: 1,
                                                   value: 'Sectoral Measure Specified')
         label_no = Indc::Label.find_or_create_by!(indicator_id: indicator.id,
-                                                 index: 1,
+                                                 index: 2,
                                                  value: 'No Sectoral Measure Specified')
         label_no_doc = Indc::Label.find_or_create_by!(indicator_id: indicator.id,
-                                                     index: 2,
+                                                     index: -2,
                                                      value: 'No Document Submitted')
         Location.where(location_type: 'COUNTRY').order(:wri_standard_name).each do |loc|
-          next unless sector.values.where(location_id: loc.id).any?
-
-          any_measure = false
-          sector.values.where(location_id: loc.id).
-            where.not("value ilike 'n/a'").select(:document_id).group(:document_id).each do |val|
-            any_measure = true
-            Indc::Value.find_or_create_by!(location_id: loc.id,
-                                          label_id: label_yes.id,
-                                          value: 'Sectoral Measure Specified',
-                                          document_id: val.document_id,
-                                          indicator_id: indicator.id)
-          end
-          if !any_measure
-            sector.values.where(location_id: loc.id).
-              where("value ilike 'n/a'").select(:document_id).group(:document_id).each do |val|
+          Indc::Document.where(slug: 'first_ndc', is_ndc: true).each do |doc|
+            if sector.values.where(location_id: loc.id, document_id: doc.id).
+                where.not("value ilike 'n/a'").
+                joins(:indicator).where("indc_indicators.slug ilike ?", "#{prefix.upcase}_%").any?
+              puts ")))))))))))))))))))))))))))))))))))))))))))))))))"
+              puts "YAY VAL!!!"
+              puts ")))))))))))))))))))))))))))))))))))))))))))))))))"
               Indc::Value.find_or_create_by!(location_id: loc.id,
-                                            label_id: label_yes.id,
+                                             label_id: label_yes.id,
+                                             value: 'Sectoral Measure Specified',
+                                             document_id: doc.id,
+                                             indicator_id: indicator.id,
+                                             sector_id: sector.id)
+            else
+              puts "7777777777777777777777777777777777777777777777777"
+              puts "NO VAL!!!"
+              puts "7777777777777777777777777777777777777777777777777"
+              Indc::Value.find_or_create_by!(location_id: loc.id,
+                                            label_id: label_no.id,
                                             value: 'No Sectoral Measure Specified',
-                                            document_id: val.document_id,
-                                            indicator_id: indicator.id)
+                                            document_id: doc.id,
+                                            indicator_id: indicator.id,
+                                            sector_id: sector.id)
             end
           end
-          any_measure = false
         end
       end
     end
@@ -449,7 +451,7 @@ class ImportIndc
       parent = Indc::Sector.find_or_create_by(
         name: d[:sector]
       )
-      sector = Indc::Sector.create!(
+      sector = Indc::Sector.find_or_create_by(
         name: d[:subsector],
         parent: parent
       )
@@ -496,7 +498,7 @@ class ImportIndc
       parent = Indc::Sector.find_or_create_by(
         name: d[:sector]
       )
-      sector = Indc::Sector.create!(
+      sector = Indc::Sector.find_or_create_by(
         name: d[:subsector],
         parent: parent
       )
