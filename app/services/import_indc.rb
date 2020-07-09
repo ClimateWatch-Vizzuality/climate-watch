@@ -54,7 +54,7 @@ class ImportIndc
     end
   end
 
-  def setup_subsector_data
+  def generate_subsectors_map_data
     source = Indc::Source.find_by(name: 'WB')&.id
     map_type = Indc::CategoryType.find_by(name: 'map')&.id
     subsectors = Indc::Sector.where.not(parent_id: nil).order(:name).distinct
