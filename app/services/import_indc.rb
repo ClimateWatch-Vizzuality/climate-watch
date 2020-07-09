@@ -63,7 +63,7 @@ class ImportIndc
     end
     count = Indc::Value.count
     puts "We had #{Indc::Value.count} values"
-    locations = Location.where(id: Indc::Value.select(:location_id).distinct.pluck(:id)).
+    locations = Location.where(id: Indc::Value.select(:location_id).distinct.pluck(:location_id)).
       order(:wri_standard_name)
     [['sectoral_mitigation_measures', 'm'], ['sectoral_adaptation_measures', 'a']].each do |slug, prefix|
       sectoral_cat = Indc::Category.find_by(category_type_id: map_type, slug: slug)
