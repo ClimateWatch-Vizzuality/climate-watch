@@ -18,7 +18,6 @@ export const getIndicatorEmissionsData = (
 ) => {
   if (!emissionsIndicator) return null;
   const emissionPercentages = emissionsIndicator.locations;
-  let summedPercentage = 0;
   const data = legend.map(legendItem => {
     let legendItemValue = 0;
     Object.entries(selectedIndicator.locations).forEach(entry => {
@@ -31,7 +30,6 @@ export const getIndicatorEmissionsData = (
         legendItemValue += parseFloat(emissionPercentages[locationIso].value);
       }
     });
-    summedPercentage += legendItemValue;
 
     return {
       name: legendItem.name,
@@ -39,21 +37,15 @@ export const getIndicatorEmissionsData = (
     };
   });
 
-  if (summedPercentage < 100) {
-    const notApplicableDataItem = data.find(d => d.name === 'Not Applicable');
-    if (notApplicableDataItem) {
-      const notApplicablePosition = data.indexOf(notApplicableDataItem);
-      data[notApplicablePosition] = {
-        name: noInformationLabel,
-        value: notApplicableDataItem.value + (100 - summedPercentage)
-      };
-    } else {
-      data.push({
-        name: noInformationLabel,
-        value: 100 - summedPercentage
-      });
-    }
+  const notApplicableDataItem = data.find(d => d.name === 'Not Applicable');
+  if (notApplicableDataItem) {
+    const notApplicablePosition = data.indexOf(notApplicableDataItem);
+    data[notApplicablePosition] = {
+      name: noInformationLabel,
+      value: notApplicableDataItem.value
+    };
   }
+
   return data;
 };
 
