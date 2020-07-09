@@ -97,9 +97,6 @@ class ImportIndc
             if sector.values.where(location_id: loc.id, document_id: doc.id).
                 where.not("value ilike 'n/a'").
                 joins(:indicator).where("indc_indicators.slug ilike ?", "#{prefix.upcase}_%").any?
-              puts ")))))))))))))))))))))))))))))))))))))))))))))))))"
-              puts "YAY VAL!!!"
-              puts ")))))))))))))))))))))))))))))))))))))))))))))))))"
               Indc::Value.find_or_create_by!(location_id: loc.id,
                                              label_id: label_yes.id,
                                              value: 'Sectoral Measure Specified',
@@ -107,9 +104,6 @@ class ImportIndc
                                              indicator_id: indicator.id,
                                              sector_id: sector.id)
             else
-              puts "7777777777777777777777777777777777777777777777777"
-              puts "NO VAL!!!"
-              puts "7777777777777777777777777777777777777777777777777"
               Indc::Value.find_or_create_by!(location_id: loc.id,
                                             label_id: label_no.id,
                                             value: 'No Sectoral Measure Specified',
