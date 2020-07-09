@@ -54,6 +54,70 @@ class ImportIndc
     end
   end
 
+  def generate_subsectors_map_data
+    source = Indc::Source.find_by(name: 'WB')&.id
+    map_type = Indc::CategoryType.find_by(name: 'map')&.id
+    subsectors = Indc::Sector.where.not(parent_id: nil).order(:name).distinct
+    if !source || !map_type || subsectors.empty?
+      Rails.logger.error '[ABORTING TASK] Underlying data doesn\'t seem to be present. Please make sure you ran "bundle exec rails indc:import", before running this task'
+      return
+    end
+    count = Indc::Value.count
+    puts "We had #{Indc::Value.count} values"
+    [['sectoral_mitigation_measures', 'm'], ['sectoral_adaptation_measures', 'a']].each do |slug, prefix|
+      sectoral_cat = Indc::Category.find_by(category_type_id: map_type, slug: slug)
+
+      order = sectoral_cat.indicators.maximum(:order) || 0
+      subsectors.each do |sector|
+        ind_slug = [prefix, sector.name.parameterize.gsub('-', '_'), 'auto'].join('_')
+        next if Indc::Indicator.find_by(slug: ind_slug, source_id: source)
+
+        indicator = Indc::Indicator.find_or_create_by!(source_id: source,
+                                                      slug: ind_slug,
+                                                      name: sector.name,
+                                                      description: "Created automatically",
+                                                      multiple_versions: true)
+        indicator.categories << sectoral_cat
+        if indicator.order.nil?
+          order += 1
+          indicator.order = order
+          indicator.save
+        end
+        label_yes = Indc::Label.find_or_create_by!(indicator_id: indicator.id,
+                                                  index: 1,
+                                                  value: 'Sectoral Measure Specified')
+        label_no = Indc::Label.find_or_create_by!(indicator_id: indicator.id,
+                                                 index: 2,
+                                                 value: 'No Sectoral Measure Specified')
+        label_no_doc = Indc::Label.find_or_create_by!(indicator_id: indicator.id,
+                                                     index: -2,
+                                                     value: 'No Document Submitted')
+        Location.where(location_type: 'COUNTRY').order(:wri_standard_name).each do |loc|
+          Indc::Document.where(slug: 'first_ndc', is_ndc: true).each do |doc|
+            if sector.values.where(location_id: loc.id, document_id: doc.id).
+                where.not("value ilike 'n/a'").
+                joins(:indicator).where("indc_indicators.slug ilike ?", "#{prefix.upcase}_%").any?
+              Indc::Value.find_or_create_by!(location_id: loc.id,
+                                             label_id: label_yes.id,
+                                             value: 'Sectoral Measure Specified',
+                                             document_id: doc.id,
+                                             indicator_id: indicator.id,
+                                             sector_id: sector.id)
+            else
+              Indc::Value.find_or_create_by!(location_id: loc.id,
+                                            label_id: label_no.id,
+                                            value: 'No Sectoral Measure Specified',
+                                            document_id: doc.id,
+                                            indicator_id: indicator.id,
+                                            sector_id: sector.id)
+            end
+          end
+        end
+      end
+    end
+    puts "We added #{Indc::Value.count - count} new values"
+  end
+
   private
 
   def cleanup
@@ -385,7 +449,7 @@ class ImportIndc
       parent = Indc::Sector.find_or_create_by(
         name: d[:sector]
       )
-      sector = Indc::Sector.create!(
+      sector = Indc::Sector.find_or_create_by(
         name: d[:subsector],
         parent: parent
       )
@@ -432,7 +496,7 @@ class ImportIndc
       parent = Indc::Sector.find_or_create_by(
         name: d[:sector]
       )
-      sector = Indc::Sector.create!(
+      sector = Indc::Sector.find_or_create_by(
         name: d[:subsector],
         parent: parent
       )
