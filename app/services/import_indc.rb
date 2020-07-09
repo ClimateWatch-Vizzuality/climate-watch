@@ -58,6 +58,10 @@ class ImportIndc
     source = Indc::Source.find_by(name: 'WB')&.id
     map_type = Indc::CategoryType.find_by(name: 'map')&.id
     subsectors = Indc::Sector.where.not(parent_id: nil).order(:name).distinct
+    if !source || !map_type || subsectors.empty?
+      Rails.logger.error '[ABORTING TASK] Underlying data doesn\'t seem to be present. Please make sure you ran "bundle exec rails indc:import", before running this task'
+      return
+    end
     count = Indc::Value.count
     puts "We had #{Indc::Value.count} values"
     [['sectoral_mitigation_measures', 'm'], ['sectoral_adaptation_measures', 'a']].each do |slug, prefix|
