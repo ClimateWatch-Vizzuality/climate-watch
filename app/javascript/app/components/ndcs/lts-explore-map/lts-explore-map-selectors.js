@@ -256,6 +256,7 @@ export const getIndicatorEmissionsData = (
 ) => {
   if (!emissionsIndicator) return null;
   const emissionPercentages = emissionsIndicator.locations;
+  let summedPercentage = 0;
   const data = legend.map(legendItem => {
     let legendItemValue = 0;
     const locationEntries = Object.entries(selectedIndicator.locations);
@@ -280,6 +281,7 @@ export const getIndicatorEmissionsData = (
         }
       }
     });
+    summedPercentage += legendItemValue;
 
     return {
       name: legendItem.name,
@@ -287,13 +289,22 @@ export const getIndicatorEmissionsData = (
     };
   });
 
-  const notSubmittedDataItem = data.find(d => d.name === NO_DOCUMENT_SUBMITTED);
-  if (notSubmittedDataItem) {
-    const notApplicablePosition = data.indexOf(notSubmittedDataItem);
-    data[notApplicablePosition] = {
-      name: NO_DOCUMENT_SUBMITTED,
-      value: notSubmittedDataItem.value
-    };
+  if (summedPercentage < 100) {
+    const notSubmittedDataItem = data.find(
+      d => d.name === NO_DOCUMENT_SUBMITTED
+    );
+    if (notSubmittedDataItem) {
+      const notApplicablePosition = data.indexOf(notSubmittedDataItem);
+      data[notApplicablePosition] = {
+        name: NO_DOCUMENT_SUBMITTED,
+        value: notSubmittedDataItem.value + (100 - summedPercentage)
+      };
+    } else {
+      data.push({
+        name: NO_DOCUMENT_SUBMITTED,
+        value: 100 - summedPercentage
+      });
+    }
   }
 
   return data;
