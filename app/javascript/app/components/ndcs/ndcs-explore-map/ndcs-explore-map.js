@@ -8,7 +8,7 @@ import { isCountryIncluded } from 'app/utils';
 import { getLocationParamUpdated } from 'utils/navigation';
 import { IGNORED_COUNTRIES_ISOS } from 'data/ignored-countries';
 import { getHoverIndex } from 'components/ndcs/shared/utils';
-import { DEFAULT_CATEGORY_SLUG } from 'data/constants';
+import { DEFAULT_NDC_EXPLORE_CATEGORY_SLUG } from 'data/constants';
 import fetchActions from 'pages/ndcs/ndcs-actions';
 import { actions as modalActions } from 'components/modal-metadata';
 import exploreMapActions from 'components/ndcs/shared/explore-map/explore-map-actions';
@@ -79,7 +79,8 @@ class NDCSExploreMapContainer extends PureComponent {
     const { location } = this.props;
     const search = qs.parse(location.search);
     this.props.fetchNDCS({
-      subcategory: (search && search.category) || DEFAULT_CATEGORY_SLUG,
+      subcategory:
+        (search && search.category) || DEFAULT_NDC_EXPLORE_CATEGORY_SLUG,
       additionalIndicatorSlug: 'ndce_ghg'
     });
   }
