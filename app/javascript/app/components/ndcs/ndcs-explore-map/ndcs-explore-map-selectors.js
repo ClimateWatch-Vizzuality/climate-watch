@@ -16,7 +16,10 @@ import {
   getLabels
 } from 'components/ndcs/shared/utils';
 import { europeSlug, europeanCountries } from 'app/data/european-countries';
-import { DEFAULT_CATEGORY_SLUG } from 'data/constants';
+import {
+  DEFAULT_NDC_EXPLORE_CATEGORY_SLUG,
+  CATEGORY_SOURCES
+} from 'data/constants';
 
 const NOT_APPLICABLE_LABEL = 'Not Applicable';
 
@@ -28,7 +31,12 @@ const getCategoriesData = createSelector(
     if (!categories) return null;
     const mapCategories = {};
     Object.keys(categories).forEach(key => {
-      if (categories[key].type === 'map') {
+      const category = categories[key];
+      if (
+        category.type === 'map' &&
+        category.sources.length &&
+        category.sources.every(s => CATEGORY_SOURCES.NDC_EXPLORE.includes(s))
+      ) {
         mapCategories[key] = categories[key];
       }
     });
@@ -96,7 +104,7 @@ export const getSelectedCategory = createSelector(
   (selected, categories = []) => {
     if (!categories || !categories.length) return null;
     const defaultCategory =
-      categories.find(cat => cat.value === DEFAULT_CATEGORY_SLUG) ||
+      categories.find(cat => cat.value === DEFAULT_NDC_EXPLORE_CATEGORY_SLUG) ||
       categories[0];
     if (selected) {
       return (

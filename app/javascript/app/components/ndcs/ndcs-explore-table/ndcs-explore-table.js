@@ -28,7 +28,6 @@ const mapStateToProps = (state, { location }) => {
     search,
     categorySelected: search.category,
     indicatorSelected: search.indicator,
-    categories: data.categories,
     emissions: state.emissions
   };
   return {
