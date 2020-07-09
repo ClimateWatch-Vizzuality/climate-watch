@@ -22,6 +22,7 @@ import Table from 'components/table';
 import GhgMultiselectDropdown from 'components/ghg-multiselect-dropdown';
 import ghgTableTheme from 'styles/themes/table/ghg-table-theme.scss';
 import ModalPngDownload from 'components/modal-png-download';
+import ModalDownload from 'components/modal-download';
 import { TabletPortraitOnly, TabletLandscape } from 'components/responsive';
 import { toPlural } from 'utils/ghg-emissions';
 import { format } from 'd3-format';
@@ -90,7 +91,7 @@ function GhgEmissions(props) {
     providerFilters,
     dataZoomData,
     handlePngDownloadModal,
-    handleDownloadDataClick,
+    handleDownloadModalOpen,
     handleInfoClick,
     setColumnWidth,
     downloadLink,
@@ -113,7 +114,7 @@ function GhgEmissions(props) {
     {
       type: 'downloadCSV',
       tooltipText: 'Download data in csv',
-      onClick: handleDownloadDataClick
+      onClick: handleDownloadModalOpen
     },
     {
       type: 'addToUser'
@@ -130,7 +131,7 @@ function GhgEmissions(props) {
       options: [
         {
           label: 'Download current data (CSV)',
-          action: handleDownloadDataClick
+          action: handleDownloadModalOpen
         },
         {
           label: 'Save as image (PNG)',
@@ -413,6 +414,7 @@ function GhgEmissions(props) {
       </ModalPngDownload>
       <ModalShare analyticsName={'GHG Emissions'} />
       <ModalMetadata />
+      <ModalDownload />
     </div>
   );
 }
@@ -432,7 +434,7 @@ GhgEmissions.propTypes = {
   legendSelected: PropTypes.array,
   handleChange: PropTypes.func.isRequired,
   handleInfoClick: PropTypes.func.isRequired,
-  handleDownloadDataClick: PropTypes.func.isRequired,
+  handleDownloadModalOpen: PropTypes.func.isRequired,
   handlePngDownloadModal: PropTypes.func.isRequired,
   setYears: PropTypes.func.isRequired,
   setColumnWidth: PropTypes.func.isRequired,

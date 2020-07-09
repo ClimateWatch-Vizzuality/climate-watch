@@ -106,7 +106,7 @@ class ModalDownload extends PureComponent {
             }
             value={this.state.country}
             hideResetButton
-            optional
+            required={requiredError}
           />
 
           <TextInput
@@ -128,7 +128,7 @@ class ModalDownload extends PureComponent {
             }
             value={this.state.sector}
             hideResetButton
-            optional
+            required={requiredError}
           />
 
           <TextInput
