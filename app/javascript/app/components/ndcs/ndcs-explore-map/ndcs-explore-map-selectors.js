@@ -220,20 +220,24 @@ export const getLegend = createSelector(
       ...indicator.legendBuckets[id],
       id
     }));
-    const legendItems = bucketsWithId.map(label => {
+    const legendItems = [];
+    bucketsWithId.forEach(label => {
       let partiesNumber = Object.values(indicator.locations).filter(
         l => l.label_id === parseInt(label.id, 10)
       ).length;
       if (label.name === NOT_APPLICABLE_LABEL) {
         partiesNumber =
           maximumCountries - Object.values(indicator.locations).length;
+        if (partiesNumber === 0) {
+          return;
+        }
       }
-      return {
+      legendItems.push({
         ...label,
         value: percentage(partiesNumber, maximumCountries),
         partiesNumber,
         color: getColorByIndex(indicator.legendBuckets, label.index)
-      };
+      });
     });
     return legendItems.sort(sortByIndexAndNotInfo);
   }
