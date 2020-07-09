@@ -22,7 +22,20 @@ const NOT_APPLICABLE_LABEL = 'Not Applicable';
 
 const getSearch = state => state.search || null;
 const getCountries = state => state.countries || null;
-const getCategoriesData = state => state.categories || null;
+const getCategoriesData = createSelector(
+  state => state.categories,
+  categories => {
+    if (!categories) return null;
+    const mapCategories = {};
+    Object.keys(categories).forEach(key => {
+      if (categories[key].type === 'map') {
+        mapCategories[key] = categories[key];
+      }
+    });
+    return mapCategories;
+  }
+);
+
 const getIndicatorsData = state => state.indicators || null;
 const getCountriesDocumentsData = state =>
   state.countriesDocuments.data || null;
