@@ -22,10 +22,11 @@ const modalPngDownloadComponent = ({
       onRequestClose={onRequestClose}
       header={<ModalHeader title={header} />}
     >
-      <div ref={modalContentRef}>
+      <div id="modal-png-content" ref={modalContentRef}>
         {/* We are inlining the svg to allow png conversion modules to access the svg DOM
             Imported svg going through webpack (svg-sprite-loader) are rendered inside a #shadow-root */}
         <svg
+          id="modal-png-logo"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 136 13"
           className={styles.logo}
