@@ -57,18 +57,20 @@ class ImportIndc
   def generate_subsectors_map_data
     source = Indc::Source.find_by(name: 'WB')&.id
     map_type = Indc::CategoryType.find_by(name: 'map')&.id
-    subsectors = Indc::Sector.where.not(parent_id: nil).order(:name).distinct
-    if !source || !map_type || subsectors.empty?
+    if !source || !map_type
       Rails.logger.error '[ABORTING TASK] Underlying data doesn\'t seem to be present. Please make sure you ran "bundle exec rails indc:import", before running this task'
       return
     end
     count = Indc::Value.count
     puts "We had #{Indc::Value.count} values"
+    locations = Location.where(id: Indc::Value.select(:location_id).distinct.pluck(:location_id)).
+      order(:wri_standard_name)
     [['sectoral_mitigation_measures', 'm'], ['sectoral_adaptation_measures', 'a']].each do |slug, prefix|
       sectoral_cat = Indc::Category.find_by(category_type_id: map_type, slug: slug)
 
       order = sectoral_cat.indicators.maximum(:order) || 0
-      subsectors.each do |sector|
+      Indc::Sector.where.not(parent_id: nil).joins(values: :indicator).
+        where("indc_indicators.slug ilike ?", "#{prefix.upcase}_%").distinct.each do |sector|
         ind_slug = [prefix, sector.name.parameterize.gsub('-', '_'), 'auto'].join('_')
         next if Indc::Indicator.find_by(slug: ind_slug, source_id: source)
 
@@ -92,7 +94,7 @@ class ImportIndc
         label_no_doc = Indc::Label.find_or_create_by!(indicator_id: indicator.id,
                                                      index: -2,
                                                      value: 'No Document Submitted')
-        Location.where(location_type: 'COUNTRY').order(:wri_standard_name).each do |loc|
+        locations.each do |loc|
           Indc::Document.where(slug: 'first_ndc', is_ndc: true).each do |doc|
             if sector.values.where(location_id: loc.id, document_id: doc.id).
                 where.not("value ilike 'n/a'").
