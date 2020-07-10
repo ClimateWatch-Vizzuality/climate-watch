@@ -7,7 +7,7 @@ import ButtonGroup from 'components/button-group';
 import Loading from 'components/loading';
 import Dropdown from 'components/dropdown';
 import ModalMetadata from 'components/modal-metadata';
-import { PieChart } from 'cw-components';
+import { PieChart, MultiLevelDropdown } from 'cw-components';
 import CustomTooltip from 'components/ndcs/shared/donut-tooltip';
 import ExploreMapTooltip from 'components/ndcs/shared/explore-map-tooltip';
 import { getHoverIndex } from 'components/ndcs/shared/utils';
@@ -137,7 +137,6 @@ function NDCSExploreMap(props) {
   );
 
   const TOOLTIP_ID = 'ndcs-map-tooltip';
-
   return (
     <div>
       <CountriesDocumentsProvider />
@@ -171,18 +170,13 @@ function NDCSExploreMap(props) {
                           selectedCategory.label.length > 14
                         }
                       />
-                      <Dropdown
+                      <MultiLevelDropdown
+                        key="indicator"
                         label="Indicator"
-                        options={indicators}
-                        onValueChange={handleIndicatorChange}
-                        value={selectedIndicator}
-                        hideResetButton
-                        plain
-                        showTooltip={
-                          selectedIndicator &&
-                          selectedIndicator.label &&
-                          selectedIndicator.label.length > 14
-                        }
+                        options={indicators || []}
+                        values={selectedIndicator ? [selectedIndicator] : []}
+                        disabled={loading}
+                        onChange={handleIndicatorChange}
                       />
                     </div>
                     {isTablet &&
