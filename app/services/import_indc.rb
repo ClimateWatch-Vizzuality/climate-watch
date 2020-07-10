@@ -515,9 +515,9 @@ class ImportIndc
       to_h
 
     @wb_sectoral_data.each do |r|
-      location = @locations_by_iso2[r[:countrycode]]
+      location = @locations_by_iso2[r[:country]]
       unless location
-        Rails.logger.error "location #{r[:countrycode]} not found. Skipping."
+        Rails.logger.error "location #{r[:country]} not found. Skipping."
         next
       end
 
