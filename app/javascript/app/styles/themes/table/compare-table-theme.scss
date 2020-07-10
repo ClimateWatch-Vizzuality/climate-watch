@@ -10,6 +10,11 @@
     border-bottom: none !important;
     text-decoration: underline !important;
   }
+
+  // Split laws from the rest
+  &:nth-child(8) {
+    border-left: 3px solid $gray2;
+  }
 }
 
 .headerRow {
