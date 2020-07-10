@@ -20,6 +20,7 @@ class App extends PureComponent {
     const { route, navRoutes, location, navbarMobileIsOpen } = this.props;
     return (
       <div
+        id="app"
         className={cx(
           styles.app,
           navbarMobileIsOpen ? styles.mobileMenuOpen : ''
@@ -34,7 +35,8 @@ class App extends PureComponent {
               <NavBar routes={navRoutes} />
             ) : (
               <NavBarMobile routes={navRoutes} />
-            ))}
+            ))
+          }
         </Desktop>
         <div className={styles.pageWrapper}>
           {renderRoutes(route.routes.filter(r => r.path))}
