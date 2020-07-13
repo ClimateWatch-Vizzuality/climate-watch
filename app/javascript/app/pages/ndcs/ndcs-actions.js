@@ -1,5 +1,6 @@
 import { createAction } from 'redux-actions';
 import { createThunkAction } from 'utils/redux';
+import { apiWithCache } from 'services/api';
 
 /* @tmpfix: remove usage of indcTransform */
 import indcTransform from 'utils/indctransform';
@@ -29,9 +30,10 @@ const fetchNDCS = createThunkAction('fetchNDCS', props => (dispatch, state) => {
   }
   if (ndcs && !ndcs.loading) {
     dispatch(fetchNDCSInit());
-    fetch(`/api/v1/ndcs${params.length ? `?${params.join('&')}` : ''}`)
-      .then(response => {
-        if (response.ok) return response.json();
+    apiWithCache
+      .get(`/api/v1/ndcs${params.length ? `?${params.join('&')}` : ''}`)
+      .then(async response => {
+        if (response.data) return response.data;
         throw Error(response.statusText);
       })
       .then(data => indcTransform(data))
@@ -54,15 +56,16 @@ const fetchNDCS = createThunkAction('fetchNDCS', props => (dispatch, state) => {
       ))
   ) {
     dispatch(fetchNDCSInit());
-    fetch(
-      `/api/v1/ndcs?indicators=${additionalIndicatorSlug}${
-        overrideFilter
-          ? ''
-          : '&filter=map&source[]=CAIT&source[]=WB&source[]=NDC%20Explorer'
-      }`
-    )
+    apiWithCache
+      .get(
+        `/api/v1/ndcs?indicators=${additionalIndicatorSlug}${
+          overrideFilter
+            ? ''
+            : '&filter=map&source[]=CAIT&source[]=WB&source[]=NDC%20Explorer'
+        }`
+      )
       .then(response => {
-        if (response.ok) return response.json();
+        if (response.data) return response.data;
         throw Error(response.statusText);
       })
       .then(data => indcTransform(data))

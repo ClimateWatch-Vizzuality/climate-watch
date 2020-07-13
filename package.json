@@ -18,6 +18,8 @@
   "private": true,
   "dependencies": {
     "autoprefixer": "9.8.0",
+    "axios": "^0.19.2",
+    "axios-cache-adapter": "^2.5.0",
     "babel-core": "6.25.0",
     "babel-eslint": "8.1.2",
     "babel-loader": "7.1.4",
