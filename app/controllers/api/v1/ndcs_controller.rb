@@ -59,16 +59,24 @@ module Api
         if params[:source].present?
           source = ::Indc::Source.where(name: params[:source])
         end
-        indicators = filtered_indicators(source)
-        categories = filtered_categories(source)
-        sectors = ::Indc::Sector.joins(values: :indicator).
-          where(indc_indicators: {id: indicators.map(&:id)})
+        indicators = Rails.cache.fetch(indicators_cache_key, expires: 7.days) do
+          filtered_indicators(source)
+        end
 
-        parents = ::Indc::Sector.where(parent_id: nil).
-          joins("INNER JOIN indc_sectors AS children ON children.parent_id = indc_sectors.id").where(children: {id: sectors.pluck(:id).uniq})
+        categories = Rails.cache.fetch(categories_cache_key, expires: 7.days) do
+          filtered_categories(source)
+        end
 
-        sectors = ::Indc::Sector.from("(#{sectors.to_sql} UNION #{parents.to_sql}) AS indc_sectors").
-          includes(values: :indicator)
+        sectors = Rails.cache.fetch(sectors_cache_key, expires: 7.days) do
+          tmp_sectors = ::Indc::Sector.joins(values: :indicator).
+            where(indc_indicators: {id: indicators.map(&:id)})
+
+          parents = ::Indc::Sector.where(parent_id: nil).
+            joins("INNER JOIN indc_sectors AS children ON children.parent_id = indc_sectors.id").where(children: {id: tmp_sectors.pluck(:id).uniq})
+
+          ::Indc::Sector.from("(#{tmp_sectors.to_sql} UNION #{parents.to_sql}) AS indc_sectors").
+            includes(values: :indicator)
+        end
 
         render json: NdcIndicators.new(indicators, categories, sectors),
                serializer: Api::V1::Indc::NdcIndicatorsSerializer,
@@ -114,6 +122,37 @@ module Api
       end
 
       private
+
+      def indicators_cache_key
+        [
+          params[:source],
+          params[:document],
+          params[:location],
+          params[:indicators],
+          params[:category],
+          params[:subcategory],
+          params[:locations_documents],
+          ::Indc::Indicator.maximum(:updated_at).to_s
+        ].join('_')
+      end
+
+      def categories_cache_key
+        [
+          params[:source],
+          params[:filter],
+          params[:category],
+          params[:subcategory],
+          params[:locations_documents],
+          ::Indc::Category.maximum(:updated_at).to_s
+        ].join('_')
+      end
+
+      def sectors_cache_key
+        [
+          indicators_cache_key,
+          ::Indc::Sector.maximum(:updated_at).to_s
+        ].join('_')
+      end
 
       def location_list
         if params[:location].blank?
@@ -197,7 +236,7 @@ module Api
       end
 
       def filtered_categories(source=nil)
-        categories = ::Indc::Category.includes(:category_type).order(:order)
+        categories = ::Indc::Category.includes(:category_type, :sources).order(:order)
 
         # params[:filter] -> ['map', 'table']
         if params[:filter].present?
