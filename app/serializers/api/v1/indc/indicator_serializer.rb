@@ -31,7 +31,7 @@ module Api
                      object.labels
                    end
           IndexedSerializer.serialize(
-            object.labels,
+            labels,
             serializer: LabelSerializer,
             &:id
           )
@@ -41,7 +41,7 @@ module Api
           values = if instance_options[:locations_documents]
                      object.values_for instance_options[:locations_documents]
                    else
-                     object.values.includes(:location, :document, :label)
+                     object.values
                    end
           indexed_data = IndexedSerializer.serialize_collection(
             values,

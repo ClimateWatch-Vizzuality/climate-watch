@@ -19,7 +19,7 @@ module Indc
                else
                  values
                end
-      result = result.includes(:document, :location).joins(:document, :location)
+      result = result.joins(:document, :location)
       where_clause = locations_documents.map do |loc, doc|
         "(locations.iso_code3 = '#{loc}' AND indc_documents.slug = '#{doc}')"
       end.join(' OR ')
