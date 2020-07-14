@@ -157,8 +157,11 @@ export const getSelectedIndicator = createSelector(
   [state => state.indicatorSelected, getCategoryIndicators],
   (selected, indicators = []) => {
     if (!indicators || !indicators.length) return {};
-    const defaultSelection =
-      indicators.find(i => i.value === 'submission') || indicators[0];
+    let defaultSelection = indicators.find(i => i.value === 'submission');
+    if (!defaultSelection) {
+      const firstParentIndicator = indicators.find(i => i.groupParent);
+      defaultSelection = firstParentIndicator || indicators[0];
+    }
     return selected
       ? indicators.find(indicator => indicator.value === selected) ||
           defaultSelection
