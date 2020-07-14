@@ -378,7 +378,13 @@ export const POSSIBLE_LABEL_FIELDS = [
   'number'
 ];
 
-export const POSSIBLE_VALUE_FIELDS = ['id', 'value', 'iso_code3', 'iso'];
+export const POSSIBLE_VALUE_FIELDS = [
+  'slug',
+  'id',
+  'value',
+  'iso_code3',
+  'iso'
+];
 
 export const FIELD_ALIAS = {
   'historical-emissions': { 'data-sources': 'Data sources' },

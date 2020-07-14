@@ -181,10 +181,21 @@ export const getPathsWithStyles = createSelector(
   }
 );
 
-export const getLinkToDataExplorer = createSelector([getSearch], search => {
-  const section = 'lts-content';
-  return generateLinkToDataExplorer(search, section);
-});
+export const getLinkToDataExplorer = createSelector(
+  [getSearch, getSelectedCategory, getSelectedIndicator],
+  (search, selectedCategory, selectedIndicator) => {
+    const section = 'lts-content';
+    let dataExplorerSearch = search || {};
+    if (selectedCategory && selectedIndicator) {
+      dataExplorerSearch = {
+        category: selectedCategory.value,
+        indicator: selectedIndicator.value,
+        ...search
+      };
+    }
+    return generateLinkToDataExplorer(dataExplorerSearch, section);
+  }
+);
 
 const percentage = (value, total) => (value * 100) / total;
 

@@ -1,7 +1,6 @@
 import { createSelector } from 'reselect';
 import { toPlural } from 'utils/ghg-emissions';
 import { generateLinkToDataExplorer } from 'utils/data-explorer';
-
 // meta data for selectors
 export const getData = state =>
   (state && state.emissions && state.emissions.data) || [];

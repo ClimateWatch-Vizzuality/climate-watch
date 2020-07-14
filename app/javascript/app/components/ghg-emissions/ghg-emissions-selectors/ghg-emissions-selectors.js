@@ -1,8 +1,8 @@
 import { createStructuredSelector } from 'reselect';
 import {
   getSearch,
-  getLinkToDataExplorer,
-  getDataZoomYears
+  getDataZoomYears,
+  getLinkToDataExplorer
 } from './ghg-emissions-selectors-get';
 import {
   getOptions,

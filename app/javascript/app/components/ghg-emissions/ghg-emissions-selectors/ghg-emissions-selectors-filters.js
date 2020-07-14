@@ -288,7 +288,6 @@ const getGasOptions = createSelector([getFieldOptions('gas')], options => {
   if (!options) return [];
 
   const valueByLabel = g => (options.find(opt => opt.label === g) || {}).value;
-
   return options.map(o => ({
     ...o,
     expandsTo:
@@ -341,7 +340,6 @@ const getFiltersSelected = field =>
     [getOptions, getSelection(field), getDefaults],
     (options, selected, defaults) => {
       if (!options || !defaults) return null;
-
       const fieldOptions =
         field === 'location' ? options.regions : options[toPlural(field)];
       const defaultSelection =

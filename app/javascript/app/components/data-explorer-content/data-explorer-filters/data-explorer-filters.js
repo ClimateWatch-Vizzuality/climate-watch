@@ -122,15 +122,15 @@ class DataExplorerFiltersContainer extends PureComponent {
           const defaultValues = FILTER_DEFAULTS[section][key].split(',');
           const defaultOptions = filterOptions[key].filter(
             f =>
-              defaultValues.includes(f.value) || defaultValues.includes(f.label)
+              defaultValues.includes(f.slug) || defaultValues.includes(f.label)
           );
           let updatedOptions = '';
           if (
             defaultOptions &&
             defaultOptions.length &&
-            defaultOptions[0].value
+            defaultOptions[0].slug
           ) {
-            updatedOptions = defaultOptions.map(o => o.value).join(',');
+            updatedOptions = defaultOptions.map(o => o.slug).join(',');
           }
           defaultOptionsToUpdate[key] = updatedOptions;
         }
