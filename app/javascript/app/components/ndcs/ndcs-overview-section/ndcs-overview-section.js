@@ -18,7 +18,11 @@ const NdcsOverviewSection = props => {
         }
       });
     });
-    fetchNDCS({ overrideFilter: true, indicatorSlugs });
+    fetchNDCS({
+      overrideFilter: true,
+      indicatorSlugs,
+      additionalIndicatorSlug: 'ndce_ghg'
+    });
   }, []);
 
   const handleInfoClick = source => {
