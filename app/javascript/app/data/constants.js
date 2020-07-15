@@ -93,7 +93,7 @@ export const DEFAULT_EMISSIONS_SELECTIONS = {
   UNFCCC_NAI: {
     gas: 'Aggregate GHGs',
     sector: 'Total GHG emissions including LULUCF/LUCF',
-    location: 'ANNEXI'
+    location: 'NONANNEXI'
   },
   GCP: {
     gas: 'CO2',
