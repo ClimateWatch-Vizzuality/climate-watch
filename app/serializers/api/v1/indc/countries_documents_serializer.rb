@@ -8,7 +8,7 @@ module Api
           object.data.map do |datum|
             docs = ::Indc::Document.joins(values: :location).
                joins('LEFT OUTER JOIN indc_submissions ON indc_submissions.document_id = indc_documents.id AND indc_submissions.location_id = locations.id').
-               where(locations: {iso_code3: datum.iso_code3}).
+               where(locations: {iso_code3: datum.iso_code3, show_in_cw: true}).
                select('indc_documents.*, indc_submissions.submission_date').
                order(:ordering).distinct.to_a
 
