@@ -29,8 +29,9 @@ const fetchNDCS = createThunkAction('fetchNDCS', props => (dispatch, state) => {
   if (subcategory) {
     params.push(`subcategory=${subcategory}`);
   }
-
-  params.push(`document=${document || 'first_ndc'}`);
+  if (document) {
+    params.push(`subcategory=${document}`);
+  }
 
   if (ndcs && !ndcs.loading) {
     dispatch(fetchNDCSInit());
