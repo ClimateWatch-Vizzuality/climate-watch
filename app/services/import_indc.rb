@@ -51,8 +51,8 @@ class ImportIndc
       import_submissions
       import_comparison_slugs
       Indc::SearchableValue.refresh
-      generate_subsectors_map_data
     end
+    generate_subsectors_map_data
   end
 
   def generate_subsectors_map_data
@@ -63,7 +63,7 @@ class ImportIndc
       return
     end
     count = Indc::Value.count
-    puts "We had #{Indc::Value.count} values"
+    puts "We had #{Indc::Value.count} indc values before creating subsector indicators and values"
     locations = Location.where(id: Indc::Value.select(:location_id).distinct.pluck(:location_id)).
       order(:wri_standard_name)
     [['sectoral_mitigation_measures', 'm'], ['sectoral_adaptation_measures', 'a']].each do |slug, prefix|
@@ -119,7 +119,7 @@ class ImportIndc
         end
       end
     end
-    puts "We added #{Indc::Value.count - count} new values"
+    puts "We added #{Indc::Value.count - count} new values for subsector indicators"
   end
 
   private
