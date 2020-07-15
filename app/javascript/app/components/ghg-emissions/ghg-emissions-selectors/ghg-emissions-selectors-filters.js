@@ -2,9 +2,8 @@ import { createSelector, createStructuredSelector } from 'reselect';
 import difference from 'lodash/difference';
 import intersection from 'lodash/intersection';
 import isEmpty from 'lodash/isEmpty';
-import kebabCase from 'lodash/kebabCase';
 import uniq from 'lodash/uniq';
-import { arrayToSentence } from 'utils';
+import { arrayToSentence, useSlug } from 'utils';
 import { getGhgEmissionDefaultSlugs, toPlural } from 'utils/ghg-emissions';
 import { sortLabelByAlpha } from 'utils/graphs';
 import {
@@ -323,15 +322,15 @@ const getDefaults = createSelector(
 );
 
 const isIncluded = (field, selectedValues, filter) => {
-  const kebabInclude = selectedValues.includes(kebabCase(filter.label));
+  const slugIncluded = selectedValues.includes(useSlug(filter.label));
   const valueOrIsoInclude =
     selectedValues.includes(String(filter.value)) ||
     selectedValues.includes(filter.iso_code3);
 
   return {
     location: valueOrIsoInclude,
-    gas: kebabInclude,
-    sector: kebabInclude
+    gas: slugIncluded,
+    sector: slugIncluded
   }[field];
 };
 

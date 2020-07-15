@@ -5,11 +5,10 @@ import {
   isArray,
   pick,
   flatten,
-  kebabCase,
   sortBy
 } from 'lodash';
 import qs from 'query-string';
-import { findEqual, isANumber, noEmptyValues } from 'utils/utils';
+import { findEqual, isANumber, noEmptyValues, useSlug } from 'utils/utils';
 import { isNoColumnField, isNonColumnKey } from 'utils/data-explorer';
 import { isPageContained } from 'utils/navigation';
 
@@ -69,7 +68,7 @@ const getMetaForNoModelFilters = createSelector(
       noModelFiltersMeta[field] = dataSection.meta[field].map(v => ({
         id: v,
         title: v,
-        slug: kebabCase(v)
+        slug: useSlug(v)
       }));
     });
     return noModelFiltersMeta;
