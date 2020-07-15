@@ -14,7 +14,8 @@ const fetchNDCS = createThunkAction('fetchNDCS', props => (dispatch, state) => {
     overrideFilter,
     indicatorSlugs,
     subcategory,
-    additionalIndicatorSlug
+    additionalIndicatorSlug,
+    document
   } = props || {};
   const { ndcs } = state();
   const params = [];
@@ -28,6 +29,9 @@ const fetchNDCS = createThunkAction('fetchNDCS', props => (dispatch, state) => {
   if (subcategory) {
     params.push(`subcategory=${subcategory}`);
   }
+
+  params.push(`document=${document || 'first_ndc'}`);
+
   if (ndcs && !ndcs.loading) {
     dispatch(fetchNDCSInit());
     apiWithCache
