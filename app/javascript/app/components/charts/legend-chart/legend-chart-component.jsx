@@ -28,7 +28,7 @@ class LegendChart extends PureComponent {
     } = this.props;
     const shouldShowMultiselect =
       dataOptions && dataSelected && dataSelected.length !== dataOptions.length;
-    const mirrorX = dataSelected.length < 2;
+    const mirrorX = dataSelected && dataSelected.length < 2;
     const hasColumns = config && config.columns && config.columns.y.length;
     const hasLegendNote = config && config.legendNote;
     return (
