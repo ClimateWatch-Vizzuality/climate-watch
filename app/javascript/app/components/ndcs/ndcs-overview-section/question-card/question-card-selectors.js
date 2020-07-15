@@ -18,7 +18,9 @@ const getFirstNDCSubmittedIsos = createSelector(
   (source, countriesDocuments, answerLabel) => {
     if (!source || !countriesDocuments) return null;
     return Object.keys(countriesDocuments).filter(iso =>
-      countriesDocuments[iso].some(doc => doc.slug === answerLabel)
+      countriesDocuments[iso].some(
+        doc => doc.slug === answerLabel && doc.submission_date
+      )
     );
   }
 );
