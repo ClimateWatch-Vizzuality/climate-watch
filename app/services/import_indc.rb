@@ -51,6 +51,7 @@ class ImportIndc
       import_submissions
       import_comparison_slugs
       Indc::SearchableValue.refresh
+      generate_subsectors_map_data
     end
   end
 
@@ -71,12 +72,13 @@ class ImportIndc
       order = sectoral_cat.indicators.maximum(:order) || 0
       Indc::Sector.where.not(parent_id: nil).joins(values: :indicator).
         where("indc_indicators.slug ilike ?", "#{prefix.upcase}_%").distinct.each do |sector|
-        ind_slug = [prefix, sector.name.parameterize.gsub('-', '_'), 'auto'].join('_')
+        sector_name = sector.name == sector.parent.name ? "#{sector.name} Subsector" : sector.name
+        ind_slug = [prefix, sector_name.parameterize.gsub('-', '_'), 'auto'].join('_')
         next if Indc::Indicator.find_by(slug: ind_slug, source_id: source)
 
         indicator = Indc::Indicator.find_or_create_by!(source_id: source,
                                                       slug: ind_slug,
-                                                      name: sector.name,
+                                                      name: sector_name,
                                                       description: "Created automatically",
                                                       multiple_versions: true)
         indicator.categories << sectoral_cat
