@@ -1,6 +1,7 @@
 import { createAction } from 'redux-actions';
 import { createThunkAction } from 'utils/redux';
 import isEmpty from 'lodash/isEmpty';
+import { apiWithCache } from 'services/api';
 
 export const fetchCountriesDocumentsInit = createAction(
   'fetchCountriesDocumentsInit'
@@ -26,9 +27,10 @@ export const fetchCountriesDocuments = createThunkAction(
         location ? `?location=${location}` : ''
       }`;
       dispatch(fetchCountriesDocumentsInit());
-      fetch(url)
+      apiWithCache
+        .get(url)
         .then(response => {
-          if (response.ok) return response.json();
+          if (response.data) return response.data;
           throw Error(response.statusText);
         })
         .then(data => {

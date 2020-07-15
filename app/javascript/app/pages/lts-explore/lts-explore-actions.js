@@ -1,6 +1,7 @@
 import { createAction } from 'redux-actions';
 import { createThunkAction } from 'utils/redux';
 import isEmpty from 'lodash/isEmpty';
+import { apiWithCache } from 'services/api';
 
 /* @tmpfix: remove usage of indcTransform */
 import indcTransform from 'utils/indctransform';
@@ -17,9 +18,10 @@ const fetchLTS = createThunkAction('fetchLTS', () => (dispatch, state) => {
     !LTS.loading
   ) {
     dispatch(fetchLTSInit());
-    fetch('/api/v1/lts?source=LTS&filter=map')
+    apiWithCache
+      .get('/api/v1/lts?source=LTS&filter=map')
       .then(response => {
-        if (response.ok) return response.json();
+        if (response.data) return response.data;
         throw Error(response.statusText);
       })
       .then(data => indcTransform(data))

@@ -49,8 +49,7 @@ export const commitmentsData = [
         answerLabel: 'Intends to Enhance Ambition or Action in 2020 NDC'
       },
       {
-        questionText:
-          'How many Parties have submitted an updated or second NDC?',
+        questionText: 'How many Parties submitted an updated or second NDC?',
         link: '/2020-ndc-tracker',
         slug: 'ndce_status_2020',
         metadataSlug: 'ndc_cw',
@@ -61,7 +60,7 @@ export const commitmentsData = [
   {
     title: 'Other climate commitments',
     description:
-      'Aside from commitments made through NDCs and LTS, some Parties also have net-zero emission targets. Many have also enacted national climate policies and laws, which incorporate either economy-wide and/or sectoral targets. While these commitments are not official submissions to the Paris Agreement, they indicate Parties’ commitment to climate action and may align with commitments under the Paris Agreement.',
+      'Aside from commitments made through NDCs and LTS, some Parties also have net zero emission targets. Many have also enacted national climate policies and laws, which incorporate either economy-wide and/or sectoral targets. While these commitments are not official submissions to the Paris Agreement, they indicate Parties’ commitment to climate action and may align with commitments under the Paris Agreement.',
     hint:
       'See how many Parties have submitted additional commitments and explore the details by clicking on each box.',
     color: '#2EC9DF',

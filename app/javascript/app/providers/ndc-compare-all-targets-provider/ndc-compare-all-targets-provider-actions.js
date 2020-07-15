@@ -1,6 +1,7 @@
 import { createAction } from 'redux-actions';
 import { createThunkAction } from 'utils/redux';
 import isEmpty from 'lodash/isEmpty';
+import { apiWithCache } from 'services/api';
 
 /* @tmpfix: remove usage of indcTransform */
 import indcTransform from 'utils/indctransform';
@@ -19,9 +20,10 @@ const fetchCompareAll = createThunkAction(
       !compareAll.loading
     ) {
       dispatch(fetchCompareAllInit());
-      fetch('/api/v1/ndcs?&source[]=CAIT&source[]=LTS')
+      apiWithCache
+        .get('/api/v1/ndcs?&source[]=CAIT&source[]=LTS')
         .then(response => {
-          if (response.ok) return response.json();
+          if (response.data) return response.data;
           throw Error(response.statusText);
         })
         .then(data => indcTransform(data))
