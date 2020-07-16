@@ -1,12 +1,5 @@
 import { createSelector } from 'reselect';
-import {
-  remove,
-  isEmpty,
-  isArray,
-  pick,
-  flatten,
-  sortBy
-} from 'lodash';
+import { remove, isEmpty, isArray, pick, flatten, sortBy } from 'lodash';
 import qs from 'query-string';
 import { findEqual, isANumber, noEmptyValues, useSlug } from 'utils/utils';
 import { isNoColumnField, isNonColumnKey } from 'utils/data-explorer';
