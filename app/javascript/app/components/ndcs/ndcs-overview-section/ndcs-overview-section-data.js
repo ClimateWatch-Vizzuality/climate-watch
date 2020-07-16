@@ -77,6 +77,7 @@ export const commitmentsData = [
         questionText:
           'How many Parties have an economy-wide target in a national law or policy?',
         link: 'https://climate-laws.org/',
+        source: 'lse',
         metadataSlug: 'national_laws_politices',
         hasExternalLink: true
       }
