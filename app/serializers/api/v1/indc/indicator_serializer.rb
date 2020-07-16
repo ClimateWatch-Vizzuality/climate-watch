@@ -60,7 +60,14 @@ module Api
                 value = []
                 data.each do |target|
                   next unless target['sources'].map{|p| p['id']}.include?(law_id.to_i) && target['sector'] != 'economy-wide'
-                  value << if object.normalized_slug == 'nrm_link'
+
+                  value << if object.normalized_slug == 'nrm_summary'
+                             val = target[LSE_INDICATORS_MAP[object.normalized_slug.to_sym]]
+                             target['sources'].select{|t| t['id'] == law_id.to_i}.map{|t| t['link']}.each do |link|
+                               val += " (<a href='#{link}' target='_blank' rel='noopener noreferrer'>View on Climate Laws</a>)<br>"
+                             end
+                             val
+                          elsif object.normalized_slug == 'nrm_link'
                              target['sources'].select{|t| t['id'] == law_id.to_i}.map{|t| t['link']}.join(',')
                           elsif object.normalized_slug == 'nrm_type_of_commitment'
                             target['ghg_target'] ? 'GHG target' : 'Non GHG target'
