@@ -14,9 +14,7 @@ export const fetchLSE = createThunkAction(
     if (lse && isEmpty(lse.data) && !lse.loading) {
       dispatch(fetchLSEInit());
       apiWithCache
-        .get(
-          '//laws-pathways-staging.vizzuality.com/cclow/api/targets/economy-wide-countries'
-        )
+        .get('//climate-laws.org/cclow/api/targets/economy-wide-countries')
         .then(response => {
           if (response.data) return response.data;
           throw Error(response.statusText);
