@@ -6,14 +6,13 @@ import { getLocationParamUpdated } from 'utils/navigation';
 import { handleAnalytics } from 'utils/analytics';
 import qs from 'query-string';
 import castArray from 'lodash/castArray';
-import kebabCase from 'lodash/kebabCase';
 import { actions as modalActions } from 'components/modal-metadata';
 import { actions as pngModalActions } from 'components/modal-png-download';
 import { actions as downloadModalActions } from 'components/modal-download';
 
 import { getStorageWithExpiration } from 'utils/localStorage';
 import { encodeAsCSVContent, invokeCSVDownload } from 'utils/csv';
-import { orderByColumns, stripHTML } from 'utils';
+import { orderByColumns, stripHTML, useSlug } from 'utils';
 import { GHG_TABLE_HEADER } from 'data/constants';
 import GhgEmissionsComponent from './ghg-emissions-component';
 import { getGHGEmissions } from './ghg-emissions-selectors/ghg-emissions-selectors';
@@ -153,7 +152,7 @@ function GhgEmissionsContainer(props) {
     updateUrlParam({
       name: [field],
       value: castArray(filters)
-        .map(v => kebabCase(v.label))
+        .map(v => useSlug(v.label))
         .join(',')
     });
     sendToAnalitics(field, filters);

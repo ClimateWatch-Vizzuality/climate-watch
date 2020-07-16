@@ -2,7 +2,7 @@ import {
   DEFAULT_EMISSIONS_SELECTIONS,
   GHG_CALCULATION_OPTIONS
 } from 'data/constants';
-import kebabCase from 'lodash/kebabCase';
+import { useSlug } from 'utils';
 
 export const getGhgEmissionDefaults = (source, meta) => {
   const sourceName = source.name || source.label;
@@ -24,8 +24,8 @@ export const getGhgEmissionDefaultSlugs = (source, meta) => {
   const gas = meta.gas.find(g => g.label === defaults.gas);
   const sector = meta.sector.find(s => s.label === defaults.sector);
   return {
-    gas: gas && kebabCase(gas.label),
-    sector: sector && kebabCase(sector.label),
+    gas: gas && useSlug(gas.label),
+    sector: sector && useSlug(sector.label),
     location: defaults.location
   };
 };
