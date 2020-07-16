@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import cx from 'classnames';
 import { isEmbededComponent } from 'utils/navigation';
 import CountriesDocumentsProvider from 'providers/countries-documents-provider';
+import LSEProvider from 'providers/lse-provider';
 import ModalShare from 'components/modal-share';
 import ModalMetadata from 'components/modal-metadata';
 import layout from 'styles/layout.scss';
@@ -63,6 +64,7 @@ const NdcsOverviewSection = ({ data, section, location, handleInfoClick }) => {
         </div>
       </div>
       <ModalShare analyticsName="NDC Overview" />
+      <LSEProvider />
       <ModalMetadata />
     </div>
   );
