@@ -262,7 +262,7 @@ function GhgEmissions(props) {
     const billionsFormat = formatPrefix(
       `.${precisionPrefix(1e7, 1.3e9)}`,
       1.3e9
-    ); // format millions with two fixed decimals
+    ); // format billions with two fixed decimals
     const millionsFormat = formatPrefix(
       `.${precisionPrefix(1e4, 1.3e6)}`,
       1.3e6
