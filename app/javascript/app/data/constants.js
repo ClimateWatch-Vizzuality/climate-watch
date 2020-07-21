@@ -111,8 +111,8 @@ export const TOP_EMITTERS = [
   'JPN',
   'BRA',
   'IDN',
-  'CAN',
-  'MEX'
+  'IRN',
+  'KOR'
 ];
 
 export const TOP_EMITTERS_REGION_COUNTRIES = [

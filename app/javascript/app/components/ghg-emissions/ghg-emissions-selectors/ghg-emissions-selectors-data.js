@@ -476,9 +476,12 @@ const getColorPalette = columns => {
 
 export const getUnit = metric => {
   let unit = DEFAULT_AXES_CONFIG.yLeft.unit;
-  if (metric === 'PER_GDP') {
+  if (metric === GHG_CALCULATION_OPTIONS.PERCENTAGE_CHANGE.value) {
+    return '%';
+  }
+  if (metric === GHG_CALCULATION_OPTIONS.PER_GDP.value) {
     unit = `${unit}/ million $ GDP`;
-  } else if (metric === 'PER_CAPITA') {
+  } else if (metric === GHG_CALCULATION_OPTIONS.PER_CAPITA.value) {
     unit = `${unit} per capita`;
   }
   return unit;
@@ -499,6 +502,7 @@ export const getChartConfig = createSelector(
       GHG_CALCULATION_OPTIONS.PERCENTAGE_CHANGE.value;
     colorThemeCache = getThemeConfig(yColumns, colorPalette, colorThemeCache);
     const tooltip = getTooltipConfig(yColumns.filter(c => c && !c.hideLegend));
+    console.log(`%cmetric`,'font-size: 12px; color: green; font-weight: bold', metric );
     const unit = getUnit(metric);
     return {
       axes: {
