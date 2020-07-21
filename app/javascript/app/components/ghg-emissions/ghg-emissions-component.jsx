@@ -9,7 +9,8 @@ import {
   Chart,
   Multiselect,
   MultiLevelDropdown,
-  Dropdown
+  Dropdown,
+  TooltipChart
 } from 'cw-components';
 import LegendChart from 'components/charts/legend-chart';
 import EmissionsMetaProvider from 'providers/ghg-emissions-meta-provider';
@@ -25,7 +26,7 @@ import ModalPngDownload from 'components/modal-png-download';
 import ModalDownload from 'components/modal-download';
 import { TabletPortraitOnly, TabletLandscape } from 'components/responsive';
 import { toPlural } from 'utils/ghg-emissions';
-import { format } from 'd3-format';
+import { format, precisionPrefix, formatPrefix } from 'd3-format';
 import ModalShare from 'components/modal-share';
 import ModalMetadata from 'components/modal-metadata';
 import lineIcon from 'assets/icons/line_chart.svg';
@@ -256,6 +257,32 @@ function GhgEmissions(props) {
       }
       return value ? `${format('.2r')(value)}%` : '0%';
     };
+
+    // more about precision prefix: https://github.com/d3/d3-format#precisionPrefix
+    const billionsFormat = formatPrefix(
+      `.${precisionPrefix(1e7, 1.3e9)}`,
+      1.3e9
+    ); // format billions with two fixed decimals
+    const millionsFormat = formatPrefix(
+      `.${precisionPrefix(1e4, 1.3e6)}`,
+      1.3e6
+    ); // format millions with two fixed decimals
+    const thousandsFormat = formatPrefix(
+      `.${precisionPrefix(1e1, 1.3e3)}`,
+      1.3e3
+    ); // format thousands with two fixed decimals
+
+    const customLabelFormat = value => {
+      if (value > 1000000000) {
+        return billionsFormat(value);
+      } else if (value > 1000000) {
+        return millionsFormat(value);
+      } else if (value > 1000) {
+        return thousandsFormat(value);
+      }
+      return format('.2f')(value);
+    };
+
     return (
       <React.Fragment>
         <Chart
@@ -277,6 +304,15 @@ function GhgEmissions(props) {
             isPercentageChangeCalculation
               ? percentageChangeCustomLabelFormat
               : undefined
+          }
+          customTooltip={
+            <TooltipChart
+              getCustomYLabelFormat={
+                isPercentageChangeCalculation
+                  ? percentageChangeCustomLabelFormat
+                  : customLabelFormat
+              }
+            />
           }
           dataZoomComponent={
             FEATURE_NEW_GHG &&
