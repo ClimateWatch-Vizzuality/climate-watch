@@ -19,7 +19,8 @@ import {
 import { europeSlug, europeanCountries } from 'app/data/european-countries';
 import {
   DEFAULT_NDC_EXPLORE_CATEGORY_SLUG,
-  CATEGORY_SOURCES
+  CATEGORY_SOURCES,
+  NOT_COVERED_LABEL
 } from 'data/constants';
 
 const NOT_APPLICABLE_LABEL = 'Not Applicable';
@@ -325,7 +326,11 @@ export const getEmissionsCardData = createSelector(
       hideLegend: true,
       innerHoverLabel: true,
       minAngle: 3,
-      ...getLabels(legend, NOT_APPLICABLE_LABEL)
+      ...getLabels({
+        legend,
+        notInformationLabel: NOT_APPLICABLE_LABEL,
+        hasNotCovered: data.some(d => d.name === NOT_COVERED_LABEL)
+      })
     };
 
     return {
