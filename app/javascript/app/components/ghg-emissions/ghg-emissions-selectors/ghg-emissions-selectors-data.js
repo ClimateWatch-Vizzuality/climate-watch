@@ -502,7 +502,6 @@ export const getChartConfig = createSelector(
       GHG_CALCULATION_OPTIONS.PERCENTAGE_CHANGE.value;
     colorThemeCache = getThemeConfig(yColumns, colorPalette, colorThemeCache);
     const tooltip = getTooltipConfig(yColumns.filter(c => c && !c.hideLegend));
-    console.log(`%cmetric`,'font-size: 12px; color: green; font-weight: bold', metric );
     const unit = getUnit(metric);
     return {
       axes: {
