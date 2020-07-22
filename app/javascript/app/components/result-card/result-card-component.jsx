@@ -22,8 +22,7 @@ const ResultCard = props => {
         result.matches.map(match => (
           <NavLink
             key={`${match.fragment}-${match.idx}`}
-            to={`/ndcs/country/${result.location.iso_code3}/full?searchBy=${search.searchBy}
-              &query=${search.query}&idx=${match.idx}&document=${result.document_type}-${result.language}`}
+            to={`/ndcs/country/${result.location.iso_code3}/full?searchBy=${search.searchBy}&query=${search.query}&idx=${match.idx}&document=${result.document_type}-${result.language}`}
             className={styles.match}
           >
             <div
@@ -31,7 +30,12 @@ const ResultCard = props => {
               id={match.idx}
               dangerouslySetInnerHTML={{ __html: match.fragment }} // eslint-disable-line
             />
-            <Button className={styles.link} variant="secondary" square onClick={() => true}>
+            <Button
+              className={styles.link}
+              variant="secondary"
+              square
+              onClick={() => true}
+            >
               <Icon icon={iconLink} className={styles.iconLink} />
             </Button>
           </NavLink>
