@@ -254,6 +254,11 @@ module Api
           categories = categories.joins(:indicators).
             where(indc_indicators: {source_id: source.map(&:id)}).uniq
         end
+
+        if @indc_locations_documents
+          categories = categories.joins(indicators: {values: :document}).
+            where(indc_documents: {slug: @indc_locations_documents.map(&:second)})
+        end
         categories
       end
     end
