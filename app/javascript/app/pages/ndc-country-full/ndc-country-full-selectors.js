@@ -18,11 +18,14 @@ export const getSelectedContent = createSelector(
     if (!content || !content.length) return null;
     if (!selected) return content[0];
     const splitSelected = selected.split('-');
+    const selectedContent = content.find(
+      ({ document_type, language }) =>
+        document_type === splitSelected[0] && language === splitSelected[1]
+    );
+    if (selectedContent) return selectedContent;
     return content.find(
-      item =>
-        item.document_type === splitSelected[0] &&
-        (item.language === splitSelected[1] || DEFAULT_LANGUAGE),
-      10
+      ({ document_type, language }) =>
+        document_type === splitSelected[0] && language === DEFAULT_LANGUAGE
     );
   }
 );
