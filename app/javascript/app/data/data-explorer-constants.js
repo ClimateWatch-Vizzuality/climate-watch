@@ -128,7 +128,7 @@ export const DATA_EXPLORER_METHODOLOGY_SOURCE = {
     'UNFCCC Non-Annex I': ['historical_emissions_unfccc'],
     GCP: ['historical_emissions_gcp']
   },
-  'ndc-sdg-linkages': ['ndc_sdc_all indicators'],
+  'ndc-sdg-linkages': ['ndc_sdg_all indicators'],
   'ndc-content': ['ndc_cw', 'ndc_wb', 'ndc_die'],
   'lts-content': ['lts'],
   'emission-pathways': [null] // model, scenario and indicator related metadata
