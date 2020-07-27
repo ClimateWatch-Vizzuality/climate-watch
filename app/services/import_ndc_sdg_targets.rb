@@ -23,29 +23,31 @@ class ImportNdcSdgTargets
       ndc = nil
       if row[:indc_text].present?
         row[:indc_text] = TextNormalizer.normalize(row[:indc_text])
-        ndc = ndc(row)
+        ndcs = ndcs(row)
         target = target(row)
       end
 
-      unless ndc && target
+      unless ndcs.present? && target
         @failed_lines.append(row)
         next
       end
 
-      indc_text = row[:indc_text]
-      starts_at = ndc.full_text.downcase.index(indc_text.downcase)
-      ends_at = starts_at + indc_text.length - 1 if starts_at
-      ndc_target = NdcSdg::NdcTarget.find_or_create_by(
-        ndc: ndc,
-        target: target,
-        indc_text: indc_text,
-        status: row[:status],
-        climate_response: row[:climate_response],
-        type_of_information: row[:type_of_information],
-        starts_at: starts_at,
-        ends_at: ends_at
-      )
-      import_ndc_target_sectors(row, ndc_target)
+      ndcs.each do |ndc|
+        indc_text = row[:indc_text]
+        starts_at = ndc.full_text.downcase.index(indc_text.downcase)
+        ends_at = starts_at + indc_text.length - 1 if starts_at
+        ndc_target = NdcSdg::NdcTarget.find_or_create_by(
+          ndc: ndc,
+          target: target,
+          indc_text: indc_text,
+          status: row[:status],
+          climate_response: row[:climate_response],
+          type_of_information: row[:type_of_information],
+          starts_at: starts_at,
+          ends_at: ends_at
+        )
+        import_ndc_target_sectors(row, ndc_target)
+      end
     end
 
     unless @failed_lines.empty?
@@ -69,6 +71,22 @@ class ImportNdcSdgTargets
         sector: sector_rec
       )
     end
+  end
+
+  def ndcs(row)
+    iso_code3 = row[:iso_code3] && row[:iso_code3].upcase
+    location = iso_code3 && Location.find_by_iso_code3(iso_code3)
+    unless location
+      Rails.logger.error "Location not found #{row}"
+      return nil
+    end
+    indc_text = row[:indc_text]
+    ndcs = location.ndcs.select do |n|
+      !n.full_text.downcase.index(indc_text.downcase).nil?
+    end.uniq
+
+    Rails.logger.error "NDC not found #{row}" unless ndcs.present?
+    ndcs
   end
 
   def ndc(row)

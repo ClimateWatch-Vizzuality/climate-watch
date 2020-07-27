@@ -550,6 +550,7 @@ class ImportIndc
       begin
         Indc::Submission.create!(submission_attributes(location, sub))
       rescue
+        puts "This row failed #{sub}"
       end
     end
   end
