@@ -124,8 +124,8 @@ module Api
           ndcs = ndcs.where(id: ::NdcSdg::Sector.ndc_ids(params[:sector])) if params[:sector]
         end
 
-        linkages = Ndc.linkages(params)
         ndcs.map do |ndc|
+          linkages = Ndc.linkages(params, ndc)
           ndc_linkages = linkages.
             select { |linkage| linkage.ndc_id == ndc.id }
 

@@ -58,7 +58,7 @@ class Ndc < ApplicationRecord
     update_all(sql)
   end
 
-  def self.linkages(params)
+  def self.linkages(params, ndc = nil)
     query_params = {}
 
     filters = {
@@ -75,11 +75,15 @@ class Ndc < ApplicationRecord
       }
     end
 
-    ::NdcSdg::NdcTarget.includes(
+    targets = ::NdcSdg::NdcTarget.includes(
       target: [:goal],
       ndc_target_sectors: [:sector],
       ndc: [:location]
-    ).where(query_params).
+    ).where(query_params)
+
+    targets = targets.where(ndc_id: ndc.id) if ndc
+
+    targets.
       reject { |n| n.starts_at.nil? }.
       uniq(&:indc_text).
       sort_by(&:starts_at)
