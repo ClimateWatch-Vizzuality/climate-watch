@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect';
-import { isEmpty, sortBy } from 'lodash';
+import isEmpty from 'lodash/isEmpty';
+import sortBy from 'lodash/sortBy';
 import { filterQuery } from 'app/utils';
 import { getMapIndicator } from 'components/ndcs/ndcs-explore-map/ndcs-explore-map-selectors';
 import {
@@ -60,9 +61,11 @@ export const tableGetSelectedData = createSelector(
     ) {
       return [];
     }
-    const refIndicator =
-      indicators.find(i => i.value === 'submission') || indicators[0];
 
+    const refIndicator =
+      indicators.find(i => i.value === 'submission') ||
+      indicators.find(i => !isEmpty(i.locations));
+    if (!refIndicator) return null;
     return Object.keys(refIndicator.locations).map(iso => {
       if (refIndicator.locations[iso].value === 'No Document Submitted') {
         return false;
