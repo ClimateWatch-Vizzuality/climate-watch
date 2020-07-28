@@ -81,8 +81,7 @@ class NDCSExploreMapContainer extends PureComponent {
     this.props.fetchNDCS({
       subcategory:
         (search && search.category) || DEFAULT_NDC_EXPLORE_CATEGORY_SLUG,
-      additionalIndicatorSlug: 'ndce_ghg',
-      document: 'first_ndc'
+      additionalIndicatorSlug: 'ndce_ghg'
     });
   }
 
@@ -96,8 +95,7 @@ class NDCSExploreMapContainer extends PureComponent {
     ) {
       this.props.fetchNDCS({
         subcategory: selectedCategory.value,
-        additionalIndicatorSlug: 'ndce_ghg',
-        document: 'first_ndc'
+        additionalIndicatorSlug: 'ndce_ghg'
       });
     }
   }
