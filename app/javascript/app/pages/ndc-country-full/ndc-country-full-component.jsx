@@ -49,7 +49,9 @@ class NDCCountryFull extends PureComponent {
         </div>
       );
     }
-    return loaded ? <NoContent message="No content available" /> : null;
+    return loaded ? (
+      <NoContent className={styles.noContent} message="No content available" />
+    ) : null;
   }
 
   render() {
