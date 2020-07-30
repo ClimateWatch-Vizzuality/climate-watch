@@ -21,7 +21,7 @@ const NdcsOverviewSection = props => {
     fetchNDCS({
       overrideFilter: true,
       indicatorSlugs,
-      additionalIndicatorSlug: 'ndce_ghg'
+      additionalIndicatorSlugs: ['ndce_ghg']
     });
   }, []);
 

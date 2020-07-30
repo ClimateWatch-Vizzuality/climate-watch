@@ -14,7 +14,7 @@ const fetchNDCS = createThunkAction('fetchNDCS', props => (dispatch, state) => {
     overrideFilter,
     indicatorSlugs,
     subcategory,
-    additionalIndicatorSlug,
+    additionalIndicatorSlugs,
     document
   } = props || {};
   const { ndcs } = state();
@@ -53,17 +53,17 @@ const fetchNDCS = createThunkAction('fetchNDCS', props => (dispatch, state) => {
 
   // Used for indicators like ndce_ghg (emissions) that are needed but not included on category filtered calls
   if (
-    additionalIndicatorSlug &&
+    additionalIndicatorSlugs &&
     ndcs &&
     (!ndcs.data.indicators ||
-      !Object.values(ndcs.data.indicators).find(
-        i => i.slug === additionalIndicatorSlug
+      additionalIndicatorSlugs.some(
+        s => !Object.values(ndcs.data.indicators).includes(s)
       ))
   ) {
     dispatch(fetchNDCSInit());
     apiWithCache
       .get(
-        `/api/v1/ndcs?indicators=${additionalIndicatorSlug}${
+        `/api/v1/ndcs?indicators=${additionalIndicatorSlugs.join(',')}${
           overrideFilter
             ? ''
             : '&filter=map&source[]=CAIT&source[]=WB&source[]=NDC%20Explorer'
