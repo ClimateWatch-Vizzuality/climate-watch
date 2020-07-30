@@ -419,7 +419,7 @@ const getGasConflicts = gasSelected => {
   return conflicts;
 };
 
-const getChartConflicts = (metricSelected, chartSelected) => {
+const getChartConflicts = (metricSelected, chartSelected, breakBySelected) => {
   const conflicts = [];
 
   if (
@@ -429,6 +429,16 @@ const getChartConflicts = (metricSelected, chartSelected) => {
     const metricOption = GHG_CALCULATION_OPTIONS[metricSelected];
     conflicts.push(
       `${metricOption.label} metric is not allowed with ${chartSelected.label} chart`
+    );
+  }
+
+  if (
+    ['PER_CAPITA', 'PER_GDP'].includes(metricSelected) &&
+    ['sector', 'gas'].includes(breakBySelected.value)
+  ) {
+    const metricOption = GHG_CALCULATION_OPTIONS[metricSelected];
+    conflicts.push(
+      `${metricOption.label} metric is not allowed with show data by ${breakBySelected.label}`
     );
   }
 
@@ -442,7 +452,8 @@ export const getFiltersConflicts = createSelector(
     getFiltersSelected('sector'),
     getModelSelected,
     getMetricSelected,
-    getChartTypeSelected
+    getChartTypeSelected,
+    getBreakByOptionSelected
   ],
   (
     regionSelected,
@@ -450,7 +461,8 @@ export const getFiltersConflicts = createSelector(
     sectorsSelected,
     modelSelected,
     metricSelected,
-    chartSelected
+    chartSelected,
+    breakBySelected
   ) => {
     let conflicts = [];
     let canChangeBreakByTo = difference(
@@ -466,7 +478,11 @@ export const getFiltersConflicts = createSelector(
     const sectorConflicts = getOverlappingConflicts(sectorsSelected);
     const regionConflicts = getOverlappingConflicts(regionSelected);
     const gasConflicts = getGasConflicts(gasSelected);
-    const chartConflicts = getChartConflicts(metricSelected, chartSelected);
+    const chartConflicts = getChartConflicts(
+      metricSelected,
+      chartSelected,
+      breakBySelected
+    );
 
     if (sectorConflicts.length) {
       canChangeBreakByTo = difference(canChangeBreakByTo, ['gas', 'regions']);
@@ -499,7 +515,7 @@ export const getFiltersConflicts = createSelector(
       solutions.push('change "Chart Type" to line chart');
     }
 
-    if (canChangeBreakByTo.length) {
+    if (canChangeBreakByTo.length && !chartConflicts.length) {
       solutions.push(
         `change "Break by" to ${arrayToSentence(canChangeBreakByTo)}`
       );
