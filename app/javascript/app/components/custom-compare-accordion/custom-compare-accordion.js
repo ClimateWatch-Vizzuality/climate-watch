@@ -19,12 +19,20 @@ const targetsToURLParams = targets => {
 
 const mapStateToProps = (state, { category, targets }) => {
   const isSectoralInformation = category === 'sectoral_information';
+  const data = isSectoralInformation
+    ? getSectoralInformationData(state, {
+      category,
+      targets
+    })
+    : getData(state, {
+      category,
+      targets
+    });
   return {
-    data: isSectoralInformation
-      ? getSectoralInformationData(state, { category, targets })
-      : getData(state, { category, targets }),
+    data,
     loading:
-      state.customCompareAccordion && state.customCompareAccordion.loading,
+      (state.customCompareAccordion && state.customCompareAccordion.loading) ||
+      !data, // data should be an array when loaded
     category,
     targets,
     isSectoralInformation
