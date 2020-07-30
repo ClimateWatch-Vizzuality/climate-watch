@@ -1,9 +1,5 @@
 import { createSelector } from 'reselect';
-import {
-  getColorByIndex,
-  createLegendBuckets,
-  shouldShowPath
-} from 'utils/map';
+import { getColorByIndex, shouldShowPath } from 'utils/map';
 import uniq from 'lodash/uniq';
 import uniqBy from 'lodash/uniqBy';
 import sortBy from 'lodash/sortBy';
@@ -19,7 +15,8 @@ import {
 import { europeSlug, europeanCountries } from 'app/data/european-countries';
 import {
   DEFAULT_NDC_EXPLORE_CATEGORY_SLUG,
-  CATEGORY_SOURCES
+  CATEGORY_SOURCES,
+  NOT_COVERED_LABEL
 } from 'data/constants';
 
 const NOT_APPLICABLE_LABEL = 'Not Applicable';
@@ -74,20 +71,13 @@ export const getISOCountries = createSelector([getCountries], countries =>
 );
 
 export const getIndicatorsParsed = createSelector(
-  [getCategories, getIndicatorsData, getSectors, getISOCountries],
-  (categories, indicators, sectors, isos) => {
+  [getCategories, getIndicatorsData, getSectors],
+  (categories, indicators, sectors) => {
     if (!categories || !indicators || !indicators.length) return null;
     let parentIndicatorNames = [];
     const parsedIndicators = sortBy(
       uniqBy(
         indicators.map(i => {
-          const legendBuckets = createLegendBuckets(
-            i.locations,
-            i.labels,
-            isos,
-            NOT_APPLICABLE_LABEL
-          );
-
           // Add indicator groups from the sector relationship - Sectoral categories
           let parentSectorName;
           if (i.locations && Object.values(i.locations)[0]) {
@@ -107,7 +97,7 @@ export const getIndicatorsParsed = createSelector(
             value: i.slug,
             categoryIds: i.category_ids,
             locations: i.locations,
-            legendBuckets,
+            legendBuckets: i.labels,
             group: parentSectorName
           };
         }),
@@ -255,23 +245,15 @@ export const getLegend = createSelector(
     if (!indicator || !indicator.legendBuckets || !maximumCountries) {
       return null;
     }
-
     const bucketsWithId = Object.keys(indicator.legendBuckets).map(id => ({
       ...indicator.legendBuckets[id],
       id
     }));
     const legendItems = [];
     bucketsWithId.forEach(label => {
-      let partiesNumber = Object.values(indicator.locations).filter(
+      const partiesNumber = Object.values(indicator.locations).filter(
         l => l.label_id === parseInt(label.id, 10)
       ).length;
-      if (label.name === NOT_APPLICABLE_LABEL) {
-        partiesNumber =
-          maximumCountries - Object.values(indicator.locations).length;
-        if (partiesNumber === 0) {
-          return;
-        }
-      }
       legendItems.push({
         ...label,
         value: percentage(partiesNumber, maximumCountries),
@@ -325,7 +307,11 @@ export const getEmissionsCardData = createSelector(
       hideLegend: true,
       innerHoverLabel: true,
       minAngle: 3,
-      ...getLabels(legend, NOT_APPLICABLE_LABEL)
+      ...getLabels({
+        legend,
+        notInformationLabel: NOT_APPLICABLE_LABEL,
+        hasNotCovered: data.some(d => d.name === NOT_COVERED_LABEL)
+      })
     };
 
     return {

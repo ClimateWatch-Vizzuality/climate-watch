@@ -39,6 +39,8 @@ export const GHG_CALCULATION_OPTIONS = {
   }
 };
 
+export const NOT_COVERED_LABEL = 'Not covered';
+
 export const CALCULATION_OPTIONS = {
   ABSOLUTE_VALUE: {
     label: 'Total',
