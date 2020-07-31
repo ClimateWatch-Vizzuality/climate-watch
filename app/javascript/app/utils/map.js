@@ -10,7 +10,7 @@ const buckets = colorArray.map((_, i) => colorArray.slice(0, i + 1));
 export function getColorByIndex(data, index, colors = buckets) {
   const length = Object.keys(data).length;
   if (index === -2 || length === 1) return CHART_NAMED_GRAY_COLORS.grayColor1;
-  return colors[length - 2][index - 1] || CHART_NAMED_GRAY_COLORS.grayColor2;
+  return colors[length - 1][index - 1] || CHART_NAMED_GRAY_COLORS.grayColor2;
 }
 
 export function createLegendBuckets(
