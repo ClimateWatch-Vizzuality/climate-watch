@@ -35,6 +35,11 @@
   flex: 0.4;
 }
 
+.noComparable {
+  color: $gray1;
+  font-style: $font-style-italic;
+}
+
 .definitionDesc {
   color: $theme-color;
   font-family: $font-family-1;
