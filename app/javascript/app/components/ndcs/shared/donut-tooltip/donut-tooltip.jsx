@@ -31,7 +31,7 @@ const DonutTooltip = props => {
       <React.Fragment>
         GHG emissions{' '}
         <span className={styles.legendItem}>
-          not covered by national inventories
+          Not covered by national inventories
         </span>
       </React.Fragment>
     ) : (

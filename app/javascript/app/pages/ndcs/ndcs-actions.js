@@ -1,6 +1,7 @@
 import { createAction } from 'redux-actions';
 import { createThunkAction } from 'utils/redux';
 import { apiWithCache } from 'services/api';
+import uniqBy from 'lodash/uniqBy';
 
 /* @tmpfix: remove usage of indcTransform */
 import indcTransform from 'utils/indctransform';
@@ -33,22 +34,13 @@ const fetchNDCS = createThunkAction('fetchNDCS', props => (dispatch, state) => {
     params.push(`document=${document}`);
   }
 
+  const promises = [];
   if (ndcs && !ndcs.loading) {
-    dispatch(fetchNDCSInit());
-    apiWithCache
-      .get(`/api/v1/ndcs${params.length ? `?${params.join('&')}` : ''}`)
-      .then(async response => {
-        if (response.data) return response.data;
-        throw Error(response.statusText);
-      })
-      .then(data => indcTransform(data))
-      .then(data => {
-        dispatch(fetchNDCSReady(data));
-      })
-      .catch(error => {
-        console.warn(error);
-        dispatch(fetchNDCSFail());
-      });
+    promises.push(
+      apiWithCache.get(
+        `/api/v1/ndcs${params.length ? `?${params.join('&')}` : ''}`
+      )
+    );
   }
 
   // Used for indicators like ndce_ghg (emissions) that are needed but not included on category filtered calls
@@ -60,28 +52,46 @@ const fetchNDCS = createThunkAction('fetchNDCS', props => (dispatch, state) => {
         s => !Object.values(ndcs.data.indicators).includes(s)
       ))
   ) {
-    dispatch(fetchNDCSInit());
-    apiWithCache
-      .get(
+    promises.push(
+      apiWithCache.get(
         `/api/v1/ndcs?indicators=${additionalIndicatorSlugs.join(',')}${
           overrideFilter
             ? ''
             : '&filter=map&source[]=CAIT&source[]=WB&source[]=NDC%20Explorer'
         }`
       )
-      .then(response => {
-        if (response.data) return response.data;
-        throw Error(response.statusText);
-      })
-      .then(data => indcTransform(data))
-      .then(data => {
-        dispatch(fetchNDCSReady(data));
-      })
-      .catch(error => {
-        console.warn(error);
-        dispatch(fetchNDCSFail());
-      });
+    );
   }
+
+  dispatch(fetchNDCSInit());
+  Promise.all(promises)
+    .then(async response => {
+      if (response.length && response[0].data) {
+        if (!response[1] || !response[1].data) {
+          return response[0].data;
+        }
+        return {
+          categories: response[0].data.categories,
+          indicators: uniqBy(
+            response[0].data.indicators.concat(response[1].data.indicators),
+            'id'
+          ),
+          sectors: {
+            ...response[0].data.sectors,
+            ...response[1].data.sectors
+          }
+        };
+      }
+      throw Error(response.statusText);
+    })
+    .then(data => indcTransform(data))
+    .then(data => {
+      dispatch(fetchNDCSReady(data));
+    })
+    .catch(error => {
+      console.warn(error);
+      dispatch(fetchNDCSFail());
+    });
 });
 
 export default {
