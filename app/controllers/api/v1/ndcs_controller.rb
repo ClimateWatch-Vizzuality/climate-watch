@@ -99,10 +99,15 @@ module Api
           ).
           order('indc_indicators.name')
 
-        if params[:document]
-          values = values.joins(:document).
-            where(indc_documents: {slug: [params[:document], nil]})
-        end
+        docs = [nil]
+        docs += if params[:document].present?
+                [params[:document]]
+              else
+                location.documents.where(is_ndc: true).order(ordering: :desc).
+                  limit(1).pluck(:slug)
+              end
+
+        values = values.joins(:document).where(indc_documents: {slug: docs})
 
         if SECTORS_INDICATORS.present?
           sectors = ::Indc::Indicator.
@@ -111,10 +116,8 @@ module Api
             where(indc_values: {location_id: location.id}).
             where.not(indc_values: {value: "No specified measure"})
 
-          if params[:document]
-            sectors = sectors.joins(values: :document).
-              where(indc_documents: {slug: [params[:document], nil]})
-          end
+          sectors = sectors.joins(values: :document).where(indc_documents: {slug: docs})
+
           sectors = sectors.order('indc_indicators.name').pluck(:name)
         end
 

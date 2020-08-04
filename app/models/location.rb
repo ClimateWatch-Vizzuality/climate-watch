@@ -12,6 +12,9 @@ class Location < ApplicationRecord
   has_many :indicators,
            class_name: 'Indc::Indicator',
            through: :values
+  has_many :documents,
+            class_name: 'Indc::Document',
+            through: :values
 
   has_many :socioeconomic_indicators, class_name: 'Socioeconomic::Indicator'
 
