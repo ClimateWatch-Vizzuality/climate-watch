@@ -260,8 +260,9 @@ module Api
         end
 
         if @indc_locations_documents
-          categories = categories.joins(indicators: {values: :document}).
-            where(indc_documents: {slug: @indc_locations_documents.map(&:second)})
+          categories = categories.joins(indicators: {values: [:document, :location]}).
+            where(indc_documents: {slug: @indc_locations_documents.map(&:second)}).
+            where(locations: {iso_code3: @indc_locations_documents.map(&:first)})
         end
         categories
       end
