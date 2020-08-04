@@ -41,15 +41,19 @@ module Api
           values = if instance_options[:locations_documents]
                      object.values_for instance_options[:locations_documents]
                    elsif instance_options[:filter] == 'map' && !['submission', 'submission_date', 'ndce_ghg'].include?(object.slug)
-                     object.values.joins(:label)
+                     object.values.joins(:label, :document, :location).
+                       select('locations.iso_code3 AS iso_code3, indc_labels.slug AS label_slug, indc_values.label_id,
+                              indc_values.sector_id, indc_documents.slug AS document_slug, indc_values.value AS value')
                    else
-                     object.values
+                     object.values.joins(:document, :location).
+                       select('locations.iso_code3 AS iso_code3, NULL AS label_slug, indc_values.label_id,
+                              indc_values.sector_id, indc_documents.slug AS document_slug, indc_values.value AS value')
                    end
           indexed_data = IndexedSerializer.serialize_collection(
             values,
             serializer: ValueSerializer
           ) do |v|
-            v.location.iso_code3
+            v.iso_code3
           end
 
           # inject laws data
