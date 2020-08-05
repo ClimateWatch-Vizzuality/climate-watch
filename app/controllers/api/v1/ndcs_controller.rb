@@ -195,11 +195,11 @@ module Api
         indicators = ::Indc::Indicator.includes(:labels, :source, :categories)
 
         if location_list
-          indicators = indicators.where(values: {locations: {iso_code3: location_list}})
+          indicators = indicators.joins(values: [:location]).where(values: {locations: {iso_code3: location_list}})
         end
 
         if params[:document].present?
-          indicators = indicators.where(values: {indc_documents: {slug: [params[:document], nil]}})
+          indicators = indicators.joins(values: [:document]).where(values: {indc_documents: {slug: [params[:document], nil]}})
         end
 
         indicators = indicators.where(source_id: source.map(&:id)) if source
