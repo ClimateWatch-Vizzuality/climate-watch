@@ -17,6 +17,10 @@ object_contents = {
     Sectoral Information,Sectoral Adaptation Commitments,,A_Sc_CapBud,Capacity Building Needs for Sectorial Implementation,Capacity building needs for sectorial implementation,WB,TRUE
     Overview,UNFCCC Process,UNFCCC Process,submission,Latest submission,,CAIT,FALSE
     Overview,UNFCCC Process,,submission_date,Latest submission date,,CAIT,FALSE
+    Mitigation,,Sectoral Mitigation Measures,m_buildings,Buildings,,CAIT,TRUE
+    Mitigation,,Sectoral Mitigation Measures,m_agriculture,Agriculture,,CAIT,TRUE
+    Adaptation,,Sectoral Adaptation Measures,a_agriculture,Agriculture,,CAIT,TRUE
+    Adaptation,,Sectoral Adaptation Measures,a_coastal_zone,Coastal Zone,,CAIT,TRUE
   END
 
   "#{CW_FILES_PREFIX}indc/NDC_submission.csv" => <<~END,
@@ -105,7 +109,7 @@ describe ImportIndc do
   end
 
   it 'Creates new INDC category records' do
-    expect { subject }.to change { Indc::Category.count }.by(10)
+    expect { subject }.to change { Indc::Category.count }.by(12)
   end
 
   it 'Creates new INDC indicator records' do
@@ -117,7 +121,7 @@ describe ImportIndc do
   end
 
   it 'Creates new INDC value records' do
-    expect { subject }.to change { Indc::Value.count }.by(6)
+    expect { subject }.to change { Indc::Value.count }.by(4)
   end
 
   it 'Creates new INDC submission records' do

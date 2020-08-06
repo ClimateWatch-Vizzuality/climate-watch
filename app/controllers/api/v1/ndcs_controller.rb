@@ -200,7 +200,7 @@ module Api
       def filtered_indicators(source=nil, categories)
         indicators = ::Indc::Indicator.
           includes(:labels, :source, :categories).
-          where(indc_categories: {id: categories.pluck(:id).uniq})
+          where(indc_categories: {id: categories.map(&:id).uniq})
 
         if location_list
           indicators = indicators.joins(values: [:location]).where(values: {locations: {iso_code3: location_list}})
@@ -234,7 +234,7 @@ module Api
       end
 
       def filtered_categories(source=nil)
-        categories = ::Indc::Category.includes(:category_type, :sources).order(:order)
+        categories = ::Indc::Category.includes(:category_type, :sources)
 
         # params[:filter] -> ['map', 'table', 'overview']
         if params[:filter].present?
@@ -252,7 +252,7 @@ module Api
 
         if source
           categories = categories.joins(:indicators).
-            where(indc_indicators: {source_id: source.map(&:id)}).uniq
+            where(indc_indicators: {source_id: source.map(&:id)})
         end
 
         if @indc_locations_documents
@@ -260,7 +260,8 @@ module Api
             where(indc_documents: {slug: @indc_locations_documents.map(&:second)}).
             where(locations: {iso_code3: @indc_locations_documents.map(&:first)})
         end
-        categories
+
+        categories.order(:order).distinct
       end
     end
   end
