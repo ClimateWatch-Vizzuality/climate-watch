@@ -65,7 +65,7 @@ module Api
         end
 
         indicators = Rails.cache.fetch(indicators_cache_key, expires: 7.days) do
-          filtered_indicators(source, categories)
+          filtered_indicators(source)
         end
 
         sectors = Rails.cache.fetch(sectors_cache_key, expires: 7.days) do
@@ -197,10 +197,8 @@ module Api
         lse_data
       end
 
-      def filtered_indicators(source=nil, categories)
-        indicators = ::Indc::Indicator.
-          includes(:labels, :source, :categories).
-          where(indc_categories: {id: categories.map(&:id).uniq})
+      def filtered_indicators(source=nil)
+        indicators = ::Indc::Indicator.all
 
         if location_list
           indicators = indicators.joins(values: [:location]).where(values: {locations: {iso_code3: location_list}})
@@ -213,14 +211,17 @@ module Api
         indicators = indicators.where(source_id: source.map(&:id)) if source
 
         if @indc_locations_documents
-          indicators = indicators.select('DISTINCT ON(COALESCE(indc_indicators.normalized_slug, indc_indicators.slug)) indc_indicators.id')
-          indicators = indicators.joins(values: [:location, :document]).
+          # TODO: do not understand why below are needed
+          # if indicator belongs to many cateogires then only one will be in category_ids
+          # that's why I'm going to reset the query at the end
+          indicators = indicators.select('DISTINCT ON(COALESCE("normalized_slug", indc_indicators.slug)) indc_indicators.*')
+          indicators = indicators.joins(values: [:location, :document]). #
             where(locations: {iso_code3: @indc_locations_documents.map(&:first)},
                   indc_documents: {slug: @indc_locations_documents.map(&:second)})
         end
 
         if !@indc_locations_documents && @lse_locations_documents
-          indicators = indicators.select('DISTINCT ON(COALESCE(indc_indicators.normalized_slug, indc_indicators.slug)) indc_indicators.id')
+          indicators = indicators.select('DISTINCT ON(COALESCE("normalized_slug", indc_indicators.slug)) indc_indicators.*')
           indicators = indicators.joins(values: [:location]).
             where(normalized_slug: LSE_INDICATORS_MAP.keys.map(&:to_s)).
             where(locations: {iso_code3: @lse_locations_documents.map(&:first)})
@@ -230,7 +231,30 @@ module Api
           indicators = indicators.where(slug: params[:indicators].split(','))
         end
 
-        indicators.sort_by{|i| i.order}
+        # FIX: not sure why I cannot just filter by filtered categories, but seems like map
+        # needs also lts_ghg indicator which is not in map category
+        if params[:category].present?
+          parent = ::Indc::Category.includes(:category_type).
+            where(indc_category_types: {name: 'global'}, slug: params[:category])
+          indicators = indicators.joins(:categories).where(indc_categories: {parent_id: parent.map(&:id)})
+        end
+
+        if params[:subcategory].present?
+          indicators = indicators.joins(:categories).where(indc_categories: {slug: params[:subcategory]})
+        end
+
+        # to not break distinct on clause
+        if @indc_locations_documents || @lse_locations_documents
+          indicator_ids = indicators.map(&:id).uniq
+        else
+          indicator_ids = indicators.ids
+        end
+
+        # better this way to reset all those joins
+        # to get all category_ids for indicator has many and belongs for example
+        ::Indc::Indicator.
+          includes(:labels, :source, :categories).
+          where(id: indicator_ids).order(:order) # use map to not remove dis
       end
 
       def filtered_categories(source=nil)
