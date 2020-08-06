@@ -11,8 +11,6 @@ SET row_security = off;
 
 SET default_tablespace = '';
 
-SET default_table_access_method = heap;
-
 --
 -- Name: admin_users; Type: TABLE; Schema: public; Owner: -
 --
@@ -124,5 +122,3 @@ SET search_path TO "$user", public;
 INSERT INTO "schema_migrations" (version) VALUES
 ('20180917120344'),
 ('20181004091403');
-
-

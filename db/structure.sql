@@ -30,8 +30,6 @@ CREATE FUNCTION public.emissions_filter_by_year_range(emissions jsonb, start_yea
 
 SET default_tablespace = '';
 
-SET default_table_access_method = heap;
-
 --
 -- Name: active_storage_attachments; Type: TABLE; Schema: public; Owner: -
 --
@@ -4261,5 +4259,3 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200423085052'),
 ('20200503165104'),
 ('20200521120158');
-
-
