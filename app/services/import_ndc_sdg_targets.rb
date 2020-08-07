@@ -1,7 +1,7 @@
 require 'csv'
 
 class ImportNdcSdgTargets
-  NDC_SDG_TARGETS = "#{CW_FILES_PREFIX}sdgs/ndc_sdg_targets.csv"
+  NDC_SDG_TARGETS = "#{CW_FILES_PREFIX}ndc_sdgs_targets/ndc_sdg_targets.csv"
 
   def call
     @failed_lines = []
@@ -80,29 +80,17 @@ class ImportNdcSdgTargets
       Rails.logger.error "Location not found #{row}"
       return nil
     end
-    indc_text = row[:indc_text]
-    ndcs = location.ndcs.select do |n|
-      !n.full_text.downcase.index(indc_text.downcase).nil?
+    location_ndcs = location.ndcs
+    document_slug = row[:document_slug]
+    document_type = document_slug&.split.join('_').downcase
+    location_ndcs = location_ndcs.where(document_type: document_type)
+    indc_text = row[:indc_text].downcase
+    ndcs = location_ndcs.select do |n|
+      !n.full_text.downcase.index(indc_text).nil?
     end.uniq
 
     Rails.logger.error "NDC not found #{row}" unless ndcs.present?
     ndcs
-  end
-
-  def ndc(row)
-    iso_code3 = row[:iso_code3] && row[:iso_code3].upcase
-    location = iso_code3 && Location.find_by_iso_code3(iso_code3)
-    unless location
-      Rails.logger.error "Location not found #{row}"
-      return nil
-    end
-    indc_text = row[:indc_text]
-    ndc = location.ndcs.detect do |n|
-      !n.full_text.downcase.index(indc_text.downcase).nil?
-    end
-
-    Rails.logger.error "NDC not found #{row}" unless ndc
-    ndc
   end
 
   def target(row)
