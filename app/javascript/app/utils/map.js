@@ -10,7 +10,6 @@ const buckets = colorArray.map((_, i) => colorArray.slice(0, i + 1));
 export function getColorByIndex(data, index, colors = buckets) {
   let length = Object.keys(data).length;
   if (index === -2 || length === 1) return CHART_NAMED_GRAY_COLORS.grayColor1;
-  console.log(colors, colors.length, length - 1, index - 1, data)
   if (colors.length >= length - 1) {
     length -= 1;
   }
