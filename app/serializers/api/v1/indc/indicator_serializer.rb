@@ -40,13 +40,9 @@ module Api
         def locations
           values = if instance_options[:locations_documents]
                      object.values_for instance_options[:locations_documents]
-                   elsif instance_options[:filter] == 'map' && !['submission', 'submission_date', 'ndce_ghg'].include?(object.slug)
+                   else
                      object.values.joins(:label, :location).joins('LEFT JOIN indc_documents ON indc_documents.id = indc_values.document_id').
                        select('locations.iso_code3 AS iso_code3, indc_labels.slug AS label_slug, indc_values.label_id,
-                              indc_values.sector_id, indc_documents.slug AS document_slug, indc_values.value AS value')
-                   else
-                     object.values.joins(:location).joins('LEFT JOIN indc_documents ON indc_documents.id = indc_values.document_id').
-                       select('locations.iso_code3 AS iso_code3, NULL AS label_slug, indc_values.label_id,
                               indc_values.sector_id, indc_documents.slug AS document_slug, indc_values.value AS value')
                    end
           indexed_data = IndexedSerializer.serialize_collection(
