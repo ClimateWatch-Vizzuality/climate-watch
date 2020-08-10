@@ -42,7 +42,7 @@ module Api
                      object.values_for instance_options[:locations_documents]
                    # if filtering for map return only those with label + custom ones
                    elsif instance_options[:filter] == 'map' &&
-                       %w(submission submission_date ndce_ghg lts_ghg lts_document lts_target lts_submission).exclude?(object.slug)
+                       %w(submission submission_date ndce_ghg lts_ghg lts_document lts_target lts_submission lts_date).exclude?(object.slug)
                      object.
                        values.
                        joins(:label, :location).
