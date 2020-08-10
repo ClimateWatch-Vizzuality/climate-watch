@@ -224,7 +224,7 @@ module Api
 
         if params[:category].present?
           parent = ::Indc::Category.includes(:category_type).
-            where(indc_category_types: {name: 'global'}, slug: params[:category])
+            where(indc_category_types: {name: 'global'}, slug: params[:category].split(','))
           indicators = indicators.joins(:categories).where(indc_categories: {parent_id: parent.map(&:id)})
         end
 
@@ -246,7 +246,7 @@ module Api
 
         if params[:category].present?
           parent = ::Indc::Category.includes(:category_type).
-            where(indc_category_types: {name: 'global'}, slug: params[:category])
+            where(indc_category_types: {name: 'global'}, slug: params[:category].split(','))
 
           categories = categories.where(parent_id: parent.map(&:id))
         end
