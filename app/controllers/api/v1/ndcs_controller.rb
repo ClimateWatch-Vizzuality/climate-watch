@@ -218,9 +218,7 @@ module Api
           indicators = indicators.joins(values: [:location, :document]). #
             where(locations: {iso_code3: @indc_locations_documents.map(&:first)},
                   indc_documents: {slug: @indc_locations_documents.map(&:second)})
-        end
-
-        if !@indc_locations_documents && @lse_locations_documents
+        elsif @lse_locations_documents
           indicators = indicators.select('DISTINCT ON(COALESCE("normalized_slug", indc_indicators.slug)) indc_indicators.*')
           indicators = indicators.joins(values: [:location]).
             where(normalized_slug: LSE_INDICATORS_MAP.keys.map(&:to_s)).
@@ -231,8 +229,8 @@ module Api
           indicators = indicators.where(slug: params[:indicators].split(','))
         end
 
-        # FIX: not sure why I cannot just filter by filtered categories, but seems like map
-        # needs also lts_ghg indicator which is not in map category
+        # seems like when filter for map we need more indicators which are not in map category
+        # so I cannot just pass filtered categories here
         if params[:category].present?
           parent = ::Indc::Category.includes(:category_type).
             where(indc_category_types: {name: 'global'}, slug: params[:category])
@@ -254,7 +252,8 @@ module Api
         # to get all category_ids for indicator has many and belongs for example
         ::Indc::Indicator.
           includes(:labels, :source, :categories).
-          where(id: indicator_ids).order(:order) # use map to not remove dis
+          where(id: indicator_ids).
+          order(:order)
       end
 
       def filtered_categories(source=nil)
