@@ -20,3 +20,9 @@
 .accordion {
   width: 100%;
 }
+
+.compareDefinitionList {
+  > div {
+    padding: 10px 0;
+  }
+}
