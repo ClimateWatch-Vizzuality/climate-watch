@@ -35,16 +35,24 @@ const mapStateToProps = (state, { location, match }) => {
 };
 
 function CountryNdcOverviewContainer(props) {
-  const { iso, fetchNdcsCountryAccordion, setModalMetadata } = props;
+  const {
+    iso,
+    fetchNdcsCountryAccordion,
+    setModalMetadata,
+    selectedDocument
+  } = props;
 
   useEffect(() => {
-    fetchNdcsCountryAccordion({
-      locations: iso,
-      category: 'summary',
-      compare: false,
-      lts: false
-    });
-  }, [iso]);
+    if (selectedDocument) {
+      fetchNdcsCountryAccordion({
+        locations: iso,
+        category: 'summary',
+        compare: false,
+        lts: false,
+        document: selectedDocument.slug
+      });
+    }
+  }, [iso, selectedDocument]);
 
   const handleAnalyticsClick = () => {
     handleAnalytics('Country', 'Leave page to explore data', 'Ndc Overview');

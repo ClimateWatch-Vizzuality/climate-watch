@@ -47,7 +47,7 @@ class NdcsCountryAccordionContainer extends PureComponent {
       document
     } = this.props;
     const locations = iso || search.locations;
-    if (document || !compare) {
+    if (document) {
       fetchNdcsCountryAccordion({
         locations,
         category,
@@ -69,7 +69,10 @@ class NdcsCountryAccordionContainer extends PureComponent {
     const newLocations =
       nextProps.iso || qs.parse(nextProps.location.search).locations;
     const oldLocations = iso || qs.parse(this.props.location.search).locations;
-    if (newLocations !== oldLocations || document !== nextProps.document) {
+    if (
+      newLocations !== oldLocations ||
+      (document !== nextProps.document && nextProps.document)
+    ) {
       fetchNdcsCountryAccordion({
         locations: newLocations,
         category: nextProps.category,
