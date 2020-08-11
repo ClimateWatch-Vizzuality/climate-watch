@@ -555,6 +555,8 @@ class ImportIndc
     end
   end
 
+  # comparison slugs are for compare pages
+  # to be able to compare values for different indicators
   def import_comparison_slugs
     @comparison_indicators.each do |ind|
       slugs = [ind[:pledges_slug], ind[:ndc_slug], ind[:lts_slug]]
