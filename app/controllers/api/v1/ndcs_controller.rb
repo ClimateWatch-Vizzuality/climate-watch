@@ -81,6 +81,7 @@ module Api
         render json: NdcIndicators.new(indicators, categories, sectors),
                serializer: Api::V1::Indc::NdcIndicatorsSerializer,
                locations_documents: @locations_documents,
+               location_list: location_list,
                lse_data: get_lse_data,
                filter: params[:filter]
       end

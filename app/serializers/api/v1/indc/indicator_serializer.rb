@@ -58,6 +58,12 @@ module Api
                        select('locations.iso_code3 AS iso_code3, indc_labels.slug AS label_slug, indc_values.label_id,
                               indc_values.sector_id, indc_documents.slug AS document_slug, indc_values.value AS value')
                    end
+
+          # filter out values for filtered locations
+          if !instance_options[:locations_documents] && instance_options[:location_list]
+            values = values.where(locations: {iso_code3: instance_options[:location_list]})
+          end
+
           indexed_data = IndexedSerializer.serialize_collection(
             values,
             serializer: ValueSerializer
