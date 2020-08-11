@@ -82,7 +82,7 @@ class ImportNdcSdgTargets
     end
     location_ndcs = location.ndcs
     document_slug = row[:document_slug]
-    document_type = document_slug&.split.join('_').downcase
+    document_type = document_slug&.split&.join('_')&.downcase
     location_ndcs = location_ndcs.where(document_type: document_type)
     indc_text = row[:indc_text].downcase
     ndcs = location_ndcs.select do |n|

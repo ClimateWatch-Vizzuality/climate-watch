@@ -94,6 +94,7 @@ end
 group :test do
   gem 'simplecov', require: false
   gem 'json-schema'
+  gem 'test-prof'
   gem 'vcr'
   gem 'webmock'
 end
