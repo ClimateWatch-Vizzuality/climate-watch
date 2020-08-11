@@ -62,10 +62,10 @@
 }
 
 .link {
-  color: $theme-secondary;
+  color: $white;
   text-decoration: underline;
 
   &:hover {
-    color: lighten($theme-secondary, 20);
+    color: $theme-secondary;
   }
 }
