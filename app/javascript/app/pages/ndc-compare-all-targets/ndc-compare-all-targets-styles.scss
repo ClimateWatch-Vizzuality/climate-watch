@@ -61,3 +61,11 @@
   }
 }
 
+.link {
+  color: $theme-secondary;
+  text-decoration: underline;
+
+  &:hover {
+    color: lighten($theme-secondary, 20);
+  }
+}
