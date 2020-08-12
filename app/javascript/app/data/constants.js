@@ -279,6 +279,8 @@ export const GAS_AGGREGATES = {
   'Aggregate F-gases': ['HFCs', 'PFCs', 'SF6']
 };
 
+export const COMPARE_GHG_AGGREGATES = ['KYOTOGHG', 'All GHG', 'Aggregate GHGs'];
+
 export const GHG_TABLE_HEADER = {
   regions: 'Country/Region',
   gas: 'Gas',
