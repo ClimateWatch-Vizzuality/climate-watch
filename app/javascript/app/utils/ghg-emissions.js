@@ -49,3 +49,30 @@ export const toPlural = model => {
   };
   return plurals[model] || model;
 };
+
+export const replaceSubscript = text => {
+  const super_sub_script_dict = {
+    '\u2070': '0',
+    '\u00B9': '1',
+    '\u00B2': '2',
+    '\u00B3': '3',
+    '\u2074': '4',
+    '\u2075': '5',
+    '\u2076': '6',
+    '\u2077': '7',
+    '\u2078': '8',
+    '\u2079': '9',
+    '\u2080': '0',
+    '\u2081': '1',
+    '\u2082': '2',
+    '\u2083': '3',
+    '\u2084': '4',
+    '\u2085': '5',
+    '\u2086': '6',
+    '\u2087': '7',
+    '\u2088': '8',
+    '\u2089': '9'
+  };
+  const regex = /[\u00B9\u00B2\u00B3\u2070\u2074-\u2089]/g;
+  return text.replace(regex, x => super_sub_script_dict[x]);
+};
