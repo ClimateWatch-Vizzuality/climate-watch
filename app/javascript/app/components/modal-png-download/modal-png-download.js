@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import html2canvas from 'html2canvas';
+import computedStyleToInlineStyle from 'computed-style-to-inline-style';
 import actions from './modal-png-download-actions';
 import reducers, { initialState } from './modal-png-download-reducers';
 import mapStateToProps from './modal-png-download-selectors';
@@ -37,11 +38,26 @@ const modalPngDownloadContainer = props => {
       scale: SCALE,
       onclone: clonedDocument => {
         const logo = clonedDocument.getElementById('modal-png-logo');
-        // We want to resize the logo to its original size after scaling the image
+        const style = document.createElement('style');
+        // Append font to fix unit font on the chart
+        style.innerHTML = `
+          @font-face {
+            font-family: Lato;
+            src: url('../fonts/Lato-Regular.woff2') format('woff2'),
+            url('../fonts/Lato-Regular.woff') format('woff');
+           }
+        `;
+        clonedDocument.getElementsByTagName('BODY')[0].appendChild(style);
         logo.setAttribute('height', '25px');
         logo.setAttribute('width', '180px');
       }
     };
+
+    // This inline style computing is needed to fix the unit font on the chart
+    computedStyleToInlineStyle(node, {
+      recursive: true,
+      properties: ['font-size', 'font-family', 'font-weight']
+    });
 
     html2canvas(node, config)
       .then(function (canvas) {
