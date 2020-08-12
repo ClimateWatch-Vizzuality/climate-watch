@@ -10,7 +10,8 @@ import {
   DEFAULT_AXES_CONFIG,
   COUNTRY_COMPARE_COLORS,
   DATA_SCALE,
-  DEFAULT_EMISSIONS_SELECTIONS
+  DEFAULT_EMISSIONS_SELECTIONS,
+  COMPARE_GHG_AGGREGATES
 } from 'data/constants';
 import {
   getThemeConfig,
@@ -148,9 +149,7 @@ export const filterData = createSelector(
 
     // Filter by source and gas
     filteredData = filteredData.filter(
-      d =>
-        d.source === source.name &&
-        (d.gas === 'All GHG' || d.gas === 'Aggregate GHGs')
+      d => d.source === source.name && COMPARE_GHG_AGGREGATES.includes(d.gas)
     );
 
     // Filter by sector
@@ -161,9 +160,11 @@ export const filterData = createSelector(
       sectors && sectors.length && sectorOptions.length !== sectors.length
         ? sectors.map(s => s.label)
         : defaultSector;
+
     filteredData = filteredData.filter(
       d => sectorFilters.indexOf(d.sector) !== -1
     );
+
     if (!locations || !locations.length) return null;
     const locationDataGroupedByYear = locations.map(l => {
       const locationData = filteredData.filter(
@@ -177,7 +178,6 @@ export const filterData = createSelector(
         value: sumBy(l[year], 'value')
       }))
     );
-
     const compressedData = locationDataSummed.map((d, i) => ({
       ...filteredData[0],
       iso_code3: locations[i].iso_code3,
@@ -185,6 +185,7 @@ export const filterData = createSelector(
       sector: sectorFilters,
       emissions: d
     }));
+
     return sortEmissionsByValue(compressedData);
   }
 );
