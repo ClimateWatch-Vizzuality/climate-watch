@@ -100,6 +100,15 @@ class TableContainer extends PureComponent {
   };
 
   getDataSorted = (data, sortBy, sortDirection) => {
+    // If all data is the same don't sort the values
+    if (
+      data &&
+      data[0][sortBy] &&
+      !data.some(d => d[sortBy] !== data[0][sortBy])
+    ) {
+      return data;
+    }
+
     const dataSorted = _sortBy(data, sortBy);
     return sortDirection === SortDirection.DESC
       ? reverse(dataSorted)
