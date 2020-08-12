@@ -4,7 +4,11 @@ import intersection from 'lodash/intersection';
 import isEmpty from 'lodash/isEmpty';
 import uniq from 'lodash/uniq';
 import { arrayToSentence, useSlug } from 'utils';
-import { getGhgEmissionDefaultSlugs, toPlural } from 'utils/ghg-emissions';
+import {
+  getGhgEmissionDefaultSlugs,
+  toPlural,
+  replaceSubscript
+} from 'utils/ghg-emissions';
 import { sortLabelByAlpha } from 'utils/graphs';
 import {
   GAS_AGGREGATES,
@@ -285,8 +289,9 @@ const getSectorOptions = createSelector(
 
 const getGasOptions = createSelector([getFieldOptions('gas')], options => {
   if (!options) return [];
+  const valueByLabel = g =>
+    (options.find(opt => replaceSubscript(opt.label) === g) || {}).value;
 
-  const valueByLabel = g => (options.find(opt => opt.label === g) || {}).value;
   return options.map(o => ({
     ...o,
     expandsTo:
