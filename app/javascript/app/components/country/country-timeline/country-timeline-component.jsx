@@ -53,6 +53,7 @@ class CountryTimeline extends PureComponent {
 
   render() {
     const { documentYears } = this.props;
+    const { index: currentIndex } = this.state;
     return (
       <div className={styles.timelineContainer}>
         <div className={styles.timeline}>
@@ -62,11 +63,15 @@ class CountryTimeline extends PureComponent {
           </h3>
           {documentYears && documentYears.length > 0 ? (
             <HorizontalTimeline
-              index={this.state.index || documentYears.length - 1}
+              index={
+                currentIndex === 0
+                  ? 0
+                  : currentIndex || documentYears.length - 1
+              }
               indexClick={index => {
                 this.setState({
                   index,
-                  previous: this.state.index,
+                  previous: currentIndex,
                   open: true
                 });
               }}
