@@ -1,7 +1,9 @@
 import { createSelector } from 'reselect';
 import { deburrUpper } from 'app/utils';
 import isNaN from 'lodash/isNaN';
+import groupBy from 'lodash/groupBy';
 import uniq from 'lodash/uniq';
+import uniqBy from 'lodash/uniqBy';
 import sortBy from 'lodash/sortBy';
 import snakeCase from 'lodash/snakeCase';
 
@@ -59,7 +61,58 @@ export const parseIndicatorsDefs = createSelector(
   }
 );
 
-export const groupIndicatorsByCategory = createSelector(
+const getNDCs = createSelector(
+  [getCategories, parseIndicatorsDefs],
+  (categories, indicators) => {
+    if (!categories || !indicators) return null;
+    const ndcs = Object.keys(categories).map(category => ({
+      title: categories[category].name,
+      slug: categories[category].slug,
+      definitions: indicators[category] ? indicators[category] : []
+    }));
+    return ndcs;
+  }
+);
+
+// NDCs can have same category (overview, adaptation, ...) in different types (overview, map, ...)
+export const mergeNDCsByCategory = createSelector([getNDCs], ndcs => {
+  if (!ndcs) return null;
+  const groupedNDCs = groupBy(ndcs, 'slug');
+  return Object.keys(groupedNDCs).map(uniqueCategoryKey => ({
+    title: groupedNDCs[uniqueCategoryKey][0].title,
+    slug: groupedNDCs[uniqueCategoryKey][0].slug,
+    definitions: uniqBy(
+      groupedNDCs[uniqueCategoryKey].map(n => n.definitions).flat(),
+      'slug'
+    )
+  }));
+});
+
+export const filterNDCs = createSelector(
+  [mergeNDCsByCategory, getSearch],
+  (ndcs, search) => {
+    if (!ndcs) return null;
+
+    const filteredNDCs = ndcs.map(ndc => {
+      const defs = ndc.definitions.filter(
+        def =>
+          deburrUpper(def.title).indexOf(search) > -1 ||
+          deburrUpper(def.descriptions[0].value).indexOf(search) > -1
+      );
+
+      return {
+        ...ndc,
+        definitions: defs
+      };
+    });
+
+    return filteredNDCs.filter(ndc => ndc.definitions.length > 0);
+  }
+);
+
+// --- ONLY FOR SECTORAL INFORMATION ---
+
+const groupIndicatorsByCategory = createSelector(
   [getAllIndicators, getCategories],
   (indicators, categories) => {
     if (!indicators || !categories) return null;
@@ -74,7 +127,7 @@ export const groupIndicatorsByCategory = createSelector(
   }
 );
 
-export const getCategoriesWithSectors = createSelector(
+const getCategoriesWithSectors = createSelector(
   [groupIndicatorsByCategory],
   categories => {
     if (!categories) return null;
@@ -95,7 +148,7 @@ export const getCategoriesWithSectors = createSelector(
   }
 );
 
-export const parsedCategoriesWithSectors = createSelector(
+const parsedCategoriesWithSectors = createSelector(
   [getCategoriesWithSectors, getSectors, getCountries],
   (categories, sectors, countries) => {
     if (!categories) return null;
@@ -144,41 +197,6 @@ export const parsedCategoriesWithSectors = createSelector(
   }
 );
 
-export const getNDCs = createSelector(
-  [getCategories, parseIndicatorsDefs],
-  (categories, indicators) => {
-    if (!categories) return null;
-    if (!indicators) return null;
-    const ndcs = Object.keys(categories).map(category => ({
-      title: categories[category].name,
-      slug: categories[category].slug,
-      definitions: indicators[category] ? indicators[category] : []
-    }));
-    return ndcs;
-  }
-);
-
-export const filterNDCs = createSelector(
-  [getNDCs, getSearch],
-  (ndcs, search) => {
-    if (!ndcs) return null;
-    const filteredNDCs = ndcs.map(ndc => {
-      const defs = ndc.definitions.filter(
-        def =>
-          deburrUpper(def.title).indexOf(search) > -1 ||
-          deburrUpper(def.descriptions[0].value).indexOf(search) > -1
-      );
-
-      return {
-        ...ndc,
-        definitions: defs
-      };
-    });
-    const reducedNDCs = filteredNDCs.filter(ndc => ndc.definitions.length > 0);
-    return reducedNDCs;
-  }
-);
-
 export const filterSectoralNDCs = createSelector(
   [parsedCategoriesWithSectors, getSearch],
   (ndcs, search) => {
@@ -210,8 +228,3 @@ export const filterSectoralNDCs = createSelector(
     return filteredNDCs;
   }
 );
-
-export default {
-  filterNDCs,
-  filterSectoralNDCs
-};

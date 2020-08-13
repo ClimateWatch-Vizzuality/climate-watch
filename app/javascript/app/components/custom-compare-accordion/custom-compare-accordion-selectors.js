@@ -64,7 +64,7 @@ export const getData = createSelector(
   }
 );
 
-export const groupIndicatorsByCategory = createSelector(
+const groupIndicatorsByCategory = createSelector(
   [getIndicators, getCategories],
   (indicators, categories) => {
     if (!indicators || !categories) return null;
@@ -79,7 +79,7 @@ export const groupIndicatorsByCategory = createSelector(
   }
 );
 
-export const getCategoriesWithSectors = createSelector(
+const getCategoriesWithSectors = createSelector(
   [groupIndicatorsByCategory],
   categories => {
     if (!categories) return null;

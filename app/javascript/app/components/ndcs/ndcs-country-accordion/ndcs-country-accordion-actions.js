@@ -14,7 +14,7 @@ const fetchNdcsCountryAccordionFailed = createAction(
 const fetchNdcsCountryAccordion = createThunkAction(
   'fetchNdcsCountryAccordion',
   params => dispatch => {
-    const { locations, category, compare, lts, document } = params;
+    const { locations, category, lts, document } = params;
     const documentParam = document ? `&document=${document}` : '';
     if (locations) {
       dispatch(fetchNdcsCountryAccordionInit());
@@ -25,7 +25,7 @@ const fetchNdcsCountryAccordion = createThunkAction(
           lts
             ? '&source=LTS'
             : '&source[]=CAIT&source[]=WB&source[]=NDC%20Explorer'
-        }${documentParam}${!compare ? '&filter=overview' : ''}`
+        }${documentParam}`
       )
         .then(response => {
           if (response.ok) return response.json();
