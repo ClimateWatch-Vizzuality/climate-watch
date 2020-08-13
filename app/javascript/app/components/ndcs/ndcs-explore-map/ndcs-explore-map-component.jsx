@@ -211,7 +211,7 @@ function NDCSExploreMap(props) {
                       {loading && <Loading light className={styles.loader} />}
                       <HandIconInfo
                         className={styles.mapInfo}
-                        text="Click on a country to see an in-depth analysis of its NDC"
+                        text="The map reflects latest submission of each country, click on a country to see in-depth analysis of its latest NDC and previous submissions"
                       />
                       <Map
                         paths={paths}
