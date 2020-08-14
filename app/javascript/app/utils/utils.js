@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 import deburr from 'lodash/deburr';
 import toUpper from 'lodash/toUpper';
 import upperFirst from 'lodash/upperFirst';
@@ -268,6 +269,9 @@ export const useSlug = string => {
     .replace(/^-+/, '')
     .replace(/-+$/, '');
 };
+
+export const isIE = () =>
+  !!window.MSInputMethodContext && !!document.documentMode;
 
 export default {
   arrayToSentence,

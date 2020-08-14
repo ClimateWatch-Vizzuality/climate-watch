@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { renderRoutes } from 'react-router-config';
 import Header from 'components/header';
@@ -12,6 +12,7 @@ import { MultiLevelDropdown } from 'cw-components';
 import NdcCompareAllTargetsProvider from 'providers/ndc-compare-all-targets-provider';
 import CountriesDocumentsProvider from 'providers/countries-documents-provider';
 import { TabletLandscape, TabletPortraitOnly } from 'components/responsive';
+import { isIE } from 'utils';
 
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
 import multiLevelDropdownTheme from 'styles/themes/dropdown/multi-level-dropdown-custom-compare.scss';
@@ -108,6 +109,16 @@ const CustomComparisonComponent = props => {
     </div>
   );
 
+  const anchorNav = (
+    <AnchorNav
+      useRoutes
+      links={anchorLinks}
+      className={styles.anchorNav}
+      theme={anchorNavRegularTheme}
+    />
+  );
+  const filters = <div className={styles.content}>{renderFilters()}</div>;
+  const isInternetExplorer = useCallback(isIE(), []);
   return (
     <div>
       <Header route={route}>
@@ -120,23 +131,24 @@ const CustomComparisonComponent = props => {
             <Intro title="Custom comparison" />
           </div>
         </div>
-        <Sticky activeClass="sticky -compare" top="#navBarMobile">
-          <AnchorNav
-            useRoutes
-            links={anchorLinks}
-            className={styles.anchorNav}
-            theme={anchorNavRegularTheme}
-          />
-        </Sticky>
+        {isInternetExplorer ? (
+          anchorNav
+        ) : (
+          <Sticky activeClass="sticky -compare" top="#navBarMobile">
+            {anchorNav}
+          </Sticky>
+        )}
       </Header>
       <TabletLandscape>
-        <Sticky activeClass="sticky -custom-compare" top={50}>
-          <div className={styles.content}>{renderFilters()}</div>
-        </Sticky>
+        {isInternetExplorer ? (
+          filters
+        ) : (
+          <Sticky activeClass="sticky -custom-compare" top={50}>
+            {filters}
+          </Sticky>
+        )}
       </TabletLandscape>
-      <TabletPortraitOnly>
-        <div className={styles.content}>{renderFilters()}</div>
-      </TabletPortraitOnly>
+      <TabletPortraitOnly>{filters}</TabletPortraitOnly>
 
       {renderRoutes(route.routes, { targets: selectedTargets })}
       <NdcCompareAllTargetsProvider />

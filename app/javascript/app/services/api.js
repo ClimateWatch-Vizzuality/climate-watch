@@ -1,5 +1,6 @@
 import isFunction from 'lodash/isFunction';
 import { setup } from 'axios-cache-adapter';
+// axios-cache-adapter needs to be fixed to 2.4.1 to avoid a IE problem
 
 const { ESP_API } = process.env;
 const { CW_API } = process.env;
