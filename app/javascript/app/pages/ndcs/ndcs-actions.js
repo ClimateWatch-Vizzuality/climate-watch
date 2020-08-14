@@ -44,6 +44,7 @@ const fetchNDCS = createThunkAction('fetchNDCS', props => (dispatch, state) => {
   }
 
   // Used for indicators like ndce_ghg (emissions) that are needed but not included on category filtered calls
+  // and as it is not filtered by category also serves the whole list of categories
   if (
     additionalIndicatorSlugs &&
     ndcs &&
@@ -71,7 +72,10 @@ const fetchNDCS = createThunkAction('fetchNDCS', props => (dispatch, state) => {
           return response[0].data;
         }
         return {
-          categories: response[0].data.categories,
+          categories: {
+            ...response[0].data.categories,
+            ...response[1].data.categories
+          },
           indicators: uniqBy(
             response[0].data.indicators.concat(response[1].data.indicators),
             'id'
