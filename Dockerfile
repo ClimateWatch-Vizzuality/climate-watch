@@ -48,7 +48,7 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         postgresql-client \
     && rm -rf /var/lib/apt/lists/* \
-    && curl -sL https://deb.nodesource.com/setup_8.x | bash - \
+    && curl -sL https://deb.nodesource.com/setup_12x | bash - \
     && apt-get install -y nodejs build-essential patch zlib1g-dev liblzma-dev libicu-dev \
     && npm install -g yarn
 
