@@ -160,7 +160,6 @@
     "rails-erb-loader": "5.2.1",
     "react-hot-loader": "3.0.0-beta.7",
     "redux-logger": "3.0.6",
-    "regenerator-runtime": "^0.13.7",
     "release": "github:vizzuality/release#4.0.0",
     "stylelint": "9.1.2",
     "stylelint-config-standard": "16.0.0",
