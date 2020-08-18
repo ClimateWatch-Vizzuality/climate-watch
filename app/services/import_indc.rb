@@ -196,10 +196,10 @@ class ImportIndc
       location: location,
       indicator: indicator,
       label: Indc::Label.find_by(
-        value: row[:"#{indicator.slug}_label"],
+        value: row[:"#{indicator.slug.downcase}_label"],
         indicator: indicator
       ),
-      value: row[:"#{indicator.slug}"],
+      value: row[:"#{indicator.slug.downcase}"],
       document: Indc::Document.find_by(slug: doc_slug)
     }
   end
@@ -396,7 +396,7 @@ class ImportIndc
           next
         end
 
-        next unless r[:"#{indicator.slug}"].present?
+        next unless r[:"#{indicator.slug.downcase}"].present?
 
         Indc::Value.create!(
           value_ndc_attributes(r, location, indicator)
@@ -415,7 +415,7 @@ class ImportIndc
           next
         end
 
-        next unless r[:"#{indicator.slug}"].present?
+        next unless r[:"#{indicator.slug.downcase}"].present?
 
         Indc::Value.create!(
           value_ndc_attributes(r, location, indicator, 'lts')
@@ -434,7 +434,7 @@ class ImportIndc
           next
         end
 
-        next unless r[:"#{indicator.slug}"].present?
+        next unless r[:"#{indicator.slug.downcase}"].present?
 
         Indc::Value.create!(
           value_ndc_attributes(r, location, indicator, 'pledges')
