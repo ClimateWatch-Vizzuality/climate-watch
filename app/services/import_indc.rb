@@ -32,7 +32,6 @@ class ImportIndc
       import_sources
       import_category_types
       import_categories
-      import_category_relations
       import_indicators
       import_indicators_categories
       import_labels
@@ -238,16 +237,6 @@ class ImportIndc
     }
   end
 
-  def import_categories_of(category_type)
-    @metadata.
-      map { |m| m[:"#{category_type.name}_category"] }.
-      select(&:itself).
-      uniq.
-      each_with_index do |name, index|
-        Indc::Category.create!(category_attributes(name, category_type, index))
-      end
-  end
-
   def import_sources
     @sources_index = @metadata.
       map { |r| r[:source] }.
@@ -267,48 +256,64 @@ class ImportIndc
   end
 
   def import_categories
-    Indc::CategoryType.all.
-      each do |category_type|
-        import_categories_of(category_type)
-      end
-  end
+    @global_categories_index = {}
 
-  # rubocop:disable MethodLength
-  def import_category_relations
-    @metadata.each do |r|
-      next unless r[:global_category]
+    category_indexes = {
+      map: 0,
+      overview: 0
+    }
 
-      global_category = Indc::Category.
-        includes(:category_type).
-        find_by(
-          slug: Slug.create(r[:global_category]),
-          indc_category_types: {name: 'global'}
-        ) or next
+    global_category_type = Indc::CategoryType.find_by(name: ::Indc::CategoryType::GLOBAL)
+    overview_category_type = Indc::CategoryType.find_by(name: ::Indc::CategoryType::OVERVIEW)
+    map_category_type = Indc::CategoryType.find_by(name: ::Indc::CategoryType::MAP)
 
-      if r[:overview_category]
-        overview_category = Indc::Category.
-          includes(:category_type).
-          find_by(
-            slug: Slug.create(r[:overview_category]),
-            indc_category_types: {name: 'overview'}
+    @metadata.each do |m|
+      global_category_name = m[:global_category]
+      overview_category_name = m[:overview_category]
+      map_category_name = m[:map_category]
+
+      global_category = @global_categories_index[global_category_name] ||= Indc::Category.create(
+        category_attributes(
+          global_category_name,
+          global_category_type,
+          @global_categories_index.keys.size
+        )
+      )
+
+      if overview_category_name &&
+          !Indc::Category.find_by(
+            name: overview_category_name,
+            parent_id: global_category.id,
+            category_type: overview_category_type
           )
-      end
-
-      if r[:map_category]
-        map_category = Indc::Category.
-          includes(:category_type).
-          find_by(
-            slug: Slug.create(r[:map_category]),
-            indc_category_types: {name: 'map'}
+        Indc::Category.create!(
+          category_attributes(
+            overview_category_name,
+            overview_category_type,
+            category_indexes[:overview]
+          ).merge(
+            parent_id: global_category.id
           )
+        )
+        category_indexes[:overview] += 1
       end
 
-      global_category.children << [
-        overview_category, map_category
-      ].select(&:itself)
+      if map_category_name &&
+          !Indc::Category.find_by(
+            name: map_category_name,
+            category_type: map_category_type
+          )
+        Indc::Category.create!(
+          category_attributes(
+            map_category_name,
+            map_category_type,
+            category_indexes[:map]
+          )
+        )
+        category_indexes[:map] += 1
+      end
     end
   end
-  # rubocop:enable MethodLength
 
   def import_indicators
     @metadata.
@@ -335,9 +340,12 @@ class ImportIndc
         map do |category_type|
           next if r[:"#{category_type}_category"].nil?
 
+          parent = @global_categories_index[r[:global_category]] if category_type == 'overview'
+
           Indc::Category.find_by!(
             name: r[:"#{category_type}_category"],
-            category_type: @category_types_index[category_type]
+            category_type: @category_types_index[category_type],
+            parent_id: parent&.id
           )
         end
 

@@ -14,6 +14,6 @@ module Indc
 
     validates :slug, presence: true
     validates :name, presence: true
-    validates :slug, uniqueness: {scope: :category_type}
+    validates :slug, uniqueness: {scope: [:category_type, :parent_id]}
   end
 end
