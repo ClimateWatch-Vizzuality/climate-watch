@@ -6,6 +6,7 @@ export const OTHER_DOCUMENTS_SLUGS = [
   'pledges',
   'indc',
   'first_ndc',
+  'revised_first_ndc',
   'second_ndc',
   'lts'
 ];
