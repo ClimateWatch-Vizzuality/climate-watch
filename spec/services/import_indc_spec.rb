@@ -2,7 +2,7 @@ require 'rails_helper'
 
 object_contents = {
   "#{CW_FILES_PREFIX}indc/NDC_metadata.csv" => <<~END,
-    global_category,main_category,map_category,column_name,long_name,Definition,Source,multiple_version
+    global_category,overview_category,map_category,column_name,long_name,Definition,Source,multiple_version
     Overview,UNFCCC Process,Other,domestic_approval,Domestic Approval Processes Category,,CAIT,TRUE
     Mitigation,Target,,M_TarYr,Target year,The year by which mitigation objectives are expected to be achieved,WB,TRUE
     Mitigation,Target,,M_TarYr_2,Second target year,Whether the NDC has a second-year target,WB,TRUE
