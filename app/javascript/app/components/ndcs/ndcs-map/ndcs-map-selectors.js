@@ -10,11 +10,29 @@ import { generateLinkToDataExplorer } from 'utils/data-explorer';
 import worldPaths from 'app/data/world-50m-paths';
 import { europeSlug, europeanCountries } from 'app/data/european-countries';
 
+import { CATEGORY_SOURCES } from 'data/constants';
 import { COUNTRY_STYLES } from 'components/ndcs/shared/constants';
 
 const getSearch = state => state.search || null;
 const getCountries = state => state.countries || null;
-const getCategoriesData = state => state.categories || null;
+const getCategoriesData = createSelector(
+  state => state.categories,
+  categories => {
+    if (!categories) return null;
+    const mapCategories = {};
+    Object.keys(categories).forEach(key => {
+      const category = categories[key];
+      if (
+        category.type === 'map' &&
+        category.sources.length &&
+        category.sources.every(s => CATEGORY_SOURCES.NDC_CONTENT.includes(s))
+      ) {
+        mapCategories[key] = categories[key];
+      }
+    });
+    return mapCategories;
+  }
+);
 const getIndicatorsData = state => state.indicators || null;
 
 export const getISOCountries = createSelector([getCountries], countries =>
@@ -152,10 +170,21 @@ export const getPathsWithStyles = createSelector(
   }
 );
 
-export const getLinkToDataExplorer = createSelector([getSearch], search => {
-  const section = 'ndc-content';
-  return generateLinkToDataExplorer(search, section);
-});
+export const getLinkToDataExplorer = createSelector(
+  [getSearch, getSelectedCategory, getSelectedIndicator],
+  (search, selectedCategory, selectedIndicator) => {
+    const section = 'ndc-content';
+    let dataExplorerSearch = search || {};
+    if (selectedCategory && selectedIndicator) {
+      dataExplorerSearch = {
+        category: selectedCategory.value,
+        indicator: selectedIndicator.value,
+        ...search
+      };
+    }
+    return generateLinkToDataExplorer(dataExplorerSearch, section);
+  }
+);
 
 export default {
   getCategories,

@@ -63,8 +63,7 @@ export const getSelectedDocument = createSelector(
     const lastDocument = countryDocuments[countryDocuments.length - 1];
     if (!search || !search.document) return lastDocument;
     return FEATURE_NDC_FILTERING
-      ? countryDocuments.find(document => document.slug === search.document) ||
-          lastDocument
+      ? countryDocuments.find(document => document.slug === search.document)
       : countryDocuments.find(
         document => legacyDocumentValue(document) === search.document
       ) || lastDocument;

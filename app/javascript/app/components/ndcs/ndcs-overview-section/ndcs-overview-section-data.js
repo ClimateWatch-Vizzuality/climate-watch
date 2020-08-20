@@ -24,7 +24,7 @@ export const commitmentsData = [
         answerLabel: 'first_ndc'
       },
       {
-        questionText: 'How many Parties have submitted Long-Term Strategies?',
+        questionText: 'How many Parties submitted Long-Term Strategies?',
         link: '/lts-explore?indicator=lts_submission ',
         slug: 'lts_submission',
         metadataSlug: 'ndc_lts',
@@ -49,8 +49,7 @@ export const commitmentsData = [
         answerLabel: 'Intends to Enhance Ambition or Action in 2020 NDC'
       },
       {
-        questionText:
-          'How many Parties have submitted an updated or second NDC?',
+        questionText: 'How many Parties submitted an updated or second NDC?',
         link: '/2020-ndc-tracker',
         slug: 'ndce_status_2020',
         metadataSlug: 'ndc_cw',
@@ -61,25 +60,24 @@ export const commitmentsData = [
   {
     title: 'Other climate commitments',
     description:
-      'Aside from commitments made through NDCs and LTS, some parties also have net-zero emission targets. Many have also enacted national climate policies and laws, which incorporate either economy-wide and/or sectoral targets. While these targets are not explicitly for the Paris Agreement, they indicate parties’ commitment to climate action and may align with commitments under the Paris Agreement.',
+      'Aside from commitments made through NDCs and LTS, some Parties also have net zero emission targets. Many have also enacted national climate policies and laws, which may incorporate economy-wide and/or sectoral targets. While these commitments are not official submissions to the Paris Agreement, they indicate Parties’ commitment to climate action and may align with commitments under the Paris Agreement.',
     hint:
-      'See how many parties have submitted additional commitments and explore the details by clicking on each box.',
+      'See how many Parties have submitted additional commitments and explore the details by clicking on each box.',
     color: '#2EC9DF',
     questions: [
       {
-        questionText: 'How many parties have a net zero emission target?',
+        questionText: 'How many Parties have a net zero emission target?',
+        answerLabel: ['In Policy Document', 'In Law'],
         link: 'https://eciu.net/netzerotracker',
-        slug: 'lts_zero',
-        answerLabel: 'Net-zero target included',
+        slug: 'nz_status',
         metadataSlug: 'eciu',
         hasExternalLink: true
       },
       {
         questionText:
-          'How many parties have an economy-wide target in a national law or policy?',
-        answerLabel: ['In Policy Document', 'In Law'],
+          'How many Parties have an economy-wide target in a national law or policy?',
         link: 'https://climate-laws.org/',
-        slug: 'nz_status',
+        source: 'lse',
         metadataSlug: 'national_laws_politices',
         hasExternalLink: true
       }

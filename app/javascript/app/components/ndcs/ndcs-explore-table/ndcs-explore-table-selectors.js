@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect';
 import isEmpty from 'lodash/isEmpty';
+import sortBy from 'lodash/sortBy';
 import { filterQuery } from 'app/utils';
 import { getMapIndicator } from 'components/ndcs/ndcs-explore-map/ndcs-explore-map-selectors';
 import {
@@ -60,9 +61,11 @@ export const tableGetSelectedData = createSelector(
     ) {
       return [];
     }
-    const refIndicator =
-      indicators.find(i => i.value === 'submission') || indicators[0];
 
+    const refIndicator =
+      indicators.find(i => i.value === 'submission') ||
+      indicators.find(i => !isEmpty(i.locations));
+    if (!refIndicator) return null;
     return Object.keys(refIndicator.locations).map(iso => {
       if (refIndicator.locations[iso].value === 'No Document Submitted') {
         return false;
@@ -90,6 +93,7 @@ const addIndicatorColumn = createSelector(
       !data ||
       isEmpty(data) ||
       !selectedIndicator ||
+      !selectedIndicator.locations ||
       !selectedIndicatorHeader
     ) {
       return null;
@@ -109,7 +113,7 @@ const getFilteredData = createSelector(
   [addIndicatorColumn, getDefaultColumns],
   (data, columnHeaders) => {
     if (!data || isEmpty(data)) return null;
-    return data.map(d => {
+    const filteredData = data.map(d => {
       const filteredAndChangedHeadersD = {};
       Object.keys(d).forEach(k => {
         const header = HEADER_CHANGES[k] || k;
@@ -123,6 +127,7 @@ const getFilteredData = createSelector(
       });
       return filteredAndChangedHeadersD;
     });
+    return sortBy(filteredData, ['country']);
   }
 );
 

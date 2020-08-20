@@ -26,6 +26,7 @@ const mapStateToProps = (state, { location }) => {
     query: search.search,
     search
   };
+
   return {
     loading,
     query: ndcsEnhancementsWithSelection.query,

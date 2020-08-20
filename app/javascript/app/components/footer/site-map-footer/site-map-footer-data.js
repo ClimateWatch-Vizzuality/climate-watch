@@ -11,8 +11,8 @@ export const siteMapData = [
     links: [
       { title: 'Country Profiles', href: '/countries' },
       { title: 'Agriculture Sector', href: '/sectors/agriculture' },
-      { title: 'NDCs', href: '/ndcs-content' },
       ...exploreTools,
+      { title: '2020 NDC Tracker', href: '/2020-ndc-tracker' },
       { title: 'NDC-SDG Linkages', href: '/ndcs-sdg' },
       { title: 'Historical GHG Emissions', href: '/ghg-emissions' },
       { title: 'Pathways', href: '/pathways' }

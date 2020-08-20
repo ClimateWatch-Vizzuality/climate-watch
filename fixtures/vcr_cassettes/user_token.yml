@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: https://production-api.globalforestwatch.org/auth/check-logged
+    uri: https://staging-api.globalforestwatch.org/auth/check-logged
     body:
       encoding: US-ASCII
       string: ''
@@ -39,6 +39,6 @@ http_interactions:
     body:
       encoding: UTF-8
       string: '{"id":"DEV_USER_ID_PLACEHOLDER","role":"USER","provider":"local","email":"test@example.com","extraUserData":{"apps":["gfw-climate","gfw"]},"createdAt":1511344608420,"iat":1511344608}'
-    http_version: 
+    http_version:
   recorded_at: Wed, 22 Nov 2017 15:15:03 GMT
 recorded_with: VCR 3.0.3

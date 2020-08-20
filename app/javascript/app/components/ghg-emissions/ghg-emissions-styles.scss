@@ -80,6 +80,8 @@ $min-height: 500px;
 .title {
   @extend %headline;
 
+  font-size: $font-size-large;
+  font-weight: $font-weight-semi-bold;
   color: $theme-color;
   line-height: 45px;
 }

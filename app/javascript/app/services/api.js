@@ -1,4 +1,6 @@
 import isFunction from 'lodash/isFunction';
+import { setup } from 'axios-cache-adapter';
+// axios-cache-adapter needs to be fixed to 2.4.1 to avoid a IE problem
 
 const { ESP_API } = process.env;
 const { CW_API } = process.env;
@@ -73,3 +75,11 @@ const cwConfig = {
 };
 
 export const CWAPI = new API(CW_API, cwConfig);
+
+// Create `axios` instance with pre-configured `axios-cache-adapter` attached to it
+export const apiWithCache = setup({
+  cache: {
+    maxAge: 15 * 60 * 1000,
+    exclude: { query: false }
+  }
+});

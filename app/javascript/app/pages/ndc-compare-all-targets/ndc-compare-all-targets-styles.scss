@@ -34,7 +34,7 @@
   }
 
   @media #{$tablet-landscape} {
-    @include columns((3.5, 3.5, 5));
+    @include columns((1.5, 3, 3, 4.5));
   }
 }
 
@@ -61,3 +61,11 @@
   }
 }
 
+.link {
+  color: $white;
+  text-decoration: underline;
+
+  &:hover {
+    color: $theme-secondary;
+  }
+}

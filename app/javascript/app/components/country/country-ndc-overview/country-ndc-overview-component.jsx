@@ -194,14 +194,13 @@ function CountryNdcOverview(props) {
     !FEATURE_NDC_FILTERING || !selectedDocument
       ? 'Summary'
       : `Summary of ${selectedDocument.long_name}`;
-
   return (
     <div className={cx(styles.wrapper, { [styles.embededWrapper]: isEmbed })}>
       {!FEATURE_NDC_FILTERING && hasSectors && !loading && renderAlertText()}
       {FEATURE_NDC_FILTERING && <CountriesDocumentsProvider location={iso} />}
       <NdcContentOverviewProvider
         locations={[iso]}
-        document={selectedDocument && selectedDocument.document_type}
+        document={!isCountryPage && selectedDocument && selectedDocument.slug}
       />
       {!hasSectors && !loading ? (
         <NoContent

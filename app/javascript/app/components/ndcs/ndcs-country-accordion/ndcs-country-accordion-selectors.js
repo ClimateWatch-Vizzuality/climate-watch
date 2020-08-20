@@ -1,6 +1,5 @@
 import { createSelector } from 'reselect';
 import { deburrUpper } from 'app/utils';
-import isNaN from 'lodash/isNaN';
 import uniq from 'lodash/uniq';
 import sortBy from 'lodash/sortBy';
 import snakeCase from 'lodash/snakeCase';
@@ -41,10 +40,18 @@ export const parseIndicatorsDefs = createSelector(
         indicator => indicator.category_ids.indexOf(parseInt(category, 10)) > -1
       );
       const parsedDefinitions = categoryIndicators.map(def => {
-        const descriptions = countries.map(country => ({
-          iso: country,
-          value: def.locations[country] ? def.locations[country][0].value : '-'
-        }));
+        const descriptions = countries.reduce((acc, country) => {
+          if (def.locations[country]) {
+            return [
+              ...acc,
+              {
+                iso: country,
+                value: def.locations[country][0].value
+              }
+            ];
+          }
+          return acc;
+        }, []);
         return {
           title: def.name,
           slug: def.slug,
@@ -106,23 +113,28 @@ export const parsedCategoriesWithSectors = createSelector(
           cat.sectors.map(sec => {
             const definitions = [];
             cat.indicators.forEach(ind => {
-              const descriptions = countries.map(loc => {
+              const descriptions = countries.reduce((acc, loc) => {
                 const valueObject = ind.locations[loc]
                   ? ind.locations[loc].find(v => v.sector_id === sec)
                   : null;
-                const value =
-                  (valueObject && valueObject.value) ||
-                  (isNaN(parseInt(loc, 10)) ? '-' : null);
-                return {
-                  iso: loc,
-                  value
-                };
-              });
-              definitions.push({
-                title: ind.name,
-                slug: ind.slug,
-                descriptions
-              });
+                if (valueObject && valueObject.value) {
+                  return [
+                    ...acc,
+                    {
+                      iso: loc,
+                      value: valueObject.value
+                    }
+                  ];
+                }
+                return acc;
+              }, []);
+              if (descriptions.length) {
+                definitions.push({
+                  title: ind.name,
+                  slug: ind.slug,
+                  descriptions
+                });
+              }
             });
             const parent =
               sectors[sec].parent_id && sectors[sectors[sec].parent_id];

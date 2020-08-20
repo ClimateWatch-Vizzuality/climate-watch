@@ -1,6 +1,7 @@
 import { createAction } from 'redux-actions';
 import { createThunkAction } from 'utils/redux';
 import isEmpty from 'lodash/isEmpty';
+import { apiWithCache } from 'services/api';
 
 /* @tmpfix: remove usage of indcTransform */
 import indcTransform from 'utils/indctransform';
@@ -20,9 +21,10 @@ const fetchNDCSEnhancements = createThunkAction(
       !ndcsEnhancements.loading
     ) {
       dispatch(fetchNDCSEnhancementsInit());
-      fetch('/api/v1/ndcs?category=overview')
+      apiWithCache
+        .get('/api/v1/ndcs?category=overview')
         .then(response => {
-          if (response.ok) return response.json();
+          if (response.data) return response.data;
           throw Error(response.statusText);
         })
         .then(data => indcTransform(data))

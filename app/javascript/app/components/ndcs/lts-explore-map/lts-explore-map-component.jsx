@@ -17,6 +17,7 @@ import ExploreMapTooltip from 'components/ndcs/shared/explore-map-tooltip';
 import ModalShare from 'components/modal-share';
 import Sticky from 'react-stickynode';
 import cx from 'classnames';
+import { getHoverIndex } from 'components/ndcs/shared/utils';
 
 import layout from 'styles/layout.scss';
 import newMapTheme from 'styles/themes/map/map-new-zoom-controls.scss';
@@ -64,14 +65,18 @@ const renderSummary = summaryData => (
   </div>
 );
 
-const renderLegend = legendData => (
+const renderLegend = (legendData, emissionsCardData) => (
   <div className={styles.legendCardContainer}>
     <div className={styles.legendContainer}>
       {legendData &&
-        legendData.map((l, index) => (
+        legendData.map(l => (
           <LegendItem
             key={l.name}
-            index={index}
+            hoverIndex={
+              emissionsCardData &&
+              emissionsCardData.data &&
+              getHoverIndex(emissionsCardData, l)
+            }
             name={l.name}
             number={l.countriesNumber}
             value={l.value}
@@ -199,7 +204,8 @@ function LTSExploreMap(props) {
                           {summaryCardData && renderSummary(summaryCardData)}
                           {emissionsCardData &&
                             renderDonutChart(emissionsCardData)}
-                          {legendData && renderLegend(legendData)}
+                          {legendData &&
+                            renderLegend(legendData, emissionsCardData)}
                         </React.Fragment>
                       )}
                     </div>

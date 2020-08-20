@@ -58,12 +58,20 @@ const CustomCompareAccordionComponent = ({
                     theme={subAccordionTheme}
                   >
                     {section.sectors.map(desc => (
-                      <DefinitionList {...desc} compare={compare} />
+                      <DefinitionList
+                        {...desc}
+                        compare={compare}
+                        className={styles.compareDefinitionList}
+                      />
                     ))}
                   </Accordion>
                 )
               ) : (
-                <DefinitionList {...section} compare={compare} />
+                <DefinitionList
+                  {...section}
+                  compare={compare}
+                  className={styles.compareDefinitionList}
+                />
               ))
             )}
         </Accordion>

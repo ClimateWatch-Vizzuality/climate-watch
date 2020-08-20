@@ -39,6 +39,11 @@ import {
   getOptions
 } from './ghg-emissions-selectors-filters';
 
+import {
+  getMetricData,
+  getRegionsWithOwnData
+} from './ghg-emissions-selectors-data-utils';
+
 const getShouldExpand = filter =>
   createSelector(
     [getModelSelected, getOptionsSelected, getIsRegionAggregated],
@@ -64,7 +69,7 @@ const getShouldExpand = filter =>
     }
   );
 
-export const getShouldExpandRegions = getShouldExpand('regions');
+const getShouldExpandRegions = getShouldExpand('regions');
 const getShouldExpandGases = getShouldExpand('gases');
 const getShouldExpandSectors = getShouldExpand('sectors');
 
@@ -94,7 +99,7 @@ const getExpandedLegendRegionsSelected = createSelector(
   }
 );
 
-export const getExpandedLegendSectorsSelected = createSelector(
+const getExpandedLegendSectorsSelected = createSelector(
   [getModelSelected, getOptions, getOptionsSelected, getShouldExpandSectors],
   (modelSelected, options, selectedOptions, shouldExpandSectors) => {
     const model = toPlural(modelSelected);
@@ -109,7 +114,7 @@ export const getExpandedLegendSectorsSelected = createSelector(
   }
 );
 
-export const getExpandedLegendGasesSelected = createSelector(
+const getExpandedLegendGasesSelected = createSelector(
   [getModelSelected, getOptions, getOptionsSelected, getShouldExpandGases],
   (modelSelected, options, selectedOptions, shouldExpandGases) => {
     const model = toPlural(modelSelected);
@@ -124,7 +129,7 @@ export const getExpandedLegendGasesSelected = createSelector(
   }
 );
 
-export const getLegendDataOptions = createSelector(
+const getLegendDataOptions = createSelector(
   [getModelSelected, getOptions],
   (modelSelected, options) => {
     if (!options || !modelSelected || !options[toPlural(modelSelected)]) {
@@ -134,7 +139,7 @@ export const getLegendDataOptions = createSelector(
   }
 );
 
-export const getLegendDataSelected = createSelector(
+const getLegendDataSelected = createSelector(
   [
     getModelSelected,
     getOptions,
@@ -202,39 +207,26 @@ export const getCalculationData = createSelector([getWBData], data => {
   return yearData;
 });
 
-// some regions expands to underlying countries but also have
-// their own aggregated data
-export const getRegionsWithOwnData = (regions, data) => {
-  if (!regions || isEmpty(data)) return [];
-
-  const regionsISOs = regions.map(r => r.iso_code3);
-  const regionsISOsWithOwnData = uniq(
-    data.filter(d => regionsISOs.includes(d.iso_code3)).map(d => d.iso_code3)
-  );
-
-  return regions.filter(r => regionsISOsWithOwnData.includes(r.iso_code3));
-};
-
 export const getChartData = createSelector(
   [
     getData,
     getRegions,
     getModelSelected,
     getYColumnOptions,
-    getMetricSelected,
     getCalculationData,
     getCalculationSelected,
-    getDataZoomYears
+    getDataZoomYears,
+    getMetricSelected
   ],
   (
     data,
     regions,
     model,
     yColumnOptions,
-    metric,
     calculationData,
     calculationSelected,
-    dataZoomYears
+    dataZoomYears,
+    metric
   ) => {
     if (
       !data ||
@@ -270,38 +262,6 @@ export const getChartData = createSelector(
       return flatMap(column.expandsTo, e =>
         data.filter(d => d.iso_code3 === e)
       ).filter(d => d);
-    };
-
-    const expandRegionToCountries = iso => {
-      const region = regions.find(r => r.iso_code3 === iso);
-      if (!region || !region.members) return iso;
-      return flatMap(region.members, expandRegionToCountries);
-    };
-    const expandRegionsToCountries = isos =>
-      uniq(flatMap(isos, expandRegionToCountries));
-
-    const getMetricData = (year, region, column) => {
-      const getMetricForYearAndRegion = (y, r) =>
-        metricField &&
-        calculationData &&
-        calculationData[y] &&
-        calculationData[y][r] &&
-        calculationData[y][r][metricField];
-      let metricData = getMetricForYearAndRegion(year, region);
-      // if no metric data for expandable column then use expanded regions to
-      // calculate metric data
-      if (!metricData && column.expandsTo && column.expandsTo.length) {
-        const expandedCountries = expandRegionsToCountries(column.expandsTo);
-        metricData = expandedCountries.reduce(
-          (acc, iso) => acc + (getMetricForYearAndRegion(year, iso) || 0),
-          0
-        );
-      }
-
-      // GDP is in dollars and we want to display it in million dollars
-      if (metricField === 'gdp' && metricData) metricData /= 1000000;
-
-      return metricData;
     };
 
     const dataParsed = [];
@@ -364,7 +324,7 @@ export const getChartData = createSelector(
 
           const yearEmissions = d.emissions.find(e => e.year === year);
           const metricRatio = shouldHaveMetricData
-            ? getMetricData(year, d.iso_code3, column)
+            ? getMetricData(year, column, metricField, calculationData, regions)
             : 1;
 
           if (yearEmissions && yearEmissions.value && metricRatio) {
@@ -452,35 +412,55 @@ export const getLegendDataSelectedWithOthers = createSelector(
   getLegendOptionsWithOthers
 );
 
-export const getSortedChartData = createSelector(
-  [getChartData, getSortedYColumnOptions],
-  (data, sortedOptions) => {
+export const getSortedChartDataWithOthers = createSelector(
+  [getChartData, getSortedYColumnOptions, getCalculationSelected],
+  (data, sortedOptions, selectedCalculation) => {
     if (!data || isEmpty(data)) return null;
     const hasOthers = sortedOptions.find(o => o.iso === 'OTHERS');
     if (!hasOthers) return data;
+
     const yearValuesOptions = sortedOptions.map(o => o.value);
     return data.map(yearValues => {
-      const valuesToDisplay = { x: yearValues.x };
+      const valuesToDisplay = {};
       let othersValue = 0;
-      Object.keys(omit(yearValues, 'x')).forEach(key => {
-        if (yearValuesOptions.includes(key)) {
-          valuesToDisplay[key] = yearValues[key];
+      let othersCount = 0;
+      const year = yearValues.x;
+      Object.keys(omit(yearValues, 'x')).forEach(columnKey => {
+        if (yearValuesOptions.includes(columnKey)) {
+          valuesToDisplay[columnKey] = yearValues[columnKey];
         } else {
-          othersValue += yearValues[key];
+          const regionValue = yearValues[columnKey];
+          if (regionValue) {
+            othersValue += yearValues[columnKey];
+            othersCount += 1;
+          }
         }
       });
-      return { ...valuesToDisplay, yOthers: othersValue };
+      if (
+        [
+          GHG_CALCULATION_OPTIONS.PER_CAPITA.value,
+          GHG_CALCULATION_OPTIONS.PER_GDP.value,
+          GHG_CALCULATION_OPTIONS.PERCENTAGE_CHANGE.value
+        ].includes(selectedCalculation.value)
+      ) {
+        // In this cases we want the mean, not the total
+        othersValue /= othersCount;
+      }
+      return { x: year, ...valuesToDisplay, yOthers: othersValue };
     });
   }
 );
 
-export const getChartDomain = createSelector([getSortedChartData], data => {
-  if (!data) return null;
-  return {
-    x: setXAxisDomain(),
-    y: setYAxisDomain()
-  };
-});
+export const getChartDomain = createSelector(
+  [getSortedChartDataWithOthers],
+  data => {
+    if (!data) return null;
+    return {
+      x: setXAxisDomain(),
+      y: setYAxisDomain()
+    };
+  }
+);
 
 // variable that caches chart elements assigned color
 // to avoid element color changing when the chart is updated
@@ -496,9 +476,12 @@ const getColorPalette = columns => {
 
 export const getUnit = metric => {
   let unit = DEFAULT_AXES_CONFIG.yLeft.unit;
-  if (metric === 'PER_GDP') {
+  if (metric === GHG_CALCULATION_OPTIONS.PERCENTAGE_CHANGE.value) {
+    return '%';
+  }
+  if (metric === GHG_CALCULATION_OPTIONS.PER_GDP.value) {
     unit = `${unit}/ million $ GDP`;
-  } else if (metric === 'PER_CAPITA') {
+  } else if (metric === GHG_CALCULATION_OPTIONS.PER_CAPITA.value) {
     unit = `${unit} per capita`;
   }
   return unit;
@@ -545,21 +528,24 @@ export const getChartConfig = createSelector(
   }
 );
 
-export const getDataZoomData = createSelector([getSortedChartData], data => {
-  if (!data) return null;
-  const t = data.map(d => {
-    const updatedD = {};
-    updatedD.x = d.x;
-    const intermediateD = { ...d };
-    delete intermediateD.x;
-    updatedD.total = Object.values(intermediateD).reduce(
-      (acc, value) => acc + value,
-      0
-    );
-    return updatedD;
-  });
-  return t;
-});
+export const getDataZoomData = createSelector(
+  [getSortedChartDataWithOthers],
+  data => {
+    if (!data) return null;
+    const t = data.map(d => {
+      const updatedD = {};
+      updatedD.x = d.x;
+      const intermediateD = { ...d };
+      delete intermediateD.x;
+      updatedD.total = Object.values(intermediateD).reduce(
+        (acc, value) => acc + value,
+        0
+      );
+      return updatedD;
+    });
+    return t;
+  }
+);
 
 export const getLoading = createSelector(
   [getChartConfig, state => state.ghgEmissionsMeta, state => state.emissions],

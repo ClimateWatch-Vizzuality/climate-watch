@@ -2,10 +2,13 @@ import { createSelector, createStructuredSelector } from 'reselect';
 import difference from 'lodash/difference';
 import intersection from 'lodash/intersection';
 import isEmpty from 'lodash/isEmpty';
-import kebabCase from 'lodash/kebabCase';
 import uniq from 'lodash/uniq';
-import { arrayToSentence } from 'utils';
-import { getGhgEmissionDefaultSlugs, toPlural } from 'utils/ghg-emissions';
+import { arrayToSentence, useSlug } from 'utils';
+import {
+  getGhgEmissionDefaultSlugs,
+  toPlural,
+  replaceSubscript
+} from 'utils/ghg-emissions';
 import { sortLabelByAlpha } from 'utils/graphs';
 import {
   GAS_AGGREGATES,
@@ -286,8 +289,8 @@ const getSectorOptions = createSelector(
 
 const getGasOptions = createSelector([getFieldOptions('gas')], options => {
   if (!options) return [];
-
-  const valueByLabel = g => (options.find(opt => opt.label === g) || {}).value;
+  const valueByLabel = g =>
+    (options.find(opt => replaceSubscript(opt.label) === g) || {}).value;
 
   return options.map(o => ({
     ...o,
@@ -324,15 +327,15 @@ const getDefaults = createSelector(
 );
 
 const isIncluded = (field, selectedValues, filter) => {
-  const kebabInclude = selectedValues.includes(kebabCase(filter.label));
+  const slugIncluded = selectedValues.includes(useSlug(filter.label));
   const valueOrIsoInclude =
     selectedValues.includes(String(filter.value)) ||
     selectedValues.includes(filter.iso_code3);
 
   return {
     location: valueOrIsoInclude,
-    gas: kebabInclude,
-    sector: kebabInclude
+    gas: slugIncluded,
+    sector: slugIncluded
   }[field];
 };
 
@@ -341,7 +344,6 @@ const getFiltersSelected = field =>
     [getOptions, getSelection(field), getDefaults],
     (options, selected, defaults) => {
       if (!options || !defaults) return null;
-
       const fieldOptions =
         field === 'location' ? options.regions : options[toPlural(field)];
       const defaultSelection =
@@ -422,7 +424,7 @@ const getGasConflicts = gasSelected => {
   return conflicts;
 };
 
-const getChartConflicts = (metricSelected, chartSelected) => {
+const getChartConflicts = (metricSelected, chartSelected, breakBySelected) => {
   const conflicts = [];
 
   if (
@@ -432,6 +434,16 @@ const getChartConflicts = (metricSelected, chartSelected) => {
     const metricOption = GHG_CALCULATION_OPTIONS[metricSelected];
     conflicts.push(
       `${metricOption.label} metric is not allowed with ${chartSelected.label} chart`
+    );
+  }
+
+  if (
+    ['PER_CAPITA', 'PER_GDP'].includes(metricSelected) &&
+    ['sector', 'gas'].includes(breakBySelected.value)
+  ) {
+    const metricOption = GHG_CALCULATION_OPTIONS[metricSelected];
+    conflicts.push(
+      `${metricOption.label} metric is not allowed with show data by ${breakBySelected.label}`
     );
   }
 
@@ -445,7 +457,8 @@ export const getFiltersConflicts = createSelector(
     getFiltersSelected('sector'),
     getModelSelected,
     getMetricSelected,
-    getChartTypeSelected
+    getChartTypeSelected,
+    getBreakByOptionSelected
   ],
   (
     regionSelected,
@@ -453,7 +466,8 @@ export const getFiltersConflicts = createSelector(
     sectorsSelected,
     modelSelected,
     metricSelected,
-    chartSelected
+    chartSelected,
+    breakBySelected
   ) => {
     let conflicts = [];
     let canChangeBreakByTo = difference(
@@ -469,7 +483,11 @@ export const getFiltersConflicts = createSelector(
     const sectorConflicts = getOverlappingConflicts(sectorsSelected);
     const regionConflicts = getOverlappingConflicts(regionSelected);
     const gasConflicts = getGasConflicts(gasSelected);
-    const chartConflicts = getChartConflicts(metricSelected, chartSelected);
+    const chartConflicts = getChartConflicts(
+      metricSelected,
+      chartSelected,
+      breakBySelected
+    );
 
     if (sectorConflicts.length) {
       canChangeBreakByTo = difference(canChangeBreakByTo, ['gas', 'regions']);
@@ -502,7 +520,7 @@ export const getFiltersConflicts = createSelector(
       solutions.push('change "Chart Type" to line chart');
     }
 
-    if (canChangeBreakByTo.length) {
+    if (canChangeBreakByTo.length && !chartConflicts.length) {
       solutions.push(
         `change "Break by" to ${arrayToSentence(canChangeBreakByTo)}`
       );

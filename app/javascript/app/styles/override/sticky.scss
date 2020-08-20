@@ -16,9 +16,12 @@
     }
 
     &.-country-selector,
+    &.-custom-compare,
     &.-explore {
       .sticky-inner-wrapper {
         background-color: $white;
+        left: 0;
+        width: 100%;
       }
     }
 

@@ -5,6 +5,7 @@ import {
   setStorageWithExpiration,
   getStorageWithExpiration
 } from 'utils/localStorage';
+import { invokeCSVDownload } from 'utils/csv';
 
 const USER_SURVEY_SPREADSHEET_URL = process.env.USER_SURVEY_SPREADSHEET_URL;
 
@@ -20,18 +21,27 @@ const saveSurveyData = createThunkAction(
       if (!getStorageWithExpiration('userSurvey')) {
         setStorageWithExpiration('userSurvey', true, 5);
       }
-      fetch(
-        `${USER_SURVEY_SPREADSHEET_URL}?${requestParams.join('&')}`
-      ).then(() => {
-        window.location.assign(modalDownload.downloadUrl);
-        handleAnalytics(
-          'Data Explorer',
-          'Download Data',
-          getUrlSection(modalDownload.downloadUrl)
+
+      if (modalDownload.CSVContent) {
+        invokeCSVDownload(modalDownload.CSVContent);
+        return dispatch(
+          setModalDownloadParams({ open: false, CSVContent: null })
         );
-        return dispatch(toggleModalDownload({ open: false }));
-      });
+      }
+
+      fetch(`${USER_SURVEY_SPREADSHEET_URL}?${requestParams.join('&')}`).then(
+        () => {
+          window.location.assign(modalDownload.downloadUrl);
+          handleAnalytics(
+            'Data Explorer',
+            'Download Data',
+            getUrlSection(modalDownload.downloadUrl)
+          );
+          return dispatch(toggleModalDownload({ open: false }));
+        }
+      );
     }
+    return undefined;
   }
 );
 

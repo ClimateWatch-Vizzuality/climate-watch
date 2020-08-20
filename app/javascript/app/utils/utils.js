@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 import deburr from 'lodash/deburr';
 import toUpper from 'lodash/toUpper';
 import upperFirst from 'lodash/upperFirst';
@@ -251,6 +252,26 @@ export function filterQuery(data, query, exceptions, objectValueKeys) {
     return match;
   });
 }
+
+export const useSlug = string => {
+  const from = 'àáäâãåăæçèéëêǵḧìíïîḿńǹñòóöôœøṕŕßśșțùúüûǘẃẍÿź·/_,:;';
+  const to = 'aaaaaaaaceeeeghiiiimnnnooooooprssstuuuuuwxyz------';
+  const regex = new RegExp(from.split('').join('|'), 'g');
+
+  return string
+    .toString()
+    .toLowerCase()
+    .replace(/\s+/g, '-')
+    .replace(regex, character => to.charAt(from.indexOf(character)))
+    .replace(/&/g, '-and-')
+    .replace(/[^\w\-]+/g, '')
+    .replace(/\-\-+/g, '-')
+    .replace(/^-+/, '')
+    .replace(/-+$/, '');
+};
+
+export const isIE = () =>
+  !!window.MSInputMethodContext && !!document.documentMode;
 
 export default {
   arrayToSentence,

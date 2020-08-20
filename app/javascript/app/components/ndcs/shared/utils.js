@@ -1,4 +1,5 @@
 import camelCase from 'lodash/camelCase';
+import { NOT_COVERED_LABEL } from 'data/constants';
 
 const NOT_APPLICABLE_LABEL = 'Not Applicable';
 const NOT_APPLICABLE_OR_NOT_INFO_LABEL = 'Not applicable or No information';
@@ -13,8 +14,7 @@ export const sortByIndexAndNotInfo = (a, b) => {
 export const getIndicatorEmissionsData = (
   emissionsIndicator,
   selectedIndicator,
-  legend,
-  noInformationLabel = NOT_APPLICABLE_OR_NOT_INFO_LABEL
+  legend
 ) => {
   if (!emissionsIndicator) return null;
   const emissionPercentages = emissionsIndicator.locations;
@@ -40,28 +40,21 @@ export const getIndicatorEmissionsData = (
   });
 
   if (summedPercentage < 100) {
-    const notApplicableDataItem = data.find(d => d.name === 'Not Applicable');
-    if (notApplicableDataItem) {
-      const notApplicablePosition = data.indexOf(notApplicableDataItem);
-      data[notApplicablePosition] = {
-        name: noInformationLabel,
-        value: notApplicableDataItem.value + (100 - summedPercentage)
-      };
-    } else {
-      data.push({
-        name: noInformationLabel,
-        value: 100 - summedPercentage
-      });
-    }
+    data.push({
+      name: NOT_COVERED_LABEL,
+      value: 100 - summedPercentage
+    });
   }
+
   return data;
 };
 
-export const getLabels = (
+export const getLabels = ({
   legend,
   noInformationLabel = NOT_APPLICABLE_OR_NOT_INFO_LABEL,
-  noLabelOverride
-) => {
+  noLabelOverride,
+  hasNotCovered
+}) => {
   const tooltip = {};
   const theme = {};
   const getNoInfoLabel = () =>
@@ -69,6 +62,7 @@ export const getLabels = (
     (noInformationLabel === NOT_APPLICABLE_LABEL
       ? NOT_APPLICABLE_OR_NOT_INFO_LABEL
       : noInformationLabel);
+
   legend.forEach(l => {
     const legendName =
       l.name === noInformationLabel ? getNoInfoLabel() : l.name;
@@ -80,8 +74,25 @@ export const getLabels = (
       stroke: l.color
     };
   });
+  if (hasNotCovered) {
+    tooltip.notCovered = {
+      label: NOT_COVERED_LABEL
+    };
+    theme.notCovered = {
+      label: NOT_COVERED_LABEL,
+      stroke: '#83A2E5'
+    };
+  }
   return {
     tooltip,
     theme
   };
+};
+
+export const getHoverIndex = (emissionsCardData, hoveredlegendData) => {
+  const hoveredLegendName = hoveredlegendData.name;
+  const hoveredEmissionsItem = emissionsCardData.data.find(d =>
+    d.name.toLowerCase().startsWith(hoveredLegendName.toLowerCase())
+  );
+  return emissionsCardData.data.indexOf(hoveredEmissionsItem);
 };

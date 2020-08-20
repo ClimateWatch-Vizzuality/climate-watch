@@ -26,9 +26,15 @@ const DefinitionList = ({
             {descriptions &&
               descriptions.map(({ iso, value }) => (
                 <dd key={`${slug}-${iso}`} className={styles.definitionDesc}>
-                  <div
-                    dangerouslySetInnerHTML={{ __html: value }} // eslint-disable-line
-                  />
+                  {compare && value === '-' ? (
+                    <div className={styles.noComparable}>
+                      No comparable data available
+                    </div>
+                  ) : (
+                    <div
+                      dangerouslySetInnerHTML={{ __html: value }} // eslint-disable-line
+                    />
+                  )}
                 </dd>
               ))}
           </div>

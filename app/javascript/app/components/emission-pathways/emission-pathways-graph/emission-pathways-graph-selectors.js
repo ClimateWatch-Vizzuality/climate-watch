@@ -209,10 +209,12 @@ export const getCategoryOptions = createSelector(
   [getIndicatorsWithData],
   indicators => {
     if (!indicators) return null;
-    const categories = indicators.filter(i => i.category).map(i => ({
-      label: i.category.name,
-      value: i.category.id
-    }));
+    const categories = indicators
+      .filter(i => i.category)
+      .map(i => ({
+        label: i.category.name,
+        value: i.category.id
+      }));
     return uniqBy(categories, 'value');
   }
 );
@@ -580,23 +582,23 @@ export const getModalData = createSelector(
 );
 
 export const getLinkToDataExplorer = createSelector(
-  [getSearch, getAllScenarios],
-  (search, allScenarios) => {
+  [getSearch, getCategorySelected, getAllScenarios],
+  (search, categorySelected, allScenarios) => {
     const section = 'emission-pathways';
-    if (!allScenarios.length) return null;
+    let dataExplorerSearch = search || {};
+    if (!categorySelected || !allScenarios.length) return null;
     if (!search.scenario && search.model) {
       // Adds the first scenario belonging to the selected model to populate
       // Data Explorer dropdown and table in case there's no scenario selected
       const scenarioId = allScenarios.find(
         s => s.model.id === parseInt(search.model, 10)
       ).id;
-      const filtersWithScenario = {
+      dataExplorerSearch = {
         ...search,
         scenario: scenarioId
       };
-      return generateLinkToDataExplorer(filtersWithScenario, section);
     }
-    return generateLinkToDataExplorer(search, section);
+    return generateLinkToDataExplorer(dataExplorerSearch, section);
   }
 );
 

@@ -181,10 +181,21 @@ export const getPathsWithStyles = createSelector(
   }
 );
 
-export const getLinkToDataExplorer = createSelector([getSearch], search => {
-  const section = 'lts-content';
-  return generateLinkToDataExplorer(search, section);
-});
+export const getLinkToDataExplorer = createSelector(
+  [getSearch, getSelectedCategory, getSelectedIndicator],
+  (search, selectedCategory, selectedIndicator) => {
+    const section = 'lts-content';
+    let dataExplorerSearch = search || {};
+    if (selectedCategory && selectedIndicator) {
+      dataExplorerSearch = {
+        category: selectedCategory.value,
+        indicator: selectedIndicator.value,
+        ...search
+      };
+    }
+    return generateLinkToDataExplorer(dataExplorerSearch, section);
+  }
+);
 
 const percentage = (value, total) => (value * 100) / total;
 
@@ -327,7 +338,10 @@ export const getEmissionsCardData = createSelector(
     );
 
     // Remove extra No document submitted. TODO: Fix in data
-    data = data.filter(d => d.name !== 'noDocumentSubmitted');
+    data = sortBy(
+      data.filter(d => d.name !== 'noDocumentSubmitted'),
+      'value'
+    );
     const config = {
       animation: true,
       innerRadius: 50,
@@ -336,7 +350,11 @@ export const getEmissionsCardData = createSelector(
       hideLegend: true,
       innerHoverLabel: true,
       minAngle: 3,
-      ...getLabels(legend, NO_DOCUMENT_SUBMITTED, true)
+      ...getLabels({
+        legend,
+        notInformationLabel: NO_DOCUMENT_SUBMITTED,
+        noLabelOverride: true
+      })
     };
 
     return {
