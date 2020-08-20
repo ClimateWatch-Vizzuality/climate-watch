@@ -138,7 +138,7 @@ class ModalDownload extends PureComponent {
             label="How do you intend to use the data?"
             value={this.state.explanation}
             onChange={e => this.handleChange(e, 'explanation')}
-            optional
+            required={requiredError}
           />
 
           <CheckInput
