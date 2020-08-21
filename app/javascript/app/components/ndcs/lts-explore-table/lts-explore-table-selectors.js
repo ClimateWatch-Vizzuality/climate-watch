@@ -142,7 +142,7 @@ const getFilteredData = createSelector(
   [addDocumentTarget, getDefaultColumns],
   (data, columnHeaders) => {
     if (!data || isEmpty(data)) return null;
-    return data.map(d => {
+    const filteredData = data.map(d => {
       const filteredAndChangedHeadersD = {};
       Object.keys(d).forEach(k => {
         const header = headerChanges[k] || k;
@@ -156,6 +156,7 @@ const getFilteredData = createSelector(
       });
       return filteredAndChangedHeadersD;
     });
+    return sortBy(filteredData, ['country']);
   }
 );
 

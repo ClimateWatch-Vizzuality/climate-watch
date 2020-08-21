@@ -13,6 +13,7 @@
 
   //menu container styles
   .cw__multi-level-dropdown-styles_menu {
+    min-width: 260px;
     border: $dropdown-border !important;
     border-radius: 0 0 4px 4px;
     margin-top: -3px;

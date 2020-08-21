@@ -7,7 +7,8 @@ import { handleAnalytics } from 'utils/analytics';
 import { isCountryIncluded } from 'app/utils';
 import { getLocationParamUpdated } from 'utils/navigation';
 import { IGNORED_COUNTRIES_ISOS } from 'data/ignored-countries';
-
+import { getHoverIndex } from 'components/ndcs/shared/utils';
+import { DEFAULT_NDC_EXPLORE_CATEGORY_SLUG } from 'data/constants';
 import fetchActions from 'pages/ndcs/ndcs-actions';
 import { actions as modalActions } from 'components/modal-metadata';
 import exploreMapActions from 'components/ndcs/shared/explore-map/explore-map-actions';
@@ -36,15 +37,6 @@ const mapStateToProps = (state, { location }) => {
   const { countries } = state;
   const search = qs.parse(location.search);
 
-  const mapCategories = {};
-  if (data.categories) {
-    Object.keys(data.categories).forEach(id => {
-      if (data.categories[id].type === 'map') {
-        mapCategories[id] = data.categories[id];
-      }
-    });
-  }
-
   const ndcsExploreWithSelection = {
     ...state,
     ...data,
@@ -52,7 +44,6 @@ const mapStateToProps = (state, { location }) => {
     query: search.search,
     categorySelected: search.category,
     indicatorSelected: search.indicator,
-    categories: mapCategories,
     emissions: state.emissions,
     search
   };
@@ -84,8 +75,29 @@ class NDCSExploreMapContainer extends PureComponent {
     };
   }
 
-  componentWillMount() {
-    this.props.fetchNDCS();
+  componentDidMount() {
+    const { location } = this.props;
+    const search = qs.parse(location.search);
+    this.props.fetchNDCS({
+      subcategory:
+        (search && search.category) || DEFAULT_NDC_EXPLORE_CATEGORY_SLUG,
+      additionalIndicatorSlugs: ['ndce_ghg', 'submission', 'submission_date']
+    });
+  }
+
+  componentDidUpdate(prevProps) {
+    const { selectedCategory: prevSelectedCategory } = prevProps;
+    const { selectedCategory } = this.props;
+    if (
+      selectedCategory &&
+      (prevSelectedCategory && prevSelectedCategory.value) !==
+        selectedCategory.value
+    ) {
+      this.props.fetchNDCS({
+        subcategory: selectedCategory.value,
+        additionalIndicatorSlugs: ['ndce_ghg', 'submission', 'submission_date']
+      });
+    }
   }
 
   handleSearchChange = query => {
@@ -106,12 +118,12 @@ class NDCSExploreMapContainer extends PureComponent {
       );
     }
   };
-
   handleCountryEnter = geography => {
     const {
       tooltipCountryValues,
       legendData,
-      selectActiveDonutIndex
+      selectActiveDonutIndex,
+      emissionsCardData
     } = this.props;
     const iso = geography.properties && geography.properties.id;
 
@@ -125,11 +137,15 @@ class NDCSExploreMapContainer extends PureComponent {
           l => parseInt(l.id, 10) === tooltipValue.labelId
         );
         if (hoveredlegendData) {
-          selectActiveDonutIndex(legendData.indexOf(hoveredlegendData));
+          selectActiveDonutIndex(
+            getHoverIndex(emissionsCardData, hoveredlegendData)
+          );
         }
-      } else {
+      } else if (legendData) {
         // This is the last legend item aggregating all the no data geographies
-        selectActiveDonutIndex(legendData.length - 1);
+        selectActiveDonutIndex(
+          getHoverIndex(emissionsCardData, legendData[legendData.length - 1])
+        );
       }
 
       const tooltipValues = {
@@ -205,6 +221,8 @@ NDCSExploreMapContainer.propTypes = {
   fetchNDCS: PropTypes.func.isRequired,
   query: PropTypes.object,
   summaryData: PropTypes.array,
+  selectedCategory: PropTypes.array,
+  emissionsCardData: PropTypes.array,
   indicator: PropTypes.object,
   selectActiveDonutIndex: PropTypes.func.isRequired,
   legendData: PropTypes.array,

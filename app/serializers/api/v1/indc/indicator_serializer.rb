@@ -31,7 +31,7 @@ module Api
                      object.labels
                    end
           IndexedSerializer.serialize(
-            object.labels,
+            labels,
             serializer: LabelSerializer,
             &:id
           )
@@ -40,14 +40,36 @@ module Api
         def locations
           values = if instance_options[:locations_documents]
                      object.values_for instance_options[:locations_documents]
+                   # if filtering for map return only those with label + custom ones
+                   elsif instance_options[:filter] == 'map' &&
+                       %w(submission submission_date ndce_ghg lts_ghg lts_document lts_target lts_submission lts_date).exclude?(object.slug)
+                     object.
+                       values.
+                       joins(:label, :location).
+                       joins('LEFT JOIN indc_documents ON indc_documents.id = indc_values.document_id').
+                       select('locations.iso_code3 AS iso_code3, indc_labels.slug AS label_slug, indc_values.label_id,
+                              indc_values.sector_id, indc_documents.slug AS document_slug, indc_values.value AS value')
                    else
-                     object.values
+                     object.
+                       values.
+                       joins(:location).
+                       joins('LEFT JOIN indc_documents ON indc_documents.id = indc_values.document_id').
+                       joins('LEFT JOIN indc_labels ON indc_labels.id = indc_values.label_id').
+                       select('locations.iso_code3 AS iso_code3, indc_labels.slug AS label_slug, indc_values.label_id,
+                              indc_values.sector_id, indc_documents.slug AS document_slug, indc_values.value AS value')
                    end
+
+          # filter out values for filtered locations
+          if !instance_options[:locations_documents]
+            values = values.where(locations: {iso_code3: instance_options[:location_list]}) if instance_options[:location_list]
+            values = values.where(indc_documents: {slug: instance_options[:document]}) if instance_options[:document]
+          end
+
           indexed_data = IndexedSerializer.serialize_collection(
             values,
             serializer: ValueSerializer
           ) do |v|
-            v.location.iso_code3
+            v.iso_code3
           end
 
           # inject laws data
@@ -60,6 +82,7 @@ module Api
                 value = []
                 data.each do |target|
                   next unless target['sources'].map{|p| p['id']}.include?(law_id.to_i) && target['sector'] != 'economy-wide'
+
                   value << if object.normalized_slug == 'nrm_link'
                              target['sources'].select{|t| t['id'] == law_id.to_i}.map{|t| t['link']}.join(',')
                           elsif object.normalized_slug == 'nrm_type_of_commitment'
@@ -70,8 +93,13 @@ module Api
                             target[LSE_INDICATORS_MAP[object.normalized_slug.to_sym]]
                           end
                 end
+                value = value.compact.uniq.join('<br>')
+                if object.normalized_slug == 'nrm_summary'
+                  link = data.first && data.first['sources']&.select{|t| t['id'] == law_id.to_i}&.map{|t| t['link']}&.first
+                  value += "<br><br><a href='#{link}' target='_blank' rel='noopener noreferrer'>View on Climate Laws</a>" if link
+                end
                 indexed_data[iso_code] << {
-                  value: value.compact.uniq.join('<br>'),
+                  value: value,
                   document_slug: param_slug
                 }
               end

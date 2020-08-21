@@ -72,7 +72,8 @@
   z-index: $z-index-over-base;
 }
 
-.loader {
+.loader,
+.noContent {
   position: absolute;
   min-height: 500px;
   top: 0;

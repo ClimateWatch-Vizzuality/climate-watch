@@ -10,6 +10,7 @@ import { IGNORED_COUNTRIES_ISOS } from 'data/ignored-countries';
 import { actions as fetchActions } from 'pages/lts-explore';
 import { actions as modalActions } from 'components/modal-metadata';
 import exploreMapActions from 'components/ndcs/shared/explore-map/explore-map-actions';
+import { getHoverIndex } from 'components/ndcs/shared/utils';
 
 import Component from './lts-explore-map-component';
 import {
@@ -76,6 +77,8 @@ class LTSExploreMapContainer extends PureComponent {
   }
 
   componentWillMount() {
+    // Note: This fetch is not filtered by category like the NDC as the data is not so big
+    // If it starts getting big copy the logic in ndcs-explore-map.js with the lts emissions indicator
     this.props.fetchLTS();
   }
 
@@ -106,7 +109,8 @@ class LTSExploreMapContainer extends PureComponent {
     const {
       tooltipCountryValues,
       legendData,
-      selectActiveDonutIndex
+      selectActiveDonutIndex,
+      emissionsCardData
     } = this.props;
     const iso = geography.properties && geography.properties.id;
 
@@ -120,11 +124,15 @@ class LTSExploreMapContainer extends PureComponent {
           l => parseInt(l.id, 10) === tooltipValue.labelId
         );
         if (hoveredlegendData) {
-          selectActiveDonutIndex(legendData.indexOf(hoveredlegendData));
+          selectActiveDonutIndex(
+            getHoverIndex(emissionsCardData, hoveredlegendData)
+          );
         }
-      } else {
+      } else if (legendData) {
         // This is the last legend item aggregating all the no data geographies
-        selectActiveDonutIndex(legendData.length - 1);
+        selectActiveDonutIndex(
+          getHoverIndex(emissionsCardData, legendData[legendData.length - 1])
+        );
       }
 
       const tooltipValues = {
@@ -198,6 +206,7 @@ LTSExploreMapContainer.propTypes = {
   history: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
   isoCountries: PropTypes.array.isRequired,
+  emissionsCardData: PropTypes.object.isRequired,
   setModalMetadata: PropTypes.func.isRequired,
   fetchLTS: PropTypes.func.isRequired,
   query: PropTypes.string,

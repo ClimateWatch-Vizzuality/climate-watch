@@ -128,7 +128,7 @@ export const DATA_EXPLORER_METHODOLOGY_SOURCE = {
     'UNFCCC Non-Annex I': ['historical_emissions_unfccc'],
     GCP: ['historical_emissions_gcp']
   },
-  'ndc-sdg-linkages': ['ndc_sdc_all indicators'],
+  'ndc-sdg-linkages': ['ndc_sdg_all indicators'],
   'ndc-content': ['ndc_cw', 'ndc_wb', 'ndc_die'],
   'lts-content': ['lts'],
   'emission-pathways': [null] // model, scenario and indicator related metadata
@@ -378,7 +378,13 @@ export const POSSIBLE_LABEL_FIELDS = [
   'number'
 ];
 
-export const POSSIBLE_VALUE_FIELDS = ['id', 'value', 'iso_code3', 'iso'];
+export const POSSIBLE_VALUE_FIELDS = [
+  'slug',
+  'id',
+  'value',
+  'iso_code3',
+  'iso'
+];
 
 export const FIELD_ALIAS = {
   'historical-emissions': { 'data-sources': 'Data sources' },

@@ -5,9 +5,22 @@ SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SELECT pg_catalog.set_config('search_path', '', false);
 SET check_function_bodies = false;
-SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
 
 --
 -- Name: emissions_filter_by_year_range(jsonb, integer, integer); Type: FUNCTION; Schema: public; Owner: -
@@ -30,7 +43,7 @@ CREATE FUNCTION public.emissions_filter_by_year_range(emissions jsonb, start_yea
 
 SET default_tablespace = '';
 
-SET default_table_access_method = heap;
+SET default_with_oids = false;
 
 --
 -- Name: active_storage_attachments; Type: TABLE; Schema: public; Owner: -
@@ -3282,10 +3295,10 @@ CREATE INDEX index_indc_categories_on_parent_id ON public.indc_categories USING 
 
 
 --
--- Name: index_indc_categories_on_slug_and_category_type_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_indc_categories_on_slug_category_type_and_parent; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_indc_categories_on_slug_and_category_type_id ON public.indc_categories USING btree (slug, category_type_id);
+CREATE UNIQUE INDEX index_indc_categories_on_slug_category_type_and_parent ON public.indc_categories USING btree (slug, category_type_id, parent_id);
 
 
 --
@@ -4260,6 +4273,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200317210928'),
 ('20200423085052'),
 ('20200503165104'),
-('20200521120158');
+('20200521120158'),
+('20200818134235');
 
 

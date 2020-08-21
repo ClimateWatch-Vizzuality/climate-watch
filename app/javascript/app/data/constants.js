@@ -39,6 +39,8 @@ export const GHG_CALCULATION_OPTIONS = {
   }
 };
 
+export const NOT_COVERED_LABEL = 'Not covered';
+
 export const CALCULATION_OPTIONS = {
   ABSOLUTE_VALUE: {
     label: 'Total',
@@ -93,7 +95,7 @@ export const DEFAULT_EMISSIONS_SELECTIONS = {
   UNFCCC_NAI: {
     gas: 'Aggregate GHGs',
     sector: 'Total GHG emissions including LULUCF/LUCF',
-    location: 'ANNEXI'
+    location: 'TOP'
   },
   GCP: {
     gas: 'CO2',
@@ -102,30 +104,17 @@ export const DEFAULT_EMISSIONS_SELECTIONS = {
   }
 };
 
-export const TOP_EMITTERS = [
-  'CHN',
-  'USA',
-  'EUU',
-  'IND',
-  'RUS',
-  'JPN',
-  'BRA',
-  'IDN',
-  'CAN',
-  'MEX'
-];
-
 export const TOP_EMITTERS_REGION_COUNTRIES = [
   { iso: 'CHN', label: 'China' },
   { iso: 'USA', label: 'United States' },
   { iso: 'EUU', label: 'European Union' },
   { iso: 'IND', label: 'India' },
-  { iso: 'RUS', label: 'Rusia' },
+  { iso: 'RUS', label: 'Russia' },
   { iso: 'JPN', label: 'Japan' },
   { iso: 'BRA', label: 'Brasil' },
   { iso: 'IDN', label: 'Indonesia' },
-  { iso: 'CAN', label: 'Canada' },
-  { iso: 'MEX', label: 'Mexico' }
+  { iso: 'IRN', label: 'Iran' },
+  { iso: 'KOR', label: 'South Korea' }
 ];
 
 export const OTHER_COLOR = CHART_NAMED_GRAY_COLORS.grayColor1;
@@ -270,7 +259,7 @@ export const TOP_EMITTERS_OPTION = {
   iso: 'TOP',
   label: 'Top Emitters',
   value: 'TOP',
-  expandsTo: TOP_EMITTERS,
+  expandsTo: TOP_EMITTERS_REGION_COUNTRIES.map(c => c.iso),
   regionCountries: TOP_EMITTERS_REGION_COUNTRIES,
   groupId: 'regions'
 };
@@ -278,9 +267,19 @@ export const TOP_EMITTERS_OPTION = {
 export const GAS_AGGREGATES = {
   'All GHG': ['CH4', 'CO2', 'F-Gas', 'N2O'],
   KYOTOGHG: ['CH4', 'CO2', 'HFCS', 'N2O', 'F-Gas'],
-  'Aggregate GHGs': ['CH4', 'CO2', 'HFCs', 'N2O', 'PFCs', 'SF6'],
+  'Aggregate GHGs': [
+    'CH4',
+    'CO2',
+    'HFCs',
+    'N2O',
+    'PFCs',
+    'SF6',
+    'Aggregate F-gases'
+  ],
   'Aggregate F-gases': ['HFCs', 'PFCs', 'SF6']
 };
+
+export const COMPARE_GHG_AGGREGATES = ['KYOTOGHG', 'All GHG', 'Aggregate GHGs'];
 
 export const GHG_TABLE_HEADER = {
   regions: 'Country/Region',
@@ -354,4 +353,11 @@ export const AGRICULTURE_INDICATORS_MAP_BUCKETS = {
     4: { name: '20% - 50%', index: 3 },
     5: { name: '> 50%', index: 4 }
   }
+};
+
+export const DEFAULT_NDC_EXPLORE_CATEGORY_SLUG = 'unfccc_process';
+
+export const CATEGORY_SOURCES = {
+  NDC_EXPLORE: ['CAIT', 'WB', 'NDC Explorer'],
+  NDC_CONTENT: ['CAIT', 'WB', 'NDC Explorer']
 };

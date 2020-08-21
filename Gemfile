@@ -7,7 +7,7 @@ git_source(:github) do |repo_name|
 end
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '5.2.2'
+gem 'rails', '~> 5.2.4'
 gem 'bootsnap'
 
 gem 'sprockets',  '~> 3.7.2'
@@ -94,6 +94,7 @@ end
 group :test do
   gem 'simplecov', require: false
   gem 'json-schema'
+  gem 'test-prof'
   gem 'vcr'
   gem 'webmock'
 end

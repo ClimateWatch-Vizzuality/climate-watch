@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Button from 'components/button';
 import Header from 'components/header';
 import Intro from 'components/intro';
+import ButtonGroup from 'components/button-group';
 import Icon from 'components/icon';
 import cx from 'classnames';
 import layout from 'styles/layout.scss';
@@ -16,6 +17,7 @@ import { NCS_COMPARE_ALL } from 'data/SEO';
 import { MetaDescription, SocialMetadata } from 'components/seo';
 import NdcCompareAllTargetsProvider from 'providers/ndc-compare-all-targets-provider';
 import CountriesDocumentsProvider from 'providers/countries-documents-provider';
+import ModalMetadata from 'components/modal-metadata';
 
 import CompareAllTable from './ndc-compare-all-targets-table/ndc-compare-all-targets-table';
 import styles from './ndc-compare-all-targets-styles.scss';
@@ -59,7 +61,8 @@ const NDCCompareAllTargets = props => {
     setColumnWidth,
     handleTargetsChange,
     selectedTargets,
-    selectedTableTargets
+    selectedTableTargets,
+    handleInfoClick
   } = props;
   return (
     <React.Fragment>
@@ -76,8 +79,7 @@ const NDCCompareAllTargets = props => {
           <div className={styles.title}>
             <Intro
               title="Compare all targets"
-              description="It is important for countries’ various commitments, laws and policies align to achieve their climate objectives.
-  Explore a summary of which countries have submitted each type of target and compare all of them side-by-side."
+              description={`It is important for countries’ various commitments, laws and policies align to achieve their climate objectives. Explore a summary of which countries have each type of documents and compare all of them side-by-side. You can also <a href='https://climate-laws.org/' class=${styles.link}> explore climate laws and policies of the world published by Grantham Research Institute</a>.`}
             />
           </div>
         </div>
@@ -91,6 +93,15 @@ const NDCCompareAllTargets = props => {
           <div className={styles.legendAndActions}>
             {renderLegend()}
             <div className={styles.buttonAndSearch}>
+              <ButtonGroup
+                className={styles.colEnd}
+                buttonsConfig={[
+                  {
+                    type: 'info',
+                    onClick: handleInfoClick
+                  }
+                ]}
+              />
               <Button
                 variant="secondary"
                 className={styles.actionButton}
@@ -133,6 +144,7 @@ const NDCCompareAllTargets = props => {
       </div>
       <NdcCompareAllTargetsProvider />
       <CountriesDocumentsProvider />
+      <ModalMetadata />
     </React.Fragment>
   );
 };
@@ -143,6 +155,7 @@ NDCCompareAllTargets.propTypes = {
   tableData: PropTypes.array,
   query: PropTypes.string,
   handleSearchChange: PropTypes.func.isRequired,
+  handleInfoClick: PropTypes.func.isRequired,
   handleTargetsChange: PropTypes.func.isRequired,
   noContentMsg: PropTypes.string,
   columns: PropTypes.array,

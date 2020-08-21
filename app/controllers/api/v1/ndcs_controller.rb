@@ -55,20 +55,36 @@ module Api
       before_action :set_locations_documents, only: [:index]
 
       def index
-        indicators = filtered_indicators
-        categories = filtered_categories(indicators)
-        sectors = ::Indc::Sector.joins(values: :indicator).
-          where(indc_indicators: {id: indicators.map(&:id)})
-        parents = ::Indc::Sector.where(parent_id: nil).
-          joins("INNER JOIN indc_sectors AS children ON children.parent_id = indc_sectors.id").where(children: {id: sectors.pluck(:id).uniq})
+        # params[:source] -> one of ["CAIT", "LTS", "WB", "NDC Explorer", "Pledges"]
+        if params[:source].present?
+          source = ::Indc::Source.where(name: params[:source])
+        end
 
-        sectors = ::Indc::Sector.from("(#{sectors.to_sql} UNION #{parents.to_sql}) AS indc_sectors").
-          includes(values: :indicator)
+        categories = Rails.cache.fetch(categories_cache_key, expires: 7.days) do
+          filtered_categories(source)
+        end
+
+        indicators = Rails.cache.fetch(indicators_cache_key, expires: 7.days) do
+          filtered_indicators(source)
+        end
+
+        sectors = Rails.cache.fetch(sectors_cache_key, expires: 7.days) do
+          tmp_sectors = ::Indc::Sector.joins(values: :indicator).
+            where(indc_indicators: {id: indicators.map(&:id)}).distinct
+
+          parents = ::Indc::Sector.where(parent_id: nil).
+            joins("INNER JOIN indc_sectors AS children ON children.parent_id = indc_sectors.id").where(children: {id: tmp_sectors.pluck(:id).uniq})
+
+          ::Indc::Sector.from("(#{tmp_sectors.to_sql} UNION #{parents.to_sql}) AS indc_sectors")
+        end
 
         render json: NdcIndicators.new(indicators, categories, sectors),
                serializer: Api::V1::Indc::NdcIndicatorsSerializer,
                locations_documents: @locations_documents,
-               lse_data: get_lse_data
+               location_list: location_list,
+               document: params[:document],
+               lse_data: get_lse_data,
+               filter: params[:filter]
       end
 
       def content_overview
@@ -85,10 +101,15 @@ module Api
           ).
           order('indc_indicators.name')
 
-        if params[:document]
-          values = values.joins(:document).
-            where(indc_documents: {slug: [params[:document], nil]})
-        end
+        docs = [nil]
+        docs += if params[:document].present?
+                [params[:document]]
+              else
+                location.documents.where(is_ndc: true).order(ordering: :desc).
+                  limit(1).pluck(:slug)
+              end
+
+        values = values.joins(:document).where(indc_documents: {slug: docs})
 
         if SECTORS_INDICATORS.present?
           sectors = ::Indc::Indicator.
@@ -97,10 +118,8 @@ module Api
             where(indc_values: {location_id: location.id}).
             where.not(indc_values: {value: "No specified measure"})
 
-          if params[:document]
-            sectors = sectors.joins(values: :document).
-              where(indc_documents: {slug: [params[:document], nil]})
-          end
+          sectors = sectors.joins(values: :document).where(indc_documents: {slug: docs})
+
           sectors = sectors.order('indc_indicators.name').pluck(:name)
         end
 
@@ -109,6 +128,37 @@ module Api
       end
 
       private
+
+      def indicators_cache_key
+        [
+          params[:source],
+          params[:document],
+          params[:location],
+          params[:indicators],
+          params[:category],
+          params[:subcategory],
+          params[:locations_documents],
+          ::Indc::Indicator.maximum(:updated_at).to_s
+        ].join('_')
+      end
+
+      def categories_cache_key
+        [
+          params[:source],
+          params[:filter],
+          params[:category],
+          params[:subcategory],
+          params[:locations_documents],
+          ::Indc::Category.maximum(:updated_at).to_s
+        ].join('_')
+      end
+
+      def sectors_cache_key
+        [
+          indicators_cache_key,
+          ::Indc::Sector.maximum(:updated_at).to_s
+        ].join('_')
+      end
 
       def location_list
         if params[:location].blank?
@@ -119,13 +169,18 @@ module Api
       end
 
       def set_locations_documents
-        return nil unless params[:locations_documents].present?
+        return unless params[:locations_documents].present?
 
         @locations_documents = params[:locations_documents].split(',').map do |loc_doc|
           loc_doc.split('-')
         end
-        @indc_locations_documents = @locations_documents.select{ |ld| !['framework', 'sectoral'].include?(ld[1].split('_').first)}.presence
-        @lse_locations_documents = @locations_documents.select{ |ld| ['framework', 'sectoral'].include?(ld[1].split('_').first)}.presence
+
+        lse_documents_prefixes = %w(framework sectoral)
+
+        @indc_locations_documents = @locations_documents.
+          select { |ld| lse_documents_prefixes.exclude?(ld[1].split('_').first) }.presence
+        @lse_locations_documents = @locations_documents.
+          select { |ld| lse_documents_prefixes.include?(ld[1].split('_').first) }.presence
       end
 
       def get_lse_data
@@ -144,33 +199,28 @@ module Api
         lse_data
       end
 
-      def filtered_indicators
-        indicators = ::Indc::Indicator.includes(:labels, :source, :categories,
-                                                values: [:sector, :label, :location,
-                                                         :document])
+      def filtered_indicators(source=nil)
+        indicators = ::Indc::Indicator.all
 
         if location_list
-          indicators = indicators.where(values: {locations: {iso_code3: location_list}})
+          indicators = indicators.joins(values: [:location]).where(values: {locations: {iso_code3: location_list}})
         end
 
         if params[:document].present?
-          indicators = indicators.where(values: {indc_documents: {slug: [params[:document], nil]}})
+          indicators = indicators.joins(values: [:document]).where(values: {indc_documents: {slug: [params[:document], nil]}})
         end
 
-        # params[:source] -> one of ["CAIT", "LTS", "WB", "NDC Explorer", "Pledges"]
-        if params[:source].present?
-          source = ::Indc::Source.where(name: params[:source])
-          indicators = indicators.where(source_id: source.map(&:id))
-        end
+        indicators = indicators.where(source_id: source.map(&:id)) if source
 
         if @indc_locations_documents
+          # TODO: do not understand why below are needed
+          # if indicator belongs to many cateogires then only one will be in category_ids
+          # that's why I'm going to reset the query at the end
           indicators = indicators.select('DISTINCT ON(COALESCE("normalized_slug", indc_indicators.slug)) indc_indicators.*')
-          indicators = indicators.joins(values: [:location, :document]).
+          indicators = indicators.joins(values: [:location, :document]). #
             where(locations: {iso_code3: @indc_locations_documents.map(&:first)},
                   indc_documents: {slug: @indc_locations_documents.map(&:second)})
-        end
-
-        if !@indc_locations_documents && @lse_locations_documents
+        elsif @lse_locations_documents
           indicators = indicators.select('DISTINCT ON(COALESCE("normalized_slug", indc_indicators.slug)) indc_indicators.*')
           indicators = indicators.joins(values: [:location]).
             where(normalized_slug: LSE_INDICATORS_MAP.keys.map(&:to_s)).
@@ -181,18 +231,37 @@ module Api
           indicators = indicators.where(slug: params[:indicators].split(','))
         end
 
+        # seems like when filter for map we need more indicators which are not in map category
+        # so I cannot just pass filtered categories here
         if params[:category].present?
           parent = ::Indc::Category.includes(:category_type).
             where(indc_category_types: {name: 'global'}, slug: params[:category])
           indicators = indicators.joins(:categories).where(indc_categories: {parent_id: parent.map(&:id)})
         end
-        indicators.sort_by{|i| i.order}
+
+        if params[:subcategory].present?
+          indicators = indicators.joins(:categories).where(indc_categories: {slug: params[:subcategory]})
+        end
+
+        # to not break distinct on clause
+        if @indc_locations_documents || @lse_locations_documents
+          indicator_ids = indicators.map(&:id).uniq
+        else
+          indicator_ids = indicators.ids
+        end
+
+        # better this way to reset all those joins
+        # to get all category_ids for indicator has many and belongs for example
+        ::Indc::Indicator.
+          includes(:labels, :source, :categories).
+          where(id: indicator_ids).
+          order(:order)
       end
 
-      def filtered_categories(indicators)
-        categories = ::Indc::Category.includes(:category_type).order(:order)
+      def filtered_categories(source=nil)
+        categories = ::Indc::Category.includes(:category_type, :sources)
 
-        # params[:filter] -> ['map', 'table']
+        # params[:filter] -> ['map', 'table', 'overview']
         if params[:filter].present?
           categories = categories.where(indc_category_types: {name: params[:filter]})
         end
@@ -204,7 +273,20 @@ module Api
           categories = categories.where(parent_id: parent.map(&:id))
         end
 
-        categories.where(id: indicators.flat_map(&:category_ids).uniq)
+        categories = categories.where(slug: params[:subcategory]) if params[:subcategory].present?
+
+        if source
+          categories = categories.joins(:indicators).
+            where(indc_indicators: {source_id: source.map(&:id)})
+        end
+
+        if @indc_locations_documents
+          categories = categories.joins(indicators: {values: [:document, :location]}).
+            where(indc_documents: {slug: @indc_locations_documents.map(&:second)}).
+            where(locations: {iso_code3: @indc_locations_documents.map(&:first)})
+        end
+
+        categories.order(:order).distinct
       end
     end
   end

@@ -6,6 +6,7 @@ export const OTHER_DOCUMENTS_SLUGS = [
   'pledges',
   'indc',
   'first_ndc',
+  'revised_first_ndc',
   'second_ndc',
   'lts'
 ];
@@ -55,30 +56,6 @@ const getCountryOptions = createSelector([getCountries], countries => {
   }));
 });
 
-export const getSelectedTargets = createSelector([getQuery], query => {
-  if (!query) return null;
-  const queryTargets = query.targets ? query.targets.split(',') : [];
-  return [1, 2, 3].map((value, i) => {
-    // targets are saved as a string 'ISO3-DOCUMENT', e.g. 'USA-NDC'
-    const target =
-      queryTargets && queryTargets[i] && queryTargets[i].split(/-(.+)/);
-    const country = target && target[0].replace('-', '');
-    const document = target && target[1];
-    return { key: `target${i}`, country, document };
-  });
-});
-
-export const getSelectedCountries = createSelector(
-  [getSelectedTargets],
-  selectedTargets => {
-    if (!selectedTargets) return null;
-    const selectedCountries = selectedTargets
-      .map(({ country }) => country)
-      .join(',');
-    return selectedCountries;
-  }
-);
-
 export const getDocumentsOptionsByCountry = createSelector(
   [getIndicatorsData, getCountriesDocuments, getCountriesDocumentsData],
   (indicators, countriesDocuments, countriesDocumentsData) => {
@@ -96,7 +73,13 @@ export const getDocumentsOptionsByCountry = createSelector(
         const countryDocument =
           countriesDocumentsData &&
           countriesDocumentsData[iso3] &&
-          countriesDocumentsData[iso3].find(d => d.slug === slug);
+          countriesDocumentsData[iso3]
+            .filter(
+              d =>
+                d.slug !== 'second_ndc' ||
+                (d.slug === 'second_ndc' && !!d.submission_date)
+            ) // filter out 'intends to submit' second NDC
+            .find(d => d.slug === slug);
         return createDropdownOption(countryDocument, '');
       }).filter(Boolean);
 
@@ -119,6 +102,48 @@ export const getDocumentsOptionsByCountry = createSelector(
   }
 );
 
+export const getSelectedTargets = createSelector(
+  [getQuery, getDocumentsOptionsByCountry],
+  (query, documentOptions) => {
+    if (!query || !documentOptions) return null;
+    const queryTargets = query.targets ? query.targets.split(',') : [];
+    return [1, 2, 3].map((value, i) => {
+      // targets are saved as a string 'ISO3-DOCUMENT', e.g. 'USA-NDC'
+      const target =
+        queryTargets && queryTargets[i] && queryTargets[i].split('-');
+      const country = target && target[0].replace('-', '');
+      const document = target && target[1];
+
+      let defaultDocument;
+      if (['framework', 'sectoral'].includes(document)) {
+        const defaultOption =
+          documentOptions[country] &&
+          documentOptions[country].find(
+            ({ optGroup }) => optGroup === document
+          );
+        defaultDocument = defaultOption && defaultOption.value;
+      }
+
+      return {
+        key: `target${i}`,
+        country,
+        document: defaultDocument || document
+      };
+    });
+  }
+);
+
+export const getSelectedCountries = createSelector(
+  [getSelectedTargets],
+  selectedTargets => {
+    if (!selectedTargets) return null;
+    const selectedCountries = selectedTargets
+      .map(({ country }) => country)
+      .join(',');
+    return selectedCountries;
+  }
+);
+
 export const getFiltersData = createSelector(
   [getCountryOptions, getDocumentsOptionsByCountry, getSelectedTargets],
   (countryOptions, documentOptions, targets) => {
@@ -138,20 +163,11 @@ export const getFiltersData = createSelector(
         documentOptions[country] &&
         documentOptions[country].find(({ value }) => value === document);
 
-      const defaultDocument =
-        documentOptions &&
-        document &&
-        documentOptions[country] &&
-        documentOptions[country].find(({ optGroup }) => {
-          const documentsGroup = document.split('-')[0];
-          return optGroup === documentsGroup;
-        });
-
       return {
         key,
         countryValue: countryOptions.find(({ value }) => country === value),
         contriesOptions: countryOptions,
-        documentValue: selectedDocument || defaultDocument,
+        documentValue: selectedDocument,
         documentOptions: documentOptions ? documentOptions[country] : []
       };
     });

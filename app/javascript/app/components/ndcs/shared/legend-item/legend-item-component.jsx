@@ -9,12 +9,12 @@ const LegendItem = ({
   value,
   color,
   itemsName,
-  index,
+  hoverIndex,
   selectActiveDonutIndex
 }) => (
   <div
     className={styles.legendItem}
-    onMouseEnter={() => selectActiveDonutIndex(index)}
+    onMouseEnter={() => selectActiveDonutIndex(hoverIndex)}
   >
     <div className={styles.legendName}>
       <span className={styles.legendDot} style={{ backgroundColor: color }} />
@@ -34,7 +34,7 @@ LegendItem.propTypes = {
   number: PropTypes.number,
   itemsName: PropTypes.array,
   value: PropTypes.number,
-  index: PropTypes.number.isRequired,
+  hoverIndex: PropTypes.number.isRequired,
   color: PropTypes.string,
   selectActiveDonutIndex: PropTypes.func.isRequired
 };

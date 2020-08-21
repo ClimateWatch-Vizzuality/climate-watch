@@ -2,7 +2,7 @@ require 'rails_helper'
 
 object_contents = {
   "#{CW_FILES_PREFIX}indc/NDC_metadata.csv" => <<~END,
-    global_category,main_category,map_category,column_name,long_name,Definition,Source,multiple_version
+    global_category,overview_category,map_category,column_name,long_name,Definition,Source,multiple_version
     Overview,UNFCCC Process,Other,domestic_approval,Domestic Approval Processes Category,,CAIT,TRUE
     Mitigation,Target,,M_TarYr,Target year,The year by which mitigation objectives are expected to be achieved,WB,TRUE
     Mitigation,Target,,M_TarYr_2,Second target year,Whether the NDC has a second-year target,WB,TRUE
@@ -17,6 +17,10 @@ object_contents = {
     Sectoral Information,Sectoral Adaptation Commitments,,A_Sc_CapBud,Capacity Building Needs for Sectorial Implementation,Capacity building needs for sectorial implementation,WB,TRUE
     Overview,UNFCCC Process,UNFCCC Process,submission,Latest submission,,CAIT,FALSE
     Overview,UNFCCC Process,,submission_date,Latest submission date,,CAIT,FALSE
+    Mitigation,,Sectoral Mitigation Measures,m_buildings,Buildings,,CAIT,TRUE
+    Mitigation,,Sectoral Mitigation Measures,m_agriculture,Agriculture,,CAIT,TRUE
+    Adaptation,,Sectoral Adaptation Measures,a_agriculture,Agriculture,,CAIT,TRUE
+    Adaptation,,Sectoral Adaptation Measures,a_coastal_zone,Coastal Zone,,CAIT,TRUE
   END
 
   "#{CW_FILES_PREFIX}indc/NDC_submission.csv" => <<~END,
@@ -105,7 +109,7 @@ describe ImportIndc do
   end
 
   it 'Creates new INDC category records' do
-    expect { subject }.to change { Indc::Category.count }.by(10)
+    expect { subject }.to change { Indc::Category.count }.by(12)
   end
 
   it 'Creates new INDC indicator records' do
@@ -117,7 +121,7 @@ describe ImportIndc do
   end
 
   it 'Creates new INDC value records' do
-    expect { subject }.to change { Indc::Value.count }.by(6)
+    expect { subject }.to change { Indc::Value.count }.by(4)
   end
 
   it 'Creates new INDC submission records' do

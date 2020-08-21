@@ -1,9 +1,6 @@
 import { createSelector } from 'reselect';
-import {
-  getColorByIndex,
-  createLegendBuckets,
-  shouldShowPath
-} from 'utils/map';
+import { getColorByIndex, shouldShowPath } from 'utils/map';
+import uniq from 'lodash/uniq';
 import uniqBy from 'lodash/uniqBy';
 import sortBy from 'lodash/sortBy';
 import intersection from 'lodash/intersection';
@@ -16,16 +13,41 @@ import {
   getLabels
 } from 'components/ndcs/shared/utils';
 import { europeSlug, europeanCountries } from 'app/data/european-countries';
+import {
+  DEFAULT_NDC_EXPLORE_CATEGORY_SLUG,
+  CATEGORY_SOURCES,
+  NOT_COVERED_LABEL
+} from 'data/constants';
 
 const NOT_APPLICABLE_LABEL = 'Not Applicable';
 
 const getSearch = state => state.search || null;
 const getCountries = state => state.countries || null;
-const getCategoriesData = state => state.categories || null;
+const getSectors = state => state.sectors || null;
+const getCategoriesData = createSelector(
+  state => state.categories,
+  categories => {
+    if (!categories) return null;
+    const mapCategories = {};
+    Object.keys(categories).forEach(key => {
+      const category = categories[key];
+      if (
+        category.type === 'map' &&
+        category.sources.length &&
+        category.sources.every(s => CATEGORY_SOURCES.NDC_EXPLORE.includes(s))
+      ) {
+        mapCategories[key] = categories[key];
+      }
+    });
+    return mapCategories;
+  }
+);
+
 const getIndicatorsData = state => state.indicators || null;
 const getCountriesDocumentsData = state =>
   state.countriesDocuments.data || null;
 const getZoom = state => state.map.zoom || null;
+
 export const getDonutActiveIndex = state =>
   state.exploreMap.activeIndex || null;
 
@@ -49,29 +71,46 @@ export const getISOCountries = createSelector([getCountries], countries =>
 );
 
 export const getIndicatorsParsed = createSelector(
-  [getCategories, getIndicatorsData, getISOCountries],
-  (categories, indicators, isos) => {
+  [getCategories, getIndicatorsData, getSectors],
+  (categories, indicators, sectors) => {
     if (!categories || !indicators || !indicators.length) return null;
-    return sortBy(
+    let parentIndicatorNames = [];
+    const parsedIndicators = sortBy(
       uniqBy(
         indicators.map(i => {
-          const legendBuckets = createLegendBuckets(
-            i.locations,
-            i.labels,
-            isos,
-            NOT_APPLICABLE_LABEL
-          );
+          // Add indicator groups from the sector relationship - Sectoral categories
+          let parentSectorName;
+          if (i.locations && Object.values(i.locations)[0]) {
+            const childrenSectorId = Object.values(i.locations)[0].sector_id;
+            const parentId =
+              childrenSectorId &&
+              sectors &&
+              sectors[childrenSectorId] &&
+              sectors[childrenSectorId].parent_id;
+            if (parentId) {
+              parentSectorName = sectors[parentId].name;
+              parentIndicatorNames.push(parentSectorName);
+            }
+          }
           return {
             label: i.name,
             value: i.slug,
             categoryIds: i.category_ids,
             locations: i.locations,
-            legendBuckets
+            legendBuckets: i.labels,
+            group: parentSectorName
           };
         }),
         'value'
       ),
       'label'
+    );
+
+    parentIndicatorNames = uniq(parentIndicatorNames);
+    return parsedIndicators.map(i =>
+      (parentIndicatorNames.includes(i.label)
+        ? { ...i, groupParent: i.label }
+        : i)
     );
   }
 );
@@ -81,7 +120,8 @@ export const getSelectedCategory = createSelector(
   (selected, categories = []) => {
     if (!categories || !categories.length) return null;
     const defaultCategory =
-      categories.find(cat => cat.value === 'unfccc_process') || categories[0];
+      categories.find(cat => cat.value === DEFAULT_NDC_EXPLORE_CATEGORY_SLUG) ||
+      categories[0];
     if (selected) {
       return (
         categories.find(category => category.value === selected) ||
@@ -107,8 +147,11 @@ export const getSelectedIndicator = createSelector(
   [state => state.indicatorSelected, getCategoryIndicators],
   (selected, indicators = []) => {
     if (!indicators || !indicators.length) return {};
-    const defaultSelection =
-      indicators.find(i => i.value === 'submission') || indicators[0];
+    let defaultSelection = indicators.find(i => i.value === 'submission');
+    if (!defaultSelection) {
+      const firstParentIndicator = indicators.find(i => i.groupParent);
+      defaultSelection = firstParentIndicator || indicators[0];
+    }
     return selected
       ? indicators.find(indicator => indicator.value === selected) ||
           defaultSelection
@@ -176,10 +219,21 @@ export const getPathsWithStyles = createSelector(
   }
 );
 
-export const getLinkToDataExplorer = createSelector([getSearch], search => {
-  const section = 'ndc-content';
-  return generateLinkToDataExplorer(search, section);
-});
+export const getLinkToDataExplorer = createSelector(
+  [getSearch, getSelectedCategory, getSelectedIndicator],
+  (search, selectedCategory, selectedIndicator) => {
+    const section = 'ndc-content';
+    let dataExplorerSearch = search || {};
+    if (selectedCategory && selectedIndicator) {
+      dataExplorerSearch = {
+        category: selectedCategory.value,
+        indicator: selectedIndicator.value,
+        ...search
+      };
+    }
+    return generateLinkToDataExplorer(dataExplorerSearch, section);
+  }
+);
 
 const percentage = (value, total) => (value * 100) / total;
 
@@ -195,20 +249,17 @@ export const getLegend = createSelector(
       ...indicator.legendBuckets[id],
       id
     }));
-    const legendItems = bucketsWithId.map(label => {
-      let partiesNumber = Object.values(indicator.locations).filter(
+    const legendItems = [];
+    bucketsWithId.forEach(label => {
+      const partiesNumber = Object.values(indicator.locations).filter(
         l => l.label_id === parseInt(label.id, 10)
       ).length;
-      if (label.name === NOT_APPLICABLE_LABEL) {
-        partiesNumber =
-          maximumCountries - Object.values(indicator.locations).length;
-      }
-      return {
+      legendItems.push({
         ...label,
         value: percentage(partiesNumber, maximumCountries),
         partiesNumber,
         color: getColorByIndex(indicator.legendBuckets, label.index)
-      };
+      });
     });
     return legendItems.sort(sortByIndexAndNotInfo);
   }
@@ -217,7 +268,7 @@ export const getLegend = createSelector(
 export const getTooltipCountryValues = createSelector(
   [getIndicatorsData, getSelectedIndicator],
   (indicators, selectedIndicator) => {
-    if (!indicators || !selectedIndicator) {
+    if (!indicators || !selectedIndicator || !selectedIndicator.locations) {
       return null;
     }
     const tooltipCountryValues = {};
@@ -240,12 +291,12 @@ export const getEmissionsCardData = createSelector(
     if (!legend || !selectedIndicator || !indicators) {
       return null;
     }
+
     const emissionsIndicator = indicators.find(i => i.slug === 'ndce_ghg');
     if (!emissionsIndicator) return null;
-    const data = getIndicatorEmissionsData(
-      emissionsIndicator,
-      selectedIndicator,
-      legend
+    const data = sortBy(
+      getIndicatorEmissionsData(emissionsIndicator, selectedIndicator, legend),
+      'value'
     );
 
     const config = {
@@ -256,7 +307,11 @@ export const getEmissionsCardData = createSelector(
       hideLegend: true,
       innerHoverLabel: true,
       minAngle: 3,
-      ...getLabels(legend, NOT_APPLICABLE_LABEL)
+      ...getLabels({
+        legend,
+        notInformationLabel: NOT_APPLICABLE_LABEL,
+        hasNotCovered: data.some(d => d.name === NOT_COVERED_LABEL)
+      })
     };
 
     return {
@@ -287,16 +342,22 @@ export const getSummaryCardData = createSelector(
   [getIndicatorsData, getCountriesDocumentsData],
   (indicators, countriesDocuments) => {
     if (!indicators || !countriesDocuments) return null;
-    const getSubmissionIsos = slug =>
-      Object.keys(countriesDocuments).filter(iso =>
-        countriesDocuments[iso].some(doc => doc.slug === slug)
-      );
-    const firstNDCCountriesAndParties = getCountriesAndParties(
-      getSubmissionIsos('first_ndc')
+
+    const firstNDCIsos = Object.keys(countriesDocuments).filter(iso =>
+      countriesDocuments[iso].some(
+        doc => doc.slug === 'first_ndc' && doc.submission_date
+      )
     );
-    const secondNDCCountriesAndParties = getCountriesAndParties(
-      getSubmissionIsos('second_ndc')
+
+    const firstNDCCountriesAndParties = getCountriesAndParties(firstNDCIsos);
+
+    const secondNDCIsos = Object.keys(countriesDocuments).filter(iso =>
+      countriesDocuments[iso].some(
+        doc => doc.slug === 'second_ndc' && !!doc.submission_date
+      )
     );
+    const secondNDCCountriesAndParties = getCountriesAndParties(secondNDCIsos);
+
     return [
       {
         value: firstNDCCountriesAndParties.partiesNumber,

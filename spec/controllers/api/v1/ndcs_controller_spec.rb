@@ -2,10 +2,7 @@ require 'rails_helper'
 
 describe Api::V1::NdcsController, type: :controller do
   context do
-    let(:parsed_body) {
-      JSON.parse(response.body)
-    }
-    let!(:some_indc_values) {
+    let_it_be(:some_indc_values) {
       FactoryBot.create_list(
         :indc_indicator,
         3,

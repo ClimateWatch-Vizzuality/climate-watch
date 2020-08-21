@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { renderRoutes } from 'react-router-config';
 import Header from 'components/header';
@@ -11,6 +11,8 @@ import Dropdown from 'components/dropdown';
 import { MultiLevelDropdown } from 'cw-components';
 import NdcCompareAllTargetsProvider from 'providers/ndc-compare-all-targets-provider';
 import CountriesDocumentsProvider from 'providers/countries-documents-provider';
+import { TabletLandscape, TabletPortraitOnly } from 'components/responsive';
+import { isIE } from 'utils';
 
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
 import multiLevelDropdownTheme from 'styles/themes/dropdown/multi-level-dropdown-custom-compare.scss';
@@ -84,9 +86,39 @@ const CustomComparisonComponent = props => {
     backButtonLink,
     accordionDataLoading,
     selectedCountries,
-    documentsListLoading
+    documentsListLoading,
+    selectedTargets
   } = props;
 
+  const renderFilters = () => (
+    <div className={styles.filters}>
+      {filtersData &&
+        filtersData.map((data, i) => (
+          <FiltersGroup
+            key={data.key}
+            data={data}
+            countryPlaceholder={COUNTRY_PLACEHOLDERS[i]}
+            handleCountryFilterChange={handleCountryFilterChange}
+            handleDocumentFilterChange={handleDocumentFilterChange}
+            countryFilterDisabled={accordionDataLoading}
+            documentsFilterDisabled={
+              documentsListLoading || accordionDataLoading
+            }
+          />
+        ))}
+    </div>
+  );
+
+  const anchorNav = (
+    <AnchorNav
+      useRoutes
+      links={anchorLinks}
+      className={styles.anchorNav}
+      theme={anchorNavRegularTheme}
+    />
+  );
+  const filters = <div className={styles.content}>{renderFilters()}</div>;
+  const isInternetExplorer = useCallback(isIE(), []);
   return (
     <div>
       <Header route={route}>
@@ -99,34 +131,26 @@ const CustomComparisonComponent = props => {
             <Intro title="Custom comparison" />
           </div>
         </div>
-        <Sticky activeClass="sticky -compare" top="#navBarMobile">
-          <AnchorNav
-            useRoutes
-            links={anchorLinks}
-            className={styles.anchorNav}
-            theme={anchorNavRegularTheme}
-          />
-        </Sticky>
+        {isInternetExplorer ? (
+          anchorNav
+        ) : (
+          <Sticky activeClass="sticky -compare" top="#navBarMobile">
+            {anchorNav}
+          </Sticky>
+        )}
       </Header>
-      <div className={styles.content}>
-        <div className={styles.filters}>
-          {filtersData &&
-            filtersData.map((data, i) => (
-              <FiltersGroup
-                key={data.key}
-                data={data}
-                countryPlaceholder={COUNTRY_PLACEHOLDERS[i]}
-                handleCountryFilterChange={handleCountryFilterChange}
-                handleDocumentFilterChange={handleDocumentFilterChange}
-                countryFilterDisabled={accordionDataLoading}
-                documentsFilterDisabled={
-                  documentsListLoading || accordionDataLoading
-                }
-              />
-            ))}
-        </div>
-      </div>
-      {renderRoutes(route.routes)}
+      <TabletLandscape>
+        {isInternetExplorer ? (
+          filters
+        ) : (
+          <Sticky activeClass="sticky -custom-compare" top={50}>
+            {filters}
+          </Sticky>
+        )}
+      </TabletLandscape>
+      <TabletPortraitOnly>{filters}</TabletPortraitOnly>
+
+      {renderRoutes(route.routes, { targets: selectedTargets })}
       <NdcCompareAllTargetsProvider />
       <CountriesDocumentsProvider location={selectedCountries} />
     </div>
@@ -174,7 +198,8 @@ CustomComparisonComponent.propTypes = {
   backButtonLink: PropTypes.string,
   accordionDataLoading: PropTypes.bool,
   selectedCountries: PropTypes.string,
-  documentsListLoading: PropTypes.bool
+  documentsListLoading: PropTypes.bool,
+  selectedTargets: PropTypes.array
 };
 
 export default CustomComparisonComponent;

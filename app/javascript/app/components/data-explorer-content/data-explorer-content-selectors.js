@@ -1,15 +1,10 @@
 import { createSelector } from 'reselect';
-import remove from 'lodash/remove';
-import isEmpty from 'lodash/isEmpty';
-import isArray from 'lodash/isArray';
-import pick from 'lodash/pick';
-import flatten from 'lodash/flatten';
+import { remove, isEmpty, isArray, pick, flatten, sortBy } from 'lodash';
 import qs from 'query-string';
-import { findEqual, isANumber, noEmptyValues } from 'utils/utils';
+import { findEqual, isANumber, noEmptyValues, useSlug } from 'utils/utils';
 import { isNoColumnField, isNonColumnKey } from 'utils/data-explorer';
 import { isPageContained } from 'utils/navigation';
 
-import sortBy from 'lodash/sortBy';
 import {
   DATA_EXPLORER_BLACKLIST,
   DATA_EXPLORER_METHODOLOGY_SOURCE,
@@ -65,7 +60,8 @@ const getMetaForNoModelFilters = createSelector(
     sectionFilters.forEach(field => {
       noModelFiltersMeta[field] = dataSection.meta[field].map(v => ({
         id: v,
-        title: v
+        title: v,
+        slug: useSlug(v)
       }));
     });
     return noModelFiltersMeta;
@@ -79,6 +75,7 @@ const getSectionMeta = createSelector(
       return null;
     }
     const sectionMeta = { ...meta[section], ...noModelFiltersMeta };
+
     if (DATA_EXPLORER_FILTERS[section].includes('regions')) {
       return { ...sectionMeta, regions, countries };
     } else if (DATA_EXPLORER_FILTERS[section].includes('countries')) {
@@ -140,10 +137,10 @@ const findSelectedValueObject = (meta, selectedId) =>
     option =>
       option.iso_code === selectedId ||
       option.iso_code3 === selectedId ||
+      option.slug === selectedId ||
       option.name === selectedId ||
       String(option.id) === selectedId
   );
-
 const addTopEmittersMembers = (isosArray, regions, key) => {
   if (key === FILTER_NAMES.regions && isosArray.includes('TOP')) {
     const topRegion = regions.find(r => r.iso === 'TOP');
@@ -172,7 +169,6 @@ function extractFilterIds(parsedFilters, metadata, isLinkQuery = false) {
       metadata.regions,
       key
     );
-
     const filters = [];
     if (metadataWithSubcategories[parsedKey]) {
       selectedIds.forEach(selectedId => {
@@ -183,6 +179,7 @@ function extractFilterIds(parsedFilters, metadata, isLinkQuery = false) {
         if (foundSelectedOption) filters.push(foundSelectedOption);
       });
     }
+
     if (filters && filters.length > 0) {
       filterIds[parsedKey] = filters.map(
         f => f.id || f.iso_code || f.iso_code3
@@ -200,6 +197,7 @@ function filterQueryIds(sectionMeta, search, section, isLinkQuery) {
     sectionMeta,
     isLinkQuery
   );
+
   return filterIds;
 }
 
@@ -257,6 +255,7 @@ const getParsedFilterId = (
       findEqual(m, ['id', currentId], filterQuery[key][0])
     )[idLabel]
     : filterQuery[key];
+
   return isArray(id) ? id.join(',') : id;
 };
 
@@ -290,25 +289,58 @@ const parseQuery = (filterQuery, section, sectionMeta, nonColumnQuery) => {
   return parsedQuery;
 };
 
+const parseSlugParams = (filterQuery, section, sectionMeta) => {
+  const SLUG_SECTIONS = ['historical-emissions', 'lts-content', 'ndc-content'];
+  if (SLUG_SECTIONS.includes(section)) {
+    const slugFilterQuery =
+      filterQuery &&
+      Object.keys(filterQuery).reduce((acc, nextFilter) => {
+        const selectedFilters = sectionMeta[nextFilter]
+          ? sectionMeta[nextFilter].filter(f => {
+            const isoCode = f.iso || f.iso_code3 || f.id;
+            return filterQuery[nextFilter].includes(isoCode);
+          })
+          : [];
+
+        const selectedSlugs = selectedFilters
+          .map(({ slug, iso, iso_code3 }) => {
+            if (
+              section === 'historical-emissions' &&
+              nextFilter === 'data_sources'
+            ) {
+              return slug.toUpperCase();
+            }
+            return slug || iso || iso_code3;
+          })
+          .join(',');
+
+        return {
+          ...acc,
+          [nextFilter]: selectedSlugs
+        };
+      }, {});
+    return slugFilterQuery;
+  }
+  return filterQuery;
+};
+
 export const getLink = createSelector(
   [getLinkFilterQuery, getNonColumnQuery, getSection, getSectionMeta],
   (filterQuery, nonColumnQuery, section, sectionMeta) => {
     if (!section) return null;
-    const parsedQuery = parseQuery(
-      filterQuery,
-      section,
-      sectionMeta,
-      nonColumnQuery
-    );
+    const query = parseSlugParams(filterQuery, section, sectionMeta);
+    const parsedQuery = parseQuery(query, section, sectionMeta, nonColumnQuery);
     const stringifiedQuery = qs.stringify(parsedQuery);
     const urlParameters = stringifiedQuery ? `?${stringifiedQuery}` : '';
     const moduleName =
       DATA_EXPLORER_SECTIONS[section].linkName ||
       DATA_EXPLORER_SECTIONS[section].moduleName;
     const subSection = moduleName === 'pathways' ? '/models' : '';
-    return `/${
+
+    const link = `/${
       isPageContained ? `${CONTAINED_PATHNAME}/` : ''
     }${moduleName}${subSection}${urlParameters}`;
+    return link;
   }
 );
 
@@ -375,6 +407,7 @@ const getValue = option =>
   option.iso ||
   option.iso_code ||
   option.iso_code3 ||
+  option.slug ||
   (option.id && String(option.id)) ||
   (option.dataSourceId && String(option.dataSourceId));
 
@@ -490,6 +523,7 @@ const parseGroupsInOptions = createSelector(
         updatedOptions[key] = parseMultipleLevelOptions(updatedOptions[key]);
       }
     });
+
     return updatedOptions;
   }
 );
@@ -523,7 +557,7 @@ export const parseExternalParams = createSelector(
             ids.includes(i.number) ||
             ids.includes(i.iso_code3) ||
             ids.includes(i.iso) ||
-            ids.includes(i.slug)
+            ids.map(f => f.toLowerCase()).includes(i.slug)
         );
 
         const selectedIds = filterObjects.map(labelObject => {
@@ -540,16 +574,16 @@ export const parseExternalParams = createSelector(
 );
 
 const findFilterOptions = (options, selectedFilters) =>
+  options &&
   options.filter(f =>
     POSSIBLE_VALUE_FIELDS.find(field => {
       const value = f[field] && String(f[field]);
       return selectedFilters.includes(value);
     })
   );
-
 export const getSelectedFilters = createSelector(
-  [getSearch, getSection, getFilterOptions],
-  (search, section, filterOptions) => {
+  [getSearch, getSection, getFilterOptions, getMetaForNoModelFilters],
+  (search, section, filterOptions, noModelFiltersMeta) => {
     if (!search || !section || !filterOptions) return null;
     const selectedFields = search;
     const nonExternalKeys = Object.keys(selectedFields).filter(
@@ -561,13 +595,20 @@ export const getSelectedFilters = createSelector(
       sectionRelatedFields,
       section
     );
-
     const selectedFilterObjects = {};
     Object.keys(parsedSelectedFilters).forEach(filterKey => {
       const filterId = parsedSelectedFilters[filterKey];
       const isNoModelColumnKey = isNoColumnField(section, filterKey);
-      if (isNonColumnKey(filterKey) || isNoModelColumnKey) {
+      if (isNonColumnKey(filterKey)) {
         selectedFilterObjects[filterKey] = filterId;
+      } else if (isNoModelColumnKey) {
+        const noModelOptions =
+          noModelFiltersMeta &&
+          noModelFiltersMeta[filterKey] &&
+          noModelFiltersMeta[filterKey]
+            .filter(f => f.slug === filterId)
+            .map(f => ({ label: f.title, value: f.slug }));
+        selectedFilterObjects[filterKey] = noModelOptions;
       } else if (filterId === ALL_SELECTED) {
         selectedFilterObjects[filterKey] = [ALL_SELECTED_OPTION];
       } else {
@@ -578,7 +619,6 @@ export const getSelectedFilters = createSelector(
         );
       }
     });
-
     return selectedFilterObjects;
   }
 );
@@ -756,11 +796,17 @@ export const getSelectedOptions = createSelector(
     if (!selectedFields) return null;
     const selectedOptions = {};
     Object.keys(selectedFields).forEach(key => {
-      if (isNonColumnKey(key) || isNoColumnField(section, key)) {
+      if (isNonColumnKey(key)) {
         selectedOptions[key] = {
           value: selectedFields[key],
           label: selectedFields[key]
         };
+      } else if (isNoColumnField(section, key)) {
+        selectedOptions[key] = selectedFields[key] &&
+          selectedFields[key][0] && {
+            value: selectedFields[key][0].value,
+            label: selectedFields[key][0].label
+          };
       } else {
         selectedOptions[key] = parseMultipleLevelOptions(
           selectedFields[key]
@@ -772,7 +818,6 @@ export const getSelectedOptions = createSelector(
         }));
       }
     });
-
     return selectedOptions;
   }
 );

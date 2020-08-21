@@ -7,9 +7,10 @@ import ButtonGroup from 'components/button-group';
 import Loading from 'components/loading';
 import Dropdown from 'components/dropdown';
 import ModalMetadata from 'components/modal-metadata';
-import { PieChart } from 'cw-components';
+import { PieChart, MultiLevelDropdown } from 'cw-components';
 import CustomTooltip from 'components/ndcs/shared/donut-tooltip';
 import ExploreMapTooltip from 'components/ndcs/shared/explore-map-tooltip';
+import { getHoverIndex } from 'components/ndcs/shared/utils';
 import HandIconInfo from 'components/ndcs/shared/hand-icon-info';
 import CustomInnerHoverLabel from 'components/ndcs/shared/donut-custom-label';
 import LegendItem from 'components/ndcs/shared/legend-item';
@@ -66,14 +67,18 @@ const renderSummary = summaryData => (
   </div>
 );
 
-const renderLegend = legendData => (
+const renderLegend = (legendData, emissionsCardData) => (
   <div className={styles.legendCardContainer}>
     <div className={styles.legendContainer}>
       {legendData &&
-        legendData.map((l, index) => (
+        legendData.map(l => (
           <LegendItem
             key={l.name}
-            index={index}
+            hoverIndex={
+              emissionsCardData &&
+              emissionsCardData.data &&
+              getHoverIndex(emissionsCardData, l)
+            }
             name={l.name}
             number={l.partiesNumber}
             value={l.value}
@@ -132,7 +137,6 @@ function NDCSExploreMap(props) {
   );
 
   const TOOLTIP_ID = 'ndcs-map-tooltip';
-
   return (
     <div>
       <CountriesDocumentsProvider />
@@ -161,20 +165,18 @@ function NDCSExploreMap(props) {
                         hideResetButton
                         plain
                         showTooltip={
-                          selectedCategory && selectedCategory.label.length > 14
+                          selectedCategory &&
+                          selectedCategory.label &&
+                          selectedCategory.label.length > 14
                         }
                       />
-                      <Dropdown
+                      <MultiLevelDropdown
+                        key="indicator"
                         label="Indicator"
-                        options={indicators}
-                        onValueChange={handleIndicatorChange}
-                        value={selectedIndicator}
-                        hideResetButton
-                        plain
-                        showTooltip={
-                          selectedIndicator &&
-                          selectedIndicator.label.length > 14
-                        }
+                        options={indicators || []}
+                        values={selectedIndicator ? [selectedIndicator] : []}
+                        disabled={loading}
+                        onChange={handleIndicatorChange}
                       />
                     </div>
                     {isTablet &&
@@ -200,7 +202,8 @@ function NDCSExploreMap(props) {
                           {summaryCardData && renderSummary(summaryCardData)}
                           {emissionsCardData &&
                             renderDonutChart(emissionsCardData)}
-                          {legendData && renderLegend(legendData)}
+                          {legendData &&
+                            renderLegend(legendData, emissionsCardData)}
                         </React.Fragment>
                       )}
                     </div>
@@ -208,7 +211,7 @@ function NDCSExploreMap(props) {
                       {loading && <Loading light className={styles.loader} />}
                       <HandIconInfo
                         className={styles.mapInfo}
-                        text="Click on a country to see an in-depth analysis of its NDC"
+                        text="The map reflects latest submission of each country, click on a country to see in-depth analysis of its latest NDC and previous submissions"
                       />
                       <Map
                         paths={paths}

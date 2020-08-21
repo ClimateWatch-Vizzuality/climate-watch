@@ -37,9 +37,12 @@ export function getPathwaysCategoryOptions(query, filtersMeta) {
   const scenarioIndicatorsIds = filtersMeta.scenarios.find(
     sc => sc.id === selectedScenarioId
   ).indicator_ids;
-  const categories = scenarioIndicatorsIds.map(
-    indId => filtersMeta.indicators.find(ind => ind.id === indId).category
-  );
+
+  const categories = scenarioIndicatorsIds.map(indId => {
+    const category = filtersMeta.indicators.find(ind => ind.id === indId)
+      .category;
+    return filtersMeta.categories.find(({ id }) => id === category.id);
+  });
   return uniqBy(categories, 'id');
 }
 

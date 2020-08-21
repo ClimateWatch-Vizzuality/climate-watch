@@ -5,6 +5,8 @@ import { europeSlug, europeanCountries } from 'app/data/european-countries';
 
 const getIndicators = state =>
   (state.ndcs && state.ndcs.data.indicators) || null;
+const getLSECountriesData = state =>
+  (state.lse && state.lse.data && state.lse.data.countries) || null;
 const getSlug = (state, { slug }) => slug || null;
 const getAnswerLabel = (state, { answerLabel }) => answerLabel || null;
 const getSource = (state, { source }) => source || null;
@@ -16,17 +18,36 @@ export const getTotalCountriesNumber = state =>
 const getFirstNDCSubmittedIsos = createSelector(
   [getSource, getCountriesDocuments, getAnswerLabel],
   (source, countriesDocuments, answerLabel) => {
-    if (!source || !countriesDocuments) return null;
+    if (!source || source !== 'countriesDocuments' || !countriesDocuments) {
+      return null;
+    }
     return Object.keys(countriesDocuments).filter(iso =>
-      countriesDocuments[iso].some(doc => doc.slug === answerLabel)
+      countriesDocuments[iso].some(
+        doc => doc.slug === answerLabel && doc.submission_date
+      )
     );
   }
 );
 
+const getLSEIsos = createSelector(
+  [getSource, getLSECountriesData],
+  (source, lse) => {
+    if (!source || source !== 'lse' || !lse) return null;
+    return lse;
+  }
+);
+
 const getPositiveAnswerIsos = createSelector(
-  [getIndicators, getSlug, getAnswerLabel, getFirstNDCSubmittedIsos],
-  (indicators, slug, answerLabel, firstNDCSubmittedIsos) => {
+  [
+    getIndicators,
+    getSlug,
+    getAnswerLabel,
+    getFirstNDCSubmittedIsos,
+    getLSEIsos
+  ],
+  (indicators, slug, answerLabel, firstNDCSubmittedIsos, lseIsos) => {
     if (firstNDCSubmittedIsos) return firstNDCSubmittedIsos;
+    if (lseIsos) return lseIsos;
     if (!indicators || !slug || !answerLabel) return null;
     const indicator = indicators.find(i => i.slug === slug);
     if (!indicator) return null;

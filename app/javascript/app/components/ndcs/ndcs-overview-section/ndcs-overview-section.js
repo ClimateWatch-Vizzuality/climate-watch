@@ -4,14 +4,25 @@ import actions from 'pages/ndcs/ndcs-actions';
 import { actions as modalActions } from 'components/modal-metadata';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
-
 import Component from './ndcs-overview-section-component';
 import { commitmentsData } from './ndcs-overview-section-data';
 
 const NdcsOverviewSection = props => {
   useEffect(() => {
     const { fetchNDCS } = props;
-    fetchNDCS(true);
+    const indicatorSlugs = [];
+    commitmentsData.forEach(d => {
+      d.questions.forEach(q => {
+        if (q.slug && !indicatorSlugs.includes(q.slug)) {
+          indicatorSlugs.push(q.slug);
+        }
+      });
+    });
+    fetchNDCS({
+      overrideFilter: true,
+      indicatorSlugs,
+      additionalIndicatorSlugs: ['ndce_ghg']
+    });
   }, []);
 
   const handleInfoClick = source => {

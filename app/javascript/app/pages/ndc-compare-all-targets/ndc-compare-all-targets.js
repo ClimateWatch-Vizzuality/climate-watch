@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import qs from 'query-string';
 import { getLocationParamUpdated } from 'utils/navigation';
 import { setColumnWidth as setColumnWidthUtil } from 'utils/table';
+import { actions as modalMetadataActions } from 'components/modal-metadata';
 import NDCCompareAllComponent from './ndc-compare-all-targets-component';
 
 import {
@@ -63,6 +64,22 @@ const NDCCompareAllContainer = props => {
     });
   };
 
+  const handleInfoClick = () => {
+    // TODO: Missing pledges slug
+    props.setModalMetadata({
+      category: 'Compare all targets',
+      slugs: [
+        'ndc_cw',
+        'ndc_wb',
+        'ndc_die',
+        'ndc_lts',
+        'national_laws_politices'
+      ],
+      customTitle: 'Compare all targets',
+      open: true
+    });
+  };
+
   const noContentMsg = query ? 'No data for this search' : 'No data';
 
   return createElement(NDCCompareAllComponent, {
@@ -71,7 +88,8 @@ const NDCCompareAllContainer = props => {
     handleSearchChange,
     tableData,
     setColumnWidth,
-    handleTargetsChange
+    handleTargetsChange,
+    handleInfoClick
   });
 };
 
@@ -84,5 +102,5 @@ NDCCompareAllContainer.propTypes = {
 };
 
 export default withRouter(
-  connect(mapStateToProps, null)(NDCCompareAllContainer)
+  connect(mapStateToProps, modalMetadataActions)(NDCCompareAllContainer)
 );

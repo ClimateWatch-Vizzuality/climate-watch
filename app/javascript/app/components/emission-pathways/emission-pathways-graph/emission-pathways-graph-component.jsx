@@ -91,7 +91,7 @@ class EmissionPathwayGraph extends PureComponent {
                     },
                     {
                       type: 'download',
-                      section: 'ndcs-content',
+                      section: 'emission-pathways',
                       link: downloadLink
                     },
                     {

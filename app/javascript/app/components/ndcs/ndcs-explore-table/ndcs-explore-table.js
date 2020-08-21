@@ -28,7 +28,6 @@ const mapStateToProps = (state, { location }) => {
     search,
     categorySelected: search.category,
     indicatorSelected: search.indicator,
-    categories: data.categories,
     emissions: state.emissions
   };
   return {
@@ -46,7 +45,6 @@ class NDCSExploreTableContainer extends PureComponent {
     super(props);
     this.state = {};
   }
-
   setColumnWidth = column => {
     const { columns } = this.props;
     return setColumnWidth({

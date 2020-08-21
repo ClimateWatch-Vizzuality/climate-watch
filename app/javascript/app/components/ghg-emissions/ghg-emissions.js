@@ -6,11 +6,13 @@ import { getLocationParamUpdated } from 'utils/navigation';
 import { handleAnalytics } from 'utils/analytics';
 import qs from 'query-string';
 import castArray from 'lodash/castArray';
-import kebabCase from 'lodash/kebabCase';
 import { actions as modalActions } from 'components/modal-metadata';
 import { actions as pngModalActions } from 'components/modal-png-download';
+import { actions as downloadModalActions } from 'components/modal-download';
+
+import { getStorageWithExpiration } from 'utils/localStorage';
 import { encodeAsCSVContent, invokeCSVDownload } from 'utils/csv';
-import { orderByColumns, stripHTML } from 'utils';
+import { orderByColumns, stripHTML, useSlug } from 'utils';
 import { GHG_TABLE_HEADER } from 'data/constants';
 import GhgEmissionsComponent from './ghg-emissions-component';
 import { getGHGEmissions } from './ghg-emissions-selectors/ghg-emissions-selectors';
@@ -31,7 +33,8 @@ function GhgEmissionsContainer(props) {
     fieldToBreakBy,
     tableData,
     data,
-    dataZoomYears
+    dataZoomYears,
+    setModalDownloadParams
   } = props;
   const handleSetYears = years => {
     const { min, max } = years || {};
@@ -149,7 +152,7 @@ function GhgEmissionsContainer(props) {
     updateUrlParam({
       name: [field],
       value: castArray(filters)
-        .map(v => kebabCase(v.label))
+        .map(v => useSlug(v.label))
         .join(',')
     });
     sendToAnalitics(field, filters);
@@ -186,7 +189,7 @@ function GhgEmissionsContainer(props) {
     }
   };
 
-  const handleDownloadDataClick = () => {
+  const createCSVContent = () => {
     const defaultColumnOrder = [GHG_TABLE_HEADER[fieldToBreakBy], 'unit'];
     const stripHtmlFromUnit = d => ({ ...d, unit: stripHTML(d.unit) });
     const parsedTableData = tableData.map(stripHtmlFromUnit);
@@ -220,7 +223,7 @@ function GhgEmissionsContainer(props) {
       orderByColumns(defaultColumnOrder),
       metadata
     );
-    invokeCSVDownload(csvContentEncoded);
+    return csvContentEncoded;
   };
 
   const handlePngDownloadModal = () => {
@@ -233,6 +236,19 @@ function GhgEmissionsContainer(props) {
     return 200;
   };
 
+  const handleDownloadModalOpen = () => {
+    const hasCompletedSurvey = getStorageWithExpiration('userSurvey');
+    if (hasCompletedSurvey) {
+      handleAnalytics('GHG emissions', 'Download Data', 'Download Chart Data');
+      invokeCSVDownload(createCSVContent());
+    } else {
+      // TODO: Improve this solution if possible
+      // We are storing all the encoded CSV content temporarily (around 33kb) on the store
+      // This way we can invoke the function after filling the form only in the case that we haven't done if before
+      setModalDownloadParams({ open: true, CSVContent: createCSVContent() });
+    }
+  };
+
   return (
     <GhgEmissionsComponent
       {...props}
@@ -240,13 +256,13 @@ function GhgEmissionsContainer(props) {
       updateUrlParam={updateUrlParam}
       handleChange={handleChange}
       handleInfoClick={handleInfoClick}
-      handleDownloadDataClick={handleDownloadDataClick}
       handlePngDownloadModal={handlePngDownloadModal}
       setColumnWidth={setColumnWidth}
       setYears={handleSetYears}
       dataZoomPosition={dataZoomPosition}
       dataZoomYears={dataZoomYears}
       setDataZoomPosition={setDataZoomPosition}
+      handleDownloadModalOpen={handleDownloadModalOpen}
     />
   );
 }
@@ -256,6 +272,7 @@ GhgEmissionsContainer.propTypes = {
   location: PropTypes.object.isRequired,
   setModalMetadata: PropTypes.func.isRequired,
   setYears: PropTypes.func.isRequired,
+  setModalDownloadParams: PropTypes.func.isRequired,
   dataZoomYears: PropTypes.object,
   selected: PropTypes.object,
   legendSelected: PropTypes.array,
@@ -271,7 +288,9 @@ GhgEmissionsContainer.defaultProps = {
 };
 
 export default withRouter(
-  connect(mapStateToProps, { ...modalActions, ...pngModalActions })(
-    GhgEmissionsContainer
-  )
+  connect(mapStateToProps, {
+    ...modalActions,
+    ...downloadModalActions,
+    ...pngModalActions
+  })(GhgEmissionsContainer)
 );

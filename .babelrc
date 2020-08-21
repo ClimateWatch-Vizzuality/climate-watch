@@ -2,36 +2,59 @@
   "env": {
     "production": {
       "plugins": [
-        ["transform-react-remove-prop-types", {
-          "mode": "remove",
-          "removeImport": true,
-          "ignoreFilenames": ["node_modules"]
-        }]
+        [
+          "transform-react-remove-prop-types",
+          {
+            "mode": "remove",
+            "removeImport": true,
+            "ignoreFilenames": [
+              "node_modules"
+            ]
+          }
+        ]
       ]
     }
   },
   "presets": [
     [
-      "env",
+      "@babel/preset-env",
       {
         "modules": false,
         "targets": {
-          "browsers": ["> 1%", "last 2 versions", "Firefox ESR", "Safari >= 8", "IE >= 11"],
+          "browsers": [
+            "> 1%",
+            "last 2 versions",
+            "Firefox ESR",
+            "Safari >= 8",
+            "IE >= 11"
+          ],
           "uglify": true
         },
-        "useBuiltIns": true
+        "useBuiltIns": "entry",
+        "corejs": "^3"
       }
     ],
-    "react",
-    "stage-2"
+    "@babel/preset-react"
   ],
   "plugins": [
-    "syntax-dynamic-import",
+    "@babel/plugin-syntax-dynamic-import",
     [
-      "transform-class-properties",
+      "@babel/plugin-proposal-class-properties",
       {
         "spec": true
       }
-    ]
+    ],
+    "@babel/plugin-syntax-import-meta",
+    "@babel/plugin-proposal-json-strings",
+    [
+      "@babel/plugin-proposal-decorators",
+      {
+        "legacy": true
+      }
+    ],
+    "@babel/plugin-proposal-function-sent",
+    "@babel/plugin-proposal-export-namespace-from",
+    "@babel/plugin-proposal-numeric-separator",
+    "@babel/plugin-proposal-throw-expressions"
   ]
 }

@@ -5,6 +5,7 @@ module Api
         attribute :slug
         attribute :name
         attribute :value
+        attribute :document_slug
 
         def name
           object.indicator.name
@@ -12,6 +13,10 @@ module Api
 
         def slug
           object.indicator.slug
+        end
+
+        def document_slug
+          object.document&.slug
         end
       end
     end
