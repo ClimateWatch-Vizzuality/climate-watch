@@ -17,13 +17,13 @@ export default [
     activeId
   },
   {
-    path: '/2020-ndc-tracker',
-    label: '2020 NDC Tracker',
+    path: '/lts-explore',
+    label: 'Explore LTS',
     activeId
   },
   {
-    path: '/lts-explore',
-    label: 'Explore LTS',
+    path: '/2020-ndc-tracker',
+    label: '2020 NDC Tracker',
     activeId
   },
   (FEATURE_ALL_COMMITMENTS_MENU_ITEMS || !FEATURE_COMPARE_ALL) && {
