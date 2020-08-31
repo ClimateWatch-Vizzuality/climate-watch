@@ -20,7 +20,7 @@ import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.s
 import countryDropdownTheme from 'styles/themes/dropdown/dropdown-country.scss';
 import styles from './lts-country-styles.scss';
 
-const FEATURE_NDC_EXPLORE = process.env.FEATURE_NDC_EXPLORE === 'true';
+const FEATURE_COMPARE_ALL = process.env.FEATURE_COMPARE_ALL === 'true';
 
 class LTSCountry extends PureComponent {
   renderFullTextDropdown() {
@@ -47,7 +47,7 @@ class LTSCountry extends PureComponent {
           variant="primary"
           link={`/custom-compare/overview?targets=${match.params.iso}-lts`}
           className={styles.compareButton}
-          disabled={!FEATURE_NDC_EXPLORE}
+          disabled={!FEATURE_COMPARE_ALL}
         >
           Compare Countries and Submissions
         </Button>
