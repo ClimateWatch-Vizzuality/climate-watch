@@ -6,11 +6,12 @@ import CompareAccordion from 'components/custom-compare-accordion';
 export default [
   {
     path: '/custom-compare/overview',
-    component: ({ targets }) => createElement(CompareAccordion, {
-      category: 'overview',
-      compare: true,
-      targets
-    }),
+    component: ({ targets }) =>
+      createElement(CompareAccordion, {
+        category: 'overview',
+        compare: true,
+        targets
+      }),
     exact: true,
     anchor: true,
     label: 'Overview',

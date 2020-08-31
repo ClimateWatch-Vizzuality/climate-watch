@@ -18,7 +18,9 @@ export const getTotalCountriesNumber = state =>
 const getFirstNDCSubmittedIsos = createSelector(
   [getSource, getCountriesDocuments, getAnswerLabel],
   (source, countriesDocuments, answerLabel) => {
-    if (!source || source !== 'countriesDocuments' || !countriesDocuments) { return null; }
+    if (!source || source !== 'countriesDocuments' || !countriesDocuments) {
+      return null;
+    }
     return Object.keys(countriesDocuments).filter(iso =>
       countriesDocuments[iso].some(
         doc => doc.slug === answerLabel && doc.submission_date
