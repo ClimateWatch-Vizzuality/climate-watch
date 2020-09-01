@@ -15,13 +15,11 @@ import { Dropdown as CWDropdown } from 'cw-components';
 import { NDC_COUNTRY } from 'data/SEO';
 import { MetaDescription, SocialMetadata } from 'components/seo';
 import { TabletPortrait, MobileOnly } from 'components/responsive';
-import NdcsDocumentsProvider from 'providers/ndcs-documents-meta-provider';
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
 import countryDropdownTheme from 'styles/themes/dropdown/dropdown-country.scss';
 import styles from './ndc-country-styles.scss';
 
 const FEATURE_COMPARE_ALL = process.env.FEATURE_COMPARE_ALL === 'true';
-const FEATURE_NDC_FILTERING = process.env.FEATURE_NDC_FILTERING === 'true';
 
 function NDCCountry(props) {
   const {
@@ -124,8 +122,7 @@ function NDCCountry(props) {
         descriptionContext={NDC_COUNTRY({ countryName })}
         href={location.href}
       />
-      {FEATURE_NDC_FILTERING && <CountriesDocumentsProvider location={iso} />}
-      {!FEATURE_NDC_FILTERING && <NdcsDocumentsProvider />}
+      <CountriesDocumentsProvider location={iso} />
       {country && (
         <Header route={route}>
           <div className={styles.header}>

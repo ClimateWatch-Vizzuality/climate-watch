@@ -39,7 +39,7 @@ node {
     cw_files_prefix = 'climatewatch.org/www.climatewatch.org/climate-watch/'
     user_report_key = '81f6ea43-5c9f-48e0-bdb2-56fc59aafbb4'
   } else {
-    feature_flags_env = feature_flags_env + ' --build-arg FEATURE_COMPARE_ALL=false --build-arg FEATURE_NEW_GHG=false --build-arg FEATURE_ALL_COMMITMENTS_MENU_ITEMS=false  --build-arg FEATURE_NDC_FILTERING=false'
+    feature_flags_env = feature_flags_env + ' --build-arg FEATURE_COMPARE_ALL=false --build-arg FEATURE_NEW_GHG=false --build-arg FEATURE_ALL_COMMITMENTS_MENU_ITEMS=false'
   }
 
   // env vars with build-arg
