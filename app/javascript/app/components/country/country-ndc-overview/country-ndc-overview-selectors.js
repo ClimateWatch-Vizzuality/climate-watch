@@ -3,15 +3,8 @@ import groupBy from 'lodash/groupBy';
 import isEmpty from 'lodash/isEmpty';
 import qs from 'query-string';
 
-const FEATURE_NDC_FILTERING = process.env.FEATURE_NDC_FILTERING === 'true';
-
 const getIso = (state, { iso }) => iso || null;
-const getDataDocuments = state => {
-  if (FEATURE_NDC_FILTERING) {
-    return state.countriesDocuments.data || null;
-  }
-  return state.ndcsDocumentsMeta.data || null;
-};
+const getDataDocuments = state => state.countriesDocuments.data || null;
 
 const getOverviewData = state =>
   state.ndcContentOverview.data && state.ndcContentOverview.data.locations;
@@ -53,20 +46,14 @@ export const getCountryDocuments = createSelector(
   }
 );
 
-const legacyDocumentValue = document =>
-  `${document.document_type}-${document.language}`;
-
 export const getSelectedDocument = createSelector(
   [getCountryDocuments, getSearch],
   (countryDocuments, search) => {
     if (isEmpty(countryDocuments)) return null;
-    const lastDocument = countryDocuments[countryDocuments.length - 1];
+    const ndcDocuments = countryDocuments.filter(d => d.is_ndc);
+    const lastDocument = ndcDocuments[ndcDocuments.length - 1];
     if (!search || !search.document) return lastDocument;
-    return FEATURE_NDC_FILTERING
-      ? countryDocuments.find(document => document.slug === search.document)
-      : countryDocuments.find(
-        document => legacyDocumentValue(document) === search.document
-      ) || lastDocument;
+    return countryDocuments.find(document => document.slug === search.document) || lastDocument;
   }
 );
 

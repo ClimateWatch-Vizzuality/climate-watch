@@ -15,15 +15,11 @@ import { Dropdown as CWDropdown } from 'cw-components';
 import { NDC_COUNTRY } from 'data/SEO';
 import { MetaDescription, SocialMetadata } from 'components/seo';
 import { TabletPortrait, MobileOnly } from 'components/responsive';
-import NdcsDocumentsProvider from 'providers/ndcs-documents-meta-provider';
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
 import countryDropdownTheme from 'styles/themes/dropdown/dropdown-country.scss';
 import styles from './ndc-country-styles.scss';
 
-const FEATURE_NDC_EXPLORE = process.env.FEATURE_NDC_EXPLORE === 'true';
-const FEATURE_NDC_FILTERING = process.env.FEATURE_NDC_FILTERING === 'true';
-const FEATURE_COMMITMENTS_OVERVIEW =
-  process.env.FEATURE_COMMITMENTS_OVERVIEW === 'true';
+const FEATURE_COMPARE_ALL = process.env.FEATURE_COMPARE_ALL === 'true';
 
 function NDCCountry(props) {
   const {
@@ -70,7 +66,7 @@ function NDCCountry(props) {
   );
 
   const renderCompareButton = () => {
-    if (!FEATURE_NDC_EXPLORE || !FEATURE_COMMITMENTS_OVERVIEW) {
+    if (!FEATURE_COMPARE_ALL) {
       return (
         <Button
           variant="primary"
@@ -126,21 +122,16 @@ function NDCCountry(props) {
         descriptionContext={NDC_COUNTRY({ countryName })}
         href={location.href}
       />
-      {FEATURE_NDC_FILTERING && <CountriesDocumentsProvider location={iso} />}
-      {!FEATURE_NDC_FILTERING && <NdcsDocumentsProvider />}
+      <CountriesDocumentsProvider location={iso} />
       {country && (
         <Header route={route}>
           <div className={styles.header}>
             <div
               className={cx(styles.actionsContainer, {
-                [styles.withSearch]: hasSearch,
-                [styles.withoutBack]: !FEATURE_NDC_EXPLORE
+                [styles.withSearch]: hasSearch
               })}
             >
-              {!FEATURE_NDC_EXPLORE && renderIntroDropdown()}
-              {FEATURE_NDC_EXPLORE && (
-                <BackButton backLabel="Explore NDCs" pathname="/ndcs-explore" />
-              )}
+              <BackButton backLabel="Explore NDCs" pathname="/ndcs-explore" />
               <TabletPortrait>
                 {renderDocumentsDropdown()}
                 {renderFullTextButton()}
@@ -158,9 +149,7 @@ function NDCCountry(props) {
                 </div>
               )}
             </TabletPortrait>
-            {FEATURE_NDC_EXPLORE && (
-              <div className={styles.title}>{renderIntroDropdown()}</div>
-            )}
+            <div className={styles.title}>{renderIntroDropdown()}</div>
             <MobileOnly>
               <div className={styles.mobileActions}>
                 {renderDocumentsDropdown()}
@@ -177,7 +166,7 @@ function NDCCountry(props) {
               </div>
             </MobileOnly>
             <TabletPortrait>
-              {FEATURE_NDC_EXPLORE && renderCompareButton()}
+              {FEATURE_COMPARE_ALL && renderCompareButton()}
             </TabletPortrait>
           </div>
           <Sticky activeClass="sticky -ndcs" top="#navBarMobile">

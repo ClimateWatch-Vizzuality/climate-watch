@@ -22,8 +22,6 @@ import CountriesDocumentsProvider from 'providers/countries-documents-provider';
 
 import styles from './country-ndc-overview-styles.scss';
 
-const FEATURE_NDC_FILTERING = process.env.FEATURE_NDC_FILTERING === 'true';
-
 function CountryNdcOverview(props) {
   const {
     sectors,
@@ -169,8 +167,7 @@ function CountryNdcOverview(props) {
         <Icon icon={alertIcon} className={styles.alertIcon} />
         <span className={styles.alertText}>
           The information shown below only reflects the{' '}
-          {FEATURE_NDC_FILTERING && !isCountryPage ? 'selected' : 'last'} NDC
-          submission.
+          {!isCountryPage ? 'selected' : 'last'} NDC submission.
         </span>
       </div>
     </div>
@@ -190,14 +187,13 @@ function CountryNdcOverview(props) {
       }}
     />
   );
-  const summaryIntroText =
-    !FEATURE_NDC_FILTERING || !selectedDocument
-      ? 'Summary'
-      : `Summary of ${selectedDocument.long_name}`;
+  const summaryIntroText = !selectedDocument
+    ? 'Summary'
+    : `Summary of ${selectedDocument.long_name}`;
   return (
     <div className={cx(styles.wrapper, { [styles.embededWrapper]: isEmbed })}>
-      {!FEATURE_NDC_FILTERING && hasSectors && !loading && renderAlertText()}
-      {FEATURE_NDC_FILTERING && <CountriesDocumentsProvider location={iso} />}
+      {hasSectors && !loading && renderAlertText()}
+      <CountriesDocumentsProvider location={iso} />
       <NdcContentOverviewProvider
         locations={[iso]}
         document={!isCountryPage && selectedDocument && selectedDocument.slug}
