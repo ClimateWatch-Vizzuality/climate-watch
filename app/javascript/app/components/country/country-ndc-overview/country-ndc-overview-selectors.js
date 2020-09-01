@@ -60,10 +60,12 @@ export const getSelectedDocument = createSelector(
   [getCountryDocuments, getSearch],
   (countryDocuments, search) => {
     if (isEmpty(countryDocuments)) return null;
-    const lastDocument = countryDocuments[countryDocuments.length - 1];
+    const ndcDocuments = countryDocuments.filter(d => d.is_ndc);
+    const lastDocument = ndcDocuments[ndcDocuments.length - 1];
     if (!search || !search.document) return lastDocument;
     return FEATURE_NDC_FILTERING
-      ? countryDocuments.find(document => document.slug === search.document)
+      ? ndcDocuments.find(document => document.slug === search.document) ||
+          lastDocument
       : countryDocuments.find(
         document => legacyDocumentValue(document) === search.document
       ) || lastDocument;

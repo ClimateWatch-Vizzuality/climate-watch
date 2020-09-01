@@ -104,12 +104,15 @@ export const getDocumentSelected = createSelector(
   [getCountryDocuments, getSearch],
   (documents, search) => {
     if (!documents || isEmpty(documents)) return null;
-    const lastDocument = documents[documents.length - 1];
+    const ndcDocuments = documents.filter(d => d.is_ndc);
+    const lastDocument = ndcDocuments[ndcDocuments.length - 1];
     if (FEATURE_NDC_FILTERING) {
       if (!search || !search.document) {
         return documentOption(lastDocument);
       }
-      const selectedDocument = documents.find(d => d.slug === search.document);
+      const selectedDocument = ndcDocuments.find(
+        d => d.slug === search.document
+      );
       return selectedDocument
         ? documentOption(selectedDocument)
         : documentOption(lastDocument);

@@ -61,11 +61,9 @@ import NDCSExploreSections from './ndcs-explore-sections';
 import NDCOverviewRoutes from './ndcs-overview-routes';
 
 const FEATURE_AGRICULTURE = process.env.FEATURE_AGRICULTURE === 'true';
-const FEATURE_NDC_EXPLORE = process.env.FEATURE_NDC_EXPLORE === 'true';
 const FEATURE_ALL_COMMITMENTS_MENU_ITEMS =
   process.env.FEATURE_ALL_COMMITMENTS_MENU_ITEMS === 'true';
-const FEATURE_COMMITMENTS_OVERVIEW =
-  process.env.FEATURE_COMMITMENTS_OVERVIEW === 'true';
+const FEATURE_COMPARE_ALL = process.env.FEATURE_COMPARE_ALL === 'true';
 
 // Main pages have a gradient header color and secondary have a single color
 export default [
@@ -116,7 +114,7 @@ export default [
     component: Sectors,
     headerGradient: HEADER_GRADIENTS.sectors
   },
-  FEATURE_COMMITMENTS_OVERVIEW && {
+  {
     path: '/ndc-overview',
     component: NdcOverview,
     routes: NDCOverviewRoutes,
@@ -142,13 +140,13 @@ export default [
     routes: LTSCountryRoutes,
     headerColor: HEADER_COLORS.ndc
   },
-  FEATURE_COMMITMENTS_OVERVIEW && {
+  FEATURE_COMPARE_ALL && {
     path: '/compare-all-targets',
     component: NDCCompareAll,
     headerGradient: HEADER_GRADIENTS.commitments,
     headerColor: HEADER_COLORS.ndc
   },
-  (!FEATURE_COMMITMENTS_OVERVIEW || FEATURE_ALL_COMMITMENTS_MENU_ITEMS) && {
+  (!FEATURE_COMPARE_ALL || FEATURE_ALL_COMMITMENTS_MENU_ITEMS) && {
     path: '/ndcs/compare',
     component: NDCCompare,
     headerGradient: HEADER_GRADIENTS.commitments,
@@ -174,7 +172,7 @@ export default [
     sections: LTSExploreSections,
     headerGradient: HEADER_GRADIENTS.commitments
   },
-  FEATURE_NDC_EXPLORE && {
+  {
     path: '/ndcs-explore',
     component: NDCSExplore,
     headerImage: 'ndc',
@@ -194,7 +192,7 @@ export default [
     exact: true,
     headerGradient: HEADER_GRADIENTS.commitments
   },
-  FEATURE_COMMITMENTS_OVERVIEW && {
+  FEATURE_COMPARE_ALL && {
     path: '/custom-compare',
     component: CustomCompare,
     routes: CustomCompareRoutes,
