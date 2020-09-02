@@ -58,7 +58,6 @@ const NDCCompareAllTargets = props => {
     tableData,
     noContentMsg,
     columns,
-    setColumnWidth,
     handleTargetsChange,
     selectedTargets,
     selectedTableTargets,
@@ -79,7 +78,7 @@ const NDCCompareAllTargets = props => {
           <div className={styles.title}>
             <Intro
               title="Compare all targets"
-              description={`It is important for countries’ various commitments, laws and policies align to achieve their climate objectives. Explore a summary of which countries have each type of documents and compare all of them side-by-side. You can also <a href='https://climate-laws.org/' class=${styles.link}> explore climate laws and policies of the world published by Grantham Research Institute</a>.`}
+              description={`It is important for countries’ various commitments, laws and policies align to achieve their climate objectives. Explore a summary of which countries have each type of document and compare all of them side-by-side. You can also <a href='https://climate-laws.org/' class=${styles.link}> explore countries’ climate laws and policies published by Grantham Research Institute.</a>.`}
             />
           </div>
         </div>
@@ -136,7 +135,6 @@ const NDCCompareAllTargets = props => {
             tableData={tableData}
             noContentMsg={noContentMsg}
             columns={columns}
-            setColumnWidth={setColumnWidth}
             selectedTargets={selectedTableTargets}
             setSelectedTargets={handleTargetsChange}
           />
@@ -159,7 +157,6 @@ NDCCompareAllTargets.propTypes = {
   handleTargetsChange: PropTypes.func.isRequired,
   noContentMsg: PropTypes.string,
   columns: PropTypes.array,
-  setColumnWidth: PropTypes.func.isRequired,
   location: PropTypes.object,
   selectedTargets: PropTypes.array,
   selectedTableTargets: PropTypes.array
