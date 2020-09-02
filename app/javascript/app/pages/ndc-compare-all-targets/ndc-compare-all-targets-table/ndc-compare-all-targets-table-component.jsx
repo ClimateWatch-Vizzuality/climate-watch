@@ -107,7 +107,7 @@ const CompareAllTable = ({
       <Table
         data={tableData}
         tableHeight={550}
-        tableWidthOffset={-90}
+        tableWidthOffset={-100}
         parseHtml
         setColumnWidth={() => 115}
         setRowsHeight={() => 50}
