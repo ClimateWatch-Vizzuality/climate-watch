@@ -7,9 +7,9 @@ const PADDING = 20;
 
 function DataZoomContainer(props) {
   const { data, onYearChange, position = {}, setPosition, years } = props;
-
   const dataZoomRef = useRef();
   const [width, setWidth] = useState(0);
+  const [displayedYears, setDisplayedYears] = useState(years);
 
   // Set initial position and width
   useEffect(() => {
@@ -64,15 +64,18 @@ function DataZoomContainer(props) {
     onYearChange(getYear('min'), getYear('max'));
   };
 
-  const handleDrag = (ui, handleType) =>
+  const handleDrag = (ui, handleType) => {
+    setDisplayedYears({ min: getYear('min'), max: getYear('max') });
     setPosition({
       ...position,
       [handleType]: position[handleType] + ui.deltaX
     });
+  };
 
   return React.createElement(DataZoomComponent, {
     dataZoomRef,
     position,
+    displayedYears,
     handleDrag,
     handleStop,
     padding: PADDING,

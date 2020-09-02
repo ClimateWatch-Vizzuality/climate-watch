@@ -3,6 +3,7 @@
 .dataZoom {
   position: relative;
   margin-top: 20px;
+  margin-bottom: 32px;
   z-index: $z-index-over-base;
 
   .selector {
@@ -16,6 +17,27 @@
       z-index: $z-index-over-base;
       position: absolute;
       cursor: grab;
+    }
+
+    .handleYear {
+      font-size: $font-size-sm;
+      margin-top: 5px;
+
+      &.min {
+        margin-left: 0;
+
+        &.nearToLimit {
+          margin-left: -25px;
+        }
+      }
+
+      &.max {
+        margin-left: -15px;
+
+        &.nearToLimit {
+          margin-left: 0;
+        }
+      }
     }
 
     .veil {
