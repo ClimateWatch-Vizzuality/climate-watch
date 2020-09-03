@@ -20,7 +20,7 @@ const NdcsOverviewSection = ({ data, section, location, handleInfoClick }) => {
         [styles.commitmentContainer]: !isEmbed
       })}
     >
-      {section === 1 && <CountriesDocumentsProvider />}
+      {parseInt(section, 10) === 1 && <CountriesDocumentsProvider />}
       <div className={layout.content}>
         <div className={cx(styles.section, { [styles.padded]: !isEmbed })}>
           <div className={styles.commitmentWrapper}>
