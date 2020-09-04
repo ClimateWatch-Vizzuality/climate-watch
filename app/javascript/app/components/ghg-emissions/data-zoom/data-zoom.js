@@ -23,10 +23,10 @@ function DataZoomContainer(props) {
       setWidth(refWidth);
 
       // Calculate initial position if we have year url params
-      if (data && years && years.min > data[0].x) {
+      if (data && years.min && years.min > data[0].x) {
         position.min = getPosition(refWidth, years.min);
       }
-      if (data && years && years.max < data[data.length - 1].x) {
+      if (data && years.max && years.max < data[data.length - 1].x) {
         position.max = getPosition(refWidth, years.max);
       }
 

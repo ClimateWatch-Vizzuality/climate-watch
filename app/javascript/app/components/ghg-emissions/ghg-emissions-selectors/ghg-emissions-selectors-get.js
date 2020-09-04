@@ -26,10 +26,10 @@ export const getSelection = field =>
     return search[field] || search[toPlural(field)];
   });
 
-export const getDataZoomYears = createSelector(getSearch, search => {
-  if (!search) return null;
-  return { min: search.start_year, max: search.end_year };
-});
+export const getDataZoomYears = createSelector(getSearch, search => ({
+  min: search && search.start_year,
+  max: search && search.end_year
+}));
 
 export const getLinkToDataExplorer = createSelector([getSearch], search => {
   const section = 'historical-emissions';
