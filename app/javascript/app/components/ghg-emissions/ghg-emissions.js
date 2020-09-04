@@ -91,6 +91,7 @@ function GhgEmissionsContainer(props) {
       hasDataChanged &&
       data &&
       data.length &&
+      dataZoomYears &&
       (!dataZoomYears.min || !dataZoomYears.max)
     ) {
       const firstDataYear = data[0].x;
