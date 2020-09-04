@@ -36,6 +36,7 @@ function GhgEmissionsContainer(props) {
     dataZoomYears,
     setModalDownloadParams
   } = props;
+
   const handleSetYears = years => {
     const { min, max } = years || {};
     updateUrlParam([
@@ -66,7 +67,7 @@ function GhgEmissionsContainer(props) {
     if (!data) {
       return undefined;
     }
-    if (dataZoomYears) {
+    if (dataZoomYears.min && dataZoomYears.max) {
       setUpdatedData(
         data.filter(
           d =>
@@ -91,7 +92,6 @@ function GhgEmissionsContainer(props) {
       hasDataChanged &&
       data &&
       data.length &&
-      dataZoomYears &&
       (!dataZoomYears.min || !dataZoomYears.max)
     ) {
       const firstDataYear = data[0].x;
