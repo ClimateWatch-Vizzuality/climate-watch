@@ -92,13 +92,12 @@ const cellRenderer = (
 const CompareAllTable = ({
   loading,
   tableData,
-  setColumnWidth,
   columns,
   noContentMsg,
   selectedTargets,
   setSelectedTargets
 }) => (
-  <div>
+  <div className={compareTableTheme.compareTableWrapper}>
     {loading && (
       <div className={styles.loaderWrapper}>
         <Loading light />
@@ -108,15 +107,16 @@ const CompareAllTable = ({
       <Table
         data={tableData}
         tableHeight={550}
-        horizontalScroll
+        tableWidthOffset={-100}
         parseHtml
-        dynamicRowsHeight
-        setColumnWidth={setColumnWidth}
+        setColumnWidth={() => 115}
+        setRowsHeight={() => 50}
         defaultColumns={columns}
         theme={compareTableTheme}
         customCellRenderer={cell =>
           cellRenderer(cell, selectedTargets, columns, setSelectedTargets)
         }
+        visibleVerticalScrollBar
       />
     )}
     {!loading && (!tableData || tableData.length <= 0) && (
@@ -130,7 +130,6 @@ CompareAllTable.propTypes = {
   tableData: PropTypes.array,
   noContentMsg: PropTypes.string,
   columns: PropTypes.array,
-  setColumnWidth: PropTypes.func.isRequired,
   selectedTargets: PropTypes.array,
   setSelectedTargets: PropTypes.func.isRequired
 };

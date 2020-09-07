@@ -12,7 +12,7 @@ import { actions as downloadModalActions } from 'components/modal-download';
 
 import { getStorageWithExpiration } from 'utils/localStorage';
 import { encodeAsCSVContent, invokeCSVDownload } from 'utils/csv';
-import { orderByColumns, stripHTML, useSlug } from 'utils';
+import { orderByColumns, stripHTML, useSlug, usePrevious } from 'utils';
 import { GHG_TABLE_HEADER } from 'data/constants';
 import GhgEmissionsComponent from './ghg-emissions-component';
 import { getGHGEmissions } from './ghg-emissions-selectors/ghg-emissions-selectors';
@@ -36,6 +36,7 @@ function GhgEmissionsContainer(props) {
     dataZoomYears,
     setModalDownloadParams
   } = props;
+
   const handleSetYears = years => {
     const { min, max } = years || {};
     updateUrlParam([
@@ -51,6 +52,7 @@ function GhgEmissionsContainer(props) {
   };
 
   // Data Zoom Logic
+
   const [updatedData, setUpdatedData] = useState(data);
   const DATA_ZOOM_START_POSITION = {
     min: 0,
@@ -59,11 +61,13 @@ function GhgEmissionsContainer(props) {
   const [dataZoomPosition, setDataZoomPosition] = useState(
     DATA_ZOOM_START_POSITION
   );
+
+  // Filter data with dataZoomYears
   useEffect(() => {
     if (!data) {
       return undefined;
     }
-    if (dataZoomYears) {
+    if (dataZoomYears.min && dataZoomYears.max) {
       setUpdatedData(
         data.filter(
           d =>
@@ -74,6 +78,28 @@ function GhgEmissionsContainer(props) {
     } else {
       setUpdatedData(data);
     }
+    return undefined;
+  }, [dataZoomYears, data]);
+
+  const previousData = usePrevious(data);
+
+  // Set data limit years on URL when we don't have any years selected
+  useEffect(() => {
+    const hasDataChanged =
+      (!previousData && data) ||
+      (data && data.length) !== (previousData && previousData.length);
+    if (
+      hasDataChanged &&
+      data &&
+      data.length &&
+      (!dataZoomYears.min || !dataZoomYears.max)
+    ) {
+      const firstDataYear = data[0].x;
+      const lastDataYear = data[data.length - 1].x;
+
+      handleSetYears({ min: firstDataYear, max: lastDataYear });
+    }
+
     return undefined;
   }, [dataZoomYears, data]);
 

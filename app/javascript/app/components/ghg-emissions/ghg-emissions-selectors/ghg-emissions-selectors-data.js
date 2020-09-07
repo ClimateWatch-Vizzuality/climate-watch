@@ -274,18 +274,11 @@ export const getChartData = createSelector(
       if (
         calculationSelected.value === GHG_CALCULATION_OPTIONS.CUMULATIVE.value
       ) {
+        const hasAccumulatedValueForYear = year > dataZoomYears.min;
         if (scaledValue) {
-          if (accumulatedValues[key]) {
-            if (
-              !dataZoomYears ||
-              !dataZoomYears.min ||
-              year > dataZoomYears.min
-            ) {
-              accumulatedValues[key] += scaledValue;
-            }
-          } else {
-            accumulatedValues[key] = scaledValue;
-          }
+          accumulatedValues[key] =
+            scaledValue +
+            (hasAccumulatedValueForYear ? accumulatedValues[key] : 0);
         }
         scaledValue = accumulatedValues[key] || null;
       }

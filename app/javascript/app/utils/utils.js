@@ -1,4 +1,5 @@
 /* eslint-disable no-useless-escape */
+import { useRef, useEffect } from 'react';
 import deburr from 'lodash/deburr';
 import toUpper from 'lodash/toUpper';
 import upperFirst from 'lodash/upperFirst';
@@ -272,6 +273,14 @@ export const useSlug = string => {
 
 export const isIE = () =>
   !!window.MSInputMethodContext && !!document.documentMode;
+
+export const usePrevious = value => {
+  const ref = useRef();
+  useEffect(() => {
+    ref.current = value;
+  });
+  return ref.current;
+};
 
 export default {
   arrayToSentence,
