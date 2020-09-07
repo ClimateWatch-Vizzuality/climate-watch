@@ -55,12 +55,16 @@ export const getData = createSelector(
   [getCategories, parseIndicatorsDefs],
   (categories, indicators) => {
     if (!categories || !indicators) return null;
-    const ndcs = Object.keys(categories).map(category => ({
-      title: categories[category].name,
-      slug: categories[category].slug,
-      definitions: indicators[category] ? indicators[category] : []
-    }));
-    return ndcs;
+    return Object.keys(categories).reduce((acc, category) => {
+      if (indicators[category] && indicators[category].length) {
+        acc.push({
+          title: categories[category].name,
+          slug: categories[category].slug,
+          definitions: indicators[category] ? indicators[category] : []
+        });
+      }
+      return acc;
+    }, []);
   }
 );
 
@@ -109,14 +113,15 @@ export const getSectoralInformationData = createSelector(
       const sectorsParsed = sortBy(
         cat.sectors &&
           cat.sectors.length &&
-          cat.sectors.map(sec => {
+          cat.sectors.reduce((acc, sector) => {
             const definitions = [];
             cat.indicators.forEach(ind => {
               const descriptions = selectedTargets.map(
                 ({ country, document }) => {
                   const valueObject = ind.locations[country]
                     ? ind.locations[country].find(
-                      v => v.sector_id === sec && v.document_slug === document
+                      v =>
+                        v.sector_id === sector && v.document_slug === document
                     )
                     : null;
                   const value =
@@ -135,14 +140,18 @@ export const getSectoralInformationData = createSelector(
               });
             });
             const parent =
-              sectors[sec].parent_id && sectors[sectors[sec].parent_id];
-            return {
-              title: sectors[sec].name,
-              slug: snakeCase(sectors[sec].name),
-              parent,
-              definitions
-            };
-          }),
+              sectors[sector].parent_id && sectors[sectors[sector].parent_id];
+
+            if (definitions && definitions.length) {
+              acc.push({
+                title: sectors[sector].name,
+                slug: snakeCase(sectors[sector].name),
+                parent,
+                definitions
+              });
+            }
+            return acc;
+          }, []),
         ['parent.name', 'title']
       );
       return {

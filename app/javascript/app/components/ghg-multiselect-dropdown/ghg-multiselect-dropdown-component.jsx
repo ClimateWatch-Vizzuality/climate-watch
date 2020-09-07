@@ -129,25 +129,6 @@ const GhgMultiselectDropdowComponent = ({
             />
             <div className={styles.optionsContainer}>
               <section className={styles.optionsSection}>
-                <p className={styles.sectionTitle}>Countries</p>
-                {getFilteredGroup('countries') &&
-                  getFilteredGroup('countries').map(country => (
-                    <div
-                      key={country.iso}
-                      className={cx(styles.menuOption, {
-                        [styles.selected]: isOptionSelected(country)
-                      })}
-                      {...getSelectedItemProps({
-                        index: country,
-                        onClick: () => handleSelectionUpdate(values, country)
-                      })}
-                    >
-                      <div className={styles.checkbox} />
-                      {country.label}
-                    </div>
-                  ))}
-              </section>
-              <section className={styles.optionsSection}>
                 <p className={styles.sectionTitle}>Regions</p>
                 {getFilteredGroup('regions') &&
                   getFilteredGroup('regions').map(region => (
@@ -196,6 +177,25 @@ const GhgMultiselectDropdowComponent = ({
                           ))}
                         </div>
                       )}
+                    </div>
+                  ))}
+              </section>
+              <section className={styles.optionsSection}>
+                <p className={styles.sectionTitle}>Countries</p>
+                {getFilteredGroup('countries') &&
+                  getFilteredGroup('countries').map(country => (
+                    <div
+                      key={country.iso}
+                      className={cx(styles.menuOption, {
+                        [styles.selected]: isOptionSelected(country)
+                      })}
+                      {...getSelectedItemProps({
+                        index: country,
+                        onClick: () => handleSelectionUpdate(values, country)
+                      })}
+                    >
+                      <div className={styles.checkbox} />
+                      {country.label}
                     </div>
                   ))}
               </section>

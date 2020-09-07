@@ -16,7 +16,8 @@ function DataZoom(props) {
     data,
     handleDrag,
     handleStop,
-    dataZoomRef
+    dataZoomRef,
+    displayedYears
   } = props;
 
   const renderDraggable = handleType => {
@@ -27,6 +28,25 @@ function DataZoom(props) {
       handleType === 'min'
         ? position.max - GAP_BETWEEN_HANDLES
         : width - padding;
+
+    const isNearToLimits = handlerHandleType => {
+      const currentPosition = position[handlerHandleType];
+      const LIMIT_PADDING = 20;
+      const isNearToOtherHandler =
+        position.max - position.min < LIMIT_PADDING + 10;
+      if (isNearToOtherHandler) return false;
+      if (handlerHandleType === 'min' && currentPosition < LIMIT_PADDING) {
+        return true;
+      }
+      if (
+        handlerHandleType === 'max' &&
+        currentPosition > width - padding - LIMIT_PADDING
+      ) {
+        return true;
+      }
+      return false;
+    };
+
     return (
       <Draggable
         axis="x"
@@ -39,6 +59,13 @@ function DataZoom(props) {
       >
         <div id={`handle${handleType}`} className={styles.handle}>
           <Icon icon={handleIcon} className={styles.handleIcon} />
+          <div
+            className={cx(styles.handleYear, [styles[handleType]], {
+              [styles.nearToLimit]: !isNearToLimits(handleType)
+            })}
+          >
+            {displayedYears && displayedYears[handleType]}
+          </div>
         </div>
       </Draggable>
     );
@@ -85,7 +112,8 @@ DataZoom.propTypes = {
   width: PropTypes.number,
   handleDrag: PropTypes.func.isRequired,
   handleStop: PropTypes.func.isRequired,
-  dataZoomRef: PropTypes.object
+  dataZoomRef: PropTypes.object,
+  displayedYears: PropTypes.object
 };
 
 export default DataZoom;

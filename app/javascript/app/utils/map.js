@@ -8,12 +8,14 @@ const colorArray = Object.values(CHART_NAMED_COLORS);
 const buckets = colorArray.map((_, i) => colorArray.slice(0, i + 1));
 
 export function getColorByIndex(data, index, colors = buckets) {
-  let length = Object.keys(data).length;
+  const length = Object.keys(data).length;
   if (index === -2 || length === 1) return CHART_NAMED_GRAY_COLORS.grayColor1;
-  if (colors.length >= length - 1) {
-    length -= 1;
-  }
-  return colors[length - 1][index - 1] || CHART_NAMED_GRAY_COLORS.grayColor2;
+  const getColorBucket = l => colors[l - 1] || getColorBucket(l - 1);
+  const colorBucket = getColorBucket(length);
+  return (
+    (colorBucket && colorBucket[index - 1]) ||
+    CHART_NAMED_GRAY_COLORS.grayColor2
+  );
 }
 
 export function createLegendBuckets(
