@@ -69,8 +69,11 @@ export const getDocumentsOptions = createSelector(
   [getCountryDocuments],
   documents => {
     if (isEmpty(documents)) return null;
+    // Intended submission documents don't have submission date
     return sortBy(
-      documents.filter(d => d.is_ndc).map(document => documentOption(document)),
+      documents
+        .filter(d => d.is_ndc && d.submission_date)
+        .map(document => documentOption(document)),
       'ordering'
     );
   }
@@ -80,7 +83,7 @@ export const getDocumentSelected = createSelector(
   [getCountryDocuments, getSearch],
   (documents, search) => {
     if (!documents || isEmpty(documents)) return null;
-    const ndcDocuments = documents.filter(d => d.is_ndc);
+    const ndcDocuments = documents.filter(d => d.is_ndc && d.submission_date);
     const lastDocument = ndcDocuments[ndcDocuments.length - 1];
     if (!search || !search.document) {
       return documentOption(lastDocument);
