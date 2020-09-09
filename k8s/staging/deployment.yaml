@@ -1,12 +1,21 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: climate-watch
   labels:
     name: climate-watch-staging
   name: climate-watch-staging
+  namespace: climate-watch
 spec:
+  progressDeadlineSeconds: 2147483647
   revisionHistoryLimit: 0
+  selector:
+    matchLabels:
+      name: climate-watch-staging
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
   template:
     metadata:
       labels:
@@ -23,135 +32,145 @@ spec:
                       - climate-watch
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
-          - weight: 100
-            podAffinityTerm:
-              labelSelector:
-                matchExpressions:
-                - key: name
-                  operator: In
-                  values:
-                  - climate-watch-staging
-              topologyKey: kubernetes.io/hostname
+            - podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: name
+                      operator: In
+                      values:
+                        - climate-watch-staging
+                topologyKey: kubernetes.io/hostname
+              weight: 100
       containers:
-      - name: climate-watch-staging
-        image: vizzuality/climate-watch
-        imagePullPolicy: Always
-        resources:
-          requests:
-            memory: "0Mi"
-            cpu: "0m"
-        args:
-          - start
-        env:
-          - name: CW_FILES_PREFIX
-            value: 'climatewatch.org/staging.climatewatch.org/climate-watch/'
-          - name: RACK_ENV
-            value: production
-          - name: RAILS_ENV
-            value: production
-          - name: PORT
-            value: "3000"
-          - name: RAILS_SERVE_STATIC_FILES
-            value: "true"
-          - name: RAILS_LOG_TO_STDOUT
-            value: "true"
-          - name: POSTGRES_URL
-            valueFrom:
+        - args:
+            - start
+          env:
+            - name: CW_FILES_PREFIX
+              value: climatewatch.org/staging.climatewatch.org/climate-watch/
+            - name: RACK_ENV
+              value: production
+            - name: RAILS_ENV
+              value: production
+            - name: PORT
+              value: "3000"
+            - name: RAILS_SERVE_STATIC_FILES
+              value: "true"
+            - name: RAILS_LOG_TO_STDOUT
+              value: "true"
+            - name: POSTGRES_URL
+              valueFrom:
                 secretKeyRef:
-                  name: dbsecrets
                   key: CW_POSTGRES_URL_STAGING
-          - name: SHARED_POSTGRES_URL
-            valueFrom:
-              secretKeyRef:
                   name: dbsecrets
+            - name: SHARED_POSTGRES_URL
+              valueFrom:
+                secretKeyRef:
                   key: CW_SHARED_POSTGRES_URL_STAGING
-          - name: S3_BUCKET_NAME
-            value: "wri-sites"
-          - name: AWS_REGION
-            value: "eu-west-1"
-          - name: AWS_ACCESS_KEY_ID
-            valueFrom:
-                secretKeyRef:
-                  name: appsecrets
-                  key: CW_PLATFORMS_S3_ACCESS_KEY
-          - name: AWS_SECRET_ACCESS_KEY
-            valueFrom:
-                secretKeyRef:
-                  name: appsecrets
-                  key: CW_PLATFORMS_S3_SECRET_ACCESS_KEY
-          - name: ESP_API
-            value: "https://data.emissionspathways.org/api/v1"
-          - name: GFW_API
-            value: "https://production-api.globalforestwatch.org"
-          - name: CORS_WHITELIST
-            value: "*"
-          - name: HTTP_AUTH_USERNAME
-            valueFrom:
-                secretKeyRef:
-                  name: appsecrets
-                  key: CW_HTTP_AUTH_USERNAME_STAGING
-          - name: HTTP_AUTH_PASSWORD
-            valueFrom:
-                secretKeyRef:
-                  name: appsecrets
-                  key: CW_HTTP_AUTH_PASSWORD_STAGING
-          - name: BASIC_AUTH
-            value: "true"
-          - name: REDIS_SERVER
-            value: redis://localhost:6379
-
-        ports:
-          - containerPort: 3000
-
-      - name: climate-watch-staging-sidekiq
-        image: vizzuality/climate-watch
-        imagePullPolicy: Always
-        resources:
-          requests:
-            memory: "512Mi"
-          limits:
-            memory: "4Gi"
-        args:
-          - sidekiq
-        env:
-          - name: CW_FILES_PREFIX
-            value: 'climatewatch.org/staging.climatewatch.org/climate-watch/'
-          - name: AWS_REGION
-            value: eu-west-1
-          - name: RACK_ENV
-            value: production
-          - name: RAILS_ENV
-            value: production
-          - name: PORT
-            value: "3000"
-          - name: RAILS_SERVE_STATIC_FILES
-            value: "true"
-          - name: S3_BUCKET_NAME
-            value: "wri-sites"
-          - name: AWS_ACCESS_KEY_ID
-            valueFrom:
-                secretKeyRef:
-                  name: appsecrets
-                  key: CW_PLATFORMS_S3_ACCESS_KEY
-          - name: AWS_SECRET_ACCESS_KEY
-            valueFrom:
-                secretKeyRef:
-                  name: appsecrets
-                  key: CW_PLATFORMS_S3_SECRET_ACCESS_KEY
-          - name: POSTGRES_URL
-            valueFrom:
-                secretKeyRef:
                   name: dbsecrets
+            - name: S3_BUCKET_NAME
+              value: wri-sites
+            - name: AWS_REGION
+              value: eu-west-1
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  key: CW_PLATFORMS_S3_ACCESS_KEY
+                  name: appsecrets
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: CW_PLATFORMS_S3_SECRET_ACCESS_KEY
+                  name: appsecrets
+            - name: ESP_API
+              value: https://data.emissionspathways.org/api/v1
+            - name: GFW_API
+              value: https://production-api.globalforestwatch.org
+            - name: CORS_WHITELIST
+              value: '*'
+            - name: HTTP_AUTH_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  key: CW_HTTP_AUTH_USERNAME_STAGING
+                  name: appsecrets
+            - name: HTTP_AUTH_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: CW_HTTP_AUTH_PASSWORD_STAGING
+                  name: appsecrets
+            - name: BASIC_AUTH
+              value: "true"
+            - name: REDIS_SERVER
+              value: redis://localhost:6379
+          image: vizzuality/climate-watch
+          imagePullPolicy: Always
+          name: climate-watch-staging
+          ports:
+            - containerPort: 3000
+              protocol: TCP
+          resources:
+            requests:
+              cpu: "0"
+              memory: "0"
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        - args:
+            - sidekiq
+          env:
+            - name: CW_FILES_PREFIX
+              value: climatewatch.org/staging.climatewatch.org/climate-watch/
+            - name: AWS_REGION
+              value: eu-west-1
+            - name: RACK_ENV
+              value: production
+            - name: RAILS_ENV
+              value: production
+            - name: PORT
+              value: "3000"
+            - name: RAILS_SERVE_STATIC_FILES
+              value: "true"
+            - name: S3_BUCKET_NAME
+              value: wri-sites
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  key: CW_PLATFORMS_S3_ACCESS_KEY
+                  name: appsecrets
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: CW_PLATFORMS_S3_SECRET_ACCESS_KEY
+                  name: appsecrets
+            - name: POSTGRES_URL
+              valueFrom:
+                secretKeyRef:
                   key: CW_POSTGRES_URL_STAGING
-          - name: REDIS_SERVER
-            value: redis://localhost:6379
-      - name: redis
-        image: redis
-        ports:
-         - containerPort: 6379
-        resources:
-         requests:
-           memory: 256Mi
-           cpu: 100m
-
+                  name: dbsecrets
+            - name: REDIS_SERVER
+              value: redis://localhost:6379
+          image: vizzuality/climate-watch
+          imagePullPolicy: Always
+          name: climate-watch-staging-sidekiq
+          resources:
+            limits:
+              memory: 4Gi
+            requests:
+              memory: 512Mi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        - image: redis
+          imagePullPolicy: Always
+          name: redis
+          ports:
+            - containerPort: 6379
+              protocol: TCP
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
       restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: { }
+      terminationGracePeriodSeconds: 30
