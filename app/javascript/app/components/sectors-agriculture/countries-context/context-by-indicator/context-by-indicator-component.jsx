@@ -76,7 +76,6 @@ class ContextByIndicatorComponent extends Component {
       handleCountryClick,
       handleInfoClick
     } = this.props;
-
     const buttonGroupConfig = [
       {
         type: 'info',
@@ -125,7 +124,8 @@ class ContextByIndicatorComponent extends Component {
                   onCountryClick={handleCountryClick}
                   onCountryEnter={handleCountryEnter}
                   onCountryFocus={undefined}
-                  dragEnable={false}
+                  dragEnable
+                  zoomEnable
                 />
                 <MapLegend
                   mapColors={MAP_COLORS}
@@ -182,7 +182,7 @@ class ContextByIndicatorComponent extends Component {
               </div>
             )}
             {countryData && (
-              <ReactTooltip>
+              <ReactTooltip id="cc-map-tooltip">
                 {getTooltip(countryData, tooltipTxt, selectedIndicator)}
               </ReactTooltip>
             )}
