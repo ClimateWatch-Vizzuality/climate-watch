@@ -4,17 +4,6 @@ node {
 
   // Actions
   def forceCompleteDeploy = false
-  try {
-    timeout(time: 60, unit: 'SECONDS') {
-      forceCompleteDeploy = input(
-        id: 'Proceed0', message: 'Force COMPLETE Deployment', parameters: [
-        [$class: 'BooleanParameterDefinition', defaultValue: true, description: '', name: 'Please confirm you want to recreate services and deployments']
-      ])
-    }
-  }
-  catch(err) { // timeout reached or input false
-      // nothing
-  }
 
   // Variables
   def tokens = "${env.JOB_NAME}".tokenize('/')
@@ -91,11 +80,9 @@ node {
         // Roll out to sandbox
         case "sandbox":
           sh("echo Deploying to STAGING app")
-          def service = sh([returnStdout: true, script: "kubectl get deploy ${appName}-staging --namespace=climate-watch || echo NotFound"]).trim()
-          if ((service && service.indexOf("NotFound") > -1) || (forceCompleteDeploy)){
-            sh("sed -i -e 's/{name}/${appName}/g' k8s/staging/*.yaml")
-            sh("kubectl apply -f k8s/staging/")
-          }
+          sh("sed -i -e 's/{name}/${appName}/g' k8s/staging/*.yaml")
+          sh("kubectl apply -f k8s/staging/")
+          sh("kubectl apply -f k8s/staging/")
           sh("kubectl set image deployment ${appName}-staging ${appName}-staging=${imageTag} --record --namespace=climate-watch")
           break
 
@@ -121,11 +108,8 @@ node {
           }
           if (userInput == true && !didTimeout){
             sh("echo Deploying to PROD app")
-            def service = sh([returnStdout: true, script: "kubectl get deploy ${appName} --namespace=climate-watch || echo NotFound"]).trim()
-            if ((service && service.indexOf("NotFound") > -1) || (forceCompleteDeploy)){
-              sh("sed -i -e 's/{name}/${appName}/g' k8s/production/*.yaml")
-              sh("kubectl apply -f k8s/production/")
-            }
+            sh("sed -i -e 's/{name}/${appName}/g' k8s/production/*.yaml")
+            sh("kubectl apply -f k8s/production/")
             sh("kubectl set image deployment ${appName} ${appName}=${imageTag} --record --namespace=climate-watch")
           } else {
             sh("echo NOT DEPLOYED")
