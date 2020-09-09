@@ -32,7 +32,7 @@ class ContextByIndicatorContainer extends PureComponent {
   // eslint-disable-next-line react/sort-comp
   indicatorValueFormat = (value, unit) => {
     if (!value) return 'No Data';
-    if (unit === '%' || !unit) return `${Math.round(value * 10) / 10} %`;
+    if (unit.startsWith('%') || !unit) { return `${Math.round(value * 10) / 10} %`; }
     return `${format(',.2s')(value)} ${unit}`;
   };
 
