@@ -135,11 +135,27 @@ class ContextByIndicatorComponent extends Component {
               </div>
               {topTenCountries && (
                 <div className={styles.topTenSection}>
-                  <p
-                    className={styles.title}
-                  >{`${selectedIndicator.label} (${selectedIndicator.unit})`}</p>
+                  <p className={styles.title}>
+                    {`${selectedIndicator.label} (${selectedIndicator.unit})`}
+                  </p>
                   {topTenCountries.length ? (
-                    <React.Fragment>
+                    <div className={styles.topTenChart}>
+                      <ul className={styles.countriesLabels}>
+                        {topTenCountries.map(c => (
+                          <li
+                            key={`${c.value}-label-${Math.random()}-${
+                              selectedIndicator.label
+                            }`}
+                            className={styles.countryDataLabel}
+                            data-for="cc-chart-tooltip"
+                            data-tip={c.label}
+                          >
+                            <span className={styles.countriesLabel}>
+                              {c.label}
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
                       <ul className={styles.countriesContainer}>
                         {topTenCountries.map(c => (
                           <li
@@ -151,7 +167,6 @@ class ContextByIndicatorComponent extends Component {
                             data-tip={c.label}
                           >
                             <span
-                              data-label={c.label}
                               data-value={c.valueLabel}
                               style={{
                                 width: `${c.chartWidth}%`,
@@ -167,7 +182,7 @@ class ContextByIndicatorComponent extends Component {
                         className={styles.tooltipContainer}
                         id="cc-chart-tooltip"
                       />
-                    </React.Fragment>
+                    </div>
                   ) : (
                     <div
                       className={styles.noData}
