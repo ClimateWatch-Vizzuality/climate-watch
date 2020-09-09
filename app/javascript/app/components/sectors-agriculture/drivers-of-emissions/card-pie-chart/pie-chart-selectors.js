@@ -54,7 +54,9 @@ export const getPieChartData = createSelector(
       ({ sector, value }) => value > 0 && INCLUDED_SECTORS.includes(sector)
     ); // filter for negative emission for Forestry sector and total LUCF sectors
 
-    if (!filteredEmissions || !totalIncludingLUCF || !totalExcludingLUCF) { return null; }
+    if (!filteredEmissions || !totalIncludingLUCF || !totalExcludingLUCF) {
+      return null;
+    }
 
     const formatEmissionValue = value => {
       const formattedValue = format('.3s')(value * API_SCALE);
@@ -64,7 +66,7 @@ export const getPieChartData = createSelector(
       const formatted = `${formattedValue}t${UNITS.CO2e}`;
       const rest = formatted.replace(valueNumber, '');
 
-      return `${valueNumber} ${rest}`;
+      return `${parseFloat(valueNumber)} ${rest}`;
     };
     const formatPercentage = value => `${format('.2f')(value)}%`;
     const emissionObject = (value, total) => ({
