@@ -119,6 +119,7 @@ class ContextByIndicatorComponent extends Component {
             <div className={styles.visualizationsContainer}>
               <div className="layout-container">
                 <Map
+                  className={styles.map}
                   paths={paths}
                   tooltipId="cc-map-tooltip"
                   onCountryClick={handleCountryClick}

@@ -120,6 +120,11 @@
   }
 }
 
+.map {
+  // To avoid problems with the legend
+  z-index: 1;
+}
+
 @media #{$tablet-portrait} {
   .filtersGroup {
     @include columns((6,6));
