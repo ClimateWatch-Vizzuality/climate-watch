@@ -62,7 +62,7 @@ module Api
           # filter out values for filtered locations
           if !instance_options[:locations_documents]
             values = values.where(locations: {iso_code3: instance_options[:location_list]}) if instance_options[:location_list]
-            values = values.where(indc_documents: {slug: instance_options[:document]}) if instance_options[:document]
+            values = values.where(indc_documents: {slug: [instance_options[:document], nil]}) if instance_options[:document]
           end
 
           indexed_data = IndexedSerializer.serialize_collection(
