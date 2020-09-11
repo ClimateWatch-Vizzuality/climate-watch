@@ -174,6 +174,7 @@ module Api
         @locations_documents = params[:locations_documents].split(',').map do |loc_doc|
           loc_doc.split('-')
         end
+        @locations_documents.reject! { |ld| ld.first == 'undefined' }
 
         lse_documents_prefixes = %w(framework sectoral)
 
