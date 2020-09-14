@@ -8,8 +8,6 @@ import { isCountryIncluded } from 'app/utils';
 import { getLocationParamUpdated } from 'utils/navigation';
 import { IGNORED_COUNTRIES_ISOS } from 'data/ignored-countries';
 import { getHoverIndex } from 'components/ndcs/shared/utils';
-import { DEFAULT_NDC_EXPLORE_CATEGORY_SLUG } from 'data/constants';
-import fetchActions from 'pages/ndcs/ndcs-actions';
 import { actions as modalActions } from 'components/modal-metadata';
 import exploreMapActions from 'components/ndcs/shared/explore-map/explore-map-actions';
 
@@ -30,7 +28,7 @@ import {
   getDonutActiveIndex
 } from './ndcs-explore-map-selectors';
 
-const actions = { ...fetchActions, ...modalActions, ...exploreMapActions };
+const actions = { ...modalActions, ...exploreMapActions };
 
 const mapStateToProps = (state, { location }) => {
   const { data, loading } = state.ndcs;
@@ -51,6 +49,7 @@ const mapStateToProps = (state, { location }) => {
   return {
     loading,
     query: ndcsExploreWithSelection.query,
+    selectedCategory: getSelectedCategory(ndcsExploreWithSelection),
     paths: getPathsWithStyles(ndcsExploreWithSelection),
     isoCountries: getISOCountries(ndcsExploreWithSelection),
     selectedIndicator: getMapIndicator(ndcsExploreWithSelection),
@@ -61,7 +60,6 @@ const mapStateToProps = (state, { location }) => {
     downloadLink: getLinkToDataExplorer(ndcsExploreWithSelection),
     categories: getCategories(ndcsExploreWithSelection),
     indicators: getCategoryIndicators(ndcsExploreWithSelection),
-    selectedCategory: getSelectedCategory(ndcsExploreWithSelection),
     donutActiveIndex: getDonutActiveIndex(ndcsExploreWithSelection)
   };
 };
@@ -73,31 +71,6 @@ class NDCSExploreMapContainer extends PureComponent {
       country: null,
       tooltipValues: {}
     };
-  }
-
-  componentDidMount() {
-    const { location } = this.props;
-    const search = qs.parse(location.search);
-    this.props.fetchNDCS({
-      subcategory:
-        (search && search.category) || DEFAULT_NDC_EXPLORE_CATEGORY_SLUG,
-      additionalIndicatorSlugs: ['ndce_ghg', 'submission', 'submission_date']
-    });
-  }
-
-  componentDidUpdate(prevProps) {
-    const { selectedCategory: prevSelectedCategory } = prevProps;
-    const { selectedCategory } = this.props;
-    if (
-      selectedCategory &&
-      (prevSelectedCategory && prevSelectedCategory.value) !==
-        selectedCategory.value
-    ) {
-      this.props.fetchNDCS({
-        subcategory: selectedCategory.value,
-        additionalIndicatorSlugs: ['ndce_ghg', 'submission', 'submission_date']
-      });
-    }
   }
 
   handleSearchChange = query => {
@@ -192,7 +165,8 @@ class NDCSExploreMapContainer extends PureComponent {
   }
 
   render() {
-    const { query } = this.props;
+    const { query, indicator, summaryData, selectedCategory } = this.props;
+    const { country: countryData, tooltipValues } = this.state;
     const noContentMsg = query
       ? 'No results found'
       : 'There is no data for this indicator';
@@ -205,10 +179,11 @@ class NDCSExploreMapContainer extends PureComponent {
       handleSearchChange: this.handleSearchChange,
       handleCategoryChange: this.handleCategoryChange,
       handleIndicatorChange: this.handleIndicatorChange,
-      indicator: this.props.indicator,
-      countryData: this.state.country,
-      summaryData: this.props.summaryData,
-      tooltipValues: this.state.tooltipValues
+      indicator,
+      summaryData,
+      selectedCategory,
+      countryData,
+      tooltipValues
     });
   }
 }
@@ -218,7 +193,6 @@ NDCSExploreMapContainer.propTypes = {
   location: PropTypes.object.isRequired,
   isoCountries: PropTypes.array.isRequired,
   setModalMetadata: PropTypes.func.isRequired,
-  fetchNDCS: PropTypes.func.isRequired,
   query: PropTypes.object,
   summaryData: PropTypes.array,
   selectedCategory: PropTypes.array,
