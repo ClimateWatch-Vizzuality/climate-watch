@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import qs from 'query-string';
 import { handleAnalytics } from 'utils/analytics';
 import { getLocationParamUpdated } from 'utils/navigation';
-import { actions } from 'pages/ndcs';
 
 import Component from './ndcs-table-component';
 import {
@@ -88,4 +87,4 @@ NDCTableContainer.propTypes = {
   fetchNDCS: PropTypes.func.isRequired
 };
 
-export default withRouter(connect(mapStateToProps, actions)(NDCTableContainer));
+export default withRouter(connect(mapStateToProps, null)(NDCTableContainer));
