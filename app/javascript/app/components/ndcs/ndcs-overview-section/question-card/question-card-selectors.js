@@ -21,11 +21,12 @@ const getFirstNDCSubmittedIsos = createSelector(
     if (!source || source !== 'countriesDocuments' || !countriesDocuments) {
       return null;
     }
-    return Object.keys(countriesDocuments).filter(iso =>
+    const firstNDCSubmittedIsos = Object.keys(countriesDocuments).filter(iso =>
       countriesDocuments[iso].some(
         doc => doc.slug === answerLabel && doc.submission_date
       )
     );
+    return firstNDCSubmittedIsos;
   }
 );
 
@@ -101,7 +102,7 @@ export const getEmissionsPercentage = createSelector(
 export const getQuestionStats = createSelector(
   [getTotalCountriesNumber, getPositiveAnswerIsos, getEmissionsPercentage],
   (maxPartiesNumber, positiveAnswerIsos, emissionPercentage) => {
-    if (!positiveAnswerIsos) return null;
+    if (!positiveAnswerIsos || !positiveAnswerIsos.length) return null;
     return {
       answerNumber: positiveAnswerIsos.length,
       maxPartiesNumber,
