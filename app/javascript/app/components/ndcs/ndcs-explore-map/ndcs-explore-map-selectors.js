@@ -348,14 +348,14 @@ export const getSummaryCardData = createSelector(
         doc => doc.slug === 'first_ndc' && doc.submission_date
       )
     );
-
-    const firstNDCCountriesAndParties = getCountriesAndParties(firstNDCIsos);
-
     const secondNDCIsos = Object.keys(countriesDocuments).filter(iso =>
       countriesDocuments[iso].some(
         doc => doc.slug === 'second_ndc' && !!doc.submission_date
       )
     );
+    if (!firstNDCIsos.length || !secondNDCIsos.length) return null;
+
+    const firstNDCCountriesAndParties = getCountriesAndParties(firstNDCIsos);
     const secondNDCCountriesAndParties = getCountriesAndParties(secondNDCIsos);
 
     return [
