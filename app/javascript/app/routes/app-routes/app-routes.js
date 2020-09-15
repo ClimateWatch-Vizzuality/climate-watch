@@ -12,7 +12,6 @@ import NDCCountry from 'pages/ndc-country';
 import LTSCountry from 'pages/lts-country';
 import NDCCompare from 'pages/ndc-compare';
 import NDCCompareAll from 'pages/ndc-compare-all-targets';
-import NDCS from 'pages/ndcs';
 import NDCSEnhancements from 'pages/ndcs-enhancements';
 import NDCSDG from 'pages/ndc-sdg';
 import Country from 'pages/country';
@@ -38,7 +37,6 @@ import NDCSRoutes from './NDCS-routes';
 import NDCCountryRoutes from './NDCCountry-routes';
 import LTSCountryRoutes from './LTSCountry-routes';
 import NDCCompareRoutes from './NDCCompare-routes';
-import NDCSContentRoutes from './NDCSContent-routes';
 import MyCwRoutes from './my-cw-routes';
 import DataExplorerRoutes from './data-explorer-routes';
 import AboutRoutes from './about-routes';
@@ -157,13 +155,6 @@ export default [
     nav: true,
     label: 'COMMITMENTS',
     routes: NDCSRoutes
-  },
-  {
-    path: '/ndcs-content',
-    component: NDCS,
-    headerImage: 'ndc',
-    routes: NDCSContentRoutes,
-    headerGradient: HEADER_GRADIENTS.commitments
   },
   {
     path: '/lts-explore',
@@ -290,6 +281,10 @@ export default [
   {
     path: '/data-explorer',
     label: 'DATA EXPLORER'
+  },
+  {
+    path: '/ndcs-content',
+    component: () => createElement(Redirect, { to: '/ndcs-explore' })
   },
   {
     path: '/lts-tracker',

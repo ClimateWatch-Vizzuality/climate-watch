@@ -89,8 +89,9 @@ const NDCMap = ({
           onCountryClick={handleCountryClick}
           onCountryEnter={handleCountryEnter}
           onCountryFocus={handleCountryEnter}
-          dragEnable={false}
           customCenter={!isTablet ? [10, -50] : null}
+          dragEnable
+          zoomEnable
         />
         {!isTablet && (
           <div className={styles.buttonsContainer}>

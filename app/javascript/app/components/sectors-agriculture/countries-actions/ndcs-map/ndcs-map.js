@@ -8,7 +8,6 @@ import { isCountryIncluded } from 'app/utils';
 import { getLocationParamUpdated } from 'utils/navigation';
 import { europeSlug, europeanCountries } from 'app/data/european-countries';
 
-import { actions as fetchActions } from 'pages/ndcs';
 import { actions as modalActions } from 'components/modal-metadata';
 
 import Component from './ndcs-map-component';
@@ -23,8 +22,6 @@ import {
   getLinkToDataExplorer,
   MAP_COLORS
 } from './ndcs-map-selectors';
-
-const actions = { ...fetchActions, ...modalActions };
 
 const mapStateToProps = (state, { location }) => {
   const { data, loading } = state.ndcs;
@@ -156,4 +153,6 @@ NDCMapContainer.propTypes = {
   fetchNDCS: PropTypes.func.isRequired
 };
 
-export default withRouter(connect(mapStateToProps, actions)(NDCMapContainer));
+export default withRouter(
+  connect(mapStateToProps, modalActions)(NDCMapContainer)
+);

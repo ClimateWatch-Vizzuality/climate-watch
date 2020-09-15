@@ -174,6 +174,7 @@ module Api
         @locations_documents = params[:locations_documents].split(',').map do |loc_doc|
           loc_doc.split('-')
         end
+        @locations_documents.reject! { |ld| ld.first == 'undefined' }
 
         lse_documents_prefixes = %w(framework sectoral)
 
@@ -207,7 +208,11 @@ module Api
         end
 
         if params[:document].present?
-          indicators = indicators.joins(values: [:document]).where(values: {indc_documents: {slug: [params[:document], nil]}})
+          # this needs to be a left join, otherwise we're missing indicators which do not have a document attached
+          # which is what the where condition is about
+          # for example, indicators under Overview -> UNFCCC Process, e.g. pa_status
+          # whose values come from NDC_single_version data file
+          indicators = indicators.left_joins(values: [:document]).where(values: {indc_documents: {slug: [params[:document], nil]}})
         end
 
         indicators = indicators.where(source_id: source.map(&:id)) if source

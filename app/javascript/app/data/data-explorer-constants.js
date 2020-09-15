@@ -110,7 +110,9 @@ export const DATA_EXPLORER_SECTIONS = {
   },
   'ndc-content': {
     label: 'ndc_content',
-    moduleName: 'ndcs-content'
+    moduleName: 'ndcs-content',
+    linkLabel: 'ndcs_explore',
+    linkName: 'ndcs-explore'
   },
   'lts-content': {
     label: 'lts_content',

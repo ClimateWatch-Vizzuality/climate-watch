@@ -3,6 +3,7 @@ import { combineReducers } from 'redux';
 import { handleActions } from 'app/utils/redux';
 
 // Providers
+import * as NDCSProvider from 'providers/ndcs-provider';
 import * as loginProvider from 'providers/login-provider';
 import * as countriesProvider from 'providers/countries-provider';
 import * as regionsProvider from 'providers/regions-provider';
@@ -43,6 +44,7 @@ import * as ndcCompareAllTargetsProvider from 'providers/ndc-compare-all-targets
 import * as customCompareAccordionProvider from 'providers/custom-compare-accordion-provider';
 
 const providersReducers = {
+  ndcs: handleActions(NDCSProvider),
   login: handleActions(loginProvider),
   countries: handleActions(countriesProvider),
   regions: handleActions(regionsProvider),
@@ -86,7 +88,6 @@ const providersReducers = {
 };
 
 // Pages
-import * as NDCSPage from 'pages/ndcs';
 import * as NDCSEnhancementsPage from 'pages/ndcs-enhancements';
 import * as LTSPage from 'pages/lts-explore';
 import * as countryNDCFullPage from 'pages/ndc-country-full';
@@ -94,7 +95,6 @@ import * as ndcSearchPage from 'pages/ndc-search';
 import * as myCWEditor from 'pages/my-climate-watch/my-cw-editor';
 
 const pagesReducers = {
-  ndcs: handleActions(NDCSPage),
   ndcsEnhancements: handleActions(NDCSEnhancementsPage),
   LTS: handleActions(LTSPage),
   countryNDCFull: handleActions(countryNDCFullPage),
