@@ -57,10 +57,6 @@ class NDCMapContainer extends PureComponent {
     };
   }
 
-  componentWillMount() {
-    this.props.fetchNDCS();
-  }
-
   getTooltipText() {
     const { geometryIdHover } = this.state;
     const { selectedIndicator } = this.props;
@@ -149,8 +145,7 @@ NDCMapContainer.propTypes = {
   location: PropTypes.object.isRequired,
   isoCountries: PropTypes.array.isRequired,
   selectedIndicator: PropTypes.object,
-  setModalMetadata: PropTypes.func.isRequired,
-  fetchNDCS: PropTypes.func.isRequired
+  setModalMetadata: PropTypes.func.isRequired
 };
 
 export default withRouter(
