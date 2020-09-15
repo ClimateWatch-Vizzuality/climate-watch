@@ -116,7 +116,6 @@ const CompareAllTable = ({
         customCellRenderer={cell =>
           cellRenderer(cell, selectedTargets, columns, setSelectedTargets)
         }
-        visibleVerticalScrollBar
       />
     )}
     {!loading && (!tableData || tableData.length <= 0) && (
