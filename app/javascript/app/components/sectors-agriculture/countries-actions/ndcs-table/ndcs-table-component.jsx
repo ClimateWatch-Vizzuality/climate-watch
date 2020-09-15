@@ -6,6 +6,7 @@ import Table from 'components/table';
 import NoContent from 'components/no-content';
 import Loading from 'components/loading';
 import { TabletPortrait } from 'components/responsive';
+import NDCSProvider from 'providers/ndcs-provider';
 
 import styles from './ndcs-table-styles.scss';
 
@@ -58,6 +59,7 @@ class NDCTable extends PureComponent {
         <TabletPortrait>
           {isMobile => this.getTableContent(isMobile)}
         </TabletPortrait>
+        <NDCSProvider />
       </div>
     );
   }

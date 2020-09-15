@@ -38,10 +38,6 @@ const mapStateToProps = (state, { location }) => {
 };
 
 class NDCTableContainer extends PureComponent {
-  componentWillMount() {
-    this.props.fetchNDCS();
-  }
-
   handleCategoryChange = category => {
     this.updateUrlParam({
       name: 'category',
@@ -83,8 +79,7 @@ class NDCTableContainer extends PureComponent {
 NDCTableContainer.propTypes = {
   query: PropTypes.string,
   history: PropTypes.object.isRequired,
-  location: PropTypes.object.isRequired,
-  fetchNDCS: PropTypes.func.isRequired
+  location: PropTypes.object.isRequired
 };
 
 export default withRouter(connect(mapStateToProps, null)(NDCTableContainer));
