@@ -31,8 +31,7 @@ const NdcsOverviewSection = props => {
     <Fragment>
       <NDCSProvider
         overrideFilter
-        indicatorSlugs={indicatorSlugs}
-        additionalIndicatorSlugs={['ndce_ghg']}
+        indicatorSlugs={[...indicatorSlugs, 'ndce_ghg']}
       />
       {component}
     </Fragment>
