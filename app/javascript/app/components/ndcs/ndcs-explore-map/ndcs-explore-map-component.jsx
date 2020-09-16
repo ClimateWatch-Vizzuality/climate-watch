@@ -19,6 +19,7 @@ import Sticky from 'react-stickynode';
 import cx from 'classnames';
 import CountriesDocumentsProvider from 'providers/countries-documents-provider';
 import ModalShare from 'components/modal-share';
+import NDCSProvider from 'providers/ndcs-provider';
 
 import newMapTheme from 'styles/themes/map/map-new-zoom-controls.scss';
 import layout from 'styles/layout.scss';
@@ -244,6 +245,10 @@ function NDCSExploreMap(props) {
         )}
       </TabletLandscape>
       <ModalMetadata />
+      <NDCSProvider
+        subcategory={selectedCategory && selectedCategory.value}
+        additionalIndicatorSlugs={['ndce_ghg', 'submission', 'submission_date']}
+      />
     </div>
   );
 }

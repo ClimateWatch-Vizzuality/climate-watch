@@ -13,6 +13,7 @@ import accordionArrow from 'assets/icons/accordion-arrow.svg';
 import Loading from 'components/loading';
 import DataExplorerFilters from 'providers/data-explorer-provider';
 import tooltipTheme from 'styles/themes/map-tooltip/map-tooltip.scss';
+import NDCSProvider from 'providers/ndcs-provider';
 import styles from './ndcs-map-styles.scss';
 
 const getTooltip = (country, tooltipTxt) => (
@@ -89,8 +90,9 @@ const NDCMap = ({
           onCountryClick={handleCountryClick}
           onCountryEnter={handleCountryEnter}
           onCountryFocus={handleCountryEnter}
-          dragEnable={false}
           customCenter={!isTablet ? [10, -50] : null}
+          dragEnable
+          zoomEnable
         />
         {!isTablet && (
           <div className={styles.buttonsContainer}>
@@ -116,6 +118,7 @@ const NDCMap = ({
           />
         )}
         <DataExplorerFilters section={'ndc-content'} />
+        <NDCSProvider />
       </div>
     )}
   </TabletLandscape>

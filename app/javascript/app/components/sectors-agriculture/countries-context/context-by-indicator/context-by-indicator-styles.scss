@@ -16,10 +16,6 @@
   @include columns((6, 6));
 }
 
-.visualizationsContainer {
-  @include columns();
-}
-
 .topTenSection {
   min-height: 160px;
 
@@ -27,6 +23,7 @@
     color: $theme-color;
     font-weight: $font-weight-bold;
     margin-bottom: 40px;
+    margin-left: 100px;
   }
 
   .noData {
@@ -34,24 +31,38 @@
   }
 }
 
+.topTenSection {
+  margin-top: 40px;
+  margin-bottom: 20px;
+
+  .topTenChart {
+    display: flex;
+  }
+}
+
+.countryDataLabel {
+  margin: -5px 10px 13px 0;
+  max-width: 100px;
+}
+
+.countriesLabel {
+  text-align: right;
+  display: block;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
 .countryData {
   position: relative;
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-bottom: 30px;
-  width: 95%;
+  margin-bottom: 15px;
+  width: 270px;
 
   span {
     position: relative;
-
-    &::before {
-      position: absolute;
-      content: attr(data-label);
-      color: $theme-color;
-      width: max-content;
-      top: -20px;
-    }
 
     &::after {
       content: attr(data-value);
@@ -133,34 +144,17 @@
   }
 
   .legend {
+    pointer-events: none;
     top: -160px;
   }
 
   .visualizationsContainer {
-    @include columns((8, 3));
-
-    > *:last-child {
-      @include column-offset(1, $gutters: true);
-    }
+    @include columns((6, 6));
   }
+}
 
-  .topTenSection {
-    margin-top: 40px;
-    margin-bottom: 20px;
-  }
-
-  .countryData {
-    margin-bottom: 15px;
-    width: 100%;
-
-    span::before {
-      padding-right: 15px;
-      transform: translate(-100%, 0);
-      top: -5px;
-      max-width: 151px;
-      text-overflow: ellipsis;
-      overflow: hidden;
-      white-space: nowrap;
-    }
+@media #{$desktop} {
+  .visualizationsContainer {
+    @include columns((8, 4));
   }
 }

@@ -32,7 +32,7 @@ class ContextByIndicatorContainer extends PureComponent {
   // eslint-disable-next-line react/sort-comp
   indicatorValueFormat = (value, unit) => {
     if (!value) return 'No Data';
-    if (unit === '%' || !unit) return `${Math.round(value * 10) / 10} %`;
+    if (unit.startsWith('%') || !unit) { return `${Math.round(value * 10) / 10} %`; }
     return `${format(',.2s')(value)} ${unit}`;
   };
 
@@ -43,13 +43,20 @@ class ContextByIndicatorContainer extends PureComponent {
 
     const countryData = mapData.find(c => c.iso === geometryIdHover);
 
-    return countryData && this.indicatorValueFormat(countryData.value, selectedIndicator.unit);
+    return (
+      countryData &&
+      this.indicatorValueFormat(countryData.value, selectedIndicator.unit)
+    );
   }
 
   handleCountryEnter = geography => {
     const iso = geography.properties && geography.properties.id;
-    if (iso) this.setState({ geometryIdHover: iso });
-    this.setState({ country: geography.properties });
+    if (iso) {
+      this.setState({
+        geometryIdHover: iso,
+        country: geography.properties
+      });
+    }
   };
 
   handleCountryClick = geography => {
@@ -73,7 +80,12 @@ class ContextByIndicatorContainer extends PureComponent {
     this.props.setModalMetadata({
       customTitle: 'Data Sources',
       category: 'Agriculture - Context by Indicator',
-      slugs: ['FAOSTAT_2', 'FAOSTAT_3', 'WBD', 'Aqueduct_Country_River_Basin_Rankings'],
+      slugs: [
+        'FAOSTAT_2',
+        'FAOSTAT_3',
+        'WBD',
+        'Aqueduct_Country_River_Basin_Rankings'
+      ],
       open: true
     });
   };
@@ -106,4 +118,6 @@ ContextByIndicatorContainer.propTypes = {
   setModalMetadata: PropTypes.func
 };
 
-export default withRouter(connect(mapStateToProps, actions)(ContextByIndicatorContainer));
+export default withRouter(
+  connect(mapStateToProps, actions)(ContextByIndicatorContainer)
+);

@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import qs from 'query-string';
 import { handleAnalytics } from 'utils/analytics';
 import { getLocationParamUpdated } from 'utils/navigation';
-import { actions } from 'pages/ndcs';
 
 import Component from './ndcs-table-component';
 import {
@@ -39,10 +38,6 @@ const mapStateToProps = (state, { location }) => {
 };
 
 class NDCTableContainer extends PureComponent {
-  componentWillMount() {
-    this.props.fetchNDCS();
-  }
-
   handleCategoryChange = category => {
     this.updateUrlParam({
       name: 'category',
@@ -84,8 +79,7 @@ class NDCTableContainer extends PureComponent {
 NDCTableContainer.propTypes = {
   query: PropTypes.string,
   history: PropTypes.object.isRequired,
-  location: PropTypes.object.isRequired,
-  fetchNDCS: PropTypes.func.isRequired
+  location: PropTypes.object.isRequired
 };
 
-export default withRouter(connect(mapStateToProps, actions)(NDCTableContainer));
+export default withRouter(connect(mapStateToProps, null)(NDCTableContainer));
