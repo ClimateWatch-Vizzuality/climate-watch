@@ -18,7 +18,10 @@ class HistoricalEmissionsGraph extends PureComponent {
   };
 
   handleEmissionTypeChange = ({ value }) => {
-    this.updateUrlParam([{ name: 'emissionType', value }, { name: 'filter', value: '' }]);
+    this.updateUrlParam([
+      { name: 'emissionType', value },
+      { name: 'filter', value: '' }
+    ]);
   };
 
   handleMetricTypeChange = ({ value }) => {
@@ -28,7 +31,8 @@ class HistoricalEmissionsGraph extends PureComponent {
   handleInfoClick = () => {
     this.props.setModalMetadata({
       category: 'Agriculture - Historical Emissions',
-      slugs: 'FAOSTAT_1',
+      customTitle: 'Country Greenhouse Gas Emissions metadata',
+      slugs: ['FAOSTAT_1', 'historical_emissions_CAIT'],
       open: true
     });
   };
@@ -70,4 +74,6 @@ const mapStateToProps = (state, { location }) => {
   return { ...getTargetsData };
 };
 
-export default withRouter(connect(mapStateToProps, actions)(HistoricalEmissionsGraph));
+export default withRouter(
+  connect(mapStateToProps, actions)(HistoricalEmissionsGraph)
+);
