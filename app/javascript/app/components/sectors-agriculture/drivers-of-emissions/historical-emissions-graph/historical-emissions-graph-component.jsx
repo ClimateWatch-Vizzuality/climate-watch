@@ -133,9 +133,6 @@ class HistoricalEmissionsGraph extends PureComponent {
     const { emissionsCountry } = this.props;
     return (
       <div>
-        <h3 className={styles.chartTitle}>
-          Drivers of emissions over time. Source: FAO agriculture
-        </h3>
         <TabletLandscape>
           <div className={styles.landscapeContent}>
             {this.renderFilters()}
