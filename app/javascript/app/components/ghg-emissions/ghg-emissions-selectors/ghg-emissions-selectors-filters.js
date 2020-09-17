@@ -427,7 +427,8 @@ const getGasConflicts = gasSelected => {
 const getOtherSectorConflicts = (sectorsSelected, metricSelected) => {
   const conflictMetrics = [
     GHG_CALCULATION_OPTIONS.PER_CAPITA.value,
-    GHG_CALCULATION_OPTIONS.PER_GDP.value
+    GHG_CALCULATION_OPTIONS.PER_GDP.value,
+    GHG_CALCULATION_OPTIONS.CUMULATIVE.value
   ];
   return sectorsSelected &&
     sectorsSelected.length > 1 &&
