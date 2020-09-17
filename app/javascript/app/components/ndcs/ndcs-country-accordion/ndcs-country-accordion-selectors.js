@@ -187,8 +187,7 @@ export const filterNDCs = createSelector(
         definitions: defs
       };
     });
-    const reducedNDCs = filteredNDCs.filter(ndc => ndc.definitions.length > 0);
-    return reducedNDCs;
+    return filteredNDCs.filter(ndc => ndc.definitions.length > 0);
   }
 );
 
@@ -196,31 +195,28 @@ export const filterSectoralNDCs = createSelector(
   [parsedCategoriesWithSectors, getSearch],
   (ndcs, search) => {
     if (!ndcs) return null;
-    if (!search) return ndcs;
-    const filteredNDCs = [];
-    ndcs.forEach(ndc => {
-      const sectors = [];
-      ndc.sectors.forEach(sec => {
-        const definitions = sec.definitions.filter(
-          def =>
-            deburrUpper(def.title).indexOf(search) > -1 ||
-            deburrUpper(def.descriptions[0].value).indexOf(search) > -1
-        );
+    return ndcs.reduce((acc, ndc) => {
+      const sectors = ndc.sectors.reduce((sectorAcc, sec) => {
+        const definitions = search
+          ? sec.definitions.filter(
+            def =>
+              deburrUpper(def.title).indexOf(search) > -1 ||
+                deburrUpper(def.descriptions[0].value).indexOf(search) > -1
+          )
+          : sec.definitions;
         if (definitions.length) {
-          sectors.push({
-            ...sec,
-            definitions
-          });
+          sectorAcc.push(sec);
         }
-      });
+        return sectorAcc;
+      }, []);
       if (sectors.length) {
-        filteredNDCs.push({
+        acc.push({
           ...ndc,
           sectors
         });
       }
-    });
-    return filteredNDCs;
+      return acc;
+    }, []);
   }
 );
 
