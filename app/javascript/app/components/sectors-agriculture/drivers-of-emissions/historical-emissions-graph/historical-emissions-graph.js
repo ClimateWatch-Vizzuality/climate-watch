@@ -31,7 +31,7 @@ class HistoricalEmissionsGraph extends PureComponent {
   handleInfoClick = () => {
     this.props.setModalMetadata({
       category: 'Agriculture - Historical Emissions',
-      customTitle: 'Country Greenhouse Gas Emissions metadata',
+      customTitle: 'Agriculture Emissions',
       slugs: ['FAOSTAT_1', 'historical_emissions_CAIT'],
       open: true
     });

@@ -83,7 +83,7 @@ class CardPieChart extends PureComponent {
     const totalIncludingLUCF = pieChartData && pieChartData.totalIncludingLUCF;
     const totalExcludingLUCF = pieChartData && pieChartData.totalExcludingLUCF;
     const subtitle = pieChartData
-      ? `Source: CAIT. ${location} GHG emissions by sector in ${year} (excluding LUCF)`
+      ? `${location} GHG emissions by sector in ${year} (excluding LUCF). Source: CAIT.`
       : 'Source: CAIT.';
 
     const cardTheme = {
