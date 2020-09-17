@@ -342,36 +342,20 @@ export const getSummaryCardData = createSelector(
   [getIndicatorsData, getCountriesDocumentsData],
   (indicators, countriesDocuments) => {
     if (!indicators || !countriesDocuments) return null;
-
-    const firstNDCIsos = Object.keys(countriesDocuments).filter(iso =>
-      countriesDocuments[iso].some(
-        doc => doc.slug === 'first_ndc' && doc.submission_date
-      )
+    const submittedIndicator = indicators.find(
+      ind => ind.slug === 'ndce_status_2020'
     );
-    const secondNDCIsos = Object.keys(countriesDocuments).filter(iso =>
-      countriesDocuments[iso].some(
-        doc => doc.slug === 'second_ndc' && !!doc.submission_date
-      )
+    if (!submittedIndicator) return null;
+    const submittedIsos = Object.keys(submittedIndicator.locations).filter(
+      iso => submittedIndicator.locations[iso].value === '2020 NDC Submitted'
     );
-    if (!firstNDCIsos.length || !secondNDCIsos.length) return null;
-
-    const firstNDCCountriesAndParties = getCountriesAndParties(firstNDCIsos);
-    const secondNDCCountriesAndParties = getCountriesAndParties(secondNDCIsos);
+    if (!submittedIsos.length) return null;
+    const submittedCountriesAndParties = getCountriesAndParties(submittedIsos);
 
     return [
       {
-        value: firstNDCCountriesAndParties.partiesNumber,
-        description: ` Parties have submitted their first NDC, representing ${firstNDCCountriesAndParties.countriesNumber} countries`
-      },
-      {
-        value: secondNDCCountriesAndParties.partiesNumber,
-        description: ` Part${
-          secondNDCCountriesAndParties.partiesNumber === 1
-            ? 'y has'
-            : 'ies have'
-        } submitted their second NDC, representing ${
-          secondNDCCountriesAndParties.countriesNumber
-        } countries`
+        value: submittedCountriesAndParties.partiesNumber,
+        description: ` Parties have submitted their 2020 NDC, representing ${submittedCountriesAndParties.countriesNumber} countries`
       }
     ];
   }
