@@ -40,8 +40,6 @@ import DataZoom from './data-zoom';
 
 import styles from './ghg-emissions-styles.scss';
 
-const FEATURE_NEW_GHG = process.env.FEATURE_NEW_GHG === 'true';
-
 const icons = {
   'Line chart': lineIcon,
   'Stacked area Chart': areaIcon,
@@ -100,27 +98,6 @@ function GhgEmissions(props) {
     dataZoomPosition,
     setDataZoomPosition
   } = props;
-
-  const buttonGroupConfig = [
-    {
-      type: 'info',
-      onClick: handleInfoClick
-    },
-    {
-      type: 'download',
-      section: 'ghg-emissions',
-      link: downloadLink,
-      tooltipText: 'View or download raw data'
-    },
-    {
-      type: 'downloadCSV',
-      tooltipText: 'Download data in csv',
-      onClick: handleDownloadModalOpen
-    },
-    {
-      type: 'addToUser'
-    }
-  ];
 
   const buttonGroupGHGemissions = [
     {
@@ -315,7 +292,6 @@ function GhgEmissions(props) {
             />
           }
           dataZoomComponent={
-            FEATURE_NEW_GHG &&
             !loading && (
               <DataZoom
                 data={dataZoomData}
@@ -349,9 +325,7 @@ function GhgEmissions(props) {
   const renderButtonGroup = () => (
     <ButtonGroup
       className={styles.buttonGroup}
-      buttonsConfig={
-        FEATURE_NEW_GHG ? buttonGroupGHGemissions : buttonGroupConfig
-      }
+      buttonsConfig={buttonGroupGHGemissions}
     />
   );
 
@@ -374,40 +348,27 @@ function GhgEmissions(props) {
             sharePath={'/ghg-emissions'}
           />
         </TabletLandscape>
-        {FEATURE_NEW_GHG && (
-          <p className={styles.bodyText}>
-            Explore GHG emissions from multiple data source (CAIT, PIK, UNFCCC,
-            GCP) and understand their differences in the{' '}
-            <a className={styles.link} href="about/faq/ghg">
-              FAQ
-            </a>
-          </p>
-        )}
+        <p className={styles.bodyText}>
+          Explore GHG emissions from multiple data source (CAIT, PIK, UNFCCC,
+          GCP) and understand their differences in the{' '}
+          <a className={styles.link} href="about/faq/ghg">
+            FAQ
+          </a>
+        </p>
       </div>
       <WorldBankDataProvider />
       <RegionsProvider includeGHGSources />
       <EmissionsMetaProvider />
       {providerFilters && <EmissionsProvider filters={providerFilters} />}
-      <div className={cx(styles.col4, { [styles.newGHG]: FEATURE_NEW_GHG })}>
+      <div className={cx(styles.col4, styles.newGHG)}>
         {renderDropdown('Data Source', 'sources')}
-        {FEATURE_NEW_GHG ? (
-          <GhgMultiselectDropdown
-            label={'Countries/Regions'}
-            groups={regionGroups}
-            options={options.regions || []}
-            values={getValues(selectedOptions.regionsSelected)}
-            onSelectionChange={selected => handleChange('regions', selected)}
-          />
-        ) : (
-          <Multiselect
-            label={'Countries/Regions'}
-            groups={regionGroups}
-            options={options.regions || []}
-            values={getValues(selectedOptions.regionsSelected)}
-            onValueChange={selected => handleChange('regions', selected)}
-            theme={multiSelectTheme}
-          />
-        )}
+        <GhgMultiselectDropdown
+          label={'Countries/Regions'}
+          groups={regionGroups}
+          options={options.regions || []}
+          values={getValues(selectedOptions.regionsSelected)}
+          onSelectionChange={selected => handleChange('regions', selected)}
+        />
         <MultiLevelDropdown
           label="Sectors/Subsectors"
           optGroups={sectorGroups}
@@ -425,7 +386,7 @@ function GhgEmissions(props) {
           onValueChange={selected => handleChange('gases', selected)}
           theme={multiSelectTheme}
         />
-        {FEATURE_NEW_GHG && renderDropdown('Calculations', 'calculation')}
+        {renderDropdown('Calculations', 'calculation')}
         {renderDropdown('Show data by', 'breakBy')}
         {renderDropdown(null, 'chartType', icons, {
           variant: 'icons-labels',
