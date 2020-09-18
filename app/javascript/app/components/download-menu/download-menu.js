@@ -65,6 +65,14 @@ class DownloadMenuContainer extends PureComponent {
       action: this.handleOnClick.bind(this, `${url}/ghg-emissions.zip`, '9 MB')
     },
     {
+      label: 'Agriculture Profile (4.4 MB)',
+      action: this.handleOnClick.bind(
+        this,
+        `${url}/CW_Agriculture_Profile.zip`,
+        '4.4 MB'
+      )
+    },
+    {
       label: 'Adaptation (357 kB)',
       action: this.handleOnClick.bind(this, `${url}/adaptation.zip`, '357 kB')
     },
