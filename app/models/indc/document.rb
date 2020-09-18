@@ -4,6 +4,6 @@ class Indc::Document < ApplicationRecord
   has_many :locations, through: :values
 
   def as_json(_={})
-    super(except: [:created_at, :updated_at])
+    super(except: [:created_at, :updated_at, :iso_code3])
   end
 end

@@ -5,12 +5,13 @@ module Api
         attributes :documents, :framework, :sectoral, :data
 
         def data
-          object.data.map do |datum|
-            docs = ::Indc::Document.joins(values: :location).
-               joins('JOIN indc_submissions ON indc_submissions.document_id = indc_documents.id AND indc_submissions.location_id = locations.id').
-               where(locations: {iso_code3: datum.iso_code3, show_in_cw: true}).
-               select('indc_documents.*, indc_submissions.submission_date').
-               order(:ordering).distinct.to_a
+          location_codes = object.locations.map(&:iso_code3)
+
+          location_with_intent_to_submit = query_location_with_intent_to_submit(location_codes)
+          documents_by_location = query_documents_by_location(location_codes)
+
+          object.locations.map do |location|
+            docs = documents_by_location[location.iso_code3] || []
 
             ordering = docs.empty? ? 0 : docs.last['ordering']
 
@@ -18,14 +19,13 @@ module Api
             # the intention of doing so, by responding 'enhance_2020', or 'intend_2020'
             # on indicator with slug: ndce_status_2020 / ndce_status_2020_label
             if docs.select{|t| t['slug'] == 'second_ndc'}.empty? &&
-                ::Indc::Label.joins(:indicator, indc_values: :location).where(slug: ['enhance_2020', 'intend_2020']).
-                where(locations: {iso_code3: datum.iso_code3}).where(indc_indicators: {slug: 'ndce_status_2020'}).any?
+                location_with_intent_to_submit.include?(location.iso_code3)
               docs += ::Indc::Document.select('indc_documents.*, NULL AS submission_date').
                 where(slug: 'second_ndc')
             end
 
-            if object.laws_info[datum.iso_code3]
-              docs += object.laws_info[datum.iso_code3].map do |key, val|
+            if object.laws_info[location.iso_code3]
+              docs += object.laws_info[location.iso_code3].map do |key, val|
                 next unless val
                 ordering += 1
                 title = key == 'in_framework' ? 'Climate Framework Laws or Policies' : 'Sectoral Laws or Policies'
@@ -41,7 +41,7 @@ module Api
               end.compact
             end
 
-            [datum.iso_code3, docs]
+            [location.iso_code3, docs]
           end.to_h
         end
 
@@ -94,6 +94,28 @@ module Api
               iso: target['iso_code3']
             }
           end.compact.uniq
+        end
+
+        private
+
+        def query_location_with_intent_to_submit(location_codes)
+          ::Indc::Label.
+            joins(:indicator, indc_values: :location).
+            where(locations: {iso_code3: location_codes}).
+            where(slug: ['enhance_2020', 'intend_2020']).
+            where(indc_indicators: {slug: 'ndce_status_2020'}).
+            select('DISTINCT iso_code3').
+            pluck(:iso_code3)
+        end
+
+        def query_documents_by_location(location_codes)
+          ::Indc::Document.joins(values: :location).
+            joins('JOIN indc_submissions ON indc_submissions.document_id = indc_documents.id AND indc_submissions.location_id = locations.id').
+            select('indc_documents.*, locations.iso_code3, indc_submissions.submission_date').
+            where(locations: {iso_code3: location_codes, show_in_cw: true}).
+            order(:ordering).
+            distinct.
+            group_by(&:iso_code3)
         end
       end
     end
