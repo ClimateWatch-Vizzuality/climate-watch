@@ -1,8 +1,9 @@
 import React, { PureComponent } from 'react';
 import Proptypes from 'prop-types';
+import { isPageContained, isEmbededComponent } from 'utils/navigation';
 import { renderRoutes } from 'react-router-config';
 import cx from 'classnames';
-
+import PopUp from 'components/pop-up';
 import CountriesProvider from 'providers/countries-provider';
 import UserReport from 'components/user-report';
 import { Desktop } from 'components/responsive';
@@ -13,7 +14,9 @@ import CookieConsent from 'components/cookie-consent';
 import { HOME_PAGE } from 'data/SEO';
 import { MetaDescription, SocialMetadata } from 'components/seo';
 
-import styles from './app-styles.scss'; // eslint-disable-line
+import styles from './app-styles.scss';
+
+const FEATURE_POP_UP = process.env.FEATURE_POP_UP === 'true';
 
 class App extends PureComponent {
   render() {
@@ -44,6 +47,9 @@ class App extends PureComponent {
         <Footer />
         <UserReport />
         <CookieConsent />
+        {FEATURE_POP_UP &&
+          !isPageContained &&
+          !isEmbededComponent(location) && <PopUp />}
       </div>
     );
   }
