@@ -1,0 +1,28 @@
+@import '~styles/layout.scss';
+
+.popUp {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.popUpContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  height: 100%;
+  color: $theme-color;
+  text-align: center;
+  padding: 0 48px;
+}
+
+.modal {
+  max-height: 360px;
+  max-width: 600px;
+}
+
+.button {
+  max-width: 250px;
+}

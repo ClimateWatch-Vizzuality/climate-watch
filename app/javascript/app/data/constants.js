@@ -225,6 +225,7 @@ export const CLIMATE_VULNERABILITY_DEFINITIONS = {
 };
 
 export const DISCLAIMER_SHOWN = 'disclaimerShown';
+export const POP_UP_SHOWN = 'popUpShown';
 
 export const CONTAINED_PATHNAME = 'contained';
 
