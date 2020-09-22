@@ -30,7 +30,7 @@ module Api
         params[:location].split(',').each do |iso|
           iso = iso == 'EUU' ? 'EUR' : iso
           data = SingleRecordFetcher.new(LSE_API, iso, iso).call
-          laws_and_policies['targets'] += data['targets']
+          laws_and_policies['targets'] += data['targets'] if data['targets']
         end
         laws_and_policies
       end
