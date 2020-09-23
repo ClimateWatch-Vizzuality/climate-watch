@@ -113,7 +113,7 @@ spec:
               memory: 6G
             requests:
               cpu: 500m
-              memory: 2G
+              memory: 1G
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: File
         - args:
