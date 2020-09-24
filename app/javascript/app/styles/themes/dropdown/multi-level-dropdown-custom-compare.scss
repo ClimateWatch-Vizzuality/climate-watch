@@ -2,6 +2,8 @@
 
 .wrapper :global {
   .cw__multi-level-dropdown-styles_menu {
+    max-height: 360px;
+
     & > *:first-child {
       display: none;
     }
