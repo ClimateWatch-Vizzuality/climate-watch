@@ -55,36 +55,15 @@ module Api
       before_action :set_locations_documents, only: [:index]
 
       def index
-        # params[:source] -> one of ["CAIT", "LTS", "WB", "NDC Explorer", "Pledges"]
-        if params[:source].present?
-          source = ::Indc::Source.where(name: params[:source])
-        end
+        json = if index_cache_key.present?
+                 Rails.cache.fetch(index_cache_key, expires: 7.days) do
+                   index_json
+                 end
+               else
+                 index_json
+               end
 
-        categories = Rails.cache.fetch(categories_cache_key, expires: 7.days) do
-          filtered_categories(source)
-        end
-
-        indicators = Rails.cache.fetch(indicators_cache_key, expires: 7.days) do
-          filtered_indicators(source)
-        end
-
-        sectors = Rails.cache.fetch(sectors_cache_key, expires: 7.days) do
-          tmp_sectors = ::Indc::Sector.joins(values: :indicator).
-            where(indc_indicators: {id: indicators.map(&:id)}).distinct
-
-          parents = ::Indc::Sector.where(parent_id: nil).
-            joins("INNER JOIN indc_sectors AS children ON children.parent_id = indc_sectors.id").where(children: {id: tmp_sectors.pluck(:id).uniq})
-
-          ::Indc::Sector.from("(#{tmp_sectors.to_sql} UNION #{parents.to_sql}) AS indc_sectors")
-        end
-
-        render json: NdcIndicators.new(indicators, categories, sectors),
-               serializer: Api::V1::Indc::NdcIndicatorsSerializer,
-               locations_documents: @locations_documents,
-               location_list: location_list,
-               document: params[:document],
-               lse_data: get_lse_data,
-               filter: params[:filter]
+        render json: json
       end
 
       def content_overview
@@ -157,6 +136,54 @@ module Api
         [
           indicators_cache_key,
           ::Indc::Sector.maximum(:updated_at).to_s
+        ].join('_')
+      end
+
+      def index_json
+        # params[:source] -> one of ["CAIT", "LTS", "WB", "NDC Explorer", "Pledges"]
+        if params[:source].present?
+          source = ::Indc::Source.where(name: params[:source])
+        end
+
+        categories = Rails.cache.fetch(categories_cache_key, expires: 7.days) do
+          filtered_categories(source)
+        end
+
+        indicators = Rails.cache.fetch(indicators_cache_key, expires: 7.days) do
+          filtered_indicators(source)
+        end
+
+        sectors = Rails.cache.fetch(sectors_cache_key, expires: 7.days) do
+          tmp_sectors = ::Indc::Sector.joins(values: :indicator).
+            where(indc_indicators: {id: indicators.map(&:id)}).distinct
+
+          parents = ::Indc::Sector.where(parent_id: nil).
+            joins("INNER JOIN indc_sectors AS children ON children.parent_id = indc_sectors.id").where(children: {id: tmp_sectors.pluck(:id).uniq})
+
+          ::Indc::Sector.from("(#{tmp_sectors.to_sql} UNION #{parents.to_sql}) AS indc_sectors")
+        end
+
+        Api::V1::Indc::NdcIndicatorsSerializer.new(
+          NdcIndicators.new(indicators, categories, sectors),
+          locations_documents: @locations_documents,
+          location_list: location_list,
+          document: params[:document],
+          lse_data: get_lse_data,
+          filter: params[:filter]
+        ).to_json
+      end
+
+      def index_cache_key
+        return if params[:location].present?
+        return if params[:locations_documents].present?
+        return if params[:document].present?
+        return if params[:category].present?
+        return if params[:subcategory].present?
+        return if params[:indicators].present?
+
+        [
+          request.url,
+          ::Indc::Indicator.maximum(:updated_at).to_s # to be sure its reloaded after any import
         ].join('_')
       end
 
