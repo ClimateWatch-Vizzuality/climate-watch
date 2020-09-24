@@ -74,28 +74,36 @@ module Api
 
           # inject laws data
           if instance_options[:lse_data] && LSE_INDICATORS_MAP.keys.include?(object.normalized_slug&.to_sym)
-            instance_options[:locations_documents].select{|ld| ['framework', 'sectoral'].include?(ld[1].split('_').first)}.each do |iso, param_slug|
-              law_id = param_slug.split('_').last
-              instance_options[:lse_data].group_by{|lse| lse['iso_code3']}.each do |iso_code, data|
+            lse_locations_documents = instance_options[:locations_documents].
+                                        select{ |ld| %w(framework sectoral).include?(ld[1].split('_').first) }
+            lse_locations_documents.each do |iso, param_slug|
+              law_id = param_slug.split('_').last.to_i
+
+              instance_options[:lse_data].group_by { |lse| lse['iso_code3'] }.each do |iso_code, targets|
                 next unless iso == iso_code
+
                 indexed_data[iso_code] ||= []
                 value = []
-                data.each do |target|
-                  next unless target['sources'].map{|p| p['id']}.include?(law_id.to_i) && target['sector'] != 'economy-wide'
+
+                targets.each do |target|
+                  target_laws_ids = target['sources'].map { |p| p['id'] }
+
+                  next if target_laws_ids.exclude?(law_id) || target['sector'] == 'economy-wide'
 
                   value << if object.normalized_slug == 'nrm_link'
-                             target['sources'].select{|t| t['id'] == law_id.to_i}.map{|t| t['link']}.join(',')
-                          elsif object.normalized_slug == 'nrm_type_of_commitment'
-                            target['ghg_target'] ? 'GHG target' : 'Non GHG target'
-                          elsif object.normalized_slug == 'nrm_target_multiplicity'
-                            target['single_year'] ? 'Single year' : 'Multiple years'
-                          else
-                            target[LSE_INDICATORS_MAP[object.normalized_slug.to_sym]]
-                          end
+                             target['sources'].select{ |t| t['id'] == law_id}.map{|t| t['link'] }.join(',')
+                           elsif object.normalized_slug == 'nrm_type_of_commitment'
+                             target['ghg_target'] ? 'GHG target' : 'Non GHG target'
+                           elsif object.normalized_slug == 'nrm_target_multiplicity'
+                             target['single_year'] ? 'Single year' : 'Multiple years'
+                           else
+                             target[LSE_INDICATORS_MAP[object.normalized_slug.to_sym]]
+                           end
                 end
                 value = value.compact.uniq.join('<br>')
                 if object.normalized_slug == 'nrm_summary'
-                  link = data.first && data.first['sources']&.select{|t| t['id'] == law_id.to_i}&.map{|t| t['link']}&.first
+                  laws = targets.flat_map { |t| t['sources'] }
+                  link = laws.find { |l| l['id'] == law_id }.try(:[], 'link')
                   value += "<br><br><a href='#{link}' target='_blank' rel='noopener noreferrer'>View on Climate Laws</a>" if link
                 end
                 indexed_data[iso_code] << {
