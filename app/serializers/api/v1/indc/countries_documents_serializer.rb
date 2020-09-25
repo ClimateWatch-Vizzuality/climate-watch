@@ -80,9 +80,14 @@ module Api
         def laws_and_policies
           return [] unless object.laws_and_policies && object.laws_and_policies['targets']
 
-          object.laws_and_policies['targets'].flat_map do |target|
+          law_targets = {}
+
+          laws = object.laws_and_policies['targets'].flat_map do |target|
             target['sources'].map do |law|
               next unless law['sectoral'] || law['framework']
+
+              law_targets[law['id']] ||= []
+              law_targets[law['id']] << target['id']
 
               {
                 id: law['id'],
@@ -93,6 +98,17 @@ module Api
               }
             end
           end.compact.uniq
+
+          # update laws titles with target count
+          laws.each do |law|
+            target_count = law_targets[law[:id]].uniq.size
+
+            next unless target_count.positive?
+
+            law[:long_name] += " (#{target_count})"
+          end
+
+          laws
         end
 
         def query_location_with_intent_to_submit(location_codes)
