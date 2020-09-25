@@ -8,12 +8,13 @@ import { actions as modalMetadataActions } from 'components/modal-metadata';
 import NDCCompareAllComponent from './ndc-compare-all-targets-component';
 
 import {
-  getFilteredDataBySearch,
+  getRemoveISOfromData,
   getColumns,
   getLoading,
   getSearch,
   getSelectedTargets,
   getSelectedTableTargets,
+  getTitleLinks,
   getQuery
 } from './ndc-compare-all-targets-selectors';
 
@@ -22,12 +23,13 @@ const mapStateToProps = (state, { location }) => {
   return {
     loading: getLoading(state),
     query: getSearch(state, { search }),
-    tableData: getFilteredDataBySearch(state, { search }),
+    tableData: getRemoveISOfromData(state, { search }),
     columns: getColumns(state, {
       search
     }),
     selectedTargets: getSelectedTargets(state, { search }),
     selectedTableTargets: getSelectedTableTargets(state, { search }),
+    titleLinks: getTitleLinks(state, { search }),
     queryParams: getQuery(state, { search })
   };
 };
