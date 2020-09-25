@@ -77,7 +77,6 @@ module Api
             lse_locations_documents = instance_options[:locations_documents].
                                         select{ |ld| %w(framework sectoral).include?(ld[1].split('_').first) }
             lse_locations_documents.each do |iso, param_slug|
-              is_sectoral = param_slug.starts_with?('sectoral')
               law_id = param_slug.split('_').last.to_i
 
               instance_options[:lse_data].group_by { |lse| lse['iso_code3'] }.each do |iso_code, targets|
