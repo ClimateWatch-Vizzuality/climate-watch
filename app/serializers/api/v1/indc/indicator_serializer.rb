@@ -90,7 +90,6 @@ module Api
                   target_laws_ids = target['sources'].map { |p| p['id'] }
 
                   next if target_laws_ids.exclude?(law_id)
-                  next if is_sectoral && target['sector'] == 'economy-wide'
 
                   value << if object.normalized_slug == 'nrm_link'
                              target['sources'].select{ |t| t['id'] == law_id}.map{|t| t['link'] }.join(',')
