@@ -38,12 +38,14 @@ const cellRenderer = (
   if (dataKey === 'Country') {
     // TODO: We are using value to find the titleLink as the sorting was not working correctly
     // We could use the rowIndex as in the default table
-    const titleLink = titleLinks.find(t => t[0] && t[0].value === cellData);
+    const titleLink = titleLinks.find(
+      t => t[0] && t[0].value.name === cellData.name
+    );
     if (titleLink) {
       const href = titleLink[0].url;
       return (
-        <a title={`NDC page for ${cellData}`} href={href}>
-          {cellData}
+        <a title={`NDC page for ${cellData.name}`} href={href}>
+          {cellData.name}
         </a>
       );
     }

@@ -63,7 +63,7 @@ const getData = createSelector(
       );
 
       return {
-        Country: c.wri_standard_name,
+        Country: { name: c.wri_standard_name, iso: c.iso_code3 },
         'Share of global GHG emissions':
           countryEmissions && countryEmissions.value,
         iso: c.iso_code3,
