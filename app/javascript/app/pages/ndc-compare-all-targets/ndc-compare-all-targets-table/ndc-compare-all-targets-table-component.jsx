@@ -19,10 +19,12 @@ const cellRenderer = (
   selectedTargets = [],
   columns,
   setSelectedTargets,
-  titleLinks
+  titleLinks,
+  countryIsos
 ) => {
   const { cellData, dataKey, columnIndex, rowData } = cell;
-  const id = `${rowData.Country.iso}-${DOCUMENT_COLUMNS_SLUGS[dataKey]}`;
+  const iso = countryIsos && countryIsos[rowData.Country];
+  const id = `${iso}-${DOCUMENT_COLUMNS_SLUGS[dataKey]}`;
   const isActive = selectedTargets.includes(id);
   const isLastColumn = columnIndex === columns.length - 1;
 
@@ -38,14 +40,12 @@ const cellRenderer = (
   if (dataKey === 'Country') {
     // TODO: We are using value to find the titleLink as the sorting was not working correctly
     // We could use the rowIndex as in the default table
-    const titleLink = titleLinks.find(
-      t => t[0] && t[0].value.name === cellData.name
-    );
+    const titleLink = titleLinks.find(t => t[0] && t[0].value === cellData);
     if (titleLink) {
       const href = titleLink[0].url;
       return (
-        <a title={`NDC page for ${cellData.name}`} href={href}>
-          {cellData.name}
+        <a title={`NDC page for ${cellData}`} href={href}>
+          {cellData}
         </a>
       );
     }
@@ -107,6 +107,7 @@ const CompareAllTable = ({
   loading,
   tableData,
   titleLinks,
+  countryIsos,
   columns,
   noContentMsg,
   selectedTargets,
@@ -135,7 +136,8 @@ const CompareAllTable = ({
             selectedTargets,
             columns,
             setSelectedTargets,
-            titleLinks
+            titleLinks,
+            countryIsos
           )
         }
       />
@@ -150,6 +152,7 @@ CompareAllTable.propTypes = {
   loading: PropTypes.bool,
   tableData: PropTypes.array,
   titleLinks: PropTypes.array,
+  countryIsos: PropTypes.object,
   noContentMsg: PropTypes.string,
   columns: PropTypes.array,
   selectedTargets: PropTypes.array,

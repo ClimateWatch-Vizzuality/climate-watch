@@ -63,7 +63,7 @@ const getData = createSelector(
       );
 
       return {
-        Country: { name: c.wri_standard_name, iso: c.iso_code3 },
+        Country: c.wri_standard_name,
         'Share of global GHG emissions':
           countryEmissions && countryEmissions.value,
         iso: c.iso_code3,
@@ -114,6 +114,15 @@ export const getRemoveISOfromData = createSelector(
 export const getSelectedTargets = createSelector([getQuery], query => {
   if (!query || !query.targets) return [];
   return query.targets.split(',');
+});
+
+export const getCountryIsos = createSelector([getCountries], countries => {
+  if (!countries) return null;
+  const countryIsos = {};
+  countries.forEach(c => {
+    countryIsos[c.wri_standard_name] = c.iso_code3;
+  });
+  return countryIsos;
 });
 
 export const getSelectedTableTargets = createSelector(
