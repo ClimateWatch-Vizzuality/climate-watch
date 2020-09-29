@@ -42,19 +42,8 @@ node {
   try {
 
     stage ('Build docker') {
-      switch ("${env.BRANCH_NAME}") {
-        case "master":
-          sh("docker -H :2375 build ${base_envs} ${feature_flags_env} ${cw_files_env} ${app_signal_env} ${user_report_env} ${user_survey_env} -t ${imageTag} ." )
-          sh("docker -H :2375 build ${base_envs} ${feature_flags_env} ${cw_files_env} ${app_signal_env} ${user_report_env} ${user_survey_env} -t ${dockerUsername}/${appName}:latest ." )
-          break
-        case "sandbox":
-          sh("docker -H :2375 build ${base_envs} ${feature_flags_env} ${cw_files_env} ${app_signal_env} ${user_report_env} ${user_survey_env} -t ${imageTag} ." )
-          sh("docker -H :2375 build ${base_envs} ${feature_flags_env} ${cw_files_env} ${app_signal_env} ${user_report_env} ${user_survey_env} -t ${dockerUsername}/${appName}:latest ." )
-          break
-        default:
-          sh("docker -H :2375 build ${base_envs} ${feature_flags_env} ${cw_files_env} ${app_signal_env} ${user_report_env} ${user_survey_env} -t ${imageTag} ." )
-          sh("docker -H :2375 build ${base_envs} ${feature_flags_env} ${cw_files_env} ${app_signal_env} ${user_report_env} ${user_survey_env} -t ${dockerUsername}/${appName}:latest ." )
-      }
+      sh("docker -H :2375 build ${base_envs} ${feature_flags_env} ${cw_files_env} ${app_signal_env} ${user_report_env} ${user_survey_env} -t ${imageTag} ." )
+      sh("docker -H :2375 build ${base_envs} ${feature_flags_env} ${cw_files_env} ${app_signal_env} ${user_report_env} ${user_survey_env} -t ${dockerUsername}/${appName}:latest ." )
     }
 
     stage ('Run Tests') {
@@ -82,7 +71,6 @@ node {
           sh("echo Deploying to STAGING app")
           sh("sed -i -e 's/{name}/${appName}/g' k8s/staging/*.yaml")
           sh("kubectl apply -f k8s/staging/")
-          sh("kubectl apply -f k8s/staging/")
           sh("kubectl set image deployment ${appName}-staging ${appName}-staging=${imageTag} --record --namespace=climate-watch")
           break
 
@@ -108,7 +96,6 @@ node {
           }
           if (userInput == true && !didTimeout){
             sh("echo Deploying to PROD app")
-            sh("sed -i -e 's/{name}/${appName}/g' k8s/production/*.yaml")
             sh("kubectl apply -f k8s/production/")
             sh("kubectl set image deployment ${appName} ${appName}=${imageTag} --record --namespace=climate-watch")
           } else {

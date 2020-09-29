@@ -1,5 +1,5 @@
 FROM ruby:2.5.1
-MAINTAINER Jose Angel Parreño <joseangel.parreno@vizzuality.com>
+MAINTAINER info@vizzuality.com
 
 ENV NAME climate-watch
 
@@ -38,25 +38,17 @@ ARG USER_REPORT_KEY
 ENV USER_REPORT_KEY $USER_REPORT_KEY
 
 # Install dependencies
+RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
-        postgresql-client \
-    && rm -rf /var/lib/apt/lists/* \
-    && curl -sL https://deb.nodesource.com/setup_12.x | bash - \
-    && apt-get install -y nodejs build-essential patch zlib1g-dev liblzma-dev libicu-dev \
-    && npm install -g yarn
+        postgresql-client nodejs build-essential patch zlib1g-dev liblzma-dev libicu-dev
+RUN npm install -g yarn
 
 RUN gem install bundler --no-ri --no-rdoc
 
 # Create app directory
 RUN mkdir -p /usr/src/$NAME
 WORKDIR /usr/src/$NAME
-# VOLUME /usr/src/$NAME
-
-# Install and run scheduling
-#RUN gem install whenever
-#RUN whenever --load-file config/schedule.rb
-#RUN whenever --update-crontab
 
 # Install app dependencies
 COPY Gemfile Gemfile.lock ./
