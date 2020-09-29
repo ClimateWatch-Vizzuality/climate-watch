@@ -100,7 +100,10 @@ spec:
             - name: CORS_WHITELIST
               value: '*'
             - name: REDIS_SERVER
-              value: redis://localhost:6379
+              valueFrom:
+                secretKeyRef:
+                  key: REDIS_URI
+                  name: dbsecrets
           image: vizzuality/climate-watch
           imagePullPolicy: Always
           name: climate-watch
@@ -149,7 +152,10 @@ spec:
                   key: CW_POSTGRES_URL
                   name: dbsecrets
             - name: REDIS_SERVER
-              value: redis://localhost:6379
+              valueFrom:
+                secretKeyRef:
+                  key: REDIS_URI
+                  name: dbsecrets
           image: vizzuality/climate-watch
           imagePullPolicy: Always
           name: climate-watch-sidekiq
@@ -160,18 +166,6 @@ spec:
             requests:
               cpu: 250m
               memory: 512Mi
-          terminationMessagePath: /dev/termination-log
-          terminationMessagePolicy: File
-        - image: redis
-          imagePullPolicy: Always
-          name: redis
-          ports:
-            - containerPort: 6379
-              protocol: TCP
-          resources:
-            requests:
-              cpu: 100m
-              memory: 256Mi
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: File
       dnsPolicy: ClusterFirst
