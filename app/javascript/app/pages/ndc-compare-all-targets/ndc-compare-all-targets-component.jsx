@@ -62,7 +62,8 @@ const NDCCompareAllTargets = props => {
     selectedTargets,
     selectedTableTargets,
     handleInfoClick,
-    titleLinks
+    titleLinks,
+    countryIsos
   } = props;
   return (
     <React.Fragment>
@@ -135,6 +136,7 @@ const NDCCompareAllTargets = props => {
             loading={loading}
             tableData={tableData}
             titleLinks={titleLinks}
+            countryIsos={countryIsos}
             noContentMsg={noContentMsg}
             columns={columns}
             selectedTargets={selectedTableTargets}
@@ -154,6 +156,7 @@ NDCCompareAllTargets.propTypes = {
   loading: PropTypes.bool,
   tableData: PropTypes.array,
   titleLinks: PropTypes.array,
+  countryIsos: PropTypes.object,
   query: PropTypes.string,
   handleSearchChange: PropTypes.func.isRequired,
   handleInfoClick: PropTypes.func.isRequired,

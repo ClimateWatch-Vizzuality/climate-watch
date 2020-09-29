@@ -19,10 +19,12 @@ const cellRenderer = (
   selectedTargets = [],
   columns,
   setSelectedTargets,
-  titleLinks
+  titleLinks,
+  countryIsos
 ) => {
   const { cellData, dataKey, columnIndex, rowData } = cell;
-  const id = `${rowData.Country.iso}-${DOCUMENT_COLUMNS_SLUGS[dataKey]}`;
+  const iso = countryIsos && countryIsos[rowData.Country];
+  const id = `${iso}-${DOCUMENT_COLUMNS_SLUGS[dataKey]}`;
   const isActive = selectedTargets.includes(id);
   const isLastColumn = columnIndex === columns.length - 1;
 
@@ -105,6 +107,7 @@ const CompareAllTable = ({
   loading,
   tableData,
   titleLinks,
+  countryIsos,
   columns,
   noContentMsg,
   selectedTargets,
@@ -133,7 +136,8 @@ const CompareAllTable = ({
             selectedTargets,
             columns,
             setSelectedTargets,
-            titleLinks
+            titleLinks,
+            countryIsos
           )
         }
       />
@@ -148,6 +152,7 @@ CompareAllTable.propTypes = {
   loading: PropTypes.bool,
   tableData: PropTypes.array,
   titleLinks: PropTypes.array,
+  countryIsos: PropTypes.object,
   noContentMsg: PropTypes.string,
   columns: PropTypes.array,
   selectedTargets: PropTypes.array,

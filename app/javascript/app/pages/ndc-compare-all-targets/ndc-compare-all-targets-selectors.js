@@ -116,6 +116,15 @@ export const getSelectedTargets = createSelector([getQuery], query => {
   return query.targets.split(',');
 });
 
+export const getCountryIsos = createSelector([getCountries], countries => {
+  if (!countries) return null;
+  const countryIsos = {};
+  countries.forEach(c => {
+    countryIsos[c.wri_standard_name] = c.iso_code3;
+  });
+  return countryIsos;
+});
+
 export const getSelectedTableTargets = createSelector(
   [getSelectedTargets],
   selectedTargets => {

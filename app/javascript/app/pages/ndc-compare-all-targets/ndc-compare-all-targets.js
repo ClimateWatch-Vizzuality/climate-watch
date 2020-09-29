@@ -15,7 +15,8 @@ import {
   getSelectedTargets,
   getSelectedTableTargets,
   getTitleLinks,
-  getQuery
+  getQuery,
+  getCountryIsos
 } from './ndc-compare-all-targets-selectors';
 
 const mapStateToProps = (state, { location }) => {
@@ -30,6 +31,7 @@ const mapStateToProps = (state, { location }) => {
     selectedTargets: getSelectedTargets(state, { search }),
     selectedTableTargets: getSelectedTableTargets(state, { search }),
     titleLinks: getTitleLinks(state, { search }),
+    countryIsos: getCountryIsos(state, { search }),
     queryParams: getQuery(state, { search })
   };
 };
