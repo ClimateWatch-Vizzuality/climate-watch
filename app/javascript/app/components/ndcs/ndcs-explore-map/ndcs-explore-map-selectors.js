@@ -44,8 +44,6 @@ const getCategoriesData = createSelector(
 );
 
 const getIndicatorsData = state => state.indicators || null;
-const getCountriesDocumentsData = state =>
-  state.countriesDocuments.data || null;
 const getZoom = state => state.map.zoom || null;
 
 export const getDonutActiveIndex = state =>
@@ -339,9 +337,9 @@ const getCountriesAndParties = submissions => {
 };
 
 export const getSummaryCardData = createSelector(
-  [getIndicatorsData, getCountriesDocumentsData],
-  (indicators, countriesDocuments) => {
-    if (!indicators || !countriesDocuments) return null;
+  [getIndicatorsData],
+  indicators => {
+    if (!indicators) return null;
     const submittedIndicator = indicators.find(
       ind => ind.slug === 'ndce_status_2020'
     );

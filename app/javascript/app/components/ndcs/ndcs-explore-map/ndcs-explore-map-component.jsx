@@ -17,7 +17,6 @@ import LegendItem from 'components/ndcs/shared/legend-item';
 import ShareButton from 'components/button/share-button';
 import Sticky from 'react-stickynode';
 import cx from 'classnames';
-import CountriesDocumentsProvider from 'providers/countries-documents-provider';
 import ModalShare from 'components/modal-share';
 import NDCSProvider from 'providers/ndcs-provider';
 
@@ -140,7 +139,6 @@ function NDCSExploreMap(props) {
   const TOOLTIP_ID = 'ndcs-map-tooltip';
   return (
     <div>
-      <CountriesDocumentsProvider />
       <TabletLandscape>
         {isTablet => (
           <div className={styles.wrapper}>
@@ -159,7 +157,7 @@ function NDCSExploreMap(props) {
                     >
                       <Dropdown
                         label="Category"
-                        paceholder="Select a category"
+                        placeholder="Select a category"
                         options={categories}
                         onValueChange={handleCategoryChange}
                         value={selectedCategory}
