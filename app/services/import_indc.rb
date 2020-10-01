@@ -567,7 +567,7 @@ class ImportIndc
   # to be able to compare values for different indicators
   def import_comparison_slugs
     @comparison_indicators.each do |ind|
-      slugs = [ind[:pledges_slug], ind[:ndc_slug], ind[:lts_slug]]
+      slugs = [ind[:pledges_slug], ind[:ndc_slug], ind[:lts_slug], ind[:lse_slug]]
       Indc::Indicator.where(slug: slugs).update_all(normalized_label: ind[:normalized_label],
                                                     normalized_slug: ind[:normalized_slug])
     end
