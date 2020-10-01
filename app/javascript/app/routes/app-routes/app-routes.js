@@ -58,7 +58,6 @@ import LTSExploreSections from './lts-explore-sections';
 import NDCSExploreSections from './ndcs-explore-sections';
 import NDCOverviewRoutes from './ndcs-overview-routes';
 
-const FEATURE_AGRICULTURE = process.env.FEATURE_AGRICULTURE === 'true';
 const FEATURE_ALL_COMMITMENTS_MENU_ITEMS =
   process.env.FEATURE_ALL_COMMITMENTS_MENU_ITEMS === 'true';
 const FEATURE_COMPARE_ALL = process.env.FEATURE_COMPARE_ALL === 'true';
@@ -88,26 +87,18 @@ export default [
     sections: countryCompareSections,
     headerColor: HEADER_COLORS.countries
   },
-  FEATURE_AGRICULTURE
-    ? {
-      nav: true,
-      label: 'SECTORS',
-      routes: sectorsRoutes
-    }
-    : {
-      path: '/sectors',
-      component: Sectors,
-      exact: true,
-      nav: true,
-      label: 'SECTORS'
-    },
-  FEATURE_AGRICULTURE && {
+  {
+    nav: true,
+    label: 'SECTORS',
+    routes: sectorsRoutes
+  },
+  {
     path: '/sectors/agriculture',
     component: SectorsAgriculture,
     sections: agricultureSections,
     headerGradient: HEADER_GRADIENTS.sectors
   },
-  FEATURE_AGRICULTURE && {
+  {
     path: '/sectors/coming-soon',
     component: Sectors,
     headerGradient: HEADER_GRADIENTS.sectors
