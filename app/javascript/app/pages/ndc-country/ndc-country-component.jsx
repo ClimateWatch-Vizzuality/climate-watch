@@ -10,6 +10,8 @@ import cx from 'classnames';
 import Sticky from 'react-stickynode';
 import AnchorNav from 'components/anchor-nav';
 import CountriesDocumentsProvider from 'providers/countries-documents-provider';
+// Use NDC Document Provider in the main page to prevent race conditions loading NDC accordions
+import NdcsDocumentsProvider from 'providers/documents-provider';
 import Dropdown from 'components/dropdown';
 import { Dropdown as CWDropdown } from 'cw-components';
 import { NDC_COUNTRY } from 'data/SEO';
@@ -123,6 +125,7 @@ function NDCCountry(props) {
         href={location.href}
       />
       <CountriesDocumentsProvider location={iso} />
+      <NdcsDocumentsProvider />
       {country && (
         <Header route={route}>
           <div className={styles.header}>
