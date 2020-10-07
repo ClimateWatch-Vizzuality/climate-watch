@@ -1,10 +1,6 @@
 import { createSelector, createStructuredSelector } from 'reselect';
-import difference from 'lodash/difference';
-import intersection from 'lodash/intersection';
 import isEmpty from 'lodash/isEmpty';
-import uniq from 'lodash/uniq';
-import pluralize from 'pluralize';
-import { arrayToSentence, useSlug } from 'utils';
+import { useSlug } from 'utils';
 import {
   getGhgEmissionDefaultSlugs,
   toPlural,
@@ -132,7 +128,7 @@ export const getCalculationSelected = createSelector(
   }
 );
 
-const getBreakByOptionSelected = createSelector(
+export const getBreakByOptionSelected = createSelector(
   [getBreakByOptions, getSelection('breakBy')],
   getOptionSelectedFunction('breakBy')
 );
@@ -316,7 +312,7 @@ const isIncluded = (field, selectedValues, filter) => {
   }[field];
 };
 
-const getFiltersSelected = field =>
+export const getFiltersSelected = field =>
   createSelector(
     [getOptions, getSelection(field), getDefaults],
     (options, selected, defaults) => {
@@ -340,230 +336,9 @@ const getFiltersSelected = field =>
     }
   );
 
-const getChartTypeSelected = createSelector(
+export const getChartTypeSelected = createSelector(
   [getChartTypeOptions, getSelection('chartType')],
   getOptionSelectedFunction('chartType')
-);
-
-const getOverlappingConflicts = optionsSelected => {
-  if (!optionsSelected || optionsSelected.length <= 1) return [];
-
-  const conflicts = [];
-  const overlapsCheckedIds = [];
-
-  optionsSelected.forEach(option => {
-    if (option.expandsTo) {
-      const overlappingOptions = [];
-      optionsSelected.forEach(option2 => {
-        if (option2.value === option.value) return;
-        if (overlapsCheckedIds.includes(option2.value)) return;
-
-        const expandedOption = [option.value, ...(option.expandsTo || [])].map(
-          String
-        );
-        const expandedOption2 = [
-          option2.value,
-          option2.group,
-          ...(option2.expandsTo || [])
-        ].map(String);
-
-        if (intersection(expandedOption, expandedOption2).length > 0) {
-          overlappingOptions.push(option2.label);
-        }
-      });
-
-      if (overlappingOptions.length) {
-        conflicts.push(
-          `${option.label} overlaps with ${arrayToSentence(overlappingOptions)}`
-        );
-      }
-
-      overlapsCheckedIds.push(option.value);
-    }
-  });
-
-  return conflicts;
-};
-
-const getGasConflicts = gasSelected => {
-  const aggregatedGases = Object.keys(GAS_AGGREGATES);
-
-  if (!gasSelected || gasSelected.length <= 1) return [];
-
-  const conflicts = [];
-
-  aggregatedGases.forEach(gas => {
-    if (gasSelected.some(g => g.label.includes(gas))) {
-      conflicts.push(`${gas} option cannot be selected with any other gas`);
-    }
-  });
-
-  return conflicts;
-};
-
-const getCalculationSectorConflicts = (sectorsSelected, metricSelected) => {
-  const conflictMetrics = [
-    GHG_CALCULATION_OPTIONS.PER_CAPITA.value,
-    GHG_CALCULATION_OPTIONS.PER_GDP.value,
-    GHG_CALCULATION_OPTIONS.CUMULATIVE.value
-  ];
-  return sectorsSelected &&
-    sectorsSelected.length > 1 &&
-    conflictMetrics.includes(metricSelected)
-    ? [
-      `More than one sector is not available with ${GHG_CALCULATION_OPTIONS[metricSelected].label} calculation`
-    ]
-    : [];
-};
-
-const getCountryRegionConflicts = (regionsSelected, breakBySelected) => {
-  const regionsGroupSelected = regionsSelected?.filter(
-    r => r.groupId === 'regions'
-  );
-  const numberOfRegionsSelected = regionsGroupSelected?.length;
-  if (breakBySelected.value === 'countries' && numberOfRegionsSelected > 1) {
-    return ['More than one region is selected'];
-  }
-  const onlyCountriesAreSelected =
-    regionsSelected?.length && numberOfRegionsSelected === 0;
-  if (breakBySelected.value === 'regions' && onlyCountriesAreSelected) {
-    return ['No region is selected'];
-  }
-  return [];
-};
-
-const getChartConflicts = (metricSelected, chartSelected, breakBySelected) => {
-  const conflicts = [];
-
-  if (
-    ['PER_CAPITA', 'PER_GDP', 'PERCENTAGE_CHANGE'].includes(metricSelected) &&
-    chartSelected.value !== 'line'
-  ) {
-    const metricOption = GHG_CALCULATION_OPTIONS[metricSelected];
-    conflicts.push(
-      `${metricOption.label} metric is not allowed with ${chartSelected.label} chart`
-    );
-  }
-
-  if (
-    ['PER_CAPITA', 'PER_GDP'].includes(metricSelected) &&
-    ['sector', 'gas'].includes(breakBySelected.value)
-  ) {
-    const metricOption = GHG_CALCULATION_OPTIONS[metricSelected];
-    conflicts.push(
-      `${metricOption.label} metric is not allowed with show data by ${breakBySelected.label}`
-    );
-  }
-
-  return conflicts;
-};
-
-export const getFiltersConflicts = createSelector(
-  [
-    getFiltersSelected('location'),
-    getFiltersSelected('gas'),
-    getFiltersSelected('sector'),
-    getModelSelected,
-    getMetricSelected,
-    getChartTypeSelected,
-    getBreakByOptionSelected
-  ],
-  (
-    regionSelected,
-    gasSelected,
-    sectorsSelected,
-    modelSelected,
-    metricSelected,
-    chartSelected,
-    breakBySelected
-  ) => {
-    let conflicts = [];
-    const solutions = ['Please deselect all conflicting options'];
-    const isNotLineChart = chartSelected.value !== 'line';
-    const notBreakBySector = modelSelected !== 'sector';
-    const notBreakByGas = modelSelected !== 'gas';
-    const notBreakByRegion = modelSelected !== 'regions';
-
-    const sectorOverlappingConflicts = getOverlappingConflicts(sectorsSelected);
-    const calculationSectorConflicts = getCalculationSectorConflicts(
-      sectorsSelected,
-      metricSelected
-    );
-    const regionConflicts = getOverlappingConflicts(regionSelected);
-    const countryRegionConflicts = getCountryRegionConflicts(
-      regionSelected,
-      breakBySelected
-    );
-    const gasConflicts = getGasConflicts(gasSelected);
-    const chartConflicts = getChartConflicts(
-      metricSelected,
-      chartSelected,
-      breakBySelected
-    );
-
-    if (
-      sectorOverlappingConflicts.length &&
-      (isNotLineChart || notBreakBySector)
-    ) {
-      conflicts = conflicts.concat(sectorOverlappingConflicts);
-    }
-    conflicts = conflicts.concat(calculationSectorConflicts);
-
-    if (gasConflicts.length && (isNotLineChart || notBreakByGas)) {
-      conflicts = conflicts.concat(gasConflicts);
-    }
-    if (regionConflicts.length && (isNotLineChart || notBreakByRegion)) {
-      conflicts = conflicts.concat(regionConflicts);
-    }
-    conflicts = conflicts.concat(countryRegionConflicts);
-    conflicts = conflicts.concat(chartConflicts);
-
-    if (conflicts.length && isNotLineChart) {
-      solutions.push('change "Chart Type" to line chart');
-    }
-
-    const getBreakByAvailableOptions = () => {
-      if (calculationSectorConflicts.length || chartConflicts.length) {
-        // Changing the show data by won't fix this cases
-        return [];
-      }
-      let breakByAvailableOptions = difference(
-        ['sector', 'gas', 'regions', 'countries'],
-        [breakBySelected.value]
-      );
-      if (sectorOverlappingConflicts.length) {
-        breakByAvailableOptions = intersection(breakByAvailableOptions, [
-          'sector'
-        ]);
-      }
-      if (regionConflicts.length) {
-        breakByAvailableOptions = intersection(breakByAvailableOptions, [
-          'region'
-        ]);
-      }
-      if (gasConflicts.length) {
-        breakByAvailableOptions = intersection(breakByAvailableOptions, [
-          'gas'
-        ]);
-      }
-      return breakByAvailableOptions;
-    };
-
-    const breakByAvailableOptions = getBreakByAvailableOptions();
-    if (breakByAvailableOptions.length) {
-      solutions.push(
-        `change "Show data by" to ${arrayToSentence(
-          breakByAvailableOptions.map(option => pluralize(option)),
-          'or'
-        )}`
-      );
-    }
-
-    return {
-      conflicts,
-      solutionText: uniq(solutions).join(' or ')
-    };
-  }
 );
 
 export const getOptionsSelected = createStructuredSelector({

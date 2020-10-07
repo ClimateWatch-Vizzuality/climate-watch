@@ -7,9 +7,9 @@ import {
 import {
   getOptions,
   getOptionsSelected,
-  getFiltersConflicts,
   getModelSelected
 } from './ghg-emissions-selectors-filters';
+import { getFiltersConflicts } from './ghg-emissions-selectors-conflicts';
 import {
   getChartConfig,
   getSortedChartDataWithOthers,
