@@ -3,7 +3,8 @@ import flatMap from 'lodash/flatMap';
 import isEmpty from 'lodash/isEmpty';
 
 const expandRegionToCountries = (iso, regions) => {
-  const region = regions.find(r => r.iso_code3 === iso);
+  const region =
+    Array.isArray(regions) && regions.find(r => r.iso_code3 === iso);
   if (!region || !region.members) return iso;
   return flatMap(region.members, expandRegionToCountries);
 };

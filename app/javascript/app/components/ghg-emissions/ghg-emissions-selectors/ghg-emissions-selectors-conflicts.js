@@ -1,7 +1,6 @@
 import { createSelector } from 'reselect';
 import difference from 'lodash/difference';
 import intersection from 'lodash/intersection';
-import uniq from 'lodash/uniq';
 import pluralize from 'pluralize';
 import { arrayToSentence } from 'utils';
 import { GAS_AGGREGATES, GHG_CALCULATION_OPTIONS } from 'data/constants';
@@ -145,14 +144,9 @@ export const getFiltersConflicts = createSelector(
     chartSelected,
     breakBySelected
   ) => {
-    let conflicts = [];
-    const solutions = ['Please deselect all conflicting options'];
     const isNotLineChart = chartSelected.value !== 'line';
-    const notBreakBySector = modelSelected !== 'sector';
-    const notBreakByGas = modelSelected !== 'gas';
-    const notBreakByRegion = modelSelected !== 'regions';
 
-    const sectorOverlappingConflicts = getOverlappingConflicts(sectorsSelected);
+    const sectorConflicts = getOverlappingConflicts(sectorsSelected);
     const calculationSectorConflicts = getCalculationSectorConflicts(
       sectorsSelected,
       metricSelected
@@ -169,26 +163,20 @@ export const getFiltersConflicts = createSelector(
       breakBySelected
     );
 
-    if (
-      sectorOverlappingConflicts.length &&
-      (isNotLineChart || notBreakBySector)
-    ) {
-      conflicts = conflicts.concat(sectorOverlappingConflicts);
+    let conflicts = [];
+    if (isNotLineChart || modelSelected !== 'sector') {
+      conflicts = conflicts.concat(sectorConflicts);
     }
     conflicts = conflicts.concat(calculationSectorConflicts);
 
-    if (gasConflicts.length && (isNotLineChart || notBreakByGas)) {
+    if (isNotLineChart || modelSelected !== 'gas') {
       conflicts = conflicts.concat(gasConflicts);
     }
-    if (regionConflicts.length && (isNotLineChart || notBreakByRegion)) {
+    if (isNotLineChart || modelSelected !== 'regions') {
       conflicts = conflicts.concat(regionConflicts);
     }
     conflicts = conflicts.concat(countryRegionConflicts);
     conflicts = conflicts.concat(chartConflicts);
-
-    if (conflicts.length && isNotLineChart) {
-      solutions.push('change "Chart Type" to line chart');
-    }
 
     const getBreakByAvailableOptions = () => {
       if (calculationSectorConflicts.length || chartConflicts.length) {
@@ -199,7 +187,7 @@ export const getFiltersConflicts = createSelector(
         ['sector', 'gas', 'regions', 'countries'],
         [breakBySelected.value]
       );
-      if (sectorOverlappingConflicts.length) {
+      if (sectorConflicts.length) {
         breakByAvailableOptions = intersection(breakByAvailableOptions, [
           'sector'
         ]);
@@ -217,6 +205,7 @@ export const getFiltersConflicts = createSelector(
       return breakByAvailableOptions;
     };
 
+    const solutions = [];
     const breakByAvailableOptions = getBreakByAvailableOptions();
     if (breakByAvailableOptions.length) {
       solutions.push(
@@ -226,10 +215,15 @@ export const getFiltersConflicts = createSelector(
         )}`
       );
     }
+    if (conflicts.length && !solutions.length && isNotLineChart) {
+      solutions.push('change "Chart Type" to line chart');
+    }
+    const solutionText = `Please deselect all conflicting options
+        ${solutions.length ? `or ${solutions.join(' or ')}` : ''}`;
 
     return {
       conflicts,
-      solutionText: uniq(solutions).join(' or ')
+      solutionText
     };
   }
 );
