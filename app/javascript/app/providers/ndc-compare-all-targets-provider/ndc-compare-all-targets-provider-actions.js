@@ -21,7 +21,7 @@ const fetchCompareAll = createThunkAction(
     ) {
       dispatch(fetchCompareAllInit());
       apiWithCache
-        .get('/api/v1/ndcs?&source[]=CAIT&source[]=LTS')
+        .get('/api/v1/ndcs?&indicators=ndce_ghg')
         .then(response => {
           if (response.data) return response.data;
           throw Error(response.statusText);
