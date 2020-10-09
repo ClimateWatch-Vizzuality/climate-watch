@@ -1,9 +1,6 @@
 import { createSelector, createStructuredSelector } from 'reselect';
-import difference from 'lodash/difference';
-import intersection from 'lodash/intersection';
 import isEmpty from 'lodash/isEmpty';
-import uniq from 'lodash/uniq';
-import { arrayToSentence, useSlug } from 'utils';
+import { useSlug } from 'utils';
 import {
   getGhgEmissionDefaultSlugs,
   toPlural,
@@ -71,14 +68,14 @@ const getCalculationOptions = () =>
   );
 
 // BreakBy selectors
-const getBreakByOptions = () => [
+const breakByOptions = [
+  {
+    label: 'Countries',
+    value: 'countries'
+  },
   {
     label: 'Regions',
     value: 'regions'
-  },
-  {
-    label: 'Regions-Total Aggregated',
-    value: 'aggregated'
   },
   {
     label: 'Sectors',
@@ -89,6 +86,8 @@ const getBreakByOptions = () => [
     value: 'gas'
   }
 ];
+
+const getBreakByOptions = () => breakByOptions;
 
 // Filtered calculation selectors
 const getFilteredCalculationOptions = createSelector(
@@ -129,7 +128,7 @@ export const getCalculationSelected = createSelector(
   }
 );
 
-const getBreakByOptionSelected = createSelector(
+export const getBreakByOptionSelected = createSelector(
   [getBreakByOptions, getSelection('breakBy')],
   getOptionSelectedFunction('breakBy')
 );
@@ -139,10 +138,12 @@ const getBreakBySelected = createSelector(
   breakBySelected => {
     if (!breakBySelected) return null;
     const selected = breakBySelected.value.split('-')[0];
-    const isAggregated = selected === 'aggregated';
+    const isRegions = selected === 'regions';
     return {
-      modelSelected: isAggregated ? 'regions' : selected,
-      isAggregated
+      modelSelected: ['countries', 'regions'].includes(selected)
+        ? 'regions'
+        : selected,
+      isRegions
     };
   }
 );
@@ -158,7 +159,7 @@ export const getMetricSelected = createSelector(
 );
 export const getIsRegionAggregated = createSelector(
   getBreakBySelected,
-  breakBySelected => (breakBySelected && breakBySelected.isAggregated) || null
+  breakBySelected => (breakBySelected && breakBySelected.isRegions) || null
 );
 
 const filterOptionsBySource = field =>
@@ -311,7 +312,7 @@ const isIncluded = (field, selectedValues, filter) => {
   }[field];
 };
 
-const getFiltersSelected = field =>
+export const getFiltersSelected = field =>
   createSelector(
     [getOptions, getSelection(field), getDefaults],
     (options, selected, defaults) => {
@@ -335,201 +336,9 @@ const getFiltersSelected = field =>
     }
   );
 
-const getChartTypeSelected = createSelector(
+export const getChartTypeSelected = createSelector(
   [getChartTypeOptions, getSelection('chartType')],
   getOptionSelectedFunction('chartType')
-);
-
-const getOverlappingConflicts = optionsSelected => {
-  if (!optionsSelected || optionsSelected.length <= 1) return [];
-
-  const conflicts = [];
-  const overlapsCheckedIds = [];
-
-  optionsSelected.forEach(option => {
-    if (option.expandsTo) {
-      const overlappingOptions = [];
-      optionsSelected.forEach(option2 => {
-        if (option2.value === option.value) return;
-        if (overlapsCheckedIds.includes(option2.value)) return;
-
-        const expandedOption = [option.value, ...(option.expandsTo || [])].map(
-          String
-        );
-        const expandedOption2 = [
-          option2.value,
-          option2.group,
-          ...(option2.expandsTo || [])
-        ].map(String);
-
-        if (intersection(expandedOption, expandedOption2).length > 0) {
-          overlappingOptions.push(option2.label);
-        }
-      });
-
-      if (overlappingOptions.length) {
-        conflicts.push(
-          `${option.label} overlaps with ${arrayToSentence(overlappingOptions)}`
-        );
-      }
-
-      overlapsCheckedIds.push(option.value);
-    }
-  });
-
-  return conflicts;
-};
-
-const getGasConflicts = gasSelected => {
-  const aggregatedGases = Object.keys(GAS_AGGREGATES);
-
-  if (!gasSelected || gasSelected.length <= 1) return [];
-
-  const conflicts = [];
-
-  aggregatedGases.forEach(gas => {
-    if (gasSelected.some(g => g.label.includes(gas))) {
-      conflicts.push(`${gas} option cannot be selected with any other gas`);
-    }
-  });
-
-  return conflicts;
-};
-
-const getOtherSectorConflicts = (sectorsSelected, metricSelected) => {
-  const conflictMetrics = [
-    GHG_CALCULATION_OPTIONS.PER_CAPITA.value,
-    GHG_CALCULATION_OPTIONS.PER_GDP.value,
-    GHG_CALCULATION_OPTIONS.CUMULATIVE.value
-  ];
-  return sectorsSelected &&
-    sectorsSelected.length > 1 &&
-    conflictMetrics.includes(metricSelected)
-    ? [
-      `More than one sector is not available with ${GHG_CALCULATION_OPTIONS[metricSelected].label} calculation`
-    ]
-    : [];
-};
-
-const getChartConflicts = (metricSelected, chartSelected, breakBySelected) => {
-  const conflicts = [];
-
-  if (
-    ['PER_CAPITA', 'PER_GDP', 'PERCENTAGE_CHANGE'].includes(metricSelected) &&
-    chartSelected.value !== 'line'
-  ) {
-    const metricOption = GHG_CALCULATION_OPTIONS[metricSelected];
-    conflicts.push(
-      `${metricOption.label} metric is not allowed with ${chartSelected.label} chart`
-    );
-  }
-
-  if (
-    ['PER_CAPITA', 'PER_GDP'].includes(metricSelected) &&
-    ['sector', 'gas'].includes(breakBySelected.value)
-  ) {
-    const metricOption = GHG_CALCULATION_OPTIONS[metricSelected];
-    conflicts.push(
-      `${metricOption.label} metric is not allowed with show data by ${breakBySelected.label}`
-    );
-  }
-
-  return conflicts;
-};
-
-export const getFiltersConflicts = createSelector(
-  [
-    getFiltersSelected('location'),
-    getFiltersSelected('gas'),
-    getFiltersSelected('sector'),
-    getModelSelected,
-    getMetricSelected,
-    getChartTypeSelected,
-    getBreakByOptionSelected
-  ],
-  (
-    regionSelected,
-    gasSelected,
-    sectorsSelected,
-    modelSelected,
-    metricSelected,
-    chartSelected,
-    breakBySelected
-  ) => {
-    let conflicts = [];
-    const solutions = ['Please deselect all conflicting options'];
-    const isAggregatedChart = chartSelected.value !== 'line';
-    const notBreakBySector = modelSelected !== 'sector';
-    const notBreakByGas = modelSelected !== 'gas';
-    const notBreakByRegion = modelSelected !== 'regions';
-
-    const sectorOverlappingConflicts = getOverlappingConflicts(sectorsSelected);
-    const otherSectorConflicts = getOtherSectorConflicts(
-      sectorsSelected,
-      metricSelected
-    );
-    const regionConflicts = getOverlappingConflicts(regionSelected);
-    const gasConflicts = getGasConflicts(gasSelected);
-    const chartConflicts = getChartConflicts(
-      metricSelected,
-      chartSelected,
-      breakBySelected
-    );
-
-    if (
-      sectorOverlappingConflicts.length &&
-      (isAggregatedChart || notBreakBySector)
-    ) {
-      conflicts = conflicts.concat(sectorOverlappingConflicts);
-    }
-    conflicts = conflicts.concat(otherSectorConflicts);
-
-    if (gasConflicts.length && (isAggregatedChart || notBreakByGas)) {
-      conflicts = conflicts.concat(gasConflicts);
-    }
-
-    if (regionConflicts.length && (isAggregatedChart || notBreakByRegion)) {
-      conflicts = conflicts.concat(regionConflicts);
-    }
-
-    conflicts = conflicts.concat(chartConflicts);
-
-    if (conflicts.length && isAggregatedChart) {
-      solutions.push('change "Chart Type" to line chart');
-    }
-
-    const getCanChangeBreakByTo = () => {
-      const canChangeBreakByTo = difference(
-        ['sector', 'gas', 'regions'],
-        [modelSelected]
-      );
-      if (otherSectorConflicts.length || chartConflicts.length) {
-        return [];
-      }
-      if (sectorOverlappingConflicts.length) {
-        return difference(canChangeBreakByTo, ['gas', 'regions']);
-      }
-      if (regionConflicts.length) {
-        return difference(canChangeBreakByTo, ['sector', 'gas']);
-      }
-      if (gasConflicts.length) {
-        return difference(canChangeBreakByTo, ['sector', 'regions']);
-      }
-      return canChangeBreakByTo;
-    };
-
-    const canChangeBreakByTo = getCanChangeBreakByTo();
-    if (canChangeBreakByTo.length) {
-      solutions.push(
-        `change "Show data by" to ${arrayToSentence(canChangeBreakByTo)}`
-      );
-    }
-
-    return {
-      conflicts,
-      solutionText: uniq(solutions).join(' or ')
-    };
-  }
 );
 
 export const getOptionsSelected = createStructuredSelector({

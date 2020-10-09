@@ -10,6 +10,8 @@ import cx from 'classnames';
 import Sticky from 'react-stickynode';
 import AnchorNav from 'components/anchor-nav';
 import CountriesDocumentsProvider from 'providers/countries-documents-provider';
+// Use NDC Document Provider in the main page to prevent race conditions loading NDC accordions
+import NdcsDocumentsProvider from 'providers/documents-provider';
 import Dropdown from 'components/dropdown';
 import { Dropdown as CWDropdown } from 'cw-components';
 import { NDC_COUNTRY } from 'data/SEO';
@@ -18,8 +20,6 @@ import { TabletPortrait, MobileOnly } from 'components/responsive';
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
 import countryDropdownTheme from 'styles/themes/dropdown/dropdown-country.scss';
 import styles from './ndc-country-styles.scss';
-
-const FEATURE_COMPARE_ALL = process.env.FEATURE_COMPARE_ALL === 'true';
 
 function NDCCountry(props) {
   const {
@@ -65,30 +65,18 @@ function NDCCountry(props) {
     </Button>
   );
 
-  const renderCompareButton = () => {
-    if (!FEATURE_COMPARE_ALL) {
-      return (
-        <Button
-          variant="primary"
-          link={`/ndcs/compare/mitigation?locations=${iso}`}
-        >
-          Compare
-        </Button>
-      );
-    }
-    return (
-      <div className={styles.compareButtonContainer}>
-        <Button
-          variant="primary"
-          link={`/custom-compare/overview?targets=${iso}-${documentSelected &&
-            documentSelected.value}`}
-          className={styles.compareButton}
-        >
-          Compare Countries and Submissions
-        </Button>
-      </div>
-    );
-  };
+  const renderCompareButton = () => (
+    <div className={styles.compareButtonContainer}>
+      <Button
+        variant="primary"
+        link={`/custom-compare/overview?targets=${iso}-${documentSelected &&
+          documentSelected.value}`}
+        className={styles.compareButton}
+      >
+        Compare Countries and Submissions
+      </Button>
+    </div>
+  );
 
   const countryName = country && `${country.wri_standard_name}`;
   const hasSearch = notSummary;
@@ -123,6 +111,7 @@ function NDCCountry(props) {
         href={location.href}
       />
       <CountriesDocumentsProvider location={iso} />
+      <NdcsDocumentsProvider />
       {country && (
         <Header route={route}>
           <div className={styles.header}>
@@ -165,9 +154,7 @@ function NDCCountry(props) {
                 )}
               </div>
             </MobileOnly>
-            <TabletPortrait>
-              {FEATURE_COMPARE_ALL && renderCompareButton()}
-            </TabletPortrait>
+            <TabletPortrait>{renderCompareButton()}</TabletPortrait>
           </div>
           <Sticky activeClass="sticky -ndcs" top="#navBarMobile">
             <AnchorNav

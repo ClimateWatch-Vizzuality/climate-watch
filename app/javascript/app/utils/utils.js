@@ -209,9 +209,11 @@ export function noEmptyValues(object) {
   return noEmptyResult;
 }
 
-export const arrayToSentence = arr => {
+export const arrayToSentence = (arr, conjunction = 'and') => {
   const sentence =
-    arr.length > 1 ? `${arr.slice(0, arr.length - 1).join(', ')}, and ` : '';
+    arr.length > 1
+      ? `${arr.slice(0, arr.length - 1).join(', ')}, ${conjunction} `
+      : '';
   return `${sentence}${arr.slice(-1)}`;
 };
 

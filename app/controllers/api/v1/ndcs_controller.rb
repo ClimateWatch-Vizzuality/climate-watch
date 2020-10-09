@@ -244,21 +244,6 @@ module Api
 
         indicators = indicators.where(source_id: source.map(&:id)) if source
 
-        if @indc_locations_documents
-          # TODO: do not understand why below are needed
-          # if indicator belongs to many cateogires then only one will be in category_ids
-          # that's why I'm going to reset the query at the end
-          indicators = indicators.select('DISTINCT ON(COALESCE("normalized_slug", indc_indicators.slug)) indc_indicators.*')
-          indicators = indicators.joins(values: [:location, :document]). #
-            where(locations: {iso_code3: @indc_locations_documents.map(&:first)},
-                  indc_documents: {slug: @indc_locations_documents.map(&:second)})
-        elsif @lse_locations_documents
-          indicators = indicators.select('DISTINCT ON(COALESCE("normalized_slug", indc_indicators.slug)) indc_indicators.*')
-          indicators = indicators.joins(values: [:location]).
-            where(normalized_slug: LSE_INDICATORS_MAP.keys.map(&:to_s)).
-            where(locations: {iso_code3: @lse_locations_documents.map(&:first)})
-        end
-
         if params[:indicators].present?
           indicators = indicators.where(slug: params[:indicators].split(','))
         end
@@ -273,6 +258,29 @@ module Api
 
         if params[:subcategory].present?
           indicators = indicators.joins(:categories).where(indc_categories: {slug: params[:subcategory]})
+        end
+
+        if @lse_locations_documents
+          lse_indicators = indicators.
+            joins(:categories).
+            where("indc_indicators.slug LIKE 'lse_%'")
+        end
+
+        if @indc_locations_documents
+          # if indicator belongs to many cateogires then only one will be in category_ids
+          # that's why I'm going to reset the query at the end
+          indicators = indicators.select('DISTINCT ON(COALESCE("normalized_slug", indc_indicators.slug)) indc_indicators.*')
+          indicators = indicators.joins(values: [:location, :document]). #
+            where(locations: {iso_code3: @indc_locations_documents.map(&:first)},
+                  indc_documents: {slug: @indc_locations_documents.map(&:second)})
+
+          if lse_indicators
+            indicators = ::Indc::Indicator.
+              select('DISTINCT ON(COALESCE("normalized_slug", indc_indicators.slug)) indc_indicators.*').
+              from("(#{indicators.to_sql} UNION #{lse_indicators.to_sql}) AS indc_indicators")
+          end
+        elsif lse_indicators
+          indicators = lse_indicators
         end
 
         # to not break distinct on clause

@@ -24,9 +24,15 @@ module Api
                 where(slug: 'second_ndc')
             end
 
+            # laws_info structure
+            # [
+            #   { 'USA': { in_framework: true, in_sectoral: false } },
+            #   ...
+            # ]
             if object.laws_info[location.iso_code3]
               docs += object.laws_info[location.iso_code3].map do |key, val|
                 next unless val
+
                 ordering += 1
                 title = key == 'in_framework' ? 'Climate Framework Laws or Policies' : 'Sectoral Laws or Policies'
                 {
@@ -62,41 +68,48 @@ module Api
         end
 
         def framework
-          return [] unless object.laws_and_policies && object.laws_and_policies['targets']
-
-          object.laws_and_policies['targets'].map do |target|
-            next if target['sources'].empty? || !target['sources'].first['framework']
-            source = target['sources'].first
-
-            {
-              id: source['id'],
-              slug: "framework_#{source['id']}",
-              long_name: source['title'],
-              url: source['link'],
-              iso: target['iso_code3']
-            }
-          end.compact.uniq
+          laws_and_policies.select { |law| law[:slug].starts_with?('framework') }
         end
 
         def sectoral
-          return [] unless object.laws_and_policies && object.laws_and_policies['targets']
-
-          object.laws_and_policies['targets'].map do |target|
-            next if target['sources'].empty? || !target['sources'].first['sectoral']
-
-            source = target['sources'].first
-
-            {
-              id: source['id'],
-              slug: "sectoral_#{source['id']}",
-              long_name: source['title'],
-              url: source['link'],
-              iso: target['iso_code3']
-            }
-          end.compact.uniq
+          laws_and_policies.select { |law| law[:slug].starts_with?('sectoral') }
         end
 
         private
+
+        def laws_and_policies
+          return [] unless object.laws_and_policies && object.laws_and_policies['targets']
+
+          law_targets = {}
+
+          laws = object.laws_and_policies['targets'].flat_map do |target|
+            target['sources'].map do |law|
+              next unless law['sectoral'] || law['framework']
+
+              law_targets[law['id']] ||= []
+              law_targets[law['id']] << target['id']
+
+              {
+                id: law['id'],
+                slug: "#{law['sectoral'] ? 'sectoral' : 'framework'}_#{law['id']}",
+                long_name: law['title'],
+                url: law['link'],
+                iso: target['iso_code3']
+              }
+            end
+          end.compact.uniq
+
+          # update laws titles with target count
+          laws.each do |law|
+            target_count = law_targets[law[:id]].uniq.size
+
+            next unless target_count.positive?
+
+            law[:long_name] += " (#{target_count})"
+          end
+
+          laws
+        end
 
         def query_location_with_intent_to_submit(location_codes)
           ::Indc::Label.

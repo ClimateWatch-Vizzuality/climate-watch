@@ -60,10 +60,11 @@ const getCountryDocuments = createSelector(
   }
 );
 
-const documentOption = document => ({
-  label: document.long_name,
-  value: document.slug
-});
+const documentOption = document =>
+  document && {
+    label: document.long_name,
+    value: document.slug
+  };
 
 export const getDocumentsOptions = createSelector(
   [getCountryDocuments],

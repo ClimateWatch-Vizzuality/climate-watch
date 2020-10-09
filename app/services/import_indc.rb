@@ -203,8 +203,10 @@ class ImportIndc
     }
   end
 
-  def value_wb_attributes(row, location, indicator)
-    doc_slug = row[:document]&.parameterize&.gsub('-', '_')
+  # for datasets that don't have multiple files we can pass the doc_slug
+  # as a param, for example for LTS
+  def value_wb_attributes(row, location, indicator, doc_slug = nil)
+    doc_slug ||= row[:document]&.parameterize&.gsub('-', '_')
     {
       location: location,
       indicator: indicator,
@@ -493,7 +495,7 @@ class ImportIndc
       next unless r[:responsetext]
 
       Indc::Value.create!(
-        value_wb_attributes(r, location, indicator)
+        value_wb_attributes(r, location, indicator, 'lts')
       )
     end
   end
@@ -567,7 +569,7 @@ class ImportIndc
   # to be able to compare values for different indicators
   def import_comparison_slugs
     @comparison_indicators.each do |ind|
-      slugs = [ind[:pledges_slug], ind[:ndc_slug], ind[:lts_slug]]
+      slugs = [ind[:pledges_slug], ind[:ndc_slug], ind[:lts_slug], ind[:lse_slug]]
       Indc::Indicator.where(slug: slugs).update_all(normalized_label: ind[:normalized_label],
                                                     normalized_slug: ind[:normalized_slug])
     end

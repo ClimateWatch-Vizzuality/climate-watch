@@ -4,6 +4,13 @@ import deburr from 'lodash/deburr';
 import isEmpty from 'lodash/isEmpty';
 import { DOCUMENT_COLUMNS_SLUGS } from 'data/country-documents';
 
+// Needed for sorting
+export const SUBMISSION_ICON_VALUE = {
+  no: 0,
+  intends: 1,
+  yes: 2
+};
+
 const getCountries = state => (state.countries && state.countries.data) || null;
 const getCountriesDocuments = state =>
   (state.countriesDocuments && state.countriesDocuments.data) || null;
@@ -40,9 +47,11 @@ const getData = createSelector(
           countryDocument &&
           !countryDocument.submission_date
         ) {
-          return 'intends';
+          return SUBMISSION_ICON_VALUE.intends;
         }
-        return countryDocument ? 'yes' : 'no';
+        return countryDocument
+          ? SUBMISSION_ICON_VALUE.yes
+          : SUBMISSION_ICON_VALUE.no;
       };
 
       const documentsColumns = Object.keys(DOCUMENT_COLUMNS_SLUGS).reduce(
@@ -54,9 +63,10 @@ const getData = createSelector(
       );
 
       return {
-        Country: { name: c.wri_standard_name, iso: c.iso_code3 },
+        Country: c.wri_standard_name,
         'Share of global GHG emissions':
           countryEmissions && countryEmissions.value,
+        iso: c.iso_code3,
         ...documentsColumns
       };
     });
@@ -70,7 +80,7 @@ export const getColumns = createSelector([getData], rows => {
   return ['Country', 'Share of global GHG emissions', ...documentColumnNames];
 });
 
-export const getFilteredDataBySearch = createSelector(
+const getFilteredDataBySearch = createSelector(
   [getData, getSearch],
   (data, search) => {
     if (!data || isEmpty(data)) return null;
@@ -78,9 +88,41 @@ export const getFilteredDataBySearch = createSelector(
   }
 );
 
+export const getTitleLinks = createSelector([getFilteredDataBySearch], data => {
+  if (!data || isEmpty(data)) return null;
+  return data.map(d => [
+    {
+      columnName: 'Country',
+      url: `/ndcs/country/${d.iso}`,
+      value: d.Country
+    }
+  ]);
+});
+
+export const getRemoveISOfromData = createSelector(
+  [getFilteredDataBySearch],
+  data => {
+    if (!data || isEmpty(data)) return null;
+    return data.map(d => {
+      const updatedD = { ...d };
+      delete updatedD.iso;
+      return updatedD;
+    });
+  }
+);
+
 export const getSelectedTargets = createSelector([getQuery], query => {
   if (!query || !query.targets) return [];
   return query.targets.split(',');
+});
+
+export const getCountryIsos = createSelector([getCountries], countries => {
+  if (!countries) return null;
+  const countryIsos = {};
+  countries.forEach(c => {
+    countryIsos[c.wri_standard_name] = c.iso_code3;
+  });
+  return countryIsos;
 });
 
 export const getSelectedTableTargets = createSelector(
