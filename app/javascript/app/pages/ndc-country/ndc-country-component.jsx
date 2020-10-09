@@ -21,8 +21,6 @@ import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.s
 import countryDropdownTheme from 'styles/themes/dropdown/dropdown-country.scss';
 import styles from './ndc-country-styles.scss';
 
-const FEATURE_COMPARE_ALL = process.env.FEATURE_COMPARE_ALL === 'true';
-
 function NDCCountry(props) {
   const {
     country,
@@ -67,30 +65,18 @@ function NDCCountry(props) {
     </Button>
   );
 
-  const renderCompareButton = () => {
-    if (!FEATURE_COMPARE_ALL) {
-      return (
-        <Button
-          variant="primary"
-          link={`/ndcs/compare/mitigation?locations=${iso}`}
-        >
-          Compare
-        </Button>
-      );
-    }
-    return (
-      <div className={styles.compareButtonContainer}>
-        <Button
-          variant="primary"
-          link={`/custom-compare/overview?targets=${iso}-${documentSelected &&
-            documentSelected.value}`}
-          className={styles.compareButton}
-        >
-          Compare Countries and Submissions
-        </Button>
-      </div>
-    );
-  };
+  const renderCompareButton = () => (
+    <div className={styles.compareButtonContainer}>
+      <Button
+        variant="primary"
+        link={`/custom-compare/overview?targets=${iso}-${documentSelected &&
+          documentSelected.value}`}
+        className={styles.compareButton}
+      >
+        Compare Countries and Submissions
+      </Button>
+    </div>
+  );
 
   const countryName = country && `${country.wri_standard_name}`;
   const hasSearch = notSummary;
@@ -168,9 +154,7 @@ function NDCCountry(props) {
                 )}
               </div>
             </MobileOnly>
-            <TabletPortrait>
-              {FEATURE_COMPARE_ALL && renderCompareButton()}
-            </TabletPortrait>
+            <TabletPortrait>{renderCompareButton()}</TabletPortrait>
           </div>
           <Sticky activeClass="sticky -ndcs" top="#navBarMobile">
             <AnchorNav
