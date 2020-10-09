@@ -83,16 +83,21 @@ const getCalculationSectorConflicts = (sectorsSelected, metricSelected) => {
     : [];
 };
 
-const getCountryRegionConflicts = (regionsSelected, breakBySelected) => {
-  const regionsGroupSelected = regionsSelected?.filter(
+const getCountryRegionConflicts = (placesSelected, breakBySelected) => {
+  const regionsGroupSelected = placesSelected?.filter(
     r => r.groupId === 'regions'
   );
   const numberOfRegionsSelected = regionsGroupSelected?.length;
-  if (breakBySelected.value === 'countries' && numberOfRegionsSelected > 1) {
+  const oneRegionAndCountriesSelected =
+    numberOfRegionsSelected === 1 && placesSelected.length > 1;
+  if (
+    breakBySelected.value === 'countries' &&
+    (numberOfRegionsSelected > 1 || oneRegionAndCountriesSelected)
+  ) {
     return ['More than one region is selected'];
   }
   const onlyCountriesAreSelected =
-    regionsSelected?.length && numberOfRegionsSelected === 0;
+    placesSelected?.length && numberOfRegionsSelected === 0;
   if (breakBySelected.value === 'regions' && onlyCountriesAreSelected) {
     return ['No region is selected'];
   }
