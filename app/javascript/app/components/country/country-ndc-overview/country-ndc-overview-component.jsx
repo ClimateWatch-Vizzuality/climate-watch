@@ -23,6 +23,7 @@ import CountriesDocumentsProvider from 'providers/countries-documents-provider';
 import styles from './country-ndc-overview-styles.scss';
 
 function CountryNdcOverview(props) {
+  // TODO: At some point we might want to split the country page component into a different one
   const {
     sectors,
     values,
@@ -58,13 +59,15 @@ function CountryNdcOverview(props) {
   };
 
   const renderCompareButton = () => {
-    const href = `/contained/ndcs/compare/mitigation?locations=${iso}`;
-    const link = `/ndcs/compare/mitigation?locations=${iso}`;
+    const link = `/custom-compare/mitigation?targets=${iso}-${selectedDocument &&
+      selectedDocument.slug}`;
+    const href = `/contained${link}`;
     return (
       <Button
         variant="secondary"
         href={isNdcp ? href : null}
         link={isNdcp ? null : link}
+        disabled={!selectedDocument}
       >
         Compare
       </Button>
@@ -190,65 +193,86 @@ function CountryNdcOverview(props) {
   const summaryIntroText = !selectedDocument
     ? 'Summary'
     : `Summary of ${selectedDocument.long_name}`;
+  const renderIntro = () => (
+    <Intro
+      theme={isCountryPage ? introSmallTheme : introTheme}
+      title={
+        isCountryPage
+          ? 'Nationally Determined Contribution (NDC) Overview'
+          : summaryIntroText
+      }
+      subtitle={
+        documentDate &&
+        `(submitted ${moment(documentDate).format('MM/DD/YYYY')})`
+      }
+    />
+  );
+
+  const renderContent = () => {
+    if (!hasSectors && !loading) {
+      return isCountryPage ? (
+        <div className={layout.content}>
+          <div className="grid-column-item">
+            <div className={cx(styles.header)}>
+              {renderIntro()}
+              <NoContent
+                message="This country hasn't submitted any Nationally Determined Contribution"
+                className={styles.noContentWrapper}
+              />
+            </div>
+          </div>
+        </div>
+      ) : (
+        <NoContent
+          message="No overview content data"
+          className={styles.noContentWrapper}
+        />
+      );
+    }
+    return (
+      <div className="layout-container">
+        {loading && <Loading light className={styles.loader} />}
+        {hasSectors && (
+          <div className={layout.content}>
+            <div className="grid-column-item">
+              <div
+                className={cx(styles.header, {
+                  [styles.col2]: isCountryPage
+                })}
+              >
+                {renderIntro()}
+                <TabletPortraitOnly>{description}</TabletPortraitOnly>
+                {isCountryPage && (
+                  <div className="grid-column-item">
+                    <div className={styles.actions}>
+                      {renderInfoButton()}
+                      {renderCompareButton()}
+                      <TabletLandscape>{renderExploreButton()}</TabletLandscape>
+                    </div>
+                  </div>
+                )}
+              </div>
+              <TabletLandscape>{description}</TabletLandscape>
+              {renderCards()}
+              <TabletPortraitOnly>
+                {isCountryPage && renderExploreButton()}
+              </TabletPortraitOnly>
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  };
+
   return (
     <div className={cx(styles.wrapper, { [styles.embededWrapper]: isEmbed })}>
       {hasSectors && !loading && renderAlertText()}
       <CountriesDocumentsProvider location={iso} />
       <NdcContentOverviewProvider
         locations={[iso]}
-        document={!isCountryPage && selectedDocument && selectedDocument.slug}
+        document={selectedDocument && selectedDocument.slug}
       />
-      {!hasSectors && !loading ? (
-        <NoContent
-          message="No overview content data"
-          className={styles.noContentWrapper}
-        />
-      ) : (
-        <div className="layout-container">
-          {loading && <Loading light className={styles.loader} />}
-          {hasSectors && (
-            <div className={layout.content}>
-              <div className="grid-column-item">
-                <div
-                  className={cx(styles.header, {
-                    [styles.col2]: isCountryPage
-                  })}
-                >
-                  <Intro
-                    theme={isCountryPage ? introSmallTheme : introTheme}
-                    title={
-                      isCountryPage
-                        ? 'Nationally Determined Contribution (NDC) Overview'
-                        : summaryIntroText
-                    }
-                    subtitle={
-                      documentDate &&
-                      `(submitted ${moment(documentDate).format('MM/DD/YYYY')})`
-                    }
-                  />
-                  <TabletPortraitOnly>{description}</TabletPortraitOnly>
-                  {isCountryPage && (
-                    <div className="grid-column-item">
-                      <div className={styles.actions}>
-                        {renderInfoButton()}
-                        {renderCompareButton()}
-                        <TabletLandscape>
-                          {renderExploreButton()}
-                        </TabletLandscape>
-                      </div>
-                    </div>
-                  )}
-                </div>
-                <TabletLandscape>{description}</TabletLandscape>
-                {renderCards()}
-                <TabletPortraitOnly>
-                  {isCountryPage && renderExploreButton()}
-                </TabletPortraitOnly>
-              </div>
-            </div>
-          )}
-        </div>
-      )}
+      {renderContent()}
       <ModalMetadata />
     </div>
   );
