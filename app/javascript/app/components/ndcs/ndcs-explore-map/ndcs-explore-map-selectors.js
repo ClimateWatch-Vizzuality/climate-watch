@@ -345,7 +345,7 @@ export const getSummaryCardData = createSelector(
     );
     if (!submittedIndicator) return null;
     const submittedIsos = Object.keys(submittedIndicator.locations).filter(
-      iso => submittedIndicator.locations[iso].value === '2020 NDC Submitted'
+      iso => submittedIndicator.locations[iso].label_slug === 'submitted_2020'
     );
     if (!submittedIsos.length) return null;
     const submittedCountriesAndParties = getCountriesAndParties(submittedIsos);
