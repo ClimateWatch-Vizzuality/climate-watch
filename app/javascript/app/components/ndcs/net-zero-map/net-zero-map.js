@@ -166,9 +166,9 @@ class NetZeroMapContainer extends PureComponent {
 
   handleInfoClick = () => {
     this.props.setModalMetadata({
-      customTitle: 'LTS Explore',
-      category: 'LTS Explore Map',
-      slugs: ['ndc_lts'],
+      customTitle: 'Net Zero Tracker',
+      category: 'Net Zero Map',
+      slugs: ['eciu'],
       open: true
     });
   };
