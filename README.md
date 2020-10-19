@@ -4,6 +4,7 @@ Table of Contents:
 
 - [Domain description](#domain-description)
 - [Local Setup](#local-setup)
+- [Environment variables](#environment-variables)
 - [Modules](#modules)
 - [API](#api)
 
@@ -106,6 +107,16 @@ The router version used in the project is `v.4.1.1`.
 
 - routes are defined as a data-structure instead of using `jsx` inside the `routes.js` file.
 - Instead of connecting the routes to the reducer via middleware we decided to use `withRouter` [HOC](https://medium.com/@franleplant/react-higher-order-components-in-depth-cf9032ee6c3e) instead, which means whenever you need access to the router information you will have to wrap your component with `withRouter`.
+
+## Environment variables
+These are some of the environment variables that we need:
+CW_API: Base Climate Watch API
+ESP_API: Emission Pathways API
+GFW_API: Global Forest Watch API
+CW_FILES_PREFIX: Prefix for the files on s3
+USER_SURVEY_SPREADSHEET_URL: URL for the script to the contact survey
+
+FEATURE_POP_UP: Pop up shown entering the site
 
 ## Modules
 
