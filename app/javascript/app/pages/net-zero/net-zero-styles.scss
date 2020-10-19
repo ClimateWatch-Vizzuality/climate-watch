@@ -1,0 +1,39 @@
+@import '~styles/layout.scss';
+@import '~styles/settings.scss';
+
+.anchorNav {
+  @include row('shrink', $wrap: false);
+}
+
+.wrapper {
+  padding-top: $gutter-padding;
+  padding-bottom: $gutter-padding;
+  background-color: $white;
+}
+
+.headerLayout {
+  @include columns(12);
+}
+
+.containedHeader {
+  display: flex;
+  margin-top: 10px;
+
+  > div {
+    flex: 1;
+  }
+}
+
+.buttonWrapper {
+  margin-bottom: 64px;
+
+  @include columns(12);
+}
+
+.button {
+  max-width: 185px;
+}
+
+.descriptionLine {
+  margin-bottom: 40px;
+}
