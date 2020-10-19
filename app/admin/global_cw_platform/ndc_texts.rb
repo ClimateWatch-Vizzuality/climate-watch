@@ -48,6 +48,7 @@ ActiveAdmin.register_page 'Global CW Platform NDC Texts' do
   content do
     render partial: 'admin/form_upload_ndc_texts', locals: {
       import_path: admin_global_cw_platform_ndc_texts_run_importer_path,
+      abort_path: admin_global_cw_platform_ndc_texts_abort_importer_path,
       logs: section_proc.call.worker_logs.order(created_at: :desc)
     }
   end
