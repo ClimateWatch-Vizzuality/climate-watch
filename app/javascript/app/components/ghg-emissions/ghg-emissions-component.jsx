@@ -192,12 +192,7 @@ function GhgEmissions(props) {
 
   const renderChart = () => {
     const { chartTypeSelected } = selectedOptions;
-
-    const anyFilterConflicts = !!(
-      filtersConflicts && filtersConflicts.conflicts.length
-    );
-
-    if (!providerFilters) {
+    if (!loading && !providerFilters) {
       return (
         <div className={styles.messageContainer}>
           <div>
@@ -207,7 +202,9 @@ function GhgEmissions(props) {
       );
     }
 
-    if (anyFilterConflicts) {
+    const hasFilterConflicts =
+      !loading && !!(filtersConflicts && filtersConflicts.conflicts.length);
+    if (hasFilterConflicts) {
       return (
         <div className={styles.messageContainer}>
           <div>
@@ -225,8 +222,9 @@ function GhgEmissions(props) {
 
     const tableDataReady = !loading && tableData && tableData.length;
     const isPercentageChangeCalculation =
+      !loading &&
       selectedOptions.calculationSelected.value ===
-      GHG_CALCULATION_OPTIONS.PERCENTAGE_CHANGE.value;
+        GHG_CALCULATION_OPTIONS.PERCENTAGE_CHANGE.value;
 
     const percentageChangeCustomLabelFormat = value => {
       if (value === undefined) {
