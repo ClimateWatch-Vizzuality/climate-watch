@@ -1,17 +1,17 @@
-import LTSExploreMap from 'components/ndcs/lts-explore-map';
-import LTSExploreTable from 'components/ndcs/lts-explore-table';
+import NetZeroMap from 'components/ndcs/net-zero-map';
+import NetZeroTable from 'components/ndcs/net-zero-table';
 
 export default [
   {
     hash: 'map',
     anchor: true,
     label: 'Map',
-    component: LTSExploreMap
+    component: NetZeroMap
   },
   {
     hash: 'table',
     anchor: true,
     label: 'Table',
-    component: LTSExploreTable
+    component: NetZeroTable
   }
 ];

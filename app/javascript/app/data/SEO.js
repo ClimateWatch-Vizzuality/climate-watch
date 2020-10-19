@@ -10,6 +10,8 @@ export const NDC_ENHANCEMENTS =
   'Analyze and compare every national climate pledge (Nationally Determined Contribution – or NDC) under the Paris Agreement, with the ability to search key words and see summaries by topic across all.';
 export const LTS_EXPLORE =
   'Analyze and compare every national climate pledge (Nationally Determined Contribution – or NDC) under the Paris Agreement, with the ability to search key words and see summaries by topic across all.';
+export const NET_ZERO =
+  'Analyze and compare every national climate pledge (Nationally Determined Contribution – or NDC) under the Paris Agreement, with the ability to search key words and see summaries by topic across all.';
 export const NDCS_EXPLORE =
   'Analyze and compare every national climate pledge (Nationally Determined Contribution – or NDC) under the Paris Agreement, with the ability to search key words and see summaries by topic across all.';
 export const NDCS_OVERVIEW =

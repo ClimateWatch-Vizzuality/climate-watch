@@ -8,7 +8,7 @@ import reducers, { initialState } from './net-zero-reducers';
 
 import Component from './net-zero-component';
 
-class LTSExploreContainer extends PureComponent {
+class NetZeroContainer extends PureComponent {
   componentWillMount() {
     this.props.fetchLTS();
   }
@@ -18,9 +18,9 @@ class LTSExploreContainer extends PureComponent {
   }
 }
 
-LTSExploreContainer.propTypes = {
+NetZeroContainer.propTypes = {
   fetchLTS: PropTypes.func.isRequired
 };
 
 export { actions, reducers, initialState };
-export default withRouter(connect(null, actions)(LTSExploreContainer));
+export default withRouter(connect(null, actions)(NetZeroContainer));

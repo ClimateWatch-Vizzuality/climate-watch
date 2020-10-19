@@ -4,17 +4,17 @@ import Proptypes from 'prop-types';
 import Header from 'components/header';
 import Button from 'components/button';
 import Intro from 'components/intro';
-import { LTS_EXPLORE } from 'data/SEO';
+import { NET_ZERO } from 'data/SEO';
 import { renderToString } from 'react-dom/server';
 import { MetaDescription, SocialMetadata } from 'components/seo';
 
 import layout from 'styles/layout.scss';
 import styles from './net-zero-styles.scss';
 
-const LTSExplore = ({ route }) => (
+const NetZero = ({ route }) => (
   <div>
-    <MetaDescription descriptionContext={LTS_EXPLORE} subtitle="LTS CONTENT" />
-    <SocialMetadata descriptionContext={LTS_EXPLORE} href={location.href} />
+    <MetaDescription descriptionContext={NET_ZERO} subtitle="LTS CONTENT" />
+    <SocialMetadata descriptionContext={NET_ZERO} href={location.href} />
     <Header route={route}>
       <div className={layout.content}>
         <div className="grid-column-item">
@@ -44,7 +44,7 @@ const LTSExplore = ({ route }) => (
           <div className={styles.buttonWrapper}>
             <Button
               variant="primary"
-              href="https://www.eciu.org/"
+              href="https://eciu.net/netzerotracker/map"
               target="_blank"
               className={styles.button}
             >
@@ -67,8 +67,8 @@ const LTSExplore = ({ route }) => (
   </div>
 );
 
-LTSExplore.propTypes = {
+NetZero.propTypes = {
   route: Proptypes.object.isRequired
 };
 
-export default LTSExplore;
+export default NetZero;
