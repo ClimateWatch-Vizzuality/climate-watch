@@ -1,7 +1,6 @@
 GIT
   remote: https://github.com/ClimateWatch-Vizzuality/climate-watch-gems.git
-  revision: 750ad6b9b90db25b7e6104efbb638548436e577b
-  branch: fix/remove_sidekiq_cancellation
+  revision: 37e3dfe60483bc01b9c2f2ee32fb77f9d170765f
   specs:
     climate_watch_engine (1.4.3)
       aws-sdk-s3 (~> 1)
