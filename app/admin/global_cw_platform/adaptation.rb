@@ -64,6 +64,7 @@ ActiveAdmin.register_page 'Global Cw Platform Adaptation' do
       download_single_data_file_path:
           admin_global_cw_platform_adaptation_download_datafile_path,
       import_path: admin_global_cw_platform_adaptation_run_importer_path,
+      abort_path: admin_global_cw_platform_adaptation_abort_importer_path,
       import_button_disabled: section_proc.call.worker_logs.started.any?,
       logs: section_proc.call.worker_logs.order(created_at: :desc)
     }
