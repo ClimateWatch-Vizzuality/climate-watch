@@ -102,7 +102,7 @@ end
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
-git 'https://github.com/ClimateWatch-Vizzuality/climate-watch-gems.git', branch: 'fix/remove_sidekiq_cancellation' do
+git 'https://github.com/ClimateWatch-Vizzuality/climate-watch-gems.git' do
   gem 'cw_data_uploader', '~> 0.5.1', require: 'data_uploader'
   gem 'climate_watch_engine', '~> 1.4.3'
 end
