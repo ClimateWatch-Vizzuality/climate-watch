@@ -59,7 +59,7 @@ gem 'activerecord-import'
 gem 'aws-sdk-rails', '~> 2'
 gem 'aws-sdk-s3', '~> 1'
 
-gem 'sidekiq'
+gem 'sidekiq', '>= 6.1.0'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
