@@ -1,11 +1,12 @@
 GIT
   remote: https://github.com/ClimateWatch-Vizzuality/climate-watch-gems.git
-  revision: 77440ef0fbe0f140805ae737de5d9d0ed4cf00e2
+  revision: 750ad6b9b90db25b7e6104efbb638548436e577b
+  branch: fix/remove_sidekiq_cancellation
   specs:
     climate_watch_engine (1.4.3)
       aws-sdk-s3 (~> 1)
       rails (~> 5.2.0)
-    cw_data_uploader (0.5.0)
+    cw_data_uploader (0.5.1)
       activeadmin
       aws-sdk-rails (~> 2)
       aws-sdk-s3 (~> 1)
@@ -13,7 +14,7 @@ GIT
       devise
       pg
       rubyzip
-      sidekiq
+      sidekiq (>= 6.1.0)
 
 GEM
   remote: https://rubygems.org/
@@ -133,7 +134,7 @@ GEM
       execjs
     coffee-script-source (1.12.2)
     concurrent-ruby (1.1.6)
-    connection_pool (2.2.2)
+    connection_pool (2.2.3)
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
     crass (1.0.6)
@@ -234,8 +235,6 @@ GEM
     public_suffix (3.0.3)
     puma (3.12.6)
     rack (2.2.3)
-    rack-protection (2.0.8.1)
-      rack
     rack-proxy (0.6.4)
       rack
     rack-test (1.1.0)
@@ -340,11 +339,10 @@ GEM
     selenium-webdriver (3.14.0)
       childprocess (~> 0.5)
       rubyzip (~> 1.2)
-    sidekiq (6.0.5)
+    sidekiq (6.1.2)
       connection_pool (>= 2.2.2)
       rack (~> 2.0)
-      rack-protection (>= 2.0.0)
-      redis (>= 4.1.0)
+      redis (>= 4.2.0)
     simplecov (0.16.1)
       docile (~> 1.1)
       json (>= 1.8, < 3)
@@ -412,7 +410,7 @@ DEPENDENCIES
   capybara (~> 2.13)
   climate_watch_engine (~> 1.4.3)!
   coffee-rails (~> 4.2)
-  cw_data_uploader (~> 0.5.0)!
+  cw_data_uploader (~> 0.5.1)!
   devise
   dotenv-rails
   factory_bot_rails
@@ -434,7 +432,7 @@ DEPENDENCIES
   scenic
   secondbase
   selenium-webdriver
-  sidekiq
+  sidekiq (>= 6.1.0)
   simplecov
   spring
   spring-watcher-listen (~> 2.0.0)

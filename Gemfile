@@ -59,7 +59,7 @@ gem 'activerecord-import'
 gem 'aws-sdk-rails', '~> 2'
 gem 'aws-sdk-s3', '~> 1'
 
-gem 'sidekiq'
+gem 'sidekiq', '>= 6.1.0'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
@@ -102,10 +102,10 @@ end
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
-git 'https://github.com/ClimateWatch-Vizzuality/climate-watch-gems.git' do
-  gem 'cw_data_uploader', '~> 0.5.0', require: 'data_uploader'
+git 'https://github.com/ClimateWatch-Vizzuality/climate-watch-gems.git', branch: 'fix/remove_sidekiq_cancellation' do
+  gem 'cw_data_uploader', '~> 0.5.1', require: 'data_uploader'
   gem 'climate_watch_engine', '~> 1.4.3'
 end
 
 # for debugging
-# gem 'cw_data_uploader', '~> 0.5.0', require: 'data_uploader', path: '../climate-watch-gems'
+# gem 'cw_data_uploader', '~> 0.5.1', require: 'data_uploader', path: '../climate-watch-gems'
