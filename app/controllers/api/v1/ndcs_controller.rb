@@ -270,9 +270,14 @@ module Api
           # if indicator belongs to many cateogires then only one will be in category_ids
           # that's why I'm going to reset the query at the end
           indicators = indicators.select('DISTINCT ON(COALESCE("normalized_slug", indc_indicators.slug)) indc_indicators.*')
-          indicators = indicators.joins(values: [:location, :document]). #
-            where(locations: {iso_code3: @indc_locations_documents.map(&:first)},
-                  indc_documents: {slug: @indc_locations_documents.map(&:second)})
+          document_location_sql = @indc_locations_documents.map do
+            '(locations.iso_code3 = ? AND indc_documents.slug = ?)'
+          end.join(' OR ')
+          document_location_args = @indc_locations_documents.flatten
+
+          indicators = indicators.
+            joins(values: [:location, :document]).
+            where(document_location_sql, *document_location_args)
 
           if lse_indicators
             indicators = ::Indc::Indicator.
