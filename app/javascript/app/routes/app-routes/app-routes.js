@@ -26,6 +26,7 @@ import EmissionPathwaysScenario from 'pages/emission-pathways-scenario';
 import Sectors from 'pages/sectors';
 import SectorsAgriculture from 'pages/sectors-agriculture';
 import LTSExplore from 'pages/lts-explore';
+import NetZero from 'pages/net-zero';
 import NDCSExplore from 'pages/ndcs-explore';
 import NdcOverview from 'pages/ndc-overview';
 import CustomCompare from 'pages/custom-compare';
@@ -55,6 +56,7 @@ import countryCompareSections from './country-compare-sections';
 import agricultureSections from './sectors-agriculture-sections';
 import ndcsEnhancementsSections from './ndcs-enhancements-sections';
 import LTSExploreSections from './lts-explore-sections';
+import NetZeroSections from './net-zero-sections';
 import NDCSExploreSections from './ndcs-explore-sections';
 import NDCOverviewRoutes from './ndcs-overview-routes';
 
@@ -156,6 +158,13 @@ export default [
     headerImage: 'ndc',
     sections: NDCSExploreSections,
     headerGradient: HEADER_GRADIENTS.commitments
+  },
+  {
+    path: '/net-zero-tracker',
+    component: NetZero,
+    sections: NetZeroSections,
+    headerGradient: HEADER_GRADIENTS.commitments,
+    headerColor: HEADER_COLORS.ndc
   },
   {
     path: '/2020-ndc-tracker',

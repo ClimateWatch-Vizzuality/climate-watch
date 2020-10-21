@@ -16,6 +16,7 @@ import AgricultureEmissionPieChart from 'components/sectors-agriculture/drivers-
 import CountriesContext from 'components/sectors-agriculture/countries-context';
 import CountriesActions from 'components/sectors-agriculture/countries-actions';
 import LTSExploreMap from 'components/ndcs/lts-explore-map';
+import NetZeroMap from 'components/ndcs/net-zero-map';
 import NDCSExploreMap from 'components/ndcs/ndcs-explore-map';
 import NDCOverviewSection from 'components/ndcs/ndcs-overview-section';
 
@@ -28,6 +29,11 @@ export default [
   {
     path: '/embed/lts-explore',
     component: LTSExploreMap,
+    exact: true
+  },
+  {
+    path: '/embed/net-zero-tracker',
+    component: NetZeroMap,
     exact: true
   },
   {
