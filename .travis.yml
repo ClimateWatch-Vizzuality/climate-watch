@@ -1,5 +1,5 @@
 os: linux
-dist: xenial
+dist: focal
 language: ruby
 env:
   global:
@@ -19,23 +19,20 @@ addons:
   apt:
     packages:
       - postgresql-12
-      - postgresql-client-12
-      - postgresql-server-dev-12
 
 before_install:
   - nvm install 8.10.0
   - node -v
   - npm i -g yarn
-  - gem install bundler
+  - gem install bundler -v "$(grep -A 1 "BUNDLED WITH" Gemfile.lock | tail -n 1)"
 install:
   - bundle install --jobs=3 --retry=3
-  - yarn
 before_script:
   - bundle exec rake db:create db:structure:load RAILS_ENV=test
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
 script:
-  - bundle exec rspec
+  - GFW_API=https://staging-api.globalforestwatch.org bundle exec rspec spec
   # Preferably you will run test-reporter on branch update events. But
   # if you setup travis to build PR updates only, you don't need to run
   # the line below

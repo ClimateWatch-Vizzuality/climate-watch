@@ -38,7 +38,6 @@ gem 'turbolinks', '~> 5'
 # gem 'jbuilder', '~> 2.5'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 3.0'
-gem 'redis-namespace'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
@@ -60,7 +59,7 @@ gem 'activerecord-import'
 gem 'aws-sdk-rails', '~> 2'
 gem 'aws-sdk-s3', '~> 1'
 
-gem 'sidekiq'
+gem 'sidekiq', '>= 6.1.0'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
@@ -104,9 +103,9 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 git 'https://github.com/ClimateWatch-Vizzuality/climate-watch-gems.git' do
-  gem 'cw_data_uploader', '~> 0.4.5', require: 'data_uploader'
+  gem 'cw_data_uploader', '~> 0.5.1', require: 'data_uploader'
   gem 'climate_watch_engine', '~> 1.4.3'
 end
 
 # for debugging
-# gem 'cw_data_uploader', '~> 0.2.0', require: 'data_uploader', path: '../climate-watch-gems'
+# gem 'cw_data_uploader', '~> 0.5.1', require: 'data_uploader', path: '../climate-watch-gems'

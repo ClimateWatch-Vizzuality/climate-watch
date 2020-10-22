@@ -47,6 +47,7 @@ ActiveAdmin.register_page 'Global Cw Platform Blog Stories' do
   content do
     render partial: 'admin/blog_stories', locals: {
       import_path: admin_global_cw_platform_blog_stories_run_importer_path,
+      abort_path: admin_global_cw_platform_blog_stories_abort_importer_path,
       logs: section_proc.call.worker_logs.order(created_at: :desc)
     }
   end
