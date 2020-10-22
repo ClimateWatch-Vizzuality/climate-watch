@@ -1,11 +1,11 @@
 GIT
   remote: https://github.com/ClimateWatch-Vizzuality/climate-watch-gems.git
-  revision: 7a5b30d70389515aec173974af5444abaa1a17a0
+  revision: 37e3dfe60483bc01b9c2f2ee32fb77f9d170765f
   specs:
     climate_watch_engine (1.4.3)
       aws-sdk-s3 (~> 1)
       rails (~> 5.2.0)
-    cw_data_uploader (0.4.5)
+    cw_data_uploader (0.5.1)
       activeadmin
       aws-sdk-rails (~> 2)
       aws-sdk-s3 (~> 1)
@@ -13,7 +13,7 @@ GIT
       devise
       pg
       rubyzip
-      sidekiq
+      sidekiq (>= 6.1.0)
 
 GEM
   remote: https://rubygems.org/
@@ -133,7 +133,7 @@ GEM
       execjs
     coffee-script-source (1.12.2)
     concurrent-ruby (1.1.6)
-    connection_pool (2.2.2)
+    connection_pool (2.2.3)
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
     crass (1.0.6)
@@ -234,8 +234,6 @@ GEM
     public_suffix (3.0.3)
     puma (3.12.6)
     rack (2.2.3)
-    rack-protection (2.0.8.1)
-      rack
     rack-proxy (0.6.4)
       rack
     rack-test (1.1.0)
@@ -278,9 +276,7 @@ GEM
     rb-fsevent (0.10.3)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
-    redis (4.1.3)
-    redis-namespace (1.8.0)
-      redis (>= 3.0.4)
+    redis (4.2.2)
     responders (3.0.0)
       actionpack (>= 5.0)
       railties (>= 5.0)
@@ -342,11 +338,10 @@ GEM
     selenium-webdriver (3.14.0)
       childprocess (~> 0.5)
       rubyzip (~> 1.2)
-    sidekiq (6.0.5)
+    sidekiq (6.1.2)
       connection_pool (>= 2.2.2)
       rack (~> 2.0)
-      rack-protection (>= 2.0.0)
-      redis (>= 4.1.0)
+      redis (>= 4.2.0)
     simplecov (0.16.1)
       docile (~> 1.1)
       json (>= 1.8, < 3)
@@ -414,7 +409,7 @@ DEPENDENCIES
   capybara (~> 2.13)
   climate_watch_engine (~> 1.4.3)!
   coffee-rails (~> 4.2)
-  cw_data_uploader (~> 0.4.5)!
+  cw_data_uploader (~> 0.5.1)!
   devise
   dotenv-rails
   factory_bot_rails
@@ -428,7 +423,6 @@ DEPENDENCIES
   puma (~> 3.12.6)
   rails (~> 5.2.4)
   rails-controller-testing
-  redis-namespace
   rspec-collection_matchers
   rspec-rails (~> 3.5)
   rubocop
@@ -437,7 +431,7 @@ DEPENDENCIES
   scenic
   secondbase
   selenium-webdriver
-  sidekiq
+  sidekiq (>= 6.1.0)
   simplecov
   spring
   spring-watcher-listen (~> 2.0.0)

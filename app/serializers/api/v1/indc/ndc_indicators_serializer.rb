@@ -6,8 +6,7 @@ module Api
 
         attribute :sectors
 
-        has_many :indicators,
-                 serializer: IndicatorSerializer
+        has_many :indicators, serializer: IndicatorSerializer
 
         def categories
           IndexedSerializer.serialize(

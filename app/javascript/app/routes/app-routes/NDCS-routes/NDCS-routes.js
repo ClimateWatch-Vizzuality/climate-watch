@@ -1,6 +1,7 @@
 import isEmpty from 'lodash/isEmpty';
 
 const activeId = 'ndc';
+const FEATURE_NET_ZERO = process.env.FEATURE_NET_ZERO === 'true';
 
 export default [
   {
@@ -31,6 +32,11 @@ export default [
   {
     path: '/compare-all-targets',
     label: 'COMPARE ALL TARGETS',
+    activeId
+  },
+  FEATURE_NET_ZERO && {
+    path: '/net-zero-tracker',
+    label: 'NET-ZERO TRACKER',
     activeId
   }
 ].filter(o => !isEmpty(o));
