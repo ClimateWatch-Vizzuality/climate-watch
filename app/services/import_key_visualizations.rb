@@ -7,6 +7,7 @@ class ImportKeyVisualizations
   def call
     ActiveRecord::Base.transaction do
       cleanup
+
       reset_id_seq(KeyVisualization)
 
       import(S3CSVReader.read(FILEPATH), FILEPATH)
@@ -18,7 +19,7 @@ class ImportKeyVisualizations
   def import(content, filepath)
     index = 1
     import_each_with_logging(content, filepath) do |row|
-      KeyVisualization.create(
+      KeyVisualization.create!(
         attributes(row).merge(order: index)
       )
       index += 1
