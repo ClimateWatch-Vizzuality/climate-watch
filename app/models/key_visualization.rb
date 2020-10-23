@@ -1,0 +1,2 @@
+class KeyVisualization < ApplicationRecord
+end

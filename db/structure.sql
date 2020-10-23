@@ -1199,6 +1199,48 @@ ALTER SEQUENCE public.indc_values_id_seq OWNED BY public.indc_values.id;
 
 
 --
+-- Name: key_visualizations; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.key_visualizations (
+    id bigint NOT NULL,
+    title character varying NOT NULL,
+    description text NOT NULL,
+    topic character varying NOT NULL,
+    embed_code text,
+    image_download_url text,
+    data_download_url text,
+    blog_link text,
+    "order" integer NOT NULL,
+    geographies character varying[] DEFAULT '{}'::character varying[],
+    tags character varying[] DEFAULT '{}'::character varying[],
+    created_date date NOT NULL,
+    last_updated_date date NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: key_visualizations_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.key_visualizations_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: key_visualizations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.key_visualizations_id_seq OWNED BY public.key_visualizations.id;
+
+
+--
 -- Name: location_members; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2314,6 +2356,13 @@ ALTER TABLE ONLY public.indc_values ALTER COLUMN id SET DEFAULT nextval('public.
 
 
 --
+-- Name: key_visualizations id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.key_visualizations ALTER COLUMN id SET DEFAULT nextval('public.key_visualizations_id_seq'::regclass);
+
+
+--
 -- Name: location_members id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2821,6 +2870,14 @@ ALTER TABLE ONLY public.indc_sources
 
 ALTER TABLE ONLY public.indc_submissions
     ADD CONSTRAINT indc_submissions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: key_visualizations key_visualizations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.key_visualizations
+    ADD CONSTRAINT key_visualizations_pkey PRIMARY KEY (id);
 
 
 --
@@ -4274,6 +4331,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200423085052'),
 ('20200503165104'),
 ('20200521120158'),
-('20200818134235');
+('20200818134235'),
+('20201023101133');
 
 
