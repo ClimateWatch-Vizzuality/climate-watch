@@ -42,7 +42,7 @@ class ImportKeyVisualizations
   end
 
   def parse_text(value)
-    return if value == 'n/a'
+    return if value&.downcase&.strip == 'n/a'
 
     value
   end
