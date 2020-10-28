@@ -109,3 +109,7 @@ platforms:
           - metadata_sources_descriptions
       - name: blog_stories
         importer: ImportStories
+      - name: key_visualizations
+        importer: ImportKeyVisualizations
+        datasets:
+          - key_visualizations
