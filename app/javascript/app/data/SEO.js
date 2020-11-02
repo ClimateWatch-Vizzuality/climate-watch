@@ -20,6 +20,8 @@ export const NCS_COMPARE_ALL =
   'Analyze and compare every national climate pledge (Nationally Determined Contribution – or NDC) under the Paris Agreement, with the ability to search key words and see summaries by topic across all.';
 export const NDC_LTS =
   'Analyze and compare every national climate pledge (Nationally Determined Contribution – or NDC) under the Paris Agreement, with the ability to search key words and see summaries by topic across all.';
+// todo: fill in
+export const KEY_VISUALIZATIONS = '';
 export const NDC_COUNTRY = ({ countryName = '' }) =>
   `Explore the Commitments (NDCs) made by ${countryName} to act on climate change, as part of the Paris Agreement`;
 export const LTS_COUNTRY = ({ countryName = '' }) =>

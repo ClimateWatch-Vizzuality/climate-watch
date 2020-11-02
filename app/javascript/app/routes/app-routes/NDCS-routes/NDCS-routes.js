@@ -34,6 +34,11 @@ export default [
     label: 'COMPARE ALL TARGETS',
     activeId
   },
+  {
+    path: '/key-visualizations',
+    label: 'Key Visualizations',
+    activeId
+  },
   FEATURE_NET_ZERO && {
     path: '/net-zero-tracker',
     label: 'NET-ZERO TRACKER',

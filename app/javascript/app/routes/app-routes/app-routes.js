@@ -59,6 +59,7 @@ import LTSExploreSections from './lts-explore-sections';
 import NetZeroSections from './net-zero-sections';
 import NDCSExploreSections from './ndcs-explore-sections';
 import NDCOverviewRoutes from './ndcs-overview-routes';
+import KeyVisualizations from '../../pages/key-visualizations/key-visualizations-component';
 
 // Main pages have a gradient header color and secondary have a single color
 export default [
@@ -132,6 +133,11 @@ export default [
     component: NDCCompareAll,
     headerGradient: HEADER_GRADIENTS.commitments,
     headerColor: HEADER_COLORS.ndc
+  },
+  {
+    path: '/key-visualizations',
+    component: KeyVisualizations,
+    headerGradient: HEADER_GRADIENTS.emissions
   },
   {
     path: '/ndcs/compare', // Legacy: only for outdated links
