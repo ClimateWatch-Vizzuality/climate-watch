@@ -85,7 +85,7 @@ export const tableRemoveIsoFromData = createSelector(
       } catch (e) {
         console.error(e);
       }
-      updatedD['Statement Date'] = date;
+      updatedD['Statement Date'] = date.name;
       updatedD['Source Link'] = d['Source Link']
         ? d['Source Link'].replace('href=', "target='_blank' href=")
         : undefined;
