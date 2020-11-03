@@ -67,6 +67,8 @@ Rails.application.routes.draw do
       resources :lse_laws_and_policies, only: [:show]
       resources :updates, only: [:index]
 
+      resources :key_visualizations, only: [:index]
+
       namespace :data do
         resources :historical_emissions, only: [:index] do
           get :download, on: :collection, defaults: { format: 'zip' }
