@@ -1,0 +1,37 @@
+@import '~styles/layout.scss';
+@import '~styles/ui-extends.scss';
+
+.titleContainer {
+  @include columns((12, 12));
+
+  margin: $gutter-padding 0;
+  align-items: center;
+
+  @media #{$tablet-landscape} {
+    @include columns((8, 2, 2, 12));
+  }
+
+  &.containedButtonGroup {
+    display: inline-block;
+    width: 100%;
+
+    .buttonGroupContainer {
+      float: right;
+      width: 152px;
+      margin: 0;
+    }
+  }
+}
+
+.buttonGroupContainer {
+  display: flex;
+}
+
+.title {
+  @extend %headline;
+
+  font-size: $font-size-large;
+  font-weight: $font-weight-semi-bold;
+  color: $theme-color;
+  line-height: 45px;
+}
