@@ -14,8 +14,8 @@ const getKeyVisualizations = createThunkAction(
         if (response.ok) return response.json();
         throw Error(response.statusText);
       })
-      .then(data => {
-        dispatch(getKeyVisualizationsReady(data));
+      .then(response => {
+        dispatch(getKeyVisualizationsReady(response.data));
       })
       .catch(error => {
         console.warn(error);

@@ -27,10 +27,8 @@ class KeyVisualizations extends PureComponent {
         />
         {!isPageContained && (
           <Header route={route}>
-            <div className={layout.content}>
-              <div className={cx(layout.content, styles.header)}>
-                <Intro title="Key Visualizations" />
-              </div>
+            <div className={cx(layout.content, styles.header)}>
+              <Intro title="Key Visualizations" />
             </div>
           </Header>
         )}
