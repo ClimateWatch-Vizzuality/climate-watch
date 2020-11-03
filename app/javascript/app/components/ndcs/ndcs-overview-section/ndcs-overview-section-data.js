@@ -51,7 +51,7 @@ export const commitmentsData = [
       {
         questionText: 'How many Parties submitted an updated or second NDC?',
         link: '/2020-ndc-tracker',
-        slug: 'ndce_status_2020',
+        source: 'submittedSecondNDCLabel',
         metadataSlug: 'ndc_cw',
         answerLabel: '2020 NDC Submitted'
       }

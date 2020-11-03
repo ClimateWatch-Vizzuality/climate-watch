@@ -30,6 +30,25 @@ const getFirstNDCSubmittedIsos = createSelector(
   }
 );
 
+const getSecondNDCSubmittedIsos = createSelector(
+  [getSource, getIndicators],
+  (source, indicators) => {
+    if (!source || source !== 'submittedSecondNDCLabel' || !indicators) {
+      return null;
+    }
+    const submittedIndicator = indicators.find(
+      ind => ind.slug === 'ndce_status_2020'
+    );
+    if (!submittedIndicator) return null;
+
+    const submittedIsos = Object.keys(submittedIndicator.locations).filter(
+      iso => submittedIndicator.locations[iso].label_slug === 'submitted_2020'
+    );
+
+    return submittedIsos;
+  }
+);
+
 const getLSEIsos = createSelector(
   [getSource, getLSECountriesData],
   (source, lse) => {
@@ -38,17 +57,20 @@ const getLSEIsos = createSelector(
   }
 );
 
-const getPositiveAnswerIsos = createSelector(
-  [
-    getIndicators,
-    getSlug,
-    getAnswerLabel,
-    getFirstNDCSubmittedIsos,
-    getLSEIsos
-  ],
-  (indicators, slug, answerLabel, firstNDCSubmittedIsos, lseIsos) => {
+const getOtherSourceIsos = createSelector(
+  [getFirstNDCSubmittedIsos, getSecondNDCSubmittedIsos, getLSEIsos],
+  (firstNDCSubmittedIsos, secondNDCSubmittedIsos, lseIsos) => {
     if (firstNDCSubmittedIsos) return firstNDCSubmittedIsos;
+    if (secondNDCSubmittedIsos) return secondNDCSubmittedIsos;
     if (lseIsos) return lseIsos;
+    return null;
+  }
+);
+
+const getPositiveAnswerIsos = createSelector(
+  [getIndicators, getSlug, getAnswerLabel, getOtherSourceIsos],
+  (indicators, slug, answerLabel, otherSourceIsos) => {
+    if (otherSourceIsos) return otherSourceIsos;
     if (!indicators || !slug || !answerLabel) return null;
     const indicator = indicators.find(i => i.slug === slug);
     if (!indicator) return null;
