@@ -226,7 +226,7 @@ class ImportIndc
       indicator: indicator,
       sector: @sectors_index[row[:subsector]],
       value: row[:responsetext],
-      document: Indc::Document.where(slug: doc_slug).pluck(:id).first
+      document_id: Indc::Document.where(slug: doc_slug).pluck(:id).first
     }
   end
 
@@ -409,7 +409,7 @@ class ImportIndc
 
   def import_values_ndc
     valid_sources = [@sources_index['CAIT'], @sources_index['NDC Explorer'],
-                     @sources_index['WB'], @sources_index['Net Zero Tracker']]
+                     @sources_index['WB'], @sources_index['ECIU']]
     values = []
 
     Indc::Indicator.
