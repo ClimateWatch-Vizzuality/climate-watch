@@ -28,30 +28,38 @@ class ImportIndc
       load_csvs
       load_locations
 
-      import_documents
-      import_sources
-      import_category_types
-      import_categories
-      import_indicators
-      import_indicators_categories
-      import_labels
-      import_values_ndc
+      time_log('import documents') { import_documents }
+      time_log('import sources') { import_sources }
+      time_log('import category types') { import_category_types }
+      time_log('import categories') { import_categories }
+      time_log('import indicators') { import_indicators }
+      time_log('import_indicators_categories') { import_indicators_categories }
+      time_log('import_labels') { import_labels }
+      time_log('import_values_ndc') { import_values_ndc }
 
-      import_sectors_lts
-      import_values_lts
-      import_sector_values_lts
+      time_log('import_sectors_lts') { import_sectors_lts }
+      time_log('import_values_lts') { import_values_lts }
+      time_log('import_sector_values_lts') { import_sector_values_lts }
 
-      import_sectors_wb
-      import_values_wb
+      time_log('import_sectors_wb') { import_sectors_wb }
+      time_log('import_values_wb') { import_values_wb }
 
-      import_values_pledges
+      time_log('import_values_pledges') { import_values_pledges }
 
       reject_map_indicators_without_values_or_labels
-      import_submissions
-      import_comparison_slugs
-      Indc::SearchableValue.refresh
+
+      time_log('import_submissions') { import_submissions }
+      time_log('import_comparison_slugs') { import_comparison_slugs }
     end
-    generate_subsectors_map_data
+
+    time_log('generate_subsectors_map_data') { generate_subsectors_map_data }
+    time_log('refresh view') { Indc::SearchableValue.refresh }
+  end
+
+  def time_log(name)
+    TimedLogger.log(name) do
+      yield
+    end
   end
 
   def generate_subsectors_map_data
@@ -70,52 +78,58 @@ class ImportIndc
 
       order = sectoral_cat.indicators.maximum(:order) || 0
       Indc::Sector.where.not(parent_id: nil).joins(values: :indicator).
-        where("indc_indicators.slug ilike ?", "#{prefix.upcase}_%").distinct.each do |sector|
+        where('indc_indicators.slug ilike ?', "#{prefix.upcase}_%").distinct.each do |sector|
         sector_name = sector.name == sector.parent.name ? "#{sector.name} Subsector" : sector.name
         ind_slug = [prefix, sector_name.parameterize.gsub('-', '_'), 'auto'].join('_')
         next if Indc::Indicator.find_by(slug: ind_slug, source_id: source)
 
-        indicator = Indc::Indicator.find_or_create_by!(source_id: source,
-                                                      slug: ind_slug,
-                                                      name: sector_name,
-                                                      description: "Created automatically",
-                                                      multiple_versions: true)
+        indicator = Indc::Indicator.create!(source_id: source,
+                                            slug: ind_slug,
+                                            name: sector_name,
+                                            description: "Created automatically",
+                                            multiple_versions: true)
         indicator.categories << sectoral_cat
         if indicator.order.nil?
           order += 1
           indicator.order = order
           indicator.save
         end
-        label_yes = Indc::Label.find_or_create_by!(indicator_id: indicator.id,
-                                                  index: 1,
-                                                  value: 'Sectoral Measure Specified')
-        label_no = Indc::Label.find_or_create_by!(indicator_id: indicator.id,
-                                                 index: 2,
-                                                 value: 'No Sectoral Measure Specified')
-        label_no_doc = Indc::Label.find_or_create_by!(indicator_id: indicator.id,
-                                                     index: -2,
-                                                     value: 'No Document Submitted')
+        label_yes = Indc::Label.create!(indicator_id: indicator.id,
+                                        index: 1,
+                                        value: 'Sectoral Measure Specified')
+        label_no = Indc::Label.create!(indicator_id: indicator.id,
+                                       index: 2,
+                                       value: 'No Sectoral Measure Specified')
+        # not sure if this label should be created or not
+        label_no_doc = Indc::Label.create!(indicator_id: indicator.id,
+                                           index: -2,
+                                           value: 'No Document Submitted')
+
+        values = []
+
         locations.each do |loc|
           Indc::Document.where(slug: 'first_ndc', is_ndc: true).each do |doc|
             if sector.values.where(location_id: loc.id, document_id: doc.id).
-                where.not("value ilike 'Not Available'").
-                joins(:indicator).where("indc_indicators.slug ilike ?", "#{prefix.upcase}_%").any?
-              Indc::Value.find_or_create_by!(location_id: loc.id,
-                                             label_id: label_yes.id,
-                                             value: 'Sectoral Measure Specified',
-                                             document_id: doc.id,
-                                             indicator_id: indicator.id,
-                                             sector_id: sector.id)
+                 where.not("value ilike 'Not Available'").
+                 joins(:indicator).where("indc_indicators.slug ilike ?", "#{prefix.upcase}_%").any?
+              values << Indc::Value.new(location_id: loc.id,
+                                        label_id: label_yes.id,
+                                        value: 'Sectoral Measure Specified',
+                                        document_id: doc.id,
+                                        indicator_id: indicator.id,
+                                        sector_id: sector.id)
             else
-              Indc::Value.find_or_create_by!(location_id: loc.id,
-                                            label_id: label_no.id,
-                                            value: 'No Sectoral Measure Specified',
-                                            document_id: doc.id,
-                                            indicator_id: indicator.id,
-                                            sector_id: sector.id)
+              values << Indc::Value.new(location_id: loc.id,
+                                        label_id: label_no.id,
+                                        value: 'No Sectoral Measure Specified',
+                                        document_id: doc.id,
+                                        indicator_id: indicator.id,
+                                        sector_id: sector.id)
             end
           end
         end
+
+        Indc::Value.import!(values)
       end
     end
     puts "We added #{Indc::Value.count - count} new values for subsector indicators"
@@ -194,12 +208,12 @@ class ImportIndc
     {
       location: location,
       indicator: indicator,
-      label: Indc::Label.find_by(
+      label_id: Indc::Label.where(
         value: row[:"#{indicator.slug.downcase}_label"],
         indicator: indicator
-      ),
+      ).pluck(:id).first,
       value: row[:"#{indicator.slug.downcase}"],
-      document: Indc::Document.find_by(slug: doc_slug)
+      document_id: Indc::Document.where(slug: doc_slug).pluck(:id).first
     }
   end
 
@@ -212,7 +226,7 @@ class ImportIndc
       indicator: indicator,
       sector: @sectors_index[row[:subsector]],
       value: row[:responsetext],
-      document: Indc::Document.find_by(slug: doc_slug)
+      document: Indc::Document.where(slug: doc_slug).pluck(:id).first
     }
   end
 
@@ -235,7 +249,7 @@ class ImportIndc
       language: submission[:language],
       submission_date: submission[:date_of_submission],
       url: submission[:url],
-      document_id: ::Indc::Document.find_by(slug: doc_slug)&.id
+      document_id: Indc::Document.where(slug: doc_slug).pluck(:id).first
     }
   end
 
@@ -396,6 +410,8 @@ class ImportIndc
   def import_values_ndc
     valid_sources = [@sources_index['CAIT'], @sources_index['NDC Explorer'],
                      @sources_index['WB'], @sources_index['Net Zero Tracker']]
+    values = []
+
     Indc::Indicator.
       where(source: valid_sources).
       each do |indicator|
@@ -408,14 +424,17 @@ class ImportIndc
 
         next unless r[:"#{indicator.slug.downcase}"].present?
 
-        Indc::Value.create!(
+        values << Indc::Value.new(
           value_ndc_attributes(r, location, indicator)
         )
       end
     end
+
+    Indc::Value.import!(values)
   end
 
   def import_values_lts
+    values = []
     Indc::Indicator.
       where(source: @sources_index['LTS']).each do |indicator|
       @lts_data.each do |r|
@@ -427,14 +446,16 @@ class ImportIndc
 
         next unless r[:"#{indicator.slug.downcase}"].present?
 
-        Indc::Value.create!(
+        values << Indc::Value.new(
           value_ndc_attributes(r, location, indicator, 'lts')
         )
       end
     end
+    Indc::Value.import!(values)
   end
 
   def import_values_pledges
+    values = []
     Indc::Indicator.
       where(source: @sources_index['Pledges']).each do |indicator|
       @pledges_data.each do |r|
@@ -446,11 +467,12 @@ class ImportIndc
 
         next unless r[:"#{indicator.slug.downcase}"].present?
 
-        Indc::Value.create!(
+        values << Indc::Value.new(
           value_ndc_attributes(r, location, indicator, 'pledges')
         )
       end
     end
+    Indc::Value.import!(values)
   end
 
   def import_sectors_lts
@@ -526,6 +548,7 @@ class ImportIndc
       map { |k, v| [k, v.first] }.
       to_h
 
+    values = []
     @wb_sectoral_data.each do |r|
       location = @locations_by_iso2[r[:country]]
       unless location
@@ -541,10 +564,11 @@ class ImportIndc
 
       next unless r[:responsetext]
 
-      Indc::Value.create!(
+      values << Indc::Value.new(
         value_wb_attributes(r, location, indicator)
       )
     end
+    Indc::Value.import!(values)
   end
 
   def import_documents
