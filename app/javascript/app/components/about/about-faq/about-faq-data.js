@@ -336,6 +336,78 @@ export const sectionsData = [
     ]
   },
   {
+    label: 'LTS content module',
+    slug: 'lts',
+    content: [
+      {
+        type: 'html',
+        title: 'What is a long-term strategy? ',
+        answer:
+          'Under the Paris Agreement, countries are invited to communicate “mid-century long-term low greenhouse gas emissions development strategies” (long-term strategies, or LTS). These strategies are central to the goal of limiting global warming to well below 2&#8451 and pursuing efforts to limit the increase to 1.5&#8451, representing a significant opportunity for countries to lay out their vision for achieving a low-carbon economy by 2050 while also pursuing sustainable development. It is advantageous for countries to align their NDCs and long-term strategies for consistency and to avoid the lock-in of carbon-intensive behavior, technologies and policies. In addition to Climate Watch’s <a href="https://www.climatewatchdata.org/lts-explore" rel="noopener noreferrer" target="_blank">Explore LTS Module</a>, WRI offers a wealth of other resources related to long-term strategy design and communication. These include expert perspectives, case studies, and working papers available at <a href="https://longtermstrategies.org" rel="noopener noreferrer" target="_blank">longtermstrategies.org</a>.'
+      },
+      {
+        type: 'html',
+        title: 'Why are long-term strategies needed? ',
+        answer:
+          'Ambitious long-term strategies are vital since current national commitments are only sufficient enough to limit warming to 2.7-3.7&#8451 (4.9-6.7&#8457). Not only do long-term strategies present an opportunity to bring national action in line with needed ambition, but they also encourage countries to avoid costly investments in high-emissions technologies.'
+      },
+      {
+        type: 'html',
+        title: 'What are the key elements of long-term strategies? ',
+        answer:
+          '<p>The scope and depth of long-term strategies will be determined by countries. Accordingly, there is no one-size-fits-all format or structure for a long-term strategy. However, some key elements of a long-term strategy could include:</p><ul><li>A long-term vision; </li><li>Sustainable development considerations; </li><li>Mitigation elements (including a long-term quantified outcome for GHG emissions reductions and results of mitigation models and scenarios); </li><li>Adaptation elements;  </li><li>Sectoral strategies (including policies and actions, milestones to be achieved over time, information on managing the transition to the long-term goals, among others); </li><li>Implementation approaches; </li><li>Monitoring plans and revisions processes. </li></ul> '
+      },
+      {
+        type: 'html',
+        title: 'What methodology is used to collect and sort data on long-term strategies?  ',
+        answer:
+          '<p>The structured indicators used for presenting LTS information are adapted from several previous WRI papers, including <a href="https://www.wri.org/publication/early-insights-long-term-climate-strategies" rel="noopener noreferrer" target="_blank">Early Insights on Long-term Climate Strategies</a> and <a href="https://www.wri.org/publication/designing-G20-long-term-strategies" rel="noopener noreferrer" target="_blank">Long-term Low Greenhouse Gas Emission Development Strategies: Approaches and Methodologies for Their Design</a>.</p><p>All data collected in this database come strictly from the LTS submissions only. No evaluation of ambition has been undertaken. Rather the database is provided to facilitate transparency and understanding of countries' long-term strategies.</p> '
+      },
+      {
+        type: 'html',
+        title: 'Is there a way to compare several long-term strategies together? ',
+        answer:
+          'Yes - Climate Watch has developed a Compare All Targets Module that enables users to view and compare multiple long-term strategies at once. It also allows users to compare other commitments, including NDC targets, laws, and policies. Explore a summary of which countries have adopted each type of document and compare all of them side-by-side <a href="https://www.climatewatchdata.org/compare-all-targets" rel="noopener noreferrer" target="_blank">here</a>. '
+      }
+    ]
+  },
+  {
+    label: 'Net-Zero content module',
+    slug: 'nz',
+    content: [
+      {
+        type: 'html',
+        title: 'What is a net-zero target? ',
+        answer:
+          '<p>At a country level, reaching or committing to reach net-zero emissions by a certain year means that GHG emissions released to the atmosphere from sources within the country’s territory in the target year do not exceed GHGs removed from the atmosphere by sinks within the country’s territory in the target year.</p><p>At the global level, the term net-zero emissions means achieving a balance between anthropogenic emissions and removals of GHGs in a given time period (typically a year).</p>'
+      },
+      {
+        type: 'html',
+        title: 'Why is the target year for a net-zero target important? ',
+        answer:
+          'According to IPCC scenarios, if warming is to be limited to below 1.5&#8451, any country that still has net-positive CO<sub>2</sub> emissions in 2044 or net-positive GHG emissions in 2066 will need to be matched by negative emissions in other countries. Accordingly, countries should aim to achieve their net-zero target as early as feasible, taking into consideration the current national inventory of emissions and removals, pathways and options for emissions and removals, and equity.'
+      },
+      {
+        type: 'html',
+        title: 'How does the target status or legal status of a net-zero target affect the target? ',
+        answer:
+          'Net-zero targets have taken a number of different forms, in different policy instruments, and differ widely regarding the binding nature of the commitment. The strength of the policy setting for the net-zero target will likely affect the extent to which it compels a country to take near-term action towards achieving the target. '
+      },
+      {
+        type: 'html',
+        title: 'Why is it important to track whether a net-zero target permits use of international GHG mitigation? ',
+        answer:
+          'To ensure the highest level of ambition, countries should prioritize reducing domestic GHG emissions and enhancing domestic GHG removals rather than relying on purchases of GHG mitigation as a primary means of meeting a net-zero target. However, if international transfers of GHG mitigation are deemed necessary to meet the target, countries should consider limiting the portion of the net-zero target that may be met through international GHG mitigation. A limit will maintain clear signals for domestic mitigation and investment and avoid locking in long-lived carbon-intensive infrastructure. '
+      },
+      {
+        type: 'html',
+        title: 'Why is it important to track whether a net-zero target includes international shipping and aviation? ',
+        answer:
+          'Since emissions from international shipping and aviation fall outside of national boundaries (and, consequently, out of jurisdiction), inclusion or exclusion of these sectors within a net-zero target determines the ambition of the commitment. Net-zero targets that include all emissions from international shipping and aviation reflect the highest possible level of ambition. '
+      }
+    ]
+  },
+  {
     label: 'NDC-SDG linkages module',
     slug: 'ndc_sdg',
     content: [
