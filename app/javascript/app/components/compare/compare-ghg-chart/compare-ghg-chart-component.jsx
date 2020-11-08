@@ -132,7 +132,7 @@ class CompareGhgChart extends PureComponent {
                 value={calculationSelected}
                 hideResetButton
               />
-
+              se
               <MultiSelect
                 label="Sectors"
                 values={sectorsSelected || []}

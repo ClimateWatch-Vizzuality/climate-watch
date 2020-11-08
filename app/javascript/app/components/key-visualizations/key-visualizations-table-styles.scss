@@ -35,3 +35,22 @@
   color: $theme-color;
   line-height: 45px;
 }
+
+.col4 {
+  @include columns(12);
+
+  > div {
+    @include xy-gutters($gutter-padding, $gutter-position: 'bottom');
+  }
+
+  @media #{$tablet-portrait} {
+    @include columns(6);
+
+    align-items: flex-end;
+  }
+
+  @media #{$tablet-landscape} {
+    @include columns((2.1, 2.1, 2.1, 2.1, 2.1, 1.4));
+    align-items: flex-end;
+  }
+}
