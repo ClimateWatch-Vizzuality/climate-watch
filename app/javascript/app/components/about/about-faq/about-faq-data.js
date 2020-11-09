@@ -213,7 +213,7 @@ export const sectionsData = [
           {
             '': 'Original data sources used',
             CAIT:
-              'Carbon Dioxide Information Analysis Center (CDIAC), International Energy Agency (IEA), U.S. Environmental Protection Agency, U.S. Food and Agriculture Organization, and U.S. Energy Information Administration. See more detailed information about sources <a href="http://cait.wri.org/docs/CAIT2.0_CountryGHG_Methods.pdf">here</a>.',
+              'Carbon Dioxide Information Analysis Center (CDIAC), International Energy Agency (IEA), U.S. Environmental Protection Agency, U.N. Food and Agriculture Organization, and U.S. Energy Information Administration. See more detailed information about sources <a href="http://cait.wri.org/docs/CAIT2.0_CountryGHG_Methods.pdf">here</a>.',
             'PIK PRIMAP-hist':
               'Uses countries’ official inventories reported to the UNFCCC as a basis, and fills in with data from other sources, including CDIAC, Emissions Database for Global Atmospheric Research (EDGAR), and FAO, among others. See all sources <a href="http://dataservices.gfz-potsdam.de/pik/showshort.php?id=escidoc:3842934">here</a>.',
             UNFCCC:
