@@ -19,7 +19,7 @@ const fetchLTS = createThunkAction('fetchLTS', () => (dispatch, state) => {
   ) {
     dispatch(fetchLTSInit());
     apiWithCache
-      .get('/api/v1/lts?source=LTS&filter=map')
+      .get('/api/v1/ndcs?source=ECIU&filter=map')
       .then(response => {
         if (response.data) return response.data;
         throw Error(response.statusText);

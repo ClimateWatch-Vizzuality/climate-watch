@@ -105,7 +105,7 @@ export const getSelectedIndicator = createSelector(
   (selected, indicators = []) => {
     if (!indicators || !indicators.length) return {};
     const defaultSelection =
-      indicators.find(i => i.slug === 'lts_submission') || indicators[0];
+      indicators.find(i => i.slug === 'nz_status') || indicators[0];
     return selected
       ? indicators.find(indicator => indicator.value === selected) ||
           defaultSelection
@@ -120,7 +120,7 @@ export const getMapIndicator = createSelector(
     const mapIndicator =
       selectedIndicator && selectedIndicator.label
         ? selectedIndicator
-        : indicators.find(indicator => indicator.slug === 'lts_submission') ||
+        : indicators.find(indicator => indicator.slug === 'nz_status') ||
           indicators[0];
     return mapIndicator;
   }
@@ -328,7 +328,7 @@ export const getEmissionsCardData = createSelector(
       return null;
     }
 
-    const emissionsIndicator = indicators.find(i => i.slug === 'lts_ghg');
+    const emissionsIndicator = indicators.find(i => i.slug === 'nz_ghg');
     if (!emissionsIndicator) return null;
 
     let data = getIndicatorEmissionsData(
@@ -368,10 +368,10 @@ export const getSummaryCardData = createSelector(
   [getIndicatorsData],
   indicators => {
     if (!indicators) return null;
-    const LTSIndicator = indicators.find(i => i.slug === 'lts_document');
+    const LTSIndicator = indicators.find(i => i.slug === 'nz_status');
     if (!LTSIndicator) return null;
-    let countriesNumber = Object.values(LTSIndicator.locations).filter(
-      l => l.value
+    let countriesNumber = Object.values(LTSIndicator.locations).filter(l =>
+      ['In Policy Document', 'In Law'].includes(l.value)
     ).length;
     const partiesNumber = countriesNumber;
     const europeanCountriesWithSubmission = europeanCountries.filter(

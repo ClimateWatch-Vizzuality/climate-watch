@@ -95,9 +95,9 @@ export const getDefaultColumns = createSelector(
     const columnIds = [
       'country',
       selectedIndicatorHeader,
-      'lts_document',
-      'lts_date',
-      'lts_ghg'
+      'nz_source',
+      'nz_target',
+      'nz_ghg'
     ];
 
     if (extraColumn) {
