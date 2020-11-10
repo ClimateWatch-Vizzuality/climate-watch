@@ -80,7 +80,7 @@ const NDCCompareAllTargets = props => {
           <div className={styles.title}>
             <Intro
               title="Compare all targets"
-              description={`It is important for countries’ various commitments, laws and policies align to achieve their climate objectives. Explore a summary of which countries have each type of document and compare all of them side-by-side. You can also <a href='https://climate-laws.org/' class=${styles.link}> explore countries’ climate laws and policies published by Grantham Research Institute</a>.`}
+              description={`It is important for countries’ various commitments, laws and policies align to achieve their climate objectives. Explore a summary of which countries have each type of document and compare all of them side-by-side. You can also <a href='https://climate-laws.org/' class=${styles.link}> explore countries’ climate laws and policies published by Grantham Research Institute.</a>`}
             />
           </div>
         </div>
