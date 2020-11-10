@@ -328,6 +328,7 @@ export const getEmissionsCardData = createSelector(
       return null;
     }
 
+    // TODO: This nz_ghg is wrong, should be other indicator
     const emissionsIndicator = indicators.find(i => i.slug === 'nz_ghg');
     if (!emissionsIndicator) return null;
 
