@@ -28,38 +28,32 @@ class ImportIndc
       load_csvs
       load_locations
 
-      time_log('import documents') { import_documents }
-      time_log('import sources') { import_sources }
-      time_log('import category types') { import_category_types }
-      time_log('import categories') { import_categories }
-      time_log('import indicators') { import_indicators }
-      time_log('import_indicators_categories') { import_indicators_categories }
-      time_log('import_labels') { import_labels }
-      time_log('import_values_ndc') { import_values_ndc }
+      import_documents
+      import_sources
+      import_category_types
+      import_categories
+      import_indicators
+      import_indicators_categories
+      import_labels
+      import_values_ndc
 
-      time_log('import_sectors_lts') { import_sectors_lts }
-      time_log('import_values_lts') { import_values_lts }
-      time_log('import_sector_values_lts') { import_sector_values_lts }
+      import_sectors_lts
+      import_values_lts
+      import_sector_values_lts
 
-      time_log('import_sectors_wb') { import_sectors_wb }
-      time_log('import_values_wb') { import_values_wb }
+      import_sectors_wb
+      import_values_wb
 
-      time_log('import_values_pledges') { import_values_pledges }
+      import_values_pledges
 
       reject_map_indicators_without_values_or_labels
 
-      time_log('import_submissions') { import_submissions }
-      time_log('import_comparison_slugs') { import_comparison_slugs }
+      import_submissions
+      import_comparison_slugs
     end
 
-    time_log('generate_subsectors_map_data') { generate_subsectors_map_data }
-    time_log('refresh view') { Indc::SearchableValue.refresh }
-  end
-
-  def time_log(name)
-    TimedLogger.log(name) do
-      yield
-    end
+    generate_subsectors_map_data
+    Indc::SearchableValue.refresh
   end
 
   def generate_subsectors_map_data
