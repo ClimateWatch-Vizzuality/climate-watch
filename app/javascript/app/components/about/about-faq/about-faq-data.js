@@ -359,13 +359,16 @@ export const sectionsData = [
       },
       {
         type: 'html',
-        title: 'What methodology is used to collect and sort data on long-term strategies?  ',
+        title:
+          'What methodology is used to collect and sort data on long-term strategies?  ',
         answer:
-          '<p>The structured indicators used for presenting LTS information are adapted from several previous WRI papers, including <a href="https://www.wri.org/publication/early-insights-long-term-climate-strategies" rel="noopener noreferrer" target="_blank">Early Insights on Long-term Climate Strategies</a> and <a href="https://www.wri.org/publication/designing-G20-long-term-strategies" rel="noopener noreferrer" target="_blank">Long-term Low Greenhouse Gas Emission Development Strategies: Approaches and Methodologies for Their Design</a>.</p><p>All data collected in this database come strictly from the LTS submissions only. No evaluation of ambition has been undertaken. Rather the database is provided to facilitate transparency and understanding of countries' long-term strategies.</p> '
+          // eslint-disable-next-line quotes
+          `<p>The structured indicators used for presenting LTS information are adapted from several previous WRI papers, including <a href="https://www.wri.org/publication/early-insights-long-term-climate-strategies" rel="noopener noreferrer" target="_blank">Early Insights on Long-term Climate Strategies</a> and <a href="https://www.wri.org/publication/designing-G20-long-term-strategies" rel="noopener noreferrer" target="_blank">Long-term Low Greenhouse Gas Emission Development Strategies: Approaches and Methodologies for Their Design</a>.</p><p>All data collected in this database come strictly from the LTS submissions only. No evaluation of ambition has been undertaken. Rather the database is provided to facilitate transparency and understanding of countries' long-term strategies.</p>`
       },
       {
         type: 'html',
-        title: 'Is there a way to compare several long-term strategies together? ',
+        title:
+          'Is there a way to compare several long-term strategies together? ',
         answer:
           'Yes - Climate Watch has developed a Compare All Targets Module that enables users to view and compare multiple long-term strategies at once. It also allows users to compare other commitments, including NDC targets, laws, and policies. Explore a summary of which countries have adopted each type of document and compare all of them side-by-side <a href="https://www.climatewatchdata.org/compare-all-targets" rel="noopener noreferrer" target="_blank">here</a>. '
       }
@@ -389,19 +392,22 @@ export const sectionsData = [
       },
       {
         type: 'html',
-        title: 'How does the target status or legal status of a net-zero target affect the target? ',
+        title:
+          'How does the target status or legal status of a net-zero target affect the target? ',
         answer:
           'Net-zero targets have taken a number of different forms, in different policy instruments, and differ widely regarding the binding nature of the commitment. The strength of the policy setting for the net-zero target will likely affect the extent to which it compels a country to take near-term action towards achieving the target. '
       },
       {
         type: 'html',
-        title: 'Why is it important to track whether a net-zero target permits use of international GHG mitigation? ',
+        title:
+          'Why is it important to track whether a net-zero target permits use of international GHG mitigation? ',
         answer:
           'To ensure the highest level of ambition, countries should prioritize reducing domestic GHG emissions and enhancing domestic GHG removals rather than relying on purchases of GHG mitigation as a primary means of meeting a net-zero target. However, if international transfers of GHG mitigation are deemed necessary to meet the target, countries should consider limiting the portion of the net-zero target that may be met through international GHG mitigation. A limit will maintain clear signals for domestic mitigation and investment and avoid locking in long-lived carbon-intensive infrastructure. '
       },
       {
         type: 'html',
-        title: 'Why is it important to track whether a net-zero target includes international shipping and aviation? ',
+        title:
+          'Why is it important to track whether a net-zero target includes international shipping and aviation? ',
         answer:
           'Since emissions from international shipping and aviation fall outside of national boundaries (and, consequently, out of jurisdiction), inclusion or exclusion of these sectors within a net-zero target determines the ambition of the commitment. Net-zero targets that include all emissions from international shipping and aviation reflect the highest possible level of ambition. '
       }
