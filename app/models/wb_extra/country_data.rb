@@ -1,7 +1,7 @@
 module WbExtra
   class CountryData < ApplicationRecord
     belongs_to :location
-    validates :year, :population, :gdp, presence: true
+    validates :year, presence: true
 
     def self.filter_by_dates(start_year, end_year)
       return all unless start_year || end_year
