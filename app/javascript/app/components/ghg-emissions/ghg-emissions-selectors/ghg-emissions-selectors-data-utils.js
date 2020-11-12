@@ -36,3 +36,21 @@ export const getRegionsWithOwnData = (regions, data) => {
 
   return regions.filter(r => regionsISOsWithOwnData.includes(r.iso_code3));
 };
+
+// If there is no value for any legend item
+// remove those element from the start and the end of chart
+// leave those in the middle
+export const trimWithNoData = dataToTrim => {
+  const indexesToString = dataToTrim
+    .map((d, idx) => (Object.keys(d).length > 1 ? idx : '_'))
+    .join(',')
+    .replace(/_,/g, '')
+    .trim();
+  const middleIndexes = indexesToString.split(',');
+  const firstNotEmptyIndex = Number(middleIndexes[0]);
+  const lastNotEmptyIndex = Number(middleIndexes[middleIndexes.length - 1]);
+
+  return dataToTrim.filter(
+    (_d, idx) => idx >= firstNotEmptyIndex && idx <= lastNotEmptyIndex
+  );
+};
