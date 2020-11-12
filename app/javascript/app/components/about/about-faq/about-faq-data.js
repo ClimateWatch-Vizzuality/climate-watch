@@ -189,7 +189,7 @@ export const sectionsData = [
     ]
   },
   {
-    label: 'Historical emissions module',
+    label: 'GHG emissions module',
     slug: 'ghg',
     content: [
       {
@@ -293,7 +293,7 @@ export const sectionsData = [
     ]
   },
   {
-    label: 'NDC content module',
+    label: 'Explore NDCs module',
     slug: 'ndc',
     content: [
       {
@@ -336,7 +336,7 @@ export const sectionsData = [
     ]
   },
   {
-    label: 'LTS content module',
+    label: 'Explore LTS module',
     slug: 'lts',
     content: [
       {
@@ -375,7 +375,7 @@ export const sectionsData = [
     ]
   },
   {
-    label: 'Net-Zero content module',
+    label: 'Net-Zero module',
     slug: 'nz',
     content: [
       {
