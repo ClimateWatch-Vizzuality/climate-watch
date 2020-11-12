@@ -124,6 +124,23 @@
   }
 }
 
+.summaryTitle {
+  font-weight: $font-weight-bold;
+  text-align: center;
+  margin-top: 20px;
+  padding-bottom: 20px;
+  cursor: default;
+}
+
+.infoIcon {
+  margin-left: 5px;
+  transform: translateY(1px);
+}
+
+.covidTooltip {
+  line-height: $line-height-medium;
+}
+
 .circularChartContainer {
   position: relative;
   margin: -10% 0;
