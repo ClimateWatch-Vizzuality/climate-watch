@@ -8,7 +8,7 @@
 }
 
 .form {
-  @include columns((6,6,6,6,6,6,12,12));
+  @include columns((6,6,6,6,6,6,12,12,12));
 
   > * {
     @include xy-gutters($gutter-position: ('bottom'), $gutters: 60px);
