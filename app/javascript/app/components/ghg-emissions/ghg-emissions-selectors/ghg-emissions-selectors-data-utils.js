@@ -9,35 +9,14 @@ const expandRegionToCountries = (iso, regions) => {
   return flatMap(region.members, expandRegionToCountries);
 };
 
-const expandRegionsToCountries = (isos, regions) =>
-  uniq(flatMap(isos, iso => expandRegionToCountries(iso, regions)));
-
-export const getMetricData = (
-  year,
-  column,
-  metricField,
-  calculationData,
-  regions
-) => {
+export const getMetricData = (year, iso, metricField, calculationData) => {
   const getMetricForYearAndRegion = (y, r) =>
     metricField &&
     calculationData &&
     calculationData[y] &&
     calculationData[y][r] &&
     calculationData[y][r][metricField];
-  let metricData = getMetricForYearAndRegion(year, column.iso);
-  // if no metric data for expandable column then use expanded regions to
-  // calculate metric data
-  if (!metricData && column.expandsTo && column.expandsTo.length) {
-    const expandedCountries = expandRegionsToCountries(
-      column.expandsTo,
-      regions
-    );
-    metricData = expandedCountries.reduce(
-      (acc, iso3) => acc + (getMetricForYearAndRegion(year, iso3) || 0),
-      0
-    );
-  }
+  let metricData = getMetricForYearAndRegion(year, iso);
 
   // GDP is in dollars and we want to display it in million dollars
   if (metricField === 'gdp' && metricData) metricData /= 1000000;

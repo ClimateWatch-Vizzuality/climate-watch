@@ -317,7 +317,13 @@ export const getChartData = createSelector(
 
           const yearEmissions = d.emissions.find(e => e.year === year);
           const metricRatio = shouldHaveMetricData
-            ? getMetricData(year, column, metricField, calculationData, regions)
+            ? getMetricData(
+              year,
+              d.iso_code3,
+              metricField,
+              calculationData,
+              regions
+            )
             : 1;
 
           if (yearEmissions && yearEmissions.value && metricRatio) {
