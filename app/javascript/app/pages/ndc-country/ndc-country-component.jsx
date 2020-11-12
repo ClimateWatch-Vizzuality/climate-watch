@@ -14,8 +14,8 @@ import CountriesDocumentsProvider from 'providers/countries-documents-provider';
 import NdcsDocumentsProvider from 'providers/documents-provider';
 import Dropdown from 'components/dropdown';
 import { Dropdown as CWDropdown } from 'cw-components';
-import { NDC_COUNTRY } from 'data/SEO';
-import { SEO } from 'components/seo';
+import { SEO_PAGES } from 'data/SEO';
+import SEO from 'components/seo';
 import { TabletPortrait, MobileOnly } from 'components/responsive';
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
 import countryDropdownTheme from 'styles/themes/dropdown/dropdown-country.scss';
@@ -103,8 +103,8 @@ function NDCCountry(props) {
   return (
     <div>
       <SEO
-        descriptionContext={NDC_COUNTRY({ countryName })}
-        subtitle={countryName}
+        page={SEO_PAGES.ndcCountry}
+        pageData={{ countryName }}
         href={location.href}
       />
       <CountriesDocumentsProvider location={iso} />

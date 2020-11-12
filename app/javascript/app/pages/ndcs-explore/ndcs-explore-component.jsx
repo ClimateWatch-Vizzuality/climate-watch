@@ -4,8 +4,8 @@ import Proptypes from 'prop-types';
 import Header from 'components/header';
 import Button from 'components/button';
 import Intro from 'components/intro';
-import { NDCS_EXPLORE } from 'data/SEO';
-import { SEO } from 'components/seo';
+import { SEO_PAGES } from 'data/SEO';
+import SEO from 'components/seo';
 import AutocompleteSearch from 'components/autocomplete-search';
 import ModalMetadata from 'components/modal-metadata';
 import ModalShare from 'components/modal-share';
@@ -16,11 +16,7 @@ import styles from './ndcs-explore-styles.scss';
 
 const NDCSExplore = ({ route }) => (
   <div>
-    <SEO
-      descriptionContext={NDCS_EXPLORE}
-      subtitle="NDCS CONTENT"
-      href={location.href}
-    />
+    <SEO page={SEO_PAGES.ndcExplore} href={location.href} />
     {!isPageContained && (
       <Header route={route}>
         <div className={layout.content}>

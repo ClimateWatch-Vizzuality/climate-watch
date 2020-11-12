@@ -4,20 +4,16 @@ import Proptypes from 'prop-types';
 import Header from 'components/header';
 import Button from 'components/button';
 import Intro from 'components/intro';
-import { NET_ZERO } from 'data/SEO';
+import { SEO_PAGES } from 'data/SEO';
 import { renderToString } from 'react-dom/server';
-import { SEO } from 'components/seo';
+import SEO from 'components/seo';
 
 import layout from 'styles/layout.scss';
 import styles from './net-zero-styles.scss';
 
 const NetZero = ({ route }) => (
   <div>
-    <SEO
-      descriptionContext={NET_ZERO}
-      subtitle="LTS CONTENT"
-      href={location.href}
-    />
+    <SEO page={SEO_PAGES.netZero} href={location.href} />
     <Header route={route}>
       <div className={layout.content}>
         <div className="grid-column-item">

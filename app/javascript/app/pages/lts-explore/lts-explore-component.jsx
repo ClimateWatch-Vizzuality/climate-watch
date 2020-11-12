@@ -3,19 +3,15 @@ import React from 'react';
 import Proptypes from 'prop-types';
 import Header from 'components/header';
 import Intro from 'components/intro';
-import { LTS_EXPLORE } from 'data/SEO';
-import { SEO } from 'components/seo';
+import { SEO_PAGES } from 'data/SEO';
+import SEO from 'components/seo';
 
 import layout from 'styles/layout.scss';
 import styles from './lts-explore-styles.scss';
 
 const LTSExplore = ({ route }) => (
   <div>
-    <SEO
-      descriptionContext={LTS_EXPLORE}
-      subtitle="LTS CONTENT"
-      href={location.href}
-    />
+    <SEO page={SEO_PAGES.ltsExplore} href={location.href} />
     <Header route={route}>
       <div className={layout.content}>
         <div className="grid-column-item">

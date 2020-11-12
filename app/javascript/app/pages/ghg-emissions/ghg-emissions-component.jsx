@@ -5,8 +5,8 @@ import PropTypes from 'prop-types';
 import Header from 'components/header';
 import Intro from 'components/intro';
 import GhgEmissionsGraph from 'components/ghg-emissions';
-import { HISTORICAL_GHG_EMISIONS } from 'data/SEO';
-import { SEO } from 'components/seo';
+import { SEO_PAGES } from 'data/SEO';
+import SEO from 'components/seo';
 import { isPageContained } from 'utils/navigation';
 
 import layout from 'styles/layout.scss';
@@ -43,11 +43,7 @@ class GhgEmissions extends PureComponent {
 
     return (
       <div>
-        <SEO
-          descriptionContext={HISTORICAL_GHG_EMISIONS}
-          subtitle="GHG emissions"
-          href={location.href}
-        />
+        <SEO page={SEO_PAGES.ghg} href={location.href} />
         {!isPageContained && (
           <Header route={route}>
             <div className={cx(layout.content, styles.header)}>

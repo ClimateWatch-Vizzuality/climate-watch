@@ -11,8 +11,8 @@ import EspScenariosProvider from 'providers/esp-scenarios-provider';
 import EspIndicatorsProvider from 'providers/esp-indicators-provider';
 import { renderRoutes } from 'react-router-config';
 
-import { EMISSION_PATHWAYS } from 'data/SEO';
-import { SEO } from 'components/seo';
+import { SEO_PAGES } from 'data/SEO';
+import SEO from 'components/seo';
 
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
 import layout from 'styles/layout.scss';
@@ -24,11 +24,7 @@ class EmissionPathways extends PureComponent {
     const { route, anchorLinks, routeLinks, setActiveSection } = this.props;
     return (
       <div>
-        <SEO
-          descriptionContext={EMISSION_PATHWAYS}
-          subtitle="Pathways"
-          href={location.href}
-        />
+        <SEO page={SEO_PAGES.pathways} href={location.href} />
         <EspModelsProvider />
         <EspScenariosProvider />
         <EspIndicatorsProvider />

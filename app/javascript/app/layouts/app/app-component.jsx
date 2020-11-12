@@ -11,9 +11,6 @@ import NavBarMobile from 'components/navbar-mobile';
 import NavBar from 'components/navbar';
 import Footer from 'components/footer';
 import CookieConsent from 'components/cookie-consent';
-import { HOME_PAGE } from 'data/SEO';
-import { SEO } from 'components/seo';
-
 import styles from './app-styles.scss';
 
 const FEATURE_POP_UP = process.env.FEATURE_POP_UP === 'true';
@@ -29,7 +26,6 @@ class App extends PureComponent {
           navbarMobileIsOpen ? styles.mobileMenuOpen : ''
         )}
       >
-        <SEO descriptionContext={HOME_PAGE} href={location.href} />
         <CountriesProvider />
         <Desktop>
           {isDesktop =>
