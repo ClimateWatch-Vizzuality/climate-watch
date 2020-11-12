@@ -1,3 +1,3 @@
-import { MetaDescription, SocialMetadata } from './seo-component';
+import { SEO } from './seo-component';
 
-export { MetaDescription, SocialMetadata };
+export { SEO };

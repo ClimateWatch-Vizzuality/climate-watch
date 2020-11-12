@@ -6,15 +6,18 @@ import Button from 'components/button';
 import Intro from 'components/intro';
 import { NET_ZERO } from 'data/SEO';
 import { renderToString } from 'react-dom/server';
-import { MetaDescription, SocialMetadata } from 'components/seo';
+import { SEO } from 'components/seo';
 
 import layout from 'styles/layout.scss';
 import styles from './net-zero-styles.scss';
 
 const NetZero = ({ route }) => (
   <div>
-    <MetaDescription descriptionContext={NET_ZERO} subtitle="LTS CONTENT" />
-    <SocialMetadata descriptionContext={NET_ZERO} href={location.href} />
+    <SEO
+      descriptionContext={NET_ZERO}
+      subtitle="LTS CONTENT"
+      href={location.href}
+    />
     <Header route={route}>
       <div className={layout.content}>
         <div className="grid-column-item">
@@ -24,10 +27,20 @@ const NetZero = ({ route }) => (
               description={renderToString(
                 <React.Fragment>
                   <div className={styles.descriptionLine}>
-                  To avoid the worst climate impacts, global greenhouse gas (GHG) emissions must be slashed in half during the next decade and reach net-zero early in the second half of the century. Given this need, a growing number of Parties to the Paris Agreement have adopted net-zero emissions targets. Net-zero targets can be communicated in a country’s Nationally Determined Contribution (NDC), Long-term Low GHG Emissions Development Strategy (LTS), or set in national laws and policies in order to drive Parties’ commitment to climate action.
+                    To avoid the worst climate impacts, global greenhouse gas
+                    (GHG) emissions must be slashed in half during the next
+                    decade and reach net-zero early in the second half of the
+                    century. Given this need, a growing number of Parties to the
+                    Paris Agreement have adopted net-zero emissions targets.
+                    Net-zero targets can be communicated in a country’s
+                    Nationally Determined Contribution (NDC), Long-term Low GHG
+                    Emissions Development Strategy (LTS), or set in national
+                    laws and policies in order to drive Parties’ commitment to
+                    climate action.
                   </div>
                   <div>
-                    Explore net-zero targets that have been formally adopted by countries here. 
+                    Explore net-zero targets that have been formally adopted by
+                    countries here.
                   </div>
                 </React.Fragment>
               )}

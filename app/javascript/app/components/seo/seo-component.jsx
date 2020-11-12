@@ -3,9 +3,9 @@ import { Helmet } from 'react-helmet';
 import PropTypes from 'prop-types';
 import { TITLE } from 'data/SEO';
 
-export const MetaDescription = ({ descriptionContext, subtitle = null }) => (
+export const SEO = ({ descriptionContext, dynamicTitlePart = '', href }) => (
   <Helmet
-    title={subtitle ? `${TITLE} - ${subtitle}` : TITLE}
+    title={`${TITLE} | ${dynamicTitlePart} | Climate Watch Data`}
     meta={[
       {
         name: 'name',
@@ -14,14 +14,7 @@ export const MetaDescription = ({ descriptionContext, subtitle = null }) => (
       {
         name: 'description',
         content: descriptionContext
-      }
-    ]}
-  />
-);
-
-export const SocialMetadata = ({ descriptionContext, href }) => (
-  <Helmet
-    meta={[
+      },
       {
         name: 'twitter:title',
         content: TITLE
@@ -54,12 +47,8 @@ export const SocialMetadata = ({ descriptionContext, href }) => (
   />
 );
 
-SocialMetadata.propTypes = {
+SEO.propTypes = {
   descriptionContext: PropTypes.string,
+  dynamicTitlePart: PropTypes.string,
   href: PropTypes.string
-};
-
-MetaDescription.propTypes = {
-  descriptionContext: PropTypes.string,
-  subtitle: PropTypes.string
 };

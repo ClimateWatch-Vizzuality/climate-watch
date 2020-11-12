@@ -1,5 +1,11 @@
 /* eslint-disable max-len */
-export const TITLE = 'Climate Watch: Data for Climate Action';
+const pages = {
+  HOME_PAGE: 'home'
+};
+export const STATIC_TITLE_PARTS = {
+  [pages.HOME_PAGE]:
+    'Climate Watch - Climate Data for Action - GHG, NDCs, LTS, Net-Zero Data'
+};
 export const HOME_PAGE =
   'Climate Watch is an open online platform designed to empower users with the climate data, visualizations and resources they need to gather insights on national and global progress on climate change, sustainable development, and help advance the goals of the Paris Agreement.';
 export const COUNTRY_PROFILES =

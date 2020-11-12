@@ -4,15 +4,18 @@ import Proptypes from 'prop-types';
 import Header from 'components/header';
 import Intro from 'components/intro';
 import { LTS_EXPLORE } from 'data/SEO';
-import { MetaDescription, SocialMetadata } from 'components/seo';
+import { SEO } from 'components/seo';
 
 import layout from 'styles/layout.scss';
 import styles from './lts-explore-styles.scss';
 
 const LTSExplore = ({ route }) => (
   <div>
-    <MetaDescription descriptionContext={LTS_EXPLORE} subtitle="LTS CONTENT" />
-    <SocialMetadata descriptionContext={LTS_EXPLORE} href={location.href} />
+    <SEO
+      descriptionContext={LTS_EXPLORE}
+      subtitle="LTS CONTENT"
+      href={location.href}
+    />
     <Header route={route}>
       <div className={layout.content}>
         <div className="grid-column-item">

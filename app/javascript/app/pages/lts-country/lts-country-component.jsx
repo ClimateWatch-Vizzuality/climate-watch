@@ -12,7 +12,7 @@ import Sticky from 'react-stickynode';
 import AnchorNav from 'components/anchor-nav';
 import { Dropdown as CWDropdown } from 'cw-components';
 import { LTS_COUNTRY } from 'data/SEO';
-import { MetaDescription, SocialMetadata } from 'components/seo';
+import { SEO } from 'components/seo';
 import { TabletPortrait, MobileOnly } from 'components/responsive';
 import externalLinkIcon from 'assets/icons/external-link.svg';
 
@@ -96,12 +96,9 @@ class LTSCountry extends PureComponent {
 
     return (
       <div>
-        <MetaDescription
+        <SEO
           descriptionContext={LTS_COUNTRY({ countryName })}
           subtitle={countryName}
-        />
-        <SocialMetadata
-          descriptionContext={LTS_COUNTRY({ countryName })}
           href={location.href}
         />
         {country && (

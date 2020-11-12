@@ -14,7 +14,7 @@ import compareNotSubmittedIcon from 'assets/icons/compare-not-submitted.svg';
 import compareIntendsIcon from 'assets/icons/compare-intends.svg';
 import Search from 'components/search';
 import { NCS_COMPARE_ALL } from 'data/SEO';
-import { MetaDescription, SocialMetadata } from 'components/seo';
+import { SEO } from 'components/seo';
 import NdcCompareAllTargetsProvider from 'providers/ndc-compare-all-targets-provider';
 import CountriesDocumentsProvider from 'providers/countries-documents-provider';
 import ModalMetadata from 'components/modal-metadata';
@@ -67,12 +67,9 @@ const NDCCompareAllTargets = props => {
   } = props;
   return (
     <React.Fragment>
-      <MetaDescription
+      <SEO
         descriptionContext={NCS_COMPARE_ALL}
         subtitle="NDCS CONTENT"
-      />
-      <SocialMetadata
-        descriptionContext={NCS_COMPARE_ALL}
         href={location.href}
       />
       <Header route={route}>

@@ -5,19 +5,16 @@ import Intro from 'components/intro';
 import BackButton from 'components/back-button';
 import AutocompleteSearch from 'components/autocomplete-search';
 import { NDC_ENHANCEMENTS } from 'data/SEO';
-import { MetaDescription, SocialMetadata } from 'components/seo';
+import { SEO } from 'components/seo';
 
 import layout from 'styles/layout.scss';
 import styles from './ndcs-enhancements-styles.scss';
 
 const NDCSEnhancements = ({ route }) => (
   <div>
-    <MetaDescription
+    <SEO
       descriptionContext={NDC_ENHANCEMENTS}
       subtitle="NDC ENHANCEMENTS"
-    />
-    <SocialMetadata
-      descriptionContext={NDC_ENHANCEMENTS}
       href={location.href}
     />
     <Header route={route}>

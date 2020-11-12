@@ -12,7 +12,7 @@ import NavBar from 'components/navbar';
 import Footer from 'components/footer';
 import CookieConsent from 'components/cookie-consent';
 import { HOME_PAGE } from 'data/SEO';
-import { MetaDescription, SocialMetadata } from 'components/seo';
+import { SEO } from 'components/seo';
 
 import styles from './app-styles.scss';
 
@@ -29,8 +29,7 @@ class App extends PureComponent {
           navbarMobileIsOpen ? styles.mobileMenuOpen : ''
         )}
       >
-        <MetaDescription descriptionContext={HOME_PAGE} />
-        <SocialMetadata descriptionContext={HOME_PAGE} href={location.href} />
+        <SEO descriptionContext={HOME_PAGE} href={location.href} />
         <CountriesProvider />
         <Desktop>
           {isDesktop =>

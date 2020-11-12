@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Sticky from 'react-stickynode';
 import Waypoint from 'react-waypoint';
 import { COUNTRY_PROFILES } from 'data/SEO';
-import { MetaDescription, SocialMetadata } from 'components/seo';
+import { SEO } from 'components/seo';
 import { isPageContained } from 'utils/navigation';
 import Header from 'components/header';
 import CountryTimeline from 'components/country/country-timeline';
@@ -28,12 +28,9 @@ class Country extends PureComponent {
     const countryName = (country && country.name) || '';
     return (
       <div>
-        <MetaDescription
+        <SEO
           descriptionContext={COUNTRY_PROFILES}
           subtitle={countryName}
-        />
-        <SocialMetadata
-          descriptionContext={COUNTRY_PROFILES}
           href={location.href}
         />
         <SocioeconomicsProvider />
