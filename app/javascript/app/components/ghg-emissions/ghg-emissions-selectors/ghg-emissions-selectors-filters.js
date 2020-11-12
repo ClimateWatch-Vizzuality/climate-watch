@@ -20,7 +20,7 @@ import {
 } from './ghg-emissions-selectors-get';
 
 const DEFAULTS = {
-  breakBy: 'regions',
+  breakBy: 'countries',
   calculation: GHG_CALCULATION_OPTIONS.ABSOLUTE_VALUE.value
 };
 
