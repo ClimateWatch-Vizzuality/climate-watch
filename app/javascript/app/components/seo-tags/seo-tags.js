@@ -1,1 +1,1 @@
-export { default } from './seo-component';
+export { default } from './seo-tags-component';
