@@ -10,7 +10,6 @@ import EspModelsProvider from 'providers/esp-models-provider';
 import EspScenariosProvider from 'providers/esp-scenarios-provider';
 import EspIndicatorsProvider from 'providers/esp-indicators-provider';
 import { renderRoutes } from 'react-router-config';
-
 import { SEO_PAGES } from 'data/SEO';
 import SEOTags from 'components/seo-tags';
 
