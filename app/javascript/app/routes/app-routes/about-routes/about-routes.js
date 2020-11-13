@@ -61,6 +61,22 @@ export default [
     anchor: false
   },
   {
+    path: '/about/faq/lts',
+    component: () =>
+      createElement(AboutFaq, {
+        selectedSectionSlug: 'lts'
+      }),
+    anchor: false
+  },
+  {
+    path: '/about/faq/nz',
+    component: () =>
+      createElement(AboutFaq, {
+        selectedSectionSlug: 'nz'
+      }),
+    anchor: false
+  },
+  {
     path: '/about/faq/ndc_sdg',
     component: () =>
       createElement(AboutFaq, {

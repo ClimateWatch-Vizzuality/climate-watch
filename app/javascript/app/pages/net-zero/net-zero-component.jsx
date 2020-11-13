@@ -24,18 +24,10 @@ const NetZero = ({ route }) => (
               description={renderToString(
                 <React.Fragment>
                   <div className={styles.descriptionLine}>
-                    To avoid the worst climate impacts, global greenhouse gas
-                    (GHG) emissions will not only need to drop by half by 2030,
-                    then reach net-zero around mid-century. Aside from
-                    commitments made through NDCs and LTS, some Parties also
-                    have already set net-zero emission targets. Net-zero targets
-                    can be in a countries’ LTS or set in national laws and
-                    policies and indicate Parties’ commitment to climate action
-                    and may align with commitments under the Paris Agreement.
+                  To avoid the worst climate impacts, global greenhouse gas (GHG) emissions must be slashed in half during the next decade and reach net-zero early in the second half of the century. Given this need, a growing number of Parties to the Paris Agreement have adopted net-zero emissions targets. Net-zero targets can be communicated in a country’s Nationally Determined Contribution (NDC), Long-term Low GHG Emissions Development Strategy (LTS), or set in national laws and policies in order to drive Parties’ commitment to climate action.
                   </div>
                   <div>
-                    Explore net-zero target of countries, states, cities and
-                    companies on the ECIU website:
+                    Explore net-zero targets that have been formally adopted by countries here. 
                   </div>
                 </React.Fragment>
               )}

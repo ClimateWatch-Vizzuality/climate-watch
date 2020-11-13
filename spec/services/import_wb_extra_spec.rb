@@ -37,6 +37,6 @@ RSpec.describe ImportWbExtra do
   end
 
   it 'Creates new wb_extra_country_data records' do
-    expect { subject }.to change { WbExtra::CountryData.count }.by(38)
+    expect { subject }.to change { WbExtra::CountryData.count }.by(61)
   end
 end
