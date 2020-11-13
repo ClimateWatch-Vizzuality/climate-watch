@@ -12,7 +12,7 @@ import Sticky from 'react-stickynode';
 import AnchorNav from 'components/anchor-nav';
 import { Dropdown as CWDropdown } from 'cw-components';
 import { SEO_PAGES } from 'data/SEO';
-import SEO from 'components/seo';
+import SEOTags from 'components/seo-tags';
 import { TabletPortrait, MobileOnly } from 'components/responsive';
 import externalLinkIcon from 'assets/icons/external-link.svg';
 
@@ -96,9 +96,10 @@ class LTSCountry extends PureComponent {
 
     return (
       <div>
-        <SEO
+        <SEOTags
           page={SEO_PAGES.ltsCountry}
-          pageData={{ countryName }}
+          dynamicTitlePart={countryName}
+          countryName={countryName}
           href={location.href}
         />
         {country && (

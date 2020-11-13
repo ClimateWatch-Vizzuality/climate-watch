@@ -1,11 +1,11 @@
 import React, { memo } from 'react';
 import { Helmet } from 'react-helmet';
 import PropTypes from 'prop-types';
+
 import { STATIC_TITLE_PARTS, getDescription } from 'data/SEO';
 
-const SEO = ({ dynamicTitlePart = '', href, page, pageData }) => {
-  const { countryName } = pageData || {};
-  const title = `${dynamicTitlePart ? `${dynamicTitlePart} |` : ''}${
+const SEOTags = ({ dynamicTitlePart = '', href, page, countryName }) => {
+  const title = `${dynamicTitlePart ? `${dynamicTitlePart} | ` : ''}${
     STATIC_TITLE_PARTS[page]
   } | Climate Watch Data`;
   const descriptionContext = getDescription({ page, countryName });
@@ -54,11 +54,11 @@ const SEO = ({ dynamicTitlePart = '', href, page, pageData }) => {
   );
 };
 
-SEO.propTypes = {
+SEOTags.propTypes = {
   dynamicTitlePart: PropTypes.string,
   href: PropTypes.string,
   page: PropTypes.string,
-  pageData: PropTypes.object
+  countryName: PropTypes.string
 };
 
-export default memo(SEO);
+export default memo(SEOTags);

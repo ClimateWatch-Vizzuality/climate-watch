@@ -7,14 +7,14 @@ import AnchorNav from 'components/anchor-nav';
 import { renderRoutes } from 'react-router-config';
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
 import { SEO_PAGES } from 'data/SEO';
-import SEO from 'components/seo';
+import SEOTags from 'components/seo-tags';
 
 import layout from 'styles/layout.scss';
 import styles from './about-styles.scss';
 
 const About = ({ route, anchorLinks, query }) => (
   <div>
-    <SEO page={SEO_PAGES.about} href={location.href} />
+    <SEOTags page={SEO_PAGES.about} href={location.href} />
     <Header route={route}>
       <div className={layout.content}>
         <div className="grid-column-item">

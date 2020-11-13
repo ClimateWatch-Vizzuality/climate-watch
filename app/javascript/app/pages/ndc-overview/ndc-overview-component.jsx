@@ -4,13 +4,13 @@ import layout from 'styles/layout.scss';
 import Header from 'components/header';
 import Intro from 'components/intro';
 import { SEO_PAGES } from 'data/SEO';
-import SEO from 'components/seo';
+import SEOTags from 'components/seo-tags';
 import { renderRoutes } from 'react-router-config';
 import styles from './ndc-overview-styles.scss';
 
 const NdcOverview = ({ route }) => (
   <div>
-    <SEO page={SEO_PAGES.ndcOverview} href={location.href} />
+    <SEOTags page={SEO_PAGES.ndcOverview} href={location.href} />
     <Header route={route}>
       <div className={layout.content}>
         <div className="grid-column-item">

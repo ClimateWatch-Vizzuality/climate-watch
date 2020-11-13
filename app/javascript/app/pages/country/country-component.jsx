@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Sticky from 'react-stickynode';
 import Waypoint from 'react-waypoint';
 import { SEO_PAGES } from 'data/SEO';
-import SEO from 'components/seo';
+import SEOTags from 'components/seo-tags';
 import { isPageContained } from 'utils/navigation';
 import Header from 'components/header';
 import CountryTimeline from 'components/country/country-timeline';
@@ -28,11 +28,14 @@ class Country extends PureComponent {
     const countryName = (country && country.name) || '';
     return (
       <div>
-        <SEO
-          page={SEO_PAGES.country}
-          href={location.href}
-          pageData={{ countryName }}
-        />
+        {countryName && (
+          <SEOTags
+            page={SEO_PAGES.country}
+            dynamicTitlePart={countryName}
+            href={location.href}
+            countryName={countryName}
+          />
+        )}
         <SocioeconomicsProvider />
         <Header route={route}>
           <div className={styles.header}>

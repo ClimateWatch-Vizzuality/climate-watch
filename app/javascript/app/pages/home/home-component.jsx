@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactPlayer from 'react-player';
 import videoThumbnailImage from 'assets/home/videobg@2x';
-import SEO from 'components/seo';
+import SEOTags from 'components/seo-tags';
 import { SEO_PAGES } from 'data/seo';
 
 import IntroSection from './intro-section/intro-section';
@@ -15,7 +15,7 @@ import styles from './home-styles.scss';
 
 const Home = () => (
   <div className={styles.homeBg}>
-    <SEO href={location.href} page={SEO_PAGES.home} />
+    <SEOTags href={location.href} page={SEO_PAGES.home} />
     <IntroSection />
     <div>
       <LatestUpdatesSection />

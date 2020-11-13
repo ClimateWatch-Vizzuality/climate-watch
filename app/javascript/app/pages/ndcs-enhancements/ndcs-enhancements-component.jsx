@@ -5,14 +5,14 @@ import Intro from 'components/intro';
 import BackButton from 'components/back-button';
 import AutocompleteSearch from 'components/autocomplete-search';
 import { SEO_PAGES } from 'data/SEO';
-import SEO from 'components/seo';
+import SEOTags from 'components/seo-tags';
 
 import layout from 'styles/layout.scss';
 import styles from './ndcs-enhancements-styles.scss';
 
 const NDCSEnhancements = ({ route }) => (
   <div>
-    <SEO page={SEO_PAGES.ndc2020} href={location.href} />
+    <SEOTags page={SEO_PAGES.ndc2020} href={location.href} />
     <Header route={route}>
       <div className={layout.content}>
         <div className="grid-column-item">

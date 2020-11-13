@@ -12,7 +12,7 @@ import EspIndicatorsProvider from 'providers/esp-indicators-provider';
 import { renderRoutes } from 'react-router-config';
 
 import { SEO_PAGES } from 'data/SEO';
-import SEO from 'components/seo';
+import SEOTags from 'components/seo-tags';
 
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
 import layout from 'styles/layout.scss';
@@ -24,7 +24,7 @@ class EmissionPathways extends PureComponent {
     const { route, anchorLinks, routeLinks, setActiveSection } = this.props;
     return (
       <div>
-        <SEO page={SEO_PAGES.pathways} href={location.href} />
+        <SEOTags page={SEO_PAGES.pathways} href={location.href} />
         <EspModelsProvider />
         <EspScenariosProvider />
         <EspIndicatorsProvider />

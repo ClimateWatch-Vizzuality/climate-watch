@@ -4,14 +4,14 @@ import Proptypes from 'prop-types';
 import Header from 'components/header';
 import Intro from 'components/intro';
 import { SEO_PAGES } from 'data/SEO';
-import SEO from 'components/seo';
+import SEOTags from 'components/seo-tags';
 
 import layout from 'styles/layout.scss';
 import styles from './lts-explore-styles.scss';
 
 const LTSExplore = ({ route }) => (
   <div>
-    <SEO page={SEO_PAGES.ltsExplore} href={location.href} />
+    <SEOTags page={SEO_PAGES.ltsExplore} href={location.href} />
     <Header route={route}>
       <div className={layout.content}>
         <div className="grid-column-item">

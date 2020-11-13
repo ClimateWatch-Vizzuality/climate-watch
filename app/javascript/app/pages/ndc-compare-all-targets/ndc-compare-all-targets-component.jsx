@@ -14,7 +14,7 @@ import compareNotSubmittedIcon from 'assets/icons/compare-not-submitted.svg';
 import compareIntendsIcon from 'assets/icons/compare-intends.svg';
 import Search from 'components/search';
 import { SEO_PAGES } from 'data/SEO';
-import SEO from 'components/seo';
+import SEOTags from 'components/seo-tags';
 import NdcCompareAllTargetsProvider from 'providers/ndc-compare-all-targets-provider';
 import CountriesDocumentsProvider from 'providers/countries-documents-provider';
 import ModalMetadata from 'components/modal-metadata';
@@ -67,7 +67,7 @@ const NDCCompareAllTargets = props => {
   } = props;
   return (
     <React.Fragment>
-      <SEO page={SEO_PAGES.compareAll} href={location.href} />
+      <SEOTags page={SEO_PAGES.ndcCompareAll} href={location.href} />
       <Header route={route}>
         <div className={cx(layout.content, styles.header)}>
           <div className={styles.title}>
