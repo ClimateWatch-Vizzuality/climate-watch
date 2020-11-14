@@ -5,13 +5,14 @@ import Dropdown from 'components/dropdown';
 import MultiSelect from 'components/multiselect';
 import KeyVisualizationsProvider from 'providers/key-visualizations-provider/key-visualizations-provider';
 import { isPageContained } from 'utils/navigation';
+import KeyVisualizationCard from './key-visualization-card/key-visualization-card';
 
 import styles from './key-visualizations-table-styles.scss';
 
 class KeyVisualizationsTable extends PureComponent {
   render() {
     const {
-      // data,
+      data,
       options,
       handleTagsChange,
       handleTopicChange,
@@ -31,7 +32,7 @@ class KeyVisualizationsTable extends PureComponent {
           <KeyVisualizationsProvider />
           {!isPageContained && <h2 className={styles.title}>Data Library</h2>}
         </div>
-        <div className={cx(styles.col4)}>
+        <div className={styles.col4}>
           <MultiSelect
             label="Tags"
             options={options.tags || []}
@@ -53,13 +54,20 @@ class KeyVisualizationsTable extends PureComponent {
             hideResetButton
           />
         </div>
+        <div className="grid-column-item">
+          <div className={styles.cards}>
+            {data.map(item => (
+              <KeyVisualizationCard visualization={item} />
+            ))}
+          </div>
+        </div>
       </div>
     );
   }
 }
 
 KeyVisualizationsTable.propTypes = {
-  // data: PropTypes.array,
+  data: PropTypes.array,
   options: PropTypes.object,
   tagsSelected: PropTypes.array,
   topicSelected: PropTypes.object,

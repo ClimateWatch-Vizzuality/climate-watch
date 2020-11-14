@@ -54,3 +54,16 @@
     align-items: flex-end;
   }
 }
+
+.cards {
+  display: grid;
+  grid-template-columns: 1fr;
+
+  @media #{$tablet-portrait} {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @media #{$tablet-landscape} {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
