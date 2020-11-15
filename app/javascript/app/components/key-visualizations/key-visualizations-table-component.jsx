@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import cx from 'classnames';
 import Dropdown from 'components/dropdown';
 import MultiSelect from 'components/multiselect';
+import { intersectionBy } from 'lodash';
 import KeyVisualizationsProvider from 'providers/key-visualizations-provider/key-visualizations-provider';
 import { isPageContained } from 'utils/navigation';
 import KeyVisualizationCard from './key-visualization-card/key-visualization-card-component';
@@ -11,8 +12,29 @@ import styles from './key-visualizations-table-styles.scss';
 
 class KeyVisualizationsTable extends PureComponent {
   filteredVisualizations() {
-    const { data, topicSelected } = this.props;
+    const {
+      data,
+      tagsSelected,
+      geographiesSelected,
+      topicSelected
+    } = this.props;
     let filtered = data;
+
+    filtered = filtered.filter(item => {
+      const includedTags = intersectionBy(
+        tagsSelected,
+        item.tags,
+        t => t.value
+      );
+
+      const includedGeos = intersectionBy(
+        geographiesSelected,
+        item.geographies,
+        g => g.value
+      );
+
+      return includedTags.length > 0 && includedGeos.length > 0;
+    });
 
     if (topicSelected) {
       filtered = filtered.filter(
