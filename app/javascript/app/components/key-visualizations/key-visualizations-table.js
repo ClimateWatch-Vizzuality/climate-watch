@@ -13,7 +13,7 @@ import {
   getTopicOptions,
   getTagsSelected,
   getTopicSelected,
-  getGeographySelected
+  getGeographiesSelected
 } from './key-visualizations-table-selectors';
 
 const mapStateToProps = (state, { location }) => {
@@ -34,7 +34,7 @@ const mapStateToProps = (state, { location }) => {
     options,
     tagsSelected: getTagsSelected(kvt),
     topicSelected: getTopicSelected(kvt),
-    geographySelected: getGeographySelected(kvt)
+    geographiesSelected: getGeographiesSelected(kvt)
   };
 };
 
@@ -53,17 +53,25 @@ class KeyVisualizationsTableContainer extends PureComponent {
   };
 
   handleTopicChange = topic => {
-    this.updateUrlParam({ name: 'topic', value: topic.value }, false);
-    handleAnalytics('Key visualizations', 'Topic selected', topic.label);
+    const value = topic ? topic.value : null;
+    this.updateUrlParam({ name: 'topic', value }, false);
+
+    if (value) {
+      handleAnalytics('Key visualizations', 'Topic selected', topic.label);
+    }
   };
 
-  handleGeographyChange = geography => {
-    this.updateUrlParam({ name: 'geography', value: geography.value }, false);
-    handleAnalytics(
-      'Key visualizations',
-      'Geography selected',
-      geography.label
-    );
+  handleGeographiesChange = geographies => {
+    const geoValues = geographies.map(g => g.value);
+    this.updateUrlParam({ name: 'geographies', value: geoValues.toString() });
+
+    if (geographies.length > 0) {
+      handleAnalytics(
+        'Key visualizations',
+        'Geography selected',
+        geoValues.toString()
+      );
+    }
   };
 
   updateUrlParam(params, clear) {
@@ -76,7 +84,7 @@ class KeyVisualizationsTableContainer extends PureComponent {
       ...this.props,
       handleTagsChange: this.handleTagsChange,
       handleTopicChange: this.handleTopicChange,
-      handleGeographyChange: this.handleGeographyChange
+      handleGeographiesChange: this.handleGeographiesChange
     });
   }
 }

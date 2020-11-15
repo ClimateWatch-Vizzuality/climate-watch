@@ -5,7 +5,8 @@ const getData = kvt => kvt.state.keyVisualizations.data;
 const getTagsSelection = kvt =>
   (kvt.search.tags && kvt.search.tags.split(',')) || null;
 const getTopicSelection = kvt => kvt.search.topic || null;
-const getGeographySelection = kvt => kvt.search.geography || null;
+const getGeographiesSelection = kvt =>
+  (kvt.search.geographies && kvt.search.geographies.split(',')) || null;
 
 export const dropdownOption = label => ({
   label,
@@ -53,8 +54,7 @@ export const getTagsSelected = createSelector(
 export const getTopicSelected = createSelector(
   [getTopicOptions, getTopicSelection],
   (topics, selected) => {
-    if (!topics) return null;
-    if (!selected) return topics[0];
+    if (!topics || !selected) return null;
     return topics.find(topic => topic.value === selected);
   }
 );
@@ -67,11 +67,11 @@ export const getGeographyOptions = createSelector(getData, data => {
   );
 });
 
-export const getGeographySelected = createSelector(
-  [getGeographyOptions, getGeographySelection],
+export const getGeographiesSelected = createSelector(
+  [getGeographyOptions, getGeographiesSelection],
   (geos, selected) => {
     if (!geos) return null;
-    if (!selected) return geos[0];
-    return geos.find(geo => geo.value === selected);
+    if (!selected) return geos;
+    return geos.filter(g => selected.indexOf(g.value) !== -1);
   }
 );

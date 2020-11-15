@@ -11,9 +11,16 @@ import styles from './key-visualizations-table-styles.scss';
 
 class KeyVisualizationsTable extends PureComponent {
   filteredVisualizations() {
-    const { data } = this.props;
+    const { data, topicSelected } = this.props;
+    let filtered = data;
 
-    return data.map(item => (
+    if (topicSelected) {
+      filtered = filtered.filter(
+        item => item.topic.value === topicSelected.value
+      );
+    }
+
+    return filtered.map(item => (
       <KeyVisualizationCard key={`kvc${item.id}`} visualization={item} />
     ));
   }
@@ -23,10 +30,10 @@ class KeyVisualizationsTable extends PureComponent {
       options,
       handleTagsChange,
       handleTopicChange,
-      handleGeographyChange,
+      handleGeographiesChange,
       tagsSelected,
       topicSelected,
-      geographySelected
+      geographiesSelected
     } = this.props;
 
     return (
@@ -46,19 +53,18 @@ class KeyVisualizationsTable extends PureComponent {
             values={tagsSelected || []}
             onMultiValueChange={handleTagsChange}
           />
+          <MultiSelect
+            label="Geographies"
+            options={options.geographies || []}
+            values={geographiesSelected || []}
+            onMultiValueChange={handleGeographiesChange}
+          />
           <Dropdown
             label="Topic"
             options={options.topics}
+            placeholder="Select a topic"
             onValueChange={handleTopicChange}
             value={topicSelected}
-            hideResetButton
-          />
-          <Dropdown
-            label="Geography"
-            options={options.geographies}
-            onValueChange={handleGeographyChange}
-            value={geographySelected}
-            hideResetButton
           />
         </div>
         <div className="grid-column-item">
@@ -73,11 +79,11 @@ KeyVisualizationsTable.propTypes = {
   data: PropTypes.array,
   options: PropTypes.object,
   tagsSelected: PropTypes.array,
+  geographiesSelected: PropTypes.array,
   topicSelected: PropTypes.object,
-  geographySelected: PropTypes.object,
   handleTagsChange: PropTypes.func.isRequired,
   handleTopicChange: PropTypes.func.isRequired,
-  handleGeographyChange: PropTypes.func.isRequired
+  handleGeographiesChange: PropTypes.func.isRequired
 };
 
 export default KeyVisualizationsTable;
