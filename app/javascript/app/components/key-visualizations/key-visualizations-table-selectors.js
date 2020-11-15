@@ -7,6 +7,7 @@ const getTagsSelection = kvt =>
 const getTopicSelection = kvt => kvt.search.topic || null;
 const getGeographiesSelection = kvt =>
   (kvt.search.geographies && kvt.search.geographies.split(',')) || null;
+const getVisualizationSelection = kvt => kvt.search.visualization || null;
 
 export const dropdownOption = label => ({
   label,
@@ -73,5 +74,16 @@ export const getGeographiesSelected = createSelector(
     if (!geos) return null;
     if (!selected) return geos;
     return geos.filter(g => selected.indexOf(g.value) !== -1);
+  }
+);
+
+export const getVisualizationSelected = createSelector(
+  [getFormattedKeyVisualizations, getVisualizationSelection],
+  (visualizations, selected) => {
+    if (!visualizations) return null;
+    if (!selected) return null;
+    return visualizations.find(
+      visualization => visualization.id === parseInt(selected, 10)
+    );
   }
 );

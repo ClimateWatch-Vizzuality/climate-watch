@@ -16,7 +16,9 @@ class KeyVisualizationsTable extends PureComponent {
       data,
       tagsSelected,
       geographiesSelected,
-      topicSelected
+      topicSelected,
+      onCardClick,
+      visualizationSelected
     } = this.props;
     let filtered = data;
 
@@ -43,7 +45,12 @@ class KeyVisualizationsTable extends PureComponent {
     }
 
     return filtered.map(item => (
-      <KeyVisualizationCard key={`kvc${item.id}`} visualization={item} />
+      <KeyVisualizationCard
+        key={`kvc${item.id}`}
+        visualization={item}
+        selected={visualizationSelected}
+        onCardClick={onCardClick}
+      />
     ));
   }
 
@@ -103,9 +110,11 @@ KeyVisualizationsTable.propTypes = {
   tagsSelected: PropTypes.array,
   geographiesSelected: PropTypes.array,
   topicSelected: PropTypes.object,
+  visualizationSelected: PropTypes.object,
   handleTagsChange: PropTypes.func.isRequired,
   handleTopicChange: PropTypes.func.isRequired,
-  handleGeographiesChange: PropTypes.func.isRequired
+  handleGeographiesChange: PropTypes.func.isRequired,
+  onCardClick: PropTypes.func.isRequired
 };
 
 export default KeyVisualizationsTable;

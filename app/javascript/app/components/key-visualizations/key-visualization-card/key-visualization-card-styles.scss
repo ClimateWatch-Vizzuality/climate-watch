@@ -8,6 +8,21 @@
   flex-direction: column;
   overflow: hidden;
   margin: 15px;
+  cursor: pointer;
+}
+
+.cardSelected {
+  .cardPreview {
+    background: $chart-color-6;
+
+    * {
+      display: none;
+    }
+  }
+
+  .cardInfo {
+    background: $chart-color-6;
+  }
 }
 
 .cardPreview {
