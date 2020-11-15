@@ -11,13 +11,28 @@
   cursor: pointer;
 }
 
+.cardCheck {
+  display: none;
+  background: $chart-color-6;
+
+  svg {
+    width: 85px;
+    height: 85px;
+    fill: $white;
+  }
+}
+
 .cardSelected {
   .cardPreview {
-    background: $chart-color-6;
+    display: none;
+  }
 
-    * {
-      display: none;
-    }
+  .cardCheck {
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: $chart-color-6;
   }
 
   .cardInfo {

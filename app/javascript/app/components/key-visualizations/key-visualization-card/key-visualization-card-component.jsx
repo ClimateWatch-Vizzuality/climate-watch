@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
+import Icon from 'components/icon';
+import checkIcon from 'assets/icons/check.svg';
 import styles from './key-visualization-card-styles.scss';
 
 class KeyVisualizationCard extends PureComponent {
@@ -18,6 +20,9 @@ class KeyVisualizationCard extends PureComponent {
         onClick={() => onCardClick(visualization, currentSelected)}
       >
         <div className={styles.cardPreview}>&nbsp;</div>
+        <div className={styles.cardCheck}>
+          <Icon icon={checkIcon} />
+        </div>
         <div className={styles.cardInfo}>
           <div className={styles.cardInfoDate}>March 2019</div>
           <div className={styles.cardInfoTitle}>{visualization.title}</div>
