@@ -59,6 +59,7 @@
 .cards {
   display: grid;
   grid-template-columns: 1fr;
+  margin: 0 -15px;
 
   @media #{$tablet-portrait} {
     grid-template-columns: 1fr 1fr;
