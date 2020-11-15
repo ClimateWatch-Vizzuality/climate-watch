@@ -5,14 +5,21 @@ import Dropdown from 'components/dropdown';
 import MultiSelect from 'components/multiselect';
 import KeyVisualizationsProvider from 'providers/key-visualizations-provider/key-visualizations-provider';
 import { isPageContained } from 'utils/navigation';
-import KeyVisualizationCard from './key-visualization-card/key-visualization-card';
+import KeyVisualizationCard from './key-visualization-card/key-visualization-card-component';
 
 import styles from './key-visualizations-table-styles.scss';
 
 class KeyVisualizationsTable extends PureComponent {
+  filteredVisualizations() {
+    const { data } = this.props;
+
+    return data.map(item => (
+      <KeyVisualizationCard key={`kvc${item.id}`} visualization={item} />
+    ));
+  }
+
   render() {
     const {
-      data,
       options,
       handleTagsChange,
       handleTopicChange,
@@ -55,11 +62,7 @@ class KeyVisualizationsTable extends PureComponent {
           />
         </div>
         <div className="grid-column-item">
-          <div className={styles.cards}>
-            {data.map(item => (
-              <KeyVisualizationCard visualization={item} />
-            ))}
-          </div>
+          <div className={styles.cards}>{this.filteredVisualizations()}</div>
         </div>
       </div>
     );

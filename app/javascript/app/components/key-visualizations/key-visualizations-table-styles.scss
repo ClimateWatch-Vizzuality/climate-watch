@@ -51,6 +51,7 @@
 
   @media #{$tablet-landscape} {
     @include columns((2.1, 2.1, 2.1, 2.1, 2.1, 1.4));
+
     align-items: flex-end;
   }
 }
