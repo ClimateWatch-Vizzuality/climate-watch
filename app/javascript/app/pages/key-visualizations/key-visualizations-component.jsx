@@ -19,7 +19,7 @@ class KeyVisualizations extends PureComponent {
       <div>
         <MetaDescription
           descriptionContext={KEY_VISUALIZATIONS}
-          subtitle="KEY VISUALIZATIONS"
+          subtitle="Key Visualizations"
         />
         <SocialMetadata
           descriptionContext={KEY_VISUALIZATIONS}
