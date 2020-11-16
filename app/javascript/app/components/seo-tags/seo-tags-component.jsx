@@ -5,6 +5,9 @@ import PropTypes from 'prop-types';
 import { STATIC_TITLE_PARTS, getDescription } from 'data/SEO';
 
 const SEOTags = ({ dynamicTitlePart = '', href, page, countryName }) => {
+  if (!STATIC_TITLE_PARTS[page]) {
+    console.warn('Missing page SEO title. Check SEO.js');
+  }
   const title = `${dynamicTitlePart ? `${dynamicTitlePart} | ` : ''}${
     STATIC_TITLE_PARTS[page]
   } | Climate Watch Data`;

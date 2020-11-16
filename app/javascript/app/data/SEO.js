@@ -17,7 +17,13 @@ export const SEO_PAGES = {
   ndcSdg: 'ndcSdg',
   ghg: 'ghg',
   pathways: 'pathways',
-  about: 'about'
+  about: 'about',
+  aboutPartners: 'aboutPartners',
+  aboutPermissions: 'aboutPermissions',
+  aboutContact: 'aboutContact',
+  aboutFAQ: 'aboutFAQ',
+  myCW: 'myCW',
+  dataExplorer: 'dataExplorer'
 };
 
 export const STATIC_TITLE_PARTS = {
@@ -40,7 +46,13 @@ export const STATIC_TITLE_PARTS = {
   [SEO_PAGES.ndcCustomCompare]: 'Compare climate targets',
   [SEO_PAGES.ghg]: 'Greenhouse Gas (GHG) Emissions',
   [SEO_PAGES.pathways]: 'Emissions Scenario Pathways',
-  [SEO_PAGES.about]: 'About'
+  [SEO_PAGES.about]: 'About',
+  [SEO_PAGES.aboutPartners]: 'Climate Watch Partners',
+  [SEO_PAGES.aboutContact]: 'Sign Up for Updates',
+  [SEO_PAGES.aboutPermissions]: 'Permissions & Licensing',
+  [SEO_PAGES.aboutFAQ]: 'Frequently Asked Questions',
+  [SEO_PAGES.myCW]: 'My Climate Watch',
+  [SEO_PAGES.dataExplorer]: 'Data Explorer'
 };
 
 export const getDescription = ({ page, countryName = '' }) => {
@@ -50,27 +62,27 @@ export const getDescription = ({ page, countryName = '' }) => {
     [SEO_PAGES.ndc2020]:
       'Climate Watch is an open online platform designed to empower users with the climate data, visualizations and resources they need to gather insights on national and global progress on climate change, sustainable development, and help advance the goals of the Paris Agreement.',
     [SEO_PAGES.sector]:
-      'Climate Watch is an open online platform designed to empower users with the climate data, visualizations and resources they need to gather insights on national and global progress on climate change, sustainable development, and help advance the goals of the Paris Agreement.',
+      'Explore sectoral profiles, global and by country, for historical and projected emissions, overview of sectoral measures included in Nationally Determined Contributions (NDC), and more',
     [SEO_PAGES.country]:
       "Snapshots of countries' climate progress, including historical and projected emissions, their Nationally Determined Contribution (NDC), risks and vulnerability to climate change, and linkages between NDCs and the Sustainable Development Goals (SDGs).",
     [SEO_PAGES.ndcContent]:
       'Analyze and compare every national climate pledge (Nationally Determined Contribution – or NDC) under the Paris Agreement, with the ability to search key words and see summaries by topic across all.',
     [SEO_PAGES.ndcOverview]:
-      'Analyze and compare every national climate pledge (Nationally Determined Contribution – or NDC) under the Paris Agreement, with the ability to search key words and see summaries by topic across all.',
+      'Analyze and compare Nationally Determined Contribution (NDC) and Long-Term Strategies (LTS) submitted by country under the Paris Agreement.',
     [SEO_PAGES.ndcCompareAll]:
-      'Analyze and compare every national climate pledge (Nationally Determined Contribution – or NDC) under the Paris Agreement, with the ability to search key words and see summaries by topic across all.',
+      'Compare current and past submissions, by country, of climate commitments (Nationally Determined Contribution – or NDC) under the Paris Agreement. Analyze target alignments between NDCs, LTSs, and national laws and policies.',
     [SEO_PAGES.ndcsExplore]:
-      'Analyze and compare every national climate pledge (Nationally Determined Contribution – or NDC) under the Paris Agreement, with the ability to search key words and see summaries by topic across all.',
+      'Explore the data to track which countries have signaled they will update or enhance their national climate commitments (NDCs) by 2020.',
     [SEO_PAGES.ltsExplore]:
-      'Analyze and compare every national climate pledge (Nationally Determined Contribution – or NDC) under the Paris Agreement, with the ability to search key words and see summaries by topic across all.',
+      'Explore which countries have submitted long-term strategies (LTS) and click on a country to see more in-depth analysis of each long-term strategy.',
     [SEO_PAGES.netZero]:
-      'Analyze and compare every national climate pledge (Nationally Determined Contribution – or NDC) under the Paris Agreement, with the ability to search key words and see summaries by topic across all.',
-    [SEO_PAGES.ndcLts]:
-      'Analyze and compare every national climate pledge (Nationally Determined Contribution – or NDC) under the Paris Agreement, with the ability to search key words and see summaries by topic across all.',
+      'Explore which countries have submitted Net-zero document and click on a country to see more in-depth analysis of each Net Zero document.',
     [SEO_PAGES.ndcCountry]: `Explore the Commitments (NDCs) made by ${countryName} to act on climate change, as part of the Paris Agreement`,
+    [SEO_PAGES.ndcSearch]:
+      'Search keywords across all national climate commitments, Nationally Determined Contribution (NDC), under the Paris Agreement.',
     [SEO_PAGES.ltsCountry]: `Explore the Long-term strategies (LTSs) made by ${countryName} to act on climate change`,
     [SEO_PAGES.ndcSdg]:
-      'Comprehensive mapping of linkages between Nationally Determined Contributions (NDCs) and the Sustainable Development Goals (SDGs) and associated targets of the 2030 Agenda for Sustainable Development.',
+      'Mapping of linkages between Nationally Determined Contributions (NDCs) and the Sustainable Development Goals (SDGs) and associated targets of the 2030 Agenda for Sustainable Development.',
     [SEO_PAGES.ghg]:
       'Analyze and visualize latest available international greenhouse gas emissions data. Climate Watch lets you explore global emissions by sector, gases, countries, or regions.',
     [SEO_PAGES.pathways]:
