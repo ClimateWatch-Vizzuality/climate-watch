@@ -63,14 +63,18 @@ class KeyVisualizationPreview extends PureComponent {
   }
 
   render() {
-    const { visualization } = this.props;
+    const { visualization, row } = this.props;
 
     if (!visualization) {
       return '';
     }
 
+    const containerStyle = {
+      gridRowStart: row
+    };
+
     return (
-      <div className={styles.previewContainer}>
+      <div className={styles.previewContainer} style={containerStyle}>
         <div className={styles.previewHeader}>
           <h1>{visualization.title}</h1>
         </div>
@@ -83,7 +87,8 @@ class KeyVisualizationPreview extends PureComponent {
 }
 
 KeyVisualizationPreview.propTypes = {
-  visualization: PropTypes.object
+  visualization: PropTypes.object,
+  row: PropTypes.number
 };
 
 export default KeyVisualizationPreview;

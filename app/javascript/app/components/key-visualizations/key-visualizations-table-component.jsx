@@ -3,24 +3,24 @@ import PropTypes from 'prop-types';
 import cx from 'classnames';
 import Dropdown from 'components/dropdown';
 import MultiSelect from 'components/multiselect';
-import { intersectionBy } from 'lodash';
+import { intersectionBy, findIndex } from 'lodash';
 import KeyVisualizationsProvider from 'providers/key-visualizations-provider/key-visualizations-provider';
 import { isPageContained } from 'utils/navigation';
+import { getGridElementPosition } from 'app/utils';
 import KeyVisualizationCard from './key-visualization-card/key-visualization-card-component';
 
 import styles from './key-visualizations-table-styles.scss';
 import KeyVisualizationPreview from './key-visualization-preview/key-visualization-preview-component';
 
 class KeyVisualizationsTable extends PureComponent {
-  filteredVisualizations() {
+  filteredData() {
     const {
       data,
       tagsSelected,
       geographiesSelected,
-      topicSelected,
-      onCardClick,
-      visualizationSelected
+      topicSelected
     } = this.props;
+
     let filtered = data;
 
     filtered = filtered.filter(item => {
@@ -45,7 +45,13 @@ class KeyVisualizationsTable extends PureComponent {
       );
     }
 
-    return filtered.map(item => (
+    return filtered;
+  }
+
+  filteredVisualizations() {
+    const { onCardClick, visualizationSelected } = this.props;
+
+    return this.filteredData().map(item => (
       <KeyVisualizationCard
         key={`kvc${item.id}`}
         visualization={item}
@@ -53,6 +59,23 @@ class KeyVisualizationsTable extends PureComponent {
         onCardClick={onCardClick}
       />
     ));
+  }
+
+  previewRowPosition() {
+    const { visualizationSelected } = this.props;
+
+    if (!visualizationSelected) {
+      return 1;
+    }
+
+    const gridEl = document.getElementById('visualization-cards');
+    const selectedIndex = findIndex(
+      this.filteredData(),
+      item => item.id === visualizationSelected.id
+    );
+
+    const position = getGridElementPosition(gridEl, selectedIndex);
+    return position ? position.row + 1 : 1;
   }
 
   render() {
@@ -99,8 +122,11 @@ class KeyVisualizationsTable extends PureComponent {
           />
         </div>
         <div className="grid-column-item">
-          <div className={styles.cards}>
-            <KeyVisualizationPreview visualization={visualizationSelected} />
+          <div className={styles.cards} id="visualization-cards">
+            <KeyVisualizationPreview
+              visualization={visualizationSelected}
+              row={this.previewRowPosition()}
+            />
             {this.filteredVisualizations()}
           </div>
         </div>
