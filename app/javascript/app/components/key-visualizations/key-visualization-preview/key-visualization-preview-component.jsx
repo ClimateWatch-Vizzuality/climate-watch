@@ -28,6 +28,40 @@ class KeyVisualizationPreview extends PureComponent {
     );
   }
 
+  renderLink() {
+    const { visualization } = this.props;
+    if (!visualization.blog_link) {
+      return '';
+    }
+
+    const hostname = new URL(visualization.blog_link).hostname;
+    return (
+      <div className={styles.previewLink}>
+        <a
+          href={visualization.blog_link}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {hostname}
+        </a>
+      </div>
+    );
+  }
+
+  renderDescription() {
+    const { visualization } = this.props;
+    if (!visualization.description) {
+      return '';
+    }
+
+    return (
+      <div
+        className={styles.previewDescription}
+        dangerouslySetInnerHTML={{ __html: visualization.description }} // eslint-disable-line
+      />
+    );
+  }
+
   render() {
     const { visualization } = this.props;
 
@@ -41,6 +75,8 @@ class KeyVisualizationPreview extends PureComponent {
           <h1>{visualization.title}</h1>
         </div>
         {this.renderContent()}
+        {this.renderLink()}
+        {this.renderDescription()}
       </div>
     );
   }
