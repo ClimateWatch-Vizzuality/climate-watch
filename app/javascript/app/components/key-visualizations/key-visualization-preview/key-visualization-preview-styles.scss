@@ -1,2 +1,22 @@
 @import '~styles/layout.scss';
 @import '~styles/ui-extends.scss';
+
+.previewContainer {
+  grid-column: 1 / 4;
+  margin: 20px 15px;
+}
+
+.previewHeader {
+  display: flex;
+  justify-content: space-between;
+
+  h1 {
+    font-weight: 400;
+  }
+}
+
+.previewContent {
+  display: flex;
+  margin: 30px 0;
+  justify-content: center;
+}

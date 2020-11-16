@@ -9,6 +9,7 @@ import { isPageContained } from 'utils/navigation';
 import KeyVisualizationCard from './key-visualization-card/key-visualization-card-component';
 
 import styles from './key-visualizations-table-styles.scss';
+import KeyVisualizationPreview from './key-visualization-preview/key-visualization-preview-component';
 
 class KeyVisualizationsTable extends PureComponent {
   filteredVisualizations() {
@@ -62,7 +63,8 @@ class KeyVisualizationsTable extends PureComponent {
       handleGeographiesChange,
       tagsSelected,
       topicSelected,
-      geographiesSelected
+      geographiesSelected,
+      visualizationSelected
     } = this.props;
 
     return (
@@ -97,7 +99,10 @@ class KeyVisualizationsTable extends PureComponent {
           />
         </div>
         <div className="grid-column-item">
-          <div className={styles.cards}>{this.filteredVisualizations()}</div>
+          <div className={styles.cards}>
+            <KeyVisualizationPreview visualization={visualizationSelected} />
+            {this.filteredVisualizations()}
+          </div>
         </div>
       </div>
     );
