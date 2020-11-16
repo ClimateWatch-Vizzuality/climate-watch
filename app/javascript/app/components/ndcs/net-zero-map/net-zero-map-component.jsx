@@ -18,6 +18,8 @@ import ModalShare from 'components/modal-share';
 import Sticky from 'react-stickynode';
 import cx from 'classnames';
 import { getHoverIndex } from 'components/ndcs/shared/utils';
+import { SEO_PAGES } from 'data/SEO';
+import SEOTags from 'components/seo-tags';
 
 import layout from 'styles/layout.scss';
 import newMapTheme from 'styles/themes/map/map-new-zoom-controls.scss';
@@ -140,6 +142,13 @@ function NetZeroMap(props) {
 
   return (
     <div>
+      {selectedIndicator && (
+        <SEOTags
+          dynamicTitlePart={selectedIndicator.label}
+          page={SEO_PAGES.netZero}
+          href={location.href}
+        />
+      )}
       <TabletLandscape>
         {isTablet => (
           <div className={styles.wrapper}>

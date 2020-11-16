@@ -8,8 +8,8 @@ import Header from 'components/header';
 import Intro from 'components/intro';
 import AutocompleteSearch from 'components/autocomplete-search';
 import NdcSdgLinkagesContent from 'components/ndc-sdg/ndc-sdg-linkages-content';
-import { NDC_SDG_LINKAGES } from 'data/SEO';
-import { MetaDescription, SocialMetadata } from 'components/seo';
+import { SEO_PAGES } from 'data/SEO';
+import SEOTags from 'components/seo-tags';
 import { isPageContained } from 'utils/navigation';
 
 import styles from './ndc-sdg-styles';
@@ -20,14 +20,7 @@ class NdcSdg extends PureComponent {
     const { route, location, isOpen } = this.props;
     return (
       <div className={cx(styles.bg, { [styles.bgOpen]: isOpen })}>
-        <MetaDescription
-          descriptionContext={NDC_SDG_LINKAGES}
-          subtitle="NDC-SDG Linkages"
-        />
-        <SocialMetadata
-          descriptionContext={NDC_SDG_LINKAGES}
-          href={location.href}
-        />
+        <SEOTags page={SEO_PAGES.ndcSdg} href={location.href} />
         <NdcsSdgsMetaProvider />
         {!isPageContained && (
           <Header

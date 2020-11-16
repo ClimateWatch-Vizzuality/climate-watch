@@ -29,10 +29,10 @@ const Intro = props => {
   return (
     <div className={cx(styles.wrapper, className)}>
       <div className={cx(theme.main, { [styles.withButton]: !!actionButton })}>
-        <h2 className={theme.title}>
+        <h1 className={theme.title}>
           {title}
           {subtitle && <span className={theme.subtitle}>{subtitle}</span>}
-        </h2>
+        </h1>
         <TabletLandscape> {actionButton} </TabletLandscape>
       </div>
       {description && (

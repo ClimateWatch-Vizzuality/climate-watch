@@ -3,16 +3,15 @@ import React from 'react';
 import Proptypes from 'prop-types';
 import Header from 'components/header';
 import Intro from 'components/intro';
-import { LTS_EXPLORE } from 'data/SEO';
-import { MetaDescription, SocialMetadata } from 'components/seo';
+import { SEO_PAGES } from 'data/SEO';
+import SEOTags from 'components/seo-tags';
 
 import layout from 'styles/layout.scss';
 import styles from './lts-explore-styles.scss';
 
 const LTSExplore = ({ route }) => (
   <div>
-    <MetaDescription descriptionContext={LTS_EXPLORE} subtitle="LTS CONTENT" />
-    <SocialMetadata descriptionContext={LTS_EXPLORE} href={location.href} />
+    <SEOTags page={SEO_PAGES.ltsExplore} href={location.href} />
     <Header route={route}>
       <div className={layout.content}>
         <div className="grid-column-item">

@@ -19,6 +19,8 @@ import Sticky from 'react-stickynode';
 import cx from 'classnames';
 import ModalShare from 'components/modal-share';
 import NDCSProvider from 'providers/ndcs-provider';
+import { SEO_PAGES } from 'data/SEO';
+import SEOTags from 'components/seo-tags';
 
 import newMapTheme from 'styles/themes/map/map-new-zoom-controls.scss';
 import layout from 'styles/layout.scss';
@@ -139,6 +141,13 @@ function NDCSExploreMap(props) {
   const TOOLTIP_ID = 'ndcs-map-tooltip';
   return (
     <div>
+      {selectedIndicator && (
+        <SEOTags
+          dynamicTitlePart={selectedIndicator.label}
+          page={SEO_PAGES.ndcsExplore}
+          href={location.href}
+        />
+      )}
       <TabletLandscape>
         {isTablet => (
           <div className={styles.wrapper}>
