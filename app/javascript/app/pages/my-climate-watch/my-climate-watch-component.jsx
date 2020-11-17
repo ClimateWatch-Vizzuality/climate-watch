@@ -10,7 +10,7 @@ import Loading from 'components/loading';
 import startCase from 'lodash/startCase';
 import { SOCIAL_APP_NAMES } from 'data/constants';
 import { getLoginUrlBySocial } from 'utils/my-cw';
-import { SEO_PAGES } from 'data/SEO';
+import { SEO_PAGES } from 'data/seo-data';
 import SEOTags from 'components/seo-tags';
 
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';

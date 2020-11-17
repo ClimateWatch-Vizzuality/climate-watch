@@ -3,7 +3,7 @@ import Proptypes from 'prop-types';
 import layout from 'styles/layout.scss';
 import Header from 'components/header';
 import Intro from 'components/intro';
-import { SEO_PAGES } from 'data/SEO';
+import { SEO_PAGES } from 'data/seo-data';
 import SEOTags from 'components/seo-tags';
 import { renderRoutes } from 'react-router-config';
 import styles from './ndc-overview-styles.scss';

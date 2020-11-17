@@ -12,7 +12,7 @@ import Chart from 'components/charts/chart';
 import ModalShare from 'components/modal-share';
 import ShareButton from 'components/button/share-button';
 import { TabletLandscape, TabletPortraitOnly } from 'components/responsive';
-import { SEO_PAGES } from 'data/SEO';
+import { SEO_PAGES } from 'data/seo-data';
 import SEOTags from 'components/seo-tags';
 
 import layout from 'styles/layout.scss';

@@ -9,7 +9,7 @@ import EspModelsProvider from 'providers/esp-models-provider';
 import EspScenariosProvider from 'providers/esp-scenarios-provider';
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
 import layout from 'styles/layout.scss';
-import { SEO_PAGES } from 'data/SEO';
+import { SEO_PAGES } from 'data/seo-data';
 import SEOTags from 'components/seo-tags';
 import styles from './emission-pathways-model-styles.scss';
 

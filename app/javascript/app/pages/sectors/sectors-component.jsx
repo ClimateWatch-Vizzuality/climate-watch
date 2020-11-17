@@ -1,7 +1,7 @@
 import React, { PureComponent, Fragment } from 'react';
 import sectorsScreenshot from 'assets/screenshots/sectors-screenshot';
 import SEOTags from 'components/seo-tags';
-import { SEO_PAGES } from 'data/seo';
+import { SEO_PAGES } from 'data/seo-data';
 import Teaser from 'components/teaser';
 
 class Sectors extends PureComponent {

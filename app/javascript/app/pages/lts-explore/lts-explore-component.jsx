@@ -3,7 +3,7 @@ import React from 'react';
 import Proptypes from 'prop-types';
 import Header from 'components/header';
 import Intro from 'components/intro';
-import { SEO_PAGES } from 'data/SEO';
+import { SEO_PAGES } from 'data/seo-data';
 import SEOTags from 'components/seo-tags';
 
 import layout from 'styles/layout.scss';

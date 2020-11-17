@@ -4,7 +4,7 @@ import Header from 'components/header';
 import Intro from 'components/intro';
 import BackButton from 'components/back-button';
 import AutocompleteSearch from 'components/autocomplete-search';
-import { SEO_PAGES } from 'data/SEO';
+import { SEO_PAGES } from 'data/seo-data';
 import SEOTags from 'components/seo-tags';
 
 import layout from 'styles/layout.scss';

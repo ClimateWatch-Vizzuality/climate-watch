@@ -2,7 +2,7 @@ import React from 'react';
 import ReactPlayer from 'react-player';
 import videoThumbnailImage from 'assets/home/videobg@2x';
 import SEOTags from 'components/seo-tags';
-import { SEO_PAGES } from 'data/seo';
+import { SEO_PAGES } from 'data/seo-data';
 
 import IntroSection from './intro-section/intro-section';
 import LatestUpdatesSection from './latest-updates-section/latest-updates-section';
