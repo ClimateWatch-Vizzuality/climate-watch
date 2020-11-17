@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Sticky from 'react-stickynode';
 import Waypoint from 'react-waypoint';
-import { SEO_PAGES } from 'data/seo-data';
+import { SEO_PAGES } from 'data/seo';
 import SEOTags from 'components/seo-tags';
 import { isPageContained } from 'utils/navigation';
 import Header from 'components/header';

@@ -8,7 +8,7 @@ import AnchorNav from 'components/anchor-nav';
 import Sticky from 'react-stickynode';
 import cx from 'classnames';
 import { updateUrlHash } from 'utils/navigation';
-import { SEO_PAGES } from 'data/seo-data';
+import { SEO_PAGES } from 'data/seo';
 import SEOTags from 'components/seo-tags';
 
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';

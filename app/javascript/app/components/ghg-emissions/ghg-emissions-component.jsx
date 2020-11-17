@@ -36,7 +36,7 @@ import dropdownTheme from 'styles/themes/dropdown/react-selectize.scss';
 import multiSelectTheme from 'styles/themes/dropdown/multiselect-dropdown.scss';
 import multiLevelDropdownTheme from 'styles/themes/dropdown/multi-level-dropdown.scss';
 import legendChartTheme from 'styles/themes/chart/legend-chart.scss';
-import { SEO_PAGES } from 'data/seo-data';
+import { SEO_PAGES } from 'data/seo';
 import SEOTags from 'components/seo-tags';
 import DataZoom from './data-zoom';
 

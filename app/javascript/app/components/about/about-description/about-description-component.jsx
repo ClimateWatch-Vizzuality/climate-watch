@@ -2,7 +2,7 @@
 import React from 'react';
 import layout from 'styles/layout';
 import cx from 'classnames';
-import { SEO_PAGES } from 'data/seo-data';
+import { SEO_PAGES } from 'data/seo';
 import { PropTypes } from 'prop-types';
 import SEOTags from 'components/seo-tags';
 import styles from './about-description-styles.scss';

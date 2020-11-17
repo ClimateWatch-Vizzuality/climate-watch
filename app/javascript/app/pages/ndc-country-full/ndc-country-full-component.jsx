@@ -12,7 +12,7 @@ import Sticky from 'react-stickynode';
 import Button from 'components/button';
 import Loading from 'components/loading';
 import NdcTranslationDisclaimer from 'components/ndcs/ndc-translation-disclaimer';
-import { SEO_PAGES } from 'data/seo-data';
+import { SEO_PAGES } from 'data/seo';
 import SEOTags from 'components/seo-tags';
 
 import { isR2LWrittedLanguage } from 'utils';

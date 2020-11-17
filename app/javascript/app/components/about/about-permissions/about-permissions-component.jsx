@@ -1,7 +1,7 @@
 import React from 'react';
 import cx from 'classnames';
 import layout from 'styles/layout';
-import { SEO_PAGES } from 'data/seo-data';
+import { SEO_PAGES } from 'data/seo';
 import SEOTags from 'components/seo-tags';
 import { PropTypes } from 'prop-types';
 import styles from './about-permissions-styles.scss';

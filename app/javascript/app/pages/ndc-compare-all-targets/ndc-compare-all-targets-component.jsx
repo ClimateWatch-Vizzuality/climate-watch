@@ -13,7 +13,7 @@ import compareSubmittedIcon from 'assets/icons/compare-submitted.svg';
 import compareNotSubmittedIcon from 'assets/icons/compare-not-submitted.svg';
 import compareIntendsIcon from 'assets/icons/compare-intends.svg';
 import Search from 'components/search';
-import { SEO_PAGES } from 'data/seo-data';
+import { SEO_PAGES } from 'data/seo';
 import SEOTags from 'components/seo-tags';
 import NdcCompareAllTargetsProvider from 'providers/ndc-compare-all-targets-provider';
 import CountriesDocumentsProvider from 'providers/countries-documents-provider';

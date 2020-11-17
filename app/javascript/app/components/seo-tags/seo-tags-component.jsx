@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import { Helmet } from 'react-helmet';
 import PropTypes from 'prop-types';
 
-import { STATIC_TITLE_PARTS, getDescription } from 'data/seo-data';
+import { STATIC_TITLE_PARTS, getDescription } from 'data/seo';
 
 const SEOTags = ({ dynamicTitlePart = '', href, page, countryName }) => {
   if (!STATIC_TITLE_PARTS[page]) {
