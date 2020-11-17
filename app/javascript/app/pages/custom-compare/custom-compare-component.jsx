@@ -13,7 +13,7 @@ import NdcCompareAllTargetsProvider from 'providers/ndc-compare-all-targets-prov
 import CountriesDocumentsProvider from 'providers/countries-documents-provider';
 import { TabletLandscape, TabletPortraitOnly } from 'components/responsive';
 import { isIE } from 'utils';
-import { SEO_PAGES } from 'data/SEO';
+import { SEO_PAGES } from 'data/seo';
 import SEOTags from 'components/seo-tags';
 
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';

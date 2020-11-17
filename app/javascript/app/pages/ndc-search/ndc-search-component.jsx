@@ -4,7 +4,7 @@ import cx from 'classnames';
 import Sticky from 'react-stickynode';
 import Loading from 'components/loading';
 import { TabletLandscape } from 'components/responsive';
-import { SEO_PAGES } from 'data/SEO';
+import { SEO_PAGES } from 'data/seo';
 import SEOTags from 'components/seo-tags';
 
 import BackButton from 'components/back-button';

@@ -10,7 +10,7 @@ import EspIndicatorsProvider from 'providers/esp-indicators-provider';
 import EspLocationsProvider from 'providers/esp-locations-provider';
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
 import layout from 'styles/layout.scss';
-import { SEO_PAGES } from 'data/SEO';
+import { SEO_PAGES } from 'data/seo';
 import SEOTags from 'components/seo-tags';
 import styles from './emission-pathways-scenario-styles.scss';
 

@@ -19,7 +19,7 @@ import Sticky from 'react-stickynode';
 import cx from 'classnames';
 import ModalShare from 'components/modal-share';
 import NDCSProvider from 'providers/ndcs-provider';
-import { SEO_PAGES } from 'data/SEO';
+import { SEO_PAGES } from 'data/seo';
 import SEOTags from 'components/seo-tags';
 
 import newMapTheme from 'styles/themes/map/map-new-zoom-controls.scss';

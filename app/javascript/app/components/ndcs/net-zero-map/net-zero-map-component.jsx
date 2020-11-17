@@ -18,7 +18,7 @@ import ModalShare from 'components/modal-share';
 import Sticky from 'react-stickynode';
 import cx from 'classnames';
 import { getHoverIndex } from 'components/ndcs/shared/utils';
-import { SEO_PAGES } from 'data/SEO';
+import { SEO_PAGES } from 'data/seo';
 import SEOTags from 'components/seo-tags';
 
 import layout from 'styles/layout.scss';

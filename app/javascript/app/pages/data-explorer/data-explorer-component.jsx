@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import DownloadMenu from 'components/download-menu';
 import anchorNavThemeColorTheme from 'styles/themes/anchor-nav/anchor-nav-theme-color.scss';
 import layout from 'styles/layout.scss';
-import { SEO_PAGES } from 'data/SEO';
+import { SEO_PAGES } from 'data/seo';
 import SEOTags from 'components/seo-tags';
 import styles from './data-explorer-styles';
 

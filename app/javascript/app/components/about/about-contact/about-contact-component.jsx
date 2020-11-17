@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import cx from 'classnames';
 import layout from 'styles/layout';
 import Loading from 'components/loading';
-import { SEO_PAGES } from 'data/SEO';
+import { SEO_PAGES } from 'data/seo';
 import { PropTypes } from 'prop-types';
 import SEOTags from 'components/seo-tags';
 
