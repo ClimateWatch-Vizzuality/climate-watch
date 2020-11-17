@@ -184,7 +184,7 @@ export const getPathsWithStyles = createSelector(
 export const getLinkToDataExplorer = createSelector(
   [getSearch, getSelectedCategory, getSelectedIndicator],
   (search, selectedCategory, selectedIndicator) => {
-    const section = 'lts-content';
+    const section = 'net-zero-content';
     let dataExplorerSearch = search || {};
     if (selectedCategory && selectedIndicator) {
       dataExplorerSearch = {
@@ -241,8 +241,8 @@ export const getTooltipCountryValues = createSelector(
       return null;
     }
     let updatedSelectedIndicator = selectedIndicator;
-    if (selectedIndicator.value === 'lts_submission') {
-      updatedSelectedIndicator = indicators.find(i => i.slug === 'lts_target');
+    if (selectedIndicator.value === 'nz_submission') {
+      updatedSelectedIndicator = indicators.find(i => i.slug === 'nz_target');
     }
 
     const tooltipCountryValues = {};
@@ -368,14 +368,14 @@ export const getSummaryCardData = createSelector(
   [getIndicatorsData],
   indicators => {
     if (!indicators) return null;
-    const LTSIndicator = indicators.find(i => i.slug === 'nz_status');
-    if (!LTSIndicator) return null;
-    let countriesNumber = Object.values(LTSIndicator.locations).filter(l =>
+    const netZeroIndicator = indicators.find(i => i.slug === 'nz_status');
+    if (!netZeroIndicator) return null;
+    let countriesNumber = Object.values(netZeroIndicator.locations).filter(l =>
       ['In Policy Document', 'In Law'].includes(l.value)
     ).length;
     const partiesNumber = countriesNumber;
     const europeanCountriesWithSubmission = europeanCountries.filter(
-      iso => LTSIndicator.locations[iso]
+      iso => netZeroIndicator.locations[iso]
     );
     countriesNumber +=
       europeanCountries.length - europeanCountriesWithSubmission.length - 1; // To avoid double counting, also substract the EUU 'country'

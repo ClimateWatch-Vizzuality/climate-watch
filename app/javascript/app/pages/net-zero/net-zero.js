@@ -10,7 +10,7 @@ import Component from './net-zero-component';
 
 class NetZeroContainer extends PureComponent {
   componentWillMount() {
-    this.props.fetchLTS();
+    this.props.fetchNetZero();
   }
 
   render() {
@@ -19,7 +19,7 @@ class NetZeroContainer extends PureComponent {
 }
 
 NetZeroContainer.propTypes = {
-  fetchLTS: PropTypes.func.isRequired
+  fetchNetZero: PropTypes.func.isRequired
 };
 
 export { actions, reducers, initialState };
