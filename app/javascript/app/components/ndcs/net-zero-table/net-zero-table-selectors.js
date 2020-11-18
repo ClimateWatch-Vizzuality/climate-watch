@@ -40,6 +40,7 @@ export const tableGetSelectedData = createSelector(
     if (!indicators || !indicators.length || !indicators[0].locations) {
       return [];
     }
+
     const refIndicator =
       indicators.find(i => i.value === 'nz_submission') || indicators[0];
 
@@ -65,7 +66,7 @@ export const tableGetSelectedData = createSelector(
 
 const headerChanges = {
   Document: 'Net Zero submission Link',
-  'Submission Date': 'Date of Net Zero submission',
+  'Net Zero Target Status': 'Target Status',
   'Share of GHG Emissions': 'Share of global GHG emissions'
 };
 
@@ -77,29 +78,17 @@ export const getSelectedIndicatorHeader = createSelector(
   }
 );
 
-export const getExtraColumn = createSelector(
-  [getMapIndicator],
-  selectedIndicator => {
-    if (!selectedIndicator) return null;
-    return selectedIndicator.value === 'nz_submission' ? 'nz_target' : null;
-  }
-);
-
 export const getDefaultColumns = createSelector(
-  [getIndicatorsParsed, getSelectedIndicatorHeader, getExtraColumn],
-  (indicators, selectedIndicatorHeader, extraColumn) => {
+  [getIndicatorsParsed, getSelectedIndicatorHeader],
+  (indicators, selectedIndicatorHeader) => {
     if (!indicators || isEmpty(indicators)) return [];
     const columnIds = [
       'country',
       selectedIndicatorHeader,
       'nz_source',
-      'nz_target',
-      'nz_ghg'
+      'nz_status',
+      'ndce_ghg'
     ];
-
-    if (extraColumn) {
-      columnIds.splice(2, 0, extraColumn);
-    }
 
     const columns = columnIds.map(id => {
       const match = indicators.find(indicator => indicator.value === id);

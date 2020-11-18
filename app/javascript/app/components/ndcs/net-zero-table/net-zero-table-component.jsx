@@ -5,7 +5,6 @@ import { Table } from 'cw-components';
 import NoContent from 'components/no-content';
 import Loading from 'components/loading';
 import exploreTableTheme from 'styles/themes/table/explore-table-theme.scss';
-import exploreTableTwoHighlightedColumnsTheme from 'styles/themes/table/explore-table-two-highlighted-theme.scss';
 
 import layout from 'styles/layout.scss';
 import styles from 'components/ndcs/shared/explore-table-styles.scss';
@@ -26,9 +25,7 @@ const NetZeroTable = ({
   handleSearchChange,
   noContentMsg,
   columns,
-  setColumnWidth,
-  titleLinks,
-  extraColumn
+  titleLinks
 }) => (
   <div>
     <div className={styles.wrapper}>
@@ -46,20 +43,10 @@ const NetZeroTable = ({
               horizontalScroll
               parseHtml
               dynamicRowsHeight
-              dynamicRowsConfig={{
-                fontWidth: 10,
-                fontSize: 14,
-                extraMargin: 0,
-                lineHeight: 1.25
-              }}
-              setColumnWidth={setColumnWidth}
+              setColumnWidth={() => 220}
               defaultColumns={columns}
               titleLinks={titleLinks}
-              theme={
-                extraColumn
-                  ? exploreTableTwoHighlightedColumnsTheme
-                  : exploreTableTheme
-              }
+              theme={exploreTableTheme}
               tableHeight={650}
             />
           </div>
@@ -77,9 +64,7 @@ NetZeroTable.propTypes = {
   noContentMsg: PropTypes.string,
   query: PropTypes.string,
   tableData: PropTypes.array,
-  extraColumn: PropTypes.string,
   handleSearchChange: PropTypes.func.isRequired,
-  setColumnWidth: PropTypes.func.isRequired,
   columns: PropTypes.array,
   titleLinks: PropTypes.array
 };
