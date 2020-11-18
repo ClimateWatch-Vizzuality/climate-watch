@@ -2,7 +2,9 @@ namespace :indc do
   desc 'Imports the INDC dataset from the csv sources'
   task import: :environment do
     TimedLogger.log('import indc data') do
-      ImportIndc.new.call
+      ActiveRecord::Base.connection.cache do
+        ImportIndc.new.call
+      end
     end
   end
 
