@@ -59,5 +59,15 @@ export default [
       }),
     anchor: true,
     exact: true
+  },
+  {
+    label: 'Net Zero Content',
+    path: '/data-explorer/net-zero-content',
+    component: () =>
+      createElement(DataExplorerContent, {
+        section: 'net-zero-content'
+      }),
+    anchor: true,
+    exact: true
   }
 ];
