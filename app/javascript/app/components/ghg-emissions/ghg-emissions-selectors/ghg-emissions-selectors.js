@@ -7,7 +7,8 @@ import {
 import {
   getOptions,
   getOptionsSelected,
-  getModelSelected
+  getModelSelected,
+  getDynamicSEOTitlePart
 } from './ghg-emissions-selectors-filters';
 import { getFiltersConflicts } from './ghg-emissions-selectors-conflicts';
 import {
@@ -44,5 +45,6 @@ export const getGHGEmissions = createStructuredSelector({
   loading: getLoading,
   fieldToBreakBy: getModelSelected,
   hideRemoveOptions: getHideRemoveOptions,
-  providerFilters: getProviderFilters
+  providerFilters: getProviderFilters,
+  dynamicSEOTitlePart: getDynamicSEOTitlePart
 });

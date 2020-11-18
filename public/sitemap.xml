@@ -29,22 +29,37 @@
     <loc>https://www.climatewatchdata.org/sectors</loc>
   </url>
   <url>
-    <loc>https://www.climatewatchdata.org/ndcs-content</loc>
+    <loc>https://www.climatewatchdata.org/sectors/agriculture</loc>
   </url>
   <url>
-    <loc>https://www.climatewatchdata.org/ndc-search</loc>
+    <loc>https://www.climatewatchdata.org/ndcs-overview</loc>
   </url>
   <url>
-    <loc>https://www.climatewatchdata.org/ndcs/compare</loc>
+    <loc>https://www.climatewatchdata.org/ndc-explore</loc>
   </url>
   <url>
-    <loc>https://www.climatewatchdata.org/ndcs/compare/mitigation</loc>
+    <loc>https://www.climatewatchdata.org/lts-explore</loc>
   </url>
   <url>
-    <loc>https://www.climatewatchdata.org/ndcs/compare/adaptation</loc>
+    <loc>https://www.climatewatchdata.org/2020-ndc-tracker</loc>
   </url>
   <url>
-    <loc>https://www.climatewatchdata.org/ndcs/compare/sectoral-information</loc>
+    <loc>https://www.climatewatchdata.org/ndcs/compare-all-targets</loc>
+  </url>
+  <url>
+    <loc>https://www.climatewatchdata.org/ndcs/country</loc>
+  </url>
+  <url>
+    <loc>https://www.climatewatchdata.org/ndcs/custom-compare</loc>
+  </url>
+  <url>
+    <loc>https://www.climatewatchdata.org/ndcs/custom-compare/mitigation</loc>
+  </url>
+  <url>
+    <loc>https://www.climatewatchdata.org/ndcs/custom-compare/adaptation</loc>
+  </url>
+  <url>
+    <loc>https://www.climatewatchdata.org/ndcs/custom-compare/sectoral-information</loc>
   </url>
   <url>
     <loc>https://www.climatewatchdata.org/ndcs-sdg/</loc>
@@ -59,10 +74,22 @@
     <loc>https://www.climatewatchdata.org/ndc-search</loc>
   </url>
   <url>
-    <loc>https://www.climatewatchdata.org/stories</loc>
+    <loc>https://www.climatewatchdata.org/my-climate-watch</loc>
   </url>
   <url>
     <loc>https://www.climatewatchdata.org/about</loc>
+  </url>
+  <url>
+    <loc>https://www.climatewatchdata.org/about/partners</loc>
+  </url>
+  <url>
+    <loc>https://www.climatewatchdata.org/about/contact</loc>
+  </url>
+  <url>
+    <loc>https://www.climatewatchdata.org/about/permissions</loc>
+  </url>
+  <url>
+    <loc>https://www.climatewatchdata.org/about/faq</loc>
   </url>
   <url>
     <loc>https://www.climatewatchdata.org/data-explorer</loc>

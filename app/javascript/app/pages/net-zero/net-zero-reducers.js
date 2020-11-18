@@ -10,8 +10,8 @@ const setError = (state, error) => ({ ...state, error });
 const setLoaded = (state, loaded) => ({ ...state, loaded });
 
 export default {
-  fetchLTSInit: state => setLoading(state, true),
-  fetchLTSReady: (state, { payload }) =>
+  fetchNetZeroInit: state => setLoading(state, true),
+  fetchNetZeroReady: (state, { payload }) =>
     setLoaded(
       setLoading(
         {
@@ -25,5 +25,5 @@ export default {
       ),
       true
     ),
-  fetchLTSFail: state => setError(state, true)
+  fetchNetZeroFail: state => setError(state, true)
 };

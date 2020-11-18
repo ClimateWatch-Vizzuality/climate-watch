@@ -33,7 +33,7 @@ const Step2 = ({ visualisations, selectVisualisation }) => (
                 type="visualisation"
               >
                 <div className={styles.cardContent}>
-                  <h1 className={styles.cardTitle}>{d.name}</h1>
+                  <h2 className={styles.cardTitle}>{d.name}</h2>
                   <p className={styles.cardTags}>{d.tags.join(' | ')}</p>
                 </div>
               </CardContent>

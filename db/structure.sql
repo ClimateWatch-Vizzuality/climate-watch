@@ -1217,7 +1217,8 @@ CREATE TABLE public.key_visualizations (
     created_date date NOT NULL,
     last_updated_date date NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    preview_image_url text
 );
 
 
@@ -4332,6 +4333,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200503165104'),
 ('20200521120158'),
 ('20200818134235'),
-('20201023101133');
+('20201023101133'),
+('20201113113501');
 
 

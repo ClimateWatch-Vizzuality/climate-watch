@@ -10,6 +10,8 @@ import Loading from 'components/loading';
 import startCase from 'lodash/startCase';
 import { SOCIAL_APP_NAMES } from 'data/constants';
 import { getLoginUrlBySocial } from 'utils/my-cw';
+import { SEO_PAGES } from 'data/seo';
+import SEOTags from 'components/seo-tags';
 
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
 import layout from 'styles/layout.scss';
@@ -48,6 +50,7 @@ const MyCw = ({ location, route, login, openCreator, logout }) => {
   }
   return (
     <div>
+      <SEOTags page={SEO_PAGES.myCW} href={location.href} />
       <Header theme={styles}>
         <div className={layout.content}>
           <Intro theme={styles} title="My Climate Watch" button={button} />

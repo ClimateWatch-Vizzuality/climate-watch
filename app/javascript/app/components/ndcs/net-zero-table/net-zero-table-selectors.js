@@ -41,7 +41,7 @@ export const tableGetSelectedData = createSelector(
       return [];
     }
     const refIndicator =
-      indicators.find(i => i.value === 'lts_submission') || indicators[0];
+      indicators.find(i => i.value === 'nz_submission') || indicators[0];
 
     return Object.keys(refIndicator.locations).map(iso => {
       if (refIndicator.locations[iso].value === 'No Document Submitted') {
@@ -64,11 +64,8 @@ export const tableGetSelectedData = createSelector(
 );
 
 const headerChanges = {
-  'Communication of Long-term Strategy':
-    'Latest submission (Current selection)',
-  Document: 'LTS submission Link',
-  'Submission Date': 'Date of LTS submission',
-  'Long-term Strategy Document': 'Long-term Strategies Document',
+  Document: 'Net Zero submission Link',
+  'Submission Date': 'Date of Net Zero submission',
   'Share of GHG Emissions': 'Share of global GHG emissions'
 };
 
@@ -84,7 +81,7 @@ export const getExtraColumn = createSelector(
   [getMapIndicator],
   selectedIndicator => {
     if (!selectedIndicator) return null;
-    return selectedIndicator.value === 'lts_submission' ? 'lts_target' : null;
+    return selectedIndicator.value === 'nz_submission' ? 'nz_target' : null;
   }
 );
 
@@ -95,9 +92,9 @@ export const getDefaultColumns = createSelector(
     const columnIds = [
       'country',
       selectedIndicatorHeader,
-      'lts_document',
-      'lts_date',
-      'lts_ghg'
+      'nz_source',
+      'nz_target',
+      'nz_ghg'
     ];
 
     if (extraColumn) {
@@ -173,7 +170,7 @@ export const getTitleLinks = createSelector([getFilteredDataBySearch], data => {
   return data.map(d => [
     {
       columnName: 'country',
-      url: `/lts/country/${d.iso}`
+      url: `/country/${d.iso}`
     }
   ]);
 });

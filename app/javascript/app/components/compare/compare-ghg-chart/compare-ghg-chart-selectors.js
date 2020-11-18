@@ -54,7 +54,7 @@ export const addNameToLocations = addSelectedNameToLocations(
 const parseLocationCalculationData = createSelector(
   [getCalculationData, parseLocations],
   (data, locations) => {
-    if (!data || isEmpty(data)) return null;
+    if (!data || isEmpty(data) || !locations) return null;
     const locationData = locations.map(l => groupBy(data[l.iso_code3], 'year'));
     return locationData;
   }

@@ -32,6 +32,7 @@ class ImportKeyVisualizations
       description: row[:description],
       topic: row[:topic],
       embed_code: parse_text(row[:embed_code]),
+      preview_image_url: resolve_preview_image(row[:preview_image_url]),
       image_download_url: parse_text(row[:image_download_url]),
       data_download_url: parse_text(row[:data_download_url]),
       blog_link: parse_text(row[:blog_link]),
@@ -40,6 +41,13 @@ class ImportKeyVisualizations
       created_date: parse_date(row[:created]),
       last_updated_date: parse_date(row[:last_updated])
     }
+  end
+
+  def resolve_preview_image(filename)
+    return unless filename.present?
+    return filename if filename.starts_with?('http') # support urls
+
+    "#{S3_BUCKET_URL}/#{CW_FILES_PREFIX}key_visualizations/images/#{filename}"
   end
 
   def parse_text(value)
