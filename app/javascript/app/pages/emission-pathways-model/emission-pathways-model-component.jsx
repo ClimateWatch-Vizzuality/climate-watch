@@ -9,6 +9,8 @@ import EspModelsProvider from 'providers/esp-models-provider';
 import EspScenariosProvider from 'providers/esp-scenarios-provider';
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
 import layout from 'styles/layout.scss';
+import { SEO_PAGES } from 'data/seo';
+import SEOTags from 'components/seo-tags';
 import styles from './emission-pathways-model-styles.scss';
 
 class EmissionPathwaysModel extends PureComponent {
@@ -17,6 +19,7 @@ class EmissionPathwaysModel extends PureComponent {
     const { route, routeLinks, anchorLinks, model, id } = this.props;
     return (
       <div>
+        <SEOTags page={SEO_PAGES.pathways} href={location.href} />
         <EspModelsProvider />
         <EspScenariosProvider />
         <div>

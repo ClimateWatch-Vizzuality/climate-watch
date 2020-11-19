@@ -3,18 +3,14 @@ import Proptypes from 'prop-types';
 import layout from 'styles/layout.scss';
 import Header from 'components/header';
 import Intro from 'components/intro';
-import { NDCS_OVERVIEW } from 'data/SEO';
-import { MetaDescription, SocialMetadata } from 'components/seo';
+import { SEO_PAGES } from 'data/seo';
+import SEOTags from 'components/seo-tags';
 import { renderRoutes } from 'react-router-config';
 import styles from './ndc-overview-styles.scss';
 
 const NdcOverview = ({ route }) => (
   <div>
-    <MetaDescription
-      descriptionContext={NDCS_OVERVIEW}
-      subtitle="NDC OVERVIEW"
-    />
-    <SocialMetadata descriptionContext={NDCS_OVERVIEW} href={location.href} />
+    <SEOTags page={SEO_PAGES.ndcOverview} href={location.href} />
     <Header route={route}>
       <div className={layout.content}>
         <div className="grid-column-item">

@@ -41,7 +41,8 @@ import {
 
 import {
   getMetricData,
-  getRegionsWithOwnData
+  getRegionsWithOwnData,
+  trimWithNoData
 } from './ghg-emissions-selectors-data-utils';
 
 const getShouldExpand = filter =>
@@ -255,7 +256,6 @@ export const getChartData = createSelector(
     const isBreakByRegions = model === 'regions';
     const groupByKey = isBreakByRegions ? 'location' : model;
     const groupedData = groupBy(data, groupByKey);
-
     const expandedData = column => {
       if (!column.expandsTo) return null;
 
@@ -264,8 +264,6 @@ export const getChartData = createSelector(
       ).filter(d => d);
     };
 
-    const dataParsed = [];
-    const yItems = {};
     const accumulatedValues = {};
     const previousYearValues = {};
 
@@ -304,6 +302,9 @@ export const getChartData = createSelector(
       return null;
     };
 
+    const dataParsed = [];
+    const yItems = {};
+
     yearValues.forEach(year => {
       yColumnOptions.forEach(column => {
         const dataForColumn =
@@ -317,7 +318,13 @@ export const getChartData = createSelector(
 
           const yearEmissions = d.emissions.find(e => e.year === year);
           const metricRatio = shouldHaveMetricData
-            ? getMetricData(year, column, metricField, calculationData, regions)
+            ? getMetricData(
+              year,
+              d.iso_code3,
+              metricField,
+              calculationData,
+              regions
+            )
             : 1;
 
           if (yearEmissions && yearEmissions.value && metricRatio) {
@@ -335,23 +342,6 @@ export const getChartData = createSelector(
       });
     });
 
-    // if there is no value for any legend item
-    // remove those element from the start and the end of chart
-    // leave those in the middle
-    const trimWithNoData = dataToTrim => {
-      const indexesToString = dataToTrim
-        .map((d, idx) => (Object.keys(d).length > 1 ? idx : '_'))
-        .join(',')
-        .replace(/_,/g, '')
-        .trim();
-      const middleIndexes = indexesToString.split(',');
-      const firstNotEmptyIndex = Number(middleIndexes[0]);
-      const lastNotEmptyIndex = Number(middleIndexes[middleIndexes.length - 1]);
-
-      return dataToTrim.filter(
-        (_d, idx) => idx >= firstNotEmptyIndex && idx <= lastNotEmptyIndex
-      );
-    };
     return trimWithNoData(dataParsed);
   }
 );

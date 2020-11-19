@@ -13,6 +13,8 @@ import NdcCompareAllTargetsProvider from 'providers/ndc-compare-all-targets-prov
 import CountriesDocumentsProvider from 'providers/countries-documents-provider';
 import { TabletLandscape, TabletPortraitOnly } from 'components/responsive';
 import { isIE } from 'utils';
+import { SEO_PAGES } from 'data/seo';
+import SEOTags from 'components/seo-tags';
 
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
 import multiLevelDropdownTheme from 'styles/themes/dropdown/multi-level-dropdown-custom-compare.scss';
@@ -119,8 +121,19 @@ const CustomComparisonComponent = props => {
   );
   const filters = <div className={styles.content}>{renderFilters()}</div>;
   const isInternetExplorer = useCallback(isIE(), []);
+  const countryNames =
+    filtersData &&
+    filtersData
+      .map(f => f.countryValue && f.countryValue.label)
+      .filter(Boolean)
+      .join(', ');
   return (
     <div>
+      <SEOTags
+        page={SEO_PAGES.ndcCustomCompare}
+        href={location.href}
+        dynamicTitlePart={countryNames}
+      />
       <Header route={route}>
         <div className={cx(layout.content, styles.header)}>
           <BackButton
