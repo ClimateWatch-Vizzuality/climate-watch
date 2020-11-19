@@ -260,30 +260,41 @@ const API_CALLS = {
   ],
   'net-zero-content': [
     {
-      title: 'GET /api/v1/data/lts_content/meta',
-      url: `${CW_API}/data/lts_content/meta`,
+      title: 'GET /api/v1/data/nz_content/meta',
+      url: `${CW_API}/data/nz_content/meta`,
       description: linkHeaderDescription,
       extra: linkHeaderExtra
     },
     {
-      title: 'GET /api/v1/data/lts_content',
-      url: `${CW_API}/data/lts_content`,
-      description: 'Retrieves time series data for LTS content',
+      title: 'GET /api/v1/data/nz_content',
+      url: `${CW_API}/data/nz_content`,
+      description: 'Retrieves time series data for Net Zero content',
       queryParams: [
         countriesParam,
         {
-          name: 'sources',
+          name: 'data_sources',
           parameter: 'source_ids[]',
-          description: 'source id'
+          description:
+            'view source id at https://www.climatewatchdata.org/api/v1/data/nz_content/data_sources'
         },
-        indicatorsParam,
-        categoriesParam,
         {
-          name: 'labels',
-          parameter: 'label_ids[]',
-          description: 'label id'
+          name: 'indicators',
+          parameter: 'indicator_ids[]',
+          description:
+            'view indicator id at https://www.climatewatchdata.org/api/v1/data/nz_content/indicators'
         },
-        sectorsParam,
+        {
+          name: 'category',
+          parameter: 'category_ids[]',
+          description:
+            'view category id at https://www.climatewatchdata.org/api/v1/data/nz_content/categories'
+        },
+        {
+          name: 'sectors',
+          parameter: 'sector_ids[]',
+          description:
+            'view sector id at https://www.climatewatchdata.org/api/v1/data/nz_content/sectors'
+        },
         sortColumnParam,
         sortDirectionParam
       ],

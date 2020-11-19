@@ -141,9 +141,9 @@ export const DATA_EXPLORER_SECTIONS = {
   },
   'net-zero-content': {
     label: 'net-zero_content',
-    moduleName: 'net-zero-content',
-    linkLabel: 'net-zero',
-    linkName: 'net-zero'
+    moduleName: 'net-zero-tracker',
+    linkLabel: 'net-zero-tracker',
+    linkName: 'net-zero-tracker'
   }
 };
 
