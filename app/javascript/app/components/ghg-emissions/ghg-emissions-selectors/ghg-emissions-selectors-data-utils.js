@@ -9,35 +9,14 @@ const expandRegionToCountries = (iso, regions) => {
   return flatMap(region.members, expandRegionToCountries);
 };
 
-const expandRegionsToCountries = (isos, regions) =>
-  uniq(flatMap(isos, iso => expandRegionToCountries(iso, regions)));
-
-export const getMetricData = (
-  year,
-  column,
-  metricField,
-  calculationData,
-  regions
-) => {
+export const getMetricData = (year, iso, metricField, calculationData) => {
   const getMetricForYearAndRegion = (y, r) =>
     metricField &&
     calculationData &&
     calculationData[y] &&
     calculationData[y][r] &&
     calculationData[y][r][metricField];
-  let metricData = getMetricForYearAndRegion(year, column.iso);
-  // if no metric data for expandable column then use expanded regions to
-  // calculate metric data
-  if (!metricData && column.expandsTo && column.expandsTo.length) {
-    const expandedCountries = expandRegionsToCountries(
-      column.expandsTo,
-      regions
-    );
-    metricData = expandedCountries.reduce(
-      (acc, iso3) => acc + (getMetricForYearAndRegion(year, iso3) || 0),
-      0
-    );
-  }
+  let metricData = getMetricForYearAndRegion(year, iso);
 
   // GDP is in dollars and we want to display it in million dollars
   if (metricField === 'gdp' && metricData) metricData /= 1000000;
@@ -56,4 +35,22 @@ export const getRegionsWithOwnData = (regions, data) => {
   );
 
   return regions.filter(r => regionsISOsWithOwnData.includes(r.iso_code3));
+};
+
+// If there is no value for any legend item
+// remove those element from the start and the end of chart
+// leave those in the middle
+export const trimWithNoData = dataToTrim => {
+  const indexesToString = dataToTrim
+    .map((d, idx) => (Object.keys(d).length > 1 ? idx : '_'))
+    .join(',')
+    .replace(/_,/g, '')
+    .trim();
+  const middleIndexes = indexesToString.split(',');
+  const firstNotEmptyIndex = Number(middleIndexes[0]);
+  const lastNotEmptyIndex = Number(middleIndexes[middleIndexes.length - 1]);
+
+  return dataToTrim.filter(
+    (_d, idx) => idx >= firstNotEmptyIndex && idx <= lastNotEmptyIndex
+  );
 };

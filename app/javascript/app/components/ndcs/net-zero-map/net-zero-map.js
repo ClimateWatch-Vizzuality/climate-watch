@@ -32,11 +32,11 @@ import {
 const actions = { ...fetchActions, ...modalActions, ...exploreMapActions };
 
 const mapStateToProps = (state, { location }) => {
-  const { data, loading } = state.LTS;
+  const { data, loading } = state.NetZero;
   const { countries } = state;
   const search = qs.parse(location.search);
 
-  const LTSWithSelection = {
+  const netZeroWithSelection = {
     ...state,
     ...data,
     countries: countries.data,
@@ -50,20 +50,20 @@ const mapStateToProps = (state, { location }) => {
 
   return {
     loading,
-    query: LTSWithSelection.query,
-    paths: getPathsWithStyles(LTSWithSelection),
-    isoCountries: getISOCountries(LTSWithSelection),
-    selectedIndicator: getMapIndicator(LTSWithSelection),
-    emissionsCardData: getEmissionsCardData(LTSWithSelection),
-    tooltipCountryValues: getTooltipCountryValues(LTSWithSelection),
-    legendData: getLegend(LTSWithSelection),
-    summaryCardData: getSummaryCardData(LTSWithSelection),
-    downloadLink: getLinkToDataExplorer(LTSWithSelection),
-    categories: getCategories(LTSWithSelection),
-    indicators: getCategoryIndicators(LTSWithSelection),
-    selectedCategory: getSelectedCategory(LTSWithSelection),
-    checked: getIsShowEUCountriesChecked(LTSWithSelection),
-    donutActiveIndex: getDonutActiveIndex(LTSWithSelection)
+    query: netZeroWithSelection.query,
+    paths: getPathsWithStyles(netZeroWithSelection),
+    isoCountries: getISOCountries(netZeroWithSelection),
+    selectedIndicator: getMapIndicator(netZeroWithSelection),
+    emissionsCardData: getEmissionsCardData(netZeroWithSelection),
+    tooltipCountryValues: getTooltipCountryValues(netZeroWithSelection),
+    legendData: getLegend(netZeroWithSelection),
+    summaryCardData: getSummaryCardData(netZeroWithSelection),
+    downloadLink: getLinkToDataExplorer(netZeroWithSelection),
+    categories: getCategories(netZeroWithSelection),
+    indicators: getCategoryIndicators(netZeroWithSelection),
+    selectedCategory: getSelectedCategory(netZeroWithSelection),
+    checked: getIsShowEUCountriesChecked(netZeroWithSelection),
+    donutActiveIndex: getDonutActiveIndex(netZeroWithSelection)
   };
 };
 
@@ -79,7 +79,7 @@ class NetZeroMapContainer extends PureComponent {
   componentWillMount() {
     // Note: This fetch is not filtered by category like the NDC as the data is not so big
     // If it starts getting big copy the logic in ndcs-explore-map.js with the lts emissions indicator
-    this.props.fetchLTS();
+    this.props.fetchNetZero();
   }
 
   handleOnChangeChecked = query => {
@@ -208,7 +208,7 @@ NetZeroMapContainer.propTypes = {
   isoCountries: PropTypes.array.isRequired,
   emissionsCardData: PropTypes.object.isRequired,
   setModalMetadata: PropTypes.func.isRequired,
-  fetchLTS: PropTypes.func.isRequired,
+  fetchNetZero: PropTypes.func.isRequired,
   query: PropTypes.string,
   summaryData: PropTypes.array,
   indicator: PropTypes.object,

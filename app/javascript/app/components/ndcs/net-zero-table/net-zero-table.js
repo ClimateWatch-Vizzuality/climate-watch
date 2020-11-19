@@ -18,11 +18,11 @@ import {
 } from './net-zero-table-selectors';
 
 const mapStateToProps = (state, { location }) => {
-  const { data, loading } = state.LTS;
+  const { data, loading } = state.NetZero;
   const { countries } = state;
   const search = qs.parse(location.search);
 
-  const LTSWithSelection = {
+  const NetZeroWithSelection = {
     ...state,
     ...data,
     countries: countries.data,
@@ -35,12 +35,12 @@ const mapStateToProps = (state, { location }) => {
   };
   return {
     loading,
-    query: LTSWithSelection.query,
-    isoCountries: getISOCountries(LTSWithSelection),
-    tableData: removeIsoFromData(LTSWithSelection),
-    columns: getDefaultColumns(LTSWithSelection),
-    titleLinks: getTitleLinks(LTSWithSelection),
-    extraColumn: getExtraColumn(LTSWithSelection)
+    query: NetZeroWithSelection.query,
+    isoCountries: getISOCountries(NetZeroWithSelection),
+    tableData: removeIsoFromData(NetZeroWithSelection),
+    columns: getDefaultColumns(NetZeroWithSelection),
+    titleLinks: getTitleLinks(NetZeroWithSelection),
+    extraColumn: getExtraColumn(NetZeroWithSelection)
   };
 };
 

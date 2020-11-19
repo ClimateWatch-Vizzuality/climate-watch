@@ -26,9 +26,9 @@ const NdcsOverviewSection = ({ data, section, location, handleInfoClick }) => {
           <div className={styles.commitmentWrapper}>
             <div className={styles.commitmentText}>
               <div>
-                <h1 className={styles.title}>{`${
+                <h2 className={styles.title}>{`${
                   isEmbed ? '' : `${section}. `
-                }${title}`}</h1>
+                }${title}`}</h2>
                 <p
                   className={cx(styles.description, {
                     [styles.firstDescription]: parseInt(section, 10) === 1

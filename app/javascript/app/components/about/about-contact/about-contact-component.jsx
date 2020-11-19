@@ -2,12 +2,17 @@ import React, { useState } from 'react';
 import cx from 'classnames';
 import layout from 'styles/layout';
 import Loading from 'components/loading';
+import { SEO_PAGES } from 'data/seo';
+import { PropTypes } from 'prop-types';
+import SEOTags from 'components/seo-tags';
+
 import styles from './about-contact-styles.scss';
 
-const AboutContact = () => {
+const AboutContact = ({ location }) => {
   const [iframeLoaded, setIframeLoaded] = useState(false);
   return (
     <div className={cx(styles.aboutContact, layout.content)}>
+      <SEOTags page={SEO_PAGES.aboutContact} href={location.href} />
       <p>
         We’d love to hear from you. Please submit questions, comments or
         feedback to{' '}
@@ -29,6 +34,10 @@ const AboutContact = () => {
       />
     </div>
   );
+};
+
+AboutContact.propTypes = {
+  location: PropTypes.object
 };
 
 export default AboutContact;

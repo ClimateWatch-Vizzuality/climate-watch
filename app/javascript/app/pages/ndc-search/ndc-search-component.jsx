@@ -4,6 +4,8 @@ import cx from 'classnames';
 import Sticky from 'react-stickynode';
 import Loading from 'components/loading';
 import { TabletLandscape } from 'components/responsive';
+import { SEO_PAGES } from 'data/seo';
+import SEOTags from 'components/seo-tags';
 
 import BackButton from 'components/back-button';
 import Header from 'components/header';
@@ -32,6 +34,11 @@ class SearchPage extends PureComponent {
     const hasNoContent = !results && !loading;
     return (
       <div className={styles.page}>
+        <SEOTags
+          page={SEO_PAGES.ndcSearch}
+          dynamicTitlePart={search && search.query}
+          href={location.href}
+        />
         <Header route={route}>
           <div className={styles.headerCols}>
             <BackButton pathname="/ndcs-explore" backLabel="Explore NDCs" />

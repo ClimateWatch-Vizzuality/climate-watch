@@ -5,6 +5,7 @@ FactoryBot.define do
     topic { 'topic' }
     embed_code { 'embed code' }
 
+    preview_image_url { 'https://example.com/preview-image.png' }
     image_download_url { 'https://example.com/image.png' }
     data_download_url { 'https://example.com/data.csv' }
     blog_link { 'https://example.com' }

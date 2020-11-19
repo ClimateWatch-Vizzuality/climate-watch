@@ -1,10 +1,14 @@
 import React from 'react';
 import cx from 'classnames';
 import layout from 'styles/layout';
+import { SEO_PAGES } from 'data/seo';
+import SEOTags from 'components/seo-tags';
+import { PropTypes } from 'prop-types';
 import styles from './about-permissions-styles.scss';
 
-const AboutPermissions = () => (
+const AboutPermissions = ({ location }) => (
   <div className={cx(layout.content, styles.aboutPermissions)}>
+    <SEOTags page={SEO_PAGES.aboutPermissions} href={location.href} />
     <p>
       Climate Watch has an open data commitment and provides information free of
       constraints and restrictions on use.
@@ -66,7 +70,8 @@ const AboutPermissions = () => (
         online at:{' '}
         <a href="http://www.unep.org/climatechange/resources/pledge-pipeline">
           http://www.unep.org/climatechange/resources/pledge-pipeline
-        </a>.
+        </a>
+        .
       </li>
     </ul>
     <h4>NDC Text in HTML:</h4>
@@ -75,7 +80,8 @@ const AboutPermissions = () => (
         UNFCCC. NDC Registry (interim). 2018. Available online at:{' '}
         <a href="http://www4.unfccc.int/ndcregistry/Pages/All.aspx">
           http://www4.unfccc.int/ndcregistry/Pages/All.aspx
-        </a>.
+        </a>
+        .
       </li>
     </ul>
     <h4>GHG Emissions:</h4>
@@ -86,14 +92,16 @@ const AboutPermissions = () => (
         (1850-2014). V. 1.1. GFZ Data Services.{' '}
         <a href="http://doi.org/10.5880/PIK.2017.001">
           http://doi.org/10.5880/PIK.2017.001
-        </a>.
+        </a>
+        .
       </li>
       <li>
         UNFCCC data: UNFCCC. 2017. Greenhouse Gas Inventory Data - Detailed data
         by Party. Available online at:{' '}
         <a href="http://di.unfccc.int/detailed_data_by_party">
           http://di.unfccc.int/detailed_data_by_party
-        </a>.
+        </a>
+        .
       </li>
     </ul>
     <h4>NDC-SDG Linkages Methodology:</h4>
@@ -105,7 +113,8 @@ const AboutPermissions = () => (
         Resources Institute. Available online at:{' '}
         <a href="http://www.wri.org/sites/default/files/WRI_INDCs_v5.pdf">
           http://www.wri.org/sites/default/files/WRI_INDCs_v5.pdf
-        </a>.
+        </a>
+        .
       </li>
     </ul>
     <h4>Pathways:</h4>
@@ -124,5 +133,8 @@ const AboutPermissions = () => (
     </p>
   </div>
 );
+AboutPermissions.propTypes = {
+  location: PropTypes.object
+};
 
 export default AboutPermissions;

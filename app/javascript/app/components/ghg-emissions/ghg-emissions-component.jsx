@@ -36,6 +36,8 @@ import dropdownTheme from 'styles/themes/dropdown/react-selectize.scss';
 import multiSelectTheme from 'styles/themes/dropdown/multiselect-dropdown.scss';
 import multiLevelDropdownTheme from 'styles/themes/dropdown/multi-level-dropdown.scss';
 import legendChartTheme from 'styles/themes/chart/legend-chart.scss';
+import { SEO_PAGES } from 'data/seo';
+import SEOTags from 'components/seo-tags';
 import DataZoom from './data-zoom';
 
 import styles from './ghg-emissions-styles.scss';
@@ -96,7 +98,8 @@ function GhgEmissions(props) {
     downloadLink,
     dataZoomYears,
     dataZoomPosition,
-    setDataZoomPosition
+    setDataZoomPosition,
+    dynamicSEOTitlePart
   } = props;
 
   const buttonGroupGHGemissions = [
@@ -326,9 +329,13 @@ function GhgEmissions(props) {
       buttonsConfig={buttonGroupGHGemissions}
     />
   );
-
   return (
     <div>
+      <SEOTags
+        page={SEO_PAGES.ghg}
+        href={location.href}
+        dynamicTitlePart={dynamicSEOTitlePart}
+      />
       <div
         className={cx(styles.titleContainer, {
           [styles.containedButtonGroup]: isPageContained
@@ -439,6 +446,7 @@ GhgEmissions.propTypes = {
   hideRemoveOptions: PropTypes.bool,
   dataZoomPosition: PropTypes.object,
   dataZoomYears: PropTypes.object,
+  dynamicSEOTitlePart: PropTypes.string,
   setDataZoomPosition: PropTypes.func.isRequired
 };
 

@@ -2,9 +2,9 @@ require 'rails_helper'
 
 object_contents = {
   "#{CW_FILES_PREFIX}key_visualizations/key_visualizations.csv" => <<~END,
-    "Title","Description","Tags","Topic","Geography","Embed Code","Image download URL","Data download URL","Blog link","Created","Last Updated"
-    "World Greenhouse Gas Emissions","This chart offers...","GHG emissions, Climate Change, Energy","Sectoral emissions","Global, UK","embed code","image download url","data download url","blog link","10/22/2020","10/22/2020"
-    "Top 10 U.S. State Emitters: 2014","Description","GHG emissions","Greenhouse gases","United States","embed code","image download url","data download url","blog link","8/11/2020","10/15/2020"
+    "Title","Description","Tags","Topic","Geography","Embed Code","Preview Image URL","Image download URL","Data download URL","Blog link","Created","Last Updated"
+    "World Greenhouse Gas Emissions","This chart offers...","GHG emissions, Climate Change, Energy","Sectoral emissions","Global, UK","embed code","image.png","image download url","data download url","blog link","10/22/2020","10/22/2020"
+    "Top 10 U.S. State Emitters: 2014","Description","GHG emissions","Greenhouse gases","United States","embed code","https://example.com/image.png","image download url","data download url","blog link","8/11/2020","10/15/2020"
   END
 }
 
@@ -43,10 +43,17 @@ RSpec.describe ImportKeyVisualizations do
     expect(v.geographies).to contain_exactly('Global', 'UK')
     expect(v.tags).to contain_exactly('GHG emissions', 'Climate Change', 'Energy')
     expect(v.embed_code).to eq('embed code')
+    expect(v.preview_image_url).to eq(
+      "#{S3_BUCKET_URL}/#{CW_FILES_PREFIX}key_visualizations/images/image.png"
+    )
     expect(v.image_download_url).to eq('image download url')
     expect(v.data_download_url).to eq('data download url')
     expect(v.blog_link).to eq('blog link')
     expect(v.created_date).to eq(Date.new(2020, 10, 22))
     expect(v.last_updated_date).to eq(Date.new(2020, 10, 22))
+
+    v2 = KeyVisualization.find_by(order: 2)
+
+    expect(v2.preview_image_url).to eq('https://example.com/image.png')
   end
 end

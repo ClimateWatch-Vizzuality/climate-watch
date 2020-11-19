@@ -12,6 +12,8 @@ import Sticky from 'react-stickynode';
 import Button from 'components/button';
 import Loading from 'components/loading';
 import NdcTranslationDisclaimer from 'components/ndcs/ndc-translation-disclaimer';
+import { SEO_PAGES } from 'data/seo';
+import SEOTags from 'components/seo-tags';
 
 import { isR2LWrittedLanguage } from 'utils';
 
@@ -69,6 +71,12 @@ class NDCCountryFull extends PureComponent {
     } = this.props;
     return (
       <div className={styles.page}>
+        <SEOTags
+          page={SEO_PAGES.ndcFull}
+          dynamicTitlePart={country.wri_standard_name}
+          countryName={country.wri_standard_name}
+          href={location.href}
+        />
         <Header route={route}>
           <div className={cx(layout.content, styles.header, styles.twoFold)}>
             <div className={styles.title}>

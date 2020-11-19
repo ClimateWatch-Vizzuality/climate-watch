@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 import SimpleTable from 'components/simple-table';
 import SideNavigation from 'components/side-navigation';
+import { SEO_PAGES } from 'data/seo';
+import SEOTags from 'components/seo-tags';
 
 import styles from './about-faq-styles.scss';
 
@@ -51,9 +53,11 @@ const renderAnswer = (type, answer, tableData) => {
 const FaqComponent = ({
   sections,
   sideNavigationSections,
-  selectedSectionSlug
+  selectedSectionSlug,
+  location
 }) => (
   <div className={styles.container}>
+    <SEOTags page={SEO_PAGES.aboutFAQ} href={location.href} />
     <SideNavigation
       sections={sideNavigationSections}
       selectedSection={selectedSectionSlug}
@@ -80,7 +84,8 @@ replaceNavLink.propTypes = {
 FaqComponent.propTypes = {
   sections: PropTypes.arrayOf(PropTypes.shape({})),
   sideNavigationSections: PropTypes.arrayOf(PropTypes.shape({})),
-  selectedSectionSlug: PropTypes.string
+  selectedSectionSlug: PropTypes.string,
+  location: PropTypes.object
 };
 
 export default FaqComponent;
