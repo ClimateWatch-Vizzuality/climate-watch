@@ -53,22 +53,26 @@ const API_CALLS = {
         {
           name: 'data_sources',
           parameter: 'source_ids[]',
-          description: 'view data source id at https://www.climatewatchdata.org/api/v1/data/historical_emissions/data_sources'
+          description:
+            'view data source id at https://www.climatewatchdata.org/api/v1/data/historical_emissions/data_sources'
         },
         {
           name: 'gases',
           parameter: 'gas_ids[]',
-          description: 'vieiw gas id at https://www.climatewatchdata.org/api/v1/data/historical_emissions/gases'
+          description:
+            'view gas id at https://www.climatewatchdata.org/api/v1/data/historical_emissions/gases'
         },
         {
           name: 'sectors',
           parameter: 'sector_ids[]',
-          description: 'vieiw sector id at https://www.climatewatchdata.org/api/v1/data/historical_emissions/sectors'
+          description:
+            'view sector id at https://www.climatewatchdata.org/api/v1/data/historical_emissions/sectors'
         },
         {
           name: 'regions',
           parameter: 'regions[]',
-          description: 'region ISO code 3 (ISO Codes for World and European Union (27) are WORLD and EUU, respectively)'
+          description:
+            'region ISO code 3 (ISO Codes for World and European Union (27) are WORLD and EUU, respectively)'
         },
         startYearParam,
         endYearParam,
@@ -93,27 +97,32 @@ const API_CALLS = {
         {
           name: 'models',
           parameter: 'model_ids[]',
-          description: 'view model id at https://data.emissionspathways.org/api/v1/data/emission_pathways/models'
+          description:
+            'view model id at https://data.emissionspathways.org/api/v1/data/emission_pathways/models'
         },
         {
           name: 'scenarios',
           parameter: 'scenario_ids[]',
-          description: 'view scenario id at https://data.emissionspathways.org/api/v1/data/emission_pathways/scenarios'
+          description:
+            'view scenario id at https://data.emissionspathways.org/api/v1/data/emission_pathways/scenarios'
         },
         {
           name: 'categories',
           parameter: 'category_ids[]',
-          description: 'view category id at https://data.emissionspathways.org/api/v1/data/emission_pathways/categories'
+          description:
+            'view category id at https://data.emissionspathways.org/api/v1/data/emission_pathways/categories'
         },
         {
           name: 'indicators',
           parameter: 'indicator_ids[]',
-          description: 'view indicator id at https://data.emissionspathways.org/api/v1/data/emission_pathways/indicators'
+          description:
+            'view indicator id at https://data.emissionspathways.org/api/v1/data/emission_pathways/indicators'
         },
         {
           name: 'locations',
           parameter: 'location_ids[]',
-          description: 'view location id at https://data.emissionspathways.org/api/v1/data/emission_pathways/locations'
+          description:
+            'view location id at https://data.emissionspathways.org/api/v1/data/emission_pathways/locations'
         },
         startYearParam,
         endYearParam,
@@ -141,17 +150,20 @@ const API_CALLS = {
         {
           name: 'goals',
           parameter: 'goal_ids[]',
-          description: 'view goal id at https://www.climatewatchdata.org/api/v1/data/ndc_sdg/goals'
+          description:
+            'view goal id at https://www.climatewatchdata.org/api/v1/data/ndc_sdg/goals'
         },
         {
           name: 'targets',
           parameter: 'target_ids[]',
-          description: 'view target id at https://www.climatewatchdata.org/api/v1/data/ndc_sdg/targets'
+          description:
+            'view target id at https://www.climatewatchdata.org/api/v1/data/ndc_sdg/targets'
         },
         {
           name: 'sectors',
           parameter: 'sector_ids[]',
-          description: 'view sector id at https://www.climatewatchdata.org/api/v1/data/ndc_sdg/sectors'
+          description:
+            'view sector id at https://www.climatewatchdata.org/api/v1/data/ndc_sdg/sectors'
         },
         countriesParam,
         sortColumnParam,
@@ -176,22 +188,26 @@ const API_CALLS = {
         {
           name: 'data_sources',
           parameter: 'source_ids[]',
-          description: 'view source id at https://www.climatewatchdata.org/api/v1/data/ndc_content/data_sources'
+          description:
+            'view source id at https://www.climatewatchdata.org/api/v1/data/ndc_content/data_sources'
         },
         {
           name: 'indicators',
           parameter: 'indicator_ids[]',
-          description: 'view indicator id at https://www.climatewatchdata.org/api/v1/data/ndc_content/indicators'
+          description:
+            'view indicator id at https://www.climatewatchdata.org/api/v1/data/ndc_content/indicators'
         },
         {
           name: 'categories',
           parameter: 'category_ids[]',
-          description: 'view category id at https://www.climatewatchdata.org/api/v1/data/ndc_content/categories'
+          description:
+            'view category id at https://www.climatewatchdata.org/api/v1/data/ndc_content/categories'
         },
         {
           name: 'sectors',
           parameter: 'sector_ids[]',
-          description: 'view sector id at https://www.climatewatchdata.org/api/v1/data/ndc_content/sectors'
+          description:
+            'view sector id at https://www.climatewatchdata.org/api/v1/data/ndc_content/sectors'
         },
         sortColumnParam,
         sortDirectionParam
@@ -215,22 +231,26 @@ const API_CALLS = {
         {
           name: 'data_sources',
           parameter: 'source_ids[]',
-          description: 'view source id at https://www.climatewatchdata.org/api/v1/data/lts_content/data_sources'
+          description:
+            'view source id at https://www.climatewatchdata.org/api/v1/data/lts_content/data_sources'
         },
         {
           name: 'indicators',
           parameter: 'indicator_ids[]',
-          description: 'view indicator id at https://www.climatewatchdata.org/api/v1/data/lts_content/indicators'
+          description:
+            'view indicator id at https://www.climatewatchdata.org/api/v1/data/lts_content/indicators'
         },
         {
           name: 'category',
           parameter: 'category_ids[]',
-          description: 'view category id at https://www.climatewatchdata.org/api/v1/data/lts_content/categories'
+          description:
+            'view category id at https://www.climatewatchdata.org/api/v1/data/lts_content/categories'
         },
         {
           name: 'sectors',
           parameter: 'sector_ids[]',
-          description: 'view sector id at https://www.climatewatchdata.org/api/v1/data/lts_content/sectors'
+          description:
+            'view sector id at https://www.climatewatchdata.org/api/v1/data/lts_content/sectors'
         },
         sortColumnParam,
         sortDirectionParam
