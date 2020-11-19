@@ -260,40 +260,28 @@ const API_CALLS = {
   ],
   'net-zero-content': [
     {
-      title: 'GET /api/v1/data/nz_content/meta',
-      url: `${CW_API}/data/nz_content/meta`,
+      title: 'GET /api/v1/data/net_zero_content/meta',
+      url: `${CW_API}/data/net_zero_content/meta`,
       description: linkHeaderDescription,
       extra: linkHeaderExtra
     },
     {
-      title: 'GET /api/v1/data/nz_content',
-      url: `${CW_API}/data/nz_content`,
-      description: 'Retrieves time series data for Net Zero content',
+      title: 'GET /api/v1/data/net_zero_content',
+      url: `${CW_API}/data/net_zero_content`,
+      description: 'Retrieves data for Net Zero content',
       queryParams: [
         countriesParam,
-        {
-          name: 'data_sources',
-          parameter: 'source_ids[]',
-          description:
-            'view source id at https://www.climatewatchdata.org/api/v1/data/nz_content/data_sources'
-        },
         {
           name: 'indicators',
           parameter: 'indicator_ids[]',
           description:
-            'view indicator id at https://www.climatewatchdata.org/api/v1/data/nz_content/indicators'
+            'view indicator id at https://www.climatewatchdata.org/api/v1/data/net_zero_content/indicators'
         },
         {
           name: 'category',
           parameter: 'category_ids[]',
           description:
-            'view category id at https://www.climatewatchdata.org/api/v1/data/nz_content/categories'
-        },
-        {
-          name: 'sectors',
-          parameter: 'sector_ids[]',
-          description:
-            'view sector id at https://www.climatewatchdata.org/api/v1/data/nz_content/sectors'
+            'view category id at https://www.climatewatchdata.org/api/v1/data/net_zero_content/categories'
         },
         sortColumnParam,
         sortDirectionParam

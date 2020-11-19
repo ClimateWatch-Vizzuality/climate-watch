@@ -1,20 +1,20 @@
 require 'rails_helper'
 
-RSpec.describe Api::V1::Data::LtsContentController, type: :controller do
-  include_context 'LTS values'
+RSpec.describe Api::V1::Data::NetZeroContentController, type: :controller do
+  include_context 'Net Zero values'
 
   before(:each) do
     Indc::SearchableValue.refresh
   end
 
   describe 'GET index' do
-    it 'renders LTS values' do
+    it 'renders Net Zero values' do
       get :index, params: {
         countries: [spain.iso_code3],
-        source_ids: [lts.id],
-        indicator_ids: [ghg_target_type.id],
+        source_ids: [net_zero.id],
+        indicator_ids: [nz_ghg.id],
         category_ids: [overview.id],
-        label_ids: [baseline_scenario_target.id]
+        label_ids: [ghg_coverage_label.id]
       }
       expect(@response).to match_response_schema('ndc_content')
     end
@@ -24,7 +24,7 @@ RSpec.describe Api::V1::Data::LtsContentController, type: :controller do
         sort_col: 'indicator_name', sort_dir: 'ASC'
       }
       records = JSON.parse(@response.body)['data']
-      expect(records.first['indicator_name']).to eq(ghg_target_type.name)
+      expect(records.first['indicator_name']).to eq(nz_ghg.name)
     end
 
     it 'sorts by indicator descending' do
@@ -32,7 +32,7 @@ RSpec.describe Api::V1::Data::LtsContentController, type: :controller do
         sort_col: 'indicator_name', sort_dir: 'DESC'
       }
       records = JSON.parse(@response.body)['data']
-      expect(records.first['indicator_name']).to eq(sectoral_targets_on.name)
+      expect(records.first['indicator_name']).to eq(nz_status.name)
     end
 
     it 'sets pagination headers' do
@@ -46,7 +46,7 @@ RSpec.describe Api::V1::Data::LtsContentController, type: :controller do
       get :download
       expect(response.content_type).to eq('application/zip')
       expect(response.headers['Content-Disposition']).
-        to eq('attachment; filename="lts_content.zip"')
+        to eq('attachment; filename="net_zero_content.zip"')
     end
   end
 
