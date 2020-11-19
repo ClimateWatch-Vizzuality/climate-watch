@@ -22,7 +22,7 @@ const fetchNetZero = createThunkAction(
       dispatch(fetchNetZeroInit());
       Promise.all([
         apiWithCache.get('/api/v1/ndcs?source=ECIU&filter=map'),
-        apiWithCache.get('/api/v1/ndcs?indicators=ndce_ghg')
+        apiWithCache.get('/api/v1/ndcs?indicators=ndce_ghg,nz_source')
       ])
         .then(responses => {
           if (!responses[0].data) throw Error(responses[0].statusText);
