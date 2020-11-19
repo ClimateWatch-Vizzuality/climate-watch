@@ -41,7 +41,7 @@ const renderButtonGroup = (clickHandler, downloadLink, stickyStatus) => (
         },
         {
           type: 'download',
-          section: 'net-zero',
+          section: 'net-zero-content',
           link: downloadLink
         },
         {
