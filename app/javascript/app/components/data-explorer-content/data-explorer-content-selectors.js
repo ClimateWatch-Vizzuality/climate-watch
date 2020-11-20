@@ -290,7 +290,12 @@ const parseQuery = (filterQuery, section, sectionMeta, nonColumnQuery) => {
 };
 
 const parseSlugParams = (filterQuery, section, sectionMeta) => {
-  const SLUG_SECTIONS = ['historical-emissions', 'lts-content', 'ndc-content'];
+  const SLUG_SECTIONS = [
+    'historical-emissions',
+    'lts-content',
+    'ndc-content',
+    'net-zero-content'
+  ];
   if (SLUG_SECTIONS.includes(section)) {
     const slugFilterQuery =
       filterQuery &&

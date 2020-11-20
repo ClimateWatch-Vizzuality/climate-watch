@@ -5,12 +5,12 @@ module Api
         class ZippedDownload
           attr_reader :filename
 
-          def initialize(filter)
+          def initialize(filter, filename: 'ndc_content')
             @filter = filter
             @metadata_filter = Api::V1::Data::Metadata::Filter.new(
               source_names: %w(ndc_cait ndc_wb ndc_die)
             )
-            @filename = 'ndc_content'
+            @filename = filename
             @metadata_filename = 'sources.csv'
           end
 

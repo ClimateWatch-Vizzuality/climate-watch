@@ -4,6 +4,10 @@ module Api
       class LtsContentController < Api::V1::Data::NdcContentController
         private
 
+        def zip_filename
+          'lts_content'
+        end
+
         def link_prefix
           '/api/v1/data/lts_content/'
         end

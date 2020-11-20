@@ -42,8 +42,6 @@ export const FIRST_TABLE_HEADERS = {
     'categories', // remove when it's splitted into global and overview category
     'global_category',
     'overview_category',
-    'sector',
-    'subsector',
     'indicator',
     'value',
     'source',
@@ -95,7 +93,6 @@ export const FILTER_DEFAULTS = {
   'net-zero-content': {
     categories: 'Target Description',
     indicators: ALL_SELECTED,
-    sectors: ALL_SELECTED,
     countries: ALL_SELECTED
   },
   'ndc-sdg-linkages': {
@@ -140,7 +137,7 @@ export const DATA_EXPLORER_SECTIONS = {
     linkName: 'lts-explore'
   },
   'net-zero-content': {
-    label: 'net-zero_content',
+    label: 'net_zero_content',
     moduleName: 'net-zero-tracker',
     linkLabel: 'net-zero-tracker',
     linkName: 'net-zero-tracker'
@@ -183,7 +180,7 @@ export const DATA_EXPLORER_FILTERS = {
   ],
   'ndc-content': ['categories', 'indicators', 'sectors', 'countries'], // TODO: add focus when ready
   'lts-content': ['categories', 'indicators', 'sectors', 'countries'], // TODO: add focus when ready
-  'net-zero-content': ['categories', 'indicators', 'sectors', 'countries'] // TODO: add focus when ready
+  'net-zero-content': ['categories', 'indicators', 'countries'] // TODO: add focus when ready
 };
 
 // The dropdown named as the keys will be deleted if one of the values column changes
@@ -248,9 +245,6 @@ export const DATA_EXPLORER_TO_MODULES_PARAMS = {
     }
   },
   'net-zero-content': {
-    sectors: {
-      key: 'sectors'
-    },
     categories: {
       key: 'category'
     },
@@ -306,9 +300,6 @@ export const MULTIPLE_LEVEL_SECTION_FIELDS = {
     }
   ],
   'net-zero-content': [
-    {
-      key: 'sectors'
-    },
     {
       key: 'categories'
     }

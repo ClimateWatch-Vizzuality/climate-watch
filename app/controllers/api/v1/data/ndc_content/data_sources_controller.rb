@@ -13,7 +13,7 @@ module Api
           private
 
           def data_sources
-            ::Indc::Source.non_lts
+            ::Indc::Source.ndc
           end
         end
       end
