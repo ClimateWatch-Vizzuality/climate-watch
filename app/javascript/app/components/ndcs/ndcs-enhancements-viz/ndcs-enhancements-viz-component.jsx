@@ -16,8 +16,8 @@ const renderButtonGroup = (clickHandler, downloadLink) => (
     <div>
       <p>
         <em>
-          Explore the data to track which countries have signaled they will
-          update or enhance their national climate commitments (NDCs) by 2020.
+          Track which countries are
+          updating or enhancing their national climate commitments in 2020 or in the lead up to COP26.
           To request changes or additions, please contact &nbsp;
           <a
             href="mailto:Rhys.Gerholdt@wri.org?subject=2020 NDC Tracker Update"
