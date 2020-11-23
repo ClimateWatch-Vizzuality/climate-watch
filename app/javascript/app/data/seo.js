@@ -3,7 +3,7 @@ export const SEO_PAGES = {
   home: 'home',
   ndc2020: 'ndc2020',
   ndcContent: 'ndcContent',
-  ndcEnhancements: 'ndcEnhancements',
+  sector: 'sector',
   ndcSearch: 'ndcSearch',
   ndcOverview: 'ndcOverview',
   ndcCompareAll: 'ndcCompareAll',
@@ -12,6 +12,7 @@ export const SEO_PAGES = {
   ltsExplore: 'ltsExplore',
   netZero: 'netZero',
   country: 'country',
+  compare: 'compare',
   ndcCountry: 'ndcCountry',
   ltsCountry: 'ltsCountry',
   ndcSdg: 'ndcSdg',
@@ -26,10 +27,39 @@ export const SEO_PAGES = {
   dataExplorer: 'dataExplorer'
 };
 
+export const CANONICAL_URLS = {
+  home: '',
+  country: 'countries',
+  compare: 'countries/compare',
+  sector: 'sectors',
+  ndcOverview: 'ndc-overview',
+  ndcsExplore: 'ndc-explore',
+  ltsExplore: 'lts-explore',
+  ndc2020: '2020-ndc-tracker',
+  ndcCompareAll: 'compare-all-targets',
+  ndcContent: 'ndc-content',
+  ndcCountry: 'ndcs/country',
+  ltsCountry: 'lts/country',
+  ndcCustomCompare: 'custom-compare',
+  ndcSearch: 'ndc-search',
+  netZero: 'net-zero-explore',
+  ndcSdg: 'ndcs-sdg',
+  ghg: 'ghg-emissions',
+  pathways: 'pathways',
+  about: 'about',
+  aboutPartners: 'about/partners',
+  aboutPermissions: 'about/permissions',
+  aboutContact: 'about/contact',
+  aboutFAQ: 'about/faq',
+  myCW: 'my-climate-watch',
+  dataExplorer: 'data-explorer'
+};
+
 export const STATIC_TITLE_PARTS = {
   [SEO_PAGES.home]:
     'Climate Watch - Climate Data for Action - GHG, NDCs, LTS, Net-Zero Data',
   [SEO_PAGES.country]: 'Climate Change Country Profile',
+  [SEO_PAGES.compare]: 'Climate Change Country Profile Compare',
   [SEO_PAGES.sector]: 'Climate Change Profile',
   [SEO_PAGES.ndcOverview]: 'NDCs, LTS, Net-Zero Overview',
   [SEO_PAGES.ndcsExplore]:
@@ -64,6 +94,8 @@ export const getDescription = ({ page, countryName = '' }) => {
     [SEO_PAGES.sector]:
       'Explore sectoral profiles, global and by country, for historical and projected emissions, overview of sectoral measures included in Nationally Determined Contributions (NDC), and more',
     [SEO_PAGES.country]:
+      "Snapshots of countries' climate progress, including historical and projected emissions, their Nationally Determined Contribution (NDC), risks and vulnerability to climate change, and linkages between NDCs and the Sustainable Development Goals (SDGs).",
+    [SEO_PAGES.compare]:
       "Snapshots of countries' climate progress, including historical and projected emissions, their Nationally Determined Contribution (NDC), risks and vulnerability to climate change, and linkages between NDCs and the Sustainable Development Goals (SDGs).",
     [SEO_PAGES.ndcContent]:
       'Analyze and compare every national climate pledge (Nationally Determined Contribution – or NDC) under the Paris Agreement, with the ability to search key words and see summaries by topic across all.',
