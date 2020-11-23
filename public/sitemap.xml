@@ -4013,22 +4013,27 @@
     <priority>1</priority>
   </url>
   <url>
-    <loc>https://www.climatewatchdata.org/ndcs/custom-compare</loc>
+    <loc>https://www.climatewatchdata.org/custom-compare</loc>
     <changefreq>weekly</changefreq>
     <priority>1</priority>
   </url>
   <url>
-    <loc>https://www.climatewatchdata.org/ndcs/custom-compare/mitigation</loc>
+    <loc>https://www.climatewatchdata.org/custom-compare/mitigation</loc>
     <changefreq>weekly</changefreq>
     <priority>1</priority>
   </url>
   <url>
-    <loc>https://www.climatewatchdata.org/ndcs/custom-compare/adaptation</loc>
+    <loc>https://www.climatewatchdata.org/custom-compare/adaptation</loc>
     <changefreq>weekly</changefreq>
     <priority>1</priority>
   </url>
   <url>
-    <loc>https://www.climatewatchdata.org/ndcs/custom-compare/sectoral-information</loc>
+    <loc>https://www.climatewatchdata.org/custom-compare/sectoral-information</loc>
+    <changefreq>weekly</changefreq>
+    <priority>1</priority>
+  </url>
+  <url>
+    <loc>https://www.climatewatchdata.org/net-zero-explore/</loc>
     <changefreq>weekly</changefreq>
     <priority>1</priority>
   </url>

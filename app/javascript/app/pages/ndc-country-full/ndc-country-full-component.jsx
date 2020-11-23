@@ -76,6 +76,7 @@ class NDCCountryFull extends PureComponent {
           dynamicTitlePart={country.wri_standard_name}
           countryName={country.wri_standard_name}
           href={location.href}
+          canonicalAttribute={country.iso}
         />
         <Header route={route}>
           <div className={cx(layout.content, styles.header, styles.twoFold)}>

@@ -133,6 +133,7 @@ const CustomComparisonComponent = props => {
         page={SEO_PAGES.ndcCustomCompare}
         href={location.href}
         dynamicTitlePart={countryNames}
+        canonicalAttribute={location.search}
       />
       <Header route={route}>
         <div className={cx(layout.content, styles.header)}>
