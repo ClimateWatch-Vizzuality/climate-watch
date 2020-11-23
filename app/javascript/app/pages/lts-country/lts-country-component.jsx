@@ -101,6 +101,7 @@ class LTSCountry extends PureComponent {
           dynamicTitlePart={countryName}
           countryName={countryName}
           href={location.href}
+          canonicalAttribute={country && country.iso_code3}
         />
         {country && (
           <Header route={route}>

@@ -20,7 +20,11 @@ class NdcSdg extends PureComponent {
     const { route, location, isOpen } = this.props;
     return (
       <div className={cx(styles.bg, { [styles.bgOpen]: isOpen })}>
-        <SEOTags page={SEO_PAGES.ndcSdg} href={location.href} />
+        <SEOTags
+          page={SEO_PAGES.ndcSdg}
+          href={location.href}
+          canonicalAttribute={location.search}
+        />
         <NdcsSdgsMetaProvider />
         {!isPageContained && (
           <Header
