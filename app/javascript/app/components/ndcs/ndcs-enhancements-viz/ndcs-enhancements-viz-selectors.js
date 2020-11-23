@@ -214,7 +214,7 @@ export const summarizeIndicators = createSelector(
             ),
             suffix: '%',
             label:
-              'of global emissions are represented by these countries (2014 emissions data)'
+              'of global emissions are represented by these countries (2016 emissions data)'
           }
         }
       };
@@ -247,15 +247,15 @@ export const summarizeIndicators = createSelector(
           case 'enhance_2020':
             return `<strong>countr${
               count === 1 ? 'y has' : 'ies have'
-            } stated their intention to <span title="Definition: Strengthening mitigation ambition and/or increasing adaptation action in the 2020 NDC.">enhance ambition or action</span> in an NDC by 2020`;
+            } stated their intention to <span title="Definition: Strengthening mitigation ambition and/or increasing adaptation action in a new or updated NDC.">enhance ambition or action</span> in new or updated NDC`;
           case 'intend_2020':
             return `<strong>countr${
               count === 1 ? 'y has' : 'ies have'
-            } stated their intention to <span title="Definition: Includes providing information to improve the clarity of the NDC or on measures to implement the current NDC.">update</span> an NDC by 2020`;
+            } stated their intention to <span title="Definition: Includes providing information to improve the clarity of the NDC or on measures to implement the current NDC.">update</span> a new or updated NDC`;
           case 'submitted_2020':
             return `<strong>countr${
               count === 1 ? 'y has' : 'ies have'
-            } submitted a 2020 NDC`;
+            } submitted a new or updated NDC`;
           default:
             return `<strong>countr${count === 1 ? 'y' : 'ies'}`;
         }
@@ -266,7 +266,7 @@ export const summarizeIndicators = createSelector(
       }
       summaryData[
         type
-      ].countries.opts.label += `</strong>, representing <span title="2014 emissions data">${summaryData[type].emissions.value}% of global emissions</span>`;
+      ].countries.opts.label += `</strong>, representing <span title="2016 emissions data">${summaryData[type].emissions.value}% of global emissions</span>`;
     });
     return summaryData;
   }
