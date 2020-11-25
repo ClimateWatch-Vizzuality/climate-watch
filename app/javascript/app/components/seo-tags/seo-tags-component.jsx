@@ -2,9 +2,20 @@ import React, { memo } from 'react';
 import { Helmet } from 'react-helmet';
 import PropTypes from 'prop-types';
 
-import { STATIC_TITLE_PARTS, CANONICAL_URLS, getDescription } from 'data/seo';
+import {
+  STATIC_TITLE_PARTS,
+  CANONICAL_URLS,
+  SEO_PAGES,
+  getDescription
+} from 'data/seo';
 
-const SEOTags = ({ dynamicTitlePart = '', href, page, countryName, canonicalAttribute }) => {
+const SEOTags = ({
+  dynamicTitlePart = '',
+  href,
+  page,
+  countryName,
+  canonicalAttribute
+}) => {
   if (!STATIC_TITLE_PARTS[page]) {
     console.warn('Missing page SEO title. Check SEO.js');
   }
@@ -55,10 +66,12 @@ const SEOTags = ({ dynamicTitlePart = '', href, page, countryName, canonicalAttr
         }
       ]}
     >
-      {canonicalUrl && (
+      {(canonicalUrl || page === SEO_PAGES.home) && (
         <link
           rel="canonical"
-          href={`https://www.climatewatchdata.org/${canonicalUrl}${canonicalAttribute ? `/${canonicalAttribute}` : ''}`}
+          href={`https://www.climatewatchdata.org${canonicalUrl}${
+            canonicalAttribute ? `/${canonicalAttribute}` : ''
+          }`}
         />
       )}
     </Helmet>
