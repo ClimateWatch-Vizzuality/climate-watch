@@ -71,13 +71,15 @@ class NDCCountryFull extends PureComponent {
     } = this.props;
     return (
       <div className={styles.page}>
-        <SEOTags
-          page={SEO_PAGES.ndcFull}
-          dynamicTitlePart={country.wri_standard_name}
-          countryName={country.wri_standard_name}
-          href={location.href}
-          canonicalAttribute={country.iso}
-        />
+        {country && (
+          <SEOTags
+            page={SEO_PAGES.ndcFull}
+            dynamicTitlePart={country.wri_standard_name}
+            countryName={country.wri_standard_name}
+            href={location.href}
+            canonicalAttribute={`${country.iso_code3}/full?document=${search.document}`}
+          />
+        )}
         <Header route={route}>
           <div className={cx(layout.content, styles.header, styles.twoFold)}>
             <div className={styles.title}>
