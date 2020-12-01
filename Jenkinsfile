@@ -47,9 +47,9 @@ node {
     }
 
     stage ('Run Tests') {
-      //  sh('docker-compose -H :2375 -f docker-compose-test.yml build')
-      //  sh('docker-compose -H :2375 -f docker-compose-test.yml run --rm test')
-      //  sh('docker-compose -H :2375 -f docker-compose-test.yml stop')
+    //  sh('docker-compose -H :2375 -f docker-compose-test.yml build')
+    //  sh('docker-compose -H :2375 -f docker-compose-test.yml run --rm test')
+    //  sh('docker-compose -H :2375 -f docker-compose-test.yml stop')
     }
 
     stage('Push Docker') {
@@ -83,16 +83,16 @@ node {
               userInput = input(
                 id: 'Proceed1', message: 'Confirm deployment', parameters: [
                 [$class: 'BooleanParameterDefinition', defaultValue: true, description: '', name: 'Please confirm you agree with this deployment']
-            ])
+              ])
             }
           }
           catch(err) { // timeout reached or input false
-            sh("echo Aborted by user or timeout")
-            if('SYSTEM' == user.toString()) { // SYSTEM means timeout.
-              didTimeout = true
-            } else {
-              userInput = false
-            }
+              sh("echo Aborted by user or timeout")
+              if('SYSTEM' == user.toString()) { // SYSTEM means timeout.
+                  didTimeout = true
+              } else {
+                  userInput = false
+              }
           }
           if (userInput == true && !didTimeout){
             sh("echo Deploying to PROD app")
