@@ -4,8 +4,6 @@ import PropTypes from 'prop-types';
 import Header from 'components/header';
 import Intro from 'components/intro';
 import KeyVisualizationsTable from 'components/key-visualizations/key-visualizations-table';
-import { MetaDescription, SocialMetadata } from 'components/seo/seo';
-import { KEY_VISUALIZATIONS } from 'data/SEO';
 import { isPageContained } from 'utils/navigation';
 
 import layout from 'styles/layout.scss';
@@ -17,14 +15,6 @@ class KeyVisualizations extends PureComponent {
 
     return (
       <div>
-        <MetaDescription
-          descriptionContext={KEY_VISUALIZATIONS}
-          subtitle="Key Visualizations"
-        />
-        <SocialMetadata
-          descriptionContext={KEY_VISUALIZATIONS}
-          href={location.href}
-        />
         {!isPageContained && (
           <Header route={route}>
             <div className={cx(layout.content, styles.header)}>
