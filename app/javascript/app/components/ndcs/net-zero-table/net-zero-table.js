@@ -5,7 +5,6 @@ import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
 import qs from 'query-string';
 import { getLocationParamUpdated } from 'utils/navigation';
-import { setColumnWidth } from 'utils/table';
 
 import Component from './net-zero-table-component';
 
@@ -13,8 +12,7 @@ import {
   getISOCountries,
   removeIsoFromData,
   getDefaultColumns,
-  getTitleLinks,
-  getExtraColumn
+  getTitleLinks
 } from './net-zero-table-selectors';
 
 const mapStateToProps = (state, { location }) => {
@@ -39,8 +37,7 @@ const mapStateToProps = (state, { location }) => {
     isoCountries: getISOCountries(NetZeroWithSelection),
     tableData: removeIsoFromData(NetZeroWithSelection),
     columns: getDefaultColumns(NetZeroWithSelection),
-    titleLinks: getTitleLinks(NetZeroWithSelection),
-    extraColumn: getExtraColumn(NetZeroWithSelection)
+    titleLinks: getTitleLinks(NetZeroWithSelection)
   };
 };
 
@@ -49,19 +46,6 @@ class NetZeroTableContainer extends PureComponent {
     super(props);
     this.state = {};
   }
-
-  setColumnWidth = column => {
-    const { extraColumn } = this.props;
-    return setColumnWidth({
-      column,
-      columns: this.props.columns,
-      tableWidth: 1100,
-      narrowColumnWidth: extraColumn ? 100 : 120,
-      wideColumnWidth: extraColumn ? 290 : 400,
-      narrowColumns: extraColumn ? [0, 4, 5] : [0, 3, 4],
-      wideColumns: extraColumn ? [2] : [1]
-    });
-  };
 
   updateUrlParam(param, clear) {
     const { history, location } = this.props;
@@ -81,8 +65,7 @@ class NetZeroTableContainer extends PureComponent {
       ...this.props,
       noContentMsg,
       handleSearchChange: this.handleSearchChange,
-      tableData: this.props.tableData,
-      setColumnWidth: this.setColumnWidth
+      tableData: this.props.tableData
     });
   }
 }
@@ -91,9 +74,7 @@ NetZeroTableContainer.propTypes = {
   history: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
   tableData: PropTypes.array,
-  columns: PropTypes.array,
-  query: PropTypes.object,
-  extraColumn: PropTypes.string
+  query: PropTypes.object
 };
 
 export default withRouter(

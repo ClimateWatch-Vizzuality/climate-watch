@@ -17,7 +17,7 @@ module Api
           private
 
           def source
-            ::Indc::Source.non_lts
+            ::Indc::Source.ndc
           end
         end
       end

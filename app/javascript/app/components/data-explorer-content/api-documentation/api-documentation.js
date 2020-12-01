@@ -257,6 +257,37 @@ const API_CALLS = {
       ],
       extra: multipleValuesExtra
     }
+  ],
+  'net-zero-content': [
+    {
+      title: 'GET /api/v1/data/net_zero_content/meta',
+      url: `${CW_API}/data/net_zero_content/meta`,
+      description: linkHeaderDescription,
+      extra: linkHeaderExtra
+    },
+    {
+      title: 'GET /api/v1/data/net_zero_content',
+      url: `${CW_API}/data/net_zero_content`,
+      description: 'Retrieves data for Net Zero content',
+      queryParams: [
+        countriesParam,
+        {
+          name: 'indicators',
+          parameter: 'indicator_ids[]',
+          description:
+            'view indicator id at https://www.climatewatchdata.org/api/v1/data/net_zero_content/indicators'
+        },
+        {
+          name: 'category',
+          parameter: 'category_ids[]',
+          description:
+            'view category id at https://www.climatewatchdata.org/api/v1/data/net_zero_content/categories'
+        },
+        sortColumnParam,
+        sortDirectionParam
+      ],
+      extra: multipleValuesExtra
+    }
   ]
 };
 

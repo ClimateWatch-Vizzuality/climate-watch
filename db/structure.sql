@@ -5,22 +5,9 @@ SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SELECT pg_catalog.set_config('search_path', '', false);
 SET check_function_bodies = false;
+SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
-
---
--- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: -
---
-
-CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
-
-
---
--- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: -
---
-
-COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
-
 
 --
 -- Name: emissions_filter_by_year_range(jsonb, integer, integer); Type: FUNCTION; Schema: public; Owner: -
@@ -181,6 +168,42 @@ CREATE SEQUENCE public.adaptation_variables_id_seq
 --
 
 ALTER SEQUENCE public.adaptation_variables_id_seq OWNED BY public.adaptation_variables.id;
+
+
+--
+-- Name: admin_users; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.admin_users (
+    id bigint NOT NULL,
+    email character varying DEFAULT ''::character varying NOT NULL,
+    encrypted_password character varying DEFAULT ''::character varying NOT NULL,
+    reset_password_token character varying,
+    reset_password_sent_at timestamp without time zone,
+    remember_created_at timestamp without time zone,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    role character varying
+);
+
+
+--
+-- Name: admin_users_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.admin_users_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: admin_users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.admin_users_id_seq OWNED BY public.admin_users.id;
 
 
 --
@@ -1218,7 +1241,8 @@ CREATE TABLE public.key_visualizations (
     last_updated_date date NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    preview_image_url text
+    preview_image_url text,
+    data_sources character varying[] DEFAULT '{}'::character varying[]
 );
 
 
@@ -2168,6 +2192,13 @@ ALTER TABLE ONLY public.adaptation_variables ALTER COLUMN id SET DEFAULT nextval
 
 
 --
+-- Name: admin_users id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.admin_users ALTER COLUMN id SET DEFAULT nextval('public.admin_users_id_seq'::regclass);
+
+
+--
 -- Name: agriculture_profile_areas id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2647,6 +2678,14 @@ ALTER TABLE ONLY public.adaptation_values
 
 ALTER TABLE ONLY public.adaptation_variables
     ADD CONSTRAINT adaptation_variables_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: admin_users admin_users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.admin_users
+    ADD CONSTRAINT admin_users_pkey PRIMARY KEY (id);
 
 
 --
@@ -3168,6 +3207,20 @@ CREATE INDEX index_adaptation_values_on_variable_id ON public.adaptation_values 
 --
 
 CREATE UNIQUE INDEX index_adaptation_variables_on_slug ON public.adaptation_variables USING btree (slug);
+
+
+--
+-- Name: index_admin_users_on_email; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_admin_users_on_email ON public.admin_users USING btree (email);
+
+
+--
+-- Name: index_admin_users_on_reset_password_token; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_admin_users_on_reset_password_token ON public.admin_users USING btree (reset_password_token);
 
 
 --
@@ -4301,6 +4354,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180720105038'),
 ('20180803123629'),
 ('20180807150412'),
+('20180917120344'),
 ('20180918170821'),
 ('20180918170838'),
 ('20180924154438'),
@@ -4309,6 +4363,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180926092304'),
 ('20181002152649'),
 ('20181003090648'),
+('20181004091403'),
 ('20181009120234'),
 ('20181026095008'),
 ('20181114113643'),
@@ -4334,6 +4389,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200521120158'),
 ('20200818134235'),
 ('20201023101133'),
-('20201113113501');
+('20201113113501'),
+('20201119151517');
 
 

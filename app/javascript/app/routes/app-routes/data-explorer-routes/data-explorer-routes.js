@@ -2,6 +2,8 @@ import { createElement } from 'react';
 import DataExplorerContent from 'components/data-explorer-content';
 import { Redirect } from 'react-router-dom';
 
+const FEATURE_NET_ZERO = process.env.FEATURE_NET_ZERO === 'true';
+
 export default [
   {
     label: 'Data Explorer',
@@ -56,6 +58,16 @@ export default [
     component: () =>
       createElement(DataExplorerContent, {
         section: 'lts-content'
+      }),
+    anchor: true,
+    exact: true
+  },
+  FEATURE_NET_ZERO && {
+    label: 'Net Zero Content',
+    path: '/data-explorer/net-zero-content',
+    component: () =>
+      createElement(DataExplorerContent, {
+        section: 'net-zero-content'
       }),
     anchor: true,
     exact: true

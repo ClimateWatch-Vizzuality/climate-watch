@@ -11,6 +11,7 @@ import worldPaths from 'app/data/world-50m-paths';
 import { COUNTRY_STYLES } from 'components/ndcs/shared/constants';
 import { sortByIndexAndNotInfo, getLabels } from 'components/ndcs/shared/utils';
 import { europeSlug, europeanCountries } from 'app/data/european-countries';
+import { getIsShowEUCountriesChecked } from 'components/ndcs/shared/explore-map/explore-map-selectors';
 
 const NO_DOCUMENT_SUBMITTED = 'No Document Submitted';
 
@@ -21,11 +22,6 @@ const getIndicatorsData = state => state.indicators || null;
 const getZoom = state => state.map.zoom || null;
 export const getDonutActiveIndex = state =>
   state.exploreMap.activeIndex || null;
-
-export const getIsShowEUCountriesChecked = createSelector(
-  getSearch,
-  search => search.showEUCountries === 'true'
-);
 
 export const getCategories = createSelector(getCategoriesData, categories =>
   (!categories
