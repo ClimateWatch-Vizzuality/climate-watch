@@ -22,13 +22,13 @@ node {
   def user_report_key = 'cf0fa021-d239-457b-bb99-e9ab0205134c'
   def user_survey_spreadsheet = 'https://script.google.com/macros/s/AKfycbzgN1G9IdLYO3KqlTC4gzBxR1UTX5bYXu1qRaiRn1oD9qoaq6s/exec'
 
-  def feature_flags_env = '--build-arg FEATURE_POP_UP=true  --build-arg FEATURE_NET_ZERO=false'
+  def feature_flags_env = ''
 
   if (env.BRANCH_NAME == 'master') {
     cw_files_prefix = 'climatewatch.org/www.climatewatch.org/climate-watch/'
     user_report_key = '81f6ea43-5c9f-48e0-bdb2-56fc59aafbb4'
   } else {
-    feature_flags_env = feature_flags_env + ''
+    feature_flags_env = feature_flags_env + ' --build-arg FEATURE_POP_UP=false --build-arg FEATURE_NET_ZERO=true'
   }
 
   // env vars with build-arg
@@ -47,9 +47,9 @@ node {
     }
 
     stage ('Run Tests') {
-    //  sh('docker-compose -H :2375 -f docker-compose-test.yml build')
-    //  sh('docker-compose -H :2375 -f docker-compose-test.yml run --rm test')
-    //  sh('docker-compose -H :2375 -f docker-compose-test.yml stop')
+      //  sh('docker-compose -H :2375 -f docker-compose-test.yml build')
+      //  sh('docker-compose -H :2375 -f docker-compose-test.yml run --rm test')
+      //  sh('docker-compose -H :2375 -f docker-compose-test.yml stop')
     }
 
     stage('Push Docker') {
@@ -83,16 +83,16 @@ node {
               userInput = input(
                 id: 'Proceed1', message: 'Confirm deployment', parameters: [
                 [$class: 'BooleanParameterDefinition', defaultValue: true, description: '', name: 'Please confirm you agree with this deployment']
-              ])
+            ])
             }
           }
           catch(err) { // timeout reached or input false
-              sh("echo Aborted by user or timeout")
-              if('SYSTEM' == user.toString()) { // SYSTEM means timeout.
-                  didTimeout = true
-              } else {
-                  userInput = false
-              }
+            sh("echo Aborted by user or timeout")
+            if('SYSTEM' == user.toString()) { // SYSTEM means timeout.
+              didTimeout = true
+            } else {
+              userInput = false
+            }
           }
           if (userInput == true && !didTimeout){
             sh("echo Deploying to PROD app")
