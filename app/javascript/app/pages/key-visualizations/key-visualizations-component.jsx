@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import Header from 'components/header';
 import Intro from 'components/intro';
 import KeyVisualizationsTable from 'components/key-visualizations/key-visualizations-table';
+import SEOTags from 'components/seo-tags/seo-tags-component';
+import { SEO_PAGES } from 'data/seo';
 import { isPageContained } from 'utils/navigation';
 
 import layout from 'styles/layout.scss';
@@ -15,6 +17,7 @@ class KeyVisualizations extends PureComponent {
 
     return (
       <div>
+        <SEOTags href={location.href} page={SEO_PAGES.keyVisualizations} />
         {!isPageContained && (
           <Header route={route}>
             <div className={cx(layout.content, styles.header)}>
