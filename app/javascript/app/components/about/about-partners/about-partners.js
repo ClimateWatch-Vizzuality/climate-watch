@@ -1,4 +1,5 @@
 import { withProps } from 'recompose';
+import { withRouter } from 'react-router';
 
 import ndcImage from 'assets/partners/ndcp.png';
 import wriImage from 'assets/partners/wri.png';
@@ -258,4 +259,4 @@ const withSections = withProps(() => ({
   sections: [partnershipWith, techPartnership, additionalData, fundingBy]
 }));
 
-export default withSections(Component);
+export default withRouter(withSections(Component));

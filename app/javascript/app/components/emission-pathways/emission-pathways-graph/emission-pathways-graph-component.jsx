@@ -12,6 +12,8 @@ import Chart from 'components/charts/chart';
 import ModalShare from 'components/modal-share';
 import ShareButton from 'components/button/share-button';
 import { TabletLandscape, TabletPortraitOnly } from 'components/responsive';
+import { SEO_PAGES } from 'data/seo';
+import SEOTags from 'components/seo-tags';
 
 import layout from 'styles/layout.scss';
 import styles from './emission-pathways-graph-styles.scss';
@@ -64,9 +66,17 @@ class EmissionPathwayGraph extends PureComponent {
       filtersLoading.indicators ||
       filtersLoading.timeseries ||
       filtersLoading.models;
-
     return (
       <div className={styles.wrapper}>
+        <SEOTags
+          page={SEO_PAGES.pathways}
+          href={location.href}
+          dynamicTitlePart={
+            filtersSelected &&
+            filtersSelected.location &&
+            filtersSelected.location.label
+          }
+        />
         <div className={layout.content}>
           <EspModelsProvider />
           <EspScenariosProvider />

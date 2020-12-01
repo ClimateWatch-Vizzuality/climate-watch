@@ -4,22 +4,15 @@ import Header from 'components/header';
 import Intro from 'components/intro';
 import BackButton from 'components/back-button';
 import AutocompleteSearch from 'components/autocomplete-search';
-import { NDC_ENHANCEMENTS } from 'data/SEO';
-import { MetaDescription, SocialMetadata } from 'components/seo';
+import { SEO_PAGES } from 'data/seo';
+import SEOTags from 'components/seo-tags';
 
 import layout from 'styles/layout.scss';
 import styles from './ndcs-enhancements-styles.scss';
 
 const NDCSEnhancements = ({ route }) => (
   <div>
-    <MetaDescription
-      descriptionContext={NDC_ENHANCEMENTS}
-      subtitle="NDC ENHANCEMENTS"
-    />
-    <SocialMetadata
-      descriptionContext={NDC_ENHANCEMENTS}
-      href={location.href}
-    />
+    <SEOTags page={SEO_PAGES.ndc2020} href={location.href} />
     <Header route={route}>
       <div className={layout.content}>
         <div className="grid-column-item">

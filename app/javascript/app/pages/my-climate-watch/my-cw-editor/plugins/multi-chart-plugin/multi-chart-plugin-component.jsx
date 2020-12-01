@@ -21,7 +21,7 @@ class MultiChartPlugin extends PureComponent {
           })}
         >
           <div className={styles.titleRow}>
-            <h1 className={styles.title}>{title}</h1>
+            <h2 className={styles.title}>{title}</h2>
             <ul className={styles.tools}>
               <li>
                 <Button

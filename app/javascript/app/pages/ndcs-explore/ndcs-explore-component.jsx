@@ -4,8 +4,6 @@ import Proptypes from 'prop-types';
 import Header from 'components/header';
 import Button from 'components/button';
 import Intro from 'components/intro';
-import { NDCS_EXPLORE } from 'data/SEO';
-import { MetaDescription, SocialMetadata } from 'components/seo';
 import AutocompleteSearch from 'components/autocomplete-search';
 import ModalMetadata from 'components/modal-metadata';
 import ModalShare from 'components/modal-share';
@@ -16,11 +14,6 @@ import styles from './ndcs-explore-styles.scss';
 
 const NDCSExplore = ({ route }) => (
   <div>
-    <MetaDescription
-      descriptionContext={NDCS_EXPLORE}
-      subtitle="NDCS CONTENT"
-    />
-    <SocialMetadata descriptionContext={NDCS_EXPLORE} href={location.href} />
     {!isPageContained && (
       <Header route={route}>
         <div className={layout.content}>

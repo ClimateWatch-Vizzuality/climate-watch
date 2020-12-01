@@ -2,11 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import layout from 'styles/layout';
+import { SEO_PAGES } from 'data/seo';
+import SEOTags from 'components/seo-tags';
 
 import styles from './about-partners-styles.scss';
 
-const AboutPartners = ({ sections }) => (
+const AboutPartners = ({ sections, location }) => (
   <div>
+    <SEOTags page={SEO_PAGES.aboutPartners} href={location.href} />
     {sections.map(section => (
       <div key={section.title} className={styles.section}>
         <div className={layout.content}>
@@ -60,7 +63,8 @@ const AboutPartners = ({ sections }) => (
 );
 
 AboutPartners.propTypes = {
-  sections: PropTypes.array.isRequired
+  sections: PropTypes.array.isRequired,
+  location: PropTypes.object
 };
 
 export default AboutPartners;

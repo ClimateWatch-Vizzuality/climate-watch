@@ -350,3 +350,21 @@ export const getOptionsSelected = createStructuredSelector({
   calculationSelected: getCalculationSelected,
   chartTypeSelected: getChartTypeSelected
 });
+
+export const getDynamicSEOTitlePart = createSelector(
+  [getOptionsSelected],
+  selectedOptions => {
+    if (!selectedOptions) return '';
+    const regionLabels = selectedOptions.regionsSelected
+      ? selectedOptions.regionsSelected.map(r => r && r.label).join(', ')
+      : '';
+    const sectorsLabels = selectedOptions.sectorsSelected
+      ? selectedOptions.sectorsSelected.map(s => s && s.label).join(', ')
+      : '';
+    const calculationLabel = selectedOptions.calculationSelected
+      ? selectedOptions.calculationSelected.label
+      : '';
+    if (!regionLabels || !sectorsLabels || !calculationLabel) return '';
+    return [regionLabels, sectorsLabels, calculationLabel].join(', ');
+  }
+);
