@@ -115,7 +115,7 @@ function CountryNdcOverview(props) {
               <CardRow
                 rowData={{
                   title: 'Adaptation included',
-                  value: values.adaptation[0].value
+                  value: values.adaptation && values.adaptation[0].value
                 }}
                 theme={cardTheme}
               />
