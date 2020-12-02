@@ -2,8 +2,19 @@
 @import '~styles/ui-extends.scss';
 
 .previewContainer {
-  grid-column: 1 / 4;
   margin: 20px 15px;
+
+  @media #{$mobile-only} {
+    grid-column: 1;
+  }
+
+  @media #{$tablet-portrait} {
+    grid-column: 1 / span 2;
+  }
+
+  @media #{$tablet-landscape} {
+    grid-column: 1 / 4;
+  }
 }
 
 .previewHeader {
