@@ -86,7 +86,8 @@ export const STATIC_TITLE_PARTS = {
   [SEO_PAGES.aboutPermissions]: 'Permissions & Licensing',
   [SEO_PAGES.aboutFAQ]: 'Frequently Asked Questions',
   [SEO_PAGES.myCW]: 'My Climate Watch',
-  [SEO_PAGES.dataExplorer]: 'Data Explorer'
+  [SEO_PAGES.dataExplorer]: 'Data Explorer',
+  [SEO_PAGES.keyVisualizations]: 'Key Visualizations'
 };
 
 export const getDescription = ({ page, countryName = '' }) => {
