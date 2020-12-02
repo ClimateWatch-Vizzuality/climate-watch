@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import cx from 'classnames';
 import Icon from 'components/icon';
 import checkIcon from 'assets/icons/check.svg';
@@ -11,6 +12,9 @@ class KeyVisualizationCard extends PureComponent {
 
     const currentSelected = selected && selected.id === visualization.id;
     const selectedClass = currentSelected ? styles.cardSelected : '';
+    const formattedDate = moment(visualization.created_date).format(
+      'MMMM YYYY'
+    );
 
     return (
       <div
@@ -19,12 +23,17 @@ class KeyVisualizationCard extends PureComponent {
         className={cx(styles.keyVisualizationCard, selectedClass)}
         onClick={() => onCardClick(visualization, currentSelected)}
       >
-        <div className={styles.cardPreview}>&nbsp;</div>
+        <div className={styles.cardPreview}>
+          <img
+            src={visualization.preview_image_url}
+            alt={visualization.title}
+          />
+        </div>
         <div className={styles.cardCheck}>
           <Icon icon={checkIcon} />
         </div>
         <div className={styles.cardInfo}>
-          <div className={styles.cardInfoDate}>March 2019</div>
+          <div className={styles.cardInfoDate}>{formattedDate}</div>
           <div className={styles.cardInfoTitle}>{visualization.title}</div>
         </div>
       </div>
