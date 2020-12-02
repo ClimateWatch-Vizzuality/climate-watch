@@ -138,7 +138,7 @@ function CountryNdcOverview(props) {
               <CardRow
                 rowData={{
                   title: 'Sectors covered',
-                  value: values.coverage_sectors[0].value
+                  value: values && values.coverage_sectors[0].value
                 }}
               />
             </React.Fragment>
