@@ -12,6 +12,7 @@ FactoryBot.define do
 
     tags { %w(tag1 tag2) }
     geographies { %w(Poland UK Portugal Spain) }
+    data_sources { %w(source1 source2) }
 
     last_updated_date { 20.days.ago }
     created_date { 30.days.ago }

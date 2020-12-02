@@ -36,6 +36,7 @@ class SectorsAgriculture extends PureComponent {
         <SEOTags
           page={SEO_PAGES.sector}
           dynamicTitlePart={'Agriculture'}
+          canonicalAttribute={'agriculture'}
           href={location.href}
         />
         <Header route={route}>

@@ -6,21 +6,28 @@ import Waypoint from 'react-waypoint';
 import Header from 'components/header';
 import Intro from 'components/intro';
 import AnchorNav from 'components/anchor-nav';
+import SEOTags from 'components/seo-tags';
 import CountryCompareSelector from 'components/country-compare/country-compare-selector';
 import CountrySelectorFooter from 'components/country-selector-footer';
 import ModalMetadata from 'components/modal-metadata';
 import { isPageContained } from 'utils/navigation';
 import { STICKY_OFFSET } from 'styles/constants';
+import { SEO_PAGES } from 'data/seo';
 
 import layout from 'styles/layout.scss';
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
 import { TabletLandscape, Desktop } from 'components/responsive';
 import styles from './country-compare-styles.scss';
 
-const CountryCompare = ({ route, anchorLinks, setActiveSection }) => (
+const CountryCompare = ({ route, anchorLinks, setActiveSection, location }) => (
   <TabletLandscape>
     {isLandscape => (
       <div>
+        <SEOTags
+          page={SEO_PAGES.compare}
+          href={location.href}
+          canonicalAttribute={location.search}
+        />
         <Header route={route}>
           <div className={layout.content}>
             <Intro title={'Country Comparison'} />
@@ -76,7 +83,8 @@ const CountryCompare = ({ route, anchorLinks, setActiveSection }) => (
 CountryCompare.propTypes = {
   route: PropTypes.object.isRequired,
   anchorLinks: PropTypes.array.isRequired,
-  setActiveSection: PropTypes.func.isRequired
+  setActiveSection: PropTypes.func.isRequired,
+  location: PropTypes.object.isRequired
 };
 
 export default CountryCompare;

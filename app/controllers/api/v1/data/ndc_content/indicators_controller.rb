@@ -22,7 +22,7 @@ module Api
           private
 
           def source
-            ::Indc::Source.non_lts.pluck(:id)
+            ::Indc::Source.ndc.pluck(:id)
           end
 
           def link_prefix

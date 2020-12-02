@@ -1,4 +1,6 @@
 /* eslint-disable max-len */
+const FEATURE_NET_ZERO = process.env.FEATURE_NET_ZERO === 'true';
+
 export const commitmentsData = [
   {
     title: 'Climate commitments under the Paris Agreement',
@@ -68,7 +70,9 @@ export const commitmentsData = [
       {
         questionText: 'How many Parties have a net zero emission target?',
         answerLabel: ['In Policy Document', 'In Law'],
-        link: 'https://eciu.net/netzerotracker',
+        link: FEATURE_NET_ZERO
+          ? '/net-zero-tracker'
+          : 'https://eciu.net/netzerotracker',
         slug: 'nz_status',
         metadataSlug: 'eciu',
         hasExternalLink: true
