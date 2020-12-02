@@ -107,6 +107,7 @@ function NDCCountry(props) {
         dynamicTitlePart={countryName}
         countryName={countryName}
         href={location.href}
+        canonicalAttribute={iso}
       />
       <CountriesDocumentsProvider location={iso} />
       <NdcsDocumentsProvider />

@@ -7,6 +7,7 @@ import intersection from 'lodash/intersection';
 import { generateLinkToDataExplorer } from 'utils/data-explorer';
 import worldPaths from 'app/data/world-50m-paths';
 import { COUNTRY_STYLES } from 'components/ndcs/shared/constants';
+import { getIsShowEUCountriesChecked } from 'components/ndcs/shared/explore-map/explore-map-selectors';
 import {
   sortByIndexAndNotInfo,
   getIndicatorEmissionsData,
@@ -167,11 +168,14 @@ export const getMapIndicator = createSelector(
 );
 
 export const getPathsWithStyles = createSelector(
-  [getMapIndicator, getZoom],
-  (indicator, zoom) => {
+  [getMapIndicator, getZoom, getIsShowEUCountriesChecked],
+  (indicator, zoom, showEUCountriesChecked) => {
     if (!indicator) return [];
     const paths = [];
-    worldPaths.forEach(path => {
+    const selectedWorldPaths = showEUCountriesChecked
+      ? worldPaths
+      : worldPaths.filter(p => !europeanCountries.includes(p.properties.id));
+    selectedWorldPaths.forEach(path => {
       if (shouldShowPath(path, zoom)) {
         const { locations, legendBuckets } = indicator;
         if (!locations) {

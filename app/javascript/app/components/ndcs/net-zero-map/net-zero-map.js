@@ -12,6 +12,7 @@ import { actions as modalActions } from 'components/modal-metadata';
 import exploreMapActions from 'components/ndcs/shared/explore-map/explore-map-actions';
 import { getHoverIndex } from 'components/ndcs/shared/utils';
 
+import { getIsShowEUCountriesChecked } from 'components/ndcs/shared/explore-map/explore-map-selectors';
 import Component from './net-zero-map-component';
 import {
   getMapIndicator,
@@ -25,8 +26,7 @@ import {
   getCategoryIndicators,
   getSelectedCategory,
   getTooltipCountryValues,
-  getDonutActiveIndex,
-  getIsShowEUCountriesChecked
+  getDonutActiveIndex
 } from './net-zero-map-selectors';
 
 const actions = { ...fetchActions, ...modalActions, ...exploreMapActions };

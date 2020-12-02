@@ -2,9 +2,9 @@ require 'rails_helper'
 
 object_contents = {
   "#{CW_FILES_PREFIX}key_visualizations/key_visualizations.csv" => <<~END,
-    "Title","Description","Tags","Topic","Geography","Embed Code","Preview Image URL","Image download URL","Data download URL","Blog link","Created","Last Updated"
-    "World Greenhouse Gas Emissions","This chart offers...","GHG emissions, Climate Change, Energy","Sectoral emissions","Global, UK","embed code","image.png","image download url","data download url","blog link","10/22/2020","10/22/2020"
-    "Top 10 U.S. State Emitters: 2014","Description","GHG emissions","Greenhouse gases","United States","embed code","https://example.com/image.png","image download url","data download url","blog link","8/11/2020","10/15/2020"
+    "Title","Description","Tags","Topic","Geography","Embed Code","Preview Image URL","Image download URL","Data download URL","Blog link","Data Sources","Created","Last Updated"
+    "World Greenhouse Gas Emissions","This chart offers...","GHG emissions, Climate Change, Energy","Sectoral emissions","Global, UK","embed code","image.png","image download url","data download url","blog link","source1,  source2","10/22/2020","10/22/2020"
+    "Top 10 U.S. State Emitters: 2014","Description","GHG emissions","Greenhouse gases","United States","embed code","https://example.com/image.png","image download url","data download url","blog link","source1","8/11/2020","10/15/2020"
   END
 }
 
@@ -42,6 +42,7 @@ RSpec.describe ImportKeyVisualizations do
     expect(v.topic).to eq('Sectoral emissions')
     expect(v.geographies).to contain_exactly('Global', 'UK')
     expect(v.tags).to contain_exactly('GHG emissions', 'Climate Change', 'Energy')
+    expect(v.data_sources).to contain_exactly('source1', 'source2')
     expect(v.embed_code).to eq('embed code')
     expect(v.preview_image_url).to eq(
       "#{S3_BUCKET_URL}/#{CW_FILES_PREFIX}key_visualizations/images/image.png"

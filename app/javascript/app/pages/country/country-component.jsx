@@ -34,6 +34,7 @@ class Country extends PureComponent {
             dynamicTitlePart={countryName}
             href={location.href}
             countryName={countryName}
+            canonicalAttribute={country && country.iso}
           />
         )}
         <SocioeconomicsProvider />

@@ -38,6 +38,7 @@ class ImportKeyVisualizations
       blog_link: parse_text(row[:blog_link]),
       tags: parse_string_list(row[:tags]),
       geographies: parse_string_list(row[:geography]),
+      data_sources: parse_string_list(row[:data_sources]),
       created_date: parse_date(row[:created]),
       last_updated_date: parse_date(row[:last_updated])
     }
@@ -57,6 +58,8 @@ class ImportKeyVisualizations
   end
 
   def parse_string_list(value)
+    return unless value.present?
+
     value.split(',').map(&:strip)
   end
 

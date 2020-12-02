@@ -1,6 +1,5 @@
 import { createSelector } from 'reselect';
 import { deburrUpper, filterQuery } from 'app/utils';
-import uniqBy from 'lodash/uniqBy';
 import sortBy from 'lodash/sortBy';
 import isEmpty from 'lodash/isEmpty';
 import { getMapIndicator } from 'components/ndcs/net-zero-map/net-zero-map-selectors';
@@ -19,15 +18,12 @@ export const getIndicatorsParsed = createSelector(
   (categories, indicators) => {
     if (!categories || !indicators || !indicators.length) return null;
     const parsedIndicators = sortBy(
-      uniqBy(
-        indicators.map(i => ({
-          label: i.name,
-          value: i.slug,
-          categoryIds: i.category_ids,
-          locations: i.locations
-        })),
-        'value'
-      ),
+      indicators.map(i => ({
+        label: i.name,
+        value: i.slug,
+        categoryIds: i.category_ids,
+        locations: i.locations
+      })),
       'label'
     );
     return parsedIndicators;
@@ -40,6 +36,7 @@ export const tableGetSelectedData = createSelector(
     if (!indicators || !indicators.length || !indicators[0].locations) {
       return [];
     }
+
     const refIndicator =
       indicators.find(i => i.value === 'nz_submission') || indicators[0];
 
@@ -64,8 +61,8 @@ export const tableGetSelectedData = createSelector(
 );
 
 const headerChanges = {
-  Document: 'Net Zero submission Link',
-  'Submission Date': 'Date of Net Zero submission',
+  'Net Zero Target Source': 'Source link',
+  'Net Zero Target Status': 'Target Status',
   'Share of GHG Emissions': 'Share of global GHG emissions'
 };
 
@@ -77,29 +74,17 @@ export const getSelectedIndicatorHeader = createSelector(
   }
 );
 
-export const getExtraColumn = createSelector(
-  [getMapIndicator],
-  selectedIndicator => {
-    if (!selectedIndicator) return null;
-    return selectedIndicator.value === 'nz_submission' ? 'nz_target' : null;
-  }
-);
-
 export const getDefaultColumns = createSelector(
-  [getIndicatorsParsed, getSelectedIndicatorHeader, getExtraColumn],
-  (indicators, selectedIndicatorHeader, extraColumn) => {
+  [getIndicatorsParsed, getSelectedIndicatorHeader],
+  (indicators, selectedIndicatorHeader) => {
     if (!indicators || isEmpty(indicators)) return [];
     const columnIds = [
       'country',
       selectedIndicatorHeader,
       'nz_source',
-      'nz_target',
-      'nz_ghg'
+      'nz_status',
+      'ndce_ghg'
     ];
-
-    if (extraColumn) {
-      columnIds.splice(2, 0, extraColumn);
-    }
 
     const columns = columnIds.map(id => {
       const match = indicators.find(indicator => indicator.value === id);
@@ -124,19 +109,8 @@ export const addIndicatorColumn = createSelector(
   }
 );
 
-const addDocumentTarget = createSelector([addIndicatorColumn], data => {
-  if (!data || isEmpty(data)) return null;
-  return data.map(d => {
-    const updatedTableDataItem = { ...d };
-    updatedTableDataItem.Document = updatedTableDataItem.Document
-      ? updatedTableDataItem.Document.replace('href=', "target='_blank' href=")
-      : undefined;
-    return updatedTableDataItem;
-  });
-});
-
 const getFilteredData = createSelector(
-  [addDocumentTarget, getDefaultColumns],
+  [addIndicatorColumn, getDefaultColumns],
   (data, columnHeaders) => {
     if (!data || isEmpty(data)) return null;
     const filteredData = data.map(d => {
@@ -171,6 +145,10 @@ export const getTitleLinks = createSelector([getFilteredDataBySearch], data => {
     {
       columnName: 'country',
       url: `/country/${d.iso}`
+    },
+    {
+      columnName: 'Source link',
+      url: 'self'
     }
   ]);
 });

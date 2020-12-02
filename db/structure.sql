@@ -1218,7 +1218,8 @@ CREATE TABLE public.key_visualizations (
     last_updated_date date NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    preview_image_url text
+    preview_image_url text,
+    data_sources character varying[] DEFAULT '{}'::character varying[]
 );
 
 
@@ -4334,6 +4335,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200521120158'),
 ('20200818134235'),
 ('20201023101133'),
-('20201113113501');
+('20201113113501'),
+('20201119151517');
 
 

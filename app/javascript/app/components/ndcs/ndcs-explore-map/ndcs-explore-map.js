@@ -10,7 +10,7 @@ import { IGNORED_COUNTRIES_ISOS } from 'data/ignored-countries';
 import { getHoverIndex } from 'components/ndcs/shared/utils';
 import { actions as modalActions } from 'components/modal-metadata';
 import exploreMapActions from 'components/ndcs/shared/explore-map/explore-map-actions';
-
+import { getIsShowEUCountriesChecked } from 'components/ndcs/shared/explore-map/explore-map-selectors';
 import Component from './ndcs-explore-map-component';
 
 import {
@@ -60,7 +60,8 @@ const mapStateToProps = (state, { location }) => {
     downloadLink: getLinkToDataExplorer(ndcsExploreWithSelection),
     categories: getCategories(ndcsExploreWithSelection),
     indicators: getCategoryIndicators(ndcsExploreWithSelection),
-    donutActiveIndex: getDonutActiveIndex(ndcsExploreWithSelection)
+    donutActiveIndex: getDonutActiveIndex(ndcsExploreWithSelection),
+    checked: getIsShowEUCountriesChecked(ndcsExploreWithSelection)
   };
 };
 
@@ -159,13 +160,23 @@ class NDCSExploreMapContainer extends PureComponent {
     });
   };
 
+  handleOnChangeChecked = query => {
+    this.updateUrlParam({ name: 'showEUCountries', value: query });
+  };
+
   updateUrlParam(param, clear) {
     const { history, location } = this.props;
     history.replace(getLocationParamUpdated(location, param, clear));
   }
 
   render() {
-    const { query, indicator, summaryData, selectedCategory } = this.props;
+    const {
+      query,
+      indicator,
+      summaryData,
+      selectedCategory,
+      checked
+    } = this.props;
     const { country: countryData, tooltipValues } = this.state;
     const noContentMsg = query
       ? 'No results found'
@@ -179,6 +190,8 @@ class NDCSExploreMapContainer extends PureComponent {
       handleSearchChange: this.handleSearchChange,
       handleCategoryChange: this.handleCategoryChange,
       handleIndicatorChange: this.handleIndicatorChange,
+      handleOnChangeChecked: this.handleOnChangeChecked,
+      checked,
       indicator,
       summaryData,
       selectedCategory,
@@ -200,6 +213,7 @@ NDCSExploreMapContainer.propTypes = {
   indicator: PropTypes.object,
   selectActiveDonutIndex: PropTypes.func.isRequired,
   legendData: PropTypes.array,
+  checked: PropTypes.bool,
   tooltipCountryValues: PropTypes.object
 };
 

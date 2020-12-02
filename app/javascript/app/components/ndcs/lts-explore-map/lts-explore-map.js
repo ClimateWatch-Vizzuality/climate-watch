@@ -11,6 +11,7 @@ import { actions as fetchActions } from 'pages/lts-explore';
 import { actions as modalActions } from 'components/modal-metadata';
 import exploreMapActions from 'components/ndcs/shared/explore-map/explore-map-actions';
 import { getHoverIndex } from 'components/ndcs/shared/utils';
+import { getIsShowEUCountriesChecked } from 'components/ndcs/shared/explore-map/explore-map-selectors';
 
 import Component from './lts-explore-map-component';
 import {
@@ -25,8 +26,7 @@ import {
   getCategoryIndicators,
   getSelectedCategory,
   getTooltipCountryValues,
-  getDonutActiveIndex,
-  getIsShowEUCountriesChecked
+  getDonutActiveIndex
 } from './lts-explore-map-selectors';
 
 const actions = { ...fetchActions, ...modalActions, ...exploreMapActions };
