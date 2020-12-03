@@ -124,9 +124,9 @@ const AboutPermissions = ({ location }) => (
         .
       </li>
       <li>
-        Levin, K., D. Rich, K. Ross, T. Fransen, and C. Elliott. 2020. “Designing and Communicating Net-Zero Targets.” Working Paper. Washington, DC: World Resources Institute. Available at:{' '}
-        <a href="www.wri.org/design-net-zero">
-          www.wri.org/design-net-zero
+        Net  Zero Tracker. Energy & Climate Intelligence Unit. Net Zero Emissions Race. 2020 Scorecard. Available at:{' '}
+        <a href="https://eciu.net/netzerotracker">
+          https://eciu.net/netzerotracker
         </a>
         .
       </li>
