@@ -366,18 +366,41 @@ export const getSummaryCardData = createSelector(
     if (!indicators) return null;
     const netZeroIndicator = indicators.find(i => i.slug === 'nz_status');
     if (!netZeroIndicator) return null;
-    let countriesNumber = Object.values(netZeroIndicator.locations).filter(l =>
-      ['In Policy Document', 'In Law'].includes(l.value)
-    ).length;
+
+    const emissionsIndicator = indicators.find(i => i.slug === 'ndce_ghg');
+    if (!emissionsIndicator) return null;
+
+    const netZeroCountries = Object.keys(
+      netZeroIndicator.locations
+    ).filter(key =>
+      ['In Policy Document', 'In Law'].includes(
+        netZeroIndicator.locations[key].value
+      )
+    );
+    let countriesNumber = netZeroCountries.length;
     const partiesNumber = countriesNumber;
+
     const europeanCountriesWithSubmission = europeanCountries.filter(
       iso => netZeroIndicator.locations[iso]
     );
+
     countriesNumber +=
       europeanCountries.length - europeanCountriesWithSubmission.length - 1; // To avoid double counting, also substract the EUU 'country'
+
+    const emissionsNumber = Object.keys(emissionsIndicator.locations)
+      .filter(
+        iso =>
+          netZeroCountries.includes(iso) &&
+          !europeanCountriesWithSubmission.includes(iso)
+      )
+      .reduce(
+        (acc, iso) => acc + parseFloat(emissionsIndicator.locations[iso].value),
+        0
+      );
+    const roundedEmissions = Math.round(emissionsNumber * 10) / 10;
     return {
       value: partiesNumber,
-      description: ` Parties, representing ${countriesNumber} countries have submitted a Net-Zero plan`
+      description: ` Parties, representing ${countriesNumber} countries have adopted a net-Zero target, representing ${roundedEmissions}% of global GHG emissions`
     };
   }
 );

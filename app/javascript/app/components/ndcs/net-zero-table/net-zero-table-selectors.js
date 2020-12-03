@@ -61,7 +61,7 @@ export const tableGetSelectedData = createSelector(
 );
 
 const headerChanges = {
-  'Net Zero Target Source': 'Source link',
+  'Net Zero Target Source': 'Source',
   'Net Zero Target Status': 'Target Status',
   'Share of GHG Emissions': 'Share of global GHG emissions'
 };

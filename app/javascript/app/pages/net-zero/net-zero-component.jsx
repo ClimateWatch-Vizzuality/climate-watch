@@ -2,7 +2,6 @@
 import React from 'react';
 import Proptypes from 'prop-types';
 import Header from 'components/header';
-import Button from 'components/button';
 import Intro from 'components/intro';
 import { renderToString } from 'react-dom/server';
 
@@ -33,21 +32,23 @@ const NetZero = ({ route }) => (
                   </div>
                   <div>
                     Explore net-zero targets that have been formally adopted by
-                    countries here.
+                    countries here. For net-zero targets of countries, states,
+                    cities and companies, visit Energy & Climate Intelligence
+                    Unit (ECIU)’s{' '}
+                    <a
+                      href="https://eciu.net/netzerotracker/map"
+                      // eslint-disable-next-line react/jsx-no-target-blank
+                      target="_blank"
+                      rel="noopener"
+                      className={styles.link}
+                    >
+                      Net-Zero Tracker
+                    </a>
+                    .
                   </div>
                 </React.Fragment>
               )}
             />
-          </div>
-          <div className={styles.buttonWrapper}>
-            <Button
-              variant="primary"
-              href="https://eciu.net/netzerotracker/map"
-              target="_blank"
-              className={styles.button}
-            >
-              Go to ECIU website
-            </Button>
           </div>
         </div>
       </div>
