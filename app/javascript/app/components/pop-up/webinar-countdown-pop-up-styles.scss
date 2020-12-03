@@ -1,0 +1,53 @@
+@import '~styles/layout.scss';
+
+.modal {
+  max-height: 460px;
+  max-width: 800px;
+}
+
+.modalContent {
+  padding: 0;
+}
+
+.popUp {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.popUpContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  height: 100%;
+  color: $theme-color;
+  text-align: center;
+}
+
+.popUpAction {
+  background-color: $gray3;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 48px;
+  font-size: $font-size-large;
+  font-weight: $font-weight-bold;
+}
+
+.popUpTitleContainer {
+  padding: 60px 50px;
+}
+
+.popUpTitle {
+  font-size: $font-size-large;
+  font-weight: $font-weight;
+}
+
+.button {
+  max-width: 250px;
+}
