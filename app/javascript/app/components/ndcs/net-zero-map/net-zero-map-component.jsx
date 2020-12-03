@@ -222,7 +222,7 @@ function NetZeroMap(props) {
                       {loading && <Loading light className={styles.loader} />}
                       <HandIconInfo
                         className={styles.mapInfo}
-                        text="Explore which countries have submitted a Net-Zero plan below and click on a country to see more in-depth analysis of each Net-Zero plan."
+                        text="Explore which countries have submitted a Net-Zero plan below and click on a country to see its climate profile."
                       />
                       <Map
                         paths={paths}
@@ -237,7 +237,7 @@ function NetZeroMap(props) {
                       />
                       <CheckInput
                         theme={blueCheckboxTheme}
-                        label="Visualize individual submissions of EU Members on the map"
+                        label="Visualize individual targets of EU Members on the map"
                         checked={checked}
                         onChange={() => handleOnChangeChecked(!checked)}
                       />
