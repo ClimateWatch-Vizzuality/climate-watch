@@ -49,6 +49,14 @@ class KeyVisualizationsTableContainer extends PureComponent {
     }
   };
 
+  onDownloadData = visualization => {
+    location.href = visualization.data_download_url;
+  };
+
+  onSaveImage = visualization => {
+    window.open(visualization.image_download_url);
+  };
+
   handleTagsChange = tags => {
     if (tags.length > 0) {
       const tagValues = tags.map(t => t.value);
@@ -79,6 +87,11 @@ class KeyVisualizationsTableContainer extends PureComponent {
     }
   };
 
+  updateUrlParam(params, clear) {
+    const { history, location } = this.props;
+    history.replace(getLocationParamUpdated(location, params, clear));
+  }
+
   handleTopicChange = topic => {
     if (topic) {
       this.updateUrlParam({ name: 'topic', value: topic.value });
@@ -88,15 +101,12 @@ class KeyVisualizationsTableContainer extends PureComponent {
     }
   };
 
-  updateUrlParam(params, clear) {
-    const { history, location } = this.props;
-    history.replace(getLocationParamUpdated(location, params, clear));
-  }
-
   render() {
     return createElement(KeyVisualizationsTable, {
       ...this.props,
       onCardClick: this.onCardClick,
+      onDownloadData: this.onDownloadData,
+      onSaveImage: this.onSaveImage,
       handleTagsChange: this.handleTagsChange,
       handleTopicChange: this.handleTopicChange,
       handleGeographiesChange: this.handleGeographiesChange

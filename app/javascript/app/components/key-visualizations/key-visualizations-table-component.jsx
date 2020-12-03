@@ -7,6 +7,7 @@ import { intersectionBy, findIndex } from 'lodash';
 import KeyVisualizationsProvider from 'providers/key-visualizations-provider/key-visualizations-provider';
 import { isPageContained } from 'utils/navigation';
 import { getGridElementPosition } from 'app/utils';
+import ButtonGroup from 'components/button-group';
 import KeyVisualizationCard from './key-visualization-card/key-visualization-card-component';
 
 import styles from './key-visualizations-table-styles.scss';
@@ -78,6 +79,39 @@ class KeyVisualizationsTable extends PureComponent {
     return position ? position.row + 1 : 1;
   }
 
+  renderButtonGroup() {
+    const { visualizationSelected, onDownloadData, onSaveImage } = this.props;
+
+    if (!visualizationSelected) {
+      return '';
+    }
+
+    return (
+      <ButtonGroup
+        buttonsConfig={[
+          {
+            type: 'downloadCombo',
+            options: [
+              {
+                label: 'Download current data',
+                action: () => onDownloadData(visualizationSelected)
+              },
+              {
+                label: 'Save as image (PNG)',
+                action: () => onSaveImage(visualizationSelected)
+              }
+            ]
+          },
+          {
+            type: 'share',
+            shareUrl: '/key-visualizations',
+            positionRight: true
+          }
+        ]}
+      />
+    );
+  }
+
   render() {
     const {
       options,
@@ -120,6 +154,7 @@ class KeyVisualizationsTable extends PureComponent {
             onValueChange={handleTopicChange}
             value={topicSelected}
           />
+          {this.renderButtonGroup()}
         </div>
         <div className="grid-column-item">
           <div className={styles.cards} id="visualization-cards">
@@ -145,7 +180,9 @@ KeyVisualizationsTable.propTypes = {
   handleTagsChange: PropTypes.func.isRequired,
   handleTopicChange: PropTypes.func.isRequired,
   handleGeographiesChange: PropTypes.func.isRequired,
-  onCardClick: PropTypes.func.isRequired
+  onCardClick: PropTypes.func.isRequired,
+  onDownloadData: PropTypes.func.isRequired,
+  onSaveImage: PropTypes.func.isRequired
 };
 
 export default KeyVisualizationsTable;
