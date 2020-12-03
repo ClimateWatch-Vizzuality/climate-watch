@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import InnerHTML from 'dangerously-set-html-content';
 import styles from './key-visualization-preview-styles.scss';
 
 class KeyVisualizationPreview extends PureComponent {
@@ -13,10 +14,11 @@ class KeyVisualizationPreview extends PureComponent {
 
     // Embed code could either be a script or a static image
     if (embedCode.slice(0, 1) === '<') {
+      // Using InnerHTML component to execute <script> tags
       return (
-        <div
+        <InnerHTML
+          html={visualization.embed_code}
           className={styles.previewContent}
-          dangerouslySetInnerHTML={{ __html: visualization.embed_code }} // eslint-disable-line
         />
       );
     }
