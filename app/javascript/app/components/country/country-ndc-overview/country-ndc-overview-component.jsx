@@ -6,7 +6,7 @@ import CardRow from 'components/card/card-row';
 import Intro from 'components/intro';
 import Icon from 'components/icon';
 import cx from 'classnames';
-import moment from 'moment';
+import { DateTime } from 'luxon';
 import ModalMetadata from 'components/modal-metadata';
 import Loading from 'components/loading';
 import NoContent from 'components/no-content';
@@ -203,7 +203,7 @@ function CountryNdcOverview(props) {
       }
       subtitle={
         documentDate &&
-        `(submitted ${moment(documentDate).format('MM/DD/YYYY')})`
+        `(submitted ${DateTime.fromISO(documentDate).toFormat('dd/MM/yyyy')})`
       }
     />
   );
