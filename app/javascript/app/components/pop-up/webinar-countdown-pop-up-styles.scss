@@ -39,13 +39,24 @@
   font-weight: $font-weight-bold;
 }
 
+.countdown {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.countNumber {
+  font-size: $font-size-xl-large;
+  font-weight: $font-weight-light;
+}
+
 .popUpTitleContainer {
-  padding: 60px 50px;
+  padding: 30px 50px;
 }
 
 .popUpTitle {
   font-size: $font-size-large;
   font-weight: $font-weight;
+  margin-bottom: 1rem;
 }
 
 .button {
