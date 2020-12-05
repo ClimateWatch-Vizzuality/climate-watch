@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { DateTime } from 'luxon';
+import moment from 'moment-timezone';
 import Button from 'components/button';
 import Modal from 'components/modal/modal-component';
 import Countdown from 'react-countdown';
@@ -47,7 +47,6 @@ const WebinarCountdownPopUp = props => {
     seconds: PropTypes.string,
     completed: PropTypes.bool
   };
-
   return (
     <Modal onRequestClose={handleOnRequestClose} isOpen theme={styles}>
       <div className={styles.popUpContent}>
@@ -56,10 +55,8 @@ const WebinarCountdownPopUp = props => {
             Join Us - Webinar for National Governments
           </h1>
           <Countdown
-            now={() => DateTime.utc()}
-            date={DateTime.fromISO('2020-12-10T07:00:00', {
-              zone: 'EST'
-            }).toUTC()}
+            now={() => moment.utc(moment())}
+            date={moment.utc(moment.tz('2020-12-10T07:00:00', 'EST'))}
             renderer={countdownRenderer}
           />
         </div>

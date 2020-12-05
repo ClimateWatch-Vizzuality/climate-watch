@@ -81,6 +81,7 @@
     "lodash": "4.17.4",
     "lodash-inflection": "1.5.0",
     "luxon": "^1.25.0",
+    "moment-timezone": "^0.5.32",
     "node-sass": "4.12.0",
     "path-complete-extname": "^1.0.0",
     "pluralize": "^8.0.0",
