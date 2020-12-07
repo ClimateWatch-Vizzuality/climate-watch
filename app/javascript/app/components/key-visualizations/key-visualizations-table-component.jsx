@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import cx from 'classnames';
 import Dropdown from 'components/dropdown';
 import MultiSelect from 'components/multiselect';
-import { intersectionBy, findIndex } from 'lodash';
+import { findIndex, intersectionBy } from 'lodash';
 import KeyVisualizationsProvider from 'providers/key-visualizations-provider/key-visualizations-provider';
 import { isPageContained } from 'utils/navigation';
 import { getGridElementPosition } from 'app/utils';
@@ -104,7 +104,7 @@ class KeyVisualizationsTable extends PureComponent {
           },
           {
             type: 'share',
-            shareUrl: '/key-visualizations',
+            shareUrl: '/embed/key-visualizations',
             positionRight: true
           }
         ]}
