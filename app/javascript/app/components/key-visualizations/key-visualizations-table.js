@@ -42,6 +42,9 @@ const mapStateToProps = (state, { location }) => {
 
 class KeyVisualizationsTableContainer extends PureComponent {
   onCardClick = (visualization, remove) => {
+    // Hack to get the Flourish embeds to load correctly
+    window.FlourishLoaded = false;
+
     if (remove) {
       this.updateUrlParam({ name: 'visualization' });
     } else {
