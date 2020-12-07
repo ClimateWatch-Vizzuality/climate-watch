@@ -1,0 +1,73 @@
+@import '~styles/layout.scss';
+@import '~styles/ui-extends.scss';
+
+.keyVisualizationCard {
+  border-radius: 6px;
+  box-shadow: $box-shadow-card;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  margin: 15px;
+  cursor: pointer;
+}
+
+.cardCheck {
+  display: none;
+  background: $chart-color-6;
+
+  svg {
+    width: 85px;
+    height: 85px;
+    fill: $white;
+  }
+}
+
+.cardSelected {
+  .cardPreview {
+    display: none;
+  }
+
+  .cardCheck {
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: $chart-color-6;
+  }
+
+  .cardInfo {
+    background: $chart-color-6;
+  }
+}
+
+.cardPreview {
+  height: 200px;
+  overflow: hidden;
+}
+
+.cardInfo {
+  padding: 15px 20px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: $gray1;
+  color: $white;
+}
+
+.cardInfoDate {
+  text-transform: uppercase;
+  font-size: 13px;
+  opacity: 0.7;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.cardInfoTitle {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 22px;
+
+  // Cut off after 2 lines
+  height: 42px;
+  overflow: hidden;
+}
