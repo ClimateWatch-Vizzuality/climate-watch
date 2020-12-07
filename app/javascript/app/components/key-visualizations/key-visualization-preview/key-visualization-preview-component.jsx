@@ -4,6 +4,16 @@ import InnerHTML from 'dangerously-set-html-content';
 import styles from './key-visualization-preview-styles.scss';
 
 class KeyVisualizationPreview extends PureComponent {
+  componentDidUpdate() {
+    // Need to adjust Flourish embeds to occupy full width
+    setTimeout(() => {
+      const flourishEmbed = document.querySelector('.flourish-embed');
+      if (flourishEmbed) {
+        flourishEmbed.style.width = '100%';
+      }
+    }, 500);
+  }
+
   renderContent() {
     const { visualization } = this.props;
     const embedCode = visualization.embed_code;
