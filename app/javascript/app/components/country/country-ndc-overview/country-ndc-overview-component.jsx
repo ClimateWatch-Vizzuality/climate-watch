@@ -6,7 +6,7 @@ import CardRow from 'components/card/card-row';
 import Intro from 'components/intro';
 import Icon from 'components/icon';
 import cx from 'classnames';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import ModalMetadata from 'components/modal-metadata';
 import Loading from 'components/loading';
 import NoContent from 'components/no-content';
@@ -138,7 +138,7 @@ function CountryNdcOverview(props) {
               <CardRow
                 rowData={{
                   title: 'Sectors covered',
-                  value: values.coverage_sectors[0].value
+                  value: values && values.coverage_sectors[0].value
                 }}
               />
             </React.Fragment>

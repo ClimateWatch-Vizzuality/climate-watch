@@ -1,6 +1,6 @@
 import { ALL_SELECTED } from 'data/constants';
 
-export const DATA_EXPLORER_BLACKLIST = [
+export const DATA_EXPLORER_BLOCKLIST = [
   'id',
   'iso_code3',
   'iso_code2',
@@ -9,11 +9,14 @@ export const DATA_EXPLORER_BLACKLIST = [
   'language'
 ];
 
+export const DATA_EXPLORER_BLOCKLIST_BY_SECTION = {
+  'net-zero-content': ['sector', 'subsector']
+};
+
 export const FIRST_TABLE_HEADERS = {
   'historical-emissions': ['country', 'data_source', 'sector', 'gas', 'unit'],
   'ndc-content': [
     'country',
-    'categories', // remove when it's splitted into global and overview category
     'global_category',
     'overview_category',
     'sector',
@@ -26,7 +29,6 @@ export const FIRST_TABLE_HEADERS = {
   ],
   'lts-content': [
     'country',
-    'categories', // remove when it's splitted into global and overview category
     'global_category',
     'overview_category',
     'sector',
@@ -39,7 +41,6 @@ export const FIRST_TABLE_HEADERS = {
   ],
   'net-zero-content': [
     'country',
-    'categories', // remove when it's splitted into global and overview category
     'global_category',
     'overview_category',
     'indicator',

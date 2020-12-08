@@ -15,6 +15,15 @@
   @include columns(12);
 }
 
+.link {
+  color: $white;
+  text-decoration: underline;
+
+  &:hover {
+    color: $theme-secondary;
+  }
+}
+
 .containedHeader {
   display: flex;
   margin-top: 10px;
