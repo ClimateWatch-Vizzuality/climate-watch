@@ -6,7 +6,8 @@ import { isNoColumnField, isNonColumnKey } from 'utils/data-explorer';
 import { isPageContained } from 'utils/navigation';
 
 import {
-  DATA_EXPLORER_BLACKLIST,
+  DATA_EXPLORER_BLOCKLIST,
+  DATA_EXPLORER_BLOCKLIST_BY_SECTION,
   DATA_EXPLORER_METHODOLOGY_SOURCE,
   DATA_EXPLORER_FILTERS,
   DATA_EXPLORER_EXTERNAL_PREFIX,
@@ -847,15 +848,21 @@ export const getTitleLinks = createSelector(
   }
 );
 
-export const parseData = createSelector([parseEmissionsInData], data => {
-  if (!data || !data.length > 0) return null;
-  const updatedData = data;
-  const whiteList = remove(
-    Object.keys(updatedData[0]),
-    n => DATA_EXPLORER_BLACKLIST.indexOf(n) === -1
-  );
-  return updatedData.map(d => pick(d, whiteList));
-});
+export const parseData = createSelector(
+  [parseEmissionsInData, getSection],
+  (data, section) => {
+    if (!data || !data.length > 0) return null;
+    const updatedData = data;
+    const allowList = remove(
+      Object.keys(updatedData[0]),
+      n =>
+        DATA_EXPLORER_BLOCKLIST.indexOf(n) === -1 &&
+        (!Object.keys(DATA_EXPLORER_BLOCKLIST_BY_SECTION).includes(section) ||
+          DATA_EXPLORER_BLOCKLIST_BY_SECTION[section].indexOf(n) === -1)
+    );
+    return updatedData.map(d => pick(d, allowList));
+  }
+);
 
 const getYearColumnKeys = createSelector(
   [parseData, getSection],
