@@ -6,7 +6,7 @@
     background-color: $theme-color !important;
     border-radius: 4px !important;
     color: $white !important;
-    font-size: 13px;
+    font-size: $font-size-s;
     opacity: 1 !important;
 
     &.place-top::after {
