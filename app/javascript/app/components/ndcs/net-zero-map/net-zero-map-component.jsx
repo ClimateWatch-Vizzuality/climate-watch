@@ -222,7 +222,7 @@ function NetZeroMap(props) {
                       {loading && <Loading light className={styles.loader} />}
                       <HandIconInfo
                         className={styles.mapInfo}
-                        text="Explore which countries have submitted a Net-Zero plan below and click on a country to see its climate profile."
+                        text="Explore which countries have adopted a net-zero target below and click on a country to see its climate profile."
                       />
                       <Map
                         paths={paths}
