@@ -20,9 +20,9 @@ const renderButtonGroup = (clickHandler, downloadLink) => (
     <div>
       <p>
         <em>
-          Track which countries are
-          updating or enhancing their national climate commitments in 2020 or in the lead up to COP26.
-          To request changes or additions, please contact &nbsp;
+          Track which countries are updating or enhancing their national climate
+          commitments in 2020 or in the lead up to COP26. To request changes or
+          additions, please contact &nbsp;
           <a
             href="mailto:Rhys.Gerholdt@wri.org?subject=2020 NDC Tracker Update"
             target="_blank"
@@ -113,7 +113,7 @@ const NDCSEnhancementsViz = ({
           <div className={styles.containerUpper}>
             <div className={styles.containerCharts}>
               {!loading && summaryData && (
-                <div>
+                <div className={styles.summary}>
                   <div
                     data-tip
                     data-for="covid-update-tooltip"
@@ -133,7 +133,6 @@ const NDCSEnhancementsViz = ({
                     of COP26. The information below does not reflect these
                     possible delays.
                   </ReactTooltip>
-                  {renderCircular(summaryData.intend_2020.countries)}
                   {renderCircular(summaryData.enhance_2020.countries)}
                   {renderCircular(summaryData.submitted_2020.countries)}
                 </div>
