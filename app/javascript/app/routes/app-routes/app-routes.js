@@ -30,6 +30,7 @@ import NetZero from 'pages/net-zero';
 import NDCSExplore from 'pages/ndcs-explore';
 import NdcOverview from 'pages/ndc-overview';
 import CustomCompare from 'pages/custom-compare';
+import KeyVisualizations from 'pages/key-visualizations/key-visualizations-component';
 
 import { HEADER_GRADIENTS, HEADER_COLORS } from 'styles/constants';
 
@@ -132,6 +133,11 @@ export default [
     component: NDCCompareAll,
     headerGradient: HEADER_GRADIENTS.commitments,
     headerColor: HEADER_COLORS.ndc
+  },
+  {
+    path: '/key-visualizations',
+    component: KeyVisualizations,
+    headerGradient: HEADER_GRADIENTS.emissions
   },
   {
     path: '/ndcs/compare', // Legacy: only for outdated links
