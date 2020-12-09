@@ -400,7 +400,7 @@ export const getSummaryCardData = createSelector(
     const roundedEmissions = Math.round(emissionsNumber * 10) / 10;
     return {
       value: partiesNumber,
-      description: ` Parties, representing ${countriesNumber} countries have adopted a net-Zero target, representing ${roundedEmissions}% of global GHG emissions`
+      description: ` Parties, representing ${countriesNumber} countries, have adopted a net-zero target, representing ${roundedEmissions}% of global GHG emissions`
     };
   }
 );

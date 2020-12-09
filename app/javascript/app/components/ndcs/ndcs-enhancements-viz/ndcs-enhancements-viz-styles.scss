@@ -58,6 +58,14 @@
   }
 }
 
+.summary {
+  min-height: 300px;
+
+  @media #{$tablet-landscape} {
+    min-height: 500px;
+  }
+}
+
 :global .__react_component_tooltip {
   max-width: 250px;
   white-space: pre-line;

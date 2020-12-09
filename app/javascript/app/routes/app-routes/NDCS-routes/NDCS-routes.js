@@ -2,6 +2,8 @@ import isEmpty from 'lodash/isEmpty';
 
 const activeId = 'ndc';
 const FEATURE_NET_ZERO = process.env.FEATURE_NET_ZERO === 'true';
+const FEATURE_KEY_VISUALIZATIONS =
+  process.env.FEATURE_KEY_VISUALIZATIONS === 'true';
 
 export default [
   {
@@ -32,6 +34,11 @@ export default [
   {
     path: '/compare-all-targets',
     label: 'COMPARE ALL TARGETS',
+    activeId
+  },
+  FEATURE_KEY_VISUALIZATIONS && {
+    path: '/key-visualizations',
+    label: 'Key Visualizations',
     activeId
   },
   FEATURE_NET_ZERO && {

@@ -25,7 +25,8 @@ export const SEO_PAGES = {
   aboutContact: 'aboutContact',
   aboutFAQ: 'aboutFAQ',
   myCW: 'myCW',
-  dataExplorer: 'dataExplorer'
+  dataExplorer: 'dataExplorer',
+  keyVisualizations: 'keyVisualizations'
 };
 
 export const CANONICAL_URLS = {
@@ -54,7 +55,8 @@ export const CANONICAL_URLS = {
   aboutContact: '/about/contact',
   aboutFAQ: '/about/faq',
   myCW: '/my-climate-watch',
-  dataExplorer: '/data-explorer'
+  dataExplorer: '/data-explorer',
+  keyVisualizations: '/key-visualizations'
 };
 
 export const STATIC_TITLE_PARTS = {
@@ -84,7 +86,8 @@ export const STATIC_TITLE_PARTS = {
   [SEO_PAGES.aboutPermissions]: 'Permissions & Licensing',
   [SEO_PAGES.aboutFAQ]: 'Frequently Asked Questions',
   [SEO_PAGES.myCW]: 'My Climate Watch',
-  [SEO_PAGES.dataExplorer]: 'Data Explorer'
+  [SEO_PAGES.dataExplorer]: 'Data Explorer',
+  [SEO_PAGES.keyVisualizations]: 'Key Visualizations'
 };
 
 export const getDescription = ({ page, countryName = '' }) => {
@@ -122,7 +125,8 @@ export const getDescription = ({ page, countryName = '' }) => {
     [SEO_PAGES.pathways]:
       'Data and visuals of emission scenario pathways for major emitting countries and sectors, derived from a growing library of models.',
     [SEO_PAGES.about]:
-      'Climate Watch is an open online platform designed to empower users with the climate data, visualizations and resources they need to gather insights on national and global progress on climate change, sustainable development, and help advance the goals of the Paris Agreement.'
+      'Climate Watch is an open online platform designed to empower users with the climate data, visualizations and resources they need to gather insights on national and global progress on climate change, sustainable development, and help advance the goals of the Paris Agreement.',
+    [SEO_PAGES.keyVisualizations]: ''
   };
   return DESCRIPTIONS[page] || DESCRIPTIONS[SEO_PAGES.home];
 };
