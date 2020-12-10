@@ -1,0 +1,71 @@
+@import '~styles/layout.scss';
+@import '~styles/ui-extends.scss';
+
+.titleContainer {
+  @include columns((12, 12));
+
+  margin: $gutter-padding 0;
+  align-items: center;
+
+  @media #{$tablet-landscape} {
+    @include columns((8, 2, 2, 12));
+  }
+
+  &.containedButtonGroup {
+    display: inline-block;
+    width: 100%;
+
+    .buttonGroupContainer {
+      float: right;
+      width: 152px;
+      margin: 0;
+    }
+  }
+}
+
+.buttonGroupContainer {
+  display: flex;
+}
+
+.title {
+  @extend %headline;
+
+  font-size: $font-size-large;
+  font-weight: $font-weight-semi-bold;
+  color: $theme-color;
+  line-height: 45px;
+}
+
+.col4 {
+  @include columns(12);
+
+  > div {
+    @include xy-gutters($gutter-padding, $gutter-position: 'bottom');
+  }
+
+  @media #{$tablet-portrait} {
+    @include columns(6);
+
+    align-items: flex-end;
+  }
+
+  @media #{$tablet-landscape} {
+    @include columns((2.1, 2.1, 2.1, 2.1, 2.1, 1.4));
+
+    align-items: flex-end;
+  }
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  margin: 0 -15px;
+
+  @media #{$tablet-portrait} {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @media #{$tablet-landscape} {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

@@ -167,7 +167,13 @@ export const getPathsWithStyles = createSelector(
 
 export const getLinkToDataExplorer = createSelector([getSearch], search => {
   const section = 'ndc-content';
-  return generateLinkToDataExplorer(search, section);
+  return generateLinkToDataExplorer(
+    {
+      category: 'ndc_enhancement',
+      ...search
+    },
+    section
+  );
 });
 
 // Chart data methods

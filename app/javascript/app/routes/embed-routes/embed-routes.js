@@ -19,6 +19,7 @@ import LTSExploreMap from 'components/ndcs/lts-explore-map';
 import NetZeroMap from 'components/ndcs/net-zero-map';
 import NDCSExploreMap from 'components/ndcs/ndcs-explore-map';
 import NDCOverviewSection from 'components/ndcs/ndcs-overview-section';
+import KeyVisualizationsTable from 'components/key-visualizations/key-visualizations-table';
 
 export default [
   {
@@ -49,6 +50,11 @@ export default [
   {
     path: '/embed/compare-ghg-chart',
     component: CompareGhgChart,
+    exact: true
+  },
+  {
+    path: '/embed/key-visualizations',
+    component: KeyVisualizationsTable,
     exact: true
   },
   {

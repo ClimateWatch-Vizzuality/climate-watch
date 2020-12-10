@@ -75,13 +75,13 @@
     }
 
     .value-wrapper {
-      font-weight: bold;
+      font-weight: $font-weight-bold;
       font-size: $font-size-large;
     }
 
     .react-selectize-placeholder {
       font-size: $font-size-large;
-      font-weight: bold;
+      font-weight: $font-weight-bold;
     }
   }
 }
