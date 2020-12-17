@@ -88,6 +88,7 @@ class KeyVisualizationsTable extends PureComponent {
       topicSelected,
       geographiesSelected,
       visualizationSelected,
+      onInfoClick,
       onDownloadData,
       onSaveImage
     } = this.props;
@@ -127,6 +128,7 @@ class KeyVisualizationsTable extends PureComponent {
             <KeyVisualizationPreview
               visualization={visualizationSelected}
               row={this.previewRowPosition()}
+              onInfoClick={onInfoClick}
               onDownloadData={onDownloadData}
               onSaveImage={onSaveImage}
             />
@@ -150,6 +152,7 @@ KeyVisualizationsTable.propTypes = {
   handleGeographiesChange: PropTypes.func.isRequired,
   onCardClick: PropTypes.func.isRequired,
   onDownloadData: PropTypes.func.isRequired,
+  onInfoClick: PropTypes.func.isRequired,
   onSaveImage: PropTypes.func.isRequired
 };
 

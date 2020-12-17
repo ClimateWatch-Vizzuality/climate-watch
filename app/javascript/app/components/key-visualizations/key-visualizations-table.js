@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import qs from 'query-string';
 import { getLocationParamUpdated } from 'utils/navigation';
 import { handleAnalytics } from 'utils/analytics';
+import { actions as modalActions } from 'components/modal-metadata';
 import KeyVisualizationsTable from './key-visualizations-table-component';
 import {
   getFormattedKeyVisualizations,
@@ -50,6 +51,17 @@ class KeyVisualizationsTableContainer extends PureComponent {
     } else {
       this.updateUrlParam({ name: 'visualization', value: visualization.id });
     }
+  };
+
+  onInfoClick = visualization => {
+    const { setModalMetadata } = this.props;
+
+    setModalMetadata({
+      customTitle: visualization.title,
+      category: 'Key Visualizations',
+      slugs: visualization.data_sources,
+      open: true
+    });
   };
 
   onDownloadData = visualization => {
@@ -108,6 +120,7 @@ class KeyVisualizationsTableContainer extends PureComponent {
     return createElement(KeyVisualizationsTable, {
       ...this.props,
       onCardClick: this.onCardClick,
+      onInfoClick: this.onInfoClick,
       onDownloadData: this.onDownloadData,
       onSaveImage: this.onSaveImage,
       handleTagsChange: this.handleTagsChange,
@@ -119,9 +132,10 @@ class KeyVisualizationsTableContainer extends PureComponent {
 
 KeyVisualizationsTableContainer.propTypes = {
   history: PropTypes.object.isRequired,
-  location: PropTypes.object.isRequired
+  location: PropTypes.object.isRequired,
+  setModalMetadata: PropTypes.func.isRequired
 };
 
 export default withRouter(
-  connect(mapStateToProps, null)(KeyVisualizationsTableContainer)
+  connect(mapStateToProps, { ...modalActions })(KeyVisualizationsTableContainer)
 );

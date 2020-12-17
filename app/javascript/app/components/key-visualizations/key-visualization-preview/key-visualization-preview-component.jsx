@@ -16,13 +16,22 @@ class KeyVisualizationPreview extends PureComponent {
   }
 
   renderButtonGroup() {
-    const { onDownloadData, onSaveImage, visualization } = this.props;
+    const {
+      onInfoClick,
+      onDownloadData,
+      onSaveImage,
+      visualization
+    } = this.props;
 
     return (
       <ButtonGroup
         key="preview-actions"
         className={styles.buttonGroup}
         buttonsConfig={[
+          {
+            type: 'info',
+            onClick: () => onInfoClick(visualization)
+          },
           {
             type: 'downloadCombo',
             options: [
@@ -134,6 +143,7 @@ class KeyVisualizationPreview extends PureComponent {
 KeyVisualizationPreview.propTypes = {
   visualization: PropTypes.object,
   row: PropTypes.number,
+  onInfoClick: PropTypes.func.isRequired,
   onDownloadData: PropTypes.func.isRequired,
   onSaveImage: PropTypes.func.isRequired
 };
