@@ -25,8 +25,17 @@ class KeyVisualizationsTable extends PureComponent {
     let filtered = data;
 
     filtered = filtered.filter(item => {
+      let selectedTags = [];
+      if (tagsSelected[0].value === 'all') {
+        tagsSelected[0].expandsTo.forEach(value => {
+          selectedTags.push(find(options.tags, { value }));
+        });
+      } else {
+        selectedTags = tagsSelected;
+      }
+
       const includedTags = intersectionBy(
-        tagsSelected,
+        selectedTags,
         item.tags,
         t => t.value
       );

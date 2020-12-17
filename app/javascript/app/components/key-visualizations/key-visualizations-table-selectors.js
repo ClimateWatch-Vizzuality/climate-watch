@@ -28,11 +28,19 @@ export const getFormattedKeyVisualizations = createSelector(getData, data => {
 });
 
 export const getTagOptions = createSelector(getData, data => {
-  if (!data) return [];
+  if (!data || data.length === 0) return [];
 
-  return uniq(data.reduce((acc, cur) => acc.concat(cur.tags), [])).map(
+  const options = uniq(data.reduce((acc, cur) => acc.concat(cur.tags), [])).map(
     dropdownOption
   );
+
+  const allOption = {
+    label: 'All Tags',
+    value: 'all',
+    expandsTo: options.map(option => option.value)
+  };
+
+  return [allOption, ...options];
 });
 
 export const getTopicOptions = createSelector(getData, data => {
@@ -46,8 +54,8 @@ export const getTopicOptions = createSelector(getData, data => {
 export const getTagsSelected = createSelector(
   [getTagOptions, getTagsSelection],
   (tags, selected) => {
-    if (!tags) return null;
-    if (!selected) return tags;
+    if (!tags || tags.length === 0) return [];
+    if (!selected) return [tags.find(tag => tag.value === 'all')];
     return tags.filter(t => selected.indexOf(t.value) !== -1);
   }
 );
@@ -66,6 +74,7 @@ export const getGeographyOptions = createSelector(getData, data => {
   const options = uniq(
     data.reduce((acc, cur) => acc.concat(cur.geographies), [])
   ).map(dropdownOption);
+
   const allOption = {
     label: 'All Geographies',
     value: 'all',
@@ -79,7 +88,7 @@ export const getGeographiesSelected = createSelector(
   [getGeographyOptions, getGeographiesSelection],
   (geos, selected) => {
     if (!geos || geos.length === 0) return [];
-    if (!selected) return [geos[0]];
+    if (!selected) return [geos.find(geo => geo.value === 'all')];
     return geos.filter(g => selected.indexOf(g.value) !== -1);
   }
 );
