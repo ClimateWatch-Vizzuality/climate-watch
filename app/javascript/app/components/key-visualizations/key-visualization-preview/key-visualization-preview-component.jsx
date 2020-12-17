@@ -82,26 +82,6 @@ class KeyVisualizationPreview extends PureComponent {
     );
   }
 
-  renderLink() {
-    const { visualization } = this.props;
-    if (!visualization.blog_link) {
-      return '';
-    }
-
-    const hostname = new URL(visualization.blog_link).hostname;
-    return (
-      <div className={styles.previewLink}>
-        <a
-          href={visualization.blog_link}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          {hostname}
-        </a>
-      </div>
-    );
-  }
-
   renderDescription() {
     const { visualization } = this.props;
     if (!visualization.description) {
@@ -134,7 +114,6 @@ class KeyVisualizationPreview extends PureComponent {
           {this.renderButtonGroup()}
         </div>
         {this.renderContent()}
-        {this.renderLink()}
         {this.renderDescription()}
         <ModalMetadata />
       </div>
