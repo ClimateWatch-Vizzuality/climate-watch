@@ -3,6 +3,8 @@
 
 .previewContainer {
   margin: 20px 15px;
+  padding-top: 30px;
+  border-top: solid 1px $gray2;
 
   @media #{$mobile-only} {
     grid-column: 1;
