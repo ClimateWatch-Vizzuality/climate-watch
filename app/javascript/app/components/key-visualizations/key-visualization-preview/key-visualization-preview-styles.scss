@@ -20,16 +20,27 @@
 .previewHeader {
   display: flex;
 
+  @media #{$mobile-only} {
+    flex-direction: column;
+  }
+
   h1 {
     font-weight: 400;
     margin-right: 30px;
     width: calc(100% - 300px);
+
+    @media #{$mobile-only} {
+      width: 100%;
+    }
   }
 }
 
 .buttonGroup {
-  margin-right: 20px;
   width: 140px;
+
+  @media #{$mobile-only} {
+    margin-top: 15px;
+  }
 }
 
 .previewContent {
