@@ -7,9 +7,18 @@ import {
 const colorArray = Object.values(CHART_NAMED_COLORS);
 const buckets = colorArray.map((_, i) => colorArray.slice(0, i + 1));
 
+const GREY_INDICATOR_SLUGS = ['no_info_2020'];
 export function getColorByIndex(data, index, colors = buckets) {
   const length = Object.keys(data).length;
-  if (index === -2 || length === 1) return CHART_NAMED_GRAY_COLORS.grayColor1;
+  const indexData = data && Object.values(data).find(d => d.index === index);
+  if (
+    index === -2 ||
+    length === 1 ||
+    !indexData ||
+    GREY_INDICATOR_SLUGS.includes(indexData.slug)
+  ) {
+    return CHART_NAMED_GRAY_COLORS.grayColor1;
+  }
   const getColorBucket = l => colors[l - 1] || getColorBucket(l - 1);
   const colorBucket = getColorBucket(length);
   return (
