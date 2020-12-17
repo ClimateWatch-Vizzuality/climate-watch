@@ -23,28 +23,7 @@ const NetZero = ({ route }) => (
                     (GHG) emissions must be slashed in half during the next
                     decade and reach net-zero early in the second half of the
                     century. Given this need, a growing number of Parties to the
-                    Paris Agreement have adopted net-zero emissions targets.
-                    Net-zero targets can be communicated in a country’s
-                    Nationally Determined Contribution (NDC), Long-term Low GHG
-                    Emissions Development Strategy (LTS), or set in national
-                    laws and policies in order to drive Parties’ commitment to
-                    climate action.
-                  </div>
-                  <div>
-                    Explore net-zero targets that have been formally adopted by
-                    countries here. For net-zero targets of countries, states,
-                    cities and companies, visit Energy & Climate Intelligence
-                    Unit (ECIU)’s{' '}
-                    <a
-                      href="https://eciu.net/netzerotracker/map"
-                      // eslint-disable-next-line react/jsx-no-target-blank
-                      target="_blank"
-                      rel="noopener"
-                      className={styles.link}
-                    >
-                      Net-Zero Tracker
-                    </a>
-                    .
+                    Paris Agreement are adopting net-zero emissions targets. This tracker presents the net-zero targets that have been communicated in a Party’s nationally determined contribution (NDC), long-term low GHG emissions development strategy (LTS), domestic law, or policy.
                   </div>
                 </React.Fragment>
               )}
