@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import InnerHTML from 'dangerously-set-html-content';
+import ButtonGroup from 'components/button-group';
 import styles from './key-visualization-preview-styles.scss';
 
 class KeyVisualizationPreview extends PureComponent {
@@ -12,6 +13,37 @@ class KeyVisualizationPreview extends PureComponent {
         flourishEmbed.style.width = '100%';
       }
     }, 500);
+  }
+
+  renderButtonGroup() {
+    const { onDownloadData, onSaveImage, visualization } = this.props;
+
+    return (
+      <ButtonGroup
+        key="preview-actions"
+        className={styles.buttonGroup}
+        buttonsConfig={[
+          {
+            type: 'downloadCombo',
+            options: [
+              {
+                label: 'Download current data',
+                action: () => onDownloadData(visualization)
+              },
+              {
+                label: 'Save as image (PNG)',
+                action: () => onSaveImage(visualization)
+              }
+            ]
+          },
+          {
+            type: 'share',
+            shareUrl: '/embed/key-visualizations',
+            positionRight: true
+          }
+        ]}
+      />
+    );
   }
 
   renderContent() {
@@ -89,6 +121,7 @@ class KeyVisualizationPreview extends PureComponent {
       <div className={styles.previewContainer} style={containerStyle}>
         <div className={styles.previewHeader}>
           <h1>{visualization.title}</h1>
+          {this.renderButtonGroup()}
         </div>
         {this.renderContent()}
         {this.renderLink()}
@@ -100,7 +133,9 @@ class KeyVisualizationPreview extends PureComponent {
 
 KeyVisualizationPreview.propTypes = {
   visualization: PropTypes.object,
-  row: PropTypes.number
+  row: PropTypes.number,
+  onDownloadData: PropTypes.func.isRequired,
+  onSaveImage: PropTypes.func.isRequired
 };
 
 export default KeyVisualizationPreview;

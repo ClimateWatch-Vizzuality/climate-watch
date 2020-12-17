@@ -19,11 +19,17 @@
 
 .previewHeader {
   display: flex;
-  justify-content: space-between;
 
   h1 {
     font-weight: 400;
+    margin-right: 30px;
+    width: calc(100% - 300px);
   }
+}
+
+.buttonGroup {
+  margin-right: 20px;
+  width: 100px;
 }
 
 .previewContent {
