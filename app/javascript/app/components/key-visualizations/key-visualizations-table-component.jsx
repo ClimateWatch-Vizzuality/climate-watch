@@ -2,19 +2,20 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import Dropdown from 'components/dropdown';
-import MultiSelect from 'components/multiselect';
-import { findIndex, intersectionBy } from 'lodash';
+import { Multiselect } from 'cw-components';
+import { findIndex, intersectionBy, find } from 'lodash';
 import KeyVisualizationsProvider from 'providers/key-visualizations-provider/key-visualizations-provider';
 import { isPageContained } from 'utils/navigation';
 import { getGridElementPosition } from 'app/utils';
+import multiSelectTheme from 'styles/themes/dropdown/multiselect-dropdown.scss';
 import KeyVisualizationCard from './key-visualization-card/key-visualization-card-component';
-
 import styles from './key-visualizations-table-styles.scss';
 import KeyVisualizationPreview from './key-visualization-preview/key-visualization-preview-component';
 
 class KeyVisualizationsTable extends PureComponent {
   filteredData() {
     const {
+      options,
       data,
       tagsSelected,
       geographiesSelected,
@@ -30,8 +31,18 @@ class KeyVisualizationsTable extends PureComponent {
         t => t.value
       );
 
+      // Either "All Geographies" selected or specific options
+      let geosSelected = [];
+      if (geographiesSelected[0].value === 'all') {
+        geographiesSelected[0].expandsTo.forEach(value => {
+          geosSelected.push(find(options.geographies, { value }));
+        });
+      } else {
+        geosSelected = geographiesSelected;
+      }
+
       const includedGeos = intersectionBy(
-        geographiesSelected,
+        geosSelected,
         item.geographies,
         g => g.value
       );
@@ -103,17 +114,19 @@ class KeyVisualizationsTable extends PureComponent {
           <KeyVisualizationsProvider />
         </div>
         <div className={styles.col4}>
-          <MultiSelect
+          <Multiselect
             label="Tags"
             options={options.tags || []}
             values={tagsSelected || []}
-            onMultiValueChange={handleTagsChange}
+            onValueChange={selected => handleTagsChange(selected)}
+            theme={multiSelectTheme}
           />
-          <MultiSelect
+          <Multiselect
             label="Geographies"
             options={options.geographies || []}
             values={geographiesSelected || []}
-            onMultiValueChange={handleGeographiesChange}
+            onValueChange={selected => handleGeographiesChange(selected)}
+            theme={multiSelectTheme}
           />
           <Dropdown
             label="Topic"

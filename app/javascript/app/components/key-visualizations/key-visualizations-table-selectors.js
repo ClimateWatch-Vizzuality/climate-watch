@@ -61,18 +61,25 @@ export const getTopicSelected = createSelector(
 );
 
 export const getGeographyOptions = createSelector(getData, data => {
-  if (!data) return [];
+  if (!data || data.length === 0) return [];
 
-  return uniq(data.reduce((acc, cur) => acc.concat(cur.geographies), [])).map(
-    dropdownOption
-  );
+  const options = uniq(
+    data.reduce((acc, cur) => acc.concat(cur.geographies), [])
+  ).map(dropdownOption);
+  const allOption = {
+    label: 'All Geographies',
+    value: 'all',
+    expandsTo: options.map(option => option.value)
+  };
+
+  return [allOption, ...options];
 });
 
 export const getGeographiesSelected = createSelector(
   [getGeographyOptions, getGeographiesSelection],
   (geos, selected) => {
-    if (!geos) return null;
-    if (!selected) return geos;
+    if (!geos || geos.length === 0) return [];
+    if (!selected) return [geos[0]];
     return geos.filter(g => selected.indexOf(g.value) !== -1);
   }
 );
