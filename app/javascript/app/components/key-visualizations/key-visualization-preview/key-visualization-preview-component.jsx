@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import InnerHTML from 'dangerously-set-html-content';
 import ButtonGroup from 'components/button-group';
+import ModalMetadata from 'components/modal-metadata';
 import styles from './key-visualization-preview-styles.scss';
 
 class KeyVisualizationPreview extends PureComponent {
@@ -135,6 +136,7 @@ class KeyVisualizationPreview extends PureComponent {
         {this.renderContent()}
         {this.renderLink()}
         {this.renderDescription()}
+        <ModalMetadata />
       </div>
     );
   }
