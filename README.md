@@ -118,7 +118,6 @@ USER_SURVEY_SPREADSHEET_URL: URL for the script to the contact survey
 
 FEATURE_POP_UP: Pop up shown entering the site
 POP_UP: Name of the temporary pop up to be displayed
-FEATURE_NET_ZERO: Activate net-zero page on commitments menu
 FEATURE_KEY_VISUALIZATIONS: Activate key visualizations page on commitments menu
 
 ## Modules

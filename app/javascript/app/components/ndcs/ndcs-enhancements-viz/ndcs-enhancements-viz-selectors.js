@@ -247,32 +247,15 @@ export const summarizeIndicators = createSelector(
       summaryData[type].emissions.value = parseFloat(
         summaryData[type].emissions.value.toFixed(1)
       );
-      const count = summaryData[type].countries.value;
-      summaryData[type].countries.opts.label = (() => {
-        switch (type) {
-          case 'enhance_2020':
-            return `<strong>countr${
-              count === 1 ? 'y has' : 'ies have'
-            } stated their intention to <span title="Definition: Strengthening mitigation ambition and/or increasing adaptation action in a new or updated NDC.">enhance ambition or action</span> in new or updated NDC`;
-          case 'intend_2020':
-            return `<strong>countr${
-              count === 1 ? 'y has' : 'ies have'
-            } stated their intention to <span title="Definition: Includes providing information to improve the clarity of the NDC or on measures to implement the current NDC.">update</span> a new or updated NDC`;
-          case 'submitted_2020':
-            return `<strong>countr${
-              count === 1 ? 'y has' : 'ies have'
-            } submitted a new or updated NDC`;
-          default:
-            return `<strong>countr${count === 1 ? 'y' : 'ies'}`;
-        }
-      })();
-      if (summaryData[type].includesEU) {
-        summaryData[type].countries.opts.label +=
-          ' (including the European Union)';
-      }
-      summaryData[
-        type
-      ].countries.opts.label += `</strong>, representing <span title="2016 emissions data">${summaryData[type].emissions.value}% of global emissions</span>`;
+      const euString = summaryData[type].includesEU
+        ? '(including the 27 EU countries)'
+        : '';
+      const emissionsString = `, representing <span title="2016 emissions data">${summaryData[type].emissions.value}% of global emissions</span>`;
+      summaryData[type].countries.opts.label =
+        {
+          enhance_2020: `<strong>countries ${euString}</strong>${emissionsString}, <strong>have stated their intention to <span title="Definition: Strengthening mitigation ambition and/or increasing adaptation action in a new or updated NDC.">enhance ambition or action</span> in new or updated NDCs</strong>`,
+          submitted_2020: `<strong>countries</strong>${emissionsString}, <strong>have submitted a new or updated NDC</strong>`
+        }[type] || '';
     });
     return summaryData;
   }
