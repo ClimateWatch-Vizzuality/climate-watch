@@ -229,17 +229,29 @@ export const summarizeIndicators = createSelector(
     locations.forEach(l => {
       const location = indicator.locations[l];
       const type = location.label_slug;
+      const emissionPercentages = emissionsIndicator.locations;
       if (type) {
-        if (l === 'EUU') {
+        if (l === europeSlug) {
+          const EUTotal = parseFloat(emissionPercentages[europeSlug].value);
+          const europeanLocationIsos = locations.filter(iso =>
+            europeanCountries.includes(iso)
+          );
+          const europeanLocationsValue = europeanLocationIsos.reduce(
+            (acc, iso) => acc + parseFloat(emissionPercentages[iso].value),
+            0
+          );
+          summaryData[type].emissions.value += EUTotal - europeanLocationsValue; // To avoid double counting
+          summaryData[type].countries.value +=
+            europeanCountries.length - europeanLocationIsos.length; // To avoid double counting
           summaryData[type].includesEU = true;
-          summaryData[type].countries.value += 27;
         } else {
           summaryData[type].countries.value += 1;
-        }
-        if (emissionsIndicator.locations[l]) {
-          summaryData[type].emissions.value += parseFloat(
-            emissionsIndicator.locations[l].value
-          );
+
+          if (emissionsIndicator.locations[l]) {
+            summaryData[type].emissions.value += parseFloat(
+              emissionsIndicator.locations[l].value
+            );
+          }
         }
       }
     });
@@ -254,7 +266,7 @@ export const summarizeIndicators = createSelector(
       summaryData[type].countries.opts.label =
         {
           enhance_2020: `<strong>countries ${euString}</strong>${emissionsString}, <strong>have stated their intention to <span title="Definition: Strengthening mitigation ambition and/or increasing adaptation action in a new or updated NDC.">enhance ambition or action</span> in new or updated NDCs</strong>`,
-          submitted_2020: `<strong>countries</strong>${emissionsString}, <strong>have submitted a new or updated NDC</strong>`
+          submitted_2020: `<strong>countries ${euString}</strong>${emissionsString}, <strong>have submitted a new or updated NDC</strong>`
         }[type] || '';
     });
     return summaryData;
