@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import InnerHTML from 'dangerously-set-html-content';
+import ButtonGroup from 'components/button-group';
+import ModalMetadata from 'components/modal-metadata';
 import styles from './key-visualization-preview-styles.scss';
 
 class KeyVisualizationPreview extends PureComponent {
@@ -12,6 +14,46 @@ class KeyVisualizationPreview extends PureComponent {
         flourishEmbed.style.width = '100%';
       }
     }, 500);
+  }
+
+  renderButtonGroup() {
+    const {
+      onInfoClick,
+      onDownloadData,
+      onSaveImage,
+      visualization
+    } = this.props;
+
+    return (
+      <ButtonGroup
+        key="preview-actions"
+        className={styles.buttonGroup}
+        buttonsConfig={[
+          {
+            type: 'info',
+            onClick: () => onInfoClick(visualization)
+          },
+          {
+            type: 'downloadCombo',
+            options: [
+              {
+                label: 'Download current data',
+                action: () => onDownloadData(visualization)
+              },
+              {
+                label: 'Save as image (PNG)',
+                action: () => onSaveImage(visualization)
+              }
+            ]
+          },
+          {
+            type: 'share',
+            shareUrl: '/embed/key-visualizations',
+            positionRight: true
+          }
+        ]}
+      />
+    );
   }
 
   renderContent() {
@@ -36,26 +78,6 @@ class KeyVisualizationPreview extends PureComponent {
     return (
       <div className={styles.previewContent}>
         <img src={embedCode} />
-      </div>
-    );
-  }
-
-  renderLink() {
-    const { visualization } = this.props;
-    if (!visualization.blog_link) {
-      return '';
-    }
-
-    const hostname = new URL(visualization.blog_link).hostname;
-    return (
-      <div className={styles.previewLink}>
-        <a
-          href={visualization.blog_link}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          {hostname}
-        </a>
       </div>
     );
   }
@@ -89,10 +111,11 @@ class KeyVisualizationPreview extends PureComponent {
       <div className={styles.previewContainer} style={containerStyle}>
         <div className={styles.previewHeader}>
           <h1>{visualization.title}</h1>
+          {this.renderButtonGroup()}
         </div>
         {this.renderContent()}
-        {this.renderLink()}
         {this.renderDescription()}
+        <ModalMetadata />
       </div>
     );
   }
@@ -100,7 +123,10 @@ class KeyVisualizationPreview extends PureComponent {
 
 KeyVisualizationPreview.propTypes = {
   visualization: PropTypes.object,
-  row: PropTypes.number
+  row: PropTypes.number,
+  onInfoClick: PropTypes.func.isRequired,
+  onDownloadData: PropTypes.func.isRequired,
+  onSaveImage: PropTypes.func.isRequired
 };
 
 export default KeyVisualizationPreview;
