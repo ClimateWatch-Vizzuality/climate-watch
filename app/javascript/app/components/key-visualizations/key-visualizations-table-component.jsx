@@ -2,20 +2,20 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import Dropdown from 'components/dropdown';
-import MultiSelect from 'components/multiselect';
-import { findIndex, intersectionBy } from 'lodash';
+import { Multiselect } from 'cw-components';
+import { findIndex, intersectionBy, find } from 'lodash';
 import KeyVisualizationsProvider from 'providers/key-visualizations-provider/key-visualizations-provider';
 import { isPageContained } from 'utils/navigation';
 import { getGridElementPosition } from 'app/utils';
-import ButtonGroup from 'components/button-group';
+import multiSelectTheme from 'styles/themes/dropdown/multiselect-dropdown.scss';
 import KeyVisualizationCard from './key-visualization-card/key-visualization-card-component';
-
 import styles from './key-visualizations-table-styles.scss';
 import KeyVisualizationPreview from './key-visualization-preview/key-visualization-preview-component';
 
 class KeyVisualizationsTable extends PureComponent {
   filteredData() {
     const {
+      options,
       data,
       tagsSelected,
       geographiesSelected,
@@ -25,14 +25,33 @@ class KeyVisualizationsTable extends PureComponent {
     let filtered = data;
 
     filtered = filtered.filter(item => {
+      let selectedTags = [];
+      if (tagsSelected[0].value === 'all') {
+        tagsSelected[0].expandsTo.forEach(value => {
+          selectedTags.push(find(options.tags, { value }));
+        });
+      } else {
+        selectedTags = tagsSelected;
+      }
+
       const includedTags = intersectionBy(
-        tagsSelected,
+        selectedTags,
         item.tags,
         t => t.value
       );
 
+      // Either "All Geographies" selected or specific options
+      let geosSelected = [];
+      if (geographiesSelected[0].value === 'all') {
+        geographiesSelected[0].expandsTo.forEach(value => {
+          geosSelected.push(find(options.geographies, { value }));
+        });
+      } else {
+        geosSelected = geographiesSelected;
+      }
+
       const includedGeos = intersectionBy(
-        geographiesSelected,
+        geosSelected,
         item.geographies,
         g => g.value
       );
@@ -79,39 +98,6 @@ class KeyVisualizationsTable extends PureComponent {
     return position ? position.row + 1 : 1;
   }
 
-  renderButtonGroup() {
-    const { visualizationSelected, onDownloadData, onSaveImage } = this.props;
-
-    if (!visualizationSelected) {
-      return '';
-    }
-
-    return (
-      <ButtonGroup
-        buttonsConfig={[
-          {
-            type: 'downloadCombo',
-            options: [
-              {
-                label: 'Download current data',
-                action: () => onDownloadData(visualizationSelected)
-              },
-              {
-                label: 'Save as image (PNG)',
-                action: () => onSaveImage(visualizationSelected)
-              }
-            ]
-          },
-          {
-            type: 'share',
-            shareUrl: '/embed/key-visualizations',
-            positionRight: true
-          }
-        ]}
-      />
-    );
-  }
-
   render() {
     const {
       options,
@@ -121,7 +107,10 @@ class KeyVisualizationsTable extends PureComponent {
       tagsSelected,
       topicSelected,
       geographiesSelected,
-      visualizationSelected
+      visualizationSelected,
+      onInfoClick,
+      onDownloadData,
+      onSaveImage
     } = this.props;
 
     return (
@@ -132,20 +121,21 @@ class KeyVisualizationsTable extends PureComponent {
           })}
         >
           <KeyVisualizationsProvider />
-          {!isPageContained && <h2 className={styles.title}>Data Library</h2>}
         </div>
         <div className={styles.col4}>
-          <MultiSelect
+          <Multiselect
             label="Tags"
             options={options.tags || []}
             values={tagsSelected || []}
-            onMultiValueChange={handleTagsChange}
+            onValueChange={selected => handleTagsChange(selected)}
+            theme={multiSelectTheme}
           />
-          <MultiSelect
+          <Multiselect
             label="Geographies"
             options={options.geographies || []}
             values={geographiesSelected || []}
-            onMultiValueChange={handleGeographiesChange}
+            onValueChange={selected => handleGeographiesChange(selected)}
+            theme={multiSelectTheme}
           />
           <Dropdown
             label="Topic"
@@ -154,13 +144,15 @@ class KeyVisualizationsTable extends PureComponent {
             onValueChange={handleTopicChange}
             value={topicSelected}
           />
-          {this.renderButtonGroup()}
         </div>
         <div className="grid-column-item">
           <div className={styles.cards} id="visualization-cards">
             <KeyVisualizationPreview
               visualization={visualizationSelected}
               row={this.previewRowPosition()}
+              onInfoClick={onInfoClick}
+              onDownloadData={onDownloadData}
+              onSaveImage={onSaveImage}
             />
             {this.filteredVisualizations()}
           </div>
@@ -182,6 +174,7 @@ KeyVisualizationsTable.propTypes = {
   handleGeographiesChange: PropTypes.func.isRequired,
   onCardClick: PropTypes.func.isRequired,
   onDownloadData: PropTypes.func.isRequired,
+  onInfoClick: PropTypes.func.isRequired,
   onSaveImage: PropTypes.func.isRequired
 };
 

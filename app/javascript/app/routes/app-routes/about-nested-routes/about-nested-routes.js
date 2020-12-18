@@ -12,6 +12,11 @@ export default [
     activeId
   },
   {
+    path: '/key-visualizations',
+    label: 'Key Visualizations',
+    activeId
+  },
+  {
     path: '/about/contact',
     label: 'Sign Up for Updates',
     activeId
