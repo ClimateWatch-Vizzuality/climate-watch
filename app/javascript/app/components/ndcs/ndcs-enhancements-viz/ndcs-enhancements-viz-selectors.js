@@ -259,14 +259,11 @@ export const summarizeIndicators = createSelector(
       summaryData[type].emissions.value = parseFloat(
         summaryData[type].emissions.value.toFixed(1)
       );
-      const euString = summaryData[type].includesEU
-        ? '(including the 27 EU countries)'
-        : '';
       const emissionsString = `, representing <span title="2016 emissions data">${summaryData[type].emissions.value}% of global emissions</span>`;
       summaryData[type].countries.opts.label =
         {
-          enhance_2020: `<strong>countries ${euString}</strong>${emissionsString}, <strong>have stated their intention to <span title="Definition: Strengthening mitigation ambition and/or increasing adaptation action in a new or updated NDC.">enhance ambition or action</span> in new or updated NDCs</strong>`,
-          submitted_2020: `<strong>countries ${euString}</strong>${emissionsString}, <strong>have submitted a new or updated NDC</strong>`
+          enhance_2020: `<strong>countries (including the 27 EU countries)</strong>${emissionsString}, <strong>have stated their intention to <span title="Definition: Strengthening mitigation ambition and/or increasing adaptation action in a new or updated NDC.">enhance ambition or action</span> in new or updated NDCs</strong>`,
+          submitted_2020: `<strong>countries (including the 27 EU countries)</strong>${emissionsString}, <strong>have submitted a new or updated NDC</strong>`
         }[type] || '';
     });
     return summaryData;
