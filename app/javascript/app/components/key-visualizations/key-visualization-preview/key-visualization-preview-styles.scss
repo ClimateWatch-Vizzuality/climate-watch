@@ -3,6 +3,8 @@
 
 .previewContainer {
   margin: 20px 15px;
+  padding-top: 30px;
+  border-top: solid 1px $gray2;
 
   @media #{$mobile-only} {
     grid-column: 1;
@@ -19,10 +21,27 @@
 
 .previewHeader {
   display: flex;
-  justify-content: space-between;
+
+  @media #{$mobile-only} {
+    flex-direction: column;
+  }
 
   h1 {
     font-weight: 400;
+    margin-right: 30px;
+    width: calc(100% - 300px);
+
+    @media #{$mobile-only} {
+      width: 100%;
+    }
+  }
+}
+
+.buttonGroup {
+  width: 140px;
+
+  @media #{$mobile-only} {
+    margin-top: 15px;
   }
 }
 
