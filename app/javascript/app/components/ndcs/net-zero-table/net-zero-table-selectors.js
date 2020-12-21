@@ -144,7 +144,7 @@ export const getTitleLinks = createSelector([getFilteredDataBySearch], data => {
   return data.map(d => [
     {
       columnName: 'country',
-      url: `/country/${d.iso}`
+      url: `/countries/${d.iso}`
     },
     {
       columnName: 'Source link',
