@@ -40,7 +40,8 @@ export const getTableData = createSelector(
         ? '%'
         : `${scaleString}${getUnit(metric)}`;
 
-    const formatValue = value => value && format('.2f')(Number(value / scale));
+    const formatValue = value =>
+      (value || value === 0) && String(format('.2f')(Number(value / scale)));
     const filteredYearValue = (d, c) => {
       if (dataZoomSelectedYears) {
         const { min, max } = dataZoomSelectedYears;
