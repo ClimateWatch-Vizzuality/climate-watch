@@ -2,6 +2,7 @@ import { createSelector } from 'reselect';
 import isEmpty from 'lodash/isEmpty';
 import { GHG_TABLE_HEADER, GHG_CALCULATION_OPTIONS } from 'data/constants';
 import { europeSlug } from 'app/data/european-countries';
+import { format } from 'd3-format';
 import {
   getRegions,
   getCountries,
@@ -39,7 +40,8 @@ export const getTableData = createSelector(
         ? '%'
         : `${scaleString}${getUnit(metric)}`;
 
-    const formatValue = value => value && Number((value / scale).toFixed(2));
+    const formatValue = value =>
+      (value || value === 0) && String(format('.2f')(Number(value / scale)));
     const filteredYearValue = (d, c) => {
       if (dataZoomSelectedYears) {
         const { min, max } = dataZoomSelectedYears;
