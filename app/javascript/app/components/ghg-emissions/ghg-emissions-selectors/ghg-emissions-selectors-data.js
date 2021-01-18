@@ -289,8 +289,7 @@ export const getChartData = createSelector(
         if (scaledValue) {
           const previousValue = previousYearValues[key];
           scaledValue = previousValue
-            ? ((scaledValue - previousYearValues[key]) * 100) /
-              previousYearValues[key]
+            ? ((scaledValue - previousValue) * 100) / previousValue
             : 'n/a';
         }
         previousYearValues[key] = currentYearValue;
