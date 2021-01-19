@@ -15,8 +15,19 @@ module Api
         def sanitised_order
           @query.klass.send(
             :sanitize_sql_for_order,
-            "#{@sorting_column} #{@sorting_direction}"
+            sorting_sql
           )
+        end
+
+        def sorting_sql
+          sql = "#{@sorting_column} #{@sorting_direction}"
+          id_column = alias_to_name('id')
+
+          return sql if id_column.nil? || @sorting_column.downcase.to_s == id_column
+
+          # append unique record identifier at the end of sorting phrase to ensure
+          # the order when sorting by non distinct columns like for example region
+          sql + ", #{id_column} ASC"
         end
 
         # @param column [String] name of column; can be a year
