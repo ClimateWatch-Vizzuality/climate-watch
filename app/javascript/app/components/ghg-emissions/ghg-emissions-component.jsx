@@ -251,16 +251,15 @@ function GhgEmissions(props) {
     ); // format thousands with two fixed decimals
 
     const customLabelFormat = value => {
-      if (value > 1000000000) {
+      if (value > 1000000000 || value < -1000000000) {
         return billionsFormat(value);
-      } else if (value > 1000000) {
+      } else if (value > 1000000 || value < -1000000) {
         return millionsFormat(value);
-      } else if (value > 1000) {
+      } else if (value > 1000 || value > -1000) {
         return thousandsFormat(value);
       }
       return format('.2f')(value);
     };
-
     return (
       <React.Fragment>
         <Chart
