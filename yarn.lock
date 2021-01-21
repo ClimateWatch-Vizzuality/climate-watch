@@ -4096,9 +4096,9 @@ currently-unhandled@^0.4.1:
   dependencies:
     array-find-index "^1.0.1"
 
-"cw-components@github:ClimateWatch-Vizzuality/climate-watch-components#1.63.1":
-  version "1.63.1"
-  resolved "https://codeload.github.com/ClimateWatch-Vizzuality/climate-watch-components/tar.gz/5fff9610763d0ae6445c29c185848979d6407d44"
+"cw-components@github:ClimateWatch-Vizzuality/climate-watch-components#1.63.2":
+  version "1.63.2"
+  resolved "https://codeload.github.com/ClimateWatch-Vizzuality/climate-watch-components/tar.gz/d2a09c2ba3cca10dc67d5d0a2d8cac78a8988bd1"
   dependencies:
     "@d3fc/d3fc-discontinuous-scale" "^3.0.7"
     "@latticejs/recharts-sunburst" "^1.0.1-beta.0"
