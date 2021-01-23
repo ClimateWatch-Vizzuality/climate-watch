@@ -5,7 +5,7 @@ node {
   // Variables
   def tokens = "${env.JOB_NAME}".tokenize('/')
   def appName = tokens[0]
-  def dockerUsername = "${DOCKER_USERNAME}"
+  def dockerUsername = "${DOCKER_WRI_USERNAME}"
   def imageTag = "${dockerUsername}/${appName}:${env.BRANCH_NAME}.${env.BUILD_NUMBER}"
 
   currentBuild.result = "SUCCESS"
