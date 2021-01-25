@@ -6,11 +6,9 @@ import cx from 'classnames';
 import Icon from 'components/icon';
 import Hamburger from 'components/hamburger';
 import Nav from 'components/nav';
-import ToolsNav from 'components/tools-nav';
 import Contact from 'components/contact';
 import cwLogo from 'assets/icons/cw-logo.svg';
 import mobileMenuNavTheme from 'styles/themes/nav/mobile-menu-nav.scss';
-import mobileToolsNavTheme from 'styles/themes/tools-nav/mobile-tools-nav.scss';
 import styles from './navbar-mobile-styles.scss';
 
 const NavBarMobile = ({ closeMenu, hamburgerIsOpen, routes }) => (
@@ -32,13 +30,6 @@ const NavBarMobile = ({ closeMenu, hamburgerIsOpen, routes }) => (
             isMobile
           />
           <div className={styles.separator} />
-          <div className={styles.toolsContainer}>
-            <ToolsNav
-              className={styles.tools}
-              theme={mobileToolsNavTheme}
-              reverse
-            />
-          </div>
           <Contact className={styles.menuContact} />
         </div>
       </div>

@@ -19,8 +19,6 @@ import EmissionPathways from 'pages/emission-pathways';
 import GHGEmissions from 'pages/ghg-emissions';
 import NDCSearch from 'pages/ndc-search';
 import error from 'pages/error';
-import MyClimateWatch from 'pages/my-climate-watch';
-import DataExplorer from 'pages/data-explorer';
 import EmissionPathwaysModel from 'pages/emission-pathways-model';
 import EmissionPathwaysScenario from 'pages/emission-pathways-scenario';
 import Sectors from 'pages/sectors';
@@ -31,22 +29,25 @@ import NDCSExplore from 'pages/ndcs-explore';
 import NdcOverview from 'pages/ndc-overview';
 import CustomCompare from 'pages/custom-compare';
 import KeyVisualizations from 'pages/key-visualizations/key-visualizations-component';
+import MyClimateWatch from 'pages/my-climate-watch';
+import DataExplorer from 'pages/data-explorer';
 
 import { HEADER_GRADIENTS, HEADER_COLORS } from 'styles/constants';
 
 // routes
 import NDCSRoutes from './NDCS-routes';
+import DownloadAndVisualizeRoutes from './download-and-visualize-routes';
 import NDCCountryRoutes from './NDCCountry-routes';
 import LTSCountryRoutes from './LTSCountry-routes';
 import NDCCompareRoutes from './NDCCompare-routes';
-import MyCwRoutes from './my-cw-routes';
-import DataExplorerRoutes from './data-explorer-routes';
 import AboutRoutes from './about-routes';
 import AboutNestedRoutes from './about-nested-routes';
 import emissionPathwaysRoutes from './emission-pathways-routes';
 import emissionPathwaysModelRoutes from './emission-pathways-model-routes';
 import sectorsRoutes from './sectors-routes';
 import CustomCompareRoutes from './custom-compare-routes';
+import MyCwRoutes from './my-cw-routes';
+import DataExplorerRoutes from './data-explorer-routes';
 
 // sections
 import countrySections from './country-sections';
@@ -245,6 +246,12 @@ export default [
     exact: true,
     nav: false,
     label: 'STORIES'
+  },
+  {
+    nav: true,
+    label: 'DOWNLOAD & VISUALIZE',
+    routes: DownloadAndVisualizeRoutes,
+    toolsNav: true
   },
   {
     path: '/my-climate-watch',

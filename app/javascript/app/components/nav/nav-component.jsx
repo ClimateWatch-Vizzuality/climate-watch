@@ -17,6 +17,7 @@ class Nav extends PureComponent {
   render() {
     const {
       routes,
+      noLogo,
       className,
       hideActive,
       reverse,
@@ -29,11 +30,13 @@ class Nav extends PureComponent {
     } = this.props;
     return (
       <nav className={cx(styles.navbar, className, theme.navbar)}>
-        <Desktop>
-          <NavLink exact className={cx(styles.link, theme.link)} to="/">
-            <Icon className={styles.logo} icon={cwLogo} />
-          </NavLink>
-        </Desktop>
+        {!noLogo && (
+          <Desktop>
+            <NavLink exact className={cx(styles.link, theme.link)} to="/">
+              <Icon className={styles.logo} icon={cwLogo} />
+            </NavLink>
+          </Desktop>
+        )}
         {routes.map(route => {
           if (route.navNestedMenu && allowNested) {
             return (
@@ -102,6 +105,7 @@ class Nav extends PureComponent {
 Nav.propTypes = {
   hideActive: PropTypes.bool.isRequired,
   allowNested: PropTypes.bool.isRequired,
+  noLogo: PropTypes.bool.isRequired,
   reverse: PropTypes.bool,
   isRendered: PropTypes.bool,
   routes: PropTypes.array.isRequired,
@@ -115,6 +119,7 @@ Nav.propTypes = {
 Nav.defaultProps = {
   routes: [],
   hideActive: false,
+  noLogo: false,
   allowNested: true,
   isMobile: false,
   theme: {}

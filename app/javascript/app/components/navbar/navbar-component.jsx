@@ -1,8 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Nav from 'components/nav';
-import ToolsNav from 'components/tools-nav';
-
+import cx from 'classnames';
 import styles from './navbar-styles.scss';
 
 class NavBar extends PureComponent {
@@ -11,9 +10,20 @@ class NavBar extends PureComponent {
     return (
       <div className={styles.row}>
         <div className={styles.navigationWrapper}>
-          <Nav routes={routes} className={styles.navigation} isRendered />
+          <Nav
+            routes={routes.filter(r => !r.toolsNav)}
+            className={styles.navigation}
+            isRendered
+          />
         </div>
-        <ToolsNav />
+        <div className={styles.toolsNavWrapper}>
+          <Nav
+            routes={routes.filter(r => r.toolsNav)}
+            className={cx(styles.navigation, styles.toolsNav)}
+            noLogo
+            isRendered
+          />
+        </div>
       </div>
     );
   }
