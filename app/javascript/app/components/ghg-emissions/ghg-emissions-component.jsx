@@ -4,7 +4,11 @@ import startCase from 'lodash/startCase';
 import isArray from 'lodash/isArray';
 import { isPageContained } from 'utils/navigation';
 import cx from 'classnames';
-import { GHG_TABLE_HEADER, GHG_CALCULATION_OPTIONS } from 'data/constants';
+import {
+  GHG_TABLE_HEADER,
+  GHG_CALCULATION_OPTIONS,
+  CHART_TYPES
+} from 'data/constants';
 import {
   Chart,
   Multiselect,
@@ -224,10 +228,11 @@ function GhgEmissions(props) {
     }
 
     const tableDataReady = !loading && tableData && tableData.length;
-    const isPercentageChangeCalculation =
+    const isPercentageUnit =
       !loading &&
-      selectedOptions.calculationSelected.value ===
-        GHG_CALCULATION_OPTIONS.PERCENTAGE_CHANGE.value;
+      (selectedOptions.calculationSelected.value ===
+        GHG_CALCULATION_OPTIONS.PERCENTAGE_CHANGE.value ||
+        selectedOptions.chartTypeSelected.value === CHART_TYPES.percentage);
 
     const percentageChangeCustomLabelFormat = value => {
       if (value === undefined) {
@@ -278,14 +283,12 @@ function GhgEmissions(props) {
           onLegendChange={handleLegendChange}
           hideRemoveOptions={hideRemoveOptions}
           getCustomYLabelFormat={
-            isPercentageChangeCalculation
-              ? percentageChangeCustomLabelFormat
-              : undefined
+            isPercentageUnit ? percentageChangeCustomLabelFormat : undefined
           }
           customTooltip={
             <TooltipChart
               getCustomYLabelFormat={
-                isPercentageChangeCalculation
+                isPercentageUnit
                   ? percentageChangeCustomLabelFormat
                   : customLabelFormat
               }

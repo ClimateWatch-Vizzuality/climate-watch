@@ -22,7 +22,8 @@ import {
   CHART_COLORS_EXTENDED,
   CHART_COLORS_EXTRA,
   OTHER_COLOR,
-  GHG_CALCULATION_OPTIONS
+  GHG_CALCULATION_OPTIONS,
+  CHART_TYPES
 } from 'data/constants';
 import {
   getWBData,
@@ -36,6 +37,7 @@ import {
   getCalculationSelected,
   getOptionsSelected,
   getIsRegionAggregated,
+  getChartTypeSelected,
   getOptions
 } from './ghg-emissions-selectors-filters';
 
@@ -456,9 +458,12 @@ const getColorPalette = columns => {
   return CHART_COLORS_EXTRA;
 };
 
-export const getUnit = metric => {
+export const getUnit = (metric, chartType) => {
   let unit = DEFAULT_AXES_CONFIG.yLeft.unit;
-  if (metric === GHG_CALCULATION_OPTIONS.PERCENTAGE_CHANGE.value) {
+  if (
+    metric === GHG_CALCULATION_OPTIONS.PERCENTAGE_CHANGE.value ||
+    chartType === CHART_TYPES.percentage
+  ) {
     return '%';
   }
   if (metric === GHG_CALCULATION_OPTIONS.PER_GDP.value) {
@@ -474,9 +479,10 @@ export const getChartConfig = createSelector(
     getModelSelected,
     getMetricSelected,
     getSortedYColumnOptions,
-    getCalculationSelected
+    getCalculationSelected,
+    getChartTypeSelected
   ],
-  (model, metric, yColumns, calculationSelected) => {
+  (model, metric, yColumns, calculationSelected, chartType) => {
     if (!model || !yColumns) return null;
     const colorPalette = getColorPalette(yColumns);
     const isPercentageChangeCalculation =
@@ -484,7 +490,7 @@ export const getChartConfig = createSelector(
       GHG_CALCULATION_OPTIONS.PERCENTAGE_CHANGE.value;
     colorThemeCache = getThemeConfig(yColumns, colorPalette, colorThemeCache);
     const tooltip = getTooltipConfig(yColumns.filter(c => c && !c.hideLegend));
-    const unit = getUnit(metric);
+    const unit = getUnit(metric, chartType);
     return {
       axes: {
         ...DEFAULT_AXES_CONFIG,
