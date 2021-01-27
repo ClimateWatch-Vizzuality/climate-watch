@@ -260,7 +260,7 @@ function GhgEmissions(props) {
         return billionsFormat(value);
       } else if (value > 1000000 || value < -1000000) {
         return millionsFormat(value);
-      } else if (value > 1000 || value > -1000) {
+      } else if (value > 1000 || value < -1000) {
         return thousandsFormat(value);
       }
       return format('.2f')(value);
