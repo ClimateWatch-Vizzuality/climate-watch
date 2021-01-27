@@ -233,7 +233,7 @@ export const getLegend = createSelector(
 export const getTooltipCountryValues = createSelector(
   [getIndicatorsData, getSelectedIndicator],
   (indicators, selectedIndicator) => {
-    if (!indicators || !selectedIndicator) {
+    if (!indicators || !selectedIndicator || !selectedIndicator.locations) {
       return null;
     }
     let updatedSelectedIndicator = selectedIndicator;
