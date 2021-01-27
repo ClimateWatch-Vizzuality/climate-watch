@@ -1,3 +1,4 @@
+
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset
   xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
@@ -14,6 +15,7 @@
         https://youtu.be/C2nIcBqrHsk</video:player_loc>
       <video:duration>79</video:duration>
       <video:family_friendly>yes</video:family_friendly>
+      <video:thumbnail_loc>https://i.ytimg.com/vi/C2nIcBqrHsk/hq720.jpg</video:thumbnail_loc>
       <video:uploader info="https://www.climatewatchdata.org/">Climate Watch
       </video:uploader>
       <video:live>no</video:live>
@@ -4033,7 +4035,7 @@
     <priority>1</priority>
   </url>
   <url>
-    <loc>https://www.climatewatchdata.org/net-zero-explore/</loc>
+    <loc>https://www.climatewatchdata.org/net-zero-tracker/</loc>
     <changefreq>weekly</changefreq>
     <priority>1</priority>
   </url>
