@@ -1,3 +1,4 @@
+
 {
   "name": "climate-watch",
   "version": "1.15.1",
@@ -39,7 +40,7 @@
     "@babel/preset-react": "^7.0.0",
     "ansi-regex": "^5.0.0",
     "autoprefixer": "9.8.0",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "axios-cache-adapter": "2.4.1",
     "babel-eslint": "^9.0.0",
     "babel-loader": "^8.1.0",
@@ -79,11 +80,11 @@
     "imagemin-webp-webpack-plugin": "^3.3.2",
     "js-lenses": "2.0.1",
     "js-yaml": "3.13.1",
-    "lodash": "4.17.4",
+    "lodash": "4.17.19",
     "lodash-inflection": "1.5.0",
     "luxon": "^1.25.0",
     "moment-timezone": "^0.5.32",
-    "node-sass": "4.12.0",
+    "node-sass": ">=4.13.1",
     "path-complete-extname": "^1.0.0",
     "pluralize": "^8.0.0",
     "post-robot": "8.0.26",
