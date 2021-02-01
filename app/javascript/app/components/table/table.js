@@ -25,6 +25,31 @@ const filterColumns = columns =>
       }))
     : []);
 
+const sortData = (data, sortBy) => {
+  const samples = data
+    .slice(0, 5)
+    .map(d => d[sortBy])
+    .filter(Boolean);
+
+  const isADate = d =>
+    Object.prototype.toString.call(d) === '[object Date]' &&
+    !isNaN(new Date(d).getTime());
+  const areDates = samples.every(sample => isADate(new Date(sample)));
+
+  if (areDates) {
+    const sortByDate = (a, b) => new Date(a[sortBy]) - new Date(b[sortBy]);
+    return data.sort(sortByDate);
+  }
+
+  const areNumbers = samples.every(sample => !isNaN(parseFloat(sample)));
+  if (areNumbers) {
+    const sortByNumbers = (a, b) =>
+      parseFloat(a[sortBy]) - parseFloat(b[sortBy]);
+    return data.sort(sortByNumbers);
+  }
+  return _sortBy(data, sortBy);
+};
+
 class TableContainer extends PureComponent {
   constructor(props) {
     super(props);
@@ -100,19 +125,17 @@ class TableContainer extends PureComponent {
   };
 
   getDataSorted = (data, sortBy, sortDirection) => {
-    // If all data is the same don't sort the values
-    if (
-      data &&
-      data[0][sortBy] &&
-      !data.some(d => d[sortBy] !== data[0][sortBy])
-    ) {
-      return data;
-    }
+    const isItemDefined = d =>
+      d[sortBy] !== null && typeof d[sortBy] !== 'undefined';
+    const notNullValueData = data.filter(isItemDefined);
+    const nullValueData = data.filter(d => !isItemDefined(d));
 
-    const dataSorted = _sortBy(data, sortBy);
-    return sortDirection === SortDirection.DESC
-      ? reverse(dataSorted)
-      : dataSorted;
+    const dataSorted = sortData(notNullValueData, sortBy);
+    const notNullValueSortedData =
+      sortDirection === SortDirection.DESC ? reverse(dataSorted) : dataSorted;
+    return nullValueData
+      ? notNullValueSortedData.concat(nullValueData)
+      : notNullValueSortedData;
   };
 
   toggleOptionsOpen = () => {
