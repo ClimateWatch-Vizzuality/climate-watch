@@ -39,6 +39,18 @@ export const GHG_CALCULATION_OPTIONS = {
   }
 };
 
+export const CHART_TYPES = {
+  line: 'line',
+  area: 'area',
+  percentage: 'percentage'
+};
+
+export const CHART_TYPE_OPTIONS = [
+  { label: 'Line chart', value: CHART_TYPES.line },
+  { label: 'Stacked area Chart', value: CHART_TYPES.area },
+  { label: '100% stacked area chart', value: CHART_TYPES.percentage }
+];
+
 export const NOT_COVERED_LABEL = 'Not covered';
 
 export const CALCULATION_OPTIONS = {

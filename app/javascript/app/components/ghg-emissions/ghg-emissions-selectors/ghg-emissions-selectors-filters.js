@@ -10,7 +10,8 @@ import { sortLabelByAlpha } from 'utils/graphs';
 import {
   GAS_AGGREGATES,
   TOP_EMITTERS_OPTION,
-  GHG_CALCULATION_OPTIONS
+  GHG_CALCULATION_OPTIONS,
+  CHART_TYPE_OPTIONS
 } from 'data/constants';
 import {
   getMeta,
@@ -272,12 +273,6 @@ const getGasOptions = createSelector([getFieldOptions('gas')], options => {
       GAS_AGGREGATES[o.label].map(valueByLabel).filter(v => v)
   }));
 });
-
-const CHART_TYPE_OPTIONS = [
-  { label: 'Line chart', value: 'line' },
-  { label: 'Stacked area Chart', value: 'area' },
-  { label: '100% stacked area chart', value: 'percentage' }
-];
 
 const getChartTypeOptions = () => CHART_TYPE_OPTIONS;
 
