@@ -3,10 +3,10 @@ import Proptypes from 'prop-types';
 import { withRouter } from 'react-router';
 import ReactGA from 'react-ga';
 import { renderRoutes } from 'react-router-config';
-
+import setupOneSignal from 'utils/one-signal';
 import './root-styles.scss';
 
-const { GOOGLE_ANALYTICS_ID } = process.env;
+const { GOOGLE_ANALYTICS_ID, ONE_SIGNAL_ID, NODE_ENV } = process.env || {};
 
 function trackPage(page) {
   ReactGA.set({ page });
@@ -36,6 +36,7 @@ function handleTrack(location, prevLocation) {
 class Root extends PureComponent {
   componentDidMount() {
     handleTrack(this.props.location);
+    setupOneSignal({ ONE_SIGNAL_ID, env: NODE_ENV });
   }
 
   componentDidUpdate(prevProps) {
