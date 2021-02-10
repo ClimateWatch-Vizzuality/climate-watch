@@ -82,14 +82,21 @@ function GhgEmissionsContainer(props) {
   }, [dataZoomYears, data]);
 
   const previousData = usePrevious(data);
+  const previousSelected = usePrevious(selected);
 
   // Set data limit years on URL when we don't have any years selected
   useEffect(() => {
+    const { sourcesSelected } = selected;
+    const { sourcesSelected: previousSourcesSelected } = previousSelected || {};
+    const hasSourceChanged =
+      previousSourcesSelected &&
+      sourcesSelected.value !== previousSourcesSelected.value;
     const hasDataChanged =
       (!previousData && data) ||
       (data && data.length) !== (previousData && previousData.length);
+
     if (
-      hasDataChanged &&
+      (hasDataChanged || hasSourceChanged) &&
       data &&
       data.length &&
       (!dataZoomYears.min || !dataZoomYears.max)
@@ -101,14 +108,14 @@ function GhgEmissionsContainer(props) {
     }
 
     return undefined;
-  }, [dataZoomYears, data]);
+  }, [dataZoomYears, data, selected.sourcesSelected]);
 
   useEffect(() => {
-    const { sourceSelected } = selected;
-    if (!(search && search.source) && sourceSelected) {
+    const { sourcesSelected } = selected;
+    if (!(search && search.source) && sourcesSelected) {
       updateUrlParam({
         name: 'source',
-        value: sourceSelected.name
+        value: sourcesSelected.name
       });
     }
   }, []);
