@@ -59,11 +59,13 @@ const getGasConflicts = gasSelected => {
 
   const conflicts = [];
 
-  aggregatedGases.forEach(gas => {
-    if (gasSelected.some(g => g.label.includes(gas))) {
-      conflicts.push(`${gas} option cannot be selected with any other gas`);
-    }
-  });
+  aggregatedGases
+    .filter(g => g !== 'Aggregate F-gases')
+    .forEach(gas => {
+      if (gasSelected.some(g => g.label.includes(gas))) {
+        conflicts.push(`${gas} option cannot be selected with any other gas`);
+      }
+    });
 
   return conflicts;
 };
