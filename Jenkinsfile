@@ -17,9 +17,10 @@ node {
 
   def cw_files_prefix = 'climatewatch.org/staging.climatewatch.org/climate-watch/'
   def user_report_key = 'cf0fa021-d239-457b-bb99-e9ab0205134c'
+  def one_signal_key = '27c3fb0e-bd48-409c-852a-e5a72446b9d4'
   def user_survey_spreadsheet = 'https://script.google.com/macros/s/AKfycbzgN1G9IdLYO3KqlTC4gzBxR1UTX5bYXu1qRaiRn1oD9qoaq6s/exec'
 
-  def feature_flags_env = ' --build-arg FEATURE_KEY_VISUALIZATIONS=false'
+  def feature_flags_env = ''
 
   if (env.BRANCH_NAME == 'master') {
     cw_files_prefix = 'climatewatch.org/www.climatewatch.org/climate-watch/'
@@ -34,13 +35,14 @@ node {
   def cw_files_env = "--build-arg CW_FILES_PREFIX=${cw_files_prefix}"
   def app_signal_env = "--build-arg APPSIGNAL_PUSH_API_KEY=${env.CW_APP_SIGNAL}"
   def user_report_env = "--build-arg USER_REPORT_KEY=${user_report_key}"
+  def one_signal_env = "--build-arg ONE_SIGNAL_ID=${one_signal_key}"
   def user_survey_env = "--build-arg USER_SURVEY_SPREADSHEET_URL=${user_survey_spreadsheet}"
 
   try {
 
     stage ('Build docker') {
-      sh("docker -H :2375 build ${base_envs} ${feature_flags_env} ${cw_files_env} ${app_signal_env} ${user_report_env} ${user_survey_env} -t ${imageTag} ." )
-      sh("docker -H :2375 build ${base_envs} ${feature_flags_env} ${cw_files_env} ${app_signal_env} ${user_report_env} ${user_survey_env} -t ${dockerUsername}/${appName}:latest ." )
+      sh("docker -H :2375 build ${base_envs} ${feature_flags_env} ${cw_files_env} ${app_signal_env} ${user_report_env} ${one_signal_env} ${user_survey_env} -t ${imageTag} ." )
+      sh("docker -H :2375 build ${base_envs} ${feature_flags_env} ${cw_files_env} ${app_signal_env} ${user_report_env} ${one_signal_env} ${user_survey_env} -t ${dockerUsername}/${appName}:latest ." )
     }
 
     stage ('Run Tests') {
