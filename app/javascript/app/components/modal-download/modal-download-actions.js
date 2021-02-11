@@ -8,14 +8,35 @@ import {
 import { invokeCSVDownload } from 'utils/csv';
 
 const USER_SURVEY_SPREADSHEET_URL = process.env.USER_SURVEY_SPREADSHEET_URL;
+const USER_NEWSLETTER_URL = process.env.USER_NEWSLETTER_URL;
 
 const setModalDownloadParams = createAction('setModalDownloadParams');
 const setRequiredFieldsError = createAction('setRequiredFieldsError');
 const toggleModalDownload = createAction('toggleModalDownload');
 
+function toQueryParams(data) {
+  return Object.keys(data).map(key =>
+    (key === 'sector' || key === 'country'
+      ? `${key}=${encodeURIComponent(data[key].value)}`
+      : `${key}=${encodeURIComponent(data[key])}`)
+  );
+}
+
+function getNewsletterFormData(data) {
+  const formdata = new FormData();
+
+  formdata.append('email', data.email);
+  formdata.append('first_name', data.firstName);
+  formdata.append('last_name', data.lastName);
+  formdata.append('organization', data.organization);
+  formdata.append('country', data.country.value);
+
+  return formdata;
+}
+
 const saveSurveyData = createThunkAction(
   'saveSurveyData',
-  requestParams => (dispatch, getState) => {
+  surveyData => (dispatch, getState) => {
     const { modalDownload } = getState();
     if (!modalDownload.requiredError) {
       if (!getStorageWithExpiration('userSurvey')) {
@@ -29,17 +50,26 @@ const saveSurveyData = createThunkAction(
         );
       }
 
-      fetch(`${USER_SURVEY_SPREADSHEET_URL}?${requestParams.join('&')}`).then(
-        () => {
-          window.location.assign(modalDownload.downloadUrl);
-          handleAnalytics(
-            'Data Explorer',
-            'Download Data',
-            getUrlSection(modalDownload.downloadUrl)
-          );
-          return dispatch(toggleModalDownload({ open: false }));
-        }
-      );
+      const spreadsheetQueryParams = toQueryParams(surveyData);
+
+      Promise.all([
+        fetch(
+          `${USER_SURVEY_SPREADSHEET_URL}?${spreadsheetQueryParams.join('&')}`
+        ),
+        surveyData.subscription &&
+          fetch(USER_NEWSLETTER_URL, {
+            method: 'POST',
+            body: getNewsletterFormData(surveyData)
+          })
+      ]).then(() => {
+        window.location.assign(modalDownload.downloadUrl);
+        handleAnalytics(
+          'Data Explorer',
+          'Download Data',
+          getUrlSection(modalDownload.downloadUrl)
+        );
+        return dispatch(toggleModalDownload({ open: false }));
+      });
     }
     return undefined;
   }
