@@ -6,7 +6,10 @@ import { renderRoutes } from 'react-router-config';
 import setupOneSignal from 'utils/one-signal';
 import './root-styles.scss';
 
-const { GOOGLE_ANALYTICS_ID, ONE_SIGNAL_ID, NODE_ENV } = process.env || {};
+// Do not destructure this
+const GOOGLE_ANALYTICS_ID = process.env.GOOGLE_ANALYTICS_ID;
+const NODE_ENV = process.env.NODE_ENV;
+const ONE_SIGNAL_ID = process.env.ONE_SIGNAL_ID;
 
 function trackPage(page) {
   ReactGA.set({ page });
