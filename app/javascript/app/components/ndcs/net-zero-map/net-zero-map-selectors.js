@@ -369,14 +369,22 @@ export const getSummaryCardData = createSelector(
 
     const emissionsIndicator = indicators.find(i => i.slug === 'ndce_ghg');
     if (!emissionsIndicator) return null;
-
+    const positiveLabels = [
+      'Net-zero Target in Law',
+      'Net-zero Target in Policy Document',
+      'Net-zero Target in Political Pledge'
+    ];
+    const positiveLabelIds = Object.entries(netZeroIndicator.labels)
+      .filter(([, l]) => positiveLabels.includes(l.name))
+      .map(([key]) => key);
     const netZeroCountries = Object.keys(
       netZeroIndicator.locations
     ).filter(key =>
-      ['In Policy Document', 'In Law'].includes(
-        netZeroIndicator.locations[key].value
+      positiveLabelIds.includes(
+        String(netZeroIndicator.locations[key].label_id)
       )
     );
+
     let countriesNumber = netZeroCountries.length;
     const partiesNumber = countriesNumber;
 
@@ -400,7 +408,7 @@ export const getSummaryCardData = createSelector(
     const roundedEmissions = Math.round(emissionsNumber * 10) / 10;
     return {
       value: partiesNumber,
-      description: ` Parties, representing ${countriesNumber} countries, have adopted a net-zero target, representing ${roundedEmissions}% of global GHG emissions`
+      description: ` Parties, representing ${countriesNumber} countries and ${roundedEmissions}% of global GHG emissions, have communicated a net-zero target`
     };
   }
 );
