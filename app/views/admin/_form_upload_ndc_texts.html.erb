@@ -21,6 +21,7 @@
     <th class="col" style="width:10%">Status</th>
     <th class="col" style="width:50%">Details</th>
     <th class="col" style="width:20%">Admin user</th>
+    <th class="col" style="width:10%">Action</th>
     </thead>
     <tbody>
       <% logs.each do |log| %>
@@ -37,6 +38,11 @@
             <% end %>
           </td>
           <td><%= log.user_email %></td>
+          <td>
+            <% if defined?(abort_path) && log.state == 'started' %>
+              <%= link_to 'Abort', abort_path + "?id=#{log.id}", method: :patch %>
+            <% end %>
+          </td>
         </tr>
       <% end %>
     </tbody>
