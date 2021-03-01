@@ -17,6 +17,11 @@ const getCountries = state => state.countries || null;
 const getCategories = state => state.categories || null;
 const getIndicatorsData = state => state.indicators || null;
 
+export const getIsEnhancedChecked = createSelector(
+  getSearch,
+  search => search.showEnhancedAmbition === 'true'
+);
+
 export const getISOCountries = createSelector([getCountries], countries =>
   countries.map(country => country.iso_code3)
 );
@@ -113,14 +118,13 @@ export const MAP_COLORS = [
 ];
 
 export const getPathsWithStyles = createSelector(
-  [getMapIndicator, getISOCountries],
-  indicator => {
+  [getMapIndicator, getIsEnhancedChecked],
+  (indicator, isEnhancedChecked) => {
     if (!indicator) return [];
     const paths = [];
     worldPaths.forEach(path => {
       if (shouldShowPath(path)) {
         const { locations, legendBuckets } = indicator;
-
         if (!locations) {
           paths.push({
             ...path,
@@ -134,11 +138,29 @@ export const getPathsWithStyles = createSelector(
         const countryData = isEuropeanCountry
           ? locations[europeSlug]
           : locations[iso];
+        const enhancedLabelId = Object.keys(legendBuckets).find(
+          key => legendBuckets[key] === 'enhanced_mitigation'
+        );
+        const submittedLabelId = Object.keys(legendBuckets).find(
+          key => legendBuckets[key] === 'submitted_2020'
+        );
+        const updatedLegendBuckets = { ...legendBuckets };
+        if (isEnhancedChecked) {
+          delete updatedLegendBuckets[enhancedLabelId];
+        }
 
         let style = COUNTRY_STYLES;
         if (countryData && countryData.label_id) {
-          const legendIndex = legendBuckets[countryData.label_id].index;
-          const color = getColorByIndex(legendBuckets, legendIndex, MAP_COLORS);
+          let legendIndex = updatedLegendBuckets[countryData.label_id].index;
+
+          if (isEnhancedChecked && legendIndex === enhancedLabelId) {
+            legendIndex = submittedLabelId;
+          }
+          const color = getColorByIndex(
+            updatedLegendBuckets,
+            legendIndex,
+            MAP_COLORS
+          );
           style = {
             ...COUNTRY_STYLES,
             default: {
@@ -269,10 +291,3 @@ export const summarizeIndicators = createSelector(
     return summaryData;
   }
 );
-
-export default {
-  getMapIndicator,
-  getIndicatorsParsed,
-  summarizeIndicators,
-  getPathsWithStyles
-};
