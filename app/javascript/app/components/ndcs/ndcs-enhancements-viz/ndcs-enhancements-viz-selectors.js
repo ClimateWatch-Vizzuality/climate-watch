@@ -289,9 +289,15 @@ export const summarizeIndicators = createSelector(
           summaryData[type].emissions.value += EUTotal - europeanLocationsValue; // To avoid double counting
           summaryData[type].countries.value +=
             europeanCountries.length - europeanLocationIsos.length; // To avoid double counting
+
           summaryData[type].includesEU = true;
         } else {
           summaryData[type].countries.value += 1;
+
+          // Enhanced 2020 should be counted as submitted 2020
+          if (type === 'enhance_2020') {
+            summaryData.submitted_2020.countries.value += 1;
+          }
 
           if (emissionsIndicator.locations[l]) {
             summaryData[type].emissions.value += parseFloat(
@@ -301,10 +307,18 @@ export const summarizeIndicators = createSelector(
         }
       }
     });
+
     Object.keys(summaryData).forEach(type => {
-      summaryData[type].emissions.value = parseFloat(
-        summaryData[type].emissions.value.toFixed(1)
-      );
+      // Enhanced 2020 should be counted as submitted 2020
+      const emissionsParsedValue =
+        type === 'submitted_2020'
+          ? parseFloat(summaryData.submitted_2020.emissions.value) +
+            parseFloat(summaryData.enhance_2020.emissions.value)
+          : parseFloat(summaryData[type].emissions.value);
+
+      summaryData[type].emissions.value = emissionsParsedValue.toFixed(1);
+    });
+    Object.keys(summaryData).forEach(type => {
       const emissionsString = `, representing <span title="2016 emissions data">${summaryData[type].emissions.value}% of global emissions</span>`;
       summaryData[type].countries.opts.label =
         {
