@@ -5,6 +5,7 @@ import { TabletLandscape } from 'components/responsive';
 import Map from 'components/map';
 import MapLegend from 'components/map-legend';
 import ButtonGroup from 'components/button-group';
+import { CheckInput } from 'cw-components';
 import Loading from 'components/loading';
 import Icon from 'components/icon';
 import infoIcon from 'assets/icons/info.svg';
@@ -12,6 +13,7 @@ import ModalMetadata from 'components/modal-metadata';
 import CircularChart from 'components/circular-chart';
 import NDCSEnhancementsTooltip from 'components/ndcs/ndcs-enhancements-viz/ndcs-enhancements-tooltip';
 import ReactTooltip from 'react-tooltip';
+import blueCheckboxTheme from 'styles/themes/checkbox/blue-checkbox.scss';
 
 import styles from './ndcs-enhancements-viz-styles.scss';
 
@@ -100,9 +102,11 @@ const NDCSEnhancementsViz = ({
   summaryData,
   handleInfoClick,
   handleCountryEnter,
-  mapColors
+  mapColors,
+  handleOnChangeChecked,
+  checked
 }) => (
-  <div>
+  <div className={styles.ndcTracker}>
     <TabletLandscape>
       {isTablet => (
         <div className={styles.wrapper}>
@@ -149,6 +153,16 @@ const NDCSEnhancementsViz = ({
                 zoomEnable
                 customCenter={!isTablet ? [10, -10] : null}
               />
+              {!loading && (
+                <div className={styles.checkboxContainer}>
+                  <CheckInput
+                    theme={blueCheckboxTheme}
+                    label="Visualize enhanced NDCs on the map"
+                    checked={checked}
+                    onChange={() => handleOnChangeChecked(!checked)}
+                  />
+                </div>
+              )}
               {countryData && tooltipValues && (
                 <NDCSEnhancementsTooltip
                   id={TOOLTIP_ID}
@@ -182,6 +196,8 @@ NDCSEnhancementsViz.propTypes = {
   summaryData: PropTypes.object,
   handleCountryEnter: PropTypes.func.isRequired,
   handleInfoClick: PropTypes.func.isRequired,
+  handleOnChangeChecked: PropTypes.func.isRequired,
+  checked: PropTypes.bool,
   mapColors: PropTypes.array
 };
 

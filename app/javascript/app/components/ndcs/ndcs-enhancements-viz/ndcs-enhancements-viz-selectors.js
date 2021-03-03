@@ -12,10 +12,27 @@ import worldPaths from 'app/data/world-50m-paths';
 import { europeSlug, europeanCountries } from 'app/data/european-countries';
 import { COUNTRY_STYLES } from 'components/ndcs/shared/constants';
 
+const ENHANCEMENT_CATEGORY = 'ndc_enhancement';
+const INDICATOR_SLUGS = {
+  EMISSIONS: 'ndce_ghg',
+  MAP: 'ndce_status_2020'
+};
+
+const LABEL_SLUGS = {
+  SUBMITTED_2020: 'submitted_2020',
+  ENHANCED_MITIGATION: 'enhanced_migitation',
+  NO_INFO: 'no_info_2020'
+};
+
 const getSearch = state => state.search || null;
 const getCountries = state => state.countries || null;
 const getCategories = state => state.categories || null;
 const getIndicatorsData = state => state.indicators || null;
+
+export const getIsEnhancedChecked = createSelector(
+  getSearch,
+  search => search.showEnhancedAmbition === 'true'
+);
 
 export const getISOCountries = createSelector([getCountries], countries =>
   countries.map(country => country.iso_code3)
@@ -26,7 +43,7 @@ export const getIndicatorsParsed = createSelector(
   (categories, indicators, isos) => {
     if (!categories || !indicators || !indicators.length) return null;
     const categoryId = Object.keys(categories).find(
-      id => categories[id].slug === 'ndc_enhancement'
+      id => categories[id].slug === ENHANCEMENT_CATEGORY
     );
     return sortBy(
       uniqBy(
@@ -56,26 +73,68 @@ export const getMapIndicator = createSelector(
   (indicators, isos) => {
     if (!indicators || !indicators.length) return null;
     const mapIndicator = indicators.find(
-      ind => ind.value === 'ndce_status_2020'
+      ind => ind.value === INDICATOR_SLUGS.MAP
     );
-    if (mapIndicator) {
-      const noInfoId = Object.keys(mapIndicator.legendBuckets).find(
-        id => mapIndicator.legendBuckets[id].slug === 'no_info_2020'
-      );
-      // Set all countries without values to "No Information" by default
-      if (noInfoId) {
-        isos.forEach(iso => {
-          if (!mapIndicator.locations[iso]) {
-            mapIndicator.locations[iso] = {
-              value: mapIndicator.legendBuckets[noInfoId].name,
-              label_id: noInfoId,
-              label_slug: mapIndicator.legendBuckets[noInfoId].slug
-            };
-          }
-        });
-      }
+    if (!mapIndicator) return null;
+
+    const updatedMapIndicator = { ...mapIndicator };
+    const noInfoId = Object.keys(updatedMapIndicator.legendBuckets).find(
+      id => updatedMapIndicator.legendBuckets[id].slug === LABEL_SLUGS.NO_INFO
+    );
+
+    // Set all countries without values to "No Information" by default
+    if (noInfoId) {
+      isos.forEach(iso => {
+        if (!updatedMapIndicator.locations[iso]) {
+          updatedMapIndicator.locations[iso] = {
+            value: updatedMapIndicator.legendBuckets[noInfoId].name,
+            label_id: noInfoId,
+            label_slug: updatedMapIndicator.legendBuckets[noInfoId].slug
+          };
+        }
+      });
     }
-    return mapIndicator;
+    return updatedMapIndicator;
+  }
+);
+
+export const filterEnhancedValueOnIndicator = createSelector(
+  [getMapIndicator, getIsEnhancedChecked],
+  (indicator, isEnhancedChecked) => {
+    if (!indicator) return null;
+    if (isEnhancedChecked) return indicator;
+    const { legendBuckets, locations } = indicator;
+    const enhancedLabelId = Object.keys(legendBuckets).find(
+      key => legendBuckets[key].slug === LABEL_SLUGS.ENHANCED_MITIGATION
+    );
+    const submittedLabelId = Object.keys(legendBuckets).find(
+      key => legendBuckets[key].slug === LABEL_SLUGS.SUBMITTED_2020
+    );
+
+    const updatedLegendBuckets = { ...legendBuckets };
+    delete updatedLegendBuckets[enhancedLabelId];
+
+    const updatedLocations = { ...locations };
+    Object.keys(updatedLocations).forEach(iso => {
+      const countryData = updatedLocations[iso];
+      if (countryData && countryData.label_id) {
+        const shouldHideEnhancedLabel =
+          !isEnhancedChecked &&
+          String(countryData.label_id) === enhancedLabelId;
+        const updatedLabelId = shouldHideEnhancedLabel
+          ? submittedLabelId
+          : countryData.label_id;
+        updatedLocations[iso] = {
+          ...updatedLocations[iso],
+          label_id: +updatedLabelId
+        };
+      }
+    });
+    return {
+      ...indicator,
+      locations: updatedLocations,
+      legendBuckets: updatedLegendBuckets
+    };
   }
 );
 
@@ -113,14 +172,13 @@ export const MAP_COLORS = [
 ];
 
 export const getPathsWithStyles = createSelector(
-  [getMapIndicator, getISOCountries],
+  [filterEnhancedValueOnIndicator],
   indicator => {
     if (!indicator) return [];
     const paths = [];
     worldPaths.forEach(path => {
       if (shouldShowPath(path)) {
         const { locations, legendBuckets } = indicator;
-
         if (!locations) {
           paths.push({
             ...path,
@@ -169,7 +227,7 @@ export const getLinkToDataExplorer = createSelector([getSearch], search => {
   const section = 'ndc-content';
   return generateLinkToDataExplorer(
     {
-      category: 'ndc_enhancement',
+      category: ENHANCEMENT_CATEGORY,
       ...search
     },
     section
@@ -225,7 +283,9 @@ export const summarizeIndicators = createSelector(
         }
       };
     });
-    const emissionsIndicator = indicators.find(ind => ind.value === 'ndce_ghg');
+    const emissionsIndicator = indicators.find(
+      ind => ind.value === INDICATOR_SLUGS.EMISSIONS
+    );
     locations.forEach(l => {
       const location = indicator.locations[l];
       const type = location.label_slug;
@@ -243,9 +303,15 @@ export const summarizeIndicators = createSelector(
           summaryData[type].emissions.value += EUTotal - europeanLocationsValue; // To avoid double counting
           summaryData[type].countries.value +=
             europeanCountries.length - europeanLocationIsos.length; // To avoid double counting
+
           summaryData[type].includesEU = true;
         } else {
           summaryData[type].countries.value += 1;
+
+          // Enhanced mitigation should be counted as submitted 2020
+          if (type === LABEL_SLUGS.ENHANCED_MITIGATION) {
+            summaryData[LABEL_SLUGS.SUBMITTED_2020].countries.value += 1;
+          }
 
           if (emissionsIndicator.locations[l]) {
             summaryData[type].emissions.value += parseFloat(
@@ -255,10 +321,20 @@ export const summarizeIndicators = createSelector(
         }
       }
     });
+
     Object.keys(summaryData).forEach(type => {
-      summaryData[type].emissions.value = parseFloat(
-        summaryData[type].emissions.value.toFixed(1)
-      );
+      // Enhanced mitigation should be counted as submitted 2020
+      const emissionsParsedValue =
+        type === LABEL_SLUGS.SUBMITTED_2020
+          ? parseFloat(summaryData.submitted_2020.emissions.value) +
+            parseFloat(
+              summaryData[LABEL_SLUGS.ENHANCED_MITIGATION].emissions.value
+            )
+          : parseFloat(summaryData[type].emissions.value);
+
+      summaryData[type].emissions.value = emissionsParsedValue.toFixed(1);
+    });
+    Object.keys(summaryData).forEach(type => {
       const emissionsString = `, representing <span title="2016 emissions data">${summaryData[type].emissions.value}% of global emissions</span>`;
       summaryData[type].countries.opts.label =
         {
@@ -269,10 +345,3 @@ export const summarizeIndicators = createSelector(
     return summaryData;
   }
 );
-
-export default {
-  getMapIndicator,
-  getIndicatorsParsed,
-  summarizeIndicators,
-  getPathsWithStyles
-};
