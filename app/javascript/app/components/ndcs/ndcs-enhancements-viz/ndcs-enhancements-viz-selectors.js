@@ -12,6 +12,18 @@ import worldPaths from 'app/data/world-50m-paths';
 import { europeSlug, europeanCountries } from 'app/data/european-countries';
 import { COUNTRY_STYLES } from 'components/ndcs/shared/constants';
 
+const ENHANCEMENT_CATEGORY = 'ndc_enhancement';
+const INDICATOR_SLUGS = {
+  EMISSIONS: 'ndce_ghg',
+  MAP: 'ndce_status_2020'
+};
+
+const LABEL_SLUGS = {
+  SUBMITTED_2020: 'submitted_2020',
+  ENHANCED_MITIGATION: 'enhanced_migitation',
+  NO_INFO: 'no_info_2020'
+};
+
 const getSearch = state => state.search || null;
 const getCountries = state => state.countries || null;
 const getCategories = state => state.categories || null;
@@ -31,7 +43,7 @@ export const getIndicatorsParsed = createSelector(
   (categories, indicators, isos) => {
     if (!categories || !indicators || !indicators.length) return null;
     const categoryId = Object.keys(categories).find(
-      id => categories[id].slug === 'ndc_enhancement'
+      id => categories[id].slug === ENHANCEMENT_CATEGORY
     );
     return sortBy(
       uniqBy(
@@ -61,13 +73,13 @@ export const getMapIndicator = createSelector(
   (indicators, isos) => {
     if (!indicators || !indicators.length) return null;
     const mapIndicator = indicators.find(
-      ind => ind.value === 'ndce_status_2020'
+      ind => ind.value === INDICATOR_SLUGS.MAP
     );
     if (!mapIndicator) return null;
 
     const updatedMapIndicator = { ...mapIndicator };
     const noInfoId = Object.keys(updatedMapIndicator.legendBuckets).find(
-      id => updatedMapIndicator.legendBuckets[id].slug === 'no_info_2020'
+      id => updatedMapIndicator.legendBuckets[id].slug === LABEL_SLUGS.NO_INFO
     );
 
     // Set all countries without values to "No Information" by default
@@ -93,10 +105,10 @@ export const filterEnhancedValueOnIndicator = createSelector(
     if (isEnhancedChecked) return indicator;
     const { legendBuckets, locations } = indicator;
     const enhancedLabelId = Object.keys(legendBuckets).find(
-      key => legendBuckets[key].slug === 'enhanced_migitation'
+      key => legendBuckets[key].slug === LABEL_SLUGS.ENHANCED_MITIGATION
     );
     const submittedLabelId = Object.keys(legendBuckets).find(
-      key => legendBuckets[key].slug === 'submitted_2020'
+      key => legendBuckets[key].slug === LABEL_SLUGS.SUBMITTED_2020
     );
 
     const updatedLegendBuckets = { ...legendBuckets };
@@ -215,7 +227,7 @@ export const getLinkToDataExplorer = createSelector([getSearch], search => {
   const section = 'ndc-content';
   return generateLinkToDataExplorer(
     {
-      category: 'ndc_enhancement',
+      category: ENHANCEMENT_CATEGORY,
       ...search
     },
     section
@@ -271,7 +283,9 @@ export const summarizeIndicators = createSelector(
         }
       };
     });
-    const emissionsIndicator = indicators.find(ind => ind.value === 'ndce_ghg');
+    const emissionsIndicator = indicators.find(
+      ind => ind.value === INDICATOR_SLUGS.EMISSIONS
+    );
     locations.forEach(l => {
       const location = indicator.locations[l];
       const type = location.label_slug;
@@ -294,9 +308,9 @@ export const summarizeIndicators = createSelector(
         } else {
           summaryData[type].countries.value += 1;
 
-          // Enhanced 2020 should be counted as submitted 2020
-          if (type === 'enhance_2020') {
-            summaryData.submitted_2020.countries.value += 1;
+          // Enhanced mitigation should be counted as submitted 2020
+          if (type === LABEL_SLUGS.ENHANCED_MITIGATION) {
+            summaryData[LABEL_SLUGS.SUBMITTED_2020].countries.value += 1;
           }
 
           if (emissionsIndicator.locations[l]) {
@@ -309,11 +323,13 @@ export const summarizeIndicators = createSelector(
     });
 
     Object.keys(summaryData).forEach(type => {
-      // Enhanced 2020 should be counted as submitted 2020
+      // Enhanced mitigation should be counted as submitted 2020
       const emissionsParsedValue =
-        type === 'submitted_2020'
+        type === LABEL_SLUGS.SUBMITTED_2020
           ? parseFloat(summaryData.submitted_2020.emissions.value) +
-            parseFloat(summaryData.enhance_2020.emissions.value)
+            parseFloat(
+              summaryData[LABEL_SLUGS.ENHANCED_MITIGATION].emissions.value
+            )
           : parseFloat(summaryData[type].emissions.value);
 
       summaryData[type].emissions.value = emissionsParsedValue.toFixed(1);
