@@ -157,7 +157,7 @@ const NDCSEnhancementsViz = ({
                 <div className={styles.checkboxContainer}>
                   <CheckInput
                     theme={blueCheckboxTheme}
-                    label="Visualize individual submissions of EU Members on the map"
+                    label="Visualize enhanced NDCs on the map"
                     checked={checked}
                     onChange={() => handleOnChangeChecked(!checked)}
                   />

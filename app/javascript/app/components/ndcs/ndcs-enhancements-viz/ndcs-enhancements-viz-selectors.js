@@ -63,24 +63,66 @@ export const getMapIndicator = createSelector(
     const mapIndicator = indicators.find(
       ind => ind.value === 'ndce_status_2020'
     );
-    if (mapIndicator) {
-      const noInfoId = Object.keys(mapIndicator.legendBuckets).find(
-        id => mapIndicator.legendBuckets[id].slug === 'no_info_2020'
-      );
-      // Set all countries without values to "No Information" by default
-      if (noInfoId) {
-        isos.forEach(iso => {
-          if (!mapIndicator.locations[iso]) {
-            mapIndicator.locations[iso] = {
-              value: mapIndicator.legendBuckets[noInfoId].name,
-              label_id: noInfoId,
-              label_slug: mapIndicator.legendBuckets[noInfoId].slug
-            };
-          }
-        });
-      }
+    if (!mapIndicator) return null;
+
+    const updatedMapIndicator = { ...mapIndicator };
+    const noInfoId = Object.keys(updatedMapIndicator.legendBuckets).find(
+      id => updatedMapIndicator.legendBuckets[id].slug === 'no_info_2020'
+    );
+
+    // Set all countries without values to "No Information" by default
+    if (noInfoId) {
+      isos.forEach(iso => {
+        if (!updatedMapIndicator.locations[iso]) {
+          updatedMapIndicator.locations[iso] = {
+            value: updatedMapIndicator.legendBuckets[noInfoId].name,
+            label_id: noInfoId,
+            label_slug: updatedMapIndicator.legendBuckets[noInfoId].slug
+          };
+        }
+      });
     }
-    return mapIndicator;
+    return updatedMapIndicator;
+  }
+);
+
+export const filterEnhancedValueOnIndicator = createSelector(
+  [getMapIndicator, getIsEnhancedChecked],
+  (indicator, isEnhancedChecked) => {
+    if (!indicator) return null;
+    if (isEnhancedChecked) return indicator;
+    const { legendBuckets, locations } = indicator;
+    const enhancedLabelId = Object.keys(legendBuckets).find(
+      key => legendBuckets[key].slug === 'enhanced_migitation'
+    );
+    const submittedLabelId = Object.keys(legendBuckets).find(
+      key => legendBuckets[key].slug === 'submitted_2020'
+    );
+
+    const updatedLegendBuckets = { ...legendBuckets };
+    delete updatedLegendBuckets[enhancedLabelId];
+
+    const updatedLocations = { ...locations };
+    Object.keys(updatedLocations).forEach(iso => {
+      const countryData = updatedLocations[iso];
+      if (countryData && countryData.label_id) {
+        const shouldHideEnhancedLabel =
+          !isEnhancedChecked &&
+          String(countryData.label_id) === enhancedLabelId;
+        const updatedLabelId = shouldHideEnhancedLabel
+          ? submittedLabelId
+          : countryData.label_id;
+        updatedLocations[iso] = {
+          ...updatedLocations[iso],
+          label_id: +updatedLabelId
+        };
+      }
+    });
+    return {
+      ...indicator,
+      locations: updatedLocations,
+      legendBuckets: updatedLegendBuckets
+    };
   }
 );
 
@@ -118,8 +160,8 @@ export const MAP_COLORS = [
 ];
 
 export const getPathsWithStyles = createSelector(
-  [getMapIndicator, getIsEnhancedChecked],
-  (indicator, isEnhancedChecked) => {
+  [filterEnhancedValueOnIndicator],
+  indicator => {
     if (!indicator) return [];
     const paths = [];
     worldPaths.forEach(path => {
@@ -138,29 +180,11 @@ export const getPathsWithStyles = createSelector(
         const countryData = isEuropeanCountry
           ? locations[europeSlug]
           : locations[iso];
-        const enhancedLabelId = Object.keys(legendBuckets).find(
-          key => legendBuckets[key] === 'enhanced_mitigation'
-        );
-        const submittedLabelId = Object.keys(legendBuckets).find(
-          key => legendBuckets[key] === 'submitted_2020'
-        );
-        const updatedLegendBuckets = { ...legendBuckets };
-        if (isEnhancedChecked) {
-          delete updatedLegendBuckets[enhancedLabelId];
-        }
 
         let style = COUNTRY_STYLES;
         if (countryData && countryData.label_id) {
-          let legendIndex = updatedLegendBuckets[countryData.label_id].index;
-
-          if (isEnhancedChecked && legendIndex === enhancedLabelId) {
-            legendIndex = submittedLabelId;
-          }
-          const color = getColorByIndex(
-            updatedLegendBuckets,
-            legendIndex,
-            MAP_COLORS
-          );
+          const legendIndex = legendBuckets[countryData.label_id].index;
+          const color = getColorByIndex(legendBuckets, legendIndex, MAP_COLORS);
           style = {
             ...COUNTRY_STYLES,
             default: {
