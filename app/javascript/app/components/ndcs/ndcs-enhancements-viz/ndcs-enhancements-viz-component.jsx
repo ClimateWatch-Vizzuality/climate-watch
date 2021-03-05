@@ -14,7 +14,7 @@ import CircularChart from 'components/circular-chart';
 import NDCSEnhancementsTooltip from 'components/ndcs/ndcs-enhancements-viz/ndcs-enhancements-tooltip';
 import ReactTooltip from 'react-tooltip';
 import blueCheckboxTheme from 'styles/themes/checkbox/blue-checkbox.scss';
-
+import { LABEL_SLUGS } from './ndcs-enhancements-viz-selectors';
 import styles from './ndcs-enhancements-viz-styles.scss';
 
 const renderButtonGroup = (clickHandler, downloadLink) => (
@@ -80,7 +80,6 @@ const renderCircular = datum => (
         >
           {datum.opts.prefix}
           {datum.value}
-          {datum.opts.suffix}
         </div>
       </div>
     </div>
@@ -136,8 +135,15 @@ const NDCSEnhancementsViz = ({
                     of COP26. The information below does not reflect these
                     possible delays.
                   </ReactTooltip>
-                  {renderCircular(summaryData.enhance_2020.countries)}
-                  {renderCircular(summaryData.submitted_2020.countries)}
+                  {renderCircular(
+                    summaryData[LABEL_SLUGS.INTENDS_TO_ENHANCE].countries
+                  )}
+                  {renderCircular(
+                    summaryData[LABEL_SLUGS.ENHANCED_MITIGATION].countries
+                  )}
+                  {renderCircular(
+                    summaryData[LABEL_SLUGS.SUBMITTED_2020].countries
+                  )}
                 </div>
               )}
             </div>

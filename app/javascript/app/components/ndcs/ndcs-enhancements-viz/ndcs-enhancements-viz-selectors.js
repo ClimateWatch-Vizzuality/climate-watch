@@ -11,6 +11,7 @@ import { generateLinkToDataExplorer } from 'utils/data-explorer';
 import worldPaths from 'app/data/world-50m-paths';
 import { europeSlug, europeanCountries } from 'app/data/european-countries';
 import { COUNTRY_STYLES } from 'components/ndcs/shared/constants';
+import { CHART_NAMED_COLORS } from 'styles/constants';
 
 const ENHANCEMENT_CATEGORY = 'ndc_enhancement';
 const INDICATOR_SLUGS = {
@@ -18,10 +19,17 @@ const INDICATOR_SLUGS = {
   MAP: 'ndce_status_2020'
 };
 
-const LABEL_SLUGS = {
+export const LABEL_SLUGS = {
+  INTENDS_TO_ENHANCE: 'enhance_2020',
   SUBMITTED_2020: 'submitted_2020',
   ENHANCED_MITIGATION: 'enhanced_migitation',
   NO_INFO: 'no_info_2020'
+};
+
+const LABEL_COLORS = {
+  SUBMITTED_2020: CHART_NAMED_COLORS.color1,
+  INTENDS_TO_ENHANCE: CHART_NAMED_COLORS.color2,
+  ENHANCED_MITIGATION: CHART_NAMED_COLORS.color3
 };
 
 const getSearch = state => state.search || null;
@@ -138,37 +146,12 @@ export const filterEnhancedValueOnIndicator = createSelector(
   }
 );
 
+const MAP_LABEL_COLORS = [...Object.values(LABEL_COLORS), 'rgb(204, 204, 204)'];
 export const MAP_COLORS = [
-  [
-    'rgb(255, 108, 47)',
-    'rgb(30, 79, 116)',
-    'rgb(132, 181, 218)',
-    'rgb(204, 204, 204)'
-  ],
-  [
-    'rgb(255, 108, 47)',
-    'rgb(30, 79, 116)',
-    'rgb(132, 181, 218)',
-    'rgb(204, 204, 204)'
-  ],
-  [
-    'rgb(255, 108, 47)',
-    'rgb(30, 79, 116)',
-    'rgb(132, 181, 218)',
-    'rgb(204, 204, 204)'
-  ],
-  [
-    'rgb(255, 108, 47)',
-    'rgb(30, 79, 116)',
-    'rgb(132, 181, 218)',
-    'rgb(204, 204, 204)'
-  ],
-  [
-    'rgb(255, 108, 47)',
-    'rgb(30, 79, 116)',
-    'rgb(132, 181, 218)',
-    'rgb(204, 204, 204)'
-  ]
+  [...MAP_LABEL_COLORS],
+  [...MAP_LABEL_COLORS],
+  [...MAP_LABEL_COLORS],
+  [...MAP_LABEL_COLORS]
 ];
 
 export const getPathsWithStyles = createSelector(
@@ -234,63 +217,56 @@ export const getLinkToDataExplorer = createSelector([getSearch], search => {
   );
 });
 
-// Chart data methods
-
 export const summarizeIndicators = createSelector(
   [getIndicatorsParsed, getMapIndicator],
   (indicators, indicator) => {
     if (!indicator || !indicators) return null;
     const summaryData = {};
-    const labels = Object.keys(indicator.legendBuckets).map(id => ({
-      ...indicator.legendBuckets[id],
-      id
-    }));
 
     const locations = Object.keys(indicator.locations);
+    const summaryLabels = [
+      'enhance_2020',
+      'enhanced_migitation',
+      'submitted_2020'
+    ];
+    const labels = Object.keys(indicator.legendBuckets)
+      .filter(id => summaryLabels.includes(indicator.legendBuckets[id].slug))
+      .map(id => ({
+        ...indicator.legendBuckets[id],
+        id
+      }));
 
-    // Retain functionality for showing submitted 2020 NDCs in case this becomes useful to display later
-    // Retain functionality for showing emissions percentage in case this becomes useful to display later
-    // ONLY "intent to submit" and "intent to enhance" 2020 NDCs currently displayed in component
-    // ONLY country totals currently displayed in component
     labels.forEach(label => {
+      const color = getColorByIndex(
+        indicator.legendBuckets,
+        label.index,
+        MAP_COLORS
+      );
       summaryData[label.slug] = {
         includesEU: false,
         countries: {
           value: 0,
           max: locations.length,
-          opts: {
-            color: getColorByIndex(
-              indicator.legendBuckets,
-              label.index,
-              MAP_COLORS
-            ),
-            label: undefined
-          }
+          opts: { color }
         },
         emissions: {
           value: 0,
           max: 100,
-          opts: {
-            color: getColorByIndex(
-              indicator.legendBuckets,
-              label.index,
-              MAP_COLORS
-            ),
-            suffix: '%',
-            label:
-              'of global emissions are represented by these countries (2016 emissions data)'
-          }
+          opts: { color }
         }
       };
     });
+
     const emissionsIndicator = indicators.find(
       ind => ind.value === INDICATOR_SLUGS.EMISSIONS
     );
+
+    // Calculate countries number and emissions
     locations.forEach(l => {
       const location = indicator.locations[l];
       const type = location.label_slug;
       const emissionPercentages = emissionsIndicator.locations;
-      if (type) {
+      if (type && summaryData[type]) {
         if (l === europeSlug) {
           const EUTotal = parseFloat(emissionPercentages[europeSlug].value);
           const europeanLocationIsos = locations.filter(iso =>
@@ -322,6 +298,7 @@ export const summarizeIndicators = createSelector(
       }
     });
 
+    // Add emissions values
     Object.keys(summaryData).forEach(type => {
       // Enhanced mitigation should be counted as submitted 2020
       const emissionsParsedValue =
@@ -334,13 +311,15 @@ export const summarizeIndicators = createSelector(
 
       summaryData[type].emissions.value = emissionsParsedValue.toFixed(1);
     });
+
+    // Add text
     Object.keys(summaryData).forEach(type => {
-      const emissionsString = `, representing <span title="2016 emissions data">${summaryData[type].emissions.value}% of global emissions</span>`;
-      summaryData[type].countries.opts.label =
-        {
-          enhance_2020: `<strong>countries</strong>${emissionsString}, <strong>have stated their intention to <span title="Definition: Strengthening mitigation ambition and/or increasing adaptation action in a new or updated NDC.">enhance ambition or action</span> in new or updated NDCs</strong>`,
-          submitted_2020: `<strong>countries (including the 27 EU countries)</strong>${emissionsString}, <strong>have submitted a new or updated NDC</strong>`
-        }[type] || '';
+      const emissionsString = `<span title="2016 emissions data">${summaryData[type].emissions.value}% of global emissions</span>`;
+      summaryData[type].countries.opts.label = {
+        [LABEL_SLUGS.INTENDS_TO_ENHANCE]: `<strong>countries</strong>, representing ${emissionsString}, <strong>have stated their intention to <span title="Definition: Strengthening mitigation ambition and/or increasing adaptation action in a new or updated NDC.">enhance ambition or action</span> in new or updated NDCs</strong>`,
+        [LABEL_SLUGS.ENHANCED_MITIGATION]: `of the <strong>countries</strong> that have submitted NDC's are <strong>enhanced compared to previous submission</strong>, those countries represent ${emissionsString}`,
+        [LABEL_SLUGS.SUBMITTED_2020]: `<strong>countries (including the 27 EU countries)</strong>, representing ${emissionsString}, <strong>have submitted a new or updated NDC</strong>`
+      }[type];
     });
     return summaryData;
   }
