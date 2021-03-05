@@ -18,9 +18,10 @@ const NDCSEnhancementsTooltip = props => {
     >
       <div className={tooltipTheme.countryName}>{tooltipValues.label}</div>
       {tooltipValues.value && (
-        <p className={cx(tooltipTheme.text, styles.tooltipValue)}>
-          {tooltipValues.value}
-        </p>
+        <p
+          className={cx(tooltipTheme.text, styles.tooltipValue)}
+          dangerouslySetInnerHTML={{ __html: tooltipValues.value }} // eslint-disable-line
+        />
       )}
       {tooltipValues.statement && (
         <p className={tooltipTheme.text}>{tooltipValues.statement}</p>
