@@ -162,7 +162,6 @@ class NDCSEnhancementsVizContainer extends PureComponent {
   render() {
     const tooltipValues = this.getTooltipValues();
     const { query, indicator, checked, summaryData } = this.props;
-    const { countryData } = this.state;
     const noContentMsg = query
       ? 'No results found'
       : 'There is no data for this indicator';
@@ -177,8 +176,7 @@ class NDCSEnhancementsVizContainer extends PureComponent {
       handleSearchChange: this.handleSearchChange,
       checked,
       indicator,
-      summaryData,
-      countryData
+      summaryData
     });
   }
 }

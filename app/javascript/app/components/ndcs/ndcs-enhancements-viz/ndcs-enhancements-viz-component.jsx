@@ -98,7 +98,6 @@ const NDCSEnhancementsViz = ({
   paths,
   tooltipValues,
   downloadLink,
-  countryData,
   summaryData,
   handleInfoClick,
   handleCountryEnter,
@@ -163,7 +162,7 @@ const NDCSEnhancementsViz = ({
                   />
                 </div>
               )}
-              {countryData && tooltipValues && (
+              {!loading && tooltipValues && (
                 <NDCSEnhancementsTooltip
                   id={TOOLTIP_ID}
                   tooltipValues={tooltipValues}
@@ -192,7 +191,6 @@ NDCSEnhancementsViz.propTypes = {
   paths: PropTypes.array.isRequired,
   tooltipValues: PropTypes.object,
   downloadLink: PropTypes.string,
-  countryData: PropTypes.object,
   summaryData: PropTypes.object,
   handleCountryEnter: PropTypes.func.isRequired,
   handleInfoClick: PropTypes.func.isRequired,
