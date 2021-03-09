@@ -1,7 +1,7 @@
 export const initialState = {
   isOpen: false,
   requiredError: false,
-  submitting: false,
+  processing: false,
   errorMessage: '',
   downloadSize: '',
   downloadAction: null
@@ -27,7 +27,12 @@ const setRequiredFieldsError = (state, { payload }) => {
 
 const setErrorMessage = (state, { payload }) => ({
   ...state,
-  errorMessage: payload.errorMessage
+  errorMessage: payload
+});
+
+const setProcessing = (state, { payload }) => ({
+  ...state,
+  processing: payload
 });
 
 const toggleModalDownload = (state, { payload }) => ({
@@ -41,5 +46,6 @@ export default {
   setModalDownloadParams,
   setRequiredFieldsError,
   setErrorMessage,
+  setProcessing,
   toggleModalDownload
 };

@@ -14,7 +14,8 @@ const mapStateToProps = ({ modalDownload, countries }) => ({
   countries: countriesSelector({ countries }),
   sectors: sectorsSelector({ sectors }),
   requiredError: modalDownload.requiredError,
-  errorMessage: modalDownload.errorMessage
+  errorMessage: modalDownload.errorMessage,
+  processing: modalDownload.processing
 });
 
 const includeActions = withHandlers({

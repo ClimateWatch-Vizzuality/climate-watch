@@ -12,6 +12,7 @@ const setModalDownloadParams = createAction('setModalDownloadParams');
 const setRequiredFieldsError = createAction('setRequiredFieldsError');
 const toggleModalDownload = createAction('toggleModalDownload');
 const setErrorMessage = createAction('setErrorMessage');
+const setProcessing = createAction('setProcessing');
 
 function toQueryParams(data) {
   return Object.keys(data).map(key =>
@@ -37,8 +38,10 @@ const saveSurveyData = createThunkAction(
   'saveSurveyData',
   surveyData => (dispatch, getState) => {
     const { modalDownload } = getState();
-    if (!modalDownload.requiredError) {
+    if (!modalDownload.requiredError && !modalDownload.processing) {
       const spreadsheetQueryParams = toQueryParams(surveyData);
+
+      dispatch(setProcessing(true));
 
       Promise.all([
         fetch(
@@ -56,6 +59,7 @@ const saveSurveyData = createThunkAction(
           if (!getStorageWithExpiration('userSurvey')) {
             setStorageWithExpiration('userSurvey', true, 5);
           }
+          dispatch(setProcessing(false));
           modalDownload.downloadAction();
           return dispatch(toggleModalDownload({ open: false }));
         })
@@ -63,7 +67,8 @@ const saveSurveyData = createThunkAction(
           console.error('Modal download response errors', errors);
           const errorMessage =
             'There was an error while processing your request';
-          return dispatch(setErrorMessage({ errorMessage }));
+          dispatch(setProcessing(false));
+          return dispatch(setErrorMessage(errorMessage));
         });
     }
     return undefined;
@@ -74,6 +79,7 @@ export default {
   setModalDownloadParams,
   setRequiredFieldsError,
   setErrorMessage,
+  setProcessing,
   toggleModalDownload,
   saveSurveyData
 };
