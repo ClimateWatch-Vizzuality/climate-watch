@@ -55,7 +55,7 @@ const saveSurveyData = createThunkAction(
       ])
         .then(response => {
           /* eslint-disable-next-line no-console */
-          console.log('Modal download responses', response);
+          console.info('Modal download responses', response);
           if (!getStorageWithExpiration('userSurvey')) {
             setStorageWithExpiration('userSurvey', true, 5);
           }
