@@ -36,18 +36,20 @@ export const openDownloadModal = (
   setModalDownloadParams,
   section
 ) => {
-  if (getStorageWithExpiration('userSurvey')) {
+  const downloadAction = () => {
     handleAnalytics(
       'Data Explorer',
       'Download Data',
       section || 'Download All Data'
     );
     return window.location.assign(downloadUrl);
+  };
+
+  if (getStorageWithExpiration('userSurvey')) {
+    downloadAction();
+  } else {
+    setModalDownloadParams({ open: true, downloadAction });
   }
-  return setModalDownloadParams({
-    open: true,
-    downloadUrl
-  });
 };
 
 const parseFilters = (search, section) => {

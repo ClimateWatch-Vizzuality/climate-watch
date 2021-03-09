@@ -10,20 +10,14 @@ import { countriesSelector, sectorsSelector } from './modal-download-selectors';
 
 const mapStateToProps = ({ modalDownload, countries }) => ({
   isOpen: modalDownload.isOpen,
-  downloadUrl: modalDownload.downloadUrl,
   downloadSize: modalDownload.downloadSize,
   countries: countriesSelector({ countries }),
   sectors: sectorsSelector({ sectors }),
-  requiredError: modalDownload.requiredError
+  requiredError: modalDownload.requiredError,
+  errorMessage: modalDownload.errorMessage,
+  processing: modalDownload.processing
 });
 
-const encodeParams = internalState =>
-  Object.keys(internalState).map(
-    key =>
-      (key === 'sector' || key === 'country'
-        ? `${key}=${encodeURIComponent(internalState[key].value)}`
-        : `${key}=${encodeURIComponent(internalState[key])}`)
-  );
 const includeActions = withHandlers({
   onRequestClose: props => () => {
     props.toggleModalDownload({ open: false });
@@ -31,8 +25,7 @@ const includeActions = withHandlers({
 
   onSubmit: ({ setRequiredFieldsError, saveSurveyData }) => internalState => {
     setRequiredFieldsError(internalState);
-    const params = encodeParams(internalState);
-    saveSurveyData(params);
+    saveSurveyData(internalState);
   }
 });
 

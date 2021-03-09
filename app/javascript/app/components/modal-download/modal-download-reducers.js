@@ -1,17 +1,17 @@
 export const initialState = {
   isOpen: false,
   requiredError: false,
-  downloadUrl: '',
+  processing: false,
+  errorMessage: '',
   downloadSize: '',
-  CSVContent: null
+  downloadAction: null
 };
 
 const setModalDownloadParams = (state, { payload }) => ({
   ...state,
   isOpen: payload.open,
-  downloadUrl: payload.downloadUrl,
   downloadSize: payload.size,
-  CSVContent: payload.CSVContent
+  downloadAction: payload.downloadAction
 });
 
 const setRequiredFieldsError = (state, { payload }) => {
@@ -25,14 +25,27 @@ const setRequiredFieldsError = (state, { payload }) => {
   };
 };
 
+const setErrorMessage = (state, { payload }) => ({
+  ...state,
+  errorMessage: payload
+});
+
+const setProcessing = (state, { payload }) => ({
+  ...state,
+  processing: payload
+});
+
 const toggleModalDownload = (state, { payload }) => ({
   ...state,
   isOpen: payload.open,
-  CSVContent: null // Delete CSV content if its not downloaded
+  errorMessage: '',
+  downloadAction: null
 });
 
 export default {
   setModalDownloadParams,
   setRequiredFieldsError,
+  setErrorMessage,
+  setProcessing,
   toggleModalDownload
 };
