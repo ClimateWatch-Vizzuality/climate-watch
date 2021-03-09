@@ -10,7 +10,6 @@ import { countriesSelector, sectorsSelector } from './modal-download-selectors';
 
 const mapStateToProps = ({ modalDownload, countries }) => ({
   isOpen: modalDownload.isOpen,
-  downloadUrl: modalDownload.downloadUrl,
   downloadSize: modalDownload.downloadSize,
   countries: countriesSelector({ countries }),
   sectors: sectorsSelector({ sectors }),

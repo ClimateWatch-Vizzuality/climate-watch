@@ -20,13 +20,15 @@ const mapStateToProps = ({ modalDownload }) => ({
 
 class DownloadMenuContainer extends PureComponent {
   handleOnClick = (downloadUrl, size) => {
+    const downloadAction = () => window.location.assign(downloadUrl);
+
     if (getStorageWithExpiration('userSurvey')) {
-      return window.location.assign(downloadUrl);
+      return downloadAction();
     }
 
     return this.props.setModalDownloadParams({
       open: true,
-      downloadUrl,
+      downloadAction,
       size
     });
   };

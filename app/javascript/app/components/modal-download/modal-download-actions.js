@@ -1,11 +1,9 @@
 import { createAction } from 'redux-actions';
 import { createThunkAction } from 'utils/redux';
-import { handleAnalytics, getUrlSection } from 'utils/analytics';
 import {
   setStorageWithExpiration,
   getStorageWithExpiration
 } from 'utils/localStorage';
-import { invokeCSVDownload } from 'utils/csv';
 
 const USER_SURVEY_SPREADSHEET_URL = process.env.USER_SURVEY_SPREADSHEET_URL;
 const USER_NEWSLETTER_URL = process.env.USER_NEWSLETTER_URL;
@@ -58,21 +56,7 @@ const saveSurveyData = createThunkAction(
           if (!getStorageWithExpiration('userSurvey')) {
             setStorageWithExpiration('userSurvey', true, 5);
           }
-          if (modalDownload.CSVContent) {
-            handleAnalytics(
-              'GHG emissions',
-              'Download Data',
-              'Download Chart Data'
-            );
-            invokeCSVDownload();
-          } else {
-            handleAnalytics(
-              'Data Explorer',
-              'Download Data',
-              getUrlSection(modalDownload.downloadUrl)
-            );
-            window.location.assign(modalDownload.downloadUrl);
-          }
+          modalDownload.downloadAction();
           return dispatch(toggleModalDownload({ open: false }));
         })
         .catch(errors => {
