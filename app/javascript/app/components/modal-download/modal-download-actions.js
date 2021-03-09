@@ -40,10 +40,6 @@ const saveSurveyData = createThunkAction(
   surveyData => (dispatch, getState) => {
     const { modalDownload } = getState();
     if (!modalDownload.requiredError) {
-      if (!getStorageWithExpiration('userSurvey')) {
-        setStorageWithExpiration('userSurvey', true, 5);
-      }
-
       const spreadsheetQueryParams = toQueryParams(surveyData);
 
       Promise.all([
@@ -59,14 +55,23 @@ const saveSurveyData = createThunkAction(
         .then(response => {
           /* eslint-disable-next-line no-console */
           console.log('Modal download responses', response);
-          window.location.assign(modalDownload.downloadUrl);
-          handleAnalytics(
-            'Data Explorer',
-            'Download Data',
-            getUrlSection(modalDownload.downloadUrl)
-          );
+          if (!getStorageWithExpiration('userSurvey')) {
+            setStorageWithExpiration('userSurvey', true, 5);
+          }
           if (modalDownload.CSVContent) {
+            handleAnalytics(
+              'GHG emissions',
+              'Download Data',
+              'Download Chart Data'
+            );
             invokeCSVDownload();
+          } else {
+            handleAnalytics(
+              'Data Explorer',
+              'Download Data',
+              getUrlSection(modalDownload.downloadUrl)
+            );
+            window.location.assign(modalDownload.downloadUrl);
           }
           return dispatch(toggleModalDownload({ open: false }));
         })

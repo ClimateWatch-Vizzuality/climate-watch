@@ -24,6 +24,11 @@
   margin: 0 auto $grid-gap;
 }
 
+.errorMessage {
+  color: red;
+  margin-bottom: 10px;
+}
+
 .licenseAndPolicy {
   font-size: $font-size-sm;
   line-height: $line-height-medium;

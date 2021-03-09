@@ -164,6 +164,7 @@ class ModalDownload extends PureComponent {
             id="training"
           />
         </form>
+        {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
         <Button
           type="submit"
           onClick={onSubmit}
@@ -172,7 +173,6 @@ class ModalDownload extends PureComponent {
         >
           {`Download ${downloadSize ? `(${downloadSize})` : ''}`}
         </Button>
-        {errorMessage && <p>{errorMessage}</p>}
         <p className={styles.licenseAndPolicy}>
           These data carry the{' '}
           <a
