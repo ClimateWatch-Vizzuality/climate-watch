@@ -13,6 +13,7 @@ const USER_NEWSLETTER_URL = process.env.USER_NEWSLETTER_URL;
 const setModalDownloadParams = createAction('setModalDownloadParams');
 const setRequiredFieldsError = createAction('setRequiredFieldsError');
 const toggleModalDownload = createAction('toggleModalDownload');
+const setErrorMessage = createAction('setErrorMessage');
 
 function toQueryParams(data) {
   return Object.keys(data).map(key =>
@@ -43,13 +44,6 @@ const saveSurveyData = createThunkAction(
         setStorageWithExpiration('userSurvey', true, 5);
       }
 
-      if (modalDownload.CSVContent) {
-        invokeCSVDownload(modalDownload.CSVContent);
-        return dispatch(
-          setModalDownloadParams({ open: false, CSVContent: null })
-        );
-      }
-
       const spreadsheetQueryParams = toQueryParams(surveyData);
 
       Promise.all([
@@ -61,15 +55,27 @@ const saveSurveyData = createThunkAction(
             method: 'POST',
             body: getNewsletterFormData(surveyData)
           })
-      ]).then(() => {
-        window.location.assign(modalDownload.downloadUrl);
-        handleAnalytics(
-          'Data Explorer',
-          'Download Data',
-          getUrlSection(modalDownload.downloadUrl)
-        );
-        return dispatch(toggleModalDownload({ open: false }));
-      });
+      ])
+        .then(response => {
+          /* eslint-disable-next-line no-console */
+          console.log('Modal download responses', response);
+          window.location.assign(modalDownload.downloadUrl);
+          handleAnalytics(
+            'Data Explorer',
+            'Download Data',
+            getUrlSection(modalDownload.downloadUrl)
+          );
+          if (modalDownload.CSVContent) {
+            invokeCSVDownload();
+          }
+          return dispatch(toggleModalDownload({ open: false }));
+        })
+        .catch(errors => {
+          console.error('Modal download response errors', errors);
+          const errorMessage =
+            'There was an error while processing your request';
+          return dispatch(setErrorMessage({ errorMessage }));
+        });
     }
     return undefined;
   }
@@ -78,6 +84,7 @@ const saveSurveyData = createThunkAction(
 export default {
   setModalDownloadParams,
   setRequiredFieldsError,
+  setErrorMessage,
   toggleModalDownload,
   saveSurveyData
 };

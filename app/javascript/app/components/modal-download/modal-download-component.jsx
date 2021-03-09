@@ -40,7 +40,13 @@ class ModalDownload extends PureComponent {
   };
 
   renderForm() {
-    const { countries, sectors, downloadSize, requiredError } = this.props;
+    const {
+      countries,
+      sectors,
+      downloadSize,
+      requiredError,
+      errorMessage
+    } = this.props;
 
     const onSubmit = event => {
       event.preventDefault();
@@ -166,6 +172,7 @@ class ModalDownload extends PureComponent {
         >
           {`Download ${downloadSize ? `(${downloadSize})` : ''}`}
         </Button>
+        {errorMessage && <p>{errorMessage}</p>}
         <p className={styles.licenseAndPolicy}>
           These data carry the{' '}
           <a
@@ -212,6 +219,7 @@ ModalDownload.propTypes = {
   onSubmit: PropTypes.func.isRequired,
   countries: PropTypes.array.isRequired,
   sectors: PropTypes.array.isRequired,
+  errorMessage: PropTypes.string,
   requiredError: PropTypes.bool
 };
 
