@@ -10,6 +10,7 @@
 // Active Admin's got SASS!
 @import "active_admin/mixins";
 @import "active_admin/base";
+@import "trix";
 
 // Overriding any non-variable SASS must be done after the fact.
 // For example, to change the default status-tag color:
@@ -41,4 +42,18 @@
 
 .logs_table {
   margin-top: 20px;
+}
+
+.trix-editor-wrapper {
+  width: calc(80% - 22px);
+  display: inline-block;
+  background: white;
+}
+
+.trix-button-row {
+  font-size: 1.25em !important;
+}
+
+.trix-dialog {
+  font-size: 1.25em !important;
 }
