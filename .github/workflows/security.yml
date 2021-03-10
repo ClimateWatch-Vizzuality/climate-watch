@@ -15,5 +15,7 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
+      - name: Run Brakeman
+        run: bundle exec brakeman
       - name: Run Bundle Audit
         run: bundle exec bundle-audit check --update
