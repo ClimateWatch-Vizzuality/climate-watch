@@ -17,11 +17,11 @@ jobs:
           POSTGRES_USER: ${{ env.POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
         ports: ["5432:5432"]
-        # options: >-
-        #   --health-cmd pg_isready
-        #   --health-interval 10s
-        #   --health-timeout 5s
-        #   --health-retries 5
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
@@ -58,6 +58,8 @@ jobs:
           PGUSER: ${{ env.POSTGRES_USER }}
           PGPASSWORD: ${{ env.POSTGRES_PASSWORD }}
           GFW_API: https://staging-api.globalforestwatch.org
+          DEV_USER_ID: DEV_USER_ID_PLACEHOLDER
+          DEV_USER_TOKEN: DEV_USER_TOKEN_PLACEHOLDER
         run: bundle exec rspec
       - name: Upload Code Coverage
         uses: actions/upload-artifact@v2
