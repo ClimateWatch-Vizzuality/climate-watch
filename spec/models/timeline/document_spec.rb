@@ -1,3 +1,17 @@
+# == Schema Information
+#
+# Table name: timeline_documents
+#
+#  id          :bigint           not null, primary key
+#  source_id   :bigint
+#  location_id :bigint
+#  link        :text
+#  text        :text
+#  date        :date
+#  language    :text
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#
 require 'rails_helper'
 
 RSpec.describe Timeline::Document, type: :model do

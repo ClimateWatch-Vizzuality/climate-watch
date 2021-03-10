@@ -1,3 +1,15 @@
+# == Schema Information
+#
+# Table name: historical_emissions_sectors
+#
+#  id             :bigint           not null, primary key
+#  parent_id      :bigint
+#  data_source_id :bigint
+#  name           :text
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#  annex_type     :text
+#
 module HistoricalEmissions
   class Sector < ApplicationRecord
     belongs_to :data_source, class_name: 'HistoricalEmissions::DataSource'

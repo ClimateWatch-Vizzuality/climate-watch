@@ -84,6 +84,7 @@ end
 
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
+  gem 'annotate'
   gem 'bundler-audit', require: false
   gem 'brakeman', require: false
   gem 'web-console', '>= 3.3.0'

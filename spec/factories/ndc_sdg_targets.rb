@@ -1,3 +1,14 @@
+# == Schema Information
+#
+# Table name: ndc_sdg_targets
+#
+#  id         :bigint           not null, primary key
+#  number     :text             not null
+#  title      :text             not null
+#  goal_id    :bigint           not null
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
 FactoryBot.define do
   factory :ndc_sdg_target, class: 'NdcSdg::Target' do
     association :goal, factory: :ndc_sdg_goal

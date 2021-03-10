@@ -79,6 +79,9 @@ GEM
       tzinfo (~> 1.1)
     addressable (2.5.2)
       public_suffix (>= 2.0.2, < 4.0)
+    annotate (3.1.1)
+      activerecord (>= 3.2, < 7.0)
+      rake (>= 10.4, < 14.0)
     api-pagination (4.8.1)
     appsignal (2.7.0)
       rack
@@ -406,6 +409,7 @@ DEPENDENCIES
   active_model_serializers (~> 0.10.0)
   activeadmin
   activerecord-import
+  annotate
   api-pagination
   appsignal
   aws-sdk-rails (~> 2)

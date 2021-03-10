@@ -1,3 +1,16 @@
+# == Schema Information
+#
+# Table name: indc_categories
+#
+#  id               :bigint           not null, primary key
+#  category_type_id :bigint           not null
+#  parent_id        :bigint
+#  slug             :text             not null
+#  name             :text             not null
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  order            :integer
+#
 module Indc
   class Category < ApplicationRecord
     belongs_to :category_type, class_name: 'Indc::CategoryType'

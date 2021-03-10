@@ -1,3 +1,13 @@
+# == Schema Information
+#
+# Table name: timeline_notes
+#
+#  id          :bigint           not null, primary key
+#  document_id :bigint
+#  note        :text
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#
 require 'rails_helper'
 
 RSpec.describe Timeline::Note, type: :model do

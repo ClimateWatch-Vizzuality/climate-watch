@@ -1,3 +1,14 @@
+# == Schema Information
+#
+# Table name: ndc_sdg_targets
+#
+#  id         :bigint           not null, primary key
+#  number     :text             not null
+#  title      :text             not null
+#  goal_id    :bigint           not null
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
 module NdcSdg
   class Target < ApplicationRecord
     belongs_to :goal, class_name: 'NdcSdg::Goal'
