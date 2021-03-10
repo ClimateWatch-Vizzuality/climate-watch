@@ -1,4 +1,4 @@
-FROM ruby:2.5.1
+FROM ruby:2.5.7
 MAINTAINER info@vizzuality.com
 
 ENV NAME climate-watch
