@@ -1,0 +1,19 @@
+name: Security
+
+on:
+  push:
+  schedule:
+    - cron: "0 14 * * *"
+
+jobs:
+  security:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      - name: Run Bundle Audit
+        run: bundle exec bundle-audit check --update

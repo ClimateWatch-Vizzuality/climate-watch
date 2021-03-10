@@ -1,4 +1,3 @@
-
 {
   "name": "climate-watch",
   "version": "1.15.1",
@@ -9,6 +8,7 @@
     "start": "run-p -r rails:server js:server",
     "reinstall": "rm -rf ./node_modules && yarn install",
     "js:server": "yarn install && ./bin/webpack-dev-server",
+    "rails:bundle-audit": "bundle exec bundle-audit check --update",
     "rails:cleanimport": "rails db:drop db:create db:migrate db:import",
     "rails:server": "bundle exec rails s",
     "precommit": "lint-staged",
