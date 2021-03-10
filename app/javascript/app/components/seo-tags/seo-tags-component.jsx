@@ -19,9 +19,10 @@ const SEOTags = ({
   if (!STATIC_TITLE_PARTS[page]) {
     console.warn('Missing page SEO title. Check SEO.js');
   }
-  const title = `${dynamicTitlePart ? `${dynamicTitlePart} | ` : ''}${
-    STATIC_TITLE_PARTS[page]
-  } | Climate Watch Data`;
+  const title = `
+    ${dynamicTitlePart ? `${dynamicTitlePart} ` : ''}
+    ${STATIC_TITLE_PARTS[page]}
+  `;
   const descriptionContext = getDescription({ page, countryName });
   const canonicalUrl = CANONICAL_URLS[page];
   return (

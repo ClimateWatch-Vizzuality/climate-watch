@@ -126,10 +126,10 @@ const CustomComparisonComponent = props => {
     filtersData
       .map(f => {
         const name = f.countryValue && f.countryValue.label;
-        return name ? `${name} - ${f.countryValue.value}` : null;
+        return name ? `${name} | ${f.countryValue.value}` : null;
       })
       .filter(Boolean)
-      .join(', ');
+      .join('| ');
   return (
     <div>
       <SEOTags
