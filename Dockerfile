@@ -44,8 +44,6 @@ RUN apt-get update \
         postgresql-client nodejs build-essential patch zlib1g-dev liblzma-dev libicu-dev
 RUN npm install -g yarn
 
-RUN gem install bundler --no-ri --no-rdoc
-
 # Create app directory
 RUN mkdir -p /usr/src/$NAME
 WORKDIR /usr/src/$NAME
@@ -54,6 +52,11 @@ WORKDIR /usr/src/$NAME
 COPY Gemfile Gemfile.lock ./
 
 RUN cd /usr/src/$NAME && bundle install --without development test --jobs 4 --deployment
+
+# Yarn install
+COPY package.json package.json
+COPY yarn.lock yarn.lock
+RUN yarn install
 
 # Env variables
 ARG secretKey
