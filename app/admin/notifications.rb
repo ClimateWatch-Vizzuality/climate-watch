@@ -1,7 +1,10 @@
 ActiveAdmin.register Notification do
   config.sort_order = 'updated_at_desc'
 
-  permit_params :description
+  permit_params :description, :date
+
+  filter :description
+  filter :date
 
   form do |f|
     f.inputs do
@@ -23,8 +26,6 @@ ActiveAdmin.register Notification do
   index download_links: false do
     column(:description) { |n| n.description.html_safe }
     column :date
-    column :created_at
-    column :updated_at
     actions
   end
 end
