@@ -41,7 +41,6 @@ gem 'turbolinks', '~> 5'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
-
 gem 'active_model_serializers', '~> 0.10.0'
 gem 'api-pagination'
 gem 'kaminari'
@@ -53,6 +52,7 @@ gem 'secondbase'
 # Add activeadmin for simple CMS
 gem 'activeadmin'
 gem 'devise'
+gem 'trix-rails', require: 'trix'
 
 gem 'activerecord-import'
 
@@ -84,6 +84,7 @@ end
 
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
+  gem 'annotate'
   gem 'bundler-audit', require: false
   gem 'brakeman', require: false
   gem 'web-console', '>= 3.3.0'

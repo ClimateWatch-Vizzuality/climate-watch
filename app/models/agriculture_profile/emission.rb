@@ -1,3 +1,14 @@
+# == Schema Information
+#
+# Table name: agriculture_profile_emissions
+#
+#  id                      :bigint           not null, primary key
+#  values                  :jsonb            not null
+#  created_at              :datetime         not null
+#  updated_at              :datetime         not null
+#  location_id             :bigint
+#  emission_subcategory_id :bigint
+#
 module AgricultureProfile
   class Emission < ApplicationRecord
     belongs_to :emission_subcategory, class_name: 'AgricultureProfile::EmissionSubcategory'

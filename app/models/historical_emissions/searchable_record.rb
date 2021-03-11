@@ -1,3 +1,20 @@
+# == Schema Information
+#
+# Table name: historical_emissions_searchable_records
+#
+#  id             :bigint
+#  data_source_id :bigint
+#  data_source    :text
+#  location_id    :bigint
+#  iso_code3      :text
+#  region         :text
+#  sector_id      :bigint
+#  sector         :text
+#  gas_id         :bigint
+#  gas            :text
+#  emissions      :jsonb
+#  emissions_dict :jsonb
+#
 module HistoricalEmissions
   class SearchableRecord < ApplicationRecord
     self.table_name = 'historical_emissions_searchable_records'

@@ -1,3 +1,12 @@
+# == Schema Information
+#
+# Table name: ndc_sdg_sectors
+#
+#  id         :bigint           not null, primary key
+#  name       :text
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
 module NdcSdg
   class Sector < ApplicationRecord
     has_many :ndc_target_sectors,

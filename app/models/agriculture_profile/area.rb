@@ -1,3 +1,18 @@
+# == Schema Information
+#
+# Table name: agriculture_profile_areas
+#
+#  id                           :bigint           not null, primary key
+#  year                         :integer          not null
+#  share_in_land_area_1         :float
+#  share_in_land_area_2         :float
+#  share_in_land_area_3         :float
+#  share_in_land_area_4         :float
+#  share_in_agricultural_area_1 :float
+#  share_in_agricultural_area_2 :float
+#  share_in_agricultural_area_3 :float
+#  location_id                  :bigint
+#
 module AgricultureProfile
   class Area < ApplicationRecord
     belongs_to :location

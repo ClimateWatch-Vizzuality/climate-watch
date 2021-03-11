@@ -1,3 +1,19 @@
+# == Schema Information
+#
+# Table name: agriculture_profile_country_contexts
+#
+#  id                     :bigint           not null, primary key
+#  year                   :integer          not null
+#  employment_agri_female :float
+#  employment_agri_male   :float
+#  employment_agri_total  :float
+#  total_pesticides_use   :float
+#  total_fertilizers      :float
+#  water_withdrawal       :float
+#  water_withdrawal_rank  :integer
+#  value_added_agr        :float
+#  location_id            :bigint
+#
 require 'rails_helper'
 
 RSpec.describe AgricultureProfile::CountryContext, type: :model do
