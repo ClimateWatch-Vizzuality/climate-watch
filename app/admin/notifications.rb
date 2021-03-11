@@ -8,7 +8,7 @@ ActiveAdmin.register Notification do
 
   form do |f|
     f.inputs do
-      f.input :date, as: :datepicker
+      f.input :date, as: :datepicker, hint: 'Notification will not be shown until this date'
       f.input :description, as: :trix_editor
     end
     f.actions
