@@ -6,7 +6,6 @@ import {
 } from 'utils/localStorage';
 
 const USER_SURVEY_SPREADSHEET_URL = process.env.USER_SURVEY_SPREADSHEET_URL;
-const USER_NEWSLETTER_URL = process.env.USER_NEWSLETTER_URL;
 
 const setModalDownloadParams = createAction('setModalDownloadParams');
 const setRequiredFieldsError = createAction('setRequiredFieldsError');
@@ -48,14 +47,20 @@ const saveSurveyData = createThunkAction(
           `${USER_SURVEY_SPREADSHEET_URL}?${spreadsheetQueryParams.join('&')}`
         ),
         surveyData.subscription &&
-          fetch(USER_NEWSLETTER_URL, {
+          fetch('/newsletter', {
             method: 'POST',
             body: getNewsletterFormData(surveyData)
           })
       ])
-        .then(response => {
-          /* eslint-disable-next-line no-console */
-          console.info('Modal download responses', response);
+        .then(responses => {
+          console.info('Modal download responses', responses);
+          if (responses[0].ok !== undefined && !responses[0].ok) {
+            throw new Error(responses[0].statusText);
+          }
+          if (responses[1].ok !== undefined && !responses[1].ok) {
+            throw new Error(responses[1].statusText);
+          }
+
           if (!getStorageWithExpiration('userSurvey')) {
             setStorageWithExpiration('userSurvey', true, 5);
           }

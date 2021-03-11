@@ -137,6 +137,8 @@ Rails.application.routes.draw do
     end
   end
 
+  post 'newsletter', to: 'newsletter#sign_up'
+
   root 'application#index'
   get '(*frontend)', to: 'application#index'
 end
