@@ -44,6 +44,11 @@
   margin-top: 20px;
 }
 
+// TRIX EDITOR
+.trix-button-group--file-tools {
+  display: none !important;
+}
+
 .trix-editor-wrapper {
   width: calc(80% - 22px);
   display: inline-block;
@@ -57,3 +62,4 @@
 .trix-dialog {
   font-size: 1.25em !important;
 }
+// END OF TRIX EDITOR

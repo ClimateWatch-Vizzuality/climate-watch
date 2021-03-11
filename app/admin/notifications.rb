@@ -24,6 +24,7 @@ ActiveAdmin.register Notification do
   end
 
   index download_links: false do
+    id_column
     column(:description) { |n| n.description.html_safe }
     column :date
     actions
