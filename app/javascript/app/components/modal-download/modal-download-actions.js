@@ -29,6 +29,10 @@ function getNewsletterFormData(data) {
   formdata.append('last_name', data.lastName);
   formdata.append('organization', data.organization);
   formdata.append('country', data.country.value);
+  const token = document
+    .querySelectorAll('meta[name="csrf-token"]')[0]
+    ?.getAttribute('content');
+  formdata.append('authenticity_token', token);
 
   return formdata;
 }

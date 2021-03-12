@@ -1,6 +1,4 @@
 class NewsletterController < ApplicationController
-  skip_before_action :verify_authenticity_token
-
   def sign_up
     res = Net::HTTP.post_form URI(ENV['USER_NEWSLETTER_URL']), form_params
 
