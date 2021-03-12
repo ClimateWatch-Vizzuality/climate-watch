@@ -1,0 +1,25 @@
+@import '~styles/settings';
+
+.notificationBell {
+  display: flex;
+  align-items: center;
+  transform: translate(0, -2px);
+}
+
+.badge {
+  height: 14px;
+  width: 14px;
+  text-align: center;
+  position: absolute;
+  top: 20px;
+  border-radius: 50%;
+  background-color: $notification-color;
+  color: $white;
+  font-size: $font-size-xs;
+}
+
+.bellIcon {
+  width: 30px;
+  height: 30px;
+}
+
