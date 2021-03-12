@@ -1,9 +1,13 @@
 @import '~styles/settings';
 
-.notificationBell {
+.notificationBellButton {
   display: flex;
   align-items: center;
   transform: translate(0, -2px);
+
+  &.active {
+    cursor: pointer;
+  }
 }
 
 .badge {
