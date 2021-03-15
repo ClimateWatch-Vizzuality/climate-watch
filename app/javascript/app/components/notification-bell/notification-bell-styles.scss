@@ -1,0 +1,44 @@
+@import '~styles/settings';
+
+.notificationBellButton {
+  display: flex;
+  align-items: center;
+  transform: translate(0, -2px);
+
+  &.active {
+    cursor: pointer;
+  }
+}
+
+.badge {
+  height: 14px;
+  width: 14px;
+  text-align: center;
+  position: absolute;
+  top: 20px;
+  border-radius: 50%;
+  background-color: $notification-color;
+  color: $white;
+  font-size: $font-size-xs;
+
+  &.moreThan99 {
+    width: 24px;
+  }
+}
+
+.bellIcon {
+  width: 30px;
+  height: 30px;
+}
+
+.tooltip {
+  text-align: center;
+  margin: 25px 5px 0 !important;
+  padding-bottom: 20px !important;
+
+  .tooltipTitle {
+    margin: 10px 0;
+    font-size: $font-size-m;
+  }
+}
+

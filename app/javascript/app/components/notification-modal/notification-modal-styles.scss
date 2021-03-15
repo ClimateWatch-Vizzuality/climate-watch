@@ -1,0 +1,36 @@
+@import '~styles/layout.scss';
+
+.modal {
+  max-width: 600px;
+}
+
+.modalTitle {
+  padding: 5px 20px 20px;
+}
+
+.notificationModal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.notificationModalContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  height: 100%;
+  padding: 0 20px;
+  overflow: auto;
+  color: $theme-color;
+  text-align: center;
+}
+
+.notification {
+  display: flex;
+  margin: 10px 0;
+}
+
+.date {
+  font-weight: $font-weight-bold;
+}

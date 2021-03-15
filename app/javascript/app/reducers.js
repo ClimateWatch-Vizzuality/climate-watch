@@ -129,6 +129,7 @@ import * as HamburgerComponent from 'components/hamburger';
 import * as AnchorNavComponent from 'components/anchor-nav';
 import * as ExploreMapShared from 'components/ndcs/shared/explore-map';
 import * as ndcCountryAccordionComponent from 'components/ndcs/ndcs-country-accordion';
+import * as NotificationBellComponent from 'components/notification-bell';
 
 const componentsReducers = {
   map: handleActions(mapComponent),
@@ -152,7 +153,8 @@ const componentsReducers = {
   hamburger: handleActions(HamburgerComponent),
   anchorNav: handleActions(AnchorNavComponent),
   exploreMap: handleActions(ExploreMapShared),
-  ndcCountryAccordion: handleActions(ndcCountryAccordionComponent)
+  ndcCountryAccordion: handleActions(ndcCountryAccordionComponent),
+  notifications: handleActions(NotificationBellComponent)
 };
 
 export default combineReducers({
