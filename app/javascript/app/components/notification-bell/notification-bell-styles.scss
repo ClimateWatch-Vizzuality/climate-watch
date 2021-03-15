@@ -20,6 +20,10 @@
   background-color: $notification-color;
   color: $white;
   font-size: $font-size-xs;
+
+  &.moreThan99 {
+    width: 24px;
+  }
 }
 
 .bellIcon {

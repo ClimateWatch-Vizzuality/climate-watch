@@ -27,7 +27,13 @@ const NotificationBell = ({
           className={styles.bellIcon}
           ariaLabel="notification button"
         />
-        {number !== 0 && <span className={styles.badge}>{number}</span>}
+        {number !== 0 && (
+          <span
+            className={cx(styles.badge, { [styles.moreThan99]: number > 99 })}
+          >
+            {number}
+          </span>
+        )}
       </button>
       <NotificationModal
         isOpen={isModalOpen}

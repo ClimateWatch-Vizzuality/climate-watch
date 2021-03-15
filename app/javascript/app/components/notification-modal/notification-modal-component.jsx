@@ -9,7 +9,9 @@ const NotificationModal = props => {
   return (
     <Modal onRequestClose={handleOnRequestClose} isOpen theme={styles}>
       <div className={styles.notificationModalContent}>
-        <h2>Latest country commitments updates</h2>
+        <h2 className={styles.modalTitle}>
+          Latest country commitments updates
+        </h2>
         {notifications &&
           notifications.map(n => (
             <div className={styles.notification}>
