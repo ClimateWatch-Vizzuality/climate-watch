@@ -12,14 +12,6 @@ describe Api::V1::NotificationsController, type: :controller do
         expect(response).to be_successful
       end
 
-      it 'limit to only 9 latest notifications' do
-        get :index
-        parsed_body = JSON.parse(response.body)
-        ids = parsed_body.map { |n| n['id'].to_i }
-        expect(parsed_body.length).to eq(9)
-        expect(ids).not_to include(old_notification.id)
-      end
-
       it 'does not return future notifications' do
         get :index
         parsed_body = JSON.parse(response.body)
