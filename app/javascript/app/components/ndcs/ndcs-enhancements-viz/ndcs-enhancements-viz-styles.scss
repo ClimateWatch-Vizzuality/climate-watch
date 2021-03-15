@@ -102,7 +102,7 @@
   }
 
   .containerUpper {
-    @media #{$tablet-landscape} {
+    @media #{$desktop} {
       @include columns((4,8));
     }
   }
@@ -110,34 +110,12 @@
   .containerCharts {
     background-color: $white;
     box-shadow: $box-shadow-light;
-
-    > div {
-      @include columns(100%);
-    }
-
-    @media #{$tablet-portrait} {
-      > div {
-        @include columns(33.333%);
-      }
-    }
-
-    @media #{$tablet-landscape} {
-      &,
-      > div {
-        height: 100%;
-      }
-
-      > div {
-        @include columns(100%);
-      }
-    }
   }
 
   .summaryTitle {
     font-weight: $font-weight-bold;
     text-align: center;
-    margin-top: 20px;
-    padding-bottom: 20px;
+    padding: 20px 0;
     cursor: default;
   }
 
@@ -150,103 +128,51 @@
     line-height: $line-height-medium;
   }
 
-  .circularChartContainer {
+  .summaryItemsContainer {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .separator {
+    height: 2px;
+    background: $gray2;
+    margin: 20px 60px 0;
+  }
+
+  .summaryItemContainer {
     position: relative;
-    margin: -10% 0;
     flex: 1;
-    height: 200px;
+    height: 170px;
+    margin: 0;
     overflow: visible;
     display: flex;
     flex-direction: row;
-    font-size: 0.8em;
-
-    > div {
-      position: relative;
-
-      &:first-child {
-        max-width: 50%;
-      }
-    }
+    font-size: $font-size-s;
 
     @media #{$tablet-portrait} {
       font-size: 1em;
-      padding-right: calc(#{$gutter-padding} / 2);
-      margin: -60px 0 6.8em;
-      flex-direction: column;
-
-      &:last-child {
-        margin-bottom: 10%;
-      }
-
-      > div {
-        &:first-child {
-          max-width: 100%;
-        }
-      }
-    }
-
-    @media #{$tablet-landscape} {
-      margin: -5% $card-content-margin 0;
-
-      &:last-child {
-        margin-bottom: -5%;
-      }
-    }
-
-    @media #{$desktop} {
-      flex-direction: row;
-      margin-bottom: -10%;
-
-      > div {
-        &:first-child {
-          max-width: 50%;
-        }
-      }
-    }
-
-    [class*=circularChartWrapper] {
-      position: static;
-      margin: 0 auto;
-    }
-
-    svg {
-      height: 200px !important;
-    }
-
-    //Hiding circular charts for now because the number of countries will remain a small minority for some time
-    //Leaving functionality in place in case the data should be shown in the future
-    svg {
-      visibility: hidden;
-    }
-
-    .circularChartValues {
-      font-size: 4.5em;
+      padding: 0 calc(#{$gutter-padding} / 2);
     }
   }
 
-  .circularChartValues {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+  .summaryItemValuesContainer {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .summaryItemValues {
     font-weight: $font-weight-bold;
-    font-size: 2.4em;
+    font-size: 4.5em;
   }
 
-  .circularChartLabels {
+  .summaryItemLabels {
+    flex: 1;
     position: relative;
     display: flex;
     align-items: center;
     justify-content: left;
-    top: 0;
-
-    @media #{$tablet-portrait} {
-      top: -2.4em;
-    }
-
-    @media #{$desktop} {
-      top: 0;
-    }
 
     span[title] {
       display: inline;
