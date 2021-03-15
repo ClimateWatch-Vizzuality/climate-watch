@@ -5,10 +5,11 @@ import cx from 'classnames';
 
 import styles from './icon-styles.scss';
 
-const Icon = ({ icon, theme, className = '', onClick, ariaLabel }) => {
+const Icon = ({ icon, theme, className = '', onClick, ariaLabel, ref }) => {
   const classNames = cx(className, theme.icon);
   return (
     <svg
+      ref={ref}
       className={classNames}
       viewBox={icon.viewBox}
       onClick={onClick}
@@ -22,6 +23,7 @@ const Icon = ({ icon, theme, className = '', onClick, ariaLabel }) => {
 Icon.propTypes = {
   icon: PropTypes.object,
   className: PropTypes.string,
+  ref: PropTypes.node,
   theme: PropTypes.object,
   onClick: PropTypes.func,
   ariaLabel: PropTypes.string

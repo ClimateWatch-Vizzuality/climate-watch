@@ -31,3 +31,14 @@
   height: 30px;
 }
 
+.tooltip {
+  text-align: center;
+  margin: 25px 5px 0 !important;
+  padding-bottom: 20px !important;
+
+  .tooltipTitle {
+    margin: 10px 0;
+    font-size: $font-size-m;
+  }
+}
+

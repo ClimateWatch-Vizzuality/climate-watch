@@ -8,11 +8,15 @@ import actions from './notification-bell-actions';
 import reducers, { initialState } from './notification-bell-reducers';
 
 const NOTIFICATIONS_LAST_DATE_SHOWN = 'notificationsLastDateShown';
+const NOTIFICATIONS_TOOLTIP_HAS_SHOWN = 'notificationsTooltipHasShown';
 
 const NotificationBellContainer = props => {
   const { fetchNotifications, notifications } = props;
   const [lastDateShown, setLastDateShown] = useState(
     localStorage.getItem(NOTIFICATIONS_LAST_DATE_SHOWN)
+  );
+  const [tooltipHasShown, setTooltipHasShown] = useState(
+    !!localStorage.getItem(NOTIFICATIONS_TOOLTIP_HAS_SHOWN)
   );
   const [filteredNotifications, setFilteredNotifications] = useState(
     notifications
@@ -39,13 +43,21 @@ const NotificationBellContainer = props => {
     setModalOpen(false);
   };
 
+  const handleTooltipHasShown = () => {
+    const today = moment().format('YYYY-MM-DD');
+    setTooltipHasShown(true);
+    localStorage.setItem(NOTIFICATIONS_TOOLTIP_HAS_SHOWN, today);
+  };
+
   return createElement(Component, {
     ...props,
     setLastDateShown,
     notifications: filteredNotifications,
     isModalOpen,
     setModalOpen,
-    handleOnModalClose
+    handleOnModalClose,
+    handleTooltipHasShown,
+    tooltipHasShown
   });
 };
 
