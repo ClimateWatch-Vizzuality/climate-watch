@@ -142,13 +142,11 @@ function LTSExploreMap(props) {
 
   return (
     <div>
-      {selectedIndicator && (
-        <SEOTags
-          dynamicTitlePart={selectedIndicator.label}
-          page={SEO_PAGES.ltsExplore}
-          href={location.href}
-        />
-      )}
+      <SEOTags
+        dynamicTitlePart={selectedIndicator && selectedIndicator.label}
+        page={SEO_PAGES.ltsExplore}
+        href={location.href}
+      />
       <TabletLandscape>
         {isTablet => (
           <div className={styles.wrapper}>

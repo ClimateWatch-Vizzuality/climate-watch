@@ -144,13 +144,11 @@ function NDCSExploreMap(props) {
   const TOOLTIP_ID = 'ndcs-map-tooltip';
   return (
     <div>
-      {selectedIndicator && (
-        <SEOTags
-          dynamicTitlePart={selectedIndicator.label}
-          page={SEO_PAGES.ndcsExplore}
-          href={location.href}
-        />
-      )}
+      <SEOTags
+        dynamicTitlePart={selectedIndicator && selectedIndicator.label}
+        page={SEO_PAGES.ndcsExplore}
+        href={location.href}
+      />
       <TabletLandscape>
         {isTablet => (
           <div className={styles.wrapper}>
