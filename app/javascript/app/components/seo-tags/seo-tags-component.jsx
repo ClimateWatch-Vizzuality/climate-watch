@@ -22,6 +22,7 @@ const SEOTags = ({
   const title = `
     ${dynamicTitlePart ? `${dynamicTitlePart} ` : ''}
     ${STATIC_TITLE_PARTS[page]}
+    ${page === SEO_PAGES.home ? '' : ' | Climate Watch'}
   `;
   const descriptionContext = getDescription({ page, countryName });
   const canonicalUrl = CANONICAL_URLS[page];
