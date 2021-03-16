@@ -146,6 +146,28 @@ export const filterEnhancedValueOnIndicator = createSelector(
   }
 );
 
+export const sortIndicatorLegend = createSelector(
+  [filterEnhancedValueOnIndicator],
+  indicator => {
+    if (!indicator) return null;
+    const updatedIndicator = { ...indicator };
+    const slugsLegendOrder = [
+      LABEL_SLUGS.ENHANCED_MITIGATION,
+      LABEL_SLUGS.SUBMITTED_2020,
+      LABEL_SLUGS.INTENDS_TO_ENHANCE,
+      null,
+      LABEL_SLUGS.NO_INFO
+    ]; // null it's for 'Not Applicable'
+    Object.entries(updatedIndicator.legendBuckets).forEach(([key, value]) => {
+      updatedIndicator.legendBuckets[key] = {
+        ...updatedIndicator.legendBuckets[key],
+        order: value.slug ? slugsLegendOrder.indexOf(value.slug) : 3 // Not Applicable should have order number 3
+      };
+    });
+    return updatedIndicator;
+  }
+);
+
 const MAP_LABEL_COLORS = [...Object.values(LABEL_COLORS), 'rgb(204, 204, 204)'];
 export const MAP_COLORS = [
   [...MAP_LABEL_COLORS],
