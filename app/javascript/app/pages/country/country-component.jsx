@@ -31,7 +31,7 @@ class Country extends PureComponent {
         {countryName && (
           <SEOTags
             page={SEO_PAGES.country}
-            dynamicTitlePart={`${countryName} | ${country.iso}`}
+            dynamicTitlePart={countryName}
             href={location.href}
             countryName={countryName}
             canonicalAttribute={country && country.iso}
