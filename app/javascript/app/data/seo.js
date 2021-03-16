@@ -45,7 +45,7 @@ export const CANONICAL_URLS = {
   ltsCountry: '/lts/country',
   ndcCustomCompare: '/custom-compare',
   ndcSearch: '/ndc-search',
-  netZero: '/net-zero-explore',
+  netZero: '/net-zero-tracker',
   ndcSdg: '/ndcs-sdg',
   ghg: '/ghg-emissions',
   pathways: '/pathways',
