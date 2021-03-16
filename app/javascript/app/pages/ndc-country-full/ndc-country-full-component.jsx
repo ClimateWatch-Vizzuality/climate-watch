@@ -74,7 +74,7 @@ class NDCCountryFull extends PureComponent {
         {country && (
           <SEOTags
             page={SEO_PAGES.ndcFull}
-            dynamicTitlePart={`${country.wri_standard_name} | ${country.iso_code3}`}
+            dynamicTitlePart={country.wri_standard_name}
             countryName={country.wri_standard_name}
             href={location.href}
             canonicalAttribute={`${country.iso_code3}/full?document=${search.document}`}
