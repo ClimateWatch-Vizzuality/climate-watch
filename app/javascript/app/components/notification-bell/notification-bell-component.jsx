@@ -26,6 +26,7 @@ const NotificationBell = ({
   return (
     <Fragment>
       <button
+        onMouseEnter={handleTooltipHasShown}
         onClick={hasNotifications ? () => setModalOpen(true) : undefined}
         className={cx(styles.notificationBellButton, {
           [styles.active]: hasNotifications
@@ -58,7 +59,6 @@ const NotificationBell = ({
         place="bottom"
         data-event="fakeEvent"
         disable={tooltipHasShown}
-        afterShow={handleTooltipHasShown}
       >
         <h5 className={styles.tooltipTitle}>NEW!</h5>
         <p>
