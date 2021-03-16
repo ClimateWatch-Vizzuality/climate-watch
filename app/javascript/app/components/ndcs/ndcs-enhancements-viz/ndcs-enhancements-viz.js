@@ -14,7 +14,7 @@ import { actions as modalActions } from 'components/modal-metadata';
 import Component from './ndcs-enhancements-viz-component';
 
 import {
-  filterEnhancedValueOnIndicator,
+  sortIndicatorLegend,
   getIndicatorsParsed,
   getPathsWithStyles,
   getISOCountries,
@@ -43,7 +43,7 @@ const mapStateToProps = (state, { location }) => {
     countries: countries.data,
     checked: getIsEnhancedChecked(ndcsEnhancementsWithSelection),
     isoCountries: getISOCountries(ndcsEnhancementsWithSelection),
-    indicator: filterEnhancedValueOnIndicator(ndcsEnhancementsWithSelection),
+    indicator: sortIndicatorLegend(ndcsEnhancementsWithSelection),
     indicators: getIndicatorsParsed(ndcsEnhancementsWithSelection),
     summaryData: summarizeIndicators(ndcsEnhancementsWithSelection),
     downloadLink: getLinkToDataExplorer(ndcsEnhancementsWithSelection),
