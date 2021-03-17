@@ -50,12 +50,20 @@ const saveSurveyData = createThunkAction(
         surveyData.subscription &&
           fetch(USER_NEWSLETTER_URL, {
             method: 'POST',
+            mode: 'no-cors',
             body: getNewsletterFormData(surveyData)
           })
       ])
-        .then(response => {
+        .then(responses => {
           /* eslint-disable-next-line no-console */
-          console.info('Modal download responses', response);
+          console.info('Modal download responses', responses);
+          if (responses[0].ok !== undefined && !responses[0].ok) {
+            throw new Error(responses[0].statusText);
+          }
+          if (responses[1].ok !== undefined && !responses[1].ok) {
+            throw new Error(responses[1].statusText);
+          }
+
           if (!getStorageWithExpiration('userSurvey')) {
             setStorageWithExpiration('userSurvey', true, 5);
           }
