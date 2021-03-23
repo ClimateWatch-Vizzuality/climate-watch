@@ -35,23 +35,30 @@ const NotificationBell = ({
           [styles.active]: hasNotifications
         })}
       >
-        <div data-tip data-for="notification-bell" ref={bellRef}>
+        <div
+          data-tip
+          data-for="notification-bell"
+          ref={bellRef}
+          className={cx(styles.bell, {
+            [styles.ring]: hasNotificationAlerts
+          })}
+        >
           <Icon
             icon={bellIcon}
             className={styles.bellIcon}
             ariaLabel="notification button"
           />
+          {hasNotificationAlerts && (
+            <span
+              className={cx(styles.badge, {
+                [styles.moreThan9]: notificationAlertsNumber > 9,
+                [styles.moreThan99]: notificationAlertsNumber > 99
+              })}
+            >
+              {notificationAlertsNumber}
+            </span>
+          )}
         </div>
-        {hasNotificationAlerts && (
-          <span
-            className={cx(styles.badge, {
-              [styles.moreThan9]: notificationAlertsNumber > 9,
-              [styles.moreThan99]: notificationAlertsNumber > 99
-            })}
-          >
-            {notificationAlertsNumber}
-          </span>
-        )}
       </button>
       <NotificationModal
         isOpen={isModalOpen}
