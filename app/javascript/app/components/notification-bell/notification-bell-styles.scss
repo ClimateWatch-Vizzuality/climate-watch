@@ -16,13 +16,21 @@
   text-align: center;
   position: absolute;
   top: 20px;
-  border-radius: 50%;
+  border-radius: 10px;
   background-color: $notification-color;
   color: $white;
   font-size: $font-size-xs;
 
+  &.moreThan9 {
+    width: 20px;
+    top: 19px;
+    left: -2px;
+  }
+
   &.moreThan99 {
     width: 24px;
+    top: 19px;
+    left: -4px;
   }
 }
 
