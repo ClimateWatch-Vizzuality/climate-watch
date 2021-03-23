@@ -34,3 +34,20 @@
 .date {
   font-weight: $font-weight-bold;
 }
+
+.footer {
+  position: absolute;
+  background-color: $white;
+  bottom: 0;
+  width: 100%;
+  height: 80px;
+  margin-left: -30px; // revert modalContent padding
+  padding-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.button {
+  max-width: 250px;
+}

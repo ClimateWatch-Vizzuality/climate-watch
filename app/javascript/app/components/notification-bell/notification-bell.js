@@ -18,7 +18,7 @@ const NotificationBellContainer = props => {
   const [tooltipHasShown, setTooltipHasShown] = useState(
     !!localStorage.getItem(NOTIFICATIONS_TOOLTIP_HAS_SHOWN)
   );
-  const [filteredNotifications, setFilteredNotifications] = useState(
+  const [notificationAlertsNumber, setNotificationAlertsNumber] = useState(
     notifications
   );
   const [isModalOpen, setModalOpen] = useState(false);
@@ -33,8 +33,10 @@ const NotificationBellContainer = props => {
       (lastDateShown
         ? notifications.filter(n => n.date > lastDateShown)
         : notifications);
-    setFilteredNotifications(updatedNotifications);
-  }, [lastDateShown, notifications, setFilteredNotifications]);
+    if (updatedNotifications) {
+      setNotificationAlertsNumber(updatedNotifications.length);
+    }
+  }, [lastDateShown, notifications, setNotificationAlertsNumber]);
 
   const handleOnModalClose = () => {
     const today = moment().format('YYYY-MM-DD');
@@ -52,7 +54,8 @@ const NotificationBellContainer = props => {
   return createElement(Component, {
     ...props,
     setLastDateShown,
-    notifications: filteredNotifications,
+    notificationAlertsNumber,
+    notifications,
     isModalOpen,
     setModalOpen,
     handleOnModalClose,

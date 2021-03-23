@@ -9,6 +9,7 @@ import styles from './notification-bell-styles.scss';
 
 const NotificationBell = ({
   notifications,
+  notificationAlertsNumber,
   isModalOpen,
   setModalOpen,
   handleOnModalClose,
@@ -21,8 +22,10 @@ const NotificationBell = ({
       ReactTooltip.show(bellRef.current);
     }
   }, [tooltipHasShown, bellRef]);
-  const number = notifications ? notifications.length : 0;
-  const hasNotifications = number > 0;
+  const hasNotifications = notifications && notifications.length > 0;
+  const hasNotificationAlerts = notificationAlertsNumber
+    ? notificationAlertsNumber > 0
+    : false;
   return (
     <Fragment>
       <button
@@ -32,20 +35,30 @@ const NotificationBell = ({
           [styles.active]: hasNotifications
         })}
       >
-        <div data-tip data-for="notification-bell" ref={bellRef}>
+        <div
+          data-tip
+          data-for="notification-bell"
+          ref={bellRef}
+          className={cx(styles.bell, {
+            [styles.ring]: hasNotificationAlerts
+          })}
+        >
           <Icon
             icon={bellIcon}
             className={styles.bellIcon}
             ariaLabel="notification button"
           />
+          {hasNotificationAlerts && (
+            <span
+              className={cx(styles.badge, {
+                [styles.moreThan9]: notificationAlertsNumber > 9,
+                [styles.moreThan99]: notificationAlertsNumber > 99
+              })}
+            >
+              {notificationAlertsNumber}
+            </span>
+          )}
         </div>
-        {number !== 0 && (
-          <span
-            className={cx(styles.badge, { [styles.moreThan99]: number > 99 })}
-          >
-            {number}
-          </span>
-        )}
       </button>
       <NotificationModal
         isOpen={isModalOpen}
@@ -72,6 +85,7 @@ const NotificationBell = ({
 
 NotificationBell.propTypes = {
   notifications: PropTypes.array,
+  notificationAlertsNumber: PropTypes.number,
   isModalOpen: PropTypes.bool,
   setModalOpen: PropTypes.func,
   handleTooltipHasShown: PropTypes.func,
@@ -81,6 +95,7 @@ NotificationBell.propTypes = {
 
 NotificationBell.defaultProps = {
   notifications: [],
+  notificationAlertsNumber: 0,
   tooltipHasShown: true // so it doesn't show by default
 };
 
