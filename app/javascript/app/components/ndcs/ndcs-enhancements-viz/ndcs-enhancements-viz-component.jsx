@@ -21,8 +21,10 @@ const renderButtonGroup = (clickHandler, downloadLink) => (
     <div>
       <p>
         <em>
-          Track which countries are updating or enhancing their national climate
-          commitments in 2020 or in the lead up to COP26. To request changes or
+          Track which countries are submitting their national climate
+          commitments in the lead up to COP26. You can compare countries’ submissions side by side <a href="https://www.climatewatchdata.org/custom-compare/overview"
+            target="_blank"
+            rel="noopener noreferrer">here</a> or by referring to the table below. To request changes or
           additions, please contact &nbsp;
           <a
             href="mailto:Rhys.Gerholdt@wri.org?subject=2020 NDC Tracker Update"
