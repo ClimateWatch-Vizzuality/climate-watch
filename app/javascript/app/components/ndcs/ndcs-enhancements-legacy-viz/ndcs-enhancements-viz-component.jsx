@@ -5,15 +5,14 @@ import { TabletLandscape } from 'components/responsive';
 import Map from 'components/map';
 import MapLegend from 'components/map-legend';
 import ButtonGroup from 'components/button-group';
-import { CheckInput } from 'cw-components';
 import Loading from 'components/loading';
 import Icon from 'components/icon';
 import infoIcon from 'assets/icons/info.svg';
 import ModalMetadata from 'components/modal-metadata';
+import CircularChart from 'components/circular-chart';
 import NDCSEnhancementsTooltip from 'components/ndcs/ndcs-enhancements-viz/ndcs-enhancements-tooltip';
 import ReactTooltip from 'react-tooltip';
-import blueCheckboxTheme from 'styles/themes/checkbox/blue-checkbox.scss';
-import { LABEL_SLUGS } from './ndcs-enhancements-viz-selectors';
+
 import styles from './ndcs-enhancements-viz-styles.scss';
 
 const renderButtonGroup = (clickHandler, downloadLink) => (
@@ -63,10 +62,15 @@ const renderButtonGroup = (clickHandler, downloadLink) => (
   </div>
 );
 
-const renderSummaryItem = datum => (
-  <div className={styles.summaryItemContainer}>
-    <div className={styles.summaryItemValuesContainer}>
-      <div className={styles.summaryItemValues}>
+const renderCircular = datum => (
+  <div className={styles.circularChartContainer}>
+    <div>
+      <CircularChart
+        index={0.1}
+        value={Math.round((datum.value / datum.max) * 100 * 10) / 10}
+        color={datum.opts.color}
+      />
+      <div className={styles.circularChartValues}>
         <div
           style={{
             color: datum.opts.color
@@ -74,10 +78,11 @@ const renderSummaryItem = datum => (
         >
           {datum.opts.prefix}
           {datum.value}
+          {datum.opts.suffix}
         </div>
       </div>
     </div>
-    <div className={styles.summaryItemLabels}>
+    <div className={styles.circularChartLabels}>
       <div dangerouslySetInnerHTML={{ __html: datum.opts.label }} />
     </div>
   </div>
@@ -91,14 +96,13 @@ const NDCSEnhancementsViz = ({
   paths,
   tooltipValues,
   downloadLink,
+  countryData,
   summaryData,
   handleInfoClick,
   handleCountryEnter,
-  mapColors,
-  handleOnChangeChecked,
-  checked
+  mapColors
 }) => (
-  <div className={styles.ndcTracker}>
+  <div>
     <TabletLandscape>
       {isTablet => (
         <div className={styles.wrapper}>
@@ -129,18 +133,8 @@ const NDCSEnhancementsViz = ({
                     of COP26. The information below does not reflect these
                     possible delays.
                   </ReactTooltip>
-                  <div className={styles.summaryItemsContainer}>
-                    {renderSummaryItem(
-                      summaryData[LABEL_SLUGS.SUBMITTED_2020].countries
-                    )}
-                    {renderSummaryItem(
-                      summaryData[LABEL_SLUGS.ENHANCED_MITIGATION].countries
-                    )}
-                    <span className={styles.separator} />
-                    {renderSummaryItem(
-                      summaryData[LABEL_SLUGS.INTENDS_TO_ENHANCE].countries
-                    )}
-                  </div>
+                  {renderCircular(summaryData.enhance_2020.countries)}
+                  {renderCircular(summaryData.submitted_2020.countries)}
                 </div>
               )}
             </div>
@@ -155,17 +149,7 @@ const NDCSEnhancementsViz = ({
                 zoomEnable
                 customCenter={!isTablet ? [10, -10] : null}
               />
-              {!loading && (
-                <div className={styles.checkboxContainer}>
-                  <CheckInput
-                    theme={blueCheckboxTheme}
-                    label="Visualize enhanced NDCs on the map"
-                    checked={checked}
-                    onChange={() => handleOnChangeChecked(!checked)}
-                  />
-                </div>
-              )}
-              {!loading && tooltipValues && (
+              {countryData && tooltipValues && (
                 <NDCSEnhancementsTooltip
                   id={TOOLTIP_ID}
                   tooltipValues={tooltipValues}
@@ -194,11 +178,10 @@ NDCSEnhancementsViz.propTypes = {
   paths: PropTypes.array.isRequired,
   tooltipValues: PropTypes.object,
   downloadLink: PropTypes.string,
+  countryData: PropTypes.object,
   summaryData: PropTypes.object,
   handleCountryEnter: PropTypes.func.isRequired,
   handleInfoClick: PropTypes.func.isRequired,
-  handleOnChangeChecked: PropTypes.func.isRequired,
-  checked: PropTypes.bool,
   mapColors: PropTypes.array
 };
 

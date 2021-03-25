@@ -1,193 +1,259 @@
 @import '~styles/layout.scss';
 @import '~styles/settings.scss';
 
-.ndcTracker {
-  .wrapper {
-    position: relative;
-  }
+.wrapper {
+  position: relative;
+}
 
-  .column {
-    @include columns();
-  }
+.column {
+  @include columns();
+}
 
-  .buttonGroup {
-    width: auto;
-    margin-top: 1em;
-    min-width: 200px;
-    float: right;
+.buttonGroup {
+  width: auto;
+  margin-top: 1em;
+  min-width: 200px;
+  float: right;
 
-    .containerControls & {
-      @media #{$tablet-portrait} {
-        margin-top: 0;
-        width: 100%;
-        min-width: 0;
-      }
-    }
-  }
-
-  .containerControls {
+  .containerControls & {
     @media #{$tablet-portrait} {
-      @include columns((8,4));
+      margin-top: 0;
+      width: 100%;
+      min-width: 0;
     }
+  }
+}
 
-    margin-bottom: 40px;
+.containerControls {
+  @media #{$tablet-portrait} {
+    @include columns((8,4));
+  }
+
+  margin-bottom: 40px;
+  margin-top: 20px;
+
+  @include clearFix();
+}
+
+.searchBox {
+  @media #{$tablet-landscape} {
+    @include column-offset(9, $gutters: true);
+
     margin-top: 20px;
+  }
+}
 
-    @include clearFix();
+.legend {
+  position: absolute;
+  left: 0;
+  bottom: 12%;
+  max-width: 100%;
+
+  @media #{$tablet-portrait} {
+    max-width: 160px;
   }
 
-  .searchBox {
-    @media #{$tablet-landscape} {
-      @include column-offset(9, $gutters: true);
-
-      margin-top: 20px;
-    }
+  @media #{$tablet-landscape} {
+    bottom: 0;
   }
+}
 
-  .legend {
-    position: absolute;
-    left: 0;
-    bottom: 12%;
-    max-width: 100%;
+.summary {
+  min-height: 300px;
 
-    @media #{$tablet-portrait} {
-      max-width: 160px;
-    }
-
-    @media #{$tablet-landscape} {
-      bottom: 0;
-    }
-  }
-
-  .summary {
-    min-height: 300px;
-
-    @media #{$tablet-landscape} {
-      min-height: 500px;
-    }
-  }
-
-  :global .__react_component_tooltip {
-    max-width: 250px;
-    white-space: pre-line;
-  }
-
-  .loader {
+  @media #{$tablet-landscape} {
     min-height: 500px;
-    position: absolute;
-    left: 0;
-    right: 0;
-    z-index: $z-index-loader;
+  }
+}
+
+:global .__react_component_tooltip {
+  max-width: 250px;
+  white-space: pre-line;
+}
+
+.loader {
+  min-height: 500px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: $z-index-loader;
+}
+
+.containerUpper,
+.containerCharts,
+.containerMap {
+  position: relative;
+}
+
+.containerMap {
+  @media #{$tablet-landscape} {
+    padding-left: calc(#{$gutter-padding} / 2);
   }
 
-  .containerUpper,
-  .containerCharts,
-  .containerMap {
-    position: relative;
+  padding-top: calc(#{$gutter-padding} / 2);
+
+  [class*=map-styles__wrapper] {
+    &,
+    &[class*=__notDraggable] {
+      cursor: default;
+    }
+  }
+}
+
+.containerUpper {
+  @media #{$tablet-landscape} {
+    @include columns((4,8));
+  }
+}
+
+.containerCharts {
+  background-color: $white;
+  box-shadow: $box-shadow-light;
+
+  > div {
+    @include columns(100%);
   }
 
-  .containerMap {
-    @media #{$tablet-landscape} {
-      padding-left: calc(#{$gutter-padding} / 2);
+  @media #{$tablet-portrait} {
+    > div {
+      @include columns(33.333%);
+    }
+  }
+
+  @media #{$tablet-landscape} {
+    &,
+    > div {
+      height: 100%;
     }
 
-    padding-top: calc(#{$gutter-padding} / 2);
+    > div {
+      @include columns(100%);
+    }
+  }
+}
 
-    [class*=map-styles__wrapper] {
-      &,
-      &[class*=__notDraggable] {
-        cursor: default;
+.summaryTitle {
+  font-weight: $font-weight-bold;
+  text-align: center;
+  margin-top: 20px;
+  padding-bottom: 20px;
+  cursor: default;
+}
+
+.infoIcon {
+  margin-left: 5px;
+  transform: translateY(1px);
+}
+
+.covidTooltip {
+  line-height: $line-height-medium;
+}
+
+.circularChartContainer {
+  position: relative;
+  margin: -10% 0;
+  flex: 1;
+  height: 200px;
+  overflow: visible;
+  display: flex;
+  flex-direction: row;
+  font-size: 0.8em;
+
+  > div {
+    position: relative;
+
+    &:first-child {
+      max-width: 50%;
+    }
+  }
+
+  @media #{$tablet-portrait} {
+    font-size: 1em;
+    padding-right: calc(#{$gutter-padding} / 2);
+    margin: -60px 0 6.8em;
+    flex-direction: column;
+
+    &:last-child {
+      margin-bottom: 10%;
+    }
+
+    > div {
+      &:first-child {
+        max-width: 100%;
       }
     }
   }
 
-  .containerUpper {
-    @media #{$desktop} {
-      @include columns((4,8));
+  @media #{$tablet-landscape} {
+    margin: -5% $card-content-margin 0;
+
+    &:last-child {
+      margin-bottom: -5%;
     }
   }
 
-  .containerCharts {
-    background-color: $white;
-    box-shadow: $box-shadow-light;
-  }
-
-  .summaryTitle {
-    font-weight: $font-weight-bold;
-    text-align: center;
-    padding: 20px 0;
-    cursor: default;
-  }
-
-  .infoIcon {
-    margin-left: 5px;
-    transform: translateY(1px);
-  }
-
-  .covidTooltip {
-    line-height: $line-height-medium;
-  }
-
-  .summaryItemsContainer {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .separator {
-    height: 2px;
-    background: $gray2;
-    margin: 20px 60px 0;
-  }
-
-  .summaryItemContainer {
-    position: relative;
-    flex: 1;
-    height: 170px;
-    margin: 0;
-    overflow: visible;
-    display: flex;
+  @media #{$desktop} {
     flex-direction: row;
-    font-size: $font-size-s;
+    margin-bottom: -10%;
 
-    @media #{$tablet-portrait} {
-      font-size: 1em;
-      padding: 0 calc(#{$gutter-padding} / 2);
+    > div {
+      &:first-child {
+        max-width: 50%;
+      }
     }
   }
 
-  .summaryItemValuesContainer {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  [class*=circularChartWrapper] {
+    position: static;
+    margin: 0 auto;
   }
 
-  .summaryItemValues {
-    font-weight: $font-weight-bold;
+  svg {
+    height: 200px !important;
+  }
+
+  //Hiding circular charts for now because the number of countries will remain a small minority for some time
+  //Leaving functionality in place in case the data should be shown in the future
+  svg {
+    visibility: hidden;
+  }
+
+  .circularChartValues {
     font-size: 4.5em;
   }
+}
 
-  .summaryItemLabels {
-    flex: 1;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: left;
+.circularChartValues {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-weight: $font-weight-bold;
+  font-size: 2.4em;
+}
 
-    span[title] {
-      display: inline;
-      border-bottom: 1px solid #aaa;
-      cursor: default;
+.circularChartLabels {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  top: 0;
 
-      &:hover {
-        border-bottom-color: #000;
-      }
-    }
+  @media #{$tablet-portrait} {
+    top: -2.4em;
   }
 
-  .checkboxContainer {
-    position: absolute;
-    left: 210px;
-    bottom: 6px;
+  @media #{$desktop} {
+    top: 0;
+  }
+
+  span[title] {
+    display: inline;
+    border-bottom: 1px solid #aaa;
+    cursor: default;
+
+    &:hover {
+      border-bottom-color: #000;
+    }
   }
 }
