@@ -13,6 +13,7 @@ import ModalMetadata from 'components/modal-metadata';
 import NDCSEnhancementsTooltip from 'components/ndcs/ndcs-enhancements-viz/ndcs-enhancements-tooltip';
 import ReactTooltip from 'react-tooltip';
 import blueCheckboxTheme from 'styles/themes/checkbox/blue-checkbox.scss';
+import { Link } from 'react-router-dom';
 import { LABEL_SLUGS } from './ndcs-enhancements-viz-selectors';
 import styles from './ndcs-enhancements-viz-styles.scss';
 
@@ -22,10 +23,13 @@ const renderButtonGroup = (clickHandler, downloadLink) => (
       <p>
         <em>
           Track which countries are submitting their national climate
-          commitments in the lead up to COP26. You can compare countries’ submissions side by side <a href="https://www.climatewatchdata.org/custom-compare/overview"
-            target="_blank"
-            rel="noopener noreferrer">here</a> or by referring to the table below. To request changes or
-          additions, please contact &nbsp;
+          commitments in the lead up to COP26. You can compare countries’
+          submissions side by side{' '}
+          <Link to="custom-compare/overview" title="Compare submissions">
+            here
+          </Link>{' '}
+          or by referring to the table below. To request changes or additions,
+          please contact &nbsp;
           <a
             href="mailto:Rhys.Gerholdt@wri.org?subject=2020 NDC Tracker Update"
             target="_blank"

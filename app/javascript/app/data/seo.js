@@ -1,4 +1,8 @@
 /* eslint-disable max-len */
+
+// This file is complementary to seo-helper.rb
+// that will start the seo on the first page load
+
 export const SEO_PAGES = {
   home: 'home',
   ndc2020: 'ndc2020',
@@ -29,7 +33,7 @@ export const SEO_PAGES = {
   keyVisualizations: 'keyVisualizations'
 };
 
-export const CANONICAL_URLS = {
+const CANONICAL_URLS = {
   home: '',
   country: '/countries',
   compare: '/countries/compare',
@@ -40,7 +44,6 @@ export const CANONICAL_URLS = {
   ndc2020: '/2020-ndc-tracker',
   ndcCompareAll: '/compare-all-targets',
   ndcContent: '/ndc-content',
-  ndcFull: '/ndcs/country',
   ndcCountry: '/ndcs/country',
   ltsCountry: '/lts/country',
   ndcCustomCompare: '/custom-compare',
@@ -57,6 +60,13 @@ export const CANONICAL_URLS = {
   myCW: '/my-climate-watch',
   dataExplorer: '/data-explorer',
   keyVisualizations: '/key-visualizations'
+};
+
+export const getCanonicalUrl = (page, countryIso) => {
+  if (page === SEO_PAGES.ndcFull) {
+    return `/ndcs/country/${countryIso}/full`;
+  }
+  return CANONICAL_URLS[page];
 };
 
 export const STATIC_TITLE_PARTS = {
