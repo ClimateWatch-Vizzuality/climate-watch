@@ -9,6 +9,7 @@ const sharedConfig = require('./shared.js');
 const ImageminWebpWebpackPlugin = require('imagemin-webp-webpack-plugin');
 
 module.exports = merge(sharedConfig, {
+  mode: 'production',
   output: { filename: '[name]-[chunkhash].js' },
   stats: 'normal',
 
@@ -20,19 +21,6 @@ module.exports = merge(sharedConfig, {
       'ESP_API',
       'GFW_API'
     ]),
-
-    new webpack.optimize.UglifyJsPlugin({
-      minimize: true,
-      sourceMap: false,
-
-      compress: {
-        warnings: false
-      },
-
-      output: {
-        comments: false
-      }
-    }),
     new ImageminWebpWebpackPlugin(),
     new CompressionPlugin({
       asset: '[path].gz[query]',
