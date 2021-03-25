@@ -336,11 +336,11 @@ export const summarizeIndicators = createSelector(
 
     // Add text
     Object.keys(summaryData).forEach(type => {
-      const emissionsString = `<span title="2016 emissions data">${summaryData[type].emissions.value}% of global emissions</span>`;
+      const emissionsString = `<span title="2018 emissions data">${summaryData[type].emissions.value}% of global emissions</span>`;
       summaryData[type].countries.opts.label = {
-        [LABEL_SLUGS.INTENDS_TO_ENHANCE]: `<strong>countries</strong>, representing ${emissionsString}, <strong>have stated their intention to <span title="Definition: Strengthening mitigation ambition and/or increasing adaptation action in a new or updated NDC.">enhance ambition or action</span> in new or updated NDCs</strong>`,
-        [LABEL_SLUGS.ENHANCED_MITIGATION]: `of the <strong>countries</strong> that have submitted NDC's are <strong>enhanced compared to previous submission</strong>, those countries represent ${emissionsString}`,
-        [LABEL_SLUGS.SUBMITTED_2020]: `<strong>countries (including the 27 EU countries)</strong>, representing ${emissionsString}, <strong>have submitted a new or updated NDC</strong>`
+        [LABEL_SLUGS.INTENDS_TO_ENHANCE]: `<strong>countries</strong> (${emissionsString}) <strong>have stated their intention to <span title="Definition: Strengthening mitigation ambition and/or increasing adaptation action in a new or updated NDC.">enhance ambition or action</span> in new or updated NDCs</strong>`,
+        [LABEL_SLUGS.ENHANCED_MITIGATION]: `of the <strong>countries</strong> (${emissionsString}) that have submitted a new or updated NDC <strong>enhanced mitigation ambition</strong> compared to their previous NDC`,
+        [LABEL_SLUGS.SUBMITTED_2020]: `<strong>countries (${emissionsString}) <strong>have submitted a new or updated NDC</strong>`
       }[type];
     });
     return summaryData;
