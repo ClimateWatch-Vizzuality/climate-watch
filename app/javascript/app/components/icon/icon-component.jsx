@@ -5,10 +5,16 @@ import cx from 'classnames';
 
 import styles from './icon-styles.scss';
 
-const Icon = ({ icon, theme, className = '', onClick }) => {
+const Icon = ({ icon, theme, className = '', onClick, ariaLabel, ref }) => {
   const classNames = cx(className, theme.icon);
   return (
-    <svg className={classNames} viewBox={icon.viewBox} onClick={onClick}>
+    <svg
+      ref={ref}
+      className={classNames}
+      viewBox={icon.viewBox}
+      onClick={onClick}
+      aria-label={ariaLabel}
+    >
       <use xlinkHref={`#${icon.id}`} />
     </svg>
   );
@@ -17,8 +23,10 @@ const Icon = ({ icon, theme, className = '', onClick }) => {
 Icon.propTypes = {
   icon: PropTypes.object,
   className: PropTypes.string,
+  ref: PropTypes.node,
   theme: PropTypes.object,
-  onClick: PropTypes.func
+  onClick: PropTypes.func,
+  ariaLabel: PropTypes.string
 };
 
 export default themr('Icon', styles)(Icon);

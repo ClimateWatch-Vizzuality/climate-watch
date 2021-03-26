@@ -2,6 +2,7 @@ import { createSelector } from 'reselect';
 import isArray from 'lodash/isArray';
 import intersection from 'lodash/intersection';
 import { europeSlug, europeanCountries } from 'app/data/european-countries';
+import { getSubmitted2020Isos } from 'utils/indicatorCalculations';
 
 const getIndicators = state =>
   (state.ndcs && state.ndcs.data.indicators) || null;
@@ -39,13 +40,7 @@ const getSecondNDCSubmittedIsos = createSelector(
     const submittedIndicator = indicators.find(
       ind => ind.slug === 'ndce_status_2020'
     );
-    if (!submittedIndicator) return null;
-
-    const submittedIsos = Object.keys(submittedIndicator.locations).filter(
-      iso => submittedIndicator.locations[iso].label_slug === 'submitted_2020'
-    );
-
-    return submittedIsos;
+    return getSubmitted2020Isos(submittedIndicator);
   }
 );
 

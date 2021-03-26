@@ -1,3 +1,19 @@
+# == Schema Information
+#
+# Table name: ndc_sdg_ndc_targets
+#
+#  id                  :bigint           not null, primary key
+#  ndc_id              :bigint
+#  target_id           :bigint
+#  indc_text           :text
+#  status              :text
+#  climate_response    :text
+#  type_of_information :text
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
+#  starts_at           :integer
+#  ends_at             :integer
+#
 FactoryBot.define do
   factory :ndc_sdg_ndc_target, class: 'NdcSdg::NdcTarget' do
     ndc

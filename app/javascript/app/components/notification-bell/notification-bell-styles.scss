@@ -1,0 +1,82 @@
+@import '~styles/settings';
+
+.notificationBellButton {
+  display: flex;
+  align-items: center;
+  transform: translate(0, -2px);
+
+  &.active {
+    cursor: pointer;
+  }
+}
+
+.bell {
+  position: relative;
+  transform-origin: top center;
+
+  &.ring {
+    animation: ring 2s ease-out 3s;
+  }
+}
+
+@keyframes ring {
+  0% {
+    transform: rotate(15deg);
+  }
+
+  25% {
+    transform: rotate(-15deg);
+  }
+
+  50% {
+    transform: rotate(15deg);
+  }
+
+  75% {
+    transform: rotate(-15deg);
+  }
+
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+.badge {
+  height: 14px;
+  width: 14px;
+  text-align: center;
+  position: absolute;
+  top: 7px;
+  border-radius: 10px;
+  background-color: $notification-color;
+  color: $white;
+  font-size: $font-size-xs;
+
+  &.moreThan9 {
+    width: 20px;
+    top: 6px;
+    left: -2px;
+  }
+
+  &.moreThan99 {
+    width: 24px;
+    top: 6px;
+    left: -4px;
+  }
+}
+
+.bellIcon {
+  width: 30px;
+  height: 30px;
+}
+
+.tooltip {
+  text-align: center;
+  margin: 25px 5px 0 !important;
+  padding-bottom: 20px !important;
+
+  .tooltipTitle {
+    margin: 10px 0;
+    font-size: $font-size-m;
+  }
+}

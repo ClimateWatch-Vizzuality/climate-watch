@@ -1,3 +1,21 @@
+# == Schema Information
+#
+# Table name: agriculture_profile_meat_productions
+#
+#  id                :bigint           not null, primary key
+#  year              :integer          not null
+#  production_agr_1  :integer
+#  production_agr_2  :integer
+#  production_agr_3  :integer
+#  production_agr_4  :integer
+#  production_agr_5  :integer
+#  production_agr_6  :integer
+#  production_agr_7  :integer
+#  production_agr_8  :integer
+#  production_agr_9  :integer
+#  production_agr_10 :integer
+#  location_id       :bigint
+#
 require 'rails_helper'
 
 RSpec.describe AgricultureProfile::MeatProduction, type: :model do

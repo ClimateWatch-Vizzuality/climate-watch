@@ -1,0 +1,46 @@
+{
+  "ignored_warnings": [
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "637e6c17f876cf79499624e3f57f26ee6b88c1fdfe56b28b771bf2e1e5d8828a",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/services/csv_importer_utils.rb",
+      "line": 5,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "ActiveRecord::Base.connection.execute(\"ALTER SEQUENCE #{\"#{resource_klass.table_name}_id_seq\"} RESTART WITH #{new_id};\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "CSVImporterUtils",
+        "method": "reset_id_seq"
+      },
+      "user_input": "new_id",
+      "confidence": "Medium",
+      "note": ""
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "af9084efa5c49bb8e1f12981b06b34ac1d05911d7dc2ae0f051dedeffdd223f7",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/services/import_agriculture_contexts.rb",
+      "line": 70,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "ActiveRecord::Base.connection.execute(\"\\n       WITH cte as (\\n       SELECT id, water_withdrawal,\\n              RANK() OVER ( ORDER BY water_withdrawal ASC) AS rnk\\n       FROM agriculture_profile_country_contexts\\n       WHERE year = #{year}\\n       )\\n       UPDATE agriculture_profile_country_contexts\\n       SET water_withdrawal_rank = cte.rnk\\n       FROM cte\\n       WHERE agriculture_profile_country_contexts.id = cte.id\\n       AND agriculture_profile_country_contexts.water_withdrawal IS NOT NULL\\n      \")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "ImportAgricultureContexts",
+        "method": "update_water_withdrawal_rank"
+      },
+      "user_input": "year",
+      "confidence": "Medium",
+      "note": ""
+    }
+  ],
+  "updated": "2021-03-10 20:16:57 +0100",
+  "brakeman_version": "5.0.0"
+}

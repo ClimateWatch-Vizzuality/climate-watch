@@ -1,3 +1,14 @@
+# == Schema Information
+#
+# Table name: agriculture_profile_metadata
+#
+#  id          :bigint           not null, primary key
+#  short_name  :string           not null
+#  indicator   :string           not null
+#  category    :string
+#  subcategory :string
+#  unit        :string
+#
 module AgricultureProfile
   class Metadatum < ApplicationRecord
 

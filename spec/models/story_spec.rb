@@ -1,3 +1,17 @@
+# == Schema Information
+#
+# Table name: stories
+#
+#  id                   :bigint           not null, primary key
+#  title                :string
+#  description          :text
+#  published_at         :datetime
+#  background_image_url :string
+#  link                 :string
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  tags                 :string           default([]), is an Array
+#
 require 'rails_helper'
 
 RSpec.describe Story, type: :model do

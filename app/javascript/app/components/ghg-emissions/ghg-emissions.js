@@ -271,14 +271,15 @@ function GhgEmissionsContainer(props) {
 
   const handleDownloadModalOpen = () => {
     const hasCompletedSurvey = getStorageWithExpiration('userSurvey');
-    if (hasCompletedSurvey) {
+    const downloadAction = () => {
       handleAnalytics('GHG emissions', 'Download Data', 'Download Chart Data');
       invokeCSVDownload(createCSVContent());
+    };
+
+    if (hasCompletedSurvey) {
+      downloadAction();
     } else {
-      // TODO: Improve this solution if possible
-      // We are storing all the encoded CSV content temporarily (around 33kb) on the store
-      // This way we can invoke the function after filling the form only in the case that we haven't done if before
-      setModalDownloadParams({ open: true, CSVContent: createCSVContent() });
+      setModalDownloadParams({ open: true, downloadAction });
     }
   };
 

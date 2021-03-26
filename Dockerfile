@@ -1,4 +1,4 @@
-FROM ruby:2.5.1
+FROM ruby:2.5.7
 MAINTAINER info@vizzuality.com
 
 ENV NAME climate-watch
@@ -28,6 +28,9 @@ ENV ONE_SIGNAL_ID $ONE_SIGNAL_ID
 ARG FEATURE_POP_UP
 ENV FEATURE_POP_UP $FEATURE_POP_UP
 
+ARG FEATURE_NDC_ENHANCEMENTS
+ENV FEATURE_NDC_ENHANCEMENTS $FEATURE_NDC_ENHANCEMENTS
+
 ARG POP_UP
 ENV POP_UP $POP_UP
 
@@ -41,10 +44,8 @@ ENV USER_REPORT_KEY $USER_REPORT_KEY
 RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
-        postgresql-client nodejs build-essential patch zlib1g-dev liblzma-dev libicu-dev
+       postgresql-client nodejs build-essential patch zlib1g-dev liblzma-dev libicu-dev shared-mime-info
 RUN npm install -g yarn
-
-RUN gem install bundler --no-ri --no-rdoc
 
 # Create app directory
 RUN mkdir -p /usr/src/$NAME
@@ -55,6 +56,11 @@ COPY Gemfile Gemfile.lock ./
 
 RUN cd /usr/src/$NAME && bundle install --without development test --jobs 4 --deployment
 
+# Yarn install
+COPY package.json package.json
+COPY yarn.lock yarn.lock
+RUN yarn install
+
 # Env variables
 ARG secretKey
 ENV SECRET_KEY_BASE $secretKey
@@ -64,6 +70,9 @@ ENV APPSIGNAL_PUSH_API_KEY $APPSIGNAL_PUSH_API_KEY
 
 ARG USER_SURVEY_SPREADSHEET_URL
 ENV USER_SURVEY_SPREADSHEET_URL $USER_SURVEY_SPREADSHEET_URL
+
+ARG USER_NEWSLETTER_URL
+ENV USER_NEWSLETTER_URL $USER_NEWSLETTER_URL
 
 # Bundle app source
 COPY . ./

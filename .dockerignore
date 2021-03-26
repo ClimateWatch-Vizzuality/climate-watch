@@ -1,0 +1,14 @@
+.cache
+.git
+.gitignore
+coverage
+Dockerfile
+docs
+/log/*
+/tmp/*
+!/log/.keep
+!/tmp/.keep
+!/tmp/cache/webpacker/
+storage
+yarn-error.log
+node_modules
