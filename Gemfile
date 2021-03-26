@@ -69,6 +69,10 @@ gem 'sidekiq', '>= 6.1.0'
 gem 'listen', '>= 3.0.5', '< 3.2'
 gem 'appsignal'
 
+# 0.3.5 won't work anymore
+# https://github.com/rails/rails/issues/41750
+gem "mimemagic", '0.3.8'
+
 group :development, :test do
   gem 'dotenv-rails'
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
