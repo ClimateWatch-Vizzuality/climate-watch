@@ -52,6 +52,19 @@ yarn run rails:install
 
 These will satisfy both the frontend and backend's dependency requirements.
 
+You will probably need to install shared-mime-info in your system:
+https://github.com/rails/rails/issues/41757
+
+(mac)
+```
+brew install shared-mime-info
+```
+
+(linux)
+```
+sudo apt-get install shared-mime-info
+```
+
 #### Setting up the Rails environment
 
 Copy the sample `.env.sample` file to `.env` and modify it as needed to fit the
