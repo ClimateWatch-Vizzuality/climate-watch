@@ -1,3 +1,12 @@
+# == Schema Information
+#
+# Table name: indc_category_types
+#
+#  id         :bigint           not null, primary key
+#  name       :text             not null
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
 module Indc
   class CategoryType < ApplicationRecord
     GLOBAL = 'global'.freeze

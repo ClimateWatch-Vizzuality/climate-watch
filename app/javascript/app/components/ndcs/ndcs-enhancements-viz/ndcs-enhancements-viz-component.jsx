@@ -5,14 +5,16 @@ import { TabletLandscape } from 'components/responsive';
 import Map from 'components/map';
 import MapLegend from 'components/map-legend';
 import ButtonGroup from 'components/button-group';
+import { CheckInput } from 'cw-components';
 import Loading from 'components/loading';
 import Icon from 'components/icon';
 import infoIcon from 'assets/icons/info.svg';
 import ModalMetadata from 'components/modal-metadata';
-import CircularChart from 'components/circular-chart';
 import NDCSEnhancementsTooltip from 'components/ndcs/ndcs-enhancements-viz/ndcs-enhancements-tooltip';
 import ReactTooltip from 'react-tooltip';
-
+import blueCheckboxTheme from 'styles/themes/checkbox/blue-checkbox.scss';
+import { Link } from 'react-router-dom';
+import { LABEL_SLUGS } from './ndcs-enhancements-viz-selectors';
 import styles from './ndcs-enhancements-viz-styles.scss';
 
 const renderButtonGroup = (clickHandler, downloadLink) => (
@@ -20,9 +22,14 @@ const renderButtonGroup = (clickHandler, downloadLink) => (
     <div>
       <p>
         <em>
-          Track which countries are updating or enhancing their national climate
-          commitments in 2020 or in the lead up to COP26. To request changes or
-          additions, please contact &nbsp;
+          Track which countries are submitting their national climate
+          commitments in the lead up to COP26. You can compare countries’
+          submissions side by side{' '}
+          <Link to="custom-compare/overview" title="Compare submissions">
+            here
+          </Link>{' '}
+          or by referring to the table below. To request changes or additions,
+          please contact &nbsp;
           <a
             href="mailto:Rhys.Gerholdt@wri.org?subject=2020 NDC Tracker Update"
             target="_blank"
@@ -62,15 +69,10 @@ const renderButtonGroup = (clickHandler, downloadLink) => (
   </div>
 );
 
-const renderCircular = datum => (
-  <div className={styles.circularChartContainer}>
-    <div>
-      <CircularChart
-        index={0.1}
-        value={Math.round((datum.value / datum.max) * 100 * 10) / 10}
-        color={datum.opts.color}
-      />
-      <div className={styles.circularChartValues}>
+const renderSummaryItem = datum => (
+  <div className={styles.summaryItemContainer}>
+    <div className={styles.summaryItemValuesContainer}>
+      <div className={styles.summaryItemValues}>
         <div
           style={{
             color: datum.opts.color
@@ -78,11 +80,10 @@ const renderCircular = datum => (
         >
           {datum.opts.prefix}
           {datum.value}
-          {datum.opts.suffix}
         </div>
       </div>
     </div>
-    <div className={styles.circularChartLabels}>
+    <div className={styles.summaryItemLabels}>
       <div dangerouslySetInnerHTML={{ __html: datum.opts.label }} />
     </div>
   </div>
@@ -96,13 +97,14 @@ const NDCSEnhancementsViz = ({
   paths,
   tooltipValues,
   downloadLink,
-  countryData,
   summaryData,
   handleInfoClick,
   handleCountryEnter,
-  mapColors
+  mapColors,
+  handleOnChangeChecked,
+  checked
 }) => (
-  <div>
+  <div className={styles.ndcTracker}>
     <TabletLandscape>
       {isTablet => (
         <div className={styles.wrapper}>
@@ -133,8 +135,18 @@ const NDCSEnhancementsViz = ({
                     of COP26. The information below does not reflect these
                     possible delays.
                   </ReactTooltip>
-                  {renderCircular(summaryData.enhance_2020.countries)}
-                  {renderCircular(summaryData.submitted_2020.countries)}
+                  <div className={styles.summaryItemsContainer}>
+                    {renderSummaryItem(
+                      summaryData[LABEL_SLUGS.SUBMITTED_2020].countries
+                    )}
+                    {renderSummaryItem(
+                      summaryData[LABEL_SLUGS.ENHANCED_MITIGATION].countries
+                    )}
+                    <span className={styles.separator} />
+                    {renderSummaryItem(
+                      summaryData[LABEL_SLUGS.INTENDS_TO_ENHANCE].countries
+                    )}
+                  </div>
                 </div>
               )}
             </div>
@@ -149,7 +161,17 @@ const NDCSEnhancementsViz = ({
                 zoomEnable
                 customCenter={!isTablet ? [10, -10] : null}
               />
-              {countryData && tooltipValues && (
+              {!loading && (
+                <div className={styles.checkboxContainer}>
+                  <CheckInput
+                    theme={blueCheckboxTheme}
+                    label="Visualize enhanced NDCs on the map"
+                    checked={checked}
+                    onChange={() => handleOnChangeChecked(!checked)}
+                  />
+                </div>
+              )}
+              {!loading && tooltipValues && (
                 <NDCSEnhancementsTooltip
                   id={TOOLTIP_ID}
                   tooltipValues={tooltipValues}
@@ -178,10 +200,11 @@ NDCSEnhancementsViz.propTypes = {
   paths: PropTypes.array.isRequired,
   tooltipValues: PropTypes.object,
   downloadLink: PropTypes.string,
-  countryData: PropTypes.object,
   summaryData: PropTypes.object,
   handleCountryEnter: PropTypes.func.isRequired,
   handleInfoClick: PropTypes.func.isRequired,
+  handleOnChangeChecked: PropTypes.func.isRequired,
+  checked: PropTypes.bool,
   mapColors: PropTypes.array
 };
 

@@ -1,3 +1,15 @@
+# == Schema Information
+#
+# Table name: historical_emissions_records
+#
+#  id             :bigint           not null, primary key
+#  location_id    :bigint
+#  data_source_id :bigint
+#  sector_id      :bigint
+#  gas_id         :bigint
+#  emissions      :jsonb
+#  gwp_id         :bigint
+#
 require 'rails_helper'
 
 RSpec.describe HistoricalEmissions::Record, type: :model do

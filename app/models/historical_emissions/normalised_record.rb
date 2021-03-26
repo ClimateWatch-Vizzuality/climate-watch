@@ -1,3 +1,15 @@
+# == Schema Information
+#
+# Table name: historical_emissions_normalised_records
+#
+#  id             :bigint
+#  data_source_id :bigint
+#  location_id    :bigint
+#  sector_id      :bigint
+#  gas_id         :bigint
+#  year           :integer
+#  value          :text
+#
 module HistoricalEmissions
   class NormalisedRecord < ApplicationRecord
     self.table_name = 'historical_emissions_normalised_records'

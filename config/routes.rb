@@ -66,6 +66,7 @@ Rails.application.routes.draw do
       resources :stories, only: [:index]
       resources :lse_laws_and_policies, only: [:show]
       resources :updates, only: [:index]
+      resources :notifications, only: [:index]
 
       resources :key_visualizations, only: [:index]
 

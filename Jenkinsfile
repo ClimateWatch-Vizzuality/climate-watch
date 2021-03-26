@@ -19,6 +19,7 @@ node {
   def user_report_key = 'cf0fa021-d239-457b-bb99-e9ab0205134c'
   def one_signal_key = ''
   def user_survey_spreadsheet = 'https://script.google.com/macros/s/AKfycbzgN1G9IdLYO3KqlTC4gzBxR1UTX5bYXu1qRaiRn1oD9qoaq6s/exec'
+  def user_newsletter = 'https://connect.wri.org/l/120942/2021-01-19/4z6v9p'
 
   def feature_flags_env = '--build-arg FEATURE_POP_UP=true  --build-arg POP_UP=webinarCountdown'
 
@@ -38,12 +39,13 @@ node {
   def user_report_env = "--build-arg USER_REPORT_KEY=${user_report_key}"
   def one_signal_env = "--build-arg ONE_SIGNAL_ID=${one_signal_key}"
   def user_survey_env = "--build-arg USER_SURVEY_SPREADSHEET_URL=${user_survey_spreadsheet}"
+  def user_newsletter_env = "--build-arg USER_NEWSLETTER_URL=${user_newsletter}"
 
   try {
 
     stage ('Build docker') {
-      sh("docker -H :2375 build ${base_envs} ${feature_flags_env} ${cw_files_env} ${app_signal_env} ${user_report_env} ${one_signal_env} ${user_survey_env} -t ${imageTag} ." )
-      sh("docker -H :2375 build ${base_envs} ${feature_flags_env} ${cw_files_env} ${app_signal_env} ${user_report_env} ${one_signal_env} ${user_survey_env} -t ${dockerUsername}/${appName}:latest ." )
+      sh("docker -H :2375 build ${base_envs} ${feature_flags_env} ${cw_files_env} ${app_signal_env} ${user_report_env} ${one_signal_env} ${user_survey_env} ${user_newsletter_env} -t ${imageTag} ." )
+      sh("docker -H :2375 build ${base_envs} ${feature_flags_env} ${cw_files_env} ${app_signal_env} ${user_report_env} ${one_signal_env} ${user_survey_env} ${user_newsletter_env} -t ${dockerUsername}/${appName}:latest ." )
     }
 
     stage ('Run Tests') {

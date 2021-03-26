@@ -14,12 +14,13 @@ import { actions as modalActions } from 'components/modal-metadata';
 import Component from './ndcs-enhancements-viz-component';
 
 import {
-  getMapIndicator,
+  sortIndicatorLegend,
   getIndicatorsParsed,
   getPathsWithStyles,
   getISOCountries,
   getLinkToDataExplorer,
   summarizeIndicators,
+  getIsEnhancedChecked,
   MAP_COLORS
 } from './ndcs-enhancements-viz-selectors';
 
@@ -40,8 +41,9 @@ const mapStateToProps = (state, { location }) => {
     query: ndcsEnhancementsWithSelection.query,
     paths: getPathsWithStyles(ndcsEnhancementsWithSelection),
     countries: countries.data,
+    checked: getIsEnhancedChecked(ndcsEnhancementsWithSelection),
     isoCountries: getISOCountries(ndcsEnhancementsWithSelection),
-    indicator: getMapIndicator(ndcsEnhancementsWithSelection),
+    indicator: sortIndicatorLegend(ndcsEnhancementsWithSelection),
     indicators: getIndicatorsParsed(ndcsEnhancementsWithSelection),
     summaryData: summarizeIndicators(ndcsEnhancementsWithSelection),
     downloadLink: getLinkToDataExplorer(ndcsEnhancementsWithSelection),
@@ -71,22 +73,30 @@ class NDCSEnhancementsVizContainer extends PureComponent {
     const id = isEuropeanCountry ? europeSlug : geometryIdHover;
 
     const dateIndicator = indicators.find(i => i.value === 'ndce_date');
-    const statementIndicator = indicators.find(i => i.value === 'ndce_statement');
+    const statementIndicator = indicators.find(
+      i => i.value === 'ndce_statement'
+    );
 
-    if (indicator.locations 
-      && indicator.locations[id] 
-      && indicator.locations[id].label_slug !== 'no_info_2020') {
-      let tooltipValues = {
+    if (
+      indicator.locations &&
+      indicator.locations[id] &&
+      indicator.locations[id].label_slug !== 'no_info_2020'
+    ) {
+      const tooltipValues = {
         label: this.getTooltipLabel(),
         value: undefined,
         statement: undefined,
-        note: "Learn more in table below"
+        note: 'Learn more in table below'
       };
-      if (statementIndicator.locations[id]) tooltipValues.statement = `${statementIndicator.locations[id].value}`;
-      tooltipValues.value = indicator.locations[id].label_slug === 'submitted_2020' 
-        ? `Submitted a 2020 NDC on ${dateIndicator.locations[id].value}.`
-        : `${indicator.locations[id].value}`;
-      
+
+      if (statementIndicator.locations[id]) {
+        tooltipValues.statement = `${statementIndicator.locations[id].value}`;
+      }
+      tooltipValues.value =
+        indicator.locations[id].label_slug === 'submitted_2020'
+          ? `Submitted a 2020 NDC on ${dateIndicator.locations[id].value}.`
+          : `${indicator.locations[id].value}`;
+
       return tooltipValues;
     }
     return null;
@@ -121,6 +131,10 @@ class NDCSEnhancementsVizContainer extends PureComponent {
     }
   };
 
+  handleOnChangeChecked = query => {
+    this.updateUrlParam({ name: 'showEnhancedAmbition', value: query });
+  };
+
   handleCountryEnter = geography => {
     const iso = geography.properties && geography.properties.id;
     if (iso) this.setState({ geometryIdHover: iso });
@@ -147,7 +161,7 @@ class NDCSEnhancementsVizContainer extends PureComponent {
 
   render() {
     const tooltipValues = this.getTooltipValues();
-    const { query } = this.props;
+    const { query, indicator, checked, summaryData } = this.props;
     const noContentMsg = query
       ? 'No results found'
       : 'There is no data for this indicator';
@@ -157,11 +171,12 @@ class NDCSEnhancementsVizContainer extends PureComponent {
       handleCountryClick: this.handleCountryClick,
       handleCountryEnter: this.handleCountryEnter,
       handleInfoClick: this.handleInfoClick,
+      handleOnChangeChecked: this.handleOnChangeChecked,
       noContentMsg,
       handleSearchChange: this.handleSearchChange,
-      indicator: this.props.indicator,
-      countryData: this.state.country,
-      summaryData: this.props.summaryData
+      checked,
+      indicator,
+      summaryData
     });
   }
 }
@@ -172,6 +187,7 @@ NDCSEnhancementsVizContainer.propTypes = {
   indicator: PropTypes.object,
   indicators: PropTypes.array,
   summaryData: PropTypes.object,
+  checked: PropTypes.bool,
   location: PropTypes.object.isRequired,
   isoCountries: PropTypes.array.isRequired,
   countries: PropTypes.array,

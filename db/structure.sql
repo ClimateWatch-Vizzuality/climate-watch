@@ -1498,6 +1498,38 @@ ALTER SEQUENCE public.ndcs_id_seq OWNED BY public.ndcs.id;
 
 
 --
+-- Name: notifications; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.notifications (
+    id bigint NOT NULL,
+    description text NOT NULL,
+    date date NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: notifications_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.notifications_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: notifications_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.notifications_id_seq OWNED BY public.notifications.id;
+
+
+--
 -- Name: platforms; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2421,6 +2453,13 @@ ALTER TABLE ONLY public.ndcs ALTER COLUMN id SET DEFAULT nextval('public.ndcs_id
 
 
 --
+-- Name: notifications id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.notifications ALTER COLUMN id SET DEFAULT nextval('public.notifications_id_seq'::regclass);
+
+
+--
 -- Name: platforms id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2944,6 +2983,14 @@ ALTER TABLE ONLY public.ndc_sdg_targets
 
 ALTER TABLE ONLY public.ndcs
     ADD CONSTRAINT ndcs_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: notifications notifications_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.notifications
+    ADD CONSTRAINT notifications_pkey PRIMARY KEY (id);
 
 
 --
@@ -4336,6 +4383,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200818134235'),
 ('20201023101133'),
 ('20201113113501'),
-('20201119151517');
+('20201119151517'),
+('20210310203949');
 
 

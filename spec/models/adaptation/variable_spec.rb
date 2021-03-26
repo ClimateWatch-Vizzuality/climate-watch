@@ -1,3 +1,13 @@
+# == Schema Information
+#
+# Table name: adaptation_variables
+#
+#  id         :bigint           not null, primary key
+#  slug       :text
+#  name       :text
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
 require 'rails_helper'
 
 RSpec.describe Adaptation::Variable, type: :model do

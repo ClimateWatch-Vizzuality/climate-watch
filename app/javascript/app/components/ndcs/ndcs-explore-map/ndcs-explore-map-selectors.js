@@ -19,6 +19,7 @@ import {
   CATEGORY_SOURCES,
   NOT_COVERED_LABEL
 } from 'data/constants';
+import { getSubmitted2020Isos } from 'utils/indicatorCalculations';
 
 const NOT_APPLICABLE_LABEL = 'Not Applicable';
 
@@ -347,10 +348,7 @@ export const getSummaryCardData = createSelector(
     const submittedIndicator = indicators.find(
       ind => ind.slug === 'ndce_status_2020'
     );
-    if (!submittedIndicator) return null;
-    const submittedIsos = Object.keys(submittedIndicator.locations).filter(
-      iso => submittedIndicator.locations[iso].label_slug === 'submitted_2020'
-    );
+    const submittedIsos = getSubmitted2020Isos(submittedIndicator);
     if (!submittedIsos.length) return null;
     const submittedCountriesAndParties = getCountriesAndParties(submittedIsos);
 

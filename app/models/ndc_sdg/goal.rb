@@ -1,3 +1,15 @@
+# == Schema Information
+#
+# Table name: ndc_sdg_goals
+#
+#  id         :bigint           not null, primary key
+#  number     :text             not null
+#  title      :text             not null
+#  cw_title   :text             not null
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  colour     :text             not null
+#
 module NdcSdg
   class Goal < ApplicationRecord
     has_many :targets, class_name: 'NdcSdg::Target', dependent: :destroy
