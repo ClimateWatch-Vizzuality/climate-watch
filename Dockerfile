@@ -44,7 +44,7 @@ ENV USER_REPORT_KEY $USER_REPORT_KEY
 RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
-       postgresql-client nodejs build-essential patch zlib1g-dev liblzma-dev libicu-dev shared-mime-info
+       postgresql-client nodejs build-essential patch zlib1g-dev liblzma-dev libicu-dev
 RUN npm install -g yarn
 
 # Create app directory

@@ -6,101 +6,78 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-# Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
+# core gems
 gem 'rails', '~> 5.2.4'
 gem 'bootsnap'
+gem 'puma', '~> 3.12.6'
 
-gem 'sprockets',  '~> 3.7.2'
-
-# Use postgresql as the database for Active Record
+# DB
 gem 'pg', '~> 0.20'
 gem 'pg_search'
-gem 'rubyzip'
-# Use Puma as the app server
-gem 'puma', '~> 3.12.6'
-# Use SCSS for stylesheets
-gem 'sass-rails', '~> 5.0'
-# Use Uglifier as compressor for JavaScript assets
-gem 'uglifier', '>= 1.3.0'
-# Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
-gem 'webpacker'
-# See https://github.com/rails/execjs#readme for more supported runtimes
-# gem 'therubyracer', platforms: :ruby
+gem 'scenic'
+gem 'secondbase'
 
-# Gem to make http requests
-gem 'faraday'
-
-# Use CoffeeScript for .coffee assets and views
+# UI, assets
 gem 'coffee-rails', '~> 4.2'
-# Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
+gem 'sass-rails', '~> 5.0'
+gem 'sprockets',  '~> 3.7.2'
 gem 'turbolinks', '~> 5'
-# Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-# gem 'jbuilder', '~> 2.5'
-# Use Redis adapter to run Action Cable in production
-# gem 'redis', '~> 3.0'
-# Use ActiveModel has_secure_password
-# gem 'bcrypt', '~> 3.1.7'
+gem 'uglifier', '>= 1.3.0'
+gem 'webpacker'
 
+# API
 gem 'active_model_serializers', '~> 0.10.0'
 gem 'api-pagination'
+gem 'faraday'
 gem 'kaminari'
-gem 'oj'
-gem 'scenic'
 
-# Add second shared database across country platforms
-gem 'secondbase'
-# Add activeadmin for simple CMS
+# Admin panel
 gem 'activeadmin'
 gem 'devise'
 gem 'trix-rails', require: 'trix'
 
-gem 'activerecord-import'
-
+# storage
 gem 'aws-sdk-rails', '~> 2'
 gem 'aws-sdk-s3', '~> 1'
 
+# jobs
 gem 'sidekiq', '>= 6.1.0'
 
-# Use Capistrano for deployment
-# gem 'capistrano-rails', group: :development
-
-# Moved to global gems because of this
-# https://github.com/rails/rails/issues/24063
-gem 'listen', '>= 3.0.5', '< 3.2'
+# Error monitoring
 gem 'appsignal'
 
-# 0.3.5 won't work anymore
-# https://github.com/rails/rails/issues/41750
-gem "mimemagic", '0.3.8'
+# other
+# Moved to global gems because of this
+# https://github.com/rails/rails/issues/24063
+gem 'activerecord-import'
+gem 'listen', '>= 3.0.5', '< 3.2'
+gem 'oj'
+gem 'rubyzip'
 
 group :development, :test do
-  gem 'dotenv-rails'
-  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
-  gem 'rspec-rails', '~> 3.5'
-  gem 'rspec-collection_matchers'
-  gem 'rails-controller-testing'
-  gem 'factory_bot_rails'
-  # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '~> 2.13'
+  gem 'dotenv-rails'
+  gem 'factory_bot_rails'
+  gem 'rails-controller-testing'
+  gem 'rspec-collection_matchers'
+  gem 'rspec-rails', '~> 3.5'
   gem 'selenium-webdriver'
 end
 
 group :development do
-  # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
   gem 'annotate'
-  gem 'bundler-audit', require: false
   gem 'brakeman', require: false
-  gem 'web-console', '>= 3.3.0'
-  # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
+  gem 'bundler-audit', require: false
+  gem 'rubocop', require: false
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
-  gem 'rubocop', require: false
+  gem 'web-console', '>= 3.3.0'
 end
 
 group :test do
-  gem 'simplecov', require: false
   gem 'json-schema'
+  gem 'simplecov', require: false
   gem 'test-prof'
   gem 'vcr'
   gem 'webmock'
