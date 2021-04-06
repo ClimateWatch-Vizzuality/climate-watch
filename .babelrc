@@ -13,6 +13,9 @@
           }
         ]
       ]
+    },
+    "test": {
+      "presets": ["@babel/preset-env"]
     }
   },
   "presets": [
