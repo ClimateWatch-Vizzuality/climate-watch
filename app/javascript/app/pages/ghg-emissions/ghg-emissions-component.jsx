@@ -31,7 +31,7 @@ class GhgEmissions extends PureComponent {
   )}, followed by agriculture. Breaking down the energy sector into its sub-sectors, ${renderLink(
   'electricity and heat generation make up the largest portion of emissions, followed by transportation and manufacturing.',
   'Electricity and heat generation make up the largest portion of emissions, followed by transportation and manufacturing.',
-  '/ghg-emissions?breakBy=sector&chartType=percentage&sectors=agriculture%2Cbunker-fuels%2Cindustrial-processes%2Cland-use-change-and-forestry%2Cbuilding%2Celectricity-heat%2Cfugitive-emissions%2Cmanufacturing-construction%2Cother-fuel-combustion%2Ctransportation%2Cwaste'
+  '/ghg-emissions?breakBy=sector&chartType=percentage&sectors=agriculture%2Cindustrial-processes%2Cland-use-change-and-forestry%2Cbuilding%2Celectricity-heat%2Cfugitive-emissions%2Cmanufacturing-construction%2Cother-fuel-combustion%2Ctransportation%2Cwaste'
 )}
      64% of GHG emissions come ${renderLink(
     'from just 10 countries',
