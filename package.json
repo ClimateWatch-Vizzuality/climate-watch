@@ -8,6 +8,7 @@
     "start": "run-p -r rails:server js:server",
     "reinstall": "rm -rf ./node_modules && yarn install",
     "js:server": "yarn install && ./bin/webpack-dev-server",
+    "test": "jest",
     "rails:bundle-audit": "bundle exec bundle-audit check --update",
     "rails:cleanimport": "rails db:drop db:create db:migrate db:import",
     "rails:server": "bundle exec rails s",
@@ -148,6 +149,7 @@
     "webpack-merge": "4.1.0"
   },
   "devDependencies": {
+    "babel-jest": "^26.6.3",
     "eslint": "4.18.2",
     "eslint-config-prettier": "2.9.0",
     "eslint-config-vizzuality": "1.0.5",
@@ -157,6 +159,7 @@
     "eslint-plugin-prettier": "2.2.0",
     "eslint-plugin-react": "7.4.0",
     "husky": "0.14.3",
+    "jest": "^26.6.3",
     "lint-staged": "4.1.1",
     "npm-run-all": "4.0.2",
     "plop": "1.8.1",

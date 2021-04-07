@@ -395,6 +395,11 @@ export const getLegendDataSelectedWithOthers = createSelector(
   [getLegendDataSelected, getSortedYColumnOptions],
   getLegendOptionsWithOthers
 );
+const MEAN_CALCULATION_OPTIONS = [
+  GHG_CALCULATION_OPTIONS.PER_CAPITA.value,
+  GHG_CALCULATION_OPTIONS.PER_GDP.value,
+  GHG_CALCULATION_OPTIONS.PERCENTAGE_CHANGE.value
+];
 
 export const getSortedChartDataWithOthers = createSelector(
   [getChartData, getSortedYColumnOptions, getCalculationSelected],
@@ -420,13 +425,7 @@ export const getSortedChartDataWithOthers = createSelector(
           }
         }
       });
-      if (
-        [
-          GHG_CALCULATION_OPTIONS.PER_CAPITA.value,
-          GHG_CALCULATION_OPTIONS.PER_GDP.value,
-          GHG_CALCULATION_OPTIONS.PERCENTAGE_CHANGE.value
-        ].includes(selectedCalculation.value)
-      ) {
+      if (MEAN_CALCULATION_OPTIONS.includes(selectedCalculation.value)) {
         // In this cases we want the mean, not the total
         othersValue /= othersCount;
       }
@@ -435,8 +434,39 @@ export const getSortedChartDataWithOthers = createSelector(
   }
 );
 
+// World includes emissions from international shipping, aviation and territories that are not among the list of countries
+// these are not included in country-level totals so we have to add the substraction of the single WORLD data to others
+export const getCorrectedChartDataWithOthers = createSelector(
+  [getSortedChartDataWithOthers, getOptionsSelected, getData],
+  (data, selectedOptions, rawData) => {
+    if (!data || isEmpty(data)) return null;
+
+    const isWorldSelected = selectedOptions.regionsSelected.some(
+      region => region.value === 'WORLD'
+    );
+    const meanCalculation = MEAN_CALCULATION_OPTIONS.includes(
+      selectedOptions.calculationSelected
+    );
+    if (
+      (!data[0].yOthers && data[0].yOthers !== 0) ||
+      !isWorldSelected ||
+      meanCalculation
+    ) { return data; }
+
+    const worldData = rawData.find(d => d.iso_code3 === 'WORLD').emissions;
+    return data.map(d => {
+      const top10Values = Object.values(omit(d, ['x', 'yOthers']));
+      const top10Emissions = top10Values.reduce((acc, value) => acc + value, 0);
+      const yearWorldData = worldData.find(worldD => worldD.year === d.x);
+      const updatedD = d;
+      updatedD.yOthers = yearWorldData.value * DATA_SCALE - top10Emissions;
+      return updatedD;
+    });
+  }
+);
+
 export const getChartDomain = createSelector(
-  [getSortedChartDataWithOthers],
+  [getCorrectedChartDataWithOthers],
   data => {
     if (!data) return null;
     return {
@@ -517,7 +547,7 @@ export const getChartConfig = createSelector(
 );
 
 export const getDataZoomData = createSelector(
-  [getSortedChartDataWithOthers],
+  [getCorrectedChartDataWithOthers],
   data => {
     if (!data) return null;
     const t = data.map(d => {
