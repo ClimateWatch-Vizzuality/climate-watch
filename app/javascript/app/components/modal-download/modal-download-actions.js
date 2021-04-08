@@ -57,11 +57,14 @@ const saveSurveyData = createThunkAction(
           })
       ])
         .then(responses => {
-          console.info('Modal download responses', responses);
           if (responses[0].ok !== undefined && !responses[0].ok) {
             throw new Error(responses[0].statusText);
           }
-          if (responses[1].ok !== undefined && !responses[1].ok) {
+          if (
+            responses[1] &&
+            responses[1].ok !== undefined &&
+            !responses[1].ok
+          ) {
             throw new Error(responses[1].statusText);
           }
 

@@ -1,4 +1,8 @@
 /* eslint-disable max-len */
+
+// This file is complementary to seo-helper.rb
+// that will start the seo on the first page load
+
 export const SEO_PAGES = {
   home: 'home',
   ndc2020: 'ndc2020',
@@ -7,7 +11,7 @@ export const SEO_PAGES = {
   ndcSearch: 'ndcSearch',
   ndcOverview: 'ndcOverview',
   ndcCompareAll: 'ndcCompareAll',
-  ndcCustomCompare: 'ndcCompareAll',
+  ndcCustomCompare: 'ndcCustomCompare',
   ndcsExplore: 'ndcsExplore',
   ndcFull: 'ndcFull',
   ltsExplore: 'ltsExplore',
@@ -29,7 +33,7 @@ export const SEO_PAGES = {
   keyVisualizations: 'keyVisualizations'
 };
 
-export const CANONICAL_URLS = {
+const CANONICAL_URLS = {
   home: '',
   country: '/countries',
   compare: '/countries/compare',
@@ -40,12 +44,11 @@ export const CANONICAL_URLS = {
   ndc2020: '/2020-ndc-tracker',
   ndcCompareAll: '/compare-all-targets',
   ndcContent: '/ndc-content',
-  ndcFull: '/ndcs/country',
   ndcCountry: '/ndcs/country',
   ltsCountry: '/lts/country',
   ndcCustomCompare: '/custom-compare',
   ndcSearch: '/ndc-search',
-  netZero: '/net-zero-explore',
+  netZero: '/net-zero-tracker',
   ndcSdg: '/ndcs-sdg',
   ghg: '/ghg-emissions',
   pathways: '/pathways',
@@ -59,26 +62,34 @@ export const CANONICAL_URLS = {
   keyVisualizations: '/key-visualizations'
 };
 
+export const getCanonicalUrl = (page, countryIso) => {
+  if (page === SEO_PAGES.ndcFull) {
+    return `/ndcs/country/${countryIso}/full`;
+  }
+  return CANONICAL_URLS[page];
+};
+
 export const STATIC_TITLE_PARTS = {
   [SEO_PAGES.home]:
-    'Climate Watch - Climate Data for Action - GHG, NDCs, LTS, Net-Zero Data',
-  [SEO_PAGES.country]: 'Climate Change Country Profile',
-  [SEO_PAGES.compare]: 'Climate Change Country Profile Compare',
-  [SEO_PAGES.sector]: 'Climate Change Profile',
-  [SEO_PAGES.ndcOverview]: 'NDCs, LTS, Net-Zero Overview',
+    'Climate Data for Action | Climate Watch | Emissions and Policies',
+  [SEO_PAGES.country]: 'Climate Change Data | Emissions and Policies',
+  [SEO_PAGES.sector]: 'Climate Change Data',
+  [SEO_PAGES.ndcOverview]:
+    'Commitments Overview | NDC | LTS | Net-Zero | Climate Policy',
   [SEO_PAGES.ndcsExplore]:
-    'Explore Nationally Determined Contributions (NDCs) Data',
-  [SEO_PAGES.ndcCountry]: 'Nationally Determined Contribution (NDC) Data',
-  [SEO_PAGES.ndcFull]: 'Nationally Determined Contribution (NDC) Text',
-  [SEO_PAGES.ltsCountry]: 'Long-Term Strategy (LTS) Data',
-  [SEO_PAGES.ltsExplore]: 'Explore Long-Term Strategies (LTS) Data',
-  [SEO_PAGES.netZero]: 'Explore Net-Zero Targets',
+    '| Explore Nationally Determined Contributions (NDCs)',
+  [SEO_PAGES.ndcCountry]: '| Nationally Determined Contribution (NDC)',
+  [SEO_PAGES.ndcFull]: '| Nationally Determined Contribution (NDC)',
+  [SEO_PAGES.ndcSearch]: '| Nationally Determined Contribution (NDC)',
+  [SEO_PAGES.ltsExplore]: 'Explore Long-Term Strategies (LTS)',
+  [SEO_PAGES.ltsCountry]: '| Long-Term Strategy (LTS) ',
   [SEO_PAGES.ndc2020]: '2020 NDC Enhancements',
-  [SEO_PAGES.ndcSdg]: 'Explore SDG-NDC Linkages',
-  [SEO_PAGES.ndcSearch]: 'Nationally Determined Contribution (NDC) Search',
+  [SEO_PAGES.netZero]: '| Net-Zero Targets',
+  [SEO_PAGES.ndcSdg]: 'Explore NDC-SDG Linkages',
+  [SEO_PAGES.compare]: 'Compare climate targets',
   [SEO_PAGES.ndcCompareAll]: 'Compare climate targets',
-  [SEO_PAGES.ndcCustomCompare]: 'Compare climate targets',
-  [SEO_PAGES.ghg]: 'Greenhouse Gas (GHG) Emissions',
+  [SEO_PAGES.ndcCustomCompare]: '| Compare climate targets',
+  [SEO_PAGES.ghg]: '| Greenhouse Gas (GHG) Emissions',
   [SEO_PAGES.pathways]: 'Emissions Scenario Pathways',
   [SEO_PAGES.about]: 'About',
   [SEO_PAGES.aboutPartners]: 'Climate Watch Partners',

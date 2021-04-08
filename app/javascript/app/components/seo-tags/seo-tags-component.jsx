@@ -4,10 +4,13 @@ import PropTypes from 'prop-types';
 
 import {
   STATIC_TITLE_PARTS,
-  CANONICAL_URLS,
   SEO_PAGES,
+  getCanonicalUrl,
   getDescription
 } from 'data/seo';
+
+// This file is complementary to seo-helper.rb
+// that will start the seo on the first page load
 
 const SEOTags = ({
   dynamicTitlePart = '',
@@ -19,11 +22,13 @@ const SEOTags = ({
   if (!STATIC_TITLE_PARTS[page]) {
     console.warn('Missing page SEO title. Check SEO.js');
   }
-  const title = `${dynamicTitlePart ? `${dynamicTitlePart} | ` : ''}${
-    STATIC_TITLE_PARTS[page]
-  } | Climate Watch Data`;
+  const title = `
+    ${dynamicTitlePart ? `${dynamicTitlePart} ` : ''}
+    ${STATIC_TITLE_PARTS[page]}
+    ${page === SEO_PAGES.home ? '' : ' | Climate Watch'}
+  `;
   const descriptionContext = getDescription({ page, countryName });
-  const canonicalUrl = CANONICAL_URLS[page];
+  const canonicalUrl = getCanonicalUrl(page, canonicalAttribute);
   return (
     <Helmet
       title={title}

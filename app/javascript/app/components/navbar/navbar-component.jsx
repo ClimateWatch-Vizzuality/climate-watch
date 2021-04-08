@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Nav from 'components/nav';
 import cx from 'classnames';
+import NotificationBell from 'components/notification-bell';
 import styles from './navbar-styles.scss';
 
 class NavBar extends PureComponent {
@@ -24,6 +25,7 @@ class NavBar extends PureComponent {
             isRendered
           />
         </div>
+        <NotificationBell />
       </div>
     );
   }

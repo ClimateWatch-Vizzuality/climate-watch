@@ -36,7 +36,7 @@ class SearchPage extends PureComponent {
       <div className={styles.page}>
         <SEOTags
           page={SEO_PAGES.ndcSearch}
-          dynamicTitlePart={search && search.query}
+          dynamicTitlePart={search && search.query ? `"${search.query}"` : ''}
           href={location.href}
         />
         <Header route={route}>

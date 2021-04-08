@@ -1,6 +1,6 @@
 import { createSelector, createStructuredSelector } from 'reselect';
 import isEmpty from 'lodash/isEmpty';
-import { useSlug } from 'utils';
+import { useSlug } from 'utils/utils';
 import {
   getGhgEmissionDefaultSlugs,
   toPlural,
@@ -356,10 +356,7 @@ export const getDynamicSEOTitlePart = createSelector(
     const sectorsLabels = selectedOptions.sectorsSelected
       ? selectedOptions.sectorsSelected.map(s => s && s.label).join(', ')
       : '';
-    const calculationLabel = selectedOptions.calculationSelected
-      ? selectedOptions.calculationSelected.label
-      : '';
-    if (!regionLabels || !sectorsLabels || !calculationLabel) return '';
-    return [regionLabels, sectorsLabels, calculationLabel].join(', ');
+    if (!regionLabels || !sectorsLabels) return '';
+    return `${regionLabels} | ${sectorsLabels}`;
   }
 );

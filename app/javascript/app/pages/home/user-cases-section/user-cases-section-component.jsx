@@ -5,8 +5,8 @@ import { TabletLandscape } from 'components/responsive';
 // Assets
 import userIcon from 'assets/icons/user.svg';
 import politicianImg from 'assets/home/government@2x.jpg';
-import researcherImg from 'assets/home/researcher@2x.png';
-import activistImg from 'assets/home/activist@2x.png';
+import researcherImg from 'assets/home/researcher@2x.jpg';
+import activistImg from 'assets/home/activist@2x.jpg';
 
 import { slidesData } from './user-cases-section-data';
 
@@ -47,7 +47,8 @@ class UserCasesSectionComponent extends Component {
               slidesToShow={1}
               autoplay={false}
               beforeChange={(current, next) =>
-                this.rightSlider && this.rightSlider.slickGoTo(next)}
+                this.rightSlider && this.rightSlider.slickGoTo(next)
+              }
               fade
             >
               <div>
@@ -75,7 +76,8 @@ class UserCasesSectionComponent extends Component {
               this.rightSlider = slider;
             }}
             beforeChange={(current, next) =>
-              this.leftSlider && this.leftSlider.slickGoTo(next)}
+              this.leftSlider && this.leftSlider.slickGoTo(next)
+            }
             {...settings}
           >
             {slidesData.map(slide => (

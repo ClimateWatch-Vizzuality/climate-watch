@@ -72,8 +72,7 @@ class LTSCountry extends PureComponent {
     } = this.props;
 
     const hasSearch = notSummary;
-    const countryName =
-      country && `${country.wri_standard_name} - ${country.iso_code3}`;
+    const countryName = country && country.wri_standard_name;
 
     const renderIntroDropdown = () => (
       <Intro

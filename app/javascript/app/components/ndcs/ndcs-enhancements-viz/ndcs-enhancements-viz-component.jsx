@@ -10,10 +10,10 @@ import Loading from 'components/loading';
 import Icon from 'components/icon';
 import infoIcon from 'assets/icons/info.svg';
 import ModalMetadata from 'components/modal-metadata';
-import CircularChart from 'components/circular-chart';
 import NDCSEnhancementsTooltip from 'components/ndcs/ndcs-enhancements-viz/ndcs-enhancements-tooltip';
 import ReactTooltip from 'react-tooltip';
 import blueCheckboxTheme from 'styles/themes/checkbox/blue-checkbox.scss';
+import { Link } from 'react-router-dom';
 import { LABEL_SLUGS } from './ndcs-enhancements-viz-selectors';
 import styles from './ndcs-enhancements-viz-styles.scss';
 
@@ -22,9 +22,14 @@ const renderButtonGroup = (clickHandler, downloadLink) => (
     <div>
       <p>
         <em>
-          Track which countries are updating or enhancing their national climate
-          commitments in 2020 or in the lead up to COP26. To request changes or
-          additions, please contact &nbsp;
+          Track which countries are submitting their national climate
+          commitments in the lead up to COP26. You can compare countries’
+          submissions side by side{' '}
+          <Link to="custom-compare/overview" title="Compare submissions">
+            here
+          </Link>{' '}
+          or by referring to the table below. To request changes or additions,
+          please contact &nbsp;
           <a
             href="mailto:Rhys.Gerholdt@wri.org?subject=2020 NDC Tracker Update"
             target="_blank"
@@ -64,15 +69,10 @@ const renderButtonGroup = (clickHandler, downloadLink) => (
   </div>
 );
 
-const renderCircular = datum => (
-  <div className={styles.circularChartContainer}>
-    <div>
-      <CircularChart
-        index={0.1}
-        value={Math.round((datum.value / datum.max) * 100 * 10) / 10}
-        color={datum.opts.color}
-      />
-      <div className={styles.circularChartValues}>
+const renderSummaryItem = datum => (
+  <div className={styles.summaryItemContainer}>
+    <div className={styles.summaryItemValuesContainer}>
+      <div className={styles.summaryItemValues}>
         <div
           style={{
             color: datum.opts.color
@@ -83,7 +83,7 @@ const renderCircular = datum => (
         </div>
       </div>
     </div>
-    <div className={styles.circularChartLabels}>
+    <div className={styles.summaryItemLabels}>
       <div dangerouslySetInnerHTML={{ __html: datum.opts.label }} />
     </div>
   </div>
@@ -135,15 +135,18 @@ const NDCSEnhancementsViz = ({
                     of COP26. The information below does not reflect these
                     possible delays.
                   </ReactTooltip>
-                  {renderCircular(
-                    summaryData[LABEL_SLUGS.INTENDS_TO_ENHANCE].countries
-                  )}
-                  {renderCircular(
-                    summaryData[LABEL_SLUGS.ENHANCED_MITIGATION].countries
-                  )}
-                  {renderCircular(
-                    summaryData[LABEL_SLUGS.SUBMITTED_2020].countries
-                  )}
+                  <div className={styles.summaryItemsContainer}>
+                    {renderSummaryItem(
+                      summaryData[LABEL_SLUGS.SUBMITTED_2020].countries
+                    )}
+                    {renderSummaryItem(
+                      summaryData[LABEL_SLUGS.ENHANCED_MITIGATION].countries
+                    )}
+                    <span className={styles.separator} />
+                    {renderSummaryItem(
+                      summaryData[LABEL_SLUGS.INTENDS_TO_ENHANCE].countries
+                    )}
+                  </div>
                 </div>
               )}
             </div>
