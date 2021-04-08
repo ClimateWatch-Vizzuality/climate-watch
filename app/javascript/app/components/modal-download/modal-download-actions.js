@@ -29,10 +29,10 @@ function getNewsletterFormData(data) {
   formdata.append('last_name', data.lastName);
   formdata.append('organization', data.organization);
   formdata.append('country', data.country.value);
-  const token = document
-    .querySelectorAll('meta[name="csrf-token"]')[0]
-    ?.getAttribute('content');
-  formdata.append('authenticity_token', token);
+  /* const token = document
+   *   .querySelectorAll('meta[name="csrf-token"]')[0]
+   *   ?.getAttribute('content');
+   * formdata.append('authenticity_token', token); */
 
   return formdata;
 }
@@ -44,6 +44,10 @@ const saveSurveyData = createThunkAction(
     if (!modalDownload.requiredError && !modalDownload.processing) {
       const spreadsheetQueryParams = toQueryParams(surveyData);
 
+      const token = document
+        .querySelectorAll('meta[name="csrf-token"]')[0]
+        ?.getAttribute('content');
+
       dispatch(setProcessing(true));
 
       Promise.all([
@@ -53,6 +57,9 @@ const saveSurveyData = createThunkAction(
         surveyData.subscription &&
           fetch('/newsletter', {
             method: 'POST',
+            headers: {
+              'X-CSRF-Token': token
+            },
             body: getNewsletterFormData(surveyData)
           })
       ])
