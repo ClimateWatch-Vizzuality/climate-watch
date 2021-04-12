@@ -440,18 +440,23 @@ export const getCorrectedChartDataWithOthers = createSelector(
   [getSortedChartDataWithOthers, getOptionsSelected, getData],
   (data, selectedOptions, rawData) => {
     if (!data || isEmpty(data)) return null;
-
+    const CORRECTED_CALCULATION_OPTIONS = [
+      GHG_CALCULATION_OPTIONS.PER_CAPITA.value,
+      GHG_CALCULATION_OPTIONS.PER_GDP.value
+    ];
     const isWorldSelected = selectedOptions.regionsSelected.some(
       region => region.value === 'WORLD'
     );
-    const meanCalculation = MEAN_CALCULATION_OPTIONS.includes(
+    const correctedCalculation = CORRECTED_CALCULATION_OPTIONS.includes(
       selectedOptions.calculationSelected
     );
     if (
       (!data[0].yOthers && data[0].yOthers !== 0) ||
       !isWorldSelected ||
-      meanCalculation
-    ) { return data; }
+      correctedCalculation
+    ) {
+      return data;
+    }
 
     const worldData = rawData.find(d => d.iso_code3 === 'WORLD').emissions;
     return data.map(d => {
