@@ -1,10 +1,15 @@
 import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { Column, Table, AutoSizer, ScrollSync } from 'react-virtualized';
 import MultiSelect from 'components/multiselect';
 import cx from 'classnames';
 import difference from 'lodash/difference';
 import 'react-virtualized/styles.css'; // only needs to be imported once
+
+import AutoSizer from 'react-virtualized/dist/commonjs/AutoSizer';
+import ScrollSync from 'react-virtualized/dist/commonjs/ScrollSync';
+import Table from 'react-virtualized/dist/commonjs/Table/Table';
+import Column from 'react-virtualized/dist/commonjs/Table/Column';
+
 import cellRenderer from './cell-renderer-component';
 import headerRowRenderer from './header-row-renderer-component';
 import styles from './table-styles.scss';

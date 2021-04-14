@@ -1,6 +1,6 @@
 import { PureComponent, createElement } from 'react';
 import PropTypes from 'prop-types';
-import { SortDirection } from 'react-virtualized';
+import SortDirection from 'react-virtualized/dist/es/Table/SortDirection';
 import _sortBy from 'lodash/sortBy';
 import omit from 'lodash/omit';
 import reverse from 'lodash/reverse';
