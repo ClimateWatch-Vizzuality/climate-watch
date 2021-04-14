@@ -1,6 +1,6 @@
 import { createSelector, createStructuredSelector } from 'reselect';
 import { getGhgEmissionsFilter } from 'components/sectors-agriculture/drivers-of-emissions/card-pie-chart/ghg-metadata-selectors';
-import { useSlug } from 'utils';
+import { useSlug } from 'utils/utils';
 import {
   getLocationsOptions,
   getEmissionCountrySelected

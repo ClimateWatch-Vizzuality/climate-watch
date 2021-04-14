@@ -2,7 +2,7 @@ import {
   DEFAULT_EMISSIONS_SELECTIONS,
   GHG_CALCULATION_OPTIONS
 } from 'data/constants';
-import { useSlug } from 'utils';
+import { useSlug } from 'utils/utils';
 
 export const getGhgEmissionDefaults = (source, meta) => {
   const sourceName = source.name || source.label;

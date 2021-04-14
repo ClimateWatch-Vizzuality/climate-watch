@@ -2,12 +2,12 @@ env:
   POSTGRES_USER: postgres
   POSTGRES_PASSWORD: postgres
 
-name: Tests
+name: Frontend Tests
 on: push
 
 jobs:
   tests:
-    name: Tests
+    name: Frontend Tests
     runs-on: ubuntu-20.04
 
     services:
@@ -61,9 +61,4 @@ jobs:
           GFW_API: https://staging-api.globalforestwatch.org
           DEV_USER_ID: DEV_USER_ID_PLACEHOLDER
           DEV_USER_TOKEN: DEV_USER_TOKEN_PLACEHOLDER
-        run: bundle exec rspec
-      - name: Upload Code Coverage
-        uses: actions/upload-artifact@v2
-        with:
-          name: code-coverage
-          path: coverage/
+        run: yarn test

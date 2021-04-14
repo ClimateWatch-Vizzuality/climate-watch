@@ -78,12 +78,6 @@ class CountrySelectContainer extends PureComponent {
 
     const markers = [
       {
-        coordinates: [28.034, -26.1952],
-        link: 'http://southafricaclimateexplorer.org',
-        name: 'South Africa Explorer',
-        pin
-      },
-      {
         coordinates: [79.2167, 20.6448],
         link: 'https://indiaclimateexplorer.org/',
         name: 'India platform',
