@@ -6,8 +6,13 @@ const { settings, output } = require('./configuration.js');
 
 module.exports = merge(sharedConfig, {
   mode: 'development',
-  devtool: 'source-map',
-
+  devtool: 'cheap-source-map',
+  optimization: {
+    // runtimeChunk: true
+    // removeAvailableModules: false,
+    // removeEmptyChunks: false,
+    // splitChunks: false
+  },
   resolve: {
     symlinks: false,
     alias: {
@@ -29,15 +34,15 @@ module.exports = merge(sharedConfig, {
   devServer: {
     contentBase: output.path,
     compress: true,
-    port: settings.dev_server.port
-    // clientLogLevel: 'none',
-    // https: settings.dev_server.https,
-    // host: settings.dev_server.host,
-    // publicPath: output.publicPath,
-    // headers: { 'Access-Control-Allow-Origin': '*' },
-    // historyApiFallback: true,
-    // watchOptions: {
-    //   ignored: /node_modules([\\]+|\/)+(?!cw-components)/
-    // }
+    port: settings.dev_server.port,
+    clientLogLevel: 'none',
+    https: settings.dev_server.https,
+    host: settings.dev_server.host,
+    publicPath: output.publicPath,
+    headers: { 'Access-Control-Allow-Origin': '*' },
+    historyApiFallback: true,
+    watchOptions: {
+      ignored: /node_modules([\\]+|\/)+(?!cw-components)/
+    }
   }
 });

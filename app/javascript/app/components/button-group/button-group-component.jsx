@@ -40,7 +40,7 @@ const getButtonLink = (link, currentPathname) => {
   return `${updatedPath}${link}`;
 };
 
-const renderButton = (buttonConfig, currentPathname) => {
+const renderButton = (buttonConfig, currentPathname, otherProps) => {
   const dataTip = buttonConfig.tooltipText || tooltipText[buttonConfig.type];
   switch (buttonConfig.type) {
     case 'share':
@@ -61,7 +61,7 @@ const renderButton = (buttonConfig, currentPathname) => {
     case 'downloadCombo':
       return (
         <SimpleMenu
-          {...this.props}
+          {...otherProps}
           buttonClassName={cx(styles.button, styles.download)}
           options={buttonConfig.options}
           icon={iconsMap[buttonConfig.type]}
@@ -94,7 +94,13 @@ const renderButton = (buttonConfig, currentPathname) => {
   }
 };
 
-const ButtonGroup = ({ className, buttonsConfig, disabled, location }) => {
+const ButtonGroup = ({
+  className,
+  buttonsConfig,
+  disabled,
+  location,
+  otherProps
+}) => {
   const { pathname: currentPathname } = location;
   return (
     <div
@@ -105,7 +111,7 @@ const ButtonGroup = ({ className, buttonsConfig, disabled, location }) => {
       )}
     >
       {buttonsConfig.map(buttonConfig =>
-        renderButton(buttonConfig, currentPathname)
+        renderButton(buttonConfig, currentPathname, otherProps)
       )}
       <ReactTooltip id="tooltip" effect="solid" />
     </div>
@@ -116,7 +122,8 @@ ButtonGroup.propTypes = {
   className: PropTypes.string,
   buttonsConfig: PropTypes.array,
   location: PropTypes.object,
-  disabled: PropTypes.bool
+  disabled: PropTypes.bool,
+  otherProps: PropTypes.object
 };
 
 export default ButtonGroup;
