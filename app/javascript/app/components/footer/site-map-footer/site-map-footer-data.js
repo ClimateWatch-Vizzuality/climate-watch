@@ -23,8 +23,7 @@ export const siteMapData = [
     title: 'Country Platforms',
     links: [
       { title: 'India', href: 'https://indiaclimateexplorer.org/' },
-      { title: 'Indonesia', href: 'https://indonesia.climatewatchdata.org' },
-      { title: 'South Africa', href: 'http://southafricaclimateexplorer.org/' }
+      { title: 'Indonesia', href: 'https://indonesia.climatewatchdata.org' }
     ]
   },
   {
