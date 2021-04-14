@@ -32,7 +32,7 @@ node {
   }
 
   // env vars with build-arg
-  def base_envs = "--build-arg RAILS_ENV=production --build-arg secretKey=${secretKey}"
+  def base_envs = "--build-arg RAILS_ENV=production --build-arg NODE_ENV=production --build-arg secretKey=${secretKey}"
 
   def cw_files_env = "--build-arg CW_FILES_PREFIX=${cw_files_prefix}"
   def app_signal_env = "--build-arg APPSIGNAL_PUSH_API_KEY=${env.CW_APP_SIGNAL}"
@@ -116,5 +116,4 @@ node {
     currentBuild.result = "FAILURE"
     throw err
   }
-
 }

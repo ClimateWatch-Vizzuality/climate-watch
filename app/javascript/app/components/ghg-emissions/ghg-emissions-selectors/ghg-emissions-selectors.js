@@ -13,7 +13,7 @@ import {
 import { getFiltersConflicts } from './ghg-emissions-selectors-conflicts';
 import {
   getChartConfig,
-  getSortedChartDataWithOthers,
+  getCorrectedChartDataWithOthers,
   getChartDomain,
   getHideRemoveOptions,
   getLegendDataOptionsWithOthers,
@@ -35,7 +35,7 @@ export const getGHGEmissions = createStructuredSelector({
   filtersConflicts: getFiltersConflicts,
   legendOptions: getLegendDataOptionsWithOthers,
   legendSelected: getLegendDataSelectedWithOthers,
-  data: getSortedChartDataWithOthers,
+  data: getCorrectedChartDataWithOthers,
   tableData: getTableData,
   titleLinks: getTitleLinks,
   domain: getChartDomain,
