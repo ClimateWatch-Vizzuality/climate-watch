@@ -6,6 +6,7 @@
 
 .modalTitle {
   padding: 5px 20px 20px;
+  text-align: center;
 }
 
 .notificationModal {
@@ -50,4 +51,10 @@
 
 .button {
   max-width: 250px;
+}
+
+.description {
+  a {
+    text-decoration: underline;
+  }
 }
