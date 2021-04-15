@@ -437,34 +437,69 @@ export const getSortedChartDataWithOthers = createSelector(
 // World includes emissions from international shipping, aviation and territories that are not among the list of countries
 // these are not included in country-level totals so we have to add the substraction of the single WORLD data to others
 export const getCorrectedChartDataWithOthers = createSelector(
-  [getSortedChartDataWithOthers, getOptionsSelected, getData],
-  (data, selectedOptions, rawData) => {
+  [getSortedChartDataWithOthers, getOptionsSelected, getData, getDataZoomYears],
+  (data, selectedOptions, rawData, dataZoomYears) => {
     if (!data || isEmpty(data)) return null;
-    const CORRECTED_CALCULATION_OPTIONS = [
+    // These calculations are not corrected as we we can't know their calculation values
+    const MISSING_DATA_CALCULATION_OPTIONS = [
       GHG_CALCULATION_OPTIONS.PER_CAPITA.value,
       GHG_CALCULATION_OPTIONS.PER_GDP.value
     ];
     const isWorldSelected = selectedOptions.regionsSelected.some(
       region => region.value === 'WORLD'
     );
-    const correctedCalculation = CORRECTED_CALCULATION_OPTIONS.includes(
-      selectedOptions.calculationSelected
+    const {
+      calculationSelected: { value: calculationSelectedValue }
+    } = selectedOptions;
+    const missingDataCalculation = MISSING_DATA_CALCULATION_OPTIONS.includes(
+      calculationSelectedValue
     );
     if (
       (!data[0].yOthers && data[0].yOthers !== 0) ||
       !isWorldSelected ||
-      correctedCalculation
+      missingDataCalculation
     ) {
       return data;
     }
 
     const worldData = rawData.find(d => d.iso_code3 === 'WORLD').emissions;
+    let cumulativeOtherValue;
+    let previousYearOtherValue;
+
     return data.map(d => {
       const top10Values = Object.values(omit(d, ['x', 'yOthers']));
       const top10Emissions = top10Values.reduce((acc, value) => acc + value, 0);
       const yearWorldData = worldData.find(worldD => worldD.year === d.x);
+      let yearWorldDataValue = yearWorldData && yearWorldData.value;
       const updatedD = d;
-      updatedD.yOthers = yearWorldData.value * DATA_SCALE - top10Emissions;
+      if (
+        calculationSelectedValue === GHG_CALCULATION_OPTIONS.CUMULATIVE.value
+      ) {
+        const year = d.x;
+        const hasAccumulatedValueForYear = year > dataZoomYears.min;
+        if (yearWorldDataValue) {
+          cumulativeOtherValue =
+            yearWorldDataValue +
+            (hasAccumulatedValueForYear ? cumulativeOtherValue : 0);
+        }
+        yearWorldDataValue = cumulativeOtherValue || null;
+      }
+
+      if (
+        calculationSelectedValue ===
+        GHG_CALCULATION_OPTIONS.PERCENTAGE_CHANGE.value
+      ) {
+        const currentYearValue = yearWorldDataValue || 0;
+        if (yearWorldDataValue) {
+          yearWorldDataValue = previousYearOtherValue
+            ? ((yearWorldDataValue - previousYearOtherValue) * 100) /
+              previousYearOtherValue
+            : 'n/a';
+        }
+        previousYearOtherValue = currentYearValue;
+      }
+
+      updatedD.yOthers = yearWorldDataValue * DATA_SCALE - top10Emissions;
       return updatedD;
     });
   }
