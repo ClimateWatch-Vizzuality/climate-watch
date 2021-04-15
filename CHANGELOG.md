@@ -2,6 +2,9 @@
 
 For missing information check the notes on the releases
 
+## [v2.10.4]
+  Fix world other corrections
+
 ## [v2.10.3]
   Fix notification modal styles
   Remove South Africa platform
