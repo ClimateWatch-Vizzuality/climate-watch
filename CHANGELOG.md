@@ -2,6 +2,9 @@
 
 For missing information check the notes on the releases
 
+## [v2.10.5]
+  Fix world other corrections (percentage change calculation)
+
 ## [v2.10.4]
   Fix world other corrections
 
