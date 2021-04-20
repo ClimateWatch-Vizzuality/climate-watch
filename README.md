@@ -121,6 +121,7 @@ ONE_SIGNAL_ID: Id for [One signal](https://onesignal.com/) service
 FEATURE_POP_UP: Pop up shown entering the site
 POP_UP: Name of the temporary pop up to be displayed
 
+
 ## Modules
 
 Perhaps the bigger peculiarity is the module based architecture. What a module architecture means is that all the elements that are part of a component are contained inside the same directory.
@@ -309,3 +310,9 @@ npx release 'major' | 'minor' | 'patch'
 ```
 
 and push to master!
+
+## Maps geometries
+
+Geometries are stored in the world-50m-topo.json file. You can generate the geometries with this [jupyter link](https://github.com/Vizzuality/sci_team_data_bank/blob/master/Projects/CW/0.%20Add%20Islands%20%26%20Do%20Brexit.ipynb)
+
+
