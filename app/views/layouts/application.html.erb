@@ -49,7 +49,7 @@
       <meta name="robots" content="noindex">
     <% end %>
 
-    <%= javascript_pack_tag 'main' %>
+    <%= javascript_pack_tag 'main', defer: true %>
 
     <% if @is_production %>
       <%= stylesheet_pack_tag 'main' %>

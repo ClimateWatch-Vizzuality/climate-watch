@@ -7,9 +7,8 @@
   "scripts": {
     "start": "run-p -r rails:server js:server",
     "reinstall": "rm -rf ./node_modules && yarn install",
-    "js:server": "yarn install && webpack serve -c config/webpack/development.js",
-    "dev": "webpack serve -c config/webpack/development.js",
-    "build": "webpack -c config/webpack/production.js",
+    "js:server": "yarn install && bin/webpack-dev",
+    "build": "bin/webpack-prod",
     "rails:bundle-audit": "bundle exec bundle-audit check --update",
     "rails:cleanimport": "rails db:drop db:create db:migrate db:import",
     "rails:server": "bundle exec rails s",
