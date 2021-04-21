@@ -1,6 +1,6 @@
 import { createSelector, createStructuredSelector } from 'reselect';
 import isEmpty from 'lodash/isEmpty';
-import { useSlug } from 'utils';
+import { useSlug } from 'utils/utils';
 import {
   getGhgEmissionDefaultSlugs,
   toPlural,

@@ -13,7 +13,7 @@ export default ({ ONE_SIGNAL_ID, env }) => {
         });
       });
     `;
-    document.body.appendChild(oneSignalScript);
-    document.body.appendChild(oneSignalSecondScript);
+    document.head.appendChild(oneSignalScript);
+    document.head.appendChild(oneSignalSecondScript);
   }
 };

@@ -28,6 +28,9 @@ ENV ONE_SIGNAL_ID $ONE_SIGNAL_ID
 ARG FEATURE_POP_UP
 ENV FEATURE_POP_UP $FEATURE_POP_UP
 
+ARG FEATURE_NDC_ENHANCEMENTS
+ENV FEATURE_NDC_ENHANCEMENTS $FEATURE_NDC_ENHANCEMENTS
+
 ARG POP_UP
 ENV POP_UP $POP_UP
 
@@ -41,7 +44,7 @@ ENV USER_REPORT_KEY $USER_REPORT_KEY
 RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
-        postgresql-client nodejs build-essential patch zlib1g-dev liblzma-dev libicu-dev
+       postgresql-client nodejs build-essential patch zlib1g-dev liblzma-dev libicu-dev
 RUN npm install -g yarn
 
 # Create app directory

@@ -43,16 +43,24 @@ const saveSurveyData = createThunkAction(
 
       dispatch(setProcessing(true));
 
+      // still test pardot submission but do not handle errors
+      if (surveyData.subscription) {
+        fetch(USER_NEWSLETTER_URL, {
+          method: 'POST',
+          body: getNewsletterFormData(surveyData)
+        });
+      }
+
       Promise.all([
         fetch(
           `${USER_SURVEY_SPREADSHEET_URL}?${spreadsheetQueryParams.join('&')}`
-        ),
-        surveyData.subscription &&
-          fetch(USER_NEWSLETTER_URL, {
-            method: 'POST',
-            mode: 'no-cors',
-            body: getNewsletterFormData(surveyData)
-          })
+        )
+        // disabled pardot for now
+        /* surveyData.subscription &&
+         *   fetch(USER_NEWSLETTER_URL, {
+         *     method: 'POST',
+         *     body: getNewsletterFormData(surveyData)
+         *   }) */
       ])
         .then(responses => {
           /* eslint-disable-next-line no-console */
@@ -60,7 +68,11 @@ const saveSurveyData = createThunkAction(
           if (responses[0].ok !== undefined && !responses[0].ok) {
             throw new Error(responses[0].statusText);
           }
-          if (responses[1].ok !== undefined && !responses[1].ok) {
+          if (
+            responses[1] &&
+            responses[1].ok !== undefined &&
+            !responses[1].ok
+          ) {
             throw new Error(responses[1].statusText);
           }
 

@@ -27,11 +27,11 @@ node {
     cw_files_prefix = 'climatewatch.org/www.climatewatch.org/climate-watch/'
     user_report_key = '81f6ea43-5c9f-48e0-bdb2-56fc59aafbb4'
   } else {
-    feature_flags_env = feature_flags_env + ' --build-arg FEATURE_POP_UP=false'
+    feature_flags_env = feature_flags_env + ' --build-arg FEATURE_POP_UP=false --build-arg FEATURE_NDC_ENHANCEMENTS=true'
   }
 
   // env vars with build-arg
-  def base_envs = "--build-arg RAILS_ENV=production --build-arg secretKey=${secretKey}"
+  def base_envs = "--build-arg RAILS_ENV=production --build-arg NODE_ENV=production --build-arg secretKey=${secretKey}"
 
   def cw_files_env = "--build-arg CW_FILES_PREFIX=${cw_files_prefix}"
   def app_signal_env = "--build-arg APPSIGNAL_PUSH_API_KEY=${env.CW_APP_SIGNAL}"
@@ -115,5 +115,4 @@ node {
     currentBuild.result = "FAILURE"
     throw err
   }
-
 }
