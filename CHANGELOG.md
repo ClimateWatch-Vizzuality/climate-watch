@@ -2,6 +2,12 @@
 
 For missing information check the notes on the releases
 
+<<<<<<< HEAD
+=======
+## [v2.10.5]
+  Fix world other corrections (percentage change calculation)
+
+>>>>>>> develop
 ## [v2.10.4]
   Fix world other corrections
 
