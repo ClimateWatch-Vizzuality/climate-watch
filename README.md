@@ -116,10 +116,10 @@ GFW_API: Global Forest Watch API
 CW_FILES_PREFIX: Prefix for the files on s3
 USER_SURVEY_SPREADSHEET_URL: URL for the script to the contact survey
 USER_NEWSLETTER_URL: Sign up to newsletter form url
-ONE_SIGNAL_ID: Id for [One signal](https://onesignal.com/) service
 
 FEATURE_POP_UP: Pop up shown entering the site
 POP_UP: Name of the temporary pop up to be displayed
+
 
 ## Modules
 
@@ -309,3 +309,9 @@ npx release 'major' | 'minor' | 'patch'
 ```
 
 and push to master!
+
+## Maps geometries
+
+Geometries are stored in the world-50m-topo.json file. You can generate the geometries with this [jupyter link](https://github.com/Vizzuality/sci_team_data_bank/blob/master/Projects/CW/0.%20Add%20Islands%20%26%20Do%20Brexit.ipynb)
+
+

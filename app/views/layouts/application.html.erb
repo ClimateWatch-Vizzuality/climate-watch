@@ -53,6 +53,15 @@
 
     <% if @is_production %>
       <%= stylesheet_pack_tag 'main' %>
+      <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async></script>
+      <script>
+        window.OneSignal = window.OneSignal || [];
+        OneSignal.push(function() {
+          OneSignal.init({
+            appId: "27c3fb0e-bd48-409c-852a-e5a72446b9d4"
+          });
+        });
+      </script>
     <% end %>
   </head>
 

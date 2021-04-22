@@ -2,6 +2,14 @@
 
 For missing information check the notes on the releases
 
+## [v2.10.5]
+  Fix OneSignal integration
+  Update map geometries (circles)
+  Fix percentage GHG correction
+
+## [v2.10.5]
+  Fix world other corrections (percentage change calculation)
+
 ## [v2.10.4]
   Fix world other corrections
 
