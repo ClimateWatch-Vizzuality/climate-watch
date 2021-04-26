@@ -2,7 +2,10 @@
 
 For missing information check the notes on the releases
 
-## [v2.10.5]
+## [v2.10.7]
+  Fix OneSignal safari integration
+
+## [v2.10.6]
   Fix OneSignal integration
   Update map geometries (circles)
   Fix percentage GHG correction
