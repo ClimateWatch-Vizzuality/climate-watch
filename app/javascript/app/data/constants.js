@@ -12,7 +12,7 @@ const { ESP_API } = process.env;
 export const LOGIN_URL = `${GFW_API}/auth/`;
 export const LOGIN_PARAMS = `?applications=climate-watch&token=true&callbackUrl=${location.origin}${CW_API}/auth/login`;
 export const LOGOUT_URL = '/auth/logout';
-export const ESP_HOST = ESP_API && ESP_API.replace('/api/v1', '');
+export const ESP_HOST = ESP_API.replace('/api/v1', '');
 
 export const SOCIAL_APP_NAMES = ['twitter', 'facebook', 'google'];
 
@@ -38,18 +38,6 @@ export const GHG_CALCULATION_OPTIONS = {
     value: 'PERCENTAGE_CHANGE'
   }
 };
-
-export const CHART_TYPES = {
-  line: 'line',
-  area: 'area',
-  percentage: 'percentage'
-};
-
-export const CHART_TYPE_OPTIONS = [
-  { label: 'Line chart', value: CHART_TYPES.line },
-  { label: 'Stacked area Chart', value: CHART_TYPES.area },
-  { label: '100% stacked area chart', value: CHART_TYPES.percentage }
-];
 
 export const NOT_COVERED_LABEL = 'Not covered';
 
@@ -301,7 +289,7 @@ export const GHG_TABLE_HEADER = {
 };
 
 export const WRI_WEBSITE = 'https://www.wri.org/';
-export const WRI_CLIMATE_BLOG = 'https://www.wri.org/blog-tags/14091';
+export const WRI_CLIMATE_BLOG = 'https://www.wri.org/resources/tags/14091';
 export const RW_WEBSITE = 'https://resourcewatch.org/';
 
 export const AGRICULTURE_TOTAL_EMISSIONS = 'Agriculture Emissions: Total';
