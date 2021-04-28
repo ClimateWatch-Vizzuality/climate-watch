@@ -9,6 +9,7 @@ const webpack = require('webpack');
 const { basename, dirname, join, relative, resolve } = require('path');
 const { sync } = require('glob');
 const DirectoryNamedWebpackPlugin = require('directory-named-webpack-plugin');
+const WebpackAssetsManifest = require('webpack-assets-manifest');
 
 const extname = require('path-complete-extname');
 const { env, settings, output, publicPath } = require('./configuration.js');
@@ -152,6 +153,13 @@ module.exports = {
   },
 
   plugins: [
+    new WebpackAssetsManifest({
+      entrypoints: true,
+      writeToDisk: true,
+      output: 'manifest.json',
+      entrypointsUseAssets: true,
+      publicPath: true
+    }),
     new webpack.DefinePlugin(webpackEnv),
     new webpack.ProvidePlugin({
       process: 'process/browser'
