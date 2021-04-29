@@ -42,6 +42,8 @@ const saveSurveyData = createThunkAction(
             last_name: surveyData.lastName,
             organization: surveyData.organization,
             country: surveyData.country.value
+          }).catch(() => {
+            throw new Error('Newsletter error');
           })
       ])
         .then(responses => {
@@ -53,14 +55,21 @@ const saveSurveyData = createThunkAction(
           }
           dispatch(setProcessing(false));
           modalDownload.downloadAction();
-          return dispatch(toggleModalDownload({ open: false }));
+          dispatch(toggleModalDownload({ open: false }));
         })
-        .catch(errors => {
-          console.error('Modal download response errors', errors);
-          const errorMessage =
-            'There was an error while processing your request';
+        .catch(error => {
+          // simplyfied error path, let the user have the data, but show message that
+          // there was some error with newsletter or feedback submission
+          let errorMessage =
+            'There was an error while submitting your feedback.';
+          if (error.message === 'Newsletter error') {
+            errorMessage =
+              'There was an error while submitting to the newsletter.';
+          }
+          // error comes from newsletter
           dispatch(setProcessing(false));
-          return dispatch(setErrorMessage(errorMessage));
+          modalDownload.downloadAction();
+          dispatch(setErrorMessage(errorMessage));
         });
     }
     return undefined;
