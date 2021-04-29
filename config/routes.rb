@@ -24,6 +24,8 @@ Rails.application.routes.draw do
       get 'auth/login', to: 'auth#login'
       get 'auth/logout', to: 'auth#logout'
 
+      resources :newsletters, only: [:create]
+
       resources :wb_extra, param: :code, only: [:index, :show], controller: 'wb_extra_country_data'
 
       resources :emissions, only: [:index], controller: :historical_emissions do
@@ -136,8 +138,6 @@ Rails.application.routes.draw do
       get '(*endpoint)', controller: :api, action: :route_not_found
     end
   end
-
-  post 'newsletter', to: 'newsletter#sign_up'
 
   root 'application#index'
   get '(*frontend)', to: 'application#index'

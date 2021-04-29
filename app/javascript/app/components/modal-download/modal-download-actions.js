@@ -4,6 +4,7 @@ import {
   setStorageWithExpiration,
   getStorageWithExpiration
 } from 'utils/localStorage';
+import { CWAPI } from 'services/api';
 
 const USER_SURVEY_SPREADSHEET_URL = process.env.USER_SURVEY_SPREADSHEET_URL;
 
@@ -21,32 +22,12 @@ function toQueryParams(data) {
   );
 }
 
-function getNewsletterFormData(data) {
-  const formdata = new FormData();
-
-  formdata.append('email', data.email);
-  formdata.append('first_name', data.firstName);
-  formdata.append('last_name', data.lastName);
-  formdata.append('organization', data.organization);
-  formdata.append('country', data.country.value);
-  /* const token = document
-   *   .querySelectorAll('meta[name="csrf-token"]')[0]
-   *   ?.getAttribute('content');
-   * formdata.append('authenticity_token', token); */
-
-  return formdata;
-}
-
 const saveSurveyData = createThunkAction(
   'saveSurveyData',
   surveyData => (dispatch, getState) => {
     const { modalDownload } = getState();
     if (!modalDownload.requiredError && !modalDownload.processing) {
       const spreadsheetQueryParams = toQueryParams(surveyData);
-
-      const token = document
-        .querySelectorAll('meta[name="csrf-token"]')[0]
-        ?.getAttribute('content');
 
       dispatch(setProcessing(true));
 
@@ -55,26 +36,18 @@ const saveSurveyData = createThunkAction(
           `${USER_SURVEY_SPREADSHEET_URL}?${spreadsheetQueryParams.join('&')}`
         ),
         surveyData.subscription &&
-          fetch('/newsletter', {
-            method: 'POST',
-            headers: {
-              'X-CSRF-Token': token
-            },
-            body: getNewsletterFormData(surveyData)
+          CWAPI.post('newsletters', {
+            email: surveyData.email,
+            first_name: surveyData.firstName,
+            last_name: surveyData.lastName,
+            organization: surveyData.organization,
+            country: surveyData.country.value
           })
       ])
         .then(responses => {
           if (responses[0].ok !== undefined && !responses[0].ok) {
             throw new Error(responses[0].statusText);
           }
-          if (
-            responses[1] &&
-            responses[1].ok !== undefined &&
-            !responses[1].ok
-          ) {
-            throw new Error(responses[1].statusText);
-          }
-
           if (!getStorageWithExpiration('userSurvey')) {
             setStorageWithExpiration('userSurvey', true, 5);
           }
