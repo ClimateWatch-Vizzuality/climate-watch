@@ -86,7 +86,9 @@ class NDCSEnhancementsVizContainer extends PureComponent {
         statement: undefined,
         note: 'Learn more in table below'
       };
-      if (statementIndicator.locations[id]) { tooltipValues.statement = `${statementIndicator.locations[id].value}`; }
+      if (statementIndicator.locations[id]) {
+        tooltipValues.statement = `${statementIndicator.locations[id].value}`;
+      }
       tooltipValues.value =
         indicator.locations[id].label_slug === 'submitted_2020'
           ? `Submitted a 2020 NDC on ${dateIndicator.locations[id].value}.`
