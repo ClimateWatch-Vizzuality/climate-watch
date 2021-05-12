@@ -174,6 +174,7 @@ module.exports = {
       resolve(settings.source_path, 'app'),
       'node_modules'
     ],
+    symlinks: false,
     plugins: [new DirectoryNamedWebpackPlugin()],
     alias: {
       app: 'app',
