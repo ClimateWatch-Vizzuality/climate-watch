@@ -8,11 +8,12 @@ module.exports = merge(sharedConfig, {
   mode: 'development',
   devtool: 'cheap-source-map',
   optimization: {
-    // runtimeChunk: true
+    // runtimeChunk: true,
     // removeAvailableModules: false,
     // removeEmptyChunks: false,
     // splitChunks: false
   },
+  cache: true,
   resolve: {
     symlinks: false,
     alias: {
@@ -42,7 +43,8 @@ module.exports = merge(sharedConfig, {
     headers: { 'Access-Control-Allow-Origin': '*' },
     historyApiFallback: true,
     watchOptions: {
-      ignored: /node_modules([\\]+|\/)+(?!cw-components)/
+      ignored: /node_modules([\\]+|\/)+(?!cw-components)/,
+      poll: 1000
     }
   }
 });
