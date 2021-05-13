@@ -2,6 +2,10 @@
 
 For missing information check the notes on the releases
 
+## [v2.10.8]
+  Fix contact form
+  GHG - New conflict created on energy sectors
+
 ## [v2.10.7]
   Fix OneSignal safari integration
 
