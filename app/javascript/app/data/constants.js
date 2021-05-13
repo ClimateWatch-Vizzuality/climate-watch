@@ -301,7 +301,7 @@ export const GHG_TABLE_HEADER = {
 };
 
 export const WRI_WEBSITE = 'https://www.wri.org/';
-export const WRI_CLIMATE_BLOG = 'https://www.wri.org/blog-tags/14091';
+export const WRI_CLIMATE_BLOG = 'https://www.wri.org/resources/14091';
 export const RW_WEBSITE = 'https://resourcewatch.org/';
 
 export const AGRICULTURE_TOTAL_EMISSIONS = 'Agriculture Emissions: Total';
