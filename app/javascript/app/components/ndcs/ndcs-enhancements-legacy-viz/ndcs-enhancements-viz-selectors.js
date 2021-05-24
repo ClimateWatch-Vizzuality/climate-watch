@@ -26,7 +26,7 @@ export const getIndicatorsParsed = createSelector(
   (categories, indicators, isos) => {
     if (!categories || !indicators || !indicators.length) return null;
     const categoryId = Object.keys(categories).find(
-      id => categories[id].slug === 'ndc_enhancement'
+      id => categories[id].slug === '2020_ndc_tracker'
     );
     return sortBy(
       uniqBy(
@@ -169,7 +169,7 @@ export const getLinkToDataExplorer = createSelector([getSearch], search => {
   const section = 'ndc-content';
   return generateLinkToDataExplorer(
     {
-      category: 'ndc_enhancement',
+      category: '2020_ndc_tracker',
       ...search
     },
     section

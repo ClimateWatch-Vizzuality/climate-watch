@@ -13,7 +13,7 @@ import { europeSlug, europeanCountries } from 'app/data/european-countries';
 import { COUNTRY_STYLES } from 'components/ndcs/shared/constants';
 import { CHART_NAMED_COLORS } from 'styles/constants';
 
-const ENHANCEMENT_CATEGORY = 'ndc_enhancement';
+const ENHANCEMENT_CATEGORY = '2020_ndc_tracker';
 const INDICATOR_SLUGS = {
   EMISSIONS: 'ndce_ghg',
   MAP: 'ndce_status_2020'
