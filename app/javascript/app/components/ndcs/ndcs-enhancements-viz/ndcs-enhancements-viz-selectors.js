@@ -13,7 +13,8 @@ import { europeSlug, europeanCountries } from 'app/data/european-countries';
 import { COUNTRY_STYLES } from 'components/ndcs/shared/constants';
 import { CHART_NAMED_COLORS } from 'styles/constants';
 
-const ENHANCEMENT_CATEGORY = '2020_ndc_tracker';
+// TODO: Remove ndc_enhancement when new data on production
+const ENHANCEMENT_CATEGORIES = ['ndc_enhancement', '2020_ndc_tracker'];
 const INDICATOR_SLUGS = {
   EMISSIONS: 'ndce_ghg',
   MAP: 'ndce_status_2020'
@@ -50,8 +51,8 @@ export const getIndicatorsParsed = createSelector(
   [getCategories, getIndicatorsData, getISOCountries],
   (categories, indicators, isos) => {
     if (!categories || !indicators || !indicators.length) return null;
-    const categoryId = Object.keys(categories).find(
-      id => categories[id].slug === ENHANCEMENT_CATEGORY
+    const categoryId = Object.keys(categories).find(id =>
+      ENHANCEMENT_CATEGORIES.includes(categories[id].slug)
     );
     return sortBy(
       uniqBy(
@@ -228,16 +229,25 @@ export const getPathsWithStyles = createSelector(
   }
 );
 
-export const getLinkToDataExplorer = createSelector([getSearch], search => {
-  const section = 'ndc-content';
-  return generateLinkToDataExplorer(
-    {
-      category: ENHANCEMENT_CATEGORY,
-      ...search
-    },
-    section
-  );
-});
+export const getLinkToDataExplorer = createSelector(
+  [getSearch, getCategories],
+  (search, categories) => {
+    if (!categories) return null;
+    const category = Object.values(categories).find(c =>
+      ENHANCEMENT_CATEGORIES.includes(c.slug)
+    );
+    if (!category) return null;
+
+    const section = 'ndc-content';
+    return generateLinkToDataExplorer(
+      {
+        category: category.slug,
+        ...search
+      },
+      section
+    );
+  }
+);
 
 export const summarizeIndicators = createSelector(
   [getIndicatorsParsed, getMapIndicator],
