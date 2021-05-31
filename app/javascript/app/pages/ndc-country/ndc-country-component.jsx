@@ -65,6 +65,17 @@ function NDCCountry(props) {
     </Button>
   );
 
+  const renderDownloadButton = () => (
+    <Button
+      variant="secondary"
+      link={`/ndcs/country/${iso}`}
+      className={styles.viewDocumentButton}
+      disabled={!documentsOptions}
+    >
+      Download original PDF
+    </Button>
+  );
+
   const renderCompareButton = () => (
     <div className={styles.compareButtonContainer}>
       <Button
@@ -123,6 +134,7 @@ function NDCCountry(props) {
               <TabletPortrait>
                 {renderDocumentsDropdown()}
                 {renderFullTextButton()}
+                {renderDownloadButton()}
               </TabletPortrait>
             </div>
             <TabletPortrait>
@@ -141,6 +153,7 @@ function NDCCountry(props) {
             <MobileOnly>
               <div className={styles.mobileActions}>
                 {renderDocumentsDropdown()}
+                {renderDownloadButton()}
                 {hasSearch && (
                   <div className={styles.search}>
                     <Search
