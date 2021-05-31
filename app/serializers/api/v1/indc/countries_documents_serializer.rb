@@ -124,7 +124,7 @@ module Api
         def query_documents_by_location(location_codes)
           ::Indc::Document.joins(values: :location).
             joins('JOIN indc_submissions ON indc_submissions.document_id = indc_documents.id AND indc_submissions.location_id = locations.id').
-            select('indc_documents.*, locations.iso_code3, indc_submissions.submission_date').
+            select('indc_documents.*, locations.iso_code3, indc_submissions.submission_date, indc_submissions.url').
             where(locations: {iso_code3: location_codes, show_in_cw: true}).
             order(:ordering).
             distinct.
