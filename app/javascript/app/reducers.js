@@ -130,6 +130,7 @@ import * as AnchorNavComponent from 'components/anchor-nav';
 import * as ExploreMapShared from 'components/ndcs/shared/explore-map';
 import * as ndcCountryAccordionComponent from 'components/ndcs/ndcs-country-accordion';
 import * as NotificationBellComponent from 'components/notification-bell';
+import * as WebTourComponent from 'components/web-tour';
 
 const componentsReducers = {
   map: handleActions(mapComponent),
@@ -154,7 +155,8 @@ const componentsReducers = {
   anchorNav: handleActions(AnchorNavComponent),
   exploreMap: handleActions(ExploreMapShared),
   ndcCountryAccordion: handleActions(ndcCountryAccordionComponent),
-  notifications: handleActions(NotificationBellComponent)
+  notifications: handleActions(NotificationBellComponent),
+  tour: handleActions(WebTourComponent)
 };
 
 export default combineReducers({

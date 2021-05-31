@@ -2,6 +2,7 @@ import React from 'react';
 import ReactPlayer from 'react-player';
 import videoThumbnailImage from 'assets/home/videobg@2x';
 import SEOTags from 'components/seo-tags';
+import WebTour from 'components/web-tour';
 import { SEO_PAGES } from 'data/seo';
 
 import IntroSection from './intro-section/intro-section';
@@ -15,9 +16,10 @@ import styles from './home-styles.scss';
 
 const Home = () => (
   <div className={styles.homeBg}>
+    <WebTour />
     <SEOTags href={location.href} page={SEO_PAGES.home} />
     <IntroSection />
-    <div>
+    <div data-tour="step-02">
       <LatestUpdatesSection />
     </div>
     <div>
@@ -26,7 +28,7 @@ const Home = () => (
     <div>
       <UserCasesSection />
     </div>
-    <div className={styles.video}>
+    <div className={styles.video} data-tour="step-01">
       <ReactPlayer
         width="100%"
         height="100%"
