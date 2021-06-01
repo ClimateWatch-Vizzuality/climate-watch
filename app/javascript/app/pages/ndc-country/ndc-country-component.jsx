@@ -35,6 +35,7 @@ function NDCCountry(props) {
     documentsOptions,
     documentSelected,
     handleDropDownChange,
+    handleDownload,
     match
   } = props;
 
@@ -68,7 +69,11 @@ function NDCCountry(props) {
   const renderDownloadButton = () => (
     <Button
       variant="secondary"
-      link={`/ndcs/country/${iso}`}
+      onClick={() =>
+        documentSelected &&
+        documentSelected.url &&
+        handleDownload(documentSelected.url)
+      }
       className={styles.viewDocumentButton}
       disabled={!documentsOptions}
     >
@@ -195,6 +200,7 @@ NDCCountry.propTypes = {
   documentSelected: PropTypes.object,
   countriesOptions: PropTypes.array,
   handleDropDownChange: PropTypes.func,
+  handleDownload: PropTypes.func,
   location: PropTypes.object,
   notSummary: PropTypes.bool
 };
