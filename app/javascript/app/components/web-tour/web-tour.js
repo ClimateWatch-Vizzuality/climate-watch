@@ -4,6 +4,7 @@ import actions from './web-tour-actions';
 import reducers, { initialState } from './web-tour-reducers';
 
 const getStateProps = state => ({
+  slug: state.tour.slug,
   isOpen: state.tour.isOpen
 });
 

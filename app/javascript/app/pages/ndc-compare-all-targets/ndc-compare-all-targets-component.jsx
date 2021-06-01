@@ -66,7 +66,7 @@ const NDCCompareAllTargets = props => {
     countryIsos
   } = props;
   return (
-    <React.Fragment>
+    <div data-tour="compare-all-01">
       <SEOTags page={SEO_PAGES.ndcCompareAll} href={location.href} />
       <Header route={route}>
         <div className={cx(layout.content, styles.header)}>
@@ -140,7 +140,7 @@ const NDCCompareAllTargets = props => {
       <NdcCompareAllTargetsProvider />
       <CountriesDocumentsProvider />
       <ModalMetadata />
-    </React.Fragment>
+    </div>
   );
 };
 

@@ -11,6 +11,7 @@ import NavBarMobile from 'components/navbar-mobile';
 import NavBar from 'components/navbar';
 import Footer from 'components/footer';
 import CookieConsent from 'components/cookie-consent';
+import WebTour from 'components/web-tour';
 import styles from './app-styles.scss';
 
 const FEATURE_POP_UP = process.env.FEATURE_POP_UP === 'true';
@@ -27,6 +28,7 @@ class App extends PureComponent {
         )}
       >
         <CountriesProvider />
+        <WebTour />
         <Desktop>
           {isDesktop =>
             (isDesktop ? (

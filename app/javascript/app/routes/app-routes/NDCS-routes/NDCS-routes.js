@@ -31,7 +31,8 @@ export default [
   {
     path: '/compare-all-targets',
     label: 'COMPARE ALL TARGETS',
-    activeId
+    activeId,
+    tour: 'compare-all'
   },
   {
     path: '/net-zero-tracker',
