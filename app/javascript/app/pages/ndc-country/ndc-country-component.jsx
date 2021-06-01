@@ -35,6 +35,7 @@ function NDCCountry(props) {
     documentsOptions,
     documentSelected,
     handleDropDownChange,
+    handleDownload,
     match
   } = props;
 
@@ -62,6 +63,21 @@ function NDCCountry(props) {
       disabled={!documentsOptions}
     >
       View Full Text
+    </Button>
+  );
+
+  const renderDownloadButton = () => (
+    <Button
+      variant="secondary"
+      onClick={() =>
+        documentSelected &&
+        documentSelected.url &&
+        handleDownload(documentSelected.url)
+      }
+      className={styles.viewDocumentButton}
+      disabled={!documentsOptions}
+    >
+      Download original PDF
     </Button>
   );
 
@@ -123,6 +139,7 @@ function NDCCountry(props) {
               <TabletPortrait>
                 {renderDocumentsDropdown()}
                 {renderFullTextButton()}
+                {renderDownloadButton()}
               </TabletPortrait>
             </div>
             <TabletPortrait>
@@ -141,6 +158,7 @@ function NDCCountry(props) {
             <MobileOnly>
               <div className={styles.mobileActions}>
                 {renderDocumentsDropdown()}
+                {renderDownloadButton()}
                 {hasSearch && (
                   <div className={styles.search}>
                     <Search
@@ -182,6 +200,7 @@ NDCCountry.propTypes = {
   documentSelected: PropTypes.object,
   countriesOptions: PropTypes.array,
   handleDropDownChange: PropTypes.func,
+  handleDownload: PropTypes.func,
   location: PropTypes.object,
   notSummary: PropTypes.bool
 };

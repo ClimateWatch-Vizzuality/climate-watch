@@ -4,6 +4,7 @@ import Proptypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import qs from 'query-string';
 import { getLocationParamUpdated } from 'utils/navigation';
+import { handleAnalytics } from 'utils/analytics';
 
 import NDCCountryComponent from './ndc-country-component';
 import {
@@ -81,11 +82,18 @@ function NDCCountryContainer(props) {
     }
   };
 
+  const handleDownload = downloadUrl => {
+    handleAnalytics('NDC', 'Download document', 'Download original PDF');
+
+    window.location.assign(downloadUrl);
+  };
+
   return createElement(NDCCountryComponent, {
     ...props,
     onSearchChange,
     handleCountryLink,
-    handleDropDownChange
+    handleDropDownChange,
+    handleDownload
   });
 }
 
