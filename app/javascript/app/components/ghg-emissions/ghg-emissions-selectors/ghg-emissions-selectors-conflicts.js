@@ -102,7 +102,8 @@ export const getIncompatibleSectorConflicts = (
       'Energy',
       'Transportation'
     ]);
-    if (incompatibleSectors) {
+
+    if (incompatibleSectors.length) {
       return [
         `Bunker Fuels and ${incompatibleSectors.join(
           ', '
