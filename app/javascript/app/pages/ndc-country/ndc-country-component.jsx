@@ -35,7 +35,7 @@ function NDCCountry(props) {
     documentsOptions,
     documentSelected,
     handleDropDownChange,
-    handleDownload,
+    handleDownloadAnalytics,
     match
   } = props;
 
@@ -72,8 +72,10 @@ function NDCCountry(props) {
       onClick={() =>
         documentSelected &&
         documentSelected.url &&
-        handleDownload(documentSelected.url)
+        handleDownloadAnalytics(documentSelected)
       }
+      href={documentSelected && documentSelected.url}
+      target="_blank"
       className={styles.viewDocumentButton}
       disabled={!documentsOptions}
     >
@@ -200,7 +202,7 @@ NDCCountry.propTypes = {
   documentSelected: PropTypes.object,
   countriesOptions: PropTypes.array,
   handleDropDownChange: PropTypes.func,
-  handleDownload: PropTypes.func,
+  handleDownloadAnalytics: PropTypes.func,
   location: PropTypes.object,
   notSummary: PropTypes.bool
 };

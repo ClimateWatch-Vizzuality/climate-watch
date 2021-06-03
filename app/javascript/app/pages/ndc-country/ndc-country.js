@@ -82,10 +82,8 @@ function NDCCountryContainer(props) {
     }
   };
 
-  const handleDownload = downloadUrl => {
-    handleAnalytics('NDC', 'Download document', 'Download original PDF');
-
-    window.location.assign(downloadUrl);
+  const handleDownloadAnalytics = documentSelected => {
+    handleAnalytics('NDC', 'Download document', documentSelected.value);
   };
 
   return createElement(NDCCountryComponent, {
@@ -93,7 +91,7 @@ function NDCCountryContainer(props) {
     onSearchChange,
     handleCountryLink,
     handleDropDownChange,
-    handleDownload
+    handleDownloadAnalytics
   });
 }
 
