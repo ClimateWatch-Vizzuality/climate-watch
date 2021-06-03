@@ -63,7 +63,8 @@ const getCountryDocuments = createSelector(
 const documentOption = document =>
   document && {
     label: document.long_name,
-    value: document.slug
+    value: document.slug,
+    url: document.url
   };
 
 export const getDocumentsOptions = createSelector(
