@@ -34,22 +34,12 @@
   @include xy-gutters($gutter-position: ('bottom'), $gutters: $gutter-padding);
 
   @media #{$tablet-portrait} {
-    @include row(6);
     @include xy-gutters($gutter-position: ('bottom'), $gutters: $gutter-padding);
-    @include row((12, 6, 6));
-
-    &.withoutBack {
-      @include row((12, 6, 6, 6));
-      @include xy-gutters($gutter-position: ('bottom'), $gutters: $gutter-padding);
-    }
+    @include row((6, 6, 6, 6));
   }
 
   @media #{$tablet-landscape} {
-    @include row((6, 3, 3));
-
-    &.withoutBack {
-      @include row((12, 4, 4, 4));
-    }
+    @include row((3, 3, 3, 3));
 
     z-index: $z-index-base;
   }

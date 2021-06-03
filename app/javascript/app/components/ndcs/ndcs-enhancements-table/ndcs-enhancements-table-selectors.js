@@ -18,7 +18,7 @@ export const getIndicatorsParsed = createSelector(
   (categories, indicators) => {
     if (!categories || !indicators || !indicators.length) return null;
     const categoryId = Object.keys(categories).find(
-      id => categories[id].slug === 'ndc_enhancement'
+      id => ['ndc_enhancement', '2020_ndc_tracker'].includes(categories[id].slug)
     );
     return sortBy(
       uniqBy(

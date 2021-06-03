@@ -9,7 +9,7 @@ end
 # core gems
 gem 'rails', '~> 5.2.4'
 gem 'bootsnap'
-gem 'puma', '~> 3.12.6'
+gem 'puma'
 
 # DB
 gem 'pg', '~> 0.20'
