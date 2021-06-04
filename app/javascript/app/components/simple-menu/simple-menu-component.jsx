@@ -83,7 +83,9 @@ class SimpleMenu extends PureComponent {
           className={styles.link}
           activeClassName={styles.active}
           to={option.path}
-          onClick={this.handleLinkClick}
+          onClick={() => {
+            this.handleLinkClick();
+          }}
         >
           {this.renderInsideLink(option)}
         </NavLink>
@@ -117,7 +119,6 @@ class SimpleMenu extends PureComponent {
       options
     } = this.props;
     const { open } = this.state;
-
     const paths = options.map(option => option.path);
     const active = includes(paths, currentPathname);
     return (
@@ -125,7 +126,9 @@ class SimpleMenu extends PureComponent {
         className={cx(styles.button, buttonClassName, {
           [styles.active]: open || active
         })}
-        onClick={() => this.setState({ open: !open })}
+        onClick={() => {
+          this.setState({ open: !open });
+        }}
       >
         {icon && <Icon icon={icon} className={styles.icon} />}
         {title && <div>{title}</div>}
@@ -149,7 +152,6 @@ class SimpleMenu extends PureComponent {
       'data-for': dataFor,
       'data-tip': dataTip
     };
-
     return (
       <ClickOutside
         onClickOutside={() => this.setState({ open: false })}
