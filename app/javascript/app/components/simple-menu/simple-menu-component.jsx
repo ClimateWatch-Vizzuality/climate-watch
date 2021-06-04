@@ -77,8 +77,6 @@ class SimpleMenu extends PureComponent {
   }
 
   renderLink(option) {
-    const { setActiveTourSlug } = this.props;
-
     if (option.path) {
       return (
         <NavLink
@@ -86,9 +84,6 @@ class SimpleMenu extends PureComponent {
           activeClassName={styles.active}
           to={option.path}
           onClick={() => {
-            if (option.tour) {
-              setActiveTourSlug(option.tour);
-            }
             this.handleLinkClick();
           }}
         >
@@ -121,23 +116,17 @@ class SimpleMenu extends PureComponent {
       title,
       buttonClassName,
       currentPathname,
-      options,
-      isTourOpen,
-      setActiveTourSlug
+      options
     } = this.props;
     const { open } = this.state;
     const paths = options.map(option => option.path);
     const active = includes(paths, currentPathname);
-    const commitmentsTour = isTourOpen && title === 'COMMITMENTS';
     return (
       <button
         className={cx(styles.button, buttonClassName, {
           [styles.active]: open || active
         })}
         onClick={() => {
-          if (commitmentsTour) {
-            setActiveTourSlug('commitments');
-          }
           this.setState({ open: !open });
         }}
       >
@@ -156,19 +145,12 @@ class SimpleMenu extends PureComponent {
       inButton,
       inButtonGroup,
       dataFor,
-      dataTip,
-      isTourOpen,
-      title
+      dataTip
     } = this.props;
     const { open } = this.state;
     const tooltipProps = {
       'data-for': dataFor,
       'data-tip': dataTip
-    };
-    const tourProps = {
-      ...(isTourOpen && title === 'COMMITMENTS'
-        ? { 'data-tour': 'commitments-01' }
-        : {})
     };
     return (
       <ClickOutside
@@ -183,10 +165,7 @@ class SimpleMenu extends PureComponent {
         {...tooltipProps}
       >
         {this.renderButton()}
-        <ul
-          className={cx(styles.links, { [styles.open]: open })}
-          {...tourProps}
-        >
+        <ul className={cx(styles.links, { [styles.open]: open })}>
           {options.map(option => (
             <li key={option.label}>{this.renderLink(option)}</li>
           ))}
@@ -209,9 +188,7 @@ SimpleMenu.propTypes = {
   currentPathname: PropTypes.string,
   analyticsGraphName: PropTypes.string,
   dataFor: PropTypes.string,
-  dataTip: PropTypes.string,
-  isTourOpen: PropTypes.bool,
-  setActiveTourSlug: PropTypes.func
+  dataTip: PropTypes.string
 };
 
 SimpleMenu.defaultProps = {

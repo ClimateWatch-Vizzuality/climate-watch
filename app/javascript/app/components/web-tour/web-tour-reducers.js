@@ -1,9 +1,8 @@
 export const initialState = {
-  isOpen: true,
-  slug: 'home'
+  isOpen: false,
+  slug: null
 };
 
 export default {
-  setOpen: (state, { isOpen }) => ({ ...state, isOpen }),
-  setActiveTourSlug: (state, { payload }) => ({ ...state, slug: payload })
+  setOpen: (state, { payload: { isOpen } }) => ({ ...state, isOpen })
 };

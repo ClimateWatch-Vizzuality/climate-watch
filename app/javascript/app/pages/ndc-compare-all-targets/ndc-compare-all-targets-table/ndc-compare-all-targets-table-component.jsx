@@ -113,7 +113,10 @@ const CompareAllTable = ({
   selectedTargets,
   setSelectedTargets
 }) => (
-  <div className={compareTableTheme.compareTableWrapper}>
+  <div
+    className={compareTableTheme.compareTableWrapper}
+    data-tour="compare-all-02"
+  >
     {loading && (
       <div className={styles.loaderWrapper}>
         <Loading light />

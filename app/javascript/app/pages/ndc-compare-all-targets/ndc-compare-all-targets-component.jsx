@@ -40,12 +40,14 @@ const renderLegend = () => (
 );
 
 const renderSearch = (searchHandler, query) => (
-  <Search
-    value={query}
-    onChange={searchHandler}
-    className={styles.searchBox}
-    placeholder="Search table data"
-  />
+  <div data-tour="compare-all-03">
+    <Search
+      value={query}
+      onChange={searchHandler}
+      className={styles.searchBox}
+      placeholder="Search table data"
+    />
+  </div>
 );
 
 const NDCCompareAllTargets = props => {
@@ -96,28 +98,32 @@ const NDCCompareAllTargets = props => {
                   }
                 ]}
               />
-              <Button
-                variant="secondary"
-                className={styles.actionButton}
-                disabled={selectedTargets.length === 0}
-                onClick={() => handleTargetsChange(null)}
-              >
-                Clear
-              </Button>
-              <Button
-                variant="primary"
-                className={styles.actionButton}
-                disabled={selectedTargets.length === 0}
-                link={`/custom-compare/overview?targets=${selectedTargets.join(
-                  ','
-                )}`}
-              >
-                {`Compare${
-                  selectedTargets.length === 0
-                    ? ''
-                    : ` (${selectedTargets.length})`
-                }`}
-              </Button>
+              <div data-tour="compare-all-04">
+                <Button
+                  variant="secondary"
+                  className={styles.actionButton}
+                  disabled={selectedTargets.length === 0}
+                  onClick={() => handleTargetsChange(null)}
+                >
+                  Clear
+                </Button>
+              </div>
+              <div data-tour="compare-all-05">
+                <Button
+                  variant="primary"
+                  className={styles.actionButton}
+                  disabled={selectedTargets.length === 0}
+                  link={`/custom-compare/overview?targets=${selectedTargets.join(
+                    ','
+                  )}`}
+                >
+                  {`Compare${
+                    selectedTargets.length === 0
+                      ? ''
+                      : ` (${selectedTargets.length})`
+                  }`}
+                </Button>
+              </div>
               {!loading && (
                 <div className={styles.filtersLayout}>
                   {renderSearch(handleSearchChange, query)}

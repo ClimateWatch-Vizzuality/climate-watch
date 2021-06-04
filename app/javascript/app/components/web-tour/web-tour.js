@@ -1,7 +1,8 @@
 import { connect } from 'react-redux';
-import Component from './web-tour-component';
-import actions from './web-tour-actions';
+import { withRouter } from 'react-router';
 import reducers, { initialState } from './web-tour-reducers';
+import actions from './web-tour-actions';
+import Component from './web-tour-component';
 
 const getStateProps = state => ({
   slug: state.tour.slug,
@@ -9,4 +10,4 @@ const getStateProps = state => ({
 });
 
 export { actions, reducers, initialState };
-export default connect(getStateProps, actions)(Component);
+export default withRouter(connect(getStateProps, actions)(Component));

@@ -1,4 +1,8 @@
 @import '~styles/layout.scss';
 
-// .c-web-tour {
-// }
+.webTour {
+  h2,
+  p {
+    margin-bottom: 10px;
+  }
+}
