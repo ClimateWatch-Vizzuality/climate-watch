@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 import { scaleLinear } from 'd3-scale';
-import worldPaths from 'app/data/world-50m-paths';
+import getIPPaths from 'app/data/world-50m-paths';
 import { generateLinkToDataExplorer } from 'utils/data-explorer';
 import { shouldShowPath } from 'utils/map';
 
@@ -28,8 +28,9 @@ export const getNdcsSdgsGoalsDataSelected = createSelector(
 );
 
 export const getPathsWithStyles = createSelector(
-  [getNdcsSdgsGoalsDataSelected, getTargetHover],
-  (data, targetHover) => {
+  [getNdcsSdgsGoalsDataSelected, getTargetHover, getIPPaths],
+  (data, targetHover, worldPaths) => {
+    if (!worldPaths) return null;
     if (!data) {
       return worldPaths.filter(path => shouldShowPath(path));
     }

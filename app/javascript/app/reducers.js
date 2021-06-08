@@ -9,6 +9,7 @@ import * as countriesProvider from 'providers/countries-provider';
 import * as regionsProvider from 'providers/regions-provider';
 import * as documentsProvider from 'providers/documents-provider';
 import * as LSEProvider from 'providers/lse-provider';
+import * as IPCountry from 'providers/ip-country-provider';
 import * as countriesDocumentsProvider from 'providers/countries-documents-provider';
 import * as espLocationsProvider from 'providers/esp-locations-provider';
 import * as espTimeSeriesProvider from 'providers/esp-time-series-provider';
@@ -51,6 +52,7 @@ const providersReducers = {
   regions: handleActions(regionsProvider),
   documents: handleActions(documentsProvider),
   lse: handleActions(LSEProvider),
+  ipCountry: handleActions(IPCountry),
   countriesDocuments: handleActions(countriesDocumentsProvider),
   adaptations: handleActions(adaptationsProvider),
   emissions: handleActions(emissionsProvider),

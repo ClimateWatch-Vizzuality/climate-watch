@@ -4,6 +4,7 @@ import { isPageContained, isEmbededComponent } from 'utils/navigation';
 import { renderRoutes } from 'react-router-config';
 import cx from 'classnames';
 import PopUp from 'components/pop-up';
+import IPCountryProvider from 'providers/ip-country-provider';
 import CountriesProvider from 'providers/countries-provider';
 import UserReport from 'components/user-report';
 import { Desktop } from 'components/responsive';
@@ -29,6 +30,7 @@ class App extends PureComponent {
           navbarMobileIsOpen ? styles.mobileMenuOpen : ''
         )}
       >
+        <IPCountryProvider />
         <CountriesProvider />
         {FEATURE_WEB_TOUR && <WebTour route={route} />}
         {FEATURE_WEB_TOUR && <WebTourSwitch />}
