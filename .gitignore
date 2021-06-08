@@ -54,3 +54,6 @@ bower.json
 # Editors
 .vscode/
 .idea/
+
+# maxmind db
+db/*.mmdb
