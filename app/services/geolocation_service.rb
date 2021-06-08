@@ -3,6 +3,10 @@ class GeolocationService
 
   class << self
     delegate :call, to: :instance
+
+    def db_path
+      Rails.root.join('db', 'GeoLite2-Country.mmdb')
+    end
   end
 
   def call(ip)
@@ -12,10 +16,6 @@ class GeolocationService
   private
 
   def db
-    @db ||= MaxMind::DB.new(db_path, mode: MaxMind::DB::MODE_MEMORY)
-  end
-
-  def db_path
-    Rails.root.join('db', 'GeoLite2-Country.mmdb')
+    @db ||= MaxMind::DB.new(GeolocationService.db_path, mode: MaxMind::DB::MODE_MEMORY)
   end
 end
