@@ -5,6 +5,7 @@ import uniq from 'lodash/uniq';
 import Icon from 'components/icon';
 import checkIcon from 'assets/icons/check.svg';
 import downloadIcon from 'assets/icons/download.svg';
+import externalLink from 'assets/icons/external-link.svg';
 import ClickOutside from 'react-click-outside';
 import { NavLink } from 'react-router-dom';
 import includes from 'lodash/includes';
@@ -76,6 +77,19 @@ class SimpleMenu extends PureComponent {
     );
   }
 
+  // eslint-disable-next-line class-methods-use-this
+  renderExternalLink(option) {
+    return (
+      <div
+        className={cx(styles.documentLink, styles.externalLink)}
+        key={option.label}
+      >
+        <span className={styles.title}>{option.label}</span>
+        <Icon icon={externalLink} className={styles.icon} />
+      </div>
+    );
+  }
+
   renderLink(option) {
     if (option.path) {
       return (
@@ -91,21 +105,26 @@ class SimpleMenu extends PureComponent {
         </NavLink>
       );
     }
-    return option.action ? (
-      <button
-        className={styles.link}
-        onClick={() => this.handleActionClick(option)}
-      >
-        {this.renderInsideLink(option, true)}
-      </button>
-    ) : (
+    if (option.action) {
+      return (
+        <button
+          className={styles.link}
+          onClick={() => this.handleActionClick(option)}
+        >
+          {this.renderInsideLink(option, true)}
+        </button>
+      );
+    }
+    return (
       <a
         className={styles.link}
-        target={option.target || '_blank'}
+        target={(option.target || option.external) && '_blank'}
         href={option.link}
         onClick={this.handleLinkClick}
       >
-        {this.renderInsideLink(option)}
+        {option.external
+          ? this.renderExternalLink(option)
+          : this.renderInsideLink(option)}
       </a>
     );
   }
