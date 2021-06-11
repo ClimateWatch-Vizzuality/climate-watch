@@ -57,3 +57,4 @@ bower.json
 
 # maxmind db
 db/*.mmdb
+!db/GeoLite2-Country-Test.mmdb
