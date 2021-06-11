@@ -40,18 +40,19 @@ namespace :db do
   end
 
   task import_maxmind: :environment do
-    db_path = GeolocationService.db_path
+    db_path = Rails.root.join('db', 'GeoLite2-Country.mmdb')
     tmp_file = Rails.root.join('tmp', 'tmp.mmdb.tar.gz')
     key = ENV['MAXMIND_LICENSE_KEY']
     url = "https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-Country&license_key=#{key}&suffix=tar.gz"
 
     abort 'NO MAXMIND LICENSE KEY' unless key.present?
 
-    abort 'Maxmind download error' unless system "wget -c --tries=3 '#{url}' -O #{tmp_file}"
+    puts "DOWNLOADING MAXMIND DB..."
+    abort 'Maxmind download error' unless system "wget -q -c --tries=3 '#{url}' -O #{tmp_file}"
     abort 'Maxmind unzip error' unless system "cd tmp && tar -xvf #{tmp_file} --wildcards --strip-components 1 '*.mmdb' && mv GeoLite2-Country.mmdb #{db_path}"
 
     system "rm #{tmp_file}"
 
-    puts 'MAXMIND DB IMPORTED!'
+    puts 'MAXMIND DB DOWNLOADED!'
   end
 end
