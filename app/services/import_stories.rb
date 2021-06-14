@@ -27,9 +27,10 @@ class ImportStories
       published_at = item.pubDate
       story = Story.find_or_initialize_by(title: title,
                                           published_at: published_at)
-      story.link = feed.channel.link + item.link.split(/href="|">/)[1].sub!(/^\//, '')
+      story.link = item.link
       story.background_image_url = item.enclosure ? item.enclosure.url : nil
-      story.tags = item.category ? item.category.content.split(',').map(&:strip) : nil
+      # 14062021 - WRI new feed returns only climatewatch-pinned tag
+      story.tags = ['climatewatch-pinned']
       story.save
     end
     # rubocop:enable AbcSize
