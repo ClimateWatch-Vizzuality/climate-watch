@@ -34,6 +34,7 @@ node {
 
   def cw_files_env = "--build-arg CW_FILES_PREFIX=${cw_files_prefix}"
   def app_signal_env = "--build-arg APPSIGNAL_PUSH_API_KEY=${env.CW_APP_SIGNAL}"
+  def maxmind_license_key_env = "--build-arg MAXMIND_LICENSE_KEY=${env.MAXMIND_LICENSE_KEY}"
   def user_report_env = "--build-arg USER_REPORT_KEY=${user_report_key}"
   def user_survey_env = "--build-arg USER_SURVEY_SPREADSHEET_URL=${user_survey_spreadsheet}"
   def user_newsletter_env = "--build-arg USER_NEWSLETTER_URL=${user_newsletter}"
@@ -41,8 +42,8 @@ node {
   try {
 
     stage ('Build docker') {
-      sh("docker -H :2375 build ${base_envs} ${feature_flags_env} ${cw_files_env} ${app_signal_env} ${user_report_env} ${user_survey_env} ${user_newsletter_env} -t ${imageTag} ." )
-      sh("docker -H :2375 build ${base_envs} ${feature_flags_env} ${cw_files_env} ${app_signal_env} ${user_report_env} ${user_survey_env} ${user_newsletter_env} -t ${dockerUsername}/${appName}:latest ." )
+      sh("docker -H :2375 build ${base_envs} ${feature_flags_env} ${cw_files_env} ${app_signal_env} ${maxmind_license_key_env} ${user_report_env} ${user_survey_env} ${user_newsletter_env} -t ${imageTag} ." )
+      sh("docker -H :2375 build ${base_envs} ${feature_flags_env} ${cw_files_env} ${app_signal_env} ${maxmind_license_key_env} ${user_report_env} ${user_survey_env} ${user_newsletter_env} -t ${dockerUsername}/${appName}:latest ." )
     }
 
     stage ('Run Tests') {

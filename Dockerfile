@@ -74,10 +74,16 @@ ENV USER_SURVEY_SPREADSHEET_URL $USER_SURVEY_SPREADSHEET_URL
 ARG USER_NEWSLETTER_URL
 ENV USER_NEWSLETTER_URL $USER_NEWSLETTER_URL
 
+ARG MAXMIND_LICENSE_KEY
+ENV MAXMIND_LICENSE_KEY $MAXMIND_LICENSE_KEY
+
 # Bundle app source
 COPY . ./
 
 EXPOSE 3000
+
+# Download maxmind IP db
+RUN bundle exec rails db:import_maxmind
 
 # Rails assets compile
 RUN bundle exec rake assets:precompile
