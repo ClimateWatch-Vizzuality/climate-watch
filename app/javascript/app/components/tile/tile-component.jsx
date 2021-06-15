@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Truncate from 'react-truncate';
 import Icon from 'components/icon';
 import arrowTailRight from 'assets/icons/arrow-tail-right.svg';
+import AbbrReplace from 'components/abbr-replace';
 import styles from './tile-styles.scss';
 
 const Tile = ({ category, date, description, link }) => (
@@ -15,7 +16,9 @@ const Tile = ({ category, date, description, link }) => (
     <div className={styles.container}>
       <div className={styles.content}>
         <div className={styles.details}>
-          <span>{category}</span>
+          <AbbrReplace>
+            <span>{category}</span>
+          </AbbrReplace>
           <span>{date}</span>
         </div>
         <Truncate
@@ -24,7 +27,7 @@ const Tile = ({ category, date, description, link }) => (
           ellipsis={<span>...</span>}
           width={270}
         >
-          {description}
+          <AbbrReplace>{description}</AbbrReplace>
         </Truncate>
       </div>
       <span className={styles.link}>

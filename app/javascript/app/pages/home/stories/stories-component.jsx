@@ -9,6 +9,7 @@ import Button from 'components/button';
 import { Icon } from 'cw-components';
 import yellowWriLogo from 'assets/icons/yellow-wri-logo';
 import { WRI_CLIMATE_BLOG } from 'data/constants';
+import AbbrReplace from 'components/abbr-replace';
 import styles from './stories-styles.scss';
 
 class Stories extends PureComponent {
@@ -54,10 +55,12 @@ class Stories extends PureComponent {
                   <div className={styles.storyDate}>
                     {this.formatTime(new Date(story.published_at))}
                   </div>
-                  <div className={styles.storyTitle}>{story.title}</div>
-                  <div className={styles.storyDescription}>
-                    {story.description}
-                  </div>
+                  <AbbrReplace>
+                    <div className={styles.storyTitle}>{story.title}</div>
+                    <div className={styles.storyDescription}>
+                      {story.description}
+                    </div>
+                  </AbbrReplace>
                   <div className={styles.logoContainer}>
                     <Icon
                       alt="Wri logo"
