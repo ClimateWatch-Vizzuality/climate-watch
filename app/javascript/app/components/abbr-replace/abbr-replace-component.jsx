@@ -3,6 +3,24 @@ import PropTypes from 'prop-types';
 import reactStringReplace from 'react-string-replace-recursively';
 import abbreviations from './abbr-replace-data';
 
+const replaceText = (text, replacements) => {
+  let updatedText = text;
+  Object.keys(replacements).forEach(x => {
+    updatedText = updatedText.replace(new RegExp(x, 'g'), replacements[x]);
+  });
+  return updatedText;
+};
+
+const replaceAllButTags = (text, replacements) => {
+  const splitTags = new RegExp('(<s*[^>]*>)(.*?)(<s*/s*.?>)', 'g');
+  const splittedText = text.split(splitTags);
+  // eslint-disable-next-line no-confusing-arrow
+  const replacedSplittedText = splittedText.map(textChunk =>
+    textChunk.startsWith('<') ? textChunk : replaceText(textChunk, replacements)
+  );
+  return replacedSplittedText.join('');
+};
+
 const AbbrReplace = ({ children }) => {
   const [config, setConfig] = useState();
   const [stringConfig, setStringConfig] = useState();
@@ -68,28 +86,20 @@ const AbbrReplace = ({ children }) => {
       ? replaceChunk(_children)
       : React.Children.map(_children, traverseChunk);
 
-  return children && config ? traverseChildren(children) : children;
+  const tryTraverseChildren = () => {
+    try {
+      return traverseChildren(children);
+    } catch (error) {
+      console.warn('Error in abbreviation replacement', { error, children });
+      return children;
+    }
+  };
+
+  return children && config ? tryTraverseChildren() : children;
 };
 
 AbbrReplace.propTypes = {
   children: PropTypes.node.isRequired
-};
-const replaceText = (text, replacements) => {
-  let updatedText = text;
-  Object.keys(replacements).forEach(x => {
-    updatedText = updatedText.replace(new RegExp(x, 'g'), replacements[x]);
-  });
-  return updatedText;
-};
-
-const replaceAll = (text, replacements) => {
-  const splitTags = new RegExp('(<s*[^>]*>)(.*?)(<s*/s*.?>)', 'g');
-  const splittedText = text.split(splitTags);
-  // eslint-disable-next-line no-confusing-arrow
-  const replacedSplittedText = splittedText.map(textChunk =>
-    textChunk.startsWith('<') ? textChunk : replaceText(textChunk, replacements)
-  );
-  return replacedSplittedText.join('');
 };
 
 export const replaceStringAbbr = text => {
@@ -99,7 +109,7 @@ export const replaceStringAbbr = text => {
       key
     ] = `<abbr key="${key}" title="${abbreviations[key]}">${key}</abbr>`;
   });
-  return replaceAll(text, replacements);
+  return replaceAllButTags(text, replacements);
 };
 
 export default AbbrReplace;
