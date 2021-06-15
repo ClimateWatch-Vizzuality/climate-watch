@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import ClickOutside from 'react-click-outside';
 import HorizontalTimeline from 'react-horizontal-timeline';
 import TimelineProvider from 'providers/timeline-provider';
-
+import cx from 'classnames';
 import styles from './country-timeline-styles.scss';
 
 class CountryTimeline extends PureComponent {
@@ -53,9 +53,9 @@ class CountryTimeline extends PureComponent {
 
   render() {
     const { documentYears } = this.props;
-    const { index: currentIndex } = this.state;
+    const { index: currentIndex, open } = this.state;
     return (
-      <div className={styles.timelineContainer}>
+      <div className={cx(styles.timelineContainer, { [styles.opened]: open })}>
         <div className={styles.timeline}>
           <TimelineProvider />
           <h3 className={styles.timelineDescription}>
