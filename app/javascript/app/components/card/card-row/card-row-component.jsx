@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
+import AbbrReplace, { replaceStringAbbr } from 'components/abbr-replace';
 import styles from './card-row-styles.scss';
 
 const CardRowComponent = ({ rowData }) => (
@@ -11,13 +12,17 @@ const CardRowComponent = ({ rowData }) => (
           [styles.cardRowWithSubtitle]: rowData.subtitle
         })}
       >
-        <div className={styles.title}>{rowData.title || ''}</div>
-        {rowData.subtitle && <p className={styles.title}>{rowData.subtitle}</p>}
+        <AbbrReplace>
+          <div className={styles.title}>{rowData.title || ''}</div>
+          {rowData.subtitle && (
+            <p className={styles.title}>{rowData.subtitle}</p>
+          )}
+        </AbbrReplace>
         <p
           className={styles.text}
           // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{
-            __html: rowData.value || ''
+            __html: rowData.value ? replaceStringAbbr(rowData.value) : ''
           }}
         />
       </div>

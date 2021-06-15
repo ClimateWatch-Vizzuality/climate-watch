@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import AbbrReplace from 'components/abbr-replace/abbr-replace';
 
 import styles from './map-footer-styles.scss';
 
@@ -10,7 +11,9 @@ class MapFooter extends PureComponent {
 
     return (
       <div className={styles.container}>
-        <span className={styles.title}>{title}</span>
+        <span className={styles.title}>
+          <AbbrReplace>{title}</AbbrReplace>
+        </span>
         <div>
           {buckets.map(value => (
             <span

@@ -4,6 +4,7 @@ import ClickOutside from 'react-click-outside';
 import HorizontalTimeline from 'react-horizontal-timeline';
 import TimelineProvider from 'providers/timeline-provider';
 import cx from 'classnames';
+import AbbrReplace from 'components/abbr-replace';
 import styles from './country-timeline-styles.scss';
 
 class CountryTimeline extends PureComponent {
@@ -31,7 +32,7 @@ class CountryTimeline extends PureComponent {
                   target="_blank"
                   href={document.link}
                 >
-                  {document.label}
+                  <AbbrReplace>{document.label}</AbbrReplace>
                 </a>
               </li>
             ))}
@@ -59,7 +60,7 @@ class CountryTimeline extends PureComponent {
         <div className={styles.timeline}>
           <TimelineProvider />
           <h3 className={styles.timelineDescription}>
-            Timeline of UNFCCC Document Submissions
+            <AbbrReplace>Timeline of UNFCCC Document Submissions</AbbrReplace>
           </h3>
           {documentYears && documentYears.length > 0 ? (
             <HorizontalTimeline

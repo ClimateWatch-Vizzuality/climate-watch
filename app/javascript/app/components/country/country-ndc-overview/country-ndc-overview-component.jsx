@@ -11,6 +11,7 @@ import ModalMetadata from 'components/modal-metadata';
 import Loading from 'components/loading';
 import NoContent from 'components/no-content';
 import ButtonGroup from 'components/button-group';
+import AbbrReplace, { replaceStringAbbr } from 'components/abbr-replace';
 import { TabletLandscape, TabletPortraitOnly } from 'components/responsive';
 import introSmallTheme from 'styles/themes/intro/intro-simple-small.scss';
 import introTheme from 'styles/themes/intro/intro-simple.scss';
@@ -169,8 +170,10 @@ function CountryNdcOverview(props) {
       <div className={styles.alert}>
         <Icon icon={alertIcon} className={styles.alertIcon} />
         <span className={styles.alertText}>
-          The information shown below only reflects the{' '}
-          {!isCountryPage ? 'selected' : 'last'} NDC submission.
+          <AbbrReplace>
+            The information shown below only reflects the{' '}
+            {!isCountryPage ? 'selected' : 'last'} NDC submission.
+          </AbbrReplace>
         </span>
       </div>
     </div>
@@ -186,7 +189,7 @@ function CountryNdcOverview(props) {
         __html:
           values.indc_summary &&
           values.indc_summary[0] &&
-          values.indc_summary[0].value
+          replaceStringAbbr(values.indc_summary[0].value)
       }}
     />
   );
@@ -205,6 +208,7 @@ function CountryNdcOverview(props) {
         documentDate &&
         `(submitted ${moment(documentDate).format('MM/DD/YYYY')})`
       }
+      tag="h3"
     />
   );
 

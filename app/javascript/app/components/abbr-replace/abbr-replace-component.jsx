@@ -11,14 +11,23 @@ const replaceText = (text, replacements) => {
   return updatedText;
 };
 
+// This component exports a component and a function: replaceStringAbbr (just for the dangerouslySetInnerHTML case)
+// to transform the abbreviations on the ./abbr-replace-data file into an abbr tags
+// Be careful with the layout once we add the AbbrReplace component as it may change if we have flex display
+
 const replaceAllButTags = (text, replacements) => {
-  const splitTags = new RegExp('(<s*[^>]*>)(.*?)(<s*/s*.?>)', 'g');
+  const splitTags = new RegExp('(<s*[^>]*>)(.*?)(<s*/s*.?>)?', 'g');
   const splittedText = text.split(splitTags);
-  // eslint-disable-next-line no-confusing-arrow
-  const replacedSplittedText = splittedText.map(textChunk =>
-    textChunk.startsWith('<') ? textChunk : replaceText(textChunk, replacements)
-  );
-  return replacedSplittedText.join('');
+
+  const replacedSplittedText = splittedText.map(textChunk => {
+    const isReplaceableText =
+      textChunk !== undefined &&
+      textChunk !== null &&
+      !textChunk.startsWith('<');
+    return isReplaceableText ? replaceText(textChunk, replacements) : textChunk;
+  });
+
+  return replacedSplittedText.filter(Boolean).join('');
 };
 
 const AbbrReplace = ({ children }) => {
@@ -57,24 +66,17 @@ const AbbrReplace = ({ children }) => {
     reactStringReplace(isString ? stringConfig : config)(text);
 
   const traverseChunk = chunk => {
+    if (chunk === undefined || chunk === null) {
+      return chunk;
+    }
+
     if (typeof chunk === 'string') {
       return replaceChunk(chunk);
     }
-    if (chunk.props && chunk.props.children) {
+
+    if (typeof chunk === 'object' && chunk.props && chunk.props.children) {
       const updatedChildren = traverseChildren(chunk.props.children);
       return React.cloneElement(chunk, {}, updatedChildren);
-    }
-
-    if (chunk.props && chunk.props.dangerouslySetInnerHTML) {
-      const updatedChildren = replaceChunk(
-        chunk.props.dangerouslySetInnerHTML.__html,
-        true
-      );
-      return React.cloneElement(
-        chunk,
-        {},
-        { dangerouslySetInnerHTML: { __html: String(updatedChildren[0]) } }
-      );
     }
 
     return chunk;
