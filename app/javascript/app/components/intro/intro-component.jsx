@@ -4,6 +4,7 @@ import { themr } from 'react-css-themr';
 import Button from 'components/button';
 import cx from 'classnames';
 import { TabletLandscape, TabletPortraitOnly } from 'components/responsive';
+import { replaceStringAbbr } from 'components/abbr-replace';
 import styles from './intro-styles.scss';
 
 const Intro = props => {
@@ -38,7 +39,7 @@ const Intro = props => {
       {description && (
         <p
           className={cx(theme.description, textColumns ? theme.columns : '')}
-          dangerouslySetInnerHTML={{ __html: description }} // eslint-disable-line
+          dangerouslySetInnerHTML={{ __html: replaceStringAbbr(description) }} // eslint-disable-line
         />
       )}
       {disclaimer && <p className={styles.disclaimer}>{disclaimer}</p>}
