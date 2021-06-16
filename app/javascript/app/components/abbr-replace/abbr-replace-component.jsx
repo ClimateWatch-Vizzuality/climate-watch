@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import reactStringReplace from 'react-string-replace-recursively';
-import abbreviations from './abbr-replace-data';
+import { abbreviations, subscripts } from './abbr-replace-data';
 
 const replaceText = (text, replacements) => {
   let updatedText = text;
@@ -14,6 +14,7 @@ const replaceText = (text, replacements) => {
 // This component exports a component and a function: replaceStringAbbr (just for the dangerouslySetInnerHTML case)
 // to transform the abbreviations on the ./abbr-replace-data file into an abbr tags
 // Be careful with the layout once we add the AbbrReplace component as it may change if we have flex display
+// This function also adds subscripts defined on the subscripts arrray
 
 const replaceAllButTags = (text, replacements) => {
   const splitTags = new RegExp('(<s*[^>]*>)(.*?)(<s*/s*.?>)?', 'g');
@@ -36,13 +37,26 @@ const AbbrReplace = ({ children }) => {
   useEffect(() => {
     const initialConfig = {};
     Object.keys(abbreviations).forEach(abbr => {
-      initialConfig[abbr] = {
+      initialConfig[`A-${abbr}`] = {
         pattern: new RegExp(`(${abbr})`, 'g'),
         matcherFn: (rawText, processed, key) => (
           <abbr key={key} title={abbreviations[abbr]}>
-            {rawText}
+            {processed}
           </abbr>
         )
+      };
+    });
+    subscripts.forEach(subscript => {
+      initialConfig[`B-${subscript}`] = {
+        pattern: new RegExp(`(${subscript})`, 'g'),
+        matcherFn: () => {
+          const getNumbers = /(\d+)$/g;
+          const splittedText = subscript.split(getNumbers);
+          // eslint-disable-next-line no-confusing-arrow
+          return splittedText.map(chunk =>
+            isNaN(parseInt(chunk, 10)) ? chunk : <sub>{chunk}</sub>
+          );
+        }
       };
     });
     setConfig(initialConfig);
