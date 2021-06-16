@@ -6,6 +6,8 @@ class GeolocationService
   end
 
   def call(ip)
+    return ENV['CW_USER_COUNTRY_OVERRIDE'] if Rails.env.development? && ENV['CW_USER_COUNTRY_OVERRIDE'].present?
+
     db.get(ip)&.dig('country', 'iso_code')
   end
 

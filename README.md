@@ -83,6 +83,8 @@ The App is using MAXMIND DB to geolocate users. In test and development environm
 locally setting `MAXMIND_LICENSE_KEY` and using rake task `db:import_maxmind`. Then to use real DB in dev environment you need to run project with env variable
 `MAXMIND_REAL_DB=true`.
 
+It is possible to override returned user country code in development mode using env variable `CW_USER_COUNTRY_OVERRIDE`.
+
 ### Launching The App
 
 You'll need to run both the rails server and the webpack server, which will be used internally by rails. Run, separately:
