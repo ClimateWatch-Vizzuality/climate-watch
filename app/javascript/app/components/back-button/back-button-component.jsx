@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Icon from 'components/icon';
 import { Link } from 'react-router-dom';
+import AbbrReplace from 'components/abbr-replace';
 import longArrowBack from 'assets/icons/long-arrow-back.svg';
 import styles from './back-button-styles.scss';
 
@@ -11,7 +12,7 @@ const BackButton = props => {
     <div className={styles.backButton}>
       <Link to={pathname}>
         <Icon className={styles.backIcon} icon={longArrowBack} />
-        {backLabel ? `Go to ${backLabel}` : 'Back'}
+        <AbbrReplace>{backLabel ? `Go to ${backLabel}` : 'Back'}</AbbrReplace>
       </Link>
     </div>
   );

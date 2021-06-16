@@ -119,13 +119,19 @@ AbbrReplace.propTypes = {
 };
 
 export const replaceStringAbbr = text => {
-  const replacements = {};
-  Object.keys(abbreviations).forEach(key => {
-    replacements[
-      key
-    ] = `<abbr key="${key}" title="${abbreviations[key]}">${key}</abbr>`;
-  });
-  return replaceAllButTags(text, replacements);
+  try {
+    if (text === undefined || text === null) return text;
+    const replacements = {};
+    Object.keys(abbreviations).forEach(key => {
+      replacements[
+        key
+      ] = `<abbr key="${key}" title="${abbreviations[key]}">${key}</abbr>`;
+    });
+    return replaceAllButTags(text, replacements);
+  } catch (error) {
+    console.warn('Error replacing string text abbreviations', { error, text });
+    return text;
+  }
 };
 
 export default AbbrReplace;

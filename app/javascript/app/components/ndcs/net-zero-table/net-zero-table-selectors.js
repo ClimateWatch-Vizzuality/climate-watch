@@ -3,6 +3,7 @@ import { deburrUpper, filterQuery } from 'app/utils';
 import sortBy from 'lodash/sortBy';
 import isEmpty from 'lodash/isEmpty';
 import { getMapIndicator } from 'components/ndcs/net-zero-map/net-zero-map-selectors';
+import { replaceStringAbbr } from 'components/abbr-replace';
 
 const getCountries = state => state.countries || null;
 const getCategories = state => state.categories || null;
@@ -163,6 +164,20 @@ export const removeIsoFromData = createSelector(
         if (key !== 'iso') {
           updatedD[key] = d[key];
         }
+      });
+      return updatedD;
+    });
+  }
+);
+
+export const replaceAbbreviations = createSelector(
+  [removeIsoFromData],
+  data => {
+    if (!data || isEmpty(data)) return null;
+    return data.map(d => {
+      const updatedD = { ...d };
+      Object.keys(updatedD).forEach(key => {
+        updatedD[key] = replaceStringAbbr(d[key]);
       });
       return updatedD;
     });
