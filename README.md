@@ -128,6 +128,11 @@ USER_NEWSLETTER_URL: Sign up to newsletter form url
 FEATURE_POP_UP: Pop up shown entering the site
 POP_UP: Name of the temporary pop up to be displayed
 
+### Temporary feature tags
+
+FEATURE_WEB_TOUR
+FEATURE_ABBREVIATIONS
+
 
 ## Modules
 

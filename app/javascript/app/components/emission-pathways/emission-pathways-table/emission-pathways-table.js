@@ -5,7 +5,7 @@ import { getLocationParamUpdated } from 'utils/navigation';
 import qs from 'query-string';
 import PropTypes from 'prop-types';
 import {
-  sortDataByCategoryAttribute,
+  replaceAbbreviations,
   titleLinks,
   getDefaultColumns,
   getEllipsisColumns,
@@ -25,7 +25,7 @@ const mapStateToProps = (state, { category, location }) => {
   };
   return {
     titleLinks: titleLinks(espData),
-    data: sortDataByCategoryAttribute(espData),
+    data: replaceAbbreviations(espData),
     defaultColumns: getDefaultColumns(espData),
     ellipsisColumns: getEllipsisColumns(espData),
     categoryName: category,

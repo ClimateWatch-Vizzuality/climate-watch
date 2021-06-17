@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import { NavLink } from 'react-router-dom';
-
+import AbbrReplace from 'components/abbr-replace';
 import styles from './button-styles.scss';
 
 const Button = props => {
@@ -34,7 +34,7 @@ const Button = props => {
   if (href) {
     return (
       <a className={classNames} href={href} target={target} {...tooltipProps}>
-        {children}
+        <AbbrReplace fixLayout>{children}</AbbrReplace>
       </a>
     );
   }
@@ -46,7 +46,7 @@ const Button = props => {
       target={target}
       {...tooltipProps}
     >
-      {children}
+      <AbbrReplace fixLayout>{children}</AbbrReplace>
     </NavLink>
   ) : (
     <button
@@ -56,7 +56,7 @@ const Button = props => {
       onClick={onClick}
       {...tooltipProps}
     >
-      {children}
+      <AbbrReplace fixLayout>{children}</AbbrReplace>
     </button>
   );
 };

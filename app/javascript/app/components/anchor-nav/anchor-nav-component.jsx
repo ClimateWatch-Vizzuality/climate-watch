@@ -51,7 +51,7 @@ const AnchorNav = props => {
                 linkProps.exact = true;
                 return (
                   <NavLink {...linkProps} replace>
-                    {link.label}
+                    <AbbrReplace>{link.label}</AbbrReplace>
                   </NavLink>
                 );
               }

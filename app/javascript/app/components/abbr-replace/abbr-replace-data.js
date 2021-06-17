@@ -1,9 +1,18 @@
-export const subscripts = ['CO2', 'CH4', 'N2O', 'NF3', 'SF6'];
+export const SUBSCRIPTS = ['CO2', 'CH4', 'N2O', 'NF3', 'SF6'];
 
-// IMPORTANT: Any container abbreviation should precede its contained.
+// This is not automated to improve performance
+export const CONFLICTS = {
+  BRICS: 'BR',
+  INDC: 'NDC',
+  LULUCF: 'LUCF',
+  MtCO2e: 'Mt',
+  UNFCCC: 'UN'
+};
+
+// IMPORTANT: Any container abbreviation (conflict) should precede its contained.
 // E.g. UNFCCC should go before UN.
 
-export const abbreviations = {
+export const ABBREVIATIONS = {
   AILAC:
     'Asociación Independiente de Latinoamérica y el Caribe (Independent Association of Latin America and the Caribbean)',
   AR2: "IPCC's Second Assessment Report in 1995",

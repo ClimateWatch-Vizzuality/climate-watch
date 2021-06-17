@@ -1,20 +1,33 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import reactStringReplace from 'react-string-replace-recursively';
-import { abbreviations, subscripts } from './abbr-replace-data';
+import { ABBREVIATIONS, SUBSCRIPTS, CONFLICTS } from './abbr-replace-data';
 
 const replaceText = (text, replacements) => {
   let updatedText = text;
-  Object.keys(replacements).forEach(x => {
-    updatedText = updatedText.replace(new RegExp(x, 'g'), replacements[x]);
+  const replacedTerms = [];
+  Object.keys(replacements).forEach(term => {
+    const termConflicts = replacedTerms.map(t => CONFLICTS[t]);
+    if (termConflicts.includes(term)) {
+      return;
+    }
+
+    const replacedText = updatedText.replace(
+      new RegExp(term, 'g'),
+      replacements[term]
+    );
+    if (replacedText !== updatedText) {
+      replacedTerms.push(term);
+    }
+    updatedText = replacedText;
   });
   return updatedText;
 };
 
-// This component exports a component and a function: replaceStringAbbr (just for the dangerouslySetInnerHTML case)
+// This component exports a component and a function: replaceStringAbbr (just for the dangerouslySetInnerHTML case),
 // to transform the abbreviations on the ./abbr-replace-data file into an abbr tags
 // Be careful with the layout once we add the AbbrReplace component as it may change if we have flex display
-// This function also adds subscripts defined on the subscripts arrray
+// This function also adds subscripts defined on the subscripts array
 
 const replaceAllButTags = (text, replacements) => {
   const splitTags = new RegExp('(<s*[^>]*>)(.*?)(<s*/s*.?>)?', 'g');
@@ -31,22 +44,25 @@ const replaceAllButTags = (text, replacements) => {
   return replacedSplittedText.filter(Boolean).join('');
 };
 
-const AbbrReplace = ({ children }) => {
+const FEATURE_ABBREVIATIONS = process.env.FEATURE_ABBREVIATIONS === 'true';
+
+const AbbrReplace = ({ children, fixLayout }) => {
+  if (!FEATURE_ABBREVIATIONS) return children;
+
   const [config, setConfig] = useState();
-  const [stringConfig, setStringConfig] = useState();
   useEffect(() => {
     const initialConfig = {};
-    Object.keys(abbreviations).forEach(abbr => {
+    Object.keys(ABBREVIATIONS).forEach(abbr => {
       initialConfig[`A-${abbr}`] = {
         pattern: new RegExp(`(${abbr})`, 'g'),
         matcherFn: (rawText, processed, key) => (
-          <abbr key={key} title={abbreviations[abbr]}>
+          <abbr key={key} title={ABBREVIATIONS[abbr]}>
             {processed}
           </abbr>
         )
       };
     });
-    subscripts.forEach(subscript => {
+    SUBSCRIPTS.forEach(subscript => {
       initialConfig[`B-${subscript}`] = {
         pattern: new RegExp(`(${subscript})`, 'g'),
         matcherFn: () => {
@@ -62,22 +78,7 @@ const AbbrReplace = ({ children }) => {
     setConfig(initialConfig);
   }, []);
 
-  useEffect(() => {
-    const initialConfig = {};
-    Object.keys(abbreviations).forEach(abbr => {
-      initialConfig[abbr] = {
-        pattern: new RegExp(`(${abbr})`, 'g'),
-        matcherFn: (rawText, processed, key) =>
-          `<abbr key={${key}} title={${abbreviations[abbr]}}>
-            {${rawText}}
-          </abbr>`
-      };
-    });
-    setStringConfig(stringConfig);
-  }, []);
-
-  const replaceChunk = (text, isString) =>
-    reactStringReplace(isString ? stringConfig : config)(text);
+  const replaceChunk = text => reactStringReplace(config)(text);
 
   const traverseChunk = chunk => {
     if (chunk === undefined || chunk === null) {
@@ -111,21 +112,32 @@ const AbbrReplace = ({ children }) => {
     }
   };
 
-  return children && config ? tryTraverseChildren() : children;
+  // eslint-disable-next-line no-confusing-arrow
+  const renderReplacedChilden = () =>
+    fixLayout ? <div>{tryTraverseChildren()}</div> : tryTraverseChildren();
+
+  return children && config ? renderReplacedChilden() : children;
 };
 
 AbbrReplace.propTypes = {
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
+  fixLayout: PropTypes.bool
+};
+
+AbbrReplace.defaultProps = {
+  fixLayout: false
 };
 
 export const replaceStringAbbr = text => {
+  if (!FEATURE_ABBREVIATIONS) return text;
+
   try {
     if (text === undefined || text === null) return text;
     const replacements = {};
-    Object.keys(abbreviations).forEach(key => {
+    Object.keys(ABBREVIATIONS).forEach(key => {
       replacements[
         key
-      ] = `<abbr key="${key}" title="${abbreviations[key]}">${key}</abbr>`;
+      ] = `<abbr key="${key}" title="${ABBREVIATIONS[key]}">${key}</abbr>`;
     });
     return replaceAllButTags(text, replacements);
   } catch (error) {

@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import Button from 'components/button';
 import ModalOverview from 'components/modal-overview';
 import PropTypes from 'prop-types';
+import AbbrReplace from 'components/abbr-replace';
 import Loading from 'components/loading';
 import layout from 'styles/layout.scss';
 import cx from 'classnames';
@@ -33,7 +34,11 @@ class EmissionPathwaysOverview extends PureComponent {
         );
         break;
       default:
-        element = <p className={styles.itemData}>{data[key]}</p>;
+        element = (
+          <p className={styles.itemData}>
+            <AbbrReplace>{data[key]}</AbbrReplace>
+          </p>
+        );
         break;
     }
     return element;
