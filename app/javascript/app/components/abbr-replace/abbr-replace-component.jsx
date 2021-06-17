@@ -1,48 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import reactStringReplace from 'react-string-replace-recursively';
-import { ABBREVIATIONS, SUBSCRIPTS, CONFLICTS } from './abbr-replace-data';
+import { ABBREVIATIONS, SUBSCRIPTS } from './abbr-replace-data';
 
-const replaceText = (text, replacements) => {
-  let updatedText = text;
-  const replacedTerms = [];
-  Object.keys(replacements).forEach(term => {
-    const termConflicts = replacedTerms.map(t => CONFLICTS[t]);
-    if (termConflicts.includes(term)) {
-      return;
-    }
-
-    const replacedText = updatedText.replace(
-      new RegExp(term, 'g'),
-      replacements[term]
-    );
-    if (replacedText !== updatedText) {
-      replacedTerms.push(term);
-    }
-    updatedText = replacedText;
-  });
-  return updatedText;
-};
-
-// This component exports a component and a function: replaceStringAbbr (just for the dangerouslySetInnerHTML case),
-// to transform the abbreviations on the ./abbr-replace-data file into an abbr tags
 // Be careful with the layout once we add the AbbrReplace component as it may change if we have flex display
-// This function also adds subscripts defined on the subscripts array
-
-const replaceAllButTags = (text, replacements) => {
-  const splitTags = new RegExp('(<s*[^>]*>)(.*?)(<s*/s*.?>)?', 'g');
-  const splittedText = text.split(splitTags);
-
-  const replacedSplittedText = splittedText.map(textChunk => {
-    const isReplaceableText =
-      textChunk !== undefined &&
-      textChunk !== null &&
-      !textChunk.startsWith('<');
-    return isReplaceableText ? replaceText(textChunk, replacements) : textChunk;
-  });
-
-  return replacedSplittedText.filter(Boolean).join('');
-};
+// To fix it we can use the fixLayout prop that embeds the content in a div
+// The replace component also adds subscripts defined on the subscripts array
 
 const FEATURE_ABBREVIATIONS = process.env.FEATURE_ABBREVIATIONS === 'true';
 
@@ -126,24 +89,6 @@ AbbrReplace.propTypes = {
 
 AbbrReplace.defaultProps = {
   fixLayout: false
-};
-
-export const replaceStringAbbr = text => {
-  if (!FEATURE_ABBREVIATIONS) return text;
-
-  try {
-    if (text === undefined || text === null) return text;
-    const replacements = {};
-    Object.keys(ABBREVIATIONS).forEach(key => {
-      replacements[
-        key
-      ] = `<abbr key="${key}" title="${ABBREVIATIONS[key]}">${key}</abbr>`;
-    });
-    return replaceAllButTags(text, replacements);
-  } catch (error) {
-    console.warn('Error replacing string text abbreviations', { error, text });
-    return text;
-  }
 };
 
 export default AbbrReplace;
