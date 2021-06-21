@@ -5,7 +5,7 @@ node {
   // Variables
   def tokens = "${env.JOB_NAME}".tokenize('/')
   def appName = tokens[0]
-  def dockerUsername = "${DOCKER_USERNAME}"
+  def dockerUsername = "${DOCKER_WRI_USERNAME}"
   def imageTag = "${dockerUsername}/${appName}:${env.BRANCH_NAME}.${env.BUILD_NUMBER}"
 
   currentBuild.result = "SUCCESS"
@@ -26,7 +26,7 @@ node {
     cw_files_prefix = 'climatewatch.org/www.climatewatch.org/climate-watch/'
     user_report_key = '81f6ea43-5c9f-48e0-bdb2-56fc59aafbb4'
   } else {
-    feature_flags_env = feature_flags_env + ' --build-arg FEATURE_POP_UP=false --build-arg FEATURE_NDC_ENHANCEMENTS=true  --build-arg FEATURE_WEB_TOUR=true'
+    feature_flags_env = feature_flags_env + ' --build-arg FEATURE_POP_UP=false --build-arg FEATURE_NDC_ENHANCEMENTS=true --build-arg FEATURE_WEB_TOUR=true --build-arg FEATURE_ABBREVIATIONS=true'
   }
 
   // env vars with build-arg

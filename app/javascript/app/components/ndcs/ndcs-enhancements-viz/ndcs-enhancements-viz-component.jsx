@@ -5,6 +5,7 @@ import { TabletLandscape } from 'components/responsive';
 import Map from 'components/map';
 import MapLegend from 'components/map-legend';
 import ButtonGroup from 'components/button-group';
+import AbbrReplace, { replaceStringAbbr } from 'components/abbr-replace';
 import { CheckInput } from 'cw-components';
 import Loading from 'components/loading';
 import Icon from 'components/icon';
@@ -22,22 +23,24 @@ const renderButtonGroup = (clickHandler, downloadLink) => (
     <div>
       <p>
         <em>
-          Track which countries are submitting their national climate
-          commitments in the lead up to COP26. You can compare countries’
-          submissions side by side{' '}
-          <Link to="custom-compare/overview" title="Compare submissions">
-            here
-          </Link>{' '}
-          or by referring to the table below. To request changes or additions,
-          please contact &nbsp;
-          <a
-            href="mailto:Rhys.Gerholdt@wri.org?subject=2020 NDC Tracker Update"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Rhys Gerholdt
-          </a>
-          .
+          <AbbrReplace>
+            Track which countries are submitting their national climate
+            commitments in the lead up to COP26. You can compare countries’
+            submissions side by side{' '}
+            <Link to="custom-compare/overview" title="Compare submissions">
+              here
+            </Link>{' '}
+            or by referring to the table below. To request changes or additions,
+            please contact &nbsp;
+            <a
+              href="mailto:Rhys.Gerholdt@wri.org?subject=2020 NDC Tracker Update"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Rhys Gerholdt
+            </a>
+            .
+          </AbbrReplace>
         </em>
       </p>
     </div>
@@ -84,7 +87,11 @@ const renderSummaryItem = datum => (
       </div>
     </div>
     <div className={styles.summaryItemLabels}>
-      <div dangerouslySetInnerHTML={{ __html: datum.opts.label }} />
+      <div
+        dangerouslySetInnerHTML={{
+          __html: replaceStringAbbr(datum.opts.label)
+        }}
+      />
     </div>
   </div>
 );

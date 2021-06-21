@@ -6,6 +6,7 @@ import Map from 'components/map';
 import ButtonGroup from 'components/button-group';
 import Loading from 'components/loading';
 import ModalMetadata from 'components/modal-metadata';
+import AbbrReplace from 'components/abbr-replace';
 import Dropdown from 'components/dropdown';
 import { PieChart, CheckInput } from 'cw-components';
 import CustomTooltip from 'components/ndcs/shared/donut-tooltip';
@@ -61,7 +62,7 @@ const renderSummary = summaryData => (
         <div>{summaryData.value}</div>
       </div>
       <div className={styles.summaryCardDescription}>
-        {summaryData.description}
+        <AbbrReplace>{summaryData.description}</AbbrReplace>
       </div>
     </div>
   </div>

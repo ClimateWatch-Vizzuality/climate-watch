@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import Button from 'components/button';
+import AbbrReplace from 'components/abbr-replace';
 
 // logos
 import faostatLogo from 'assets/partners/partners-FAOSTAT.png';
@@ -64,15 +65,17 @@ class ResourcesForAction extends PureComponent {
           <h3 className={styles.title}>Resources for Action</h3>
           <div className={styles.descriptionWrapper}>
             <div className={styles.description}>
-              <p>
-                To plan and implement NDCs, there are already many tools and
-                resources that can help countries to turn their agriculture
-                commitments into action.
-              </p>
-              <p>
-                To learn more about agriculture and to dive into the data,
-                explore highlighted resources from our partners below.
-              </p>
+              <AbbrReplace>
+                <p>
+                  To plan and implement NDCs, there are already many tools and
+                  resources that can help countries to turn their agriculture
+                  commitments into action.
+                </p>
+                <p>
+                  To learn more about agriculture and to dive into the data,
+                  explore highlighted resources from our partners below.
+                </p>
+              </AbbrReplace>
             </div>
             <Button
               variant="primary"
@@ -93,7 +96,7 @@ class ResourcesForAction extends PureComponent {
                   <img src={partner.img} alt={partner.title} />
                 </a>
                 <p className={styles.partnerDescription}>
-                  {partner.description}
+                  <AbbrReplace>{partner.description}</AbbrReplace>
                 </p>
               </div>
             ))}

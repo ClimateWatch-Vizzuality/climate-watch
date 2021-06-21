@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Icon from 'components/icon';
+import AbbrReplace from 'components/abbr-replace';
 import cx from 'classnames';
 import { handleAnalytics } from 'utils/analytics';
 import closeIcon from 'assets/icons/legend-close.svg';
@@ -37,9 +38,9 @@ class NdcSdgLinkagesList extends PureComponent {
           {targets.map((target, index) => {
             const isSelected = targetHover === target.number;
             const style = {
-              borderBottom: `4px solid ${isSelected
-                ? goal.colour
-                : 'transparent'}`
+              borderBottom: `4px solid ${
+                isSelected ? goal.colour : 'transparent'
+              }`
             };
             return (
               <div
@@ -53,7 +54,9 @@ class NdcSdgLinkagesList extends PureComponent {
                 onClick={() => this.handleClick(target.number)}
               >
                 <span className={styles.number}>{target.number}</span>
-                <span className={styles.title}>{target.title}</span>
+                <AbbrReplace>
+                  <span className={styles.title}>{target.title}</span>
+                </AbbrReplace>
               </div>
             );
           })}

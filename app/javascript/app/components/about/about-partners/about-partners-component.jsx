@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import layout from 'styles/layout';
+import AbbrReplace from 'components/abbr-replace';
 import { SEO_PAGES } from 'data/seo';
 import SEOTags from 'components/seo-tags';
 
@@ -49,7 +50,7 @@ const AboutPartners = ({ sections, location }) => (
                     </a>
                     {partner.description && (
                       <div className={styles.description} key={partner.id}>
-                        {partner.description}
+                        <AbbrReplace>{partner.description}</AbbrReplace>
                       </div>
                     )}
                   </div>

@@ -31,6 +31,9 @@ ENV FEATURE_NDC_ENHANCEMENTS $FEATURE_NDC_ENHANCEMENTS
 ARG FEATURE_WEB_TOUR
 ENV FEATURE_WEB_TOUR $FEATURE_WEB_TOUR
 
+ARG FEATURE_ABBREVIATIONS
+ENV FEATURE_ABBREVIATIONS $FEATURE_ABBREVIATIONS
+
 ARG POP_UP
 ENV POP_UP $POP_UP
 
@@ -43,8 +46,8 @@ ENV USER_REPORT_KEY $USER_REPORT_KEY
 # Install dependencies
 RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends \
-       postgresql-client nodejs build-essential patch zlib1g-dev liblzma-dev libicu-dev
+  && apt-get install -y --no-install-recommends \
+  postgresql-client nodejs build-essential patch zlib1g-dev liblzma-dev libicu-dev
 RUN npm install -g yarn
 
 # Create app directory

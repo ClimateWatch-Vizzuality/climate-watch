@@ -7,7 +7,7 @@ import userIcon from 'assets/icons/user.svg';
 import politicianImg from 'assets/home/government@2x.jpg';
 import researcherImg from 'assets/home/researcher@2x.jpg';
 import activistImg from 'assets/home/activist@2x.jpg';
-
+import { replaceStringAbbr } from 'components/abbr-replace';
 import { slidesData } from './user-cases-section-data';
 
 import styles from './user-cases-section-styles.scss';
@@ -31,7 +31,7 @@ const settings = {
 const paragraphTextCreator = (text, anchor, href) => {
   const link = `<a rel="noopener norefer" target="_blank" href="${href}">${anchor}</a>`;
   const updatedText = text.replace(anchor, link);
-  return { __html: updatedText };
+  return { __html: replaceStringAbbr(updatedText) };
 };
 
 class UserCasesSectionComponent extends Component {
