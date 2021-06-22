@@ -7,7 +7,7 @@ import {
 import uniqBy from 'lodash/uniqBy';
 import sortBy from 'lodash/sortBy';
 import { generateLinkToDataExplorer } from 'utils/data-explorer';
-import worldPaths from 'app/data/world-50m-paths';
+import getIPPaths from 'app/data/world-50m-paths';
 import { COUNTRY_STYLES } from 'components/ndcs/shared/constants';
 import { sortByIndexAndNotInfo, getLabels } from 'components/ndcs/shared/utils';
 import { europeSlug, europeanCountries } from 'app/data/european-countries';
@@ -123,9 +123,9 @@ export const getMapIndicator = createSelector(
 );
 
 export const getPathsWithStyles = createSelector(
-  [getMapIndicator, getZoom, getIsShowEUCountriesChecked],
-  (indicator, zoom, showEUCountriesChecked) => {
-    if (!indicator) return [];
+  [getMapIndicator, getZoom, getIsShowEUCountriesChecked, getIPPaths],
+  (indicator, zoom, showEUCountriesChecked, worldPaths) => {
+    if (!indicator || !worldPaths) return [];
     const paths = [];
     const selectedWorldPaths = showEUCountriesChecked
       ? worldPaths

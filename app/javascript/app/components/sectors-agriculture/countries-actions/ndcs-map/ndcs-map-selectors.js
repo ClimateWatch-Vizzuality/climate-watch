@@ -6,7 +6,7 @@ import {
 } from 'utils/map';
 import { sortBy, flatten, lowerCase, uniqBy, has } from 'lodash';
 import { generateLinkToDataExplorer } from 'utils/data-explorer';
-import worldPaths from 'app/data/world-50m-paths';
+import getIPPaths from 'app/data/world-50m-paths';
 import { europeSlug, europeanCountries } from 'app/data/european-countries';
 
 import { COUNTRY_STYLES } from 'components/ndcs/shared/constants';
@@ -147,9 +147,9 @@ export const getSelectedIndicator = createSelector(
 );
 
 export const getPathsWithStyles = createSelector(
-  [getSelectedIndicator],
-  selectedIndicator => {
-    if (!selectedIndicator) return [];
+  [getSelectedIndicator, getIPPaths],
+  (selectedIndicator, worldPaths) => {
+    if (!selectedIndicator || !worldPaths) return [];
     const paths = [];
 
     worldPaths.forEach(path => {

@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import worldPaths from 'app/data/world-50m-paths';
+import getIPPaths from 'app/data/world-50m-paths';
 import { shouldShowPath } from 'utils/map';
 import uniq from 'lodash/uniq';
 
@@ -88,9 +88,12 @@ const activeCountryStyle = {
 };
 
 export const getPathsWithStyles = createSelector(
-  [getIncludedCountries, getLoading, getZoom],
-  (countriesIncluded, loading, zoom) => {
+  [getIncludedCountries, getLoading, getZoom, getIPPaths],
+  (countriesIncluded, loading, zoom, worldPaths) => {
     const paths = [];
+
+    if (!worldPaths) return paths;
+
     worldPaths.forEach(path => {
       if (shouldShowPath(path, zoom)) {
         const iso = path.properties && path.properties.id;

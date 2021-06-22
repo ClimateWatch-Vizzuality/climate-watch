@@ -1,3 +1,4 @@
+/* eslint-disable no-confusing-arrow */
 import React, { PureComponent } from 'react';
 import Proptypes from 'prop-types';
 import { isPageContained, isEmbededComponent } from 'utils/navigation';
@@ -34,11 +35,11 @@ class App extends PureComponent {
         {FEATURE_WEB_TOUR && <WebTourSwitch />}
         <Desktop>
           {isDesktop =>
-            (isDesktop ? (
+            isDesktop ? (
               <NavBar routes={navRoutes} />
             ) : (
               <NavBarMobile routes={navRoutes} />
-            ))
+            )
           }
         </Desktop>
         <div className={styles.pageWrapper}>

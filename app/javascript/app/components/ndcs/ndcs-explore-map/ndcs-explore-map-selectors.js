@@ -5,7 +5,7 @@ import uniqBy from 'lodash/uniqBy';
 import sortBy from 'lodash/sortBy';
 import intersection from 'lodash/intersection';
 import { generateLinkToDataExplorer } from 'utils/data-explorer';
-import worldPaths from 'app/data/world-50m-paths';
+import getIPPaths from 'app/data/world-50m-paths';
 import { COUNTRY_STYLES } from 'components/ndcs/shared/constants';
 import { getIsShowEUCountriesChecked } from 'components/ndcs/shared/explore-map/explore-map-selectors';
 import {
@@ -169,9 +169,9 @@ export const getMapIndicator = createSelector(
 );
 
 export const getPathsWithStyles = createSelector(
-  [getMapIndicator, getZoom, getIsShowEUCountriesChecked],
-  (indicator, zoom, showEUCountriesChecked) => {
-    if (!indicator) return [];
+  [getMapIndicator, getZoom, getIsShowEUCountriesChecked, getIPPaths],
+  (indicator, zoom, showEUCountriesChecked, worldPaths) => {
+    if (!indicator || !worldPaths) return [];
     const paths = [];
     const selectedWorldPaths = showEUCountriesChecked
       ? worldPaths
