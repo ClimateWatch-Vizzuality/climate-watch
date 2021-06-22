@@ -5,7 +5,7 @@ import topojsonChina from /* webpackChunkName: "world-geo-china" */ 'app/data/wo
 import topojsonIndia from /* webpackChunkName: "world-geo-india" */ 'app/data/world-50m-india-topo.json';
 
 const countryTopojsons = {
-  CH: topojsonChina,
+  CN: topojsonChina,
   IN: topojsonIndia
 };
 
