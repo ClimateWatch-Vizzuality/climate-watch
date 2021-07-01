@@ -1,7 +1,7 @@
 @import '~styles/layout.scss';
 
 .header {
-  padding-bottom: 64px;
+  padding-bottom: 34px;
 
   a {
     color: $white;
@@ -11,4 +11,8 @@
       color: $theme-secondary;
     }
   }
+}
+
+.learnMore {
+  margin-top: 14px;
 }

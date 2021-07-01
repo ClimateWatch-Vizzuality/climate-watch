@@ -86,13 +86,6 @@ $min-height: 500px;
   line-height: 45px;
 }
 
-.bodyText {
-  @extend %bodyText;
-
-  color: $theme-color;
-  margin-top: $gutter-padding;
-}
-
 .link {
   color: $theme-color-medium;
   text-decoration: underline;

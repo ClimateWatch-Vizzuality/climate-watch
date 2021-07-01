@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import startCase from 'lodash/startCase';
 import isArray from 'lodash/isArray';
 import { isPageContained } from 'utils/navigation';
-import AbbrReplace from 'components/abbr-replace';
 import cx from 'classnames';
 import {
   GHG_TABLE_HEADER,
@@ -356,15 +355,6 @@ function GhgEmissions(props) {
             sharePath={'/ghg-emissions'}
           />
         </TabletLandscape>
-        <p className={styles.bodyText}>
-          <AbbrReplace>
-            Explore GHG emissions from multiple data source (CAIT, PIK, UNFCCC,
-            GCP) and understand their differences in the{' '}
-          </AbbrReplace>
-          <a className={styles.link} href="about/faq/ghg">
-            FAQ
-          </a>
-        </p>
       </div>
       <WorldBankDataProvider />
       <RegionsProvider includeGHGSources />
