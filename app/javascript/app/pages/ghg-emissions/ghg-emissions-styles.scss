@@ -2,8 +2,37 @@
 
 .header {
   padding-bottom: 64px;
+}
 
-  a {
+.introContainer {
+  @include columns((12));
+
+  margin-bottom: 14px;
+
+  @media #{$tablet-landscape} {
+    @include columns((7, 5));
+
+    margin-bottom: 0;
+  }
+}
+
+.learnMore {
+  margin-top: 14px;
+}
+
+.buttons {
+  display: flex;
+  margin-top: 16px;
+
+  :first-child {
+    margin-right: 14px;
+  }
+}
+
+.description {
+  line-height: $line-height-medium;
+
+  .descriptionLink {
     color: $white;
     text-decoration: underline;
 
