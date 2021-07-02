@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
+import AbbrReplace, { replaceStringAbbr } from 'components/abbr-replace';
 import layoutStyles from 'app/styles/layout.scss';
-
 import styles from './definition-list-legacy-styles.scss';
 
 class DefinitionList extends PureComponent {
@@ -21,7 +21,9 @@ class DefinitionList extends PureComponent {
                   compare ? styles.definitionCompare : styles.definition
                 )}
               >
-                <dt className={styles.definitionTitle}>{def.title}</dt>
+                <dt className={styles.definitionTitle}>
+                  <AbbrReplace>{def.title}</AbbrReplace>
+                </dt>
                 {def.descriptions &&
                   def.descriptions.map(desc => (
                     <dd
@@ -30,7 +32,10 @@ class DefinitionList extends PureComponent {
                     >
                       <div
                         className={layoutStyles.parsedHTML}
-                        dangerouslySetInnerHTML={{ __html: desc.value }} // eslint-disable-line
+                        // eslint-disable-next-line react/no-danger
+                        dangerouslySetInnerHTML={{
+                          __html: replaceStringAbbr(desc.value)
+                        }}
                       />
                     </dd>
                   ))}

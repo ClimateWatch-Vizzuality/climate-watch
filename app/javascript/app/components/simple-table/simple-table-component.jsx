@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import AbbrReplace, { replaceStringAbbr } from 'components/abbr-replace';
 import cx from 'classnames';
-
 import styles from './simple-table-styles.scss';
 
 const SimpleTable = props => {
@@ -13,7 +13,9 @@ const SimpleTable = props => {
       <div>
         <div className={cx(styles.header, theme.header)}>
           {columns.map(key => (
-            <span style={{ width: columnWidth }}>{key}</span>
+            <span style={{ width: columnWidth }}>
+              <AbbrReplace>{key}</AbbrReplace>
+            </span>
           ))}
         </div>
         <div className={cx(styles.scroll, theme.scroll)}>
@@ -24,7 +26,10 @@ const SimpleTable = props => {
                   <td
                     className={theme.cell}
                     width={columnWidth}
-                    dangerouslySetInnerHTML={{ __html: row[key] }}
+                    // eslint-disable-next-line react/no-danger
+                    dangerouslySetInnerHTML={{
+                      __html: replaceStringAbbr(row[key])
+                    }}
                   />
                 ))}
               </tr>

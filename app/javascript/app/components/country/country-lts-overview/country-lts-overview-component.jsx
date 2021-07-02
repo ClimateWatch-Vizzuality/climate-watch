@@ -153,6 +153,7 @@ const CountryLtsOverview = props => {
                     ? 'Long-term Strategies (LTS) Overview'
                     : 'Long-term vision'
                 }
+                tag="h3"
               />
               {cardData && isCountryPage && (
                 <div className="grid-column-item">

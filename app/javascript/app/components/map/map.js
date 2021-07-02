@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import isEqual from 'lodash/isEqual';
 
-import worldPaths from 'app/data/world-50m-paths';
+import getIPPaths from 'app/data/world-50m-paths';
 
 import actions from './map-actions';
 import reducers, { initialState } from './map-reducers';
@@ -14,7 +14,8 @@ const ZOOM_STEP = 2;
 
 const mapStateToProps = state => ({
   zoom: state.map.zoom,
-  center: state.map.center
+  center: state.map.center,
+  worldPaths: getIPPaths(state)
 });
 
 class MapContainer extends PureComponent {
@@ -50,11 +51,14 @@ class MapContainer extends PureComponent {
   };
 
   render() {
+    const { worldPaths } = this.props;
+    const { forceUpdate } = this.state;
+
     return createElement(MapComponent, {
       paths: worldPaths,
       handleZoomIn: this.handleZoomIn,
       handleZoomOut: this.handleZoomOut,
-      forceUpdate: this.state.forceUpdate,
+      forceUpdate,
       ...this.props
     });
   }
@@ -64,7 +68,8 @@ MapContainer.propTypes = {
   paths: PropTypes.array,
   zoom: PropTypes.number.isRequired,
   setMapZoom: PropTypes.func.isRequired,
-  setMapParams: PropTypes.func.isRequired
+  setMapParams: PropTypes.func.isRequired,
+  worldPaths: PropTypes.array
 };
 
 export { actions, reducers, initialState };

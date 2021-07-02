@@ -2,16 +2,17 @@ import React from 'react';
 import { Icon } from 'cw-components';
 import cwLogo from 'assets/icons/cw-logo.svg';
 import { NavLink } from 'react-router-dom';
-
+import AbbrReplace from 'components/abbr-replace';
+import { PropTypes } from 'prop-types';
 import { siteMapData } from './site-map-footer-data';
 import styles from './site-map-footer-styles';
 
 const Component = () => {
-  // eslint-disable-next-line react/prop-types
+  // eslint-disable-next-line no-confusing-arrow
   const siteMapLink = ({ title, href }) =>
-    (href.startsWith('/') ? (
+    href.startsWith('/') ? (
       <NavLink to={href} className={styles.link}>
-        {title}
+        <AbbrReplace>{title}</AbbrReplace>
       </NavLink>
     ) : (
       <a
@@ -22,7 +23,12 @@ const Component = () => {
       >
         {title}
       </a>
-    ));
+    );
+
+  siteMapLink.propTypes = {
+    title: PropTypes.string,
+    href: PropTypes.string
+  };
 
   return (
     <section className={styles.siteMapContainer}>

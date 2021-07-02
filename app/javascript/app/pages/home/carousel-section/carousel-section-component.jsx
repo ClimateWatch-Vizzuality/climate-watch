@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Carousel } from 'cw-components';
 import Dropdown from 'components/dropdown';
 import Button from 'components/button';
+import AbbrReplace from 'components/abbr-replace';
 import { handleAnalytics } from 'utils/analytics';
 import { slidesData } from './carousel-section-data';
 
@@ -57,7 +58,7 @@ const BottomSlide = ({
     <h3 className={styles.slideTitle}>{title}</h3>
     {text.map(paragraph => (
       <p key={paragraph} className={styles.slideParagraph}>
-        {paragraph}
+        <AbbrReplace>{paragraph}</AbbrReplace>
       </p>
     ))}
     <div className={styles.buttonsContainer}>
@@ -69,7 +70,8 @@ const BottomSlide = ({
 );
 
 class CarouselSectionComponent extends Component {
-  pagingTitles = () => slidesData.map(s => s.pagingTitle);
+  pagingTitles = () =>
+    slidesData.map(s => <AbbrReplace>{s.pagingTitle}</AbbrReplace>);
 
   handleDropDownChange = selected => {
     const { history } = this.props;

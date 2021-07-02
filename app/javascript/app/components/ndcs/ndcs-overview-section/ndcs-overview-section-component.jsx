@@ -6,6 +6,7 @@ import CountriesDocumentsProvider from 'providers/countries-documents-provider';
 import LSEProvider from 'providers/lse-provider';
 import ModalShare from 'components/modal-share';
 import ModalMetadata from 'components/modal-metadata';
+import AbbrReplace from 'components/abbr-replace';
 import layout from 'styles/layout.scss';
 import ShareButton from 'components/button/share-button';
 import styles from './ndcs-overview-section-styles.scss';
@@ -26,16 +27,18 @@ const NdcsOverviewSection = ({ data, section, location, handleInfoClick }) => {
           <div className={styles.commitmentWrapper}>
             <div className={styles.commitmentText}>
               <div>
-                <h2 className={styles.title}>{`${
-                  isEmbed ? '' : `${section}. `
-                }${title}`}</h2>
-                <p
-                  className={cx(styles.description, {
-                    [styles.firstDescription]: parseInt(section, 10) === 1
-                  })}
-                >
-                  {description}
-                </p>
+                <AbbrReplace>
+                  <h2 className={styles.title}>{`${
+                    isEmbed ? '' : `${section}. `
+                  }${title}`}</h2>
+                  <p
+                    className={cx(styles.description, {
+                      [styles.firstDescription]: parseInt(section, 10) === 1
+                    })}
+                  >
+                    {description}
+                  </p>
+                </AbbrReplace>
               </div>
               <p className={styles.hint}>{hint}</p>
             </div>

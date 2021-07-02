@@ -8,7 +8,7 @@ import {
 import uniqBy from 'lodash/uniqBy';
 import sortBy from 'lodash/sortBy';
 import { generateLinkToDataExplorer } from 'utils/data-explorer';
-import worldPaths from 'app/data/world-50m-paths';
+import getIPPaths from 'app/data/world-50m-paths';
 import { europeSlug, europeanCountries } from 'app/data/european-countries';
 import { COUNTRY_STYLES } from 'components/ndcs/shared/constants';
 
@@ -116,9 +116,9 @@ export const MAP_COLORS = [
 ];
 
 export const getPathsWithStyles = createSelector(
-  [getMapIndicator, getISOCountries],
-  indicator => {
-    if (!indicator) return [];
+  [getMapIndicator, getIPPaths],
+  (indicator, worldPaths) => {
+    if (!indicator || !worldPaths) return [];
     const paths = [];
     worldPaths.forEach(path => {
       if (shouldShowPath(path)) {

@@ -4,6 +4,7 @@ import cx from 'classnames';
 import { themr } from 'react-css-themr';
 import { NavLink } from 'react-router-dom';
 import { NavHashLink } from 'react-router-hash-link';
+import AbbrReplace from 'components/abbr-replace';
 import qs from 'query-string';
 
 import styles from './anchor-nav-styles.scss';
@@ -50,7 +51,7 @@ const AnchorNav = props => {
                 linkProps.exact = true;
                 return (
                   <NavLink {...linkProps} replace>
-                    {link.label}
+                    <AbbrReplace>{link.label}</AbbrReplace>
                   </NavLink>
                 );
               }
@@ -69,7 +70,7 @@ const AnchorNav = props => {
                   }}
                   replace
                 >
-                  {link.label}
+                  <AbbrReplace>{link.label}</AbbrReplace>
                 </NavHashLink>
               );
             })}

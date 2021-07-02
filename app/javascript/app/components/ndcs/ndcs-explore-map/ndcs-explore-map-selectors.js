@@ -1,3 +1,4 @@
+/* eslint-disable no-confusing-arrow */
 import { createSelector } from 'reselect';
 import { getColorByIndex, shouldShowPath } from 'utils/map';
 import uniq from 'lodash/uniq';
@@ -5,7 +6,7 @@ import uniqBy from 'lodash/uniqBy';
 import sortBy from 'lodash/sortBy';
 import intersection from 'lodash/intersection';
 import { generateLinkToDataExplorer } from 'utils/data-explorer';
-import worldPaths from 'app/data/world-50m-paths';
+import getIPPaths from 'app/data/world-50m-paths';
 import { COUNTRY_STYLES } from 'components/ndcs/shared/constants';
 import { getIsShowEUCountriesChecked } from 'components/ndcs/shared/explore-map/explore-map-selectors';
 import {
@@ -52,13 +53,13 @@ export const getDonutActiveIndex = state =>
   state.exploreMap.activeIndex || null;
 
 export const getCategories = createSelector(getCategoriesData, categories =>
-  (!categories
+  !categories
     ? null
     : Object.keys(categories).map(category => ({
       label: categories[category].name,
       value: categories[category].slug,
       id: category
-    })))
+    }))
 );
 
 export const getMaximumCountries = createSelector(
@@ -108,9 +109,9 @@ export const getIndicatorsParsed = createSelector(
 
     parentIndicatorNames = uniq(parentIndicatorNames);
     return parsedIndicators.map(i =>
-      (parentIndicatorNames.includes(i.label)
+      parentIndicatorNames.includes(i.label)
         ? { ...i, groupParent: i.label }
-        : i)
+        : i
     );
   }
 );
@@ -169,9 +170,9 @@ export const getMapIndicator = createSelector(
 );
 
 export const getPathsWithStyles = createSelector(
-  [getMapIndicator, getZoom, getIsShowEUCountriesChecked],
-  (indicator, zoom, showEUCountriesChecked) => {
-    if (!indicator) return [];
+  [getMapIndicator, getZoom, getIsShowEUCountriesChecked, getIPPaths],
+  (indicator, zoom, showEUCountriesChecked, worldPaths) => {
+    if (!indicator || !worldPaths) return [];
     const paths = [];
     const selectedWorldPaths = showEUCountriesChecked
       ? worldPaths

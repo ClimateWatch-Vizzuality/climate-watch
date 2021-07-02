@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
+import AbbrReplace, { replaceStringAbbr } from 'components/abbr-replace';
 import layout from 'styles/layout.scss';
 
 import styles from './definition-list-styles.scss';
@@ -22,7 +23,9 @@ const DefinitionList = ({
               compare ? styles.definitionCompare : styles.definition
             )}
           >
-            <dt className={styles.definitionTitle}>{title}:</dt>
+            <dt className={styles.definitionTitle}>
+              <AbbrReplace>{title}</AbbrReplace>:
+            </dt>
             {descriptions &&
               descriptions.map(({ iso, value }) => (
                 <dd key={`${slug}-${iso}`} className={styles.definitionDesc}>
@@ -32,7 +35,10 @@ const DefinitionList = ({
                     </div>
                   ) : (
                     <div
-                      dangerouslySetInnerHTML={{ __html: value }} // eslint-disable-line
+                      // eslint-disable-next-line react/no-danger
+                      dangerouslySetInnerHTML={{
+                        __html: replaceStringAbbr(value)
+                      }}
                     />
                   )}
                 </dd>

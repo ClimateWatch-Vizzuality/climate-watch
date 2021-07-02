@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 import SimpleTable from 'components/simple-table';
 import SideNavigation from 'components/side-navigation';
+import AbbrReplace from 'components/abbr-replace';
 import { SEO_PAGES } from 'data/seo';
 import SEOTags from 'components/seo-tags';
 
@@ -13,9 +14,11 @@ const renderQuestion = ({ title, answer, type, tableData = null }, index) => (
   <div key={title} className={styles.questionContainer}>
     <div className={styles.questionTitleWrapper}>
       <span className={styles.questionTitle}>{`${index + 1}. `}</span>
-      <span className={styles.questionTitle}>{title}</span>
+      <span className={styles.questionTitle}>
+        <AbbrReplace>{title}</AbbrReplace>
+      </span>
     </div>
-    {renderAnswer(type, answer, tableData)}
+    <AbbrReplace>{renderAnswer(type, answer, tableData)}</AbbrReplace>
   </div>
 );
 
@@ -31,11 +34,13 @@ const renderAnswer = (type, answer, tableData) => {
   switch (type) {
     case 'html':
       return (
-        <div className={styles.htmlAnswer}>
-          {renderHTML(answer, {
-            replace: node => node.name === 'link' && replaceNavLink(node)
-          })}
-        </div>
+        <AbbrReplace>
+          <div className={styles.htmlAnswer}>
+            {renderHTML(answer, {
+              replace: node => node.name === 'link' && replaceNavLink(node)
+            })}
+          </div>
+        </AbbrReplace>
       );
     case 'table':
       return (
@@ -46,7 +51,11 @@ const renderAnswer = (type, answer, tableData) => {
         </div>
       );
     default:
-      return <p className={styles.questionAnswer}>{answer}</p>;
+      return (
+        <p className={styles.questionAnswer}>
+          <AbbrReplace>{answer}</AbbrReplace>
+        </p>
+      );
   }
 };
 

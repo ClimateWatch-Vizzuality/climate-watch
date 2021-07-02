@@ -17,7 +17,7 @@ const Home = () => (
   <div className={styles.homeBg}>
     <SEOTags href={location.href} page={SEO_PAGES.home} />
     <IntroSection />
-    <div>
+    <div data-tour="step-02">
       <LatestUpdatesSection />
     </div>
     <div>
@@ -26,7 +26,7 @@ const Home = () => (
     <div>
       <UserCasesSection />
     </div>
-    <div className={styles.video}>
+    <div className={styles.video} data-tour="step-01">
       <ReactPlayer
         width="100%"
         height="100%"

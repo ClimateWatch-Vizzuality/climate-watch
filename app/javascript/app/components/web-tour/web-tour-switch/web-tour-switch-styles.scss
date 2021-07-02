@@ -1,0 +1,8 @@
+@import '~styles/layout.scss';
+
+.webTourSwitch {
+  position: fixed;
+  bottom: 5%;
+  right: 5%;
+  z-index: $z-index-top;
+}

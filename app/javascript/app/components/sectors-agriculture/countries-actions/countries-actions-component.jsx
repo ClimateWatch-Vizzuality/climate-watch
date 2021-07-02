@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Switch } from 'cw-components';
 import ModalMetadata from 'components/modal-metadata';
 import ModalShare from 'components/modal-share';
+import AbbrReplace from 'components/abbr-replace';
 import NdcsMap from './ndcs-map';
 import NdcsTable from './ndcs-table';
 import styles from './countries-actions-styles';
@@ -40,21 +41,26 @@ class CountriesActions extends PureComponent {
     return (
       <React.Fragment>
         <div className={styles.page}>
-          <h3 className={styles.title}>Countries’ Actions in their NDCs</h3>
+          <h3 className={styles.title}>
+            <AbbrReplace>Countries’ Actions in their NDCs</AbbrReplace>
+          </h3>
           <div className={styles.descriptionWrapper}>
             <div className={styles.description}>
-              <p>
-                While emissions are rising, countries are also stepping up their
-                commitments to reduce emissions. As part of the Paris Agreement,{' '}
-                {m_agriculture} countries proposed agricultural mitigation
-                measures (i.e.: targets, policies, actions and plans) and{' '}
-                {a_agriculture} countries proposed agricultural adaptation
-                measures (i.e.: targets, policies, actions and plans).
-              </p>
-              <p>
-                Click on a country to see what agriculture measures have been
-                proposed in their NDCs.
-              </p>
+              <AbbrReplace>
+                <p>
+                  While emissions are rising, countries are also stepping up
+                  their commitments to reduce emissions. As part of the Paris
+                  Agreement, {m_agriculture} countries proposed agricultural
+                  mitigation measures (i.e.: targets, policies, actions and
+                  plans) and {a_agriculture} countries proposed agricultural
+                  adaptation measures (i.e.: targets, policies, actions and
+                  plans).
+                </p>
+                <p>
+                  Click on a country to see what agriculture measures have been
+                  proposed in their NDCs.
+                </p>
+              </AbbrReplace>
             </div>
             <Switch
               options={tabs}

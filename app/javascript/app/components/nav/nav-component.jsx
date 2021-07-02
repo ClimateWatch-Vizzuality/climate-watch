@@ -94,6 +94,7 @@ class Nav extends PureComponent {
               )}
               reverse={reverse}
               positionRight
+              dataTour={route.label === 'COMMITMENTS' && 'commitments-02'}
             />
           );
         })}

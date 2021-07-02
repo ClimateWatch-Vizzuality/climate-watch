@@ -2,7 +2,7 @@ import { createSelector, createStructuredSelector } from 'reselect';
 import { getColorByIndex, shouldShowPath } from 'utils/map';
 import { isEmpty, orderBy, flatten } from 'lodash';
 import { format } from 'd3-format';
-import worldPaths from 'app/data/world-50m-paths';
+import getIPPaths from 'app/data/world-50m-paths';
 import {
   AGRICULTURE_INDICATORS_NAMES,
   AGRICULTURE_INDICATORS_MAP_BUCKETS
@@ -185,9 +185,9 @@ export const getTopTenConfig = createSelector(
 );
 
 export const getPathsWithStyles = createSelector(
-  [getSelectedIndicator, getMapData],
-  (selectedIndicator, mapData) => {
-    if (!selectedIndicator) return [];
+  [getSelectedIndicator, getMapData, getIPPaths],
+  (selectedIndicator, mapData, worldPaths) => {
+    if (!selectedIndicator || !worldPaths) return [];
     const paths = [];
     worldPaths.forEach(path => {
       if (shouldShowPath(path)) {

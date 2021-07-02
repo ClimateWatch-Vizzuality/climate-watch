@@ -1,6 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import cx from 'classnames';
+import AbbrReplace from 'components/abbr-replace';
 import PropTypes from 'prop-types';
 import styles from './side-navigation-styles.scss';
 
@@ -15,7 +16,7 @@ const SideNavigationComponent = ({ sections, selectedSection }) => (
           [styles.selected]: section.slug === selectedSection
         })}
       >
-        {section.label}
+        <AbbrReplace>{section.label}</AbbrReplace>
       </NavLink>
     ))}
   </div>

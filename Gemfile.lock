@@ -214,6 +214,7 @@ GEM
     mail (2.7.1)
       mini_mime (>= 0.1.1)
     marcel (1.0.1)
+    maxmind-db (1.1.1)
     method_source (1.0.0)
     mini_mime (1.1.0)
     mini_portile2 (2.5.3)
@@ -430,6 +431,7 @@ DEPENDENCIES
   json-schema
   kaminari
   listen (>= 3.0.5, < 3.2)
+  maxmind-db
   oj
   pg (~> 0.20)
   pg_search

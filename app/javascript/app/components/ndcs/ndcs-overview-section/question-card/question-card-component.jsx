@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Progress from 'components/progress';
 import Icon from 'components/icon';
+import AbbrReplace from 'components/abbr-replace';
 import infoIcon from 'assets/icons/info.svg';
 import externalLinkIcon from 'assets/icons/external-link.svg';
 import ReactTooltip from 'react-tooltip';
@@ -38,7 +39,7 @@ const QuestionCard = ({
         title={questionText}
       >
         <div className={styles.questionText}>
-          {questionText}
+          <AbbrReplace>{questionText}</AbbrReplace>
           {hasExternalLink && (
             <Icon className={styles.externalLinkIcon} icon={externalLinkIcon} />
           )}
@@ -54,7 +55,7 @@ const QuestionCard = ({
                   : '-'}{' '}
                 %
               </span>{' '}
-              of total GHG emissions
+              <AbbrReplace>of total GHG emissions</AbbrReplace>
             </div>
             <Progress
               value={(answerNumber / maxPartiesNumber) * 100}

@@ -2,6 +2,7 @@ import { createSelector } from 'reselect';
 import isEmpty from 'lodash/isEmpty';
 import sortBy from 'lodash/sortBy';
 import { filterQuery } from 'app/utils';
+import { replaceStringAbbr } from 'components/abbr-replace';
 import { getMapIndicator } from 'components/ndcs/ndcs-explore-map/ndcs-explore-map-selectors';
 import {
   getIndicatorsParsed,
@@ -159,6 +160,20 @@ export const removeIsoFromData = createSelector(
         if (key !== 'iso') {
           updatedD[key] = d[key];
         }
+      });
+      return updatedD;
+    });
+  }
+);
+
+export const replaceAbbreviations = createSelector(
+  [removeIsoFromData],
+  data => {
+    if (!data || isEmpty(data)) return null;
+    return data.map(d => {
+      const updatedD = { ...d };
+      Object.keys(updatedD).forEach(key => {
+        updatedD[key] = replaceStringAbbr(d[key]);
       });
       return updatedD;
     });
