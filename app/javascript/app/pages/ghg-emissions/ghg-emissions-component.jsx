@@ -25,41 +25,35 @@ class GhgEmissions extends PureComponent {
     const description = (
       <div className={styles.description}>
         <p>
-          Greenhouse gas (GHG) emissions which cause climate change{' '}
+          Human-caused greenhouse gas (GHG) emissions drive climate change.{' '}
+          About 60% of GHG emissions come{' '}
           {renderLink(
-            'have increased 50 fold since the mid-1800s.',
-            'Greenhouse gas (GHG) emissions which cause climate change have increased 50 fold since the mid-1800s.',
-            '/ghg-emissions?chartType=area&source=PIK'
-          )}{' '}
+            'from just 10 countries',
+            'About 60% of GHG emissions come from just 10 countries',
+            '/ghg-emissions?chartType=percentage'
+          )}
+          , while the 100 least-emitting contributed less than 3%.
           Energy makes up{' '}
           {renderLink(
             'nearly three-quarters of global emissions',
             'Energy makes up nearly three-quarters of global emissions',
             '/ghg-emissions?breakBy=sector&chartType=percentage&source=CAIT'
           )}
-          , followed by agriculture. Breaking down the energy sector into its
-          sub-sectors,
+          , followed by agriculture. Within the energy sector, the{' '}
           {renderLink(
-            'electricity and heat generation make up the largest portion of emissions, followed by transportation and manufacturing.',
-            'Electricity and heat generation make up the largest portion of emissions, followed by transportation and manufacturing.',
+            'largest emitting sector is electricity and heat generation',
+            'Largest emitting sector is electricity and heat generation',
             '/ghg-emissions?breakBy=sector&chartType=percentage&sectors=agriculture%2Cindustrial-processes%2Cland-use-change-and-forestry%2Cbuilding%2Celectricity-heat%2Cfugitive-emissions%2Cmanufacturing-construction%2Cother-fuel-combustion%2Ctransportation%2Cwaste'
           )}{' '}
-          64% of GHG emissions come
-          {renderLink(
-            'from just 10 countries',
-            '64% of GHG emissions come from just 10 countries',
-            '/ghg-emissions?chartType=percentage'
-          )}
-          , while the 100 least-emitting contributed less than 3%.
+          , followed by transportation and manufacturing. Land use, land use-change and forestry (LULUCF) is both a source and sink of emissions and key sector to get to net-zero emissions.
         </p>
         <p className={styles.learnMore}>
-          Learn more about our data sources (CAIT, PIK, UNFCCC, GCP), economic
-          sectors, consumption based emissions and methodologies in our{' '}
+          Learn more about our data sources (CAIT, PIK, UNFCCC, GCP) and methodologies in our{' '}
           {renderLink(
-            'Frequently asked questions.',
+            'Frequently asked questions',
             'Frequently asked questions',
             '/about/faq/ghg'
-          )}
+          )}.
         </p>
       </div>
     );
