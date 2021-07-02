@@ -1,5 +1,6 @@
 import React from 'react';
 import Progress from 'components/progress';
+import AbbrReplace from 'components/abbr-replace';
 import PropTypes from 'prop-types';
 import styles from './legend-item-styles.scss';
 
@@ -18,7 +19,9 @@ const LegendItem = ({
   >
     <div className={styles.legendName}>
       <span className={styles.legendDot} style={{ backgroundColor: color }} />
-      <span>{name}</span>
+      <span>
+        <AbbrReplace>{name}</AbbrReplace>
+      </span>
     </div>
     <div className={styles.progressContainer}>
       <Progress value={value} className={styles.progressBar} color={color} />

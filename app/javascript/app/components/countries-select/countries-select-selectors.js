@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
 import { deburrUpper, isCountryIncluded } from 'app/utils';
 import sortBy from 'lodash/sortBy';
-import worldPaths from 'app/data/world-50m-paths';
+import getIPPaths from 'app/data/world-50m-paths';
 import { shouldShowPath } from 'utils/map';
 
 const COUNTRY_PLATFORMS_ISOS = ['IDN', 'IND'];
@@ -88,9 +88,11 @@ const semiActiveCountryStyles = {
 };
 
 export const getPathsWithStyles = createSelector(
-  [getFilter, getPreSelect, getISOCountries],
-  (query, preSelect, isoCountries) => {
+  [getFilter, getPreSelect, getISOCountries, getIPPaths],
+  (query, preSelect, isoCountries, worldPaths) => {
     const paths = [];
+    if (!worldPaths) return paths;
+
     worldPaths.forEach(path => {
       if (shouldShowPath(path)) {
         const iso = path.properties && path.properties.id;

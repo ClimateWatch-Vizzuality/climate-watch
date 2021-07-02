@@ -9,9 +9,13 @@ const fetchSearchResultsFail = createAction('fetchSearchResultsFail');
 const fetchSearchResults = createThunkAction(
   'fetchSearchResults',
   search => dispatch => {
-    if (!isEmpty(search) && (search.searchBy && search.query)) {
+    if (!isEmpty(search) && search.searchBy && search.query) {
       dispatch(fetchSearchResultsInit());
-      fetch(`/api/v1/ndcs/text?${search.searchBy}=${search.query}`)
+      fetch(
+        `/api/v1/ndcs/text?${search.searchBy}=${encodeURIComponent(
+          search.query
+        )}`
+      )
         .then(response => {
           if (response.ok) return response.json();
           throw Error(response.statusText);

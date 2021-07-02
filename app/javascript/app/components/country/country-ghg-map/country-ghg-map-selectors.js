@@ -5,7 +5,7 @@ import { CALCULATION_OPTIONS } from 'app/data/constants';
 import { shouldShowPath } from 'utils/map';
 import groupBy from 'lodash/groupBy';
 
-import worldPaths from 'app/data/world-50m-paths';
+import getIPPaths from 'app/data/world-50m-paths';
 import { getGhgEmissionDefaults } from 'utils/ghg-emissions';
 
 const calculationKeys = Object.keys(CALCULATION_OPTIONS);
@@ -174,8 +174,9 @@ export const getDefaultValues = createSelector(
 );
 
 export const getPathsWithStyles = createSelector(
-  [getDataParsed, getZoom],
-  (data, zoom) => {
+  [getDataParsed, getZoom, getIPPaths],
+  (data, zoom, worldPaths) => {
+    if (!worldPaths) return [];
     if (!data) return worldPaths;
     const { min, max } = data;
     if (min && max) setScale(getRanges(min, max));

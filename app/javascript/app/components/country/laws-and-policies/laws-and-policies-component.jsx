@@ -6,6 +6,7 @@ import layout from 'styles/layout.scss';
 import SlideCards from 'components/slide-cards';
 import ModalMetadata from 'components/modal-metadata';
 import Dropdown from 'components/dropdown';
+import AbbrReplace from 'components/abbr-replace';
 import ButtonGroup from 'components/button-group';
 import Card from 'components/card';
 import CardRow from 'components/card/card-row';
@@ -97,12 +98,16 @@ class LawsAndPolicies extends PureComponent {
       <div className={layout.content}>
         <div className={styles.descriptionContainer}>
           <div className="grid-column-item">
-            <h3 className={styles.title}>Targets in Laws and Policies</h3>
+            <h3 className={styles.title}>
+              <AbbrReplace>Targets in Laws and Policies</AbbrReplace>
+            </h3>
             <div>
-              Are countries implementing laws and policies consistent with the
-              targets in their Nationally Determined Contributions (NDCs)? Use
-              the table below to explore alignment between quantified NDC
-              targets and targets in sectoral laws and policies.
+              <AbbrReplace>
+                Are countries implementing laws and policies consistent with the
+                targets in their Nationally Determined Contributions (NDCs)? Use
+                the table below to explore alignment between quantified NDC
+                targets and targets in sectoral laws and policies.
+              </AbbrReplace>
             </div>
             <Desktop>{this.renderActionToolbar()}</Desktop>
           </div>

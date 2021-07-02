@@ -20,6 +20,7 @@ import {
 const mapStateToProps = (state, { location }) => {
   const { countrySelect, countries } = state;
   const stateWithFilters = {
+    ...state,
     ...countrySelect,
     query: countrySelect.query,
     countries: countries.data

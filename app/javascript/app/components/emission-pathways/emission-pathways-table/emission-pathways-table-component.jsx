@@ -42,6 +42,7 @@ class EmissionPathwaysTable extends PureComponent {
         ellipsisColumns={ellipsisColumns}
         emptyValueLabel={'Not specified'}
         horizontalScroll
+        parseHtml
       />
     ) : (
       <NoContent className={styles.noContent} message={noContentMsg} />

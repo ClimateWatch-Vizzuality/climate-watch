@@ -4,6 +4,7 @@ import Proptypes from 'prop-types';
 import Header from 'components/header';
 import Button from 'components/button';
 import Intro from 'components/intro';
+import AbbrReplace from 'components/abbr-replace';
 import AutocompleteSearch from 'components/autocomplete-search';
 import ModalMetadata from 'components/modal-metadata';
 import ModalShare from 'components/modal-share';
@@ -30,9 +31,13 @@ const NDCSExplore = ({ route }) => (
                 link="/2020-ndc-tracker"
                 className="link-button"
               >
-                Go to 2020 NDC Tracker
+                <AbbrReplace>Go to 2020 NDC Tracker</AbbrReplace>
               </Button>
-              <AutocompleteSearch placeholder="Search NDCs for a keyword or phrase (e.g., ‘forest’ or ‘CO2’)" />
+              <AutocompleteSearch
+                placeholder={
+                  'Search NDCs for a keyword or phrase (e.g., ‘forest’ or ‘CO2’)'
+                }
+              />
             </div>
           </div>
         </div>

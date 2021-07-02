@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
+import AbbrReplace from 'components/abbr-replace';
 
 import styles from './card-styles.scss';
 
@@ -40,13 +41,19 @@ class Card extends PureComponent {
             onClick={() => handleClick(title.link)}
             className={cx(styles.title, styles.link, theme.title)}
           >
-            {title.title}
+            <AbbrReplace>{title.title}</AbbrReplace>
           </a>
         ) : (
-          title && <p className={cx(styles.title, theme.title)}>{title}</p>
+          title && (
+            <p className={cx(styles.title, theme.title)}>
+              <AbbrReplace>{title}</AbbrReplace>
+            </p>
+          )
         )}
         {subtitle && (
-          <p className={cx(styles.subtitle, theme.subtitle)}>{subtitle}</p>
+          <p className={cx(styles.subtitle, theme.subtitle)}>
+            <AbbrReplace>{subtitle}</AbbrReplace>
+          </p>
         )}
       </div>
     );

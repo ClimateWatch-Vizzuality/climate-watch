@@ -51,6 +51,7 @@ gem 'appsignal'
 # https://github.com/rails/rails/issues/24063
 gem 'activerecord-import'
 gem 'listen', '>= 3.0.5', '< 3.2'
+gem 'maxmind-db'
 gem 'oj'
 gem 'rubyzip'
 

@@ -355,13 +355,6 @@ function GhgEmissions(props) {
             sharePath={'/ghg-emissions'}
           />
         </TabletLandscape>
-        <p className={styles.bodyText}>
-          Explore GHG emissions from multiple data source (CAIT, PIK, UNFCCC,
-          GCP) and understand their differences in the{' '}
-          <a className={styles.link} href="about/faq/ghg">
-            FAQ
-          </a>
-        </p>
       </div>
       <WorldBankDataProvider />
       <RegionsProvider includeGHGSources />

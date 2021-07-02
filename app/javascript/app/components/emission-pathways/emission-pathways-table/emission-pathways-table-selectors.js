@@ -6,6 +6,7 @@ import pick from 'lodash/pick';
 import uniq from 'lodash/uniq';
 import flatten from 'lodash/flatten';
 import sortBy from 'lodash/sortBy';
+import { replaceStringAbbr } from 'components/abbr-replace';
 import { ESP_BLACKLIST, FILTERS_BY_CATEGORY } from 'data/constants';
 
 const getCategory = state =>
@@ -231,6 +232,20 @@ export const sortDataByCategoryAttribute = createSelector(
     if (!data || isEmpty(data) || !category) return null;
     if (category !== 'indicators') return data;
     return sortBy(data, d => d.category.name);
+  }
+);
+
+export const replaceAbbreviations = createSelector(
+  [sortDataByCategoryAttribute],
+  data => {
+    if (!data || isEmpty(data)) return null;
+    return data.map(d => {
+      const updatedD = { ...d };
+      Object.keys(updatedD).forEach(key => {
+        updatedD[key] = replaceStringAbbr(d[key]);
+      });
+      return updatedD;
+    });
   }
 );
 

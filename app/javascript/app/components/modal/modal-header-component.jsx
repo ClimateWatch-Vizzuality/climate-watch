@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { themr } from 'react-css-themr';
 import Tab from 'components/tab';
+import AbbrReplace from 'components/abbr-replace';
 
 import styles from './modal-styles.scss';
 
@@ -17,13 +18,19 @@ class ModalHeader extends PureComponent {
     } = this.props;
     return (
       <div className={theme.header}>
-        {title && <h2 className={theme.headerTitle}>{title}</h2>}
+        {title && (
+          <h2 className={theme.headerTitle}>
+            <AbbrReplace>{title}</AbbrReplace>
+          </h2>
+        )}
         {tabTitles && (
-          <Tab
-            options={tabTitles}
-            selectedIndex={selectedIndex}
-            handleTabIndexChange={handleTabIndexChange}
-          />
+          <AbbrReplace>
+            <Tab
+              options={tabTitles}
+              selectedIndex={selectedIndex}
+              handleTabIndexChange={handleTabIndexChange}
+            />
+          </AbbrReplace>
         )}
         {children}
       </div>

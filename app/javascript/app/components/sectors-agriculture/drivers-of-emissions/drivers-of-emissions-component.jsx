@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Switch } from 'cw-components';
 import PropTypes from 'prop-types';
+import AbbrReplace from 'components/abbr-replace';
 import styles from './drivers-of-emissions-styles.scss';
 import { emissionTabs } from './drivers-of-emissions-data';
 import HistoricalEmissionsGraph from './historical-emissions-graph/historical-emissions-graph';
@@ -22,8 +23,8 @@ class DriversOfEmissions extends PureComponent {
           Agriculture activities are responsible for more land-clearing than any
           other sector, contributing a significant amount of emissions in
           developing countries. GHG emissions from agriculture consist mainly of
-          non-CO<sub>2</sub> gases produced by crop and livestock production and
-          management activities.
+          non-CO2 gases produced by crop and livestock production and management
+          activities.
         </p>
         <p>
           Explore what activities are driving agricultural emissions in the
@@ -36,9 +37,11 @@ class DriversOfEmissions extends PureComponent {
       <div>
         <div className={styles.content}>
           <div className={styles.header}>
-            <h2>Drivers of Emissions</h2>
+            <h2>
+              <AbbrReplace>Drivers of Emissions</AbbrReplace>
+            </h2>
             <div className={styles.intro}>
-              {emissionDescription}
+              <AbbrReplace>{emissionDescription}</AbbrReplace>
               <Switch
                 options={emissionTabs}
                 selectedOption={activeTab.value}
