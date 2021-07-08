@@ -2,8 +2,10 @@ require 'fileutils'
 require 'zip'
 
 class GenerateZIPFiles
+  include ClimateWatchEngine::CSVImporter
+
+  FILEPATH = "#{CW_FILES_PREFIX}zip_files/zip_files.csv".freeze
   UPLOAD_PREFIX = 'climate-watch-download-zip'.freeze
-  STRUCTURE_CSV = Rails.root.join('db', 'zip.csv')
   TEMP_DIR = Rails.root.join('tmp', 'zip_files')
   IGNORE = ['ALL DATA', 'NDC TEXT IN HTML', 'PATHWAYS'].freeze
 
@@ -15,15 +17,7 @@ class GenerateZIPFiles
   private
 
   def load_structure
-    strip_converter = ->(field) { field&.strip }
-
-    parsed_data = CSV.parse(
-      File.read(STRUCTURE_CSV),
-      headers: true,
-      skip_blanks: true,
-      converters: [strip_converter],
-      header_converters: :symbol
-    )
+    parsed_data = S3CSVReader.read(FILEPATH)
     @structure = parsed_data.map(&:to_h)
     @zip_files = @structure.
       reject { |s| IGNORE.include? s[:drop_down] }.
