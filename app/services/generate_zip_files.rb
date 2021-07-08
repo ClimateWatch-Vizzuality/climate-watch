@@ -2,10 +2,10 @@ require 'fileutils'
 require 'zip'
 
 class GenerateZIPFiles
+  UPLOAD_PREFIX = 'climate-watch-download-zip'.freeze
   STRUCTURE_CSV = Rails.root.join('db', 'zip.csv')
   TEMP_DIR = Rails.root.join('tmp', 'zip_files')
   IGNORE = ['ALL DATA', 'NDC TEXT IN HTML', 'PATHWAYS'].freeze
-  TAKE = ['NDC CONTENT'].freeze
 
   def call
     load_structure
@@ -29,7 +29,6 @@ class GenerateZIPFiles
       reject { |s| IGNORE.include? s[:drop_down] }.
       map { |s| s[:zip_file] }.
       uniq
-    # .select { |s| TAKE.include? s[:drop_down] }
   end
 
   def generate_and_upload_files
@@ -37,14 +36,17 @@ class GenerateZIPFiles
     puts "Creating #{@temp_dir}"
     FileUtils.mkdir_p(@temp_dir)
     @zip_files.each do |zip_file|
-      generate_and_upload_file(zip_file)
+      generate_file(zip_file)
+    end
+    @zip_files.each do |zip_file|
+      upload_file(zip_file)
     end
   ensure
     puts "Removing #{@temp_dir}"
-    # FileUtils.rm_rf(@temp_dir)
+    FileUtils.rm_rf(@temp_dir)
   end
 
-  def generate_and_upload_file(zip_file)
+  def generate_file(zip_file)
     file_configs = @structure.select { |s| s[:zip_file] == zip_file }
     zip_filename = File.join(@temp_dir, zip_file)
 
@@ -66,15 +68,41 @@ class GenerateZIPFiles
     puts "ZIP file #{zip_filename} created"
   end
 
+  def upload_file(zip_file)
+    zip_filepath = File.join(@temp_dir, zip_file)
+    s3_filename = "#{CW_FILES_PREFIX}#{UPLOAD_PREFIX}/#{zip_file}"
+    raise "File #{zip_file} not uploaded" unless s3_upload_file(s3_filename, zip_filepath)
+  end
+
   def s3_download_file(filename)
-    puts "Downloading from S3: #{filename}..."
-    bucket = Rails.application.secrets.s3_bucket_name
-    s3_client.get_object(bucket: bucket, key: filename).body.read
+    puts "Downloading from S3 #{s3_bucket}: #{filename}..."
+    s3_client.get_object(bucket: s3_bucket, key: filename).body.read
   rescue Aws::S3::Errors::NoSuchKey
-    puts "File #{filename} not found in #{bucket}"
+    puts "File #{filename} not found in #{s3_bucket}"
+  end
+
+  def s3_upload_file(filename, filepath)
+    puts "Uploading #{filepath} to S3..."
+    File.open(filepath, 'rb') do |file|
+      response = s3_client.put_object(
+        bucket: s3_bucket,
+        key: filename,
+        body: file
+      )
+      return true if response.etag
+
+      false
+    end
+  rescue StandardError => e
+    puts "Error uploading object: #{e.message}"
+    false
   end
 
   def s3_client
-    Aws::S3::Client.new
+    @s3_client ||= Aws::S3::Client.new
+  end
+
+  def s3_bucket
+    Rails.application.secrets.s3_bucket_name
   end
 end
