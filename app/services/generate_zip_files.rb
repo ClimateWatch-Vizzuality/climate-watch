@@ -5,20 +5,25 @@ class GenerateZIPFiles
   include ClimateWatchEngine::CSVImporter
 
   FILEPATH = "#{CW_FILES_PREFIX}zip_files/zip_files.csv".freeze
+  WRI_METADATA_FILEPATH = "#{CW_FILES_PREFIX}wri_metadata/metadata_sources.csv".freeze
   UPLOAD_PREFIX = 'climate-watch-download-zip'.freeze
   TEMP_DIR = Rails.root.join('tmp', 'zip_files')
   ALL_DATA = 'ALL DATA'.freeze
 
   def call
+    load_metadata
     load_structure
     generate_and_upload_files
   end
 
   private
 
+  def load_metadata
+    @metadata = S3CSVReader.read(WRI_METADATA_FILEPATH).map(&:to_h)
+  end
+
   def load_structure
-    parsed_data = S3CSVReader.read(FILEPATH)
-    @structure = parsed_data.map(&:to_h)
+    @structure =  S3CSVReader.read(FILEPATH).map(&:to_h)
     @zip_files = @structure.
       reject { |s| s[:drop_down] == ALL_DATA }.
       reject { |s| s[:s3_folder].blank? }.
@@ -91,9 +96,38 @@ class GenerateZIPFiles
         File.write(tmp_file, file_content)
         zipfile.add(file_config[:file_name_zip], tmp_file)
       end
+
+      metadata_filepath = create_metadata_file(zip_file)
+      if metadata_filepath.present?
+        zipfile.add('metadata.csv', metadata_filepath)
+      else
+        puts "NO Metadata to save for #{zip_filename}"
+      end
     end
 
     puts "ZIP file #{zip_filename} created"
+  end
+
+  def create_metadata_file(zip_file)
+    file_configs = @structure.select { |s| s[:zip_file] == zip_file }
+    metadata_sources = file_configs.
+      map { |fc| fc[:metadata]&.split("\n") }.
+      compact.
+      flatten.
+      map(&:strip)
+    tmp_file = File.join(@temp_dir, zip_file.chomp('.zip') + '_metadata.csv')
+    metadata_to_save = @metadata.select { |m| metadata_sources.include?(m[:dataset]) }
+
+    return if metadata_to_save.count.zero?
+
+    CSV.open(tmp_file, 'wb') do |csv|
+      csv << metadata_to_save.first.keys
+      metadata_to_save.each do |m|
+        csv << m.values
+      end
+    end
+
+    tmp_file
   end
 
   def upload_file(zip_file)
