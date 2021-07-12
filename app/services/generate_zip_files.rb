@@ -7,7 +7,7 @@ class GenerateZIPFiles
   FILEPATH = "#{CW_FILES_PREFIX}zip_files/zip_files.csv".freeze
   UPLOAD_PREFIX = 'climate-watch-download-zip'.freeze
   TEMP_DIR = Rails.root.join('tmp', 'zip_files')
-  IGNORE = ['ALL DATA', 'NDC TEXT IN HTML', 'PATHWAYS'].freeze
+  ALL_DATA = 'ALL DATA'.freeze
 
   def call
     load_structure
@@ -20,7 +20,13 @@ class GenerateZIPFiles
     parsed_data = S3CSVReader.read(FILEPATH)
     @structure = parsed_data.map(&:to_h)
     @zip_files = @structure.
-      reject { |s| IGNORE.include? s[:drop_down] }.
+      reject { |s| s[:drop_down] == ALL_DATA }.
+      reject { |s| s[:s3_folder].blank? }.
+      map { |s| s[:zip_file] }.
+      uniq
+    @zip_files_to_download = @structure.
+      reject { |s| s[:drop_down] == ALL_DATA }.
+      select { |s| s[:s3_folder].blank? }.
       map { |s| s[:zip_file] }.
       uniq
   end
@@ -35,9 +41,37 @@ class GenerateZIPFiles
     @zip_files.each do |zip_file|
       upload_file(zip_file)
     end
+
+    download_not_generated_zip_files
+    create_and_upload_all_data_zip
   ensure
     puts "Removing #{@temp_dir}"
     FileUtils.rm_rf(@temp_dir)
+  end
+
+  def download_not_generated_zip_files
+    @zip_files_to_download.each do |zip_file|
+      tmp_file = File.join(@temp_dir, zip_file)
+      s3_filename = "#{CW_FILES_PREFIX}#{UPLOAD_PREFIX}/#{zip_file}"
+      file_content = s3_download_file(s3_filename)
+      File.write(tmp_file, file_content)
+    end
+  end
+
+  def create_and_upload_all_data_zip
+    all_data_row = @structure.find { |s| s[:drop_down] == ALL_DATA }
+    zip_file = all_data_row[:zip_file]
+    all_data_zip_filename = File.join(@temp_dir, zip_file)
+
+    puts "Creating All Data ZIP file #{all_data_zip_filename}"
+    Zip::File.open(all_data_zip_filename, create: true) do |zipfile|
+      (@zip_files + @zip_files_to_download).each do |zip_file|
+        zip_filepath = File.join(@temp_dir, zip_file)
+        zipfile.add(zip_file, zip_filepath)
+      end
+    end
+    puts "ZIP file #{all_data_zip_filename} created"
+    upload_file(zip_file)
   end
 
   def generate_file(zip_file)
@@ -72,7 +106,7 @@ class GenerateZIPFiles
     puts "Downloading from S3 #{s3_bucket}: #{filename}..."
     s3_client.get_object(bucket: s3_bucket, key: filename).body.read
   rescue Aws::S3::Errors::NoSuchKey
-    puts "File #{filename} not found in #{s3_bucket}"
+    raise "File #{filename} not found in #{s3_bucket}"
   end
 
   def s3_upload_file(filename, filepath)
