@@ -5,4 +5,30 @@
   p {
     margin-bottom: 10px;
   }
+
+  .arrow {
+    height: 10px;
+    width: 10px;
+
+    &.leftArrow {
+      transform: rotate(180deg);
+    }
+  }
+
+  .nextButton {
+    background-color: $gray3;
+    position: absolute;
+    right: 32px;
+    bottom: 15px;
+    height: 25px;
+    width: 25px;
+    border-radius: 0 3px 3px 0;
+  }
+
+  .prevButton {
+    @extend .nextButton;
+
+    right: 58px;
+    border-radius: 3px 0 0 3px;
+  }
 }
