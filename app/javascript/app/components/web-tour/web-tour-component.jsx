@@ -9,7 +9,7 @@ import StepButton from './step-button';
 import getSteps from './web-tour-data';
 import styles from './web-tour-styles.scss';
 
-const WebTour = ({ isOpen, setOpen, location: { pathname } }) => {
+const WebTour = ({ isOpen, location: { pathname } }, setOpen) => {
   const [selectedStep, setSelectedStep] = useState();
   const steps = getSteps(pathname, setOpen);
   if (!steps) return null;
@@ -40,18 +40,22 @@ const WebTour = ({ isOpen, setOpen, location: { pathname } }) => {
         goToStep={selectedStep}
         nextButton={
           <button
-            className={styles.nextButton}
-            type="button"
+            className={cx(styles.nextButton, {
+              [styles.disabled]: selectedStep === steps.length - 1
+            })}
             title="Next tour step"
+            disabled={selectedStep === steps.length - 1}
           >
             <Icon icon={rightArrow} className={styles.arrow} />
           </button>
         }
         prevButton={
           <button
-            className={styles.prevButton}
-            type="button"
+            className={cx(styles.prevButton, {
+              [styles.disabled]: !selectedStep || selectedStep === 0
+            })}
             title="Previous tour step"
+            disabled={!selectedStep || selectedStep === 0}
           >
             <Icon
               icon={rightArrow}
@@ -67,7 +71,6 @@ const WebTour = ({ isOpen, setOpen, location: { pathname } }) => {
 
 WebTour.propTypes = {
   isOpen: PropTypes.bool,
-  setOpen: PropTypes.func.isRequired,
   location: PropTypes.shape({
     pathname: PropTypes.string
   })

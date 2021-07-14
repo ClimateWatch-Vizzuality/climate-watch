@@ -31,8 +31,8 @@ const WebTourElement = ({ selector, goToStep, stepIndex, selectedStep }) => {
         [styles.active]: selectedStep === stepIndex
       })}
       style={{
-        top: window.scrollY + top + 10,
-        left
+        top: top ? window.scrollY + top : 0,
+        left: left - 20
       }}
     />
   );

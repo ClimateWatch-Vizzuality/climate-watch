@@ -48,6 +48,7 @@ class Nav extends PureComponent {
                 className={styles.link}
                 theme={theme}
                 Child={route.Child}
+                dataTour={getDataTourByRoute(route.label)}
               />
             );
           }
@@ -61,6 +62,7 @@ class Nav extends PureComponent {
                 }
                 to={route.path}
                 onClick={isMobile ? closeMenu : null}
+                data-tour={getDataTourByRoute(route.label)}
               >
                 <span>{route.label}</span>
                 <Icon
@@ -78,10 +80,10 @@ class Nav extends PureComponent {
                 title={route.label}
                 theme={theme}
                 activeClassName={activeClassName}
+                dataTour={getDataTourByRoute(route.label)}
               />
             );
           }
-
           return (
             <SimpleMenu
               key={route.label}

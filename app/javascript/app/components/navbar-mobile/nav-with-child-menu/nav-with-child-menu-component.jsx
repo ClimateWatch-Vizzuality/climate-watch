@@ -12,9 +12,13 @@ const NavWithChildMenu = ({
   options,
   closeMenu,
   theme,
-  activeClassName
+  activeClassName,
+  dataTour
 }) => (
-  <div className={cx(styles.container, theme.navWithChildContainer)}>
+  <div
+    className={cx(styles.container, theme.navWithChildContainer)}
+    data-tour={dataTour}
+  >
     <div className={cx(styles.title, theme.title)}>{title}:</div>
     {/* eslint-disable-next-line no-confusing-arrow */}
     {options.map(option =>
@@ -56,7 +60,8 @@ NavWithChildMenu.propTypes = {
   title: PropTypes.string,
   closeMenu: PropTypes.func,
   theme: PropTypes.object,
-  activeClassName: PropTypes.string
+  activeClassName: PropTypes.string,
+  dataTour: PropTypes.string
 };
 
 NavWithChildMenu.defaultProps = {

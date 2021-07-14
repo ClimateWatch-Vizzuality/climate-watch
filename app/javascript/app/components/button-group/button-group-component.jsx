@@ -56,6 +56,7 @@ const renderButton = (buttonConfig, currentPathname) => {
           positionRight={buttonConfig.positionRight}
           dataFor="tooltip"
           dataTip={dataTip}
+          dataTour={buttonConfig.dataTour}
         />
       );
     case 'downloadCombo':
@@ -68,6 +69,7 @@ const renderButton = (buttonConfig, currentPathname) => {
           reverse={buttonConfig.reverseDropdown}
           dataFor="tooltip"
           dataTip={dataTip}
+          dataTour={buttonConfig.dataTour}
           inButtonGroup
         />
       );
@@ -86,6 +88,7 @@ const renderButton = (buttonConfig, currentPathname) => {
           disabled={buttonConfig.disabled}
           dataFor="tooltip"
           dataTip={dataTip}
+          dataTour={buttonConfig.dataTour}
           target={buttonConfig.link && isPageContained ? '_blank' : undefined}
         >
           <Icon icon={iconsMap[buttonConfig.type]} />

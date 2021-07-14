@@ -1,32 +1,95 @@
 import React from 'react';
-import Button from 'components/button';
 import styles from './web-tour-styles.scss';
 
-export default (slug, setOpen) =>
-  ({
-    '/': [
+export default (pathname, setOpen) => {
+  const stepsByPathname = {
+    '/countries': [
       {
-        selector: '[data-tour="home-01"]',
+        selector: '[data-tour="countries-01"]',
         content: () => (
           <div>
-            <h2 className={styles.title}>NOTIFICATION BELL​</h2>
+            <h2 className={styles.title}>UNFCCC DOCUMENTS TIMELINE​</h2>
             <p className={styles.description}>
-              Find out our latest updates on datasets and NDCs by clicking here.
+              Access all the official documents that the country submitted to
+              the UNFCCC directly from here.
             </p>
           </div>
-        )
+        ),
+        position: 'bottom'
       },
       {
-        selector: '[data-tour="home-02"]',
+        selector: '[data-tour="countries-02"]',
         content: () => (
           <div>
-            <h2 className={styles.title}>DOWNLOAD & VISUALIZE</h2>
+            <h2 className={styles.title}>COUNTRY OVERVIEWS</h2>
             <p className={styles.description}>
-              Download the raw data from all modules and access our most
-              appealing visualizations on GHG emissions.
+              Explore the different tabs to get an overview of the country’s
+              climate situation.
             </p>
           </div>
-        )
+        ),
+        position: 'bottom'
+      },
+      {
+        selector: '[data-tour="countries-03"]',
+        content: () => (
+          <div>
+            <h2 className={styles.title}>EXPLORE MORE</h2>
+            <p className={styles.description}>
+              Each section contains a highlight summary on each topic, but you
+              can explore the data more in depth by clicking the yellow buttons
+              and accessing the main modules.
+            </p>
+          </div>
+        ),
+        position: 'bottom'
+      },
+      {
+        selector: '[data-tour="countries-04"]',
+        content: () => (
+          <div>
+            <h2 className={styles.title}>DOWNLOAD</h2>
+            <p className={styles.description}>
+              Download the raw data in csv format by clicking this button.
+            </p>
+          </div>
+        ),
+        position: 'bottom'
+      },
+      {
+        selector: '[data-tour="countries-05"]',
+        content: () => (
+          <div>
+            <h2 className={styles.title}>SHARE</h2>
+            <p className={styles.description}>
+              Share this graphic in multiple ways by clicking this button.
+            </p>
+          </div>
+        ),
+        position: 'bottom'
+      },
+      {
+        selector: '[data-tour="countries-06"]',
+        content: () => (
+          <div>
+            <h2 className={styles.title}>INFO BUTTON</h2>
+            <p className={styles.description}>
+              Access the full information on the datasets used in this graphic,
+              including sources and citations.​{' '}
+              <a
+                href="/about/faq/general_questions"
+                onClick={() =>
+                  setOpen({
+                    isOpen: false
+                  })
+                }
+              >
+                For more general questions, you can access our FAQ
+              </a>
+            </p>
+          </div>
+        ),
+        position: 'bottom'
       }
     ],
     '/compare-all-targets': [
@@ -95,11 +158,111 @@ export default (slug, setOpen) =>
           <div>
             <h2>COMPARE ALL TARGETS</h2>
             <p>You are now ready to use this module!</p>
-            <Button variant="primary" onClick={() => setOpen(false)}>
-              Done!
-            </Button>
           </div>
         )
       }
+    ],
+    '/': [
+      {
+        selector: '[data-tour="home-01"]',
+        content: () => (
+          <div>
+            <h2 className={styles.title}>NOTIFICATION BELL​</h2>
+            <p className={styles.description}>
+              Find out our latest updates on datasets and NDCs by clicking here.
+            </p>
+          </div>
+        ),
+        position: 'bottom'
+      },
+      {
+        selector: '[data-tour="home-02"]',
+        content: () => (
+          <div>
+            <h2 className={styles.title}>DOWNLOAD & VISUALIZE</h2>
+            <p className={styles.description}>
+              Download the raw data from all modules and access our most
+              appealing visualizations on GHG emissions.
+            </p>
+          </div>
+        ),
+        position: 'bottom'
+      },
+      {
+        selector: '[data-tour="home-03"]',
+        content: () => (
+          <div>
+            <h2 className={styles.title}>HISTORIC GHG EMISSIONS​</h2>
+            <p className={styles.description}>
+              Access the most comprehensive database on countries{"'"} historic
+              GHG emissions and filter down the data through our multiple
+              indicators.
+            </p>
+          </div>
+        ),
+        position: 'bottom'
+      },
+      {
+        selector: '[data-tour="home-04"]',
+        content: () => (
+          <div>
+            <h2 className={styles.title}>COUNTRY PROFILES​</h2>
+            <p className={styles.description}>
+              Access an overview assessment on countries{"'"} climate situation
+              through our curated list of key indicators.
+            </p>
+          </div>
+        ),
+        position: 'bottom'
+      },
+      {
+        selector: '[data-tour="home-05"]',
+        content: () => (
+          <div>
+            <h2 className={styles.title}>CLIMATE COMMITMENTS</h2>
+            <p className={styles.description}>
+              Find out the latest data on countries{"'"} main climate
+              commitments, including NDCs, LTSs, Net-Zero targets, SDGs and
+              more.
+            </p>
+          </div>
+        ),
+        position: 'bottom'
+      },
+      {
+        selector: '[data-tour="home-06"]',
+        content: () => (
+          <div>
+            <h2 className={styles.title}>SECTORAL INFORMATION</h2>
+            <p className={styles.description}>
+              Explore our indicators on sectoral information.
+            </p>
+          </div>
+        ),
+        position: 'bottom'
+      },
+      {
+        selector: '[data-tour="home-07"]',
+        content: () => (
+          <div>
+            <h2 className={styles.title}>PATHWAYS</h2>
+            <p className={styles.description}>
+              Explore our indicators on future economic and emissions scenarios.
+            </p>
+          </div>
+        ),
+        position: 'bottom'
+      }
     ]
-  }[slug] || undefined);
+  };
+
+  let pathSteps = null;
+  Object.keys(stepsByPathname).some(path => {
+    if (pathname.startsWith(path)) {
+      pathSteps = stepsByPathname[path];
+      return true;
+    }
+    return false;
+  });
+  return pathSteps;
+};

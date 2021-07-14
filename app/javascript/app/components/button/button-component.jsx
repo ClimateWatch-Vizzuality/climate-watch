@@ -17,6 +17,7 @@ const Button = props => {
     onClick,
     dataFor,
     dataTip,
+    dataTour,
     title,
     target
   } = props;
@@ -30,10 +31,19 @@ const Button = props => {
     'data-for': dataFor,
     'data-tip': dataTip
   };
+  const dataTourProp = {
+    'data-tour': dataTour
+  };
 
   if (href) {
     return (
-      <a className={classNames} href={href} target={target} {...tooltipProps}>
+      <a
+        className={classNames}
+        href={href}
+        target={target}
+        {...tooltipProps}
+        {...dataTourProp}
+      >
         <AbbrReplace fixLayout>{children}</AbbrReplace>
       </a>
     );
@@ -45,6 +55,7 @@ const Button = props => {
       onClick={disabled ? e => e.preventDefault() : onClick}
       target={target}
       {...tooltipProps}
+      {...dataTourProp}
     >
       <AbbrReplace fixLayout>{children}</AbbrReplace>
     </NavLink>
@@ -55,6 +66,7 @@ const Button = props => {
       className={classNames}
       onClick={onClick}
       {...tooltipProps}
+      {...dataTourProp}
     >
       <AbbrReplace fixLayout>{children}</AbbrReplace>
     </button>
@@ -73,7 +85,8 @@ Button.propTypes = {
   dataFor: PropTypes.string,
   dataTip: PropTypes.string,
   title: PropTypes.string,
-  target: PropTypes.string
+  target: PropTypes.string,
+  dataTour: PropTypes.string
 };
 
 Button.defaultProps = {

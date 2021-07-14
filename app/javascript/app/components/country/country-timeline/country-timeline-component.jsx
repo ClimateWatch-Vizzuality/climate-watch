@@ -56,7 +56,10 @@ class CountryTimeline extends PureComponent {
     const { documentYears } = this.props;
     const { index: currentIndex, open } = this.state;
     return (
-      <div className={cx(styles.timelineContainer, { [styles.opened]: open })}>
+      <div
+        className={cx(styles.timelineContainer, { [styles.opened]: open })}
+        data-tour="countries-01"
+      >
         <div className={styles.timeline}>
           <TimelineProvider />
           <h3 className={styles.timelineDescription}>
