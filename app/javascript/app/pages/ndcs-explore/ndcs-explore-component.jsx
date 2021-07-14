@@ -33,11 +33,13 @@ const NDCSExplore = ({ route }) => (
               >
                 <AbbrReplace>Go to 2020 NDC Tracker</AbbrReplace>
               </Button>
-              <AutocompleteSearch
-                placeholder={
-                  'Search NDCs for a keyword or phrase (e.g., ‘forest’ or ‘CO2’)'
-                }
-              />
+              <span data-tour="commitments-01">
+                <AutocompleteSearch
+                  placeholder={
+                    'Search NDCs for a keyword or phrase (e.g., ‘forest’ or ‘CO2’)'
+                  }
+                />
+              </span>
             </div>
           </div>
         </div>

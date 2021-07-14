@@ -92,6 +92,90 @@ export default (pathname, setOpen) => {
         position: 'bottom'
       }
     ],
+    '/ndcs-explore': [
+      {
+        selector: '[data-tour="commitments-01"]',
+        content: () => (
+          <div>
+            <h2 className={styles.title}>KEYWORD SEARCH​</h2>
+            <p className={styles.description}>
+              AType any keyword or phrase you want to find in NDCs and get
+              instant access to the documents and a map with all the countries
+              that mention your search. TIP: for phrases, add quotation marks
+              (e.g., “nature based”)
+            </p>
+          </div>
+        ),
+        position: 'bottom'
+      },
+      {
+        selector: '[data-tour="commitments-02"]',
+        content: () => (
+          <div>
+            <h2 className={styles.title}>KEY INDICATORS</h2>
+            <p className={styles.description}>
+              Explore the different Categories and Indicators to generate new
+              visualizations.
+            </p>
+          </div>
+        ),
+        position: 'bottom'
+      },
+      {
+        selector: '[data-tour="commitments-03"]',
+        content: () => (
+          <div>
+            <h2 className={styles.title}>MAP</h2>
+            <p className={styles.description}>
+              Visualize key NDC indicators and find out what each country is
+              proposing in their climate commitments.
+            </p>
+          </div>
+        ),
+        position: 'bottom'
+      },
+      {
+        selector: '[data-tour="commitments-04"]',
+        content: () => (
+          <div>
+            <h2 className={styles.title}>IN-DEPTH NDC ANALYSIS</h2>
+            <p className={styles.description}>
+              Click on a country for a more detailed analysis on its latest NDC
+              and previous submissions.
+            </p>
+          </div>
+        ),
+        position: 'bottom'
+      },
+      {
+        selector: '[data-tour="commitments-05"]',
+        content: () => (
+          <div>
+            <h2 className={styles.title}>TABLE VIEW</h2>
+            <p className={styles.description}>
+              Explore all the values shown in the map above and find out more
+              details with this table view. You can sort values (ideal to find
+              latest submissions) and search for key terms.
+            </p>
+          </div>
+        ),
+        position: 'bottom'
+      },
+      {
+        selector: '[data-tour="commitments-06"]',
+        content: () => (
+          <div>
+            <h2 className={styles.title}>MORE INFO, DOWNLOAD & SHARE​</h2>
+            <p className={styles.description}>
+              Click on these icons to download the raw data shown in the map,
+              share the content in multiple formats, or to explore the sources
+              and citations of the datasets.
+            </p>
+          </div>
+        ),
+        position: 'bottom'
+      }
+    ],
     '/compare-all-targets': [
       {
         selector: '[data-tour="compare-all-01"]',
