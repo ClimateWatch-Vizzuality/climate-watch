@@ -9,7 +9,7 @@ import arrow from 'assets/icons/arrow-down-tiny.svg';
 import SimpleMenu from 'components/simple-menu';
 import NavNestedMenu from 'components/nav/nav-nested-menu';
 import NavWithChildMenu from 'components/navbar-mobile/nav-with-child-menu';
-
+import { getDataTourByRoute } from 'components/web-tour/web-tour-utils';
 import cwLogo from 'assets/icons/cw-logo.svg';
 import styles from './nav-styles.scss';
 
@@ -81,6 +81,7 @@ class Nav extends PureComponent {
               />
             );
           }
+
           return (
             <SimpleMenu
               key={route.label}
@@ -94,7 +95,7 @@ class Nav extends PureComponent {
               )}
               reverse={reverse}
               positionRight
-              dataTour={route.label === 'COMMITMENTS' && 'commitments-02'}
+              dataTour={getDataTourByRoute(route.label)}
             />
           );
         })}

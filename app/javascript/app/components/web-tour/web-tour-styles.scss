@@ -1,8 +1,12 @@
 @import '~styles/layout.scss';
 
 .webTour {
-  h2,
-  p {
+  .title {
+    font-size: $font-size;
+    margin-bottom: 10px;
+  }
+
+  .description {
     margin-bottom: 10px;
   }
 

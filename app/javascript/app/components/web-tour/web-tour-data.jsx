@@ -1,5 +1,6 @@
 import React from 'react';
 import Button from 'components/button';
+import styles from './web-tour-styles.scss';
 
 export default (slug, setOpen) =>
   ({
@@ -8,10 +9,22 @@ export default (slug, setOpen) =>
         selector: '[data-tour="home-01"]',
         content: () => (
           <div>
-            <p>
-              This upper menu takes you to the main modules of Climate Watch.
+            <h2 className={styles.title}>NOTIFICATION BELL​</h2>
+            <p className={styles.description}>
+              Find out our latest updates on datasets and NDCs by clicking here.
             </p>
-            <p>Click on one of them to further explore</p>
+          </div>
+        )
+      },
+      {
+        selector: '[data-tour="home-02"]',
+        content: () => (
+          <div>
+            <h2 className={styles.title}>DOWNLOAD & VISUALIZE</h2>
+            <p className={styles.description}>
+              Download the raw data from all modules and access our most
+              appealing visualizations on GHG emissions.
+            </p>
           </div>
         )
       }
