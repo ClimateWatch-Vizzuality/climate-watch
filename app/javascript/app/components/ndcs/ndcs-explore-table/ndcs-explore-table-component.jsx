@@ -38,7 +38,7 @@ const NDCSExploreTable = ({
           </div>
         )}
         {!loading && tableData && tableData.length > 0 && (
-          <div className={styles.tableWrapper}>
+          <div className={styles.tableWrapper} data-tour="commitments-05">
             <Table
               data={tableData}
               horizontalScroll

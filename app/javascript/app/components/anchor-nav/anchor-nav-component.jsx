@@ -17,12 +17,13 @@ const AnchorNav = props => {
     query,
     theme,
     offset,
-    activeSection
+    activeSection,
+    dataTour
   } = props;
   return (
     <div>
       <div className={cx(styles.anchorContainer)}>
-        <nav className={cx(className, theme.anchorNav)}>
+        <nav className={cx(className, theme.anchorNav)} data-tour={dataTour}>
           {links &&
             links.map((link, index) => {
               const linkProps = {
@@ -87,7 +88,8 @@ AnchorNav.propTypes = {
   query: PropTypes.string,
   theme: PropTypes.object,
   activeSection: PropTypes.string,
-  offset: PropTypes.array
+  offset: PropTypes.array,
+  dataTour: PropTypes.string
 };
 
 AnchorNav.defaultProps = {

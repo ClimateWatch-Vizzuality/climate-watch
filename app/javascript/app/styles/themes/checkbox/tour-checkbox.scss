@@ -1,0 +1,51 @@
+@import '~styles/layout.scss';
+
+.switch {
+  flex-direction: column-reverse;
+  height: 100px;
+  width: 60px;
+  align-items: center;
+}
+
+.label {
+  margin-top: 5px;
+  color: $theme-color;
+  text-align: center;
+
+  &::before {
+    content: 'Activate ';
+  }
+}
+
+input:checked ~ .label {
+  color: $white;
+
+  &::before {
+    content: 'Deactivate ';
+  }
+}
+
+.slider {
+  box-shadow: inset 3px 1px 8px -4px rgba(0, 0, 0, 0.5);
+  height: 48px;
+  width: 30px;
+  margin-left: 0 !important;
+
+  &::before {
+    height: 26px;
+    width: 26px;
+    left: 2px;
+    padding-top: 2px;
+    bottom: 3px;
+    content: "?";
+    text-align: center;
+  }
+}
+
+input:checked ~ .slider {
+  background-color: $theme-secondary;
+
+  &::before {
+    transform: translateY(-16px);
+  }
+}

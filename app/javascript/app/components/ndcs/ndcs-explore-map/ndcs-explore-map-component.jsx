@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable react/no-danger */
 import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
@@ -32,6 +33,7 @@ const renderButtonGroup = (clickHandler, downloadLink, stickyStatus) => (
     className={cx(styles.buttonGroupContainer, {
       [styles.padded]: stickyStatus !== Sticky.STATUS_ORIGINAL
     })}
+    data-tour="commitments-06"
   >
     <ButtonGroup
       className={styles.buttonGroup}
@@ -164,6 +166,7 @@ function NDCSExploreMap(props) {
                       className={cx(styles.filtersGroup, {
                         [styles.sticky]: stickyStatus === Sticky.STATUS_FIXED
                       })}
+                      data-tour="commitments-02"
                     >
                       <Dropdown
                         label="Category"
@@ -201,7 +204,10 @@ function NDCSExploreMap(props) {
             <div className={styles.containerUpperWrapper}>
               <div className={layout.content}>
                 <div className="grid-column-item">
-                  <div className={styles.containerUpper}>
+                  <div
+                    className={styles.containerUpper}
+                    data-tour="commitments-03"
+                  >
                     <div
                       className={styles.containerCharts}
                       ref={tooltipParentRef}
@@ -222,17 +228,19 @@ function NDCSExploreMap(props) {
                         className={styles.mapInfo}
                         text="The map reflects latest submission of each country, click on a country to see in-depth analysis of its latest NDC and previous submissions"
                       />
-                      <Map
-                        paths={paths}
-                        tooltipId={TOOLTIP_ID}
-                        onCountryClick={handleCountryClick}
-                        onCountryEnter={handleCountryEnter}
-                        onCountryFocus={handleCountryEnter}
-                        zoomEnable
-                        customCenter={isTablet ? [20, 20] : [10, 20]}
-                        theme={newMapTheme}
-                        className={styles.map}
-                      />
+                      <span data-tour="commitments-04">
+                        <Map
+                          paths={paths}
+                          tooltipId={TOOLTIP_ID}
+                          onCountryClick={handleCountryClick}
+                          onCountryEnter={handleCountryEnter}
+                          onCountryFocus={handleCountryEnter}
+                          zoomEnable
+                          customCenter={isTablet ? [20, 20] : [10, 20]}
+                          theme={newMapTheme}
+                          className={styles.map}
+                        />
+                      </span>
                       <CheckInput
                         theme={blueCheckboxTheme}
                         label="Visualize individual submissions of EU Members on the map"
