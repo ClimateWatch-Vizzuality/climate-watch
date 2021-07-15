@@ -13,7 +13,11 @@ class GenerateZIPFiles
   def call
     load_metadata
     load_structure
-    generate_and_upload_files
+    ActiveRecord::Base.transaction do
+      cleanup_zip_files
+      save_zip_files
+      generate_and_upload_files
+    end
   end
 
   private
@@ -23,7 +27,7 @@ class GenerateZIPFiles
   end
 
   def load_structure
-    @structure =  S3CSVReader.read(FILEPATH).map(&:to_h)
+    @structure = S3CSVReader.read(FILEPATH).map(&:to_h)
     @zip_files = @structure.
       reject { |s| s[:drop_down] == ALL_DATA }.
       reject { |s| s[:s3_folder].blank? }.
@@ -34,6 +38,28 @@ class GenerateZIPFiles
       select { |s| s[:s3_folder].blank? }.
       map { |s| s[:zip_file] }.
       uniq
+  end
+
+  def cleanup_zip_files
+    ZipFile.delete_all
+  end
+
+  def save_zip_files
+    files = []
+    @structure.each do |row|
+      file = files.find { |f| f.dropdown_title == row[:drop_down] } ||
+        ZipFile.new(metadata: [], files: [])
+      file.dropdown_title ||= row[:drop_down]
+      file.zip_filename ||= row[:zip_file]
+      file.metadata.concat(Array.wrap(row[:metadata]&.split("\n")&.compact))
+      file.files << {
+        s3_folder: row[:s3_folder],
+        filename_original: row[:file_name_raw],
+        filename_zip: row[:file_name_zip]
+      }
+      files << file unless files.include?(file)
+    end
+    files.each(&:save!)
   end
 
   def generate_and_upload_files
