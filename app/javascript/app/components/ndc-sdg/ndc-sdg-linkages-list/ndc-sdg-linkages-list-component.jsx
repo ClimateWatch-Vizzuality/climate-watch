@@ -30,7 +30,11 @@ class NdcSdgLinkagesList extends PureComponent {
             <span className={styles.number}>{goal.number}</span>
             <span className={styles.title}>{goal.title}</span>
           </div>
-          <button className={styles.closeButton} onClick={onCloseClick}>
+          <button
+            className={styles.closeButton}
+            onClick={onCloseClick}
+            data-tour-action="ndcs-sdg-01"
+          >
             <Icon icon={closeIcon} className={styles.icon} />
           </button>
         </div>

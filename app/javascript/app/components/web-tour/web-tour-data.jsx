@@ -1,6 +1,13 @@
 import React from 'react';
 import styles from './web-tour-styles.scss';
 
+const clickAction = selector => {
+  const element = document.querySelector(`[data-tour-action=${selector}]`);
+  if (element) {
+    element.click();
+  }
+};
+
 export default (pathname, setOpen) => {
   const stepsByPathname = {
     '/countries': [
@@ -132,7 +139,7 @@ export default (pathname, setOpen) => {
             </p>
           </div>
         ),
-        position: 'bottom'
+        position: 'top'
       },
       {
         selector: '[data-tour="commitments-04"]',
@@ -145,7 +152,7 @@ export default (pathname, setOpen) => {
             </p>
           </div>
         ),
-        position: 'bottom'
+        position: 'top'
       },
       {
         selector: '[data-tour="commitments-05"]',
@@ -159,7 +166,7 @@ export default (pathname, setOpen) => {
             </p>
           </div>
         ),
-        position: 'bottom'
+        position: 'top'
       },
       {
         selector: '[data-tour="commitments-06"]',
@@ -201,7 +208,7 @@ export default (pathname, setOpen) => {
             </p>
           </div>
         ),
-        position: 'bottom'
+        position: 'top'
       },
       {
         selector: '[data-tour="net-zero-03"]',
@@ -214,7 +221,7 @@ export default (pathname, setOpen) => {
             </p>
           </div>
         ),
-        position: 'bottom'
+        position: 'top'
       },
       {
         selector: '[data-tour="net-zero-04"]',
@@ -228,10 +235,69 @@ export default (pathname, setOpen) => {
             </p>
           </div>
         ),
-        position: 'bottom'
+        position: 'top'
       },
       {
         selector: '[data-tour="net-zero-05"]',
+        content: () => (
+          <div>
+            <h2 className={styles.title}>MORE INFO, DOWNLOAD & SHARE​</h2>
+            <p className={styles.description}>
+              Click on these icons to download the raw data shown in the map,
+              share the content in multiple formats, or to explore the sources
+              and citations of the datasets.
+            </p>
+          </div>
+        ),
+        position: 'bottom'
+      }
+    ],
+    '/ndcs-sdg': [
+      {
+        selector: '[data-tour="ndcs-sdg-01"]',
+        content: () => (
+          <div>
+            <h2 className={styles.title}>SDG TARGETS</h2>
+            <p className={styles.description}>
+              Hover over the different SDGs to visualize how relevant they are
+              for each country. Click on them to find out more information about
+              each SDG’s targets.
+            </p>
+          </div>
+        ),
+        action: () => clickAction('ndcs-sdg-01'), // Close targets
+        position: 'top'
+      },
+      {
+        selector: '[data-tour="ndcs-sdg-02"]',
+        content: () => (
+          <div>
+            <h2 className={styles.title}>COUNTRY LINK TO SDGs</h2>
+            <p className={styles.description}>
+              Hover over countries to visualize how many targets they linked in
+              their NDCs. Click on them see the links directly into the NDC
+              documents.
+            </p>
+          </div>
+        ),
+        position: 'top'
+      },
+      {
+        selector: '[data-tour="ndcs-sdg-03"]',
+        content: () => (
+          <div>
+            <h2 className={styles.title}>SDG TARGETS</h2>
+            <p className={styles.description}>
+              Click on each SDG target to visualize the countries that have
+              direct linkages to them.
+            </p>
+          </div>
+        ),
+        action: () => clickAction('ndcs-sdg-03'), // Open first target
+        position: 'top'
+      },
+      {
+        selector: '[data-tour="ndcs-sdg-04"]',
         content: () => (
           <div>
             <h2 className={styles.title}>MORE INFO, DOWNLOAD & SHARE​</h2>
