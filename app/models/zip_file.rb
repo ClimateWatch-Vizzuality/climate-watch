@@ -1,0 +1,3 @@
+class ZipFile < ApplicationRecord
+
+end
