@@ -117,37 +117,39 @@ const CompareAllTable = ({
     className={compareTableTheme.compareTableWrapper}
     data-tour="compare-all-02"
   >
-    {loading && (
-      <div className={styles.loaderWrapper}>
-        <Loading light />
-      </div>
-    )}
-    {!loading && tableData && tableData.length > 0 && (
-      <Table
-        data={tableData}
-        tableHeight={550}
-        tableWidthOffset={-100}
-        parseHtml
-        titleLinks={titleLinks}
-        setColumnWidth={() => 115}
-        setRowsHeight={() => 50}
-        defaultColumns={columns}
-        theme={compareTableTheme}
-        customCellRenderer={cell =>
-          cellRenderer(
-            cell,
-            selectedTargets,
-            columns,
-            setSelectedTargets,
-            titleLinks,
-            countryIsos
-          )
-        }
-      />
-    )}
-    {!loading && (!tableData || tableData.length <= 0) && (
-      <NoContent className={styles.noContent} message={noContentMsg} />
-    )}
+    <span data-tour="compare-all-03">
+      {loading && (
+        <div className={styles.loaderWrapper}>
+          <Loading light />
+        </div>
+      )}
+      {!loading && tableData && tableData.length > 0 && (
+        <Table
+          data={tableData}
+          tableHeight={550}
+          tableWidthOffset={-100}
+          parseHtml
+          titleLinks={titleLinks}
+          setColumnWidth={() => 115}
+          setRowsHeight={() => 50}
+          defaultColumns={columns}
+          theme={compareTableTheme}
+          customCellRenderer={cell =>
+            cellRenderer(
+              cell,
+              selectedTargets,
+              columns,
+              setSelectedTargets,
+              titleLinks,
+              countryIsos
+            )
+          }
+        />
+      )}
+      {!loading && (!tableData || tableData.length <= 0) && (
+        <NoContent className={styles.noContent} message={noContentMsg} />
+      )}
+    </span>
   </div>
 );
 

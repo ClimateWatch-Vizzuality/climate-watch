@@ -36,6 +36,10 @@
     }
   }
 
+  .bold {
+    font-weight: $font-weight;
+  }
+
   .prevButton {
     @extend .nextButton;
 

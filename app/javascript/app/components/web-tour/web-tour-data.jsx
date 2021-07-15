@@ -316,10 +316,10 @@ export default (pathname, setOpen) => {
         selector: '[data-tour="compare-all-01"]',
         content: () => (
           <div>
-            <h2>COMPARE ALL TARGETS</h2>
+            <h2>LEGEND</h2>
             <p>
-              In this page you can choose up to three countries’ commitments and
-              compare them among +160 indicators.
+              These legends indicate the status of any given Climate Commitment
+              in the table below.
             </p>
           </div>
         )
@@ -328,11 +328,10 @@ export default (pathname, setOpen) => {
         selector: '[data-tour="compare-all-02"]',
         content: () => (
           <div>
-            <h2>COMPARE ALL TARGETS</h2>
+            <h2>COUNTRY LIST</h2>
             <p>
-              This table summarizes every country’s commitment and indicates
-              whether a documentwas Submitted, Not submitted, or if the country
-              intends to submit.You can choose up to 3 documents to compare.
+              Find any country you are interested in by scrolling down this
+              list.
             </p>
           </div>
         )
@@ -341,9 +340,14 @@ export default (pathname, setOpen) => {
         selector: '[data-tour="compare-all-03"]',
         content: () => (
           <div>
-            <h2>COMPARE ALL TARGETS</h2>
-            The Keyword Search allows you to easily find a country and select
-            their commitments for comparisons
+            <h2>CLIMATE COMMITMENTS</h2>
+            <p>
+              Click in the boxes and select up to three different Climate
+              Commitments to compare.
+            </p>
+            <span className={styles.bold}>TIP:</span> Select different
+            commitments from a same country to evaluate their evolution, or
+            choose among different countries to see regional differences
           </div>
         )
       },
@@ -351,10 +355,10 @@ export default (pathname, setOpen) => {
         selector: '[data-tour="compare-all-04"]',
         content: () => (
           <div>
-            <h2>COMPARE ALL TARGETS</h2>
+            <h2>COMPARE</h2>
             <p>
-              To change the options you selected, you can click again on the
-              table or simple click ”Clear” to undo your selection.
+              Once you clicked on up to three climate commitments in the boxes
+              below, click the yellow button to access the comparison page.
             </p>
           </div>
         )
@@ -363,10 +367,10 @@ export default (pathname, setOpen) => {
         selector: '[data-tour="compare-all-05"]',
         content: () => (
           <div>
-            <h2>COMPARE ALL TARGETS</h2>
+            <h2>CLEAR</h2>
             <p>
-              Once you are done with your selection, click “Compare” to see the
-              side by side comparison.
+              Once you clicked on up to three climate commitments, select
+              “Clear” to choose other commitments.
             </p>
           </div>
         )
@@ -375,8 +379,33 @@ export default (pathname, setOpen) => {
         selector: '[data-tour="compare-all-06"]',
         content: () => (
           <div>
-            <h2>COMPARE ALL TARGETS</h2>
-            <p>You are now ready to use this module!</p>
+            <h2>KEYWORD SEARCH</h2>
+            <p>
+              Find countries more easily in the list below by typing their names
+              in this box.
+            </p>
+          </div>
+        )
+      },
+      {
+        selector: '[data-tour="compare-all-07"]',
+        content: () => (
+          <div>
+            <h2 className={styles.title}>INFO BUTTON</h2>
+            <p className={styles.description}>
+              Access the full information on the datasets used in this graphic,
+              including sources and citations.​{' '}
+              <a
+                href="/about/faq/general_questions"
+                onClick={() =>
+                  setOpen({
+                    isOpen: false
+                  })
+                }
+              >
+                For more general questions, you can access our FAQ
+              </a>
+            </p>
           </div>
         )
       }
