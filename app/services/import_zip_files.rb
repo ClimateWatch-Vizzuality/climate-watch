@@ -1,7 +1,7 @@
 require 'fileutils'
 require 'zip'
 
-class GenerateZIPFiles
+class ImportZIPFiles
   include ClimateWatchEngine::CSVImporter
 
   FILEPATH = "#{CW_FILES_PREFIX}zip_files/zip_files.csv".freeze

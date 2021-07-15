@@ -1,7 +1,7 @@
 namespace :zip_files do
-  task generate: :environment do
+  task import: :environment do
     TimedLogger.log('Generating ZIP files') do
-      GenerateZIPFiles.new.call
+      ImportZIPFiles.new.call
     end
   end
 end
