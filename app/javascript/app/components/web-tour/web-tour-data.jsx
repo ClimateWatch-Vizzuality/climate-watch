@@ -534,6 +534,77 @@ export default (pathname, setOpen) => {
         )
       }
     ],
+    '/data-explorer': [
+      {
+        selector: '[data-tour="data-explorer-01"]',
+        content: () => (
+          <div>
+            <h2>DOWNLOAD BULK DATA</h2>
+            <p>
+              Select between the different options in this drop-down menu to
+              download directly the raw data files in csv format.
+            </p>
+          </div>
+        )
+      },
+      {
+        selector: '[data-tour="data-explorer-02"]',
+        content: () => (
+          <div>
+            <h2>FILTER BY MODULE</h2>
+            <p>
+              Select between the different tabs to choose the module you want to
+              extract data from.
+            </p>
+          </div>
+        )
+      },
+      {
+        selector: '[data-tour="data-explorer-03"]',
+        content: () => (
+          <div>
+            <h2>DATA FILTERS</h2>
+            <p>
+              Explore the different drop-down options to filter and adjust your
+              selection.
+            </p>
+          </div>
+        )
+      },
+      {
+        selector: '[data-tour="data-explorer-04"]',
+        content: () => (
+          <div>
+            <h2>TABLE VIEW</h2>
+            <p>Explore the values from your selection in a table format.​</p>
+          </div>
+        )
+      },
+      {
+        selector: '[data-tour="data-explorer-05"]',
+        content: () => (
+          <div>
+            <h2>MORE INFO</h2>
+            <p>
+              Toggle between these tabs to find out more about the data sources
+              and citations.
+            </p>
+          </div>
+        )
+      },
+      {
+        selector: '[data-tour="data-explorer-06"]',
+        content: () => (
+          <div>
+            <h2 className={styles.title}>API CALLS</h2>
+            <p className={styles.description}>
+              Find out more about how to link our API data directly into your
+              website.
+            </p>
+          </div>
+        )
+      }
+    ],
     '/': [
       {
         selector: '[data-tour="home-01"]',
