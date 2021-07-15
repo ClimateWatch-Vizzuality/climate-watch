@@ -52,11 +52,13 @@ class ImportZIPFiles
       file.dropdown_title ||= row[:drop_down]
       file.zip_filename ||= row[:zip_file]
       file.metadata.concat(Array.wrap(row[:metadata]&.split("\n")&.compact))
-      file.files << {
-        s3_folder: row[:s3_folder],
-        filename_original: row[:file_name_raw],
-        filename_zip: row[:file_name_zip]
-      }
+      if row[:s3_folder].present?
+        file.files << {
+          s3_folder: row[:s3_folder],
+          filename_original: row[:file_name_raw],
+          filename_zip: row[:file_name_zip]
+        }
+      end
       files << file unless files.include?(file)
     end
     files.each(&:save!)
