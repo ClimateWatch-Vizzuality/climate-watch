@@ -38,7 +38,6 @@ class SDGCard extends PureComponent {
     );
 
     const title = square ? goal.title : `${goal.number}. ${goal.cw_title}`;
-
     return (
       <div
         className={cardStyle}
@@ -46,6 +45,7 @@ class SDGCard extends PureComponent {
         role="menuitem"
         tabIndex={0}
         onMouseEnter={onMouseEnter}
+        data-tour-action={goal.number === 1 && 'ndcs-sdg-03'}
       >
         <h4 className={styles.title}>{title}</h4>
         <div className={styles.dots}>

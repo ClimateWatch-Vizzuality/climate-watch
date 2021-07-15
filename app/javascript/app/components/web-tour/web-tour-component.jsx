@@ -9,7 +9,8 @@ import StepButton from './step-button';
 import getSteps from './web-tour-data';
 import styles from './web-tour-styles.scss';
 
-const WebTour = ({ isOpen, location: { pathname } }, setOpen) => {
+const WebTour = ({ isOpen, location }, setOpen) => {
+  const { pathname, search } = location;
   const [selectedStep, setSelectedStep] = useState();
   const steps = getSteps(pathname, setOpen);
   if (!steps) return null;
@@ -38,6 +39,7 @@ const WebTour = ({ isOpen, location: { pathname } }, setOpen) => {
         disableInteraction
         disableFocusLock
         goToStep={selectedStep}
+        update={`${pathname}${search}`}
         nextButton={
           <button
             className={cx(styles.nextButton, {

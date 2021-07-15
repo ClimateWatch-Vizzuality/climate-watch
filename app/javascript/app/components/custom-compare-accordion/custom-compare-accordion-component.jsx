@@ -1,3 +1,4 @@
+/* eslint-disable no-confusing-arrow */
 import React from 'react';
 import PropTypes from 'prop-types';
 import Accordion from 'components/accordion';
@@ -34,6 +35,7 @@ const CustomCompareAccordionComponent = ({
       className={cx(styles.container, {
         [styles.containerNoData]: loading || noContent
       })}
+      data-tour="custom-compare-04"
     >
       {loading && <Loading light className={styles.loader} />}
       {noContent && (
@@ -49,7 +51,7 @@ const CustomCompareAccordionComponent = ({
         >
           {data &&
             data.map(section =>
-              (isSectoralInformation ? (
+              isSectoralInformation ? (
                 section.sectors && (
                   <Accordion
                     key={section.slug}
@@ -73,7 +75,7 @@ const CustomCompareAccordionComponent = ({
                   compare={compare}
                   className={styles.compareDefinitionList}
                 />
-              ))
+              )
             )}
         </Accordion>
       )}

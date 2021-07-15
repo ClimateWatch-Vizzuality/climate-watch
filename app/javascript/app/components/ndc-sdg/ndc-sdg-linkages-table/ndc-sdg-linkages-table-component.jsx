@@ -30,14 +30,17 @@ class NdcSdgLinkagesTable extends PureComponent {
         className={cx('grid-column-item', {
           [styles.isContained]: isPageContained
         })}
+        data-tour="ndcs-sdg-01"
       >
         {selectedGoal ? (
-          <NdcSdgLinkagesList
-            targetHover={targetHover}
-            onTargetHover={onTargetHover}
-            onCloseClick={handleClickClose}
-            goal={selectedGoal}
-          />
+          <span data-tour="ndcs-sdg-03">
+            <NdcSdgLinkagesList
+              targetHover={targetHover}
+              onTargetHover={onTargetHover}
+              onCloseClick={handleClickClose}
+              goal={selectedGoal}
+            />
+          </span>
         ) : (
           <div className={styles.container}>
             {goals.map((goal, i) => {

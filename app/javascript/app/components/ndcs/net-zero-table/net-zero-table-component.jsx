@@ -29,7 +29,7 @@ const NetZeroTable = ({
 }) => (
   <div>
     <div className={styles.wrapper}>
-      <div className={layout.content}>
+      <div className={layout.content} data-tour="net-zero-04">
         {loading && <Loading light className={styles.loader} />}
         {!loading && (
           <div className={styles.filtersLayout}>

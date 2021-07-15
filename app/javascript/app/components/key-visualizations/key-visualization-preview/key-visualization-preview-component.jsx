@@ -28,6 +28,7 @@ class KeyVisualizationPreview extends PureComponent {
       <ButtonGroup
         key="preview-actions"
         className={styles.buttonGroup}
+        dataTour="key-visualizations-03"
         buttonsConfig={[
           {
             type: 'info',

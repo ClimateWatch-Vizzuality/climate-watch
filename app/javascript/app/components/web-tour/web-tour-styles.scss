@@ -36,6 +36,10 @@
     }
   }
 
+  .bold {
+    font-weight: $font-weight;
+  }
+
   .prevButton {
     @extend .nextButton;
 
@@ -45,6 +49,6 @@
 
   .disabled {
     opacity: 0.5;
-    cursor: pointer;
+    cursor: default;
   }
 }
