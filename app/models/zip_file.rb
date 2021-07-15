@@ -1,8 +1,14 @@
 class ZipFile < ApplicationRecord
+  UPLOAD_PREFIX = 'climate-watch-download-zip'.freeze
+
   validates_presence_of :dropdown_title, :zip_filename
 
+  def s3_key
+    "#{CW_FILES_PREFIX}#{UPLOAD_PREFIX}/#{zip_filename}"
+  end
+
   def url
-    "#{s3_url}/#{CW_FILES_PREFIX}climate-watch-download-zip/#{zip_filename}"
+    "#{s3_url}/#{s3_key}"
   end
 
   private

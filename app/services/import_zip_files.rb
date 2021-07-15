@@ -6,7 +6,6 @@ class ImportZIPFiles
 
   FILEPATH = "#{CW_FILES_PREFIX}zip_files/zip_files.csv".freeze
   WRI_METADATA_FILEPATH = "#{CW_FILES_PREFIX}wri_metadata/metadata_sources.csv".freeze
-  UPLOAD_PREFIX = 'climate-watch-download-zip'.freeze
   TEMP_DIR = Rails.root.join('tmp', 'zip_files')
   ALL_DATA = 'ALL DATA'.freeze
 
@@ -16,6 +15,7 @@ class ImportZIPFiles
     ActiveRecord::Base.transaction do
       cleanup_zip_files
       save_zip_files
+      load_zip_files
       generate_and_upload_files if upload_files
     end
   end
@@ -28,16 +28,6 @@ class ImportZIPFiles
 
   def load_structure
     @structure = S3CSVReader.read(FILEPATH).map(&:to_h)
-    @zip_files = @structure.
-      reject { |s| s[:drop_down] == ALL_DATA }.
-      reject { |s| s[:s3_folder].blank? }.
-      map { |s| s[:zip_file] }.
-      uniq
-    @zip_files_to_download = @structure.
-      reject { |s| s[:drop_down] == ALL_DATA }.
-      select { |s| s[:s3_folder].blank? }.
-      map { |s| s[:zip_file] }.
-      uniq
   end
 
   def cleanup_zip_files
@@ -64,14 +54,18 @@ class ImportZIPFiles
     files.each(&:save!)
   end
 
+  def load_zip_files
+    @zip_files = ZipFile.all
+  end
+
   def generate_and_upload_files
     @temp_dir = "#{TEMP_DIR}/#{Time.now.strftime('%Y%m%d%H%M%S')}"
     puts "Creating #{@temp_dir}"
     FileUtils.mkdir_p(@temp_dir)
-    @zip_files.each do |zip_file|
+    zip_files_to_generate.each do |zip_file|
       generate_file(zip_file)
     end
-    @zip_files.each do |zip_file|
+    zip_files_to_generate.each do |zip_file|
       upload_file(zip_file)
     end
 
@@ -83,51 +77,57 @@ class ImportZIPFiles
   end
 
   def download_not_generated_zip_files
-    @zip_files_to_download.each do |zip_file|
-      tmp_file = File.join(@temp_dir, zip_file)
-      s3_filename = "#{CW_FILES_PREFIX}#{UPLOAD_PREFIX}/#{zip_file}"
-      file_content = s3_download_file(s3_filename)
+    zip_files_to_download.each do |zip_file|
+      tmp_file = File.join(@temp_dir, zip_file.zip_filename)
+      file_content = s3_download_file(zip_file.s3_key)
       File.write(tmp_file, file_content)
     end
   end
 
-  def create_and_upload_all_data_zip
-    all_data_row = @structure.find { |s| s[:drop_down] == ALL_DATA }
-    zip_file = all_data_row[:zip_file]
-    all_data_zip_filename = File.join(@temp_dir, zip_file)
+  def zip_files_to_generate
+    @zip_files.reject { |s| s.files.empty? }
+  end
 
-    puts "Creating All Data ZIP file #{all_data_zip_filename}"
-    Zip::File.open(all_data_zip_filename, create: true) do |zipfile|
-      (@zip_files + @zip_files_to_download).each do |zip_file|
-        zip_filepath = File.join(@temp_dir, zip_file)
-        zipfile.add(zip_file, zip_filepath)
+  def zip_files_to_download
+    @zip_files.
+      select { |s| s.files.empty? }.
+      reject { |s| s.dropdown_title == ALL_DATA }
+  end
+
+  def create_and_upload_all_data_zip
+    all_data = @zip_files.find { |s| s.dropdown_title == ALL_DATA }
+    all_data_zip_filepath = File.join(@temp_dir, all_data.zip_filename)
+
+    puts "Creating All Data ZIP file #{all_data_zip_filepath}"
+    Zip::File.open(all_data_zip_filepath, create: true) do |zip|
+      (zip_files_to_generate + zip_files_to_download).each do |f|
+        zip.add(f.zip_filename, File.join(@temp_dir, f.zip_filename))
       end
     end
-    puts "ZIP file #{all_data_zip_filename} created"
-    upload_file(zip_file)
+    puts "ZIP file #{all_data_zip_filepath} created"
+    upload_file(all_data)
   end
 
   def generate_file(zip_file)
-    file_configs = @structure.select { |s| s[:zip_file] == zip_file }
-    zip_filename = File.join(@temp_dir, zip_file)
+    zip_filename = File.join(@temp_dir, zip_file.zip_filename)
 
     puts "Creating ZIP file #{zip_filename}"
 
-    Zip::File.open(zip_filename, create: true) do |zipfile|
-      file_configs.each do |file_config|
+    Zip::File.open(zip_filename, create: true) do |zip|
+      zip_file.files.map(&:symbolize_keys).each do |file_config|
         s3_folder = file_config[:s3_folder]
-        s3_file = file_config[:file_name_raw]
+        s3_file = file_config[:filename_original]
         s3_filename = "#{CW_FILES_PREFIX}#{s3_folder}/#{s3_file}"
         tmp_file = File.join(@temp_dir, s3_folder, s3_file)
         FileUtils.mkdir_p(File.dirname(tmp_file))
         file_content = s3_download_file(s3_filename)
         File.write(tmp_file, file_content)
-        zipfile.add(file_config[:file_name_zip], tmp_file)
+        zip.add(file_config[:filename_zip], tmp_file)
       end
 
       metadata_filepath = create_metadata_file(zip_file)
       if metadata_filepath.present?
-        zipfile.add('metadata.csv', metadata_filepath)
+        zip.add('metadata.csv', metadata_filepath)
       else
         puts "NO Metadata to save for #{zip_filename}"
       end
@@ -137,14 +137,8 @@ class ImportZIPFiles
   end
 
   def create_metadata_file(zip_file)
-    file_configs = @structure.select { |s| s[:zip_file] == zip_file }
-    metadata_sources = file_configs.
-      map { |fc| fc[:metadata]&.split("\n") }.
-      compact.
-      flatten.
-      map(&:strip)
-    tmp_file = File.join(@temp_dir, zip_file.chomp('.zip') + '_metadata.csv')
-    metadata_to_save = @metadata.select { |m| metadata_sources.include?(m[:dataset]) }
+    tmp_file = File.join(@temp_dir, zip_file.zip_filename.chomp('.zip') + '_metadata.csv')
+    metadata_to_save = @metadata.select { |m| zip_file.metadata.include?(m[:dataset]) }
 
     return if metadata_to_save.count.zero?
 
@@ -159,9 +153,8 @@ class ImportZIPFiles
   end
 
   def upload_file(zip_file)
-    zip_filepath = File.join(@temp_dir, zip_file)
-    s3_filename = "#{CW_FILES_PREFIX}#{UPLOAD_PREFIX}/#{zip_file}"
-    raise "File #{zip_file} not uploaded" unless s3_upload_file(s3_filename, zip_filepath)
+    zip_filepath = File.join(@temp_dir, zip_file.zip_filename)
+    raise "File #{zip_file} not uploaded" unless s3_upload_file(zip_file.s3_key, zip_filepath)
   end
 
   def s3_download_file(filename)
