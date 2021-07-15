@@ -2178,8 +2178,8 @@ ALTER SEQUENCE public.wri_metadata_values_id_seq OWNED BY public.wri_metadata_va
 
 CREATE TABLE public.zip_files (
     id bigint NOT NULL,
-    dropdown_title character varying,
-    zip_filename character varying,
+    dropdown_title character varying NOT NULL,
+    zip_filename character varying NOT NULL,
     metadata character varying[] DEFAULT '{}'::character varying[],
     files jsonb DEFAULT '{}'::jsonb,
     created_at timestamp without time zone NOT NULL,
