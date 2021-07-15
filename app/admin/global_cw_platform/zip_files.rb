@@ -29,7 +29,7 @@ ActiveAdmin.register_page 'Global Cw Platform Zip Files' do
     end
 
     def import_worker
-      DataUploader::BaseImportWorker.perform_async(section.id, 'ImportZIPFiles', current_admin_user.email)
+      DataUploader::BaseImportWorker.perform_async(section.id, 'ImportZipFiles', current_admin_user.email)
     end
 
     def section_repository

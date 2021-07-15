@@ -40,8 +40,8 @@ NDC_CW","indc","NDC_data.csv","CW_NDC_data_highlevel.csv"
   END
 }
 
-RSpec.describe ImportZIPFiles do
-  subject { ImportZIPFiles.new.call(upload_files: false) }
+RSpec.describe ImportZipFiles do
+  subject { ImportZipFiles.new.call(upload_files: false) }
 
   before :all do
     Aws.config[:s3] = {
@@ -105,9 +105,9 @@ RSpec.describe ImportZIPFiles do
   end
 
   context 'with file generate and upload' do
-    subject { ImportZIPFiles.new.call }
+    subject { ImportZipFiles.new.call }
 
-    it 'Generate ZIP files and upload them' do
+    it 'Generate Zip files and upload them' do
       allow_any_instance_of(Kernel).to receive(:puts) # suppress puts message
 
       uploaded_files = []

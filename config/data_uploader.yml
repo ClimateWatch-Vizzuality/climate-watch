@@ -114,6 +114,6 @@ platforms:
         datasets:
           - key_visualizations
       - name: zip_files
-        importer: ImportZIPFiles
+        importer: ImportZipFiles
         datasets:
           - zip_files

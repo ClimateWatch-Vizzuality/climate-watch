@@ -1,7 +1,7 @@
 require 'fileutils'
 require 'zip'
 
-class ImportZIPFiles
+class ImportZipFiles
   include ClimateWatchEngine::CSVImporter
 
   FILEPATH = "#{CW_FILES_PREFIX}zip_files/zip_files.csv".freeze
@@ -111,20 +111,20 @@ class ImportZIPFiles
     all_data = @zip_files.find { |s| s.dropdown_title == ALL_DATA }
     all_data_zip_filepath = File.join(@temp_dir, all_data.zip_filename)
 
-    puts "Creating All Data ZIP file #{all_data_zip_filepath}"
+    puts "Creating All Data Zip file #{all_data_zip_filepath}"
     Zip::File.open(all_data_zip_filepath, create: true) do |zip|
       (zip_files_to_generate + zip_files_to_download).each do |f|
         zip.add(f.zip_filename, File.join(@temp_dir, f.zip_filename))
       end
     end
-    puts "ZIP file #{all_data_zip_filepath} created"
+    puts "Zip file #{all_data_zip_filepath} created"
     upload_file(all_data)
   end
 
   def generate_file(zip_file)
     zip_filename = File.join(@temp_dir, zip_file.zip_filename)
 
-    puts "Creating ZIP file #{zip_filename}"
+    puts "Creating Zip file #{zip_filename}"
 
     Zip::File.open(zip_filename, create: true) do |zip|
       zip_file.files.map(&:symbolize_keys).each do |file_config|
@@ -146,7 +146,7 @@ class ImportZIPFiles
       end
     end
 
-    puts "ZIP file #{zip_filename} created"
+    puts "Zip file #{zip_filename} created"
   end
 
   def create_metadata_file(zip_file)
