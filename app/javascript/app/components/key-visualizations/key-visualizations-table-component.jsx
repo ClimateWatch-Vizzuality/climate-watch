@@ -122,7 +122,7 @@ class KeyVisualizationsTable extends PureComponent {
         >
           <KeyVisualizationsProvider />
         </div>
-        <div className={styles.col4}>
+        <div className={styles.col4} data-tour="key-visualizations-01">
           <Multiselect
             label="Tags"
             options={options.tags || []}
@@ -146,7 +146,11 @@ class KeyVisualizationsTable extends PureComponent {
           />
         </div>
         <div className="grid-column-item">
-          <div className={styles.cards} id="visualization-cards">
+          <div
+            className={styles.cards}
+            id="visualization-cards"
+            data-tour="key-visualizations-02"
+          >
             <KeyVisualizationPreview
               visualization={visualizationSelected}
               row={this.previewRowPosition()}

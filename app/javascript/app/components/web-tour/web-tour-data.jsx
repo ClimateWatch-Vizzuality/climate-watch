@@ -316,8 +316,8 @@ export default (pathname, setOpen) => {
         selector: '[data-tour="compare-all-01"]',
         content: () => (
           <div>
-            <h2>LEGEND</h2>
-            <p>
+            <h2 className={styles.title}>LEGEND</h2>
+            <p className={styles.description}>
               These legends indicate the status of any given Climate Commitment
               in the table below.
             </p>
@@ -328,8 +328,8 @@ export default (pathname, setOpen) => {
         selector: '[data-tour="compare-all-02"]',
         content: () => (
           <div>
-            <h2>COUNTRY LIST</h2>
-            <p>
+            <h2 className={styles.title}>COUNTRY LIST</h2>
+            <p className={styles.description}>
               Find any country you are interested in by scrolling down this
               list.
             </p>
@@ -340,8 +340,8 @@ export default (pathname, setOpen) => {
         selector: '[data-tour="compare-all-03"]',
         content: () => (
           <div>
-            <h2>CLIMATE COMMITMENTS</h2>
-            <p>
+            <h2 className={styles.title}>CLIMATE COMMITMENTS</h2>
+            <p className={styles.description}>
               Click in the boxes and select up to three different Climate
               Commitments to compare.
             </p>
@@ -355,8 +355,8 @@ export default (pathname, setOpen) => {
         selector: '[data-tour="compare-all-04"]',
         content: () => (
           <div>
-            <h2>COMPARE</h2>
-            <p>
+            <h2 className={styles.title}>COMPARE</h2>
+            <p className={styles.description}>
               Once you clicked on up to three climate commitments in the boxes
               below, click the yellow button to access the comparison page.
             </p>
@@ -367,8 +367,8 @@ export default (pathname, setOpen) => {
         selector: '[data-tour="compare-all-05"]',
         content: () => (
           <div>
-            <h2>CLEAR</h2>
-            <p>
+            <h2 className={styles.title}>CLEAR</h2>
+            <p className={styles.description}>
               Once you clicked on up to three climate commitments, select
               “Clear” to choose other commitments.
             </p>
@@ -379,8 +379,8 @@ export default (pathname, setOpen) => {
         selector: '[data-tour="compare-all-06"]',
         content: () => (
           <div>
-            <h2>KEYWORD SEARCH</h2>
-            <p>
+            <h2 className={styles.title}>KEYWORD SEARCH</h2>
+            <p className={styles.description}>
               Find countries more easily in the list below by typing their names
               in this box.
             </p>
@@ -415,8 +415,8 @@ export default (pathname, setOpen) => {
         selector: '[data-tour="custom-compare-01"]',
         content: () => (
           <div>
-            <h2>IN DEPTH ANALYSIS</h2>
-            <p>
+            <h2 className={styles.title}>IN DEPTH ANALYSIS</h2>
+            <p className={styles.description}>
               Explore our analysis of the NDCs covering more than 160
               indicators, divided into these four categories: Overview,
               Mitigation, Adaptation and Sectoral Information.
@@ -428,8 +428,8 @@ export default (pathname, setOpen) => {
         selector: '[data-tour="custom-compare-02"]',
         content: () => (
           <div>
-            <h2>COUNTRY SELECTION</h2>
-            <p>
+            <h2 className={styles.title}>COUNTRY SELECTION</h2>
+            <p className={styles.description}>
               Switch between different countries by clicking in the dropdown
               option or by typing.
             </p>
@@ -440,8 +440,8 @@ export default (pathname, setOpen) => {
         selector: '[data-tour="custom-compare-03"]',
         content: () => (
           <div>
-            <h2>COMMITMENTS SELECTION</h2>
-            <p>
+            <h2 className={styles.title}>COMMITMENTS SELECTION</h2>
+            <p className={styles.description}>
               Switch between the different climate commitments available within
               the country.
             </p>
@@ -452,8 +452,8 @@ export default (pathname, setOpen) => {
         selector: '[data-tour="custom-compare-04"]',
         content: () => (
           <div>
-            <h2>INDICATORS​</h2>
-            <p>
+            <h2 className={styles.title}>INDICATORS​</h2>
+            <p className={styles.description}>
               Click on the drop down menus to explore among our more than 160
               indicators.
             </p>
@@ -466,8 +466,8 @@ export default (pathname, setOpen) => {
         selector: '[data-tour="ghg-01"]',
         content: () => (
           <div>
-            <h2>FILTERS</h2>
-            <p>
+            <h2 className={styles.title}>FILTERS</h2>
+            <p className={styles.description}>
               Explore the different drop-down options to filter and adjust your
               selection and the visualization underneath.
             </p>
@@ -478,8 +478,8 @@ export default (pathname, setOpen) => {
         selector: '[data-tour="ghg-02"]',
         content: () => (
           <div>
-            <h2>GRAPH</h2>
-            <p>
+            <h2 className={styles.title}>GRAPH</h2>
+            <p className={styles.description}>
               Visualize the historic GHG emissions values from your selection
               and hover over the graph to get more details.
             </p>
@@ -490,8 +490,8 @@ export default (pathname, setOpen) => {
         selector: '[data-tour="ghg-03"]',
         content: () => (
           <div>
-            <h2>TIME BAR</h2>
-            <p>
+            <h2 className={styles.title}>TIME BAR</h2>
+            <p className={styles.description}>
               Adjust the handles to select the timespan that you are interested
               about.
             </p>
@@ -502,8 +502,10 @@ export default (pathname, setOpen) => {
         selector: '[data-tour="ghg-04"]',
         content: () => (
           <div>
-            <h2>TABLE VIEW</h2>
-            <p>Explore the values from your selection in a table format.​</p>
+            <h2 className={styles.title}>TABLE VIEW</h2>
+            <p className={styles.description}>
+              Explore the values from your selection in a table format.
+            </p>
           </div>
         )
       },
@@ -511,8 +513,8 @@ export default (pathname, setOpen) => {
         selector: '[data-tour="ghg-05"]',
         content: () => (
           <div>
-            <h2>WHAT DATA SOURCE SHOULD I USE?</h2>
-            <p>
+            <h2 className={styles.title}>WHAT DATA SOURCE SHOULD I USE?</h2>
+            <p className={styles.description}>
               This is the most common question we get. To get a better idea on
               which of our four data sources you should use, click on this FAQ
               link to find out more in a summary table.
@@ -539,8 +541,8 @@ export default (pathname, setOpen) => {
         selector: '[data-tour="data-explorer-01"]',
         content: () => (
           <div>
-            <h2>DOWNLOAD BULK DATA</h2>
-            <p>
+            <h2 className={styles.title}>DOWNLOAD BULK DATA</h2>
+            <p className={styles.description}>
               Select between the different options in this drop-down menu to
               download directly the raw data files in csv format.
             </p>
@@ -551,8 +553,8 @@ export default (pathname, setOpen) => {
         selector: '[data-tour="data-explorer-02"]',
         content: () => (
           <div>
-            <h2>FILTER BY MODULE</h2>
-            <p>
+            <h2 className={styles.title}>FILTER BY MODULE</h2>
+            <p className={styles.description}>
               Select between the different tabs to choose the module you want to
               extract data from.
             </p>
@@ -563,8 +565,8 @@ export default (pathname, setOpen) => {
         selector: '[data-tour="data-explorer-03"]',
         content: () => (
           <div>
-            <h2>DATA FILTERS</h2>
-            <p>
+            <h2 className={styles.title}>DATA FILTERS</h2>
+            <p className={styles.description}>
               Explore the different drop-down options to filter and adjust your
               selection.
             </p>
@@ -575,8 +577,10 @@ export default (pathname, setOpen) => {
         selector: '[data-tour="data-explorer-04"]',
         content: () => (
           <div>
-            <h2>TABLE VIEW</h2>
-            <p>Explore the values from your selection in a table format.​</p>
+            <h2 className={styles.title}>TABLE VIEW</h2>
+            <p className={styles.description}>
+              Explore the values from your selection in a table format.
+            </p>
           </div>
         )
       },
@@ -584,8 +588,8 @@ export default (pathname, setOpen) => {
         selector: '[data-tour="data-explorer-05"]',
         content: () => (
           <div>
-            <h2>MORE INFO</h2>
-            <p>
+            <h2 className={styles.title}>MORE INFO</h2>
+            <p className={styles.description}>
               Toggle between these tabs to find out more about the data sources
               and citations.
             </p>
@@ -600,6 +604,46 @@ export default (pathname, setOpen) => {
             <p className={styles.description}>
               Find out more about how to link our API data directly into your
               website.
+            </p>
+          </div>
+        )
+      }
+    ],
+    '/key-visualizations': [
+      {
+        selector: '[data-tour="key-visualizations-01"]',
+        content: () => (
+          <div>
+            <h2 className={styles.title}>FILTERS</h2>
+            <p className={styles.description}>
+              Explore the different drop-down options to filter down the
+              visualizations.
+            </p>
+          </div>
+        )
+      },
+      {
+        selector: '[data-tour="key-visualizations-02"]',
+        content: () => (
+          <div>
+            <h2 className={styles.title}>VISUALIZATIONS</h2>
+            <p className={styles.description}>
+              Click on any visualization to expand it and interact with it.
+            </p>
+          </div>
+        )
+      }
+    ],
+    '/key-visualizations?': [
+      {
+        selector: '[data-tour="key-visualizations-03"]',
+        content: () => (
+          <div>
+            <h2 className={styles.title}>MORE INFO, DOWNLOAD & SHARE</h2>
+            <p className={styles.description}>
+              Click on these icons to download the raw data shown in the
+              visualization, share the content in multiple formats, or to
+              explore the sources and citations of the datasets.
             </p>
           </div>
         )
