@@ -12,6 +12,7 @@ NDC_DIE
 NDC_CW","indc","NDC_data.csv","CW_NDC_data_highlevel.csv"
 "LTS CONTENT","ClimateWatch_LTS.zip","NDC_LTS","indc","NDC_LTS_data.csv","CW_LTS_data_highlevel.csv"
 "LTS CONTENT","ClimateWatch_LTS.zip",,"indc","NDC_LTS_data_sectoral.csv","CW_LTS_data_sector.csv"
+"PATHWAYS","ClimateWatch_Pathways.zip",,,,,
   END
   "#{CW_FILES_PREFIX}indc/NDC_metadata.csv" => <<~END,
     global_category,overview_category,map_category,column_name,long_name,Definition,Source,multiple_version
@@ -33,6 +34,9 @@ NDC_CW","indc","NDC_data.csv","CW_NDC_data_highlevel.csv"
     NDC_DIE,title
     NDC_CW,title
     NDC_LTS,title
+  END
+  "#{CW_FILES_PREFIX}climate-watch-download-zip/ClimateWatch_Pathways.zip" => <<~END,
+    zipfilecontent
   END
 }
 
@@ -61,11 +65,12 @@ RSpec.describe ImportZIPFiles do
   end
 
   it 'Creates new zip files records' do
-    expect { subject }.to change { ZipFile.count }.by(3)
+    expect { subject }.to change { ZipFile.count }.by(4)
 
     z1 = ZipFile.find_by(dropdown_title: 'ALL DATA')
     z2 = ZipFile.find_by(dropdown_title: 'NDC CONTENT')
     z3 = ZipFile.find_by(dropdown_title: 'LTS CONTENT')
+    z4 = ZipFile.find_by(dropdown_title: 'PATHWAYS')
 
     expect(z1.zip_filename).to eq('ClimateWatch_AllData.zip')
     expect(z1.metadata).to eq([])
@@ -88,6 +93,10 @@ RSpec.describe ImportZIPFiles do
         {s3_folder: 'indc', filename_original: 'NDC_LTS_data_sectoral.csv', filename_zip: 'CW_LTS_data_sector.csv'}
       ]
     )
+
+    expect(z4.zip_filename).to eq('ClimateWatch_Pathways.zip')
+    expect(z4.metadata).to eq([])
+    expect(z4.files).to eq([])
   end
 
   context 'with file generate and upload' do
@@ -117,7 +126,7 @@ RSpec.describe ImportZIPFiles do
       all_data_file = uploaded_files.find { |f| f[:name].include?('AllData.zip') }
 
       Zip::File.open_buffer(all_data_file[:content]) do |zipfile|
-        expect(zipfile.entries.map(&:name)).to eq(['ClimateWatch_NDC_Content.zip', 'ClimateWatch_LTS.zip'])
+        expect(zipfile.entries.map(&:name)).to eq(['ClimateWatch_NDC_Content.zip', 'ClimateWatch_LTS.zip', 'ClimateWatch_Pathways.zip'])
       end
 
       ndc_content_file = uploaded_files.find { |f| f[:name].include?('NDC_Content.zip') }

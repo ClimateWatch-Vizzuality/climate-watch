@@ -34,6 +34,7 @@ class ImportZIPFiles
     ZipFile.delete_all
   end
 
+  # rubocop:disable AbcSize
   def save_zip_files
     files = []
     @structure.each do |row|
@@ -53,6 +54,7 @@ class ImportZIPFiles
     end
     files.each(&:save!)
   end
+  # rubocop:enable AbcSize
 
   def load_zip_files
     @zip_files = ZipFile.all
