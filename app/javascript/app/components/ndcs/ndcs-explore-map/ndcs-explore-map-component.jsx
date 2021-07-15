@@ -4,6 +4,7 @@ import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { TabletLandscape } from 'components/responsive';
 import Map from 'components/map';
+import AbbrReplace from 'components/abbr-replace';
 import ButtonGroup from 'components/button-group';
 import Loading from 'components/loading';
 import Dropdown from 'components/dropdown';
@@ -64,7 +65,7 @@ const renderSummary = summaryData => (
         <div className={styles.summarySentence}>
           <div className={styles.summaryCardValue}>{summarySentence.value}</div>
           <div className={styles.summaryCardDescription}>
-            {summarySentence.description}
+            <AbbrReplace>{summarySentence.description}</AbbrReplace>
           </div>
         </div>
       ))}
