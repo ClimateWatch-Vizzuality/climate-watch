@@ -16,7 +16,7 @@ class GenerateZIPFiles
     ActiveRecord::Base.transaction do
       cleanup_zip_files
       save_zip_files
-      generate_and_upload_files
+      # generate_and_upload_files
     end
   end
 
