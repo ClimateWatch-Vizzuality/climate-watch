@@ -410,6 +410,130 @@ export default (pathname, setOpen) => {
         )
       }
     ],
+    '/custom-compare': [
+      {
+        selector: '[data-tour="custom-compare-01"]',
+        content: () => (
+          <div>
+            <h2>IN DEPTH ANALYSIS</h2>
+            <p>
+              Explore our analysis of the NDCs covering more than 160
+              indicators, divided into these four categories: Overview,
+              Mitigation, Adaptation and Sectoral Information.
+            </p>
+          </div>
+        )
+      },
+      {
+        selector: '[data-tour="custom-compare-02"]',
+        content: () => (
+          <div>
+            <h2>COUNTRY SELECTION</h2>
+            <p>
+              Switch between different countries by clicking in the dropdown
+              option or by typing.
+            </p>
+          </div>
+        )
+      },
+      {
+        selector: '[data-tour="custom-compare-03"]',
+        content: () => (
+          <div>
+            <h2>COMMITMENTS SELECTION</h2>
+            <p>
+              Switch between the different climate commitments available within
+              the country.
+            </p>
+          </div>
+        )
+      },
+      {
+        selector: '[data-tour="custom-compare-04"]',
+        content: () => (
+          <div>
+            <h2>INDICATORS​</h2>
+            <p>
+              Click on the drop down menus to explore among our more than 160
+              indicators.
+            </p>
+          </div>
+        )
+      }
+    ],
+    '/ghg': [
+      {
+        selector: '[data-tour="ghg-01"]',
+        content: () => (
+          <div>
+            <h2>FILTERS</h2>
+            <p>
+              Explore the different drop-down options to filter and adjust your
+              selection and the visualization underneath.
+            </p>
+          </div>
+        )
+      },
+      {
+        selector: '[data-tour="ghg-02"]',
+        content: () => (
+          <div>
+            <h2>GRAPH</h2>
+            <p>
+              Visualize the historic GHG emissions values from your selection
+              and hover over the graph to get more details.
+            </p>
+          </div>
+        )
+      },
+      {
+        selector: '[data-tour="ghg-03"]',
+        content: () => (
+          <div>
+            <h2>TIME BAR</h2>
+            <p>
+              Adjust the handles to select the timespan that you are interested
+              about.
+            </p>
+          </div>
+        )
+      },
+      {
+        selector: '[data-tour="ghg-04"]',
+        content: () => (
+          <div>
+            <h2>TABLE VIEW</h2>
+            <p>Explore the values from your selection in a table format.​</p>
+          </div>
+        )
+      },
+      {
+        selector: '[data-tour="ghg-05"]',
+        content: () => (
+          <div>
+            <h2>WHAT DATA SOURCE SHOULD I USE?</h2>
+            <p>
+              This is the most common question we get. To get a better idea on
+              which of our four data sources you should use, click on this FAQ
+              link to find out more in a summary table.
+            </p>
+          </div>
+        )
+      },
+      {
+        selector: '[data-tour="ghg-06"]',
+        content: () => (
+          <div>
+            <h2 className={styles.title}>MORE INFO, DOWNLOAD & SHARE​</h2>
+            <p className={styles.description}>
+              Click on these icons to download the raw data shown in the map,
+              share the content in multiple formats, or to explore the sources
+              and citations of the datasets.
+            </p>
+          </div>
+        )
+      }
+    ],
     '/': [
       {
         selector: '[data-tour="home-01"]',
