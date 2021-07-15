@@ -17,6 +17,7 @@ class ImportZIPFiles
       save_zip_files
       load_zip_files
       generate_and_upload_files if upload_files
+      update_file_sizes
     end
   end
 
@@ -76,6 +77,16 @@ class ImportZIPFiles
   ensure
     puts "Removing #{@temp_dir}"
     FileUtils.rm_rf(@temp_dir)
+  end
+
+  def update_file_sizes
+    puts 'Updating file sizes in DB...'
+    ZipFile.find_each do |file|
+      byte_size = s3_head_file(file.s3_key).content_length
+      raise "Content Length of #{file.s3_key} is 0" if byte_size.zero?
+
+      file.update!(byte_size: byte_size)
+    end
   end
 
   def download_not_generated_zip_files
@@ -157,6 +168,11 @@ class ImportZIPFiles
   def upload_file(zip_file)
     zip_filepath = File.join(@temp_dir, zip_file.zip_filename)
     raise "File #{zip_file} not uploaded" unless s3_upload_file(zip_file.s3_key, zip_filepath)
+  end
+
+  def s3_head_file(filename)
+    puts "Getting HEAD request from S3 #{s3_bucket}: #{filename}..."
+    s3_client.head_object(bucket: s3_bucket, key: filename)
   end
 
   def s3_download_file(filename)

@@ -53,6 +53,9 @@ RSpec.describe ImportZIPFiles do
         },
         get_object: lambda { |context|
           {body: object_contents[context.params[:key]]}
+        },
+        head_object: lambda { |_context|
+          {content_length: 10}
         }
       }
     }
@@ -65,6 +68,8 @@ RSpec.describe ImportZIPFiles do
   end
 
   it 'Creates new zip files records' do
+    allow_any_instance_of(Kernel).to receive(:puts) # suppress puts message
+
     expect { subject }.to change { ZipFile.count }.by(4)
 
     z1 = ZipFile.find_by(dropdown_title: 'ALL DATA')
@@ -141,6 +146,8 @@ RSpec.describe ImportZIPFiles do
         end
         expect(saved_metadata).to eq(%w(2020_NDC NDC_WB NDC_DIE NDC_CW))
       end
+
+      expect(ZipFile.first.byte_size).to eq(10) # file size is set in stub response
     end
   end
 end

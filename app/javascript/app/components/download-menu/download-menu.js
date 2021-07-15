@@ -29,8 +29,8 @@ class DownloadMenuContainer extends PureComponent {
       })
       .then(response => {
         const downloadMenuOptions = response.data.map(d => ({
-          label: d.dropdown_title,
-          action: this.handleOnClick.bind(this, d.url, 'xx MB')
+          label: `${d.dropdown_title} (${d.size})`,
+          action: this.handleOnClick.bind(this, d.url, d.size)
         }));
 
         this.setState({ downloadMenuOptions });

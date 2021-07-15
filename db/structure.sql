@@ -2180,6 +2180,7 @@ CREATE TABLE public.zip_files (
     id bigint NOT NULL,
     dropdown_title character varying NOT NULL,
     zip_filename character varying NOT NULL,
+    byte_size bigint,
     metadata character varying[] DEFAULT '{}'::character varying[],
     files jsonb DEFAULT '{}'::jsonb,
     created_at timestamp without time zone NOT NULL,
