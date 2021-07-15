@@ -9,13 +9,28 @@ object_contents = {
 "NDC CONTENT","ClimateWatch_NDC_Content.zip","NDC_WB
 NDC_DIE
 NDC_CW","indc","NDC_data.csv","CW_NDC_data_highlevel.csv"
-"LTS CONTENT","ClimateWatch_LTS.zip","NDC_LTS","indc","NDC_LTS_data.csv","CW_LTS_data_highlevel.csv"
-"LTS CONTENT","ClimateWatch_LTS.zip",,"indc","NDC_LTS_data_sectoral.csv","CW_LTS_data_sector.csv"
+  END
+  "#{CW_FILES_PREFIX}indc/NDC_metadata.csv" => <<~END,
+    global_category,overview_category,map_category,column_name,long_name,Definition,Source,multiple_version
+    Overview,UNFCCC Process,Other,domestic_approval,Domestic Approval Processes Category,,CAIT,TRUE
+    Mitigation,Target,,M_TarYr,Target year,The year by which mitigation objectives are expected to be achieved,WB,TRUE
+  END
+  "#{CW_FILES_PREFIX}indc/NDC_data.csv" => <<~END,
+    country,ISO,document, domestic_approval,domestic_approval_label
+    Afghanistan,AFG,indc, Executive + majority of two legislative bodies,Executive + majority of two legislative bodies/super-majority of one legislative body
+  END
+  "#{CW_FILES_PREFIX}indc/NDC_single_version.csv" => <<~END,
+    Country,ISO,submission,submission_label,submission_date
+    Afghanistan,AFG,First NDC Submitted,First NDC Submitted,11/23/2016
+  END
+  "#{CW_FILES_PREFIX}wri_metadata/metadata_sources.csv" => <<~END,
+    dataset,title,subtitle
+    historical_emissions_CAIT,CAIT Historical Emissions,CAIT Historical Emissions
   END
 }
 
 RSpec.describe ImportZIPFiles do
-  subject { ImportZIPFiles.new.call }
+  subject { ImportZIPFiles.new.call(upload_files: false) }
 
   before :all do
     Aws.config[:s3] = {
@@ -39,7 +54,7 @@ RSpec.describe ImportZIPFiles do
   end
 
   it 'Creates new zip files records' do
-    expect { subject }.to change { ZipFile.count }.by(3)
+    expect { subject }.to change { ZipFile.count }.by(2)
 
     z1 = ZipFile.find_by(dropdown_title: 'ALL DATA')
     z2 = ZipFile.find_by(dropdown_title: 'NDC CONTENT')
@@ -57,5 +72,31 @@ RSpec.describe ImportZIPFiles do
         {s3_folder: 'indc', filename_original: 'NDC_data.csv', filename_zip: 'CW_NDC_data_highlevel.csv'}
       ]
     )
+  end
+
+  context 'with file generate and upload' do
+    subject { ImportZIPFiles.new.call }
+
+    it 'Generate ZIP files and upload them' do
+      allow_any_instance_of(Kernel).to receive(:puts) # suppress puts message
+
+      uploaded_files = []
+
+      Aws.config[:s3] = Aws.config[:s3].deep_merge(
+        stub_responses: {
+          put_object: lambda { |context|
+            uploaded_files << context.params[:body]
+            {etag: 'etag'}
+          }
+        }
+      )
+
+      subject
+
+      uploaded_file_names = uploaded_files.map(&:to_path).map { |p| File.basename(p) }
+
+      expect(uploaded_files.count).to eq(2)
+      expect(uploaded_file_names).to eq(['ClimateWatch_NDC_Content.zip', 'ClimateWatch_AllData.zip'])
+    end
   end
 end

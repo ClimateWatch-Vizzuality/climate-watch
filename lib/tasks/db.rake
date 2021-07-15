@@ -16,7 +16,8 @@ namespace :db do
     'quantifications:import',
     'socioeconomics:import',
     'stories:import',
-    'key_visualizations:import'
+    'key_visualizations:import',
+    'zip_files:import'
   ]
 
   desc 'Imports all data in correct order, replaces all data'

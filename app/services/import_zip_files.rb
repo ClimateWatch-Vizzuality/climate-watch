@@ -10,13 +10,13 @@ class ImportZIPFiles
   TEMP_DIR = Rails.root.join('tmp', 'zip_files')
   ALL_DATA = 'ALL DATA'.freeze
 
-  def call
+  def call(upload_files: true)
     load_metadata
     load_structure
     ActiveRecord::Base.transaction do
       cleanup_zip_files
       save_zip_files
-      # generate_and_upload_files
+      generate_and_upload_files if upload_files
     end
   end
 
