@@ -99,6 +99,7 @@ node {
             sh("echo Deploying to PROD app")
             sh("kubectl apply -f k8s/production/")
             sh("kubectl set image deployment ${appName} ${appName}=${imageTag} --record --namespace=climate-watch")
+            sh("kubectl set image deployment ${appName} ${appName}-sidekiq=${imageTag} --record --namespace=climate-watch")
           } else {
             sh("echo NOT DEPLOYED")
             currentBuild.result = 'SUCCESS'
