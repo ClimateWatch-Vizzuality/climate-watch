@@ -4,7 +4,7 @@ require 'zip'
 class ImportZipFiles
   include ClimateWatchEngine::CSVImporter
 
-  FILEPATH = "#{CW_FILES_PREFIX}zip_files/zip_files.csv".freeze
+  ZIP_STRUCTURE_FILEPATH = "#{CW_FILES_PREFIX}zip_files/zip_files.csv".freeze
   WRI_METADATA_FILEPATH = "#{CW_FILES_PREFIX}wri_metadata/metadata_sources.csv".freeze
   TEMP_DIR = Rails.root.join('tmp', 'zip_files')
   ALL_DATA = 'ALL DATA'.freeze
@@ -12,6 +12,7 @@ class ImportZipFiles
   def call(upload_files: true)
     load_metadata
     load_structure
+    validate
     ActiveRecord::Base.transaction do
       cleanup_zip_files
       save_zip_files
@@ -28,7 +29,13 @@ class ImportZipFiles
   end
 
   def load_structure
-    @structure = S3CSVReader.read(FILEPATH).map(&:to_h)
+    @structure = S3CSVReader.read(ZIP_STRUCTURE_FILEPATH).map(&:to_h)
+  end
+
+  def validate
+    return if @structure.find { |s| s[:drop_down] == ALL_DATA && s[:zip_file].present? }
+
+    raise 'ALL DATA entry must exist'
   end
 
   def cleanup_zip_files

@@ -1,49 +1,51 @@
 require 'rails_helper'
 # rubocop:disable LineLength
 
-object_contents = {
-  "#{CW_FILES_PREFIX}zip_files/zip_files.csv" => <<~END,
-"drop_down","zip_file","metadata","s3_folder","file_name_raw","file_name_zip"
-"ALL DATA","ClimateWatch_AllData.zip",,,,,
-"NDC CONTENT","ClimateWatch_NDC_Content.zip",,"indc","NDC_metadata.csv","CW_NDC_metadata.csv"
-"NDC CONTENT","ClimateWatch_NDC_Content.zip","2020_NDC","indc","NDC_single_version.csv","CW_NDC_tracker.csv"
-"NDC CONTENT","ClimateWatch_NDC_Content.zip","NDC_WB
-NDC_DIE
-NDC_CW","indc","NDC_data.csv","CW_NDC_data_highlevel.csv"
-"LTS CONTENT","ClimateWatch_LTS.zip","NDC_LTS","indc","NDC_LTS_data.csv","CW_LTS_data_highlevel.csv"
-"LTS CONTENT","ClimateWatch_LTS.zip",,"indc","NDC_LTS_data_sectoral.csv","CW_LTS_data_sector.csv"
-"PATHWAYS","ClimateWatch_Pathways.zip",,,,,
-  END
-  "#{CW_FILES_PREFIX}indc/NDC_metadata.csv" => <<~END,
-    global_category,overview_category,map_category,column_name,long_name,Definition,Source,multiple_version
-    Overview,UNFCCC Process,Other,domestic_approval,Domestic Approval Processes Category,,CAIT,TRUE
-    Mitigation,Target,,M_TarYr,Target year,The year by which mitigation objectives are expected to be achieved,WB,TRUE
-  END
-  "#{CW_FILES_PREFIX}indc/NDC_data.csv" => <<~END,
-    country,ISO,document, domestic_approval,domestic_approval_label
-    Afghanistan,AFG,indc, Executive + majority of two legislative bodies,Executive + majority of two legislative bodies/super-majority of one legislative body
-  END
-  "#{CW_FILES_PREFIX}indc/NDC_single_version.csv" => <<~END,
-    Country,ISO,submission,submission_label,submission_date
-    Afghanistan,AFG,First NDC Submitted,First NDC Submitted,11/23/2016
-  END
-  "#{CW_FILES_PREFIX}wri_metadata/metadata_sources.csv" => <<~END,
-    ﻿dataset,title
-    2020_NDC,title
-    NDC_WB,title
-    NDC_DIE,title
-    NDC_CW,title
-    NDC_LTS,title
-  END
-  "#{CW_FILES_PREFIX}climate-watch-download-zip/ClimateWatch_Pathways.zip" => <<~END,
-    zipfilecontent
-  END
-}
-
 RSpec.describe ImportZipFiles do
   subject { ImportZipFiles.new.call(upload_files: false) }
 
-  before :all do
+  let(:object_contents) do
+    {
+      "#{CW_FILES_PREFIX}zip_files/zip_files.csv" => <<~END,
+        "drop_down","zip_file","metadata","s3_folder","file_name_raw","file_name_zip"
+        "ALL DATA","ClimateWatch_AllData.zip",,,,,
+        "NDC CONTENT","ClimateWatch_NDC_Content.zip",,"indc","NDC_metadata.csv","CW_NDC_metadata.csv"
+        "NDC CONTENT","ClimateWatch_NDC_Content.zip","2020_NDC","indc","NDC_single_version.csv","CW_NDC_tracker.csv"
+        "NDC CONTENT","ClimateWatch_NDC_Content.zip","NDC_WB
+        NDC_DIE
+        NDC_CW","indc","NDC_data.csv","CW_NDC_data_highlevel.csv"
+        "LTS CONTENT","ClimateWatch_LTS.zip","NDC_LTS","indc","NDC_LTS_data.csv","CW_LTS_data_highlevel.csv"
+        "LTS CONTENT","ClimateWatch_LTS.zip",,"indc","NDC_LTS_data_sectoral.csv","CW_LTS_data_sector.csv"
+        "PATHWAYS","ClimateWatch_Pathways.zip",,,,,
+      END
+      "#{CW_FILES_PREFIX}indc/NDC_metadata.csv" => <<~END,
+        global_category,overview_category,map_category,column_name,long_name,Definition,Source,multiple_version
+        Overview,UNFCCC Process,Other,domestic_approval,Domestic Approval Processes Category,,CAIT,TRUE
+        Mitigation,Target,,M_TarYr,Target year,The year by which mitigation objectives are expected to be achieved,WB,TRUE
+      END
+      "#{CW_FILES_PREFIX}indc/NDC_data.csv" => <<~END,
+        country,ISO,document, domestic_approval,domestic_approval_label
+        Afghanistan,AFG,indc, Executive + majority of two legislative bodies,Executive + majority of two legislative bodies/super-majority of one legislative body
+      END
+      "#{CW_FILES_PREFIX}indc/NDC_single_version.csv" => <<~END,
+        Country,ISO,submission,submission_label,submission_date
+        Afghanistan,AFG,First NDC Submitted,First NDC Submitted,11/23/2016
+      END
+      "#{CW_FILES_PREFIX}wri_metadata/metadata_sources.csv" => <<~END,
+        ﻿dataset,title
+        2020_NDC,title
+        NDC_WB,title
+        NDC_DIE,title
+        NDC_CW,title
+        NDC_LTS,title
+      END
+      "#{CW_FILES_PREFIX}climate-watch-download-zip/ClimateWatch_Pathways.zip" => <<~END,
+        zipfilecontent
+      END
+    }
+  end
+
+  before :each do
     Aws.config[:s3] = {
       stub_responses: {
         list_objects: {
@@ -61,7 +63,7 @@ RSpec.describe ImportZipFiles do
     }
   end
 
-  after :all do
+  after :each do
     Aws.config[:s3] = {
       stub_responses: nil
     }
@@ -102,6 +104,23 @@ RSpec.describe ImportZipFiles do
     expect(z4.zip_filename).to eq('ClimateWatch_Pathways.zip')
     expect(z4.metadata).to eq([])
     expect(z4.files).to eq([])
+  end
+
+  context 'with errors' do
+    let(:object_contents) do
+      {
+        "#{CW_FILES_PREFIX}zip_files/zip_files.csv" => <<~END,
+          "drop_down","zip_file","metadata","s3_folder","file_name_raw","file_name_zip"
+          "NDC CONTENT","ClimateWatch_NDC_Content.zip",,"indc","NDC_metadata.csv","CW_NDC_metadata.csv"
+          "NDC CONTENT","ClimateWatch_NDC_Content.zip","2020_NDC","indc","NDC_single_version.csv","CW_NDC_tracker.csv"
+          "PATHWAYS","ClimateWatch_Pathways.zip",,,,,
+        END
+      }
+    end
+
+    it 'raises error when ALL DATA entry does not exist' do
+      expect { subject }.to raise_error('ALL DATA entry must exist')
+    end
   end
 
   context 'with file generate and upload' do
