@@ -72,6 +72,7 @@ node {
           sh("sed -i -e 's/{name}/${appName}/g' k8s/staging/*.yaml")
           sh("kubectl apply -f k8s/staging/")
           sh("kubectl set image deployment ${appName}-staging ${appName}-staging=${imageTag} --record --namespace=climate-watch")
+          sh("kubectl set image deployment ${appName}-staging ${appName}-staging-sidekiq=${imageTag} --record --namespace=climate-watch")
           break
 
         // Roll out to production
