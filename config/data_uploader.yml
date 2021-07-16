@@ -113,3 +113,7 @@ platforms:
         importer: ImportKeyVisualizations
         datasets:
           - key_visualizations
+      - name: zip_files
+        importer: ImportZipFiles
+        datasets:
+          - zip_files
