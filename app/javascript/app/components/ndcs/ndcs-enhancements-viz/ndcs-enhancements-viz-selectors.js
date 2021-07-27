@@ -40,7 +40,8 @@ const getIndicatorsData = state => state.indicators || null;
 
 export const getIsEnhancedChecked = createSelector(
   getSearch,
-  search => search.showEnhancedAmbition === 'true'
+  search =>
+    !search.showEnhancedAmbition || search.showEnhancedAmbition !== 'false'
 );
 
 export const getISOCountries = createSelector([getCountries], countries =>
