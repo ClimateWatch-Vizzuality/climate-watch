@@ -72,7 +72,6 @@ class NDCSEnhancementsVizContainer extends PureComponent {
     const isEuropeanCountry = europeanCountries.includes(geometryIdHover);
     const id = isEuropeanCountry ? europeSlug : geometryIdHover;
 
-    const dateIndicator = indicators.find(i => i.value === 'ndce_date');
     const statementIndicator = indicators.find(
       i => i.value === 'ndce_statement'
     );
@@ -82,22 +81,22 @@ class NDCSEnhancementsVizContainer extends PureComponent {
       indicator.locations[id] &&
       indicator.locations[id].label_slug !== 'no_info_2020'
     ) {
-      const tooltipValues = {
+      const statement =
+        statementIndicator.locations[id] &&
+        statementIndicator.locations[id].value;
+      const indicatorLabelId = indicator.locations[id].label_id;
+      const value =
+        indicatorLabelId &&
+        indicator.legendBuckets &&
+        indicator.legendBuckets[indicatorLabelId] &&
+        indicator.legendBuckets[indicatorLabelId].name;
+
+      return {
         label: this.getTooltipLabel(),
-        value: undefined,
-        statement: undefined,
+        value,
+        statement,
         note: 'Learn more in table below'
       };
-
-      if (statementIndicator.locations[id]) {
-        tooltipValues.statement = `${statementIndicator.locations[id].value}`;
-      }
-      tooltipValues.value =
-        indicator.locations[id].label_slug === 'submitted_2020'
-          ? `Submitted a 2020 NDC on ${dateIndicator.locations[id].value}.`
-          : `${indicator.locations[id].value}`;
-
-      return tooltipValues;
     }
     return null;
   }
