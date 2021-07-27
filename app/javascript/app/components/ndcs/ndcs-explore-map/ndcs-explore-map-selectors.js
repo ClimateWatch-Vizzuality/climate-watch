@@ -1,3 +1,4 @@
+/* eslint-disable no-confusing-arrow */
 import { createSelector } from 'reselect';
 import { getColorByIndex, shouldShowPath } from 'utils/map';
 import uniq from 'lodash/uniq';
@@ -52,13 +53,13 @@ export const getDonutActiveIndex = state =>
   state.exploreMap.activeIndex || null;
 
 export const getCategories = createSelector(getCategoriesData, categories =>
-  (!categories
+  !categories
     ? null
     : Object.keys(categories).map(category => ({
       label: categories[category].name,
       value: categories[category].slug,
       id: category
-    })))
+    }))
 );
 
 export const getMaximumCountries = createSelector(
@@ -108,9 +109,9 @@ export const getIndicatorsParsed = createSelector(
 
     parentIndicatorNames = uniq(parentIndicatorNames);
     return parsedIndicators.map(i =>
-      (parentIndicatorNames.includes(i.label)
+      parentIndicatorNames.includes(i.label)
         ? { ...i, groupParent: i.label }
-        : i)
+        : i
     );
   }
 );
@@ -355,7 +356,7 @@ export const getSummaryCardData = createSelector(
     return [
       {
         value: submittedCountriesAndParties.partiesNumber,
-        description: ` Parties have submitted their 2020 NDC, representing ${submittedCountriesAndParties.countriesNumber} countries`
+        description: ` Parties have submitted their new or updated NDC, representing ${submittedCountriesAndParties.countriesNumber} countries`
       }
     ];
   }

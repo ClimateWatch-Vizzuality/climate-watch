@@ -31,7 +31,7 @@ const NDCSExplore = ({ route }) => (
                 link="/2020-ndc-tracker"
                 className="link-button"
               >
-                <AbbrReplace>Go to 2020 NDC Tracker</AbbrReplace>
+                <AbbrReplace>Go to NDC Enhancement Tracker</AbbrReplace>
               </Button>
               <span data-tour="commitments-01">
                 <AutocompleteSearch
