@@ -131,8 +131,6 @@ POP_UP: Name of the temporary pop up to be displayed
 ### Temporary feature tags
 
 FEATURE_WEB_TOUR
-FEATURE_ABBREVIATIONS
-
 
 ## Modules
 
