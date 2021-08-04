@@ -266,7 +266,7 @@ function GhgEmissions(props) {
       return format('.2f')(value);
     };
     return (
-      <React.Fragment>
+      <span data-tour="ghg-02">
         <Chart
           className={styles.chartWrapper}
           type={chartTypeSelected && chartTypeSelected.value}
@@ -296,32 +296,36 @@ function GhgEmissions(props) {
           }
           dataZoomComponent={
             !loading && (
-              <DataZoom
-                data={dataZoomData}
-                position={dataZoomPosition}
-                years={dataZoomYears}
-                setPosition={setDataZoomPosition}
-                onYearChange={(min, max) => setYears({ min, max })}
-              />
+              <span data-tour="ghg-03">
+                <DataZoom
+                  data={dataZoomData}
+                  position={dataZoomPosition}
+                  years={dataZoomYears}
+                  setPosition={setDataZoomPosition}
+                  onYearChange={(min, max) => setYears({ min, max })}
+                />
+              </span>
             )
           }
         />
         {tableDataReady && (
-          <Table
-            data={tableData}
-            horizontalScroll
-            firstColumnHeaders={[GHG_TABLE_HEADER[fieldToBreakBy], 'unit']}
-            flexGrow={0}
-            headerHeight={30}
-            parseHtml
-            setColumnWidth={setColumnWidth}
-            emptyValueLabel="N/A"
-            splittedColumns
-            titleLinks={titleLinks}
-            theme={ghgTableTheme}
-          />
+          <span data-tour="ghg-04">
+            <Table
+              data={tableData}
+              horizontalScroll
+              firstColumnHeaders={[GHG_TABLE_HEADER[fieldToBreakBy], 'unit']}
+              flexGrow={0}
+              headerHeight={30}
+              parseHtml
+              setColumnWidth={setColumnWidth}
+              emptyValueLabel="N/A"
+              splittedColumns
+              titleLinks={titleLinks}
+              theme={ghgTableTheme}
+            />
+          </span>
         )}
-      </React.Fragment>
+      </span>
     );
   };
 
@@ -329,6 +333,7 @@ function GhgEmissions(props) {
     <ButtonGroup
       className={styles.buttonGroup}
       buttonsConfig={buttonGroupGHGemissions}
+      dataTour="ghg-06"
     />
   );
   return (
@@ -360,7 +365,7 @@ function GhgEmissions(props) {
       <RegionsProvider includeGHGSources />
       <EmissionsMetaProvider />
       {providerFilters && <EmissionsProvider filters={providerFilters} />}
-      <div className={cx(styles.col4, styles.newGHG)}>
+      <div className={cx(styles.col4, styles.newGHG)} data-tour="ghg-01">
         {renderDropdown('Data Source', 'sources')}
         <GhgMultiselectDropdown
           label={'Countries/Regions'}

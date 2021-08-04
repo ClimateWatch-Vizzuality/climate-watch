@@ -27,7 +27,7 @@ node {
     user_report_key = '81f6ea43-5c9f-48e0-bdb2-56fc59aafbb4'
     one_signal_key = '27c3fb0e-bd48-409c-852a-e5a72446b9d4'
   } else {
-    feature_flags_env = feature_flags_env + ''
+    feature_flags_env = feature_flags_env + ' --build-arg FEATURE_NDC_ENHANCEMENTS=true'
   }
 
   // env vars with build-arg
@@ -73,6 +73,7 @@ node {
           sh("sed -i -e 's/{name}/${appName}/g' k8s/staging/*.yaml")
           sh("kubectl apply -f k8s/staging/")
           sh("kubectl set image deployment ${appName}-staging ${appName}-staging=${imageTag} --record --namespace=climate-watch")
+          sh("kubectl set image deployment ${appName}-staging ${appName}-staging-sidekiq=${imageTag} --record --namespace=climate-watch")
           break
 
         // Roll out to production
@@ -99,6 +100,7 @@ node {
             sh("echo Deploying to PROD app")
             sh("kubectl apply -f k8s/production/")
             sh("kubectl set image deployment ${appName} ${appName}=${imageTag} --record --namespace=climate-watch")
+            sh("kubectl set image deployment ${appName} ${appName}-sidekiq=${imageTag} --record --namespace=climate-watch")
           } else {
             sh("echo NOT DEPLOYED")
             currentBuild.result = 'SUCCESS'

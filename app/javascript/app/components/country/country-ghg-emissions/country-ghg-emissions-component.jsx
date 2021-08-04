@@ -61,18 +61,21 @@ class CountryGhgEmissions extends PureComponent {
       : [
         {
           type: 'info',
-          onClick: handleInfoClick
+          onClick: handleInfoClick,
+          dataTour: 'countries-06'
         },
         {
           type: 'share',
           shareUrl: `/embed/countries/${iso}/ghg-emissions`,
           analyticsGraphName: 'Country/Ghg-emissions',
-          positionRight: true
+          positionRight: true,
+          dataTour: 'countries-05'
         },
         {
           type: 'download',
           section: 'ghg-emissions',
-          link: downloadLink
+          link: downloadLink,
+          dataTour: 'countries-04'
         },
         {
           type: 'addToUser'
@@ -95,6 +98,7 @@ class CountryGhgEmissions extends PureComponent {
         href={isNdcp ? href : null}
         link={isNdcp ? null : link}
         onClick={handleAnalyticsClick}
+        dataTour="countries-03"
       >
         Explore Emissions
       </Button>

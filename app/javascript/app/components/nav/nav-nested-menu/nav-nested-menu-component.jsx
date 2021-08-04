@@ -33,7 +33,14 @@ class NavNestedMenuComponent extends PureComponent {
   };
 
   render() {
-    const { className, reverse, isRendered, title, theme } = this.props;
+    const {
+      className,
+      reverse,
+      isRendered,
+      title,
+      theme,
+      dataTour
+    } = this.props;
     const { isHidden } = this.state;
     return (
       <div
@@ -42,6 +49,7 @@ class NavNestedMenuComponent extends PureComponent {
           { [styles.isHidden]: isHidden },
           { [styles.reverse]: reverse }
         )}
+        data-tour={dataTour}
       >
         <ClickOutside onClickOutside={this.closeMenu}>
           <button
@@ -81,7 +89,8 @@ NavNestedMenuComponent.propTypes = {
   reverse: PropTypes.bool,
   location: PropTypes.object,
   isRendered: PropTypes.bool,
-  theme: PropTypes.object
+  theme: PropTypes.object,
+  dataTour: PropTypes.string
 };
 
 NavNestedMenuComponent.defaultProps = {

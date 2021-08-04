@@ -20,7 +20,7 @@ export default [
   },
   {
     path: '/2020-ndc-tracker',
-    label: '2020 NDC Tracker',
+    label: 'NDC Enhancement Tracker',
     activeId
   },
   {

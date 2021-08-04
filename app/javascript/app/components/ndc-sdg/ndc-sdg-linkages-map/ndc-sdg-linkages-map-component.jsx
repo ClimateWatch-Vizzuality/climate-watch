@@ -81,6 +81,7 @@ class NdcSdgLinkagesMap extends PureComponent {
               type: 'addToUser'
             }
           ]}
+          dataTour="ndcs-sdg-04"
         />
         <ShareButton sharePath={'/ndcs-sdg'} />
       </React.Fragment>
@@ -115,19 +116,21 @@ class NdcSdgLinkagesMap extends PureComponent {
             <div className={styles.row}>
               {this.renderMapHeader({ isTablet })}
             </div>
-            <Map
-              style={{ height: '100%', width: '100%' }}
-              zoomEnable={isTablet}
-              dragEnable={isTablet}
-              paths={this.props.paths}
-              className={styles.map}
-              onCountryEnter={this.handleMapInteraction}
-              onCountryFocus={this.handleMapInteraction}
-              onCountryClick={this.props.onCountryClick}
-              customCenter={isTablet ? null : [10, 0]}
-              controlPosition="bottom"
-              tooltipId="sdg-linkages"
-            />
+            <span data-tour="ndcs-sdg-02">
+              <Map
+                style={{ height: '100%', width: '100%' }}
+                zoomEnable={isTablet}
+                dragEnable={isTablet}
+                paths={this.props.paths}
+                className={styles.map}
+                onCountryEnter={this.handleMapInteraction}
+                onCountryFocus={this.handleMapInteraction}
+                onCountryClick={this.props.onCountryClick}
+                customCenter={isTablet ? null : [10, 0]}
+                controlPosition="bottom"
+                tooltipId="sdg-linkages"
+              />
+            </span>
             {this.getLegend()}
             <ReactTooltip
               className={styles.tooltipContainer}

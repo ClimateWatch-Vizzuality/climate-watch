@@ -9,7 +9,7 @@ class NavBar extends PureComponent {
   render() {
     const { routes } = this.props;
     return (
-      <div className={styles.row} data-tour="home-01">
+      <div className={styles.row}>
         <div className={styles.navigationWrapper}>
           <Nav
             routes={routes.filter(r => !r.toolsNav)}

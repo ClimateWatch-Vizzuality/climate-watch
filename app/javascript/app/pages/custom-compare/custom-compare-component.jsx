@@ -51,29 +51,33 @@ const FiltersGroup = ({
   } = data;
   return (
     <div className={styles.filter}>
-      <Dropdown
-        key={`${key}-country`}
-        className={styles.dropdown}
-        options={contriesOptions}
-        onValueChange={({ value }) => handleCountryFilterChange(key, value)}
-        value={countryValue}
-        placeholder={countryPlaceholder}
-        hideResetButton
-        noAutoSort
-        disabled={countryFilterDisabled}
-      />
-      <MultiLevelDropdown
-        key={`${key}-document`}
-        optGroups={DOCUMENT_DROPDOWN_GROUPS}
-        options={documentOptions}
-        values={documentValue ? [documentValue] : []}
-        onChange={({ value }) => {
-          handleDocumentFilterChange(key, value);
-        }}
-        clearable={false}
-        theme={multiLevelDropdownTheme}
-        disabled={documentsFilterDisabled}
-      />
+      <span data-tour="custom-compare-02">
+        <Dropdown
+          key={`${key}-country`}
+          className={styles.dropdown}
+          options={contriesOptions}
+          onValueChange={({ value }) => handleCountryFilterChange(key, value)}
+          value={countryValue}
+          placeholder={countryPlaceholder}
+          hideResetButton
+          noAutoSort
+          disabled={countryFilterDisabled}
+        />
+      </span>
+      <span data-tour="custom-compare-03">
+        <MultiLevelDropdown
+          key={`${key}-document`}
+          optGroups={DOCUMENT_DROPDOWN_GROUPS}
+          options={documentOptions}
+          values={documentValue ? [documentValue] : []}
+          onChange={({ value }) => {
+            handleDocumentFilterChange(key, value);
+          }}
+          clearable={false}
+          theme={multiLevelDropdownTheme}
+          disabled={documentsFilterDisabled}
+        />
+      </span>
     </div>
   );
 };

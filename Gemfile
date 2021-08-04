@@ -80,6 +80,7 @@ group :test do
   gem 'json-schema'
   gem 'simplecov', require: false
   gem 'test-prof'
+  gem 'super_diff'
   gem 'vcr'
   gem 'webmock'
 end

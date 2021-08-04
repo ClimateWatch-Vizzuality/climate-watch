@@ -163,6 +163,7 @@ class SimpleMenu extends PureComponent {
       positionRight,
       inButton,
       inButtonGroup,
+      dataTour,
       dataFor,
       dataTip
     } = this.props;
@@ -182,6 +183,7 @@ class SimpleMenu extends PureComponent {
           { [styles.inButtonGroup]: inButtonGroup }
         )}
         {...tooltipProps}
+        data-tour={dataTour}
       >
         {this.renderButton()}
         <ul className={cx(styles.links, { [styles.open]: open })}>
@@ -207,7 +209,8 @@ SimpleMenu.propTypes = {
   currentPathname: PropTypes.string,
   analyticsGraphName: PropTypes.string,
   dataFor: PropTypes.string,
-  dataTip: PropTypes.string
+  dataTip: PropTypes.string,
+  dataTour: PropTypes.string
 };
 
 SimpleMenu.defaultProps = {

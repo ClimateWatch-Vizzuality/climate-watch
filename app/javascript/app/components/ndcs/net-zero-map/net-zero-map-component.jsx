@@ -32,6 +32,7 @@ const renderButtonGroup = (clickHandler, downloadLink, stickyStatus) => (
     className={cx(styles.buttonGroupContainer, {
       [styles.padded]: stickyStatus !== Sticky.STATUS_ORIGINAL
     })}
+    data-tour="net-zero-05"
   >
     <ButtonGroup
       className={styles.buttonGroup}
@@ -163,6 +164,7 @@ function NetZeroMap(props) {
                       className={cx(styles.filtersGroup, {
                         [styles.sticky]: stickyStatus === Sticky.STATUS_FIXED
                       })}
+                      data-tour="net-zero-01"
                     >
                       <Dropdown
                         label="Category"
@@ -202,7 +204,10 @@ function NetZeroMap(props) {
             <div className={styles.containerUpperWrapper}>
               <div className={layout.content}>
                 <div className="grid-column-item">
-                  <div className={styles.containerUpper}>
+                  <div
+                    className={styles.containerUpper}
+                    data-tour="net-zero-02"
+                  >
                     <div
                       className={styles.containerCharts}
                       ref={tooltipParentRef}
@@ -217,7 +222,10 @@ function NetZeroMap(props) {
                         </React.Fragment>
                       )}
                     </div>
-                    <div className={styles.containerMap}>
+                    <div
+                      className={styles.containerMap}
+                      data-tour="net-zero-03"
+                    >
                       {loading && <Loading light className={styles.loader} />}
                       <HandIconInfo
                         className={styles.mapInfo}

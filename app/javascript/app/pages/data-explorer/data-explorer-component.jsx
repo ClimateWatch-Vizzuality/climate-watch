@@ -37,6 +37,7 @@ const DataExplorer = ({ navLinks, route, location }) => (
         links={navLinks}
         theme={anchorNavThemeColorTheme}
         className={styles.anchorNav}
+        dataTour="data-explorer-02"
       />
     </Header>
     <div className={styles.wrapper}>

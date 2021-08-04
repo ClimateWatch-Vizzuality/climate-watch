@@ -23,6 +23,7 @@ class DownloadMenu extends PureComponent {
           buttonClassName={cx({ [styles.downloadButton]: inButton }, className)}
           options={downloadMenuOptions}
           reverse={reverse}
+          dataTour="data-explorer-01"
           {...iconProp}
           {...this.props}
         />
