@@ -29,6 +29,7 @@ const NotificationBell = ({
   return (
     <Fragment>
       <button
+        data-tour="home-01"
         onMouseEnter={handleTooltipHasShown}
         onClick={hasNotifications ? () => setModalOpen(true) : undefined}
         className={cx(styles.notificationBellButton, {

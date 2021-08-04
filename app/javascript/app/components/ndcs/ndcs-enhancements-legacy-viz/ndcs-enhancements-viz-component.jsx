@@ -24,7 +24,7 @@ const renderButtonGroup = (clickHandler, downloadLink) => (
           commitments in 2020 or in the lead up to COP26. To request changes or
           additions, please contact &nbsp;
           <a
-            href="mailto:Rhys.Gerholdt@wri.org?subject=2020 NDC Tracker Update"
+            href="mailto:Rhys.Gerholdt@wri.org?subject=NDC Enhancement Tracker Update"
             target="_blank"
             rel="noopener noreferrer"
           >

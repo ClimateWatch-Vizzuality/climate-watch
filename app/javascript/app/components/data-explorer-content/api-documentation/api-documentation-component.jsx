@@ -11,7 +11,7 @@ class ApiDocumentationContent extends PureComponent {
   render() {
     const { data, handleAnalyticsTryLink } = this.props;
     return (
-      <div className={styles.documentation}>
+      <div className={styles.documentation} data-tour="data-explorer-06">
         <AbbrReplace>
           <p>
             To use this data in your own applications, please see our API

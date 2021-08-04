@@ -32,8 +32,8 @@ class GhgEmissions extends PureComponent {
             'About 60% of GHG emissions come from just 10 countries',
             '/ghg-emissions?chartType=percentage'
           )}
-          , while the 100 least-emitting contributed less than 3%.
-          Energy makes up{' '}
+          , while the 100 least-emitting contributed less than 3%. Energy makes
+          up{' '}
           {renderLink(
             'nearly three-quarters of global emissions',
             'Energy makes up nearly three-quarters of global emissions',
@@ -45,15 +45,19 @@ class GhgEmissions extends PureComponent {
             'Largest emitting sector is electricity and heat generation',
             '/ghg-emissions?breakBy=sector&chartType=percentage&sectors=agriculture%2Cindustrial-processes%2Cland-use-change-and-forestry%2Cbuilding%2Celectricity-heat%2Cfugitive-emissions%2Cmanufacturing-construction%2Cother-fuel-combustion%2Ctransportation%2Cwaste'
           )}{' '}
-          , followed by transportation and manufacturing. Land use, land use-change and forestry (LULUCF) is both a source and sink of emissions and key sector to get to net-zero emissions.
+          , followed by transportation and manufacturing. Land use, land
+          use-change and forestry (LULUCF) is both a source and sink of
+          emissions and key sector to get to net-zero emissions.
         </p>
-        <p className={styles.learnMore}>
-          Learn more about our data sources (CAIT, PIK, UNFCCC, GCP) and methodologies in our{' '}
+        <p className={styles.learnMore} data-tour="ghg-05">
+          Learn more about our data sources (CAIT, PIK, UNFCCC, GCP) and
+          methodologies in our{' '}
           {renderLink(
             'Frequently asked questions',
             'Frequently asked questions',
             '/about/faq/ghg'
-          )}.
+          )}
+          .
         </p>
       </div>
     );

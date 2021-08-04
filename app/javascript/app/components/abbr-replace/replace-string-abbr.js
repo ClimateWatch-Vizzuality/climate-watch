@@ -1,7 +1,5 @@
 import { ABBREVIATIONS, CONFLICTS } from './abbr-replace-data';
 
-const FEATURE_ABBREVIATIONS = process.env.FEATURE_ABBREVIATIONS === 'true';
-
 // This function just replace the text for the dangerouslySetInnerHTML cases
 
 const replaceText = (text, replacements) => {
@@ -41,8 +39,6 @@ const replaceAllButTags = (text, replacements) => {
 };
 
 export const replaceStringAbbr = text => {
-  if (!FEATURE_ABBREVIATIONS) return text;
-
   try {
     if (text === undefined || text === null) return text;
     const replacements = {};

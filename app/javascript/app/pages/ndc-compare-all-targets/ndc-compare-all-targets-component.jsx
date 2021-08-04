@@ -23,7 +23,7 @@ import CompareAllTable from './ndc-compare-all-targets-table/ndc-compare-all-tar
 import styles from './ndc-compare-all-targets-styles.scss';
 
 const renderLegend = () => (
-  <div className={styles.legend}>
+  <div className={styles.legend} data-tour="compare-all-01">
     <span className={styles.legendItem}>
       <Icon icon={compareSubmittedIcon} className={styles.submitIcon} />
       Submitted
@@ -40,7 +40,7 @@ const renderLegend = () => (
 );
 
 const renderSearch = (searchHandler, query) => (
-  <div data-tour="compare-all-03">
+  <div data-tour="compare-all-06">
     <Search
       value={query}
       onChange={searchHandler}
@@ -68,7 +68,7 @@ const NDCCompareAllTargets = props => {
     countryIsos
   } = props;
   return (
-    <div data-tour="compare-all-01">
+    <div>
       <SEOTags page={SEO_PAGES.ndcCompareAll} href={location.href} />
       <Header route={route}>
         <div className={cx(layout.content, styles.header)}>
@@ -94,11 +94,12 @@ const NDCCompareAllTargets = props => {
                 buttonsConfig={[
                   {
                     type: 'info',
-                    onClick: handleInfoClick
+                    onClick: handleInfoClick,
+                    dataTour: 'compare-all-07'
                   }
                 ]}
               />
-              <div data-tour="compare-all-04">
+              <div data-tour="compare-all-05">
                 <Button
                   variant="secondary"
                   className={styles.actionButton}
@@ -108,7 +109,7 @@ const NDCCompareAllTargets = props => {
                   Clear
                 </Button>
               </div>
-              <div data-tour="compare-all-05">
+              <div data-tour="compare-all-04">
                 <Button
                   variant="primary"
                   className={styles.actionButton}

@@ -58,6 +58,7 @@ class Country extends PureComponent {
               links={anchorLinks}
               className={styles.anchorNav}
               theme={anchorNavRegularTheme}
+              dataTour="countries-02"
             />
           </Sticky>
         </Header>

@@ -2173,6 +2173,41 @@ ALTER SEQUENCE public.wri_metadata_values_id_seq OWNED BY public.wri_metadata_va
 
 
 --
+-- Name: zip_files; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.zip_files (
+    id bigint NOT NULL,
+    dropdown_title character varying NOT NULL,
+    zip_filename character varying NOT NULL,
+    byte_size bigint,
+    metadata character varying[] DEFAULT '{}'::character varying[],
+    files jsonb DEFAULT '{}'::jsonb,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: zip_files_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.zip_files_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: zip_files_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.zip_files_id_seq OWNED BY public.zip_files.id;
+
+
+--
 -- Name: active_storage_attachments id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2590,6 +2625,13 @@ ALTER TABLE ONLY public.wri_metadata_sources ALTER COLUMN id SET DEFAULT nextval
 --
 
 ALTER TABLE ONLY public.wri_metadata_values ALTER COLUMN id SET DEFAULT nextval('public.wri_metadata_values_id_seq'::regclass);
+
+
+--
+-- Name: zip_files id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.zip_files ALTER COLUMN id SET DEFAULT nextval('public.zip_files_id_seq'::regclass);
 
 
 --
@@ -3167,6 +3209,14 @@ ALTER TABLE ONLY public.wri_metadata_sources
 
 ALTER TABLE ONLY public.wri_metadata_values
     ADD CONSTRAINT wri_metadata_values_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: zip_files zip_files_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.zip_files
+    ADD CONSTRAINT zip_files_pkey PRIMARY KEY (id);
 
 
 --
@@ -4384,6 +4434,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20201023101133'),
 ('20201113113501'),
 ('20201119151517'),
-('20210310203949');
+('20210310203949'),
+('20210715112941');
 
 

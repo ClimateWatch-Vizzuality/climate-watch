@@ -33,7 +33,7 @@ const renderButtonGroup = (clickHandler, downloadLink) => (
             or by referring to the table below. To request changes or additions,
             please contact &nbsp;
             <a
-              href="mailto:Rhys.Gerholdt@wri.org?subject=2020 NDC Tracker Update"
+              href="mailto:Rhys.Gerholdt@wri.org?subject=NDC Enhancement Tracker Update"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -172,7 +172,7 @@ const NDCSEnhancementsViz = ({
                 <div className={styles.checkboxContainer}>
                   <CheckInput
                     theme={blueCheckboxTheme}
-                    label="Visualize enhanced NDCs on the map"
+                    label="Show which new NDCs reduce total emissions"
                     checked={checked}
                     onChange={() => handleOnChangeChecked(!checked)}
                   />

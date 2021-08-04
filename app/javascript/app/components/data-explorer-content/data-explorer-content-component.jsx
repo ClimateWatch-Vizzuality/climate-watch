@@ -35,18 +35,20 @@ class DataExplorerContent extends PureComponent {
     if (loading) return <Loading light className={styles.loader} />;
     if (data && data.length) {
       return (
-        <Table
-          data={data}
-          sortBy={sortDefaults ? sortDefaults.sort_col : undefined}
-          sortDirection={sortDefaults ? sortDefaults.sort_dir : undefined}
-          firstColumnHeaders={firstColumnHeaders}
-          horizontalScroll
-          titleLinks={titleLinks}
-          handleSortChange={handleSortChange}
-          forcedColumnWidth={tableColumnsWidth[section] || null}
-          flexGrow={0}
-          emptyValueLabel="N/A"
-        />
+        <span data-tour="data-explorer-04">
+          <Table
+            data={data}
+            sortBy={sortDefaults ? sortDefaults.sort_col : undefined}
+            sortDirection={sortDefaults ? sortDefaults.sort_dir : undefined}
+            firstColumnHeaders={firstColumnHeaders}
+            horizontalScroll
+            titleLinks={titleLinks}
+            handleSortChange={handleSortChange}
+            forcedColumnWidth={tableColumnsWidth[section] || null}
+            flexGrow={0}
+            emptyValueLabel="N/A"
+          />
+        </span>
       );
     }
     return <NoContent message={'No data'} className={styles.noData} />;
@@ -105,13 +107,14 @@ class DataExplorerContent extends PureComponent {
         />
         <RegionsProvider />
         <CountriesProvider />
-        <div className={styles.filtersContainer}>
+        <div className={styles.filtersContainer} data-tour="data-explorer-03">
           <DataExplorerFilters section={section} />
         </div>
         <AnchorNav
           links={anchorLinks}
           theme={anchorNavLightTheme}
           query={query}
+          dataTour="data-explorer-05"
         />
         <div className={styles.tableContainer}>
           {metadataSection ? this.renderMeta() : this.renderTable()}

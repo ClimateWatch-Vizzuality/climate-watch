@@ -52,7 +52,7 @@ Style/RegexpLiteral:
   AllowInnerSlashes: true
 
 Metrics/LineLength:
-  Max: 100
+  Max: 110
   Exclude:
     - 'db/**/*'
     - 'spec/spec_helper.rb'

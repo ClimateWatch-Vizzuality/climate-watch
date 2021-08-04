@@ -12,9 +12,9 @@ import getIPPaths from 'app/data/world-50m-paths';
 import { europeSlug, europeanCountries } from 'app/data/european-countries';
 import { COUNTRY_STYLES } from 'components/ndcs/shared/constants';
 import { CHART_NAMED_COLORS } from 'styles/constants';
-
 // TODO: Remove ndc_enhancement when new data on production
-const ENHANCEMENT_CATEGORIES = ['ndc_enhancement', '2020_ndc_tracker'];
+import { ENHANCEMENT_CATEGORIES } from 'data/constants';
+
 const INDICATOR_SLUGS = {
   EMISSIONS: 'ndce_ghg',
   MAP: 'ndce_status_2020'
@@ -40,7 +40,8 @@ const getIndicatorsData = state => state.indicators || null;
 
 export const getIsEnhancedChecked = createSelector(
   getSearch,
-  search => search.showEnhancedAmbition === 'true'
+  search =>
+    !search.showEnhancedAmbition || search.showEnhancedAmbition !== 'false'
 );
 
 export const getISOCountries = createSelector([getCountries], countries =>

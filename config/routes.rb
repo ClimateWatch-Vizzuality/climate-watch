@@ -71,6 +71,7 @@ Rails.application.routes.draw do
       resources :notifications, only: [:index]
 
       resources :key_visualizations, only: [:index]
+      resources :zip_files, only: [:index]
 
       namespace :data do
         resources :historical_emissions, only: [:index] do
