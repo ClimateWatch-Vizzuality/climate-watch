@@ -4,6 +4,7 @@ import { replaceStringAbbr } from 'components/abbr-replace';
 import uniqBy from 'lodash/uniqBy';
 import sortBy from 'lodash/sortBy';
 import isEmpty from 'lodash/isEmpty';
+import { ENHANCEMENT_CATEGORIES } from 'data/constants';
 
 const getCountries = state => state.countries || null;
 const getCategories = state => state.categories || null;
@@ -19,7 +20,7 @@ export const getIndicatorsParsed = createSelector(
   (categories, indicators) => {
     if (!categories || !indicators || !indicators.length) return null;
     const categoryId = Object.keys(categories).find(id =>
-      ['ndc_enhancement', '2020_ndc_tracker'].includes(categories[id].slug)
+      ENHANCEMENT_CATEGORIES.includes(categories[id].slug)
     );
     return sortBy(
       uniqBy(

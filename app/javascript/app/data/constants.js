@@ -374,3 +374,9 @@ export const CATEGORY_SOURCES = {
   NDC_EXPLORE: ['CAIT', 'WB', 'NDC Explorer'],
   NDC_CONTENT: ['CAIT', 'WB', 'NDC Explorer']
 };
+
+export const ENHANCEMENT_CATEGORIES = [
+  'ndc_enhancement',
+  '2020_ndc_tracker',
+  'ndc_enhancement_tracker'
+];

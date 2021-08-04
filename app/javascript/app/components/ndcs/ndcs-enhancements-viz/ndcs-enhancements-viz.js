@@ -146,9 +146,8 @@ class NDCSEnhancementsVizContainer extends PureComponent {
 
   handleInfoClick = () => {
     this.props.setModalMetadata({
-      customTitle: 'NDC Content',
       category: 'NDC Content Map',
-      slugs: ['ndc_cw', 'ndc_wb', 'ndc_die'],
+      slugs: '2020_NDC',
       open: true
     });
   };

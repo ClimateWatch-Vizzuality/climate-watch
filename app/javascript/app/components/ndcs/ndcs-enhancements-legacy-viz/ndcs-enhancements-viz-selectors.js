@@ -13,7 +13,7 @@ import { europeSlug, europeanCountries } from 'app/data/european-countries';
 import { COUNTRY_STYLES } from 'components/ndcs/shared/constants';
 
 // TODO: Remove ndc_enhancement when new data on production
-const ENHANCEMENT_CATEGORIES = ['ndc_enhancement', '2020_ndc_tracker'];
+import { ENHANCEMENT_CATEGORIES } from 'data/constants';
 
 const getSearch = state => state.search || null;
 const getCountries = state => state.countries || null;

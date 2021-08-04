@@ -7,11 +7,7 @@ import { ABBREVIATIONS, SUBSCRIPTS } from './abbr-replace-data';
 // To fix it we can use the fixLayout prop that embeds the content in a div
 // The replace component also adds subscripts defined on the subscripts array
 
-const FEATURE_ABBREVIATIONS = process.env.FEATURE_ABBREVIATIONS === 'true';
-
 const AbbrReplace = ({ children, fixLayout }) => {
-  if (!FEATURE_ABBREVIATIONS) return children;
-
   const [config, setConfig] = useState();
   useEffect(() => {
     const initialConfig = {};
