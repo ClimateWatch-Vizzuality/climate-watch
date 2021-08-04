@@ -20,14 +20,14 @@ node {
   def user_survey_spreadsheet = 'https://script.google.com/macros/s/AKfycbzgN1G9IdLYO3KqlTC4gzBxR1UTX5bYXu1qRaiRn1oD9qoaq6s/exec'
   def user_newsletter = 'https://connect.wri.org/l/120942/2021-01-19/4z6v9p'
 
-  def feature_flags_env = '--build-arg FEATURE_POP_UP=true  --build-arg POP_UP=webinarCountdown'
+  def feature_flags_env = '--build-arg FEATURE_POP_UP=true  --build-arg POP_UP=webinarCountdown  --build-arg FEATURE_NDC_ENHANCEMENTS=true'
 
   if (env.BRANCH_NAME == 'master') {
     cw_files_prefix = 'climatewatch.org/www.climatewatch.org/climate-watch/'
     user_report_key = '81f6ea43-5c9f-48e0-bdb2-56fc59aafbb4'
     one_signal_key = '27c3fb0e-bd48-409c-852a-e5a72446b9d4'
   } else {
-    feature_flags_env = feature_flags_env + ' --build-arg FEATURE_NDC_ENHANCEMENTS=true'
+    feature_flags_env = feature_flags_env + ''
   }
 
   // env vars with build-arg
