@@ -22,10 +22,10 @@
   .nextButton {
     background-color: $gray3;
     position: absolute;
-    right: 32px;
+    right: 21px;
     bottom: 15px;
-    height: 25px;
-    width: 25px;
+    height: 35px;
+    width: 35px;
     border-radius: 0 3px 3px 0;
     cursor: pointer;
 
@@ -51,4 +51,9 @@
     opacity: 0.5;
     cursor: default;
   }
+}
+
+:global .reactour__dot {
+  width: 14px;
+  height: 14px;
 }
