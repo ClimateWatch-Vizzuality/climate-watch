@@ -18,7 +18,8 @@ const AnchorNav = props => {
     theme,
     offset,
     activeSection,
-    dataTour
+    dataTour,
+    dataTours
   } = props;
   return (
     <div>
@@ -51,9 +52,13 @@ const AnchorNav = props => {
               if (useRoutes) {
                 linkProps.exact = true;
                 return (
-                  <NavLink {...linkProps} replace>
-                    <AbbrReplace>{link.label}</AbbrReplace>
-                  </NavLink>
+                  <span
+                    data-tour={dataTours && dataTours[link.label.toLowerCase()]}
+                  >
+                    <NavLink {...linkProps} replace>
+                      <AbbrReplace>{link.label}</AbbrReplace>
+                    </NavLink>
+                  </span>
                 );
               }
               linkProps.isActive = (match, location) =>
@@ -89,7 +94,8 @@ AnchorNav.propTypes = {
   theme: PropTypes.object,
   activeSection: PropTypes.string,
   offset: PropTypes.array,
-  dataTour: PropTypes.string
+  dataTour: PropTypes.string,
+  dataTours: PropTypes.object
 };
 
 AnchorNav.defaultProps = {
