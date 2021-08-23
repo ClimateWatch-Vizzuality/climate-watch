@@ -183,6 +183,75 @@ export default (pathname, setOpen) => {
         position: 'bottom'
       }
     ],
+    '/lts-explore': [
+      {
+        selector: '[data-tour="lts-explore-01"]',
+        content: () => (
+          <div>
+            <h2 className={styles.title}>KEY INDICATORS</h2>
+            <p className={styles.description}>
+              Explore the different Categories and Indicators to generate new
+              visualizations.
+            </p>
+          </div>
+        ),
+        position: 'bottom'
+      },
+      {
+        selector: '[data-tour="lts-explore-02"]',
+        content: () => (
+          <div>
+            <h2 className={styles.title}>MAP</h2>
+            <p className={styles.description}>
+              Visualize key indicators and find out what each country is
+              proposing in their climate commitments.
+            </p>
+          </div>
+        ),
+        position: 'top'
+      },
+      {
+        selector: '[data-tour="lts-explore-03"]',
+        content: () => (
+          <div>
+            <h2 className={styles.title}>IN-DEPTH LTS ANALYSIS</h2>
+            <p className={styles.description}>
+              Click on a country for a more detailed analysis on its Long-Term
+              Strategy.
+            </p>
+          </div>
+        ),
+        position: 'top'
+      },
+      {
+        selector: '[data-tour="lts-explore-04"]',
+        content: () => (
+          <div>
+            <h2 className={styles.title}>TABLE VIEW</h2>
+            <p className={styles.description}>
+              Explore all the values shown in the map above and find out more
+              details with this table view. You can sort values (ideal to find
+              latest submissions) and search for key terms.
+            </p>
+          </div>
+        ),
+        position: 'top'
+      },
+      {
+        selector: '[data-tour="lts-explore-05"]',
+        content: () => (
+          <div>
+            <h2 className={styles.title}>MORE INFO, DOWNLOAD & SHARE​</h2>
+            <p className={styles.description}>
+              Click on these icons to download the raw data shown in the map,
+              share the content in multiple formats, or to explore the sources
+              and citations of the datasets.
+            </p>
+          </div>
+        ),
+        position: 'bottom'
+      }
+    ],
     '/net-zero-tracker': [
       {
         selector: '[data-tour="net-zero-01"]',

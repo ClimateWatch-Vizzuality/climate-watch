@@ -32,6 +32,7 @@ const renderButtonGroup = (clickHandler, downloadLink, stickyStatus) => (
     className={cx(styles.buttonGroupContainer, {
       [styles.padded]: stickyStatus !== Sticky.STATUS_ORIGINAL
     })}
+    data-tour="lts-explore-05"
   >
     <ButtonGroup
       className={styles.buttonGroup}
@@ -163,6 +164,7 @@ function LTSExploreMap(props) {
                       className={cx(styles.filtersGroup, {
                         [styles.sticky]: stickyStatus === Sticky.STATUS_FIXED
                       })}
+                      data-tour="lts-explore-01"
                     >
                       <Dropdown
                         label="Category"
@@ -202,7 +204,10 @@ function LTSExploreMap(props) {
             <div className={styles.containerUpperWrapper}>
               <div className={layout.content}>
                 <div className="grid-column-item">
-                  <div className={styles.containerUpper}>
+                  <div
+                    className={styles.containerUpper}
+                    data-tour="lts-explore-02"
+                  >
                     <div
                       className={styles.containerCharts}
                       ref={tooltipParentRef}
@@ -223,17 +228,19 @@ function LTSExploreMap(props) {
                         className={styles.mapInfo}
                         text="Click on a country to see an in-depth analysis of its long-term strategy"
                       />
-                      <Map
-                        paths={paths}
-                        tooltipId={TOOLTIP_ID}
-                        onCountryClick={handleCountryClick}
-                        onCountryEnter={handleCountryEnter}
-                        onCountryFocus={handleCountryEnter}
-                        zoomEnable
-                        customCenter={isTablet ? [20, 20] : [10, 20]}
-                        theme={newMapTheme}
-                        className={styles.map}
-                      />
+                      <span data-tour="lts-explore-03">
+                        <Map
+                          paths={paths}
+                          tooltipId={TOOLTIP_ID}
+                          onCountryClick={handleCountryClick}
+                          onCountryEnter={handleCountryEnter}
+                          onCountryFocus={handleCountryEnter}
+                          zoomEnable
+                          customCenter={isTablet ? [20, 20] : [10, 20]}
+                          theme={newMapTheme}
+                          className={styles.map}
+                        />
+                      </span>
                       <CheckInput
                         theme={blueCheckboxTheme}
                         label="Visualize individual submissions of EU Members on the map"
