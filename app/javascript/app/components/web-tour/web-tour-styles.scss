@@ -57,3 +57,7 @@
   width: 14px;
   height: 14px;
 }
+
+:global [data-tour-elem="controls"] {
+  justify-content: flex-start;
+}
