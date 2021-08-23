@@ -101,7 +101,7 @@ export default (pathname, setOpen) => {
     ],
     '/ndcs-explore': [
       {
-        selector: '[data-tour="commitments-01"]',
+        selector: '[data-tour="ndc-explore-01"]',
         content: () => (
           <div>
             <h2 className={styles.title}>KEYWORD SEARCH​</h2>
@@ -116,7 +116,7 @@ export default (pathname, setOpen) => {
         position: 'bottom'
       },
       {
-        selector: '[data-tour="commitments-02"]',
+        selector: '[data-tour="ndc-explore-02"]',
         content: () => (
           <div>
             <h2 className={styles.title}>KEY INDICATORS</h2>
@@ -129,7 +129,7 @@ export default (pathname, setOpen) => {
         position: 'bottom'
       },
       {
-        selector: '[data-tour="commitments-03"]',
+        selector: '[data-tour="ndc-explore-03"]',
         content: () => (
           <div>
             <h2 className={styles.title}>MAP</h2>
@@ -142,7 +142,7 @@ export default (pathname, setOpen) => {
         position: 'top'
       },
       {
-        selector: '[data-tour="commitments-04"]',
+        selector: '[data-tour="ndc-explore-04"]',
         content: () => (
           <div>
             <h2 className={styles.title}>IN-DEPTH NDC ANALYSIS</h2>
@@ -155,7 +155,7 @@ export default (pathname, setOpen) => {
         position: 'top'
       },
       {
-        selector: '[data-tour="commitments-05"]',
+        selector: '[data-tour="ndc-explore-05"]',
         content: () => (
           <div>
             <h2 className={styles.title}>TABLE VIEW</h2>
@@ -169,7 +169,7 @@ export default (pathname, setOpen) => {
         position: 'top'
       },
       {
-        selector: '[data-tour="commitments-06"]',
+        selector: '[data-tour="ndc-explore-06"]',
         content: () => (
           <div>
             <h2 className={styles.title}>MORE INFO, DOWNLOAD & SHARE​</h2>
