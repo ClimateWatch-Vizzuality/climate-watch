@@ -10,7 +10,7 @@ import styles from './web-tour-styles.scss';
 
 const WebTour = ({ isOpen, location, setOpen }) => {
   const { pathname, search } = location;
-  const [selectedStep, setSelectedStep] = useState(0);
+  const [selectedStep, setSelectedStep] = useState();
   const steps = getSteps(pathname, setOpen);
   if (!steps) return null;
   return (
@@ -20,18 +20,17 @@ const WebTour = ({ isOpen, location, setOpen }) => {
         steps={steps}
         isOpen={isOpen}
         showNumber={false}
+        startAt={0}
         closeWithMask={false}
         getCurrentStep={setSelectedStep}
-        onAfterOpen={() => {
-          setSelectedStep(0);
-          disableBodyScroll();
-        }}
+        onAfterOpen={disableBodyScroll}
         onBeforeClose={enableBodyScroll}
         disableInteraction
         disableFocusLock
         goToStep={selectedStep}
-        update={`${pathname}${search}${selectedStep}`}
+        update={`${pathname}${search}`}
         onRequestClose={() => {
+          setSelectedStep(null);
           setOpen({ isOpen: false });
         }}
         nextButton={
