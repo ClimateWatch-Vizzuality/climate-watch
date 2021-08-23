@@ -318,7 +318,64 @@ export default (pathname, setOpen) => {
             </p>
           </div>
         ),
-        position: 'bottom'
+        position: 'top'
+      }
+    ],
+    '/2020-ndc-tracker': [
+      {
+        selector: '[data-tour="ndc-enhancement-tracker-01"]',
+        content: () => (
+          <div>
+            <h2 className={styles.title}>COUNTRY SEARCH</h2>
+            <p className={styles.description}>
+              Type the country that you are interested in to access their
+              climate related documents and to filter them down in the table
+              view below.
+            </p>
+          </div>
+        ),
+        position: 'top'
+      },
+      {
+        selector: '[data-tour="ndc-enhancement-tracker-02"]',
+        content: () => (
+          <div>
+            <h2 className={styles.title}>MAP</h2>
+            <p className={styles.description}>
+              Visualize the latest NDC submissions and keep track of countries
+              with enhanced ambition.
+            </p>
+          </div>
+        ),
+        position: 'top'
+      },
+      {
+        selector: '[data-tour="ndc-enhancement-tracker-03"]',
+        content: () => (
+          <div>
+            <h2 className={styles.title}>TABLE VIEW</h2>
+            <p className={styles.description}>
+              Explore all the values shown in the map above and find out more
+              details with this table view. You can sort values (ideal to find
+              latest submissions) and search for key terms.
+            </p>
+          </div>
+        ),
+        position: 'top'
+      },
+      {
+        selector: '[data-tour="ndc-enhancement-tracker-04"]',
+        content: () => (
+          <div>
+            <h2 className={styles.title}>MORE INFO, DOWNLOAD & SHARE​</h2>
+            <p className={styles.description}>
+              Click on these icons to download the raw data shown in the map,
+              share the content in multiple formats, or to explore the sources
+              and citations of the datasets.
+            </p>
+          </div>
+        ),
+        position: 'top'
       }
     ],
     '/ndcs-sdg': [
