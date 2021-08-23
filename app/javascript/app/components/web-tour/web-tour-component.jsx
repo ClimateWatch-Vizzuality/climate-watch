@@ -5,41 +5,35 @@ import cx from 'classnames';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import Icon from 'components/icon';
 import rightArrow from 'assets/icons/right-arrow.svg';
-import StepButton from './step-button';
 import getSteps from './web-tour-data';
 import styles from './web-tour-styles.scss';
 
-const WebTour = ({ isOpen, location }, setOpen) => {
+const WebTour = ({ isOpen, location, setOpen }) => {
   const { pathname, search } = location;
-  const [selectedStep, setSelectedStep] = useState();
+  const [selectedStep, setSelectedStep] = useState(0);
   const steps = getSteps(pathname, setOpen);
   if (!steps) return null;
   return (
     <Fragment>
-      {isOpen &&
-        steps.map((step, i) => (
-          <StepButton
-            key={step.selector}
-            stepIndex={i}
-            selector={step.selector}
-            goToStep={setSelectedStep}
-            selectedStep={selectedStep}
-          />
-        ))}
       <Tour
         className={styles.webTour}
         steps={steps}
         isOpen={isOpen}
         showNumber={false}
         closeWithMask={false}
-        showCloseButton={false}
         getCurrentStep={setSelectedStep}
-        onAfterOpen={disableBodyScroll}
+        onAfterOpen={() => {
+          setSelectedStep(0);
+          disableBodyScroll();
+        }}
         onBeforeClose={enableBodyScroll}
         disableInteraction
         disableFocusLock
         goToStep={selectedStep}
-        update={`${pathname}${search}`}
+        update={`${pathname}${search}${selectedStep}`}
+        onRequestClose={() => {
+          setOpen({ isOpen: false });
+        }}
         nextButton={
           <button
             className={cx(styles.nextButton, {
@@ -73,6 +67,7 @@ const WebTour = ({ isOpen, location }, setOpen) => {
 
 WebTour.propTypes = {
   isOpen: PropTypes.bool,
+  setOpen: PropTypes.func.isRequired,
   location: PropTypes.shape({
     pathname: PropTypes.string
   })
