@@ -47,6 +47,7 @@ const renderButtonGroup = (clickHandler, downloadLink) => (
     <div>
       <ButtonGroup
         className={styles.buttonGroup}
+        dataTour="ndc-enhancement-tracker-04"
         buttonsConfig={[
           {
             type: 'info',
@@ -160,14 +161,16 @@ const NDCSEnhancementsViz = ({
             <div className={styles.containerMap}>
               {loading && <Loading light className={styles.loader} />}
               {!isTablet && renderButtonGroup(handleInfoClick, downloadLink)}
-              <Map
-                paths={paths}
-                tooltipId={TOOLTIP_ID}
-                onCountryEnter={handleCountryEnter}
-                onCountryFocus={handleCountryEnter}
-                zoomEnable
-                customCenter={!isTablet ? [10, -10] : null}
-              />
+              <span data-tour="ndc-enhancement-tracker-02">
+                <Map
+                  paths={paths}
+                  tooltipId={TOOLTIP_ID}
+                  onCountryEnter={handleCountryEnter}
+                  onCountryFocus={handleCountryEnter}
+                  zoomEnable
+                  customCenter={!isTablet ? [10, -10] : null}
+                />
+              </span>
               {!loading && (
                 <div className={styles.checkboxContainer}>
                   <CheckInput

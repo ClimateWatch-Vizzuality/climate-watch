@@ -34,26 +34,27 @@ const renderButtonGroup = (clickHandler, downloadLink, stickyStatus) => (
     className={cx(styles.buttonGroupContainer, {
       [styles.padded]: stickyStatus !== Sticky.STATUS_ORIGINAL
     })}
-    data-tour="commitments-06"
   >
-    <ButtonGroup
-      className={styles.buttonGroup}
-      buttonsConfig={[
-        {
-          type: 'info',
-          onClick: clickHandler
-        },
-        {
-          type: 'download',
-          section: 'ndcs-content',
-          link: downloadLink
-        },
-        {
-          type: 'addToUser'
-        }
-      ]}
-    />
-    <ShareButton />
+    <span data-tour="ndc-explore-06">
+      <ButtonGroup
+        className={styles.buttonGroup}
+        buttonsConfig={[
+          {
+            type: 'info',
+            onClick: clickHandler
+          },
+          {
+            type: 'download',
+            section: 'ndcs-content',
+            link: downloadLink
+          },
+          {
+            type: 'addToUser'
+          }
+        ]}
+      />
+      <ShareButton />
+    </span>
     <ModalShare analyticsName="NDC Explore" />
   </div>
 );
@@ -167,7 +168,7 @@ function NDCSExploreMap(props) {
                       className={cx(styles.filtersGroup, {
                         [styles.sticky]: stickyStatus === Sticky.STATUS_FIXED
                       })}
-                      data-tour="commitments-02"
+                      data-tour="ndc-explore-02"
                     >
                       <Dropdown
                         label="Category"
@@ -207,7 +208,7 @@ function NDCSExploreMap(props) {
                 <div className="grid-column-item">
                   <div
                     className={styles.containerUpper}
-                    data-tour="commitments-03"
+                    data-tour="ndc-explore-03"
                   >
                     <div
                       className={styles.containerCharts}
@@ -229,7 +230,7 @@ function NDCSExploreMap(props) {
                         className={styles.mapInfo}
                         text="The map reflects latest submission of each country, click on a country to see in-depth analysis of its latest NDC and previous submissions"
                       />
-                      <span data-tour="commitments-04">
+                      <span data-tour="ndc-explore-04">
                         <Map
                           paths={paths}
                           tooltipId={TOOLTIP_ID}

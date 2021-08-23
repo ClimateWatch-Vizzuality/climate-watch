@@ -32,26 +32,27 @@ const renderButtonGroup = (clickHandler, downloadLink, stickyStatus) => (
     className={cx(styles.buttonGroupContainer, {
       [styles.padded]: stickyStatus !== Sticky.STATUS_ORIGINAL
     })}
-    data-tour="net-zero-05"
   >
-    <ButtonGroup
-      className={styles.buttonGroup}
-      buttonsConfig={[
-        {
-          type: 'info',
-          onClick: clickHandler
-        },
-        {
-          type: 'download',
-          section: 'net-zero-content',
-          link: downloadLink
-        },
-        {
-          type: 'addToUser'
-        }
-      ]}
-    />
-    <ShareButton />
+    <span data-tour="net-zero-05">
+      <ButtonGroup
+        className={styles.buttonGroup}
+        buttonsConfig={[
+          {
+            type: 'info',
+            onClick: clickHandler
+          },
+          {
+            type: 'download',
+            section: 'net-zero-content',
+            link: downloadLink
+          },
+          {
+            type: 'addToUser'
+          }
+        ]}
+      />
+      <ShareButton />
+    </span>
     <ModalShare analyticsName="LTS Explore" />
   </div>
 );

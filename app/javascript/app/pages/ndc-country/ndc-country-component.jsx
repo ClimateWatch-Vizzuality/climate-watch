@@ -42,45 +42,51 @@ function NDCCountry(props) {
   const { iso } = match.params;
 
   const renderDocumentsDropdown = () => (
-    <Dropdown
-      className={cx(styles.countryDropdown)}
-      options={documentsOptions}
-      value={documentSelected}
-      onValueChange={handleDropDownChange}
-      white
-      hideResetButton
-      disabled={!documentsOptions}
-      noAutoSort
-    />
+    <span data-tour="ndcs-country-01">
+      <Dropdown
+        className={cx(styles.countryDropdown)}
+        options={documentsOptions}
+        value={documentSelected}
+        onValueChange={handleDropDownChange}
+        white
+        hideResetButton
+        disabled={!documentsOptions}
+        noAutoSort
+      />
+    </span>
   );
 
   const renderFullTextButton = () => (
-    <Button
-      variant="secondary"
-      link={`/ndcs/country/${iso}/full?document=${documentSelected &&
-        documentSelected.value}`}
-      className={styles.viewDocumentButton}
-      disabled={!documentsOptions}
-    >
-      View Full Text
-    </Button>
+    <span data-tour="ndcs-country-02">
+      <Button
+        variant="secondary"
+        link={`/ndcs/country/${iso}/full?document=${documentSelected &&
+          documentSelected.value}`}
+        className={styles.viewDocumentButton}
+        disabled={!documentsOptions}
+      >
+        View Full Text
+      </Button>
+    </span>
   );
 
   const renderDownloadButton = () => (
-    <Button
-      variant="secondary"
-      onClick={() =>
-        documentSelected &&
-        documentSelected.url &&
-        handleDownloadAnalytics(documentSelected)
-      }
-      href={documentSelected && documentSelected.url}
-      target="_blank"
-      className={styles.viewDocumentButton}
-      disabled={!documentsOptions}
-    >
-      Download original PDF
-    </Button>
+    <span data-tour="ndcs-country-03">
+      <Button
+        variant="secondary"
+        onClick={() =>
+          documentSelected &&
+          documentSelected.url &&
+          handleDownloadAnalytics(documentSelected)
+        }
+        href={documentSelected && documentSelected.url}
+        target="_blank"
+        className={styles.viewDocumentButton}
+        disabled={!documentsOptions}
+      >
+        Download original PDF
+      </Button>
+    </span>
   );
 
   const renderCompareButton = () => (
@@ -181,6 +187,8 @@ function NDCCountry(props) {
               links={anchorLinks}
               className={styles.anchorNav}
               theme={anchorNavRegularTheme}
+              dataTours={{ summary: 'ndcs-country-04' }}
+              dataTour="ndcs-country-05"
             />
           </Sticky>
         </Header>

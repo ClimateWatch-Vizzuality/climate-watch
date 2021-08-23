@@ -21,8 +21,7 @@ export default (pathname, setOpen) => {
               the UNFCCC directly from here.
             </p>
           </div>
-        ),
-        position: 'bottom'
+        )
       },
       {
         selector: '[data-tour="countries-02"]',
@@ -34,8 +33,7 @@ export default (pathname, setOpen) => {
               climate situation.
             </p>
           </div>
-        ),
-        position: 'bottom'
+        )
       },
       {
         selector: '[data-tour="countries-03"]',
@@ -48,8 +46,7 @@ export default (pathname, setOpen) => {
               and accessing the main modules.
             </p>
           </div>
-        ),
-        position: 'bottom'
+        )
       },
       {
         selector: '[data-tour="countries-04"]',
@@ -60,8 +57,7 @@ export default (pathname, setOpen) => {
               Download the raw data in csv format by clicking this button.
             </p>
           </div>
-        ),
-        position: 'bottom'
+        )
       },
       {
         selector: '[data-tour="countries-05"]',
@@ -72,8 +68,7 @@ export default (pathname, setOpen) => {
               Share this graphic in multiple ways by clicking this button.
             </p>
           </div>
-        ),
-        position: 'bottom'
+        )
       },
       {
         selector: '[data-tour="countries-06"]',
@@ -85,6 +80,7 @@ export default (pathname, setOpen) => {
               including sources and citations.​{' '}
               <a
                 href="/about/faq/general_questions"
+                target="_blank"
                 onClick={() =>
                   setOpen({
                     isOpen: false
@@ -95,13 +91,12 @@ export default (pathname, setOpen) => {
               </a>
             </p>
           </div>
-        ),
-        position: 'bottom'
+        )
       }
     ],
     '/ndcs-explore': [
       {
-        selector: '[data-tour="commitments-01"]',
+        selector: '[data-tour="ndc-explore-01"]',
         content: () => (
           <div>
             <h2 className={styles.title}>KEYWORD SEARCH​</h2>
@@ -112,11 +107,10 @@ export default (pathname, setOpen) => {
               (e.g., “nature based”)
             </p>
           </div>
-        ),
-        position: 'bottom'
+        )
       },
       {
-        selector: '[data-tour="commitments-02"]',
+        selector: '[data-tour="ndc-explore-02"]',
         content: () => (
           <div>
             <h2 className={styles.title}>KEY INDICATORS</h2>
@@ -125,11 +119,10 @@ export default (pathname, setOpen) => {
               visualizations.
             </p>
           </div>
-        ),
-        position: 'bottom'
+        )
       },
       {
-        selector: '[data-tour="commitments-03"]',
+        selector: '[data-tour="ndc-explore-03"]',
         content: () => (
           <div>
             <h2 className={styles.title}>MAP</h2>
@@ -138,11 +131,10 @@ export default (pathname, setOpen) => {
               proposing in their climate commitments.
             </p>
           </div>
-        ),
-        position: 'top'
+        )
       },
       {
-        selector: '[data-tour="commitments-04"]',
+        selector: '[data-tour="ndc-explore-04"]',
         content: () => (
           <div>
             <h2 className={styles.title}>IN-DEPTH NDC ANALYSIS</h2>
@@ -151,11 +143,10 @@ export default (pathname, setOpen) => {
               and previous submissions.
             </p>
           </div>
-        ),
-        position: 'top'
+        )
       },
       {
-        selector: '[data-tour="commitments-05"]',
+        selector: '[data-tour="ndc-explore-05"]',
         content: () => (
           <div>
             <h2 className={styles.title}>TABLE VIEW</h2>
@@ -165,11 +156,10 @@ export default (pathname, setOpen) => {
               latest submissions) and search for key terms.
             </p>
           </div>
-        ),
-        position: 'top'
+        )
       },
       {
-        selector: '[data-tour="commitments-06"]',
+        selector: '[data-tour="ndc-explore-06"]',
         content: () => (
           <div>
             <h2 className={styles.title}>MORE INFO, DOWNLOAD & SHARE​</h2>
@@ -179,8 +169,71 @@ export default (pathname, setOpen) => {
               and citations of the datasets.
             </p>
           </div>
-        ),
-        position: 'bottom'
+        )
+      }
+    ],
+    '/lts-explore': [
+      {
+        selector: '[data-tour="lts-explore-01"]',
+        content: () => (
+          <div>
+            <h2 className={styles.title}>KEY INDICATORS</h2>
+            <p className={styles.description}>
+              Explore the different Categories and Indicators to generate new
+              visualizations.
+            </p>
+          </div>
+        )
+      },
+      {
+        selector: '[data-tour="lts-explore-02"]',
+        content: () => (
+          <div>
+            <h2 className={styles.title}>MAP</h2>
+            <p className={styles.description}>
+              Visualize key indicators and find out what each country is
+              proposing in their climate commitments.
+            </p>
+          </div>
+        )
+      },
+      {
+        selector: '[data-tour="lts-explore-03"]',
+        content: () => (
+          <div>
+            <h2 className={styles.title}>IN-DEPTH LTS ANALYSIS</h2>
+            <p className={styles.description}>
+              Click on a country for a more detailed analysis on its Long-Term
+              Strategy.
+            </p>
+          </div>
+        )
+      },
+      {
+        selector: '[data-tour="lts-explore-04"]',
+        content: () => (
+          <div>
+            <h2 className={styles.title}>TABLE VIEW</h2>
+            <p className={styles.description}>
+              Explore all the values shown in the map above and find out more
+              details with this table view. You can sort values (ideal to find
+              latest submissions) and search for key terms.
+            </p>
+          </div>
+        )
+      },
+      {
+        selector: '[data-tour="lts-explore-05"]',
+        content: () => (
+          <div>
+            <h2 className={styles.title}>MORE INFO, DOWNLOAD & SHARE​</h2>
+            <p className={styles.description}>
+              Click on these icons to download the raw data shown in the map,
+              share the content in multiple formats, or to explore the sources
+              and citations of the datasets.
+            </p>
+          </div>
+        )
       }
     ],
     '/net-zero-tracker': [
@@ -194,8 +247,7 @@ export default (pathname, setOpen) => {
               visualizations.
             </p>
           </div>
-        ),
-        position: 'bottom'
+        )
       },
       {
         selector: '[data-tour="net-zero-02"]',
@@ -203,12 +255,11 @@ export default (pathname, setOpen) => {
           <div>
             <h2 className={styles.title}>MAP</h2>
             <p className={styles.description}>
-              Visualize key NDC indicators and find out what each country is
+              Visualize key indicators and find out what each country is
               proposing in their climate commitments.
             </p>
           </div>
-        ),
-        position: 'top'
+        )
       },
       {
         selector: '[data-tour="net-zero-03"]',
@@ -216,12 +267,10 @@ export default (pathname, setOpen) => {
           <div>
             <h2 className={styles.title}>IN-DEPTH NET-ZERO ANALYSIS</h2>
             <p className={styles.description}>
-              Click on a country for a more detailed analysis on its latest NDC
-              and previous submissions.
+              Click on a country to see its climate profile.
             </p>
           </div>
-        ),
-        position: 'top'
+        )
       },
       {
         selector: '[data-tour="net-zero-04"]',
@@ -234,8 +283,7 @@ export default (pathname, setOpen) => {
               latest submissions) and search for key terms.
             </p>
           </div>
-        ),
-        position: 'top'
+        )
       },
       {
         selector: '[data-tour="net-zero-05"]',
@@ -248,8 +296,60 @@ export default (pathname, setOpen) => {
               and citations of the datasets.
             </p>
           </div>
-        ),
-        position: 'bottom'
+        )
+      }
+    ],
+    '/2020-ndc-tracker': [
+      {
+        selector: '[data-tour="ndc-enhancement-tracker-01"]',
+        content: () => (
+          <div>
+            <h2 className={styles.title}>COUNTRY SEARCH</h2>
+            <p className={styles.description}>
+              Type the country that you are interested in to access their
+              climate related documents and to filter them down in the table
+              view below.
+            </p>
+          </div>
+        )
+      },
+      {
+        selector: '[data-tour="ndc-enhancement-tracker-02"]',
+        content: () => (
+          <div>
+            <h2 className={styles.title}>MAP</h2>
+            <p className={styles.description}>
+              Visualize the latest NDC submissions and keep track of countries
+              with enhanced ambition.
+            </p>
+          </div>
+        )
+      },
+      {
+        selector: '[data-tour="ndc-enhancement-tracker-03"]',
+        content: () => (
+          <div>
+            <h2 className={styles.title}>TABLE VIEW</h2>
+            <p className={styles.description}>
+              Explore all the values shown in the map above and find out more
+              details with this table view. You can sort values (ideal to find
+              latest submissions) and search for key terms.
+            </p>
+          </div>
+        )
+      },
+      {
+        selector: '[data-tour="ndc-enhancement-tracker-04"]',
+        content: () => (
+          <div>
+            <h2 className={styles.title}>MORE INFO, DOWNLOAD & SHARE​</h2>
+            <p className={styles.description}>
+              Click on these icons to download the raw data shown in the map,
+              share the content in multiple formats, or to explore the sources
+              and citations of the datasets.
+            </p>
+          </div>
+        )
       }
     ],
     '/ndcs-sdg': [
@@ -265,8 +365,7 @@ export default (pathname, setOpen) => {
             </p>
           </div>
         ),
-        action: () => clickAction('ndcs-sdg-01'), // Close targets
-        position: 'top'
+        action: () => clickAction('ndcs-sdg-01') // Close target
       },
       {
         selector: '[data-tour="ndcs-sdg-02"]',
@@ -279,8 +378,7 @@ export default (pathname, setOpen) => {
               documents.
             </p>
           </div>
-        ),
-        position: 'top'
+        )
       },
       {
         selector: '[data-tour="ndcs-sdg-03"]',
@@ -293,8 +391,7 @@ export default (pathname, setOpen) => {
             </p>
           </div>
         ),
-        action: () => clickAction('ndcs-sdg-03'), // Open first target
-        position: 'top'
+        action: () => clickAction('ndcs-sdg-03') // Open first targe
       },
       {
         selector: '[data-tour="ndcs-sdg-04"]',
@@ -307,8 +404,69 @@ export default (pathname, setOpen) => {
               and citations of the datasets.
             </p>
           </div>
-        ),
-        position: 'bottom'
+        )
+      }
+    ],
+    '/ndcs/country': [
+      {
+        selector: '[data-tour="ndcs-country-01"]',
+        content: () => (
+          <div>
+            <h2 className={styles.title}>CLIMATE COMMITMENT CHOSEN​</h2>
+            <p className={styles.description}>
+              Click on the dropdown arrow to change between different versions
+              of the country{"'"}s NDCs and explore our analysis.
+            </p>
+          </div>
+        )
+      },
+      {
+        selector: '[data-tour="ndcs-country-02"]',
+        content: () => (
+          <div>
+            <h2 className={styles.title}>FULL HTML TEXT​</h2>
+            <p className={styles.description}>
+              Access the full NDC document transcribed into HTML for better
+              analysis and searchability functionality.
+            </p>
+          </div>
+        )
+      },
+      {
+        selector: '[data-tour="ndcs-country-03"]',
+        content: () => (
+          <div>
+            <h2 className={styles.title}>DOWNLOAD ORIGINAL DOCUMENT​</h2>
+            <p className={styles.description}>
+              Download the original PDF document of this climate commitment.
+            </p>
+          </div>
+        )
+      },
+      {
+        selector: '[data-tour="ndcs-country-04"]',
+        content: () => (
+          <div>
+            <h2 className={styles.title}>HIGH LEVEL OVERVIEW​​</h2>
+            <p className={styles.description}>
+              Access a summary of the country{"'"}s climate commitment broken
+              down into top level indicators.
+            </p>
+          </div>
+        )
+      },
+      {
+        selector: '[data-tour="ndcs-country-05"]',
+        content: () => (
+          <div>
+            <h2 className={styles.title}>IN DEPTH ANALYSIS​​​</h2>
+            <p className={styles.description}>
+              Explore our analysis of the NDCs covering more than 160
+              indicators, divided into these four categories: Overview,
+              Mitigation, Adaptation and Sectoral Information.
+            </p>
+          </div>
+        )
       }
     ],
     '/compare-all-targets': [
@@ -397,6 +555,7 @@ export default (pathname, setOpen) => {
               including sources and citations.​{' '}
               <a
                 href="/about/faq/general_questions"
+                target="_blank"
                 onClick={() =>
                   setOpen({
                     isOpen: false
@@ -659,8 +818,7 @@ export default (pathname, setOpen) => {
               Find out our latest updates on datasets and NDCs by clicking here.
             </p>
           </div>
-        ),
-        position: 'bottom'
+        )
       },
       {
         selector: '[data-tour="home-02"]',
@@ -672,8 +830,7 @@ export default (pathname, setOpen) => {
               appealing visualizations on GHG emissions.
             </p>
           </div>
-        ),
-        position: 'bottom'
+        )
       },
       {
         selector: '[data-tour="home-03"]',
@@ -686,8 +843,7 @@ export default (pathname, setOpen) => {
               indicators.
             </p>
           </div>
-        ),
-        position: 'bottom'
+        )
       },
       {
         selector: '[data-tour="home-04"]',
@@ -699,8 +855,7 @@ export default (pathname, setOpen) => {
               through our curated list of key indicators.
             </p>
           </div>
-        ),
-        position: 'bottom'
+        )
       },
       {
         selector: '[data-tour="home-05"]',
@@ -713,8 +868,7 @@ export default (pathname, setOpen) => {
               more.
             </p>
           </div>
-        ),
-        position: 'bottom'
+        )
       },
       {
         selector: '[data-tour="home-06"]',
@@ -725,8 +879,7 @@ export default (pathname, setOpen) => {
               Explore our indicators on sectoral information.
             </p>
           </div>
-        ),
-        position: 'bottom'
+        )
       },
       {
         selector: '[data-tour="home-07"]',
@@ -737,8 +890,7 @@ export default (pathname, setOpen) => {
               Explore our indicators on future economic and emissions scenarios.
             </p>
           </div>
-        ),
-        position: 'bottom'
+        )
       }
     ]
   };
@@ -746,7 +898,10 @@ export default (pathname, setOpen) => {
   let pathSteps = null;
   Object.keys(stepsByPathname).some(path => {
     if (pathname.startsWith(path)) {
-      pathSteps = stepsByPathname[path];
+      pathSteps = stepsByPathname[path].map(step => ({
+        ...step,
+        position: 'top'
+      }));
       return true;
     }
     return false;
