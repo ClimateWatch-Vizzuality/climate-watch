@@ -85,6 +85,7 @@ export default (pathname, setOpen) => {
               including sources and citations.​{' '}
               <a
                 href="/about/faq/general_questions"
+                target="_blank"
                 onClick={() =>
                   setOpen({
                     isOpen: false
@@ -272,7 +273,7 @@ export default (pathname, setOpen) => {
           <div>
             <h2 className={styles.title}>MAP</h2>
             <p className={styles.description}>
-              Visualize key NDC indicators and find out what each country is
+              Visualize key indicators and find out what each country is
               proposing in their climate commitments.
             </p>
           </div>
@@ -285,8 +286,7 @@ export default (pathname, setOpen) => {
           <div>
             <h2 className={styles.title}>IN-DEPTH NET-ZERO ANALYSIS</h2>
             <p className={styles.description}>
-              Click on a country for a more detailed analysis on its latest NDC
-              and previous submissions.
+              Click on a country to see its climate profile.
             </p>
           </div>
         ),
@@ -418,7 +418,8 @@ export default (pathname, setOpen) => {
             commitments from a same country to evaluate their evolution, or
             choose among different countries to see regional differences
           </div>
-        )
+        ),
+        position: 'top'
       },
       {
         selector: '[data-tour="compare-all-04"]',
@@ -466,6 +467,7 @@ export default (pathname, setOpen) => {
               including sources and citations.​{' '}
               <a
                 href="/about/faq/general_questions"
+                target="_blank"
                 onClick={() =>
                   setOpen({
                     isOpen: false
