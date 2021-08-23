@@ -34,26 +34,27 @@ const renderButtonGroup = (clickHandler, downloadLink, stickyStatus) => (
     className={cx(styles.buttonGroupContainer, {
       [styles.padded]: stickyStatus !== Sticky.STATUS_ORIGINAL
     })}
-    data-tour="ndc-explore-06"
   >
-    <ButtonGroup
-      className={styles.buttonGroup}
-      buttonsConfig={[
-        {
-          type: 'info',
-          onClick: clickHandler
-        },
-        {
-          type: 'download',
-          section: 'ndcs-content',
-          link: downloadLink
-        },
-        {
-          type: 'addToUser'
-        }
-      ]}
-    />
-    <ShareButton />
+    <span data-tour="ndc-explore-06">
+      <ButtonGroup
+        className={styles.buttonGroup}
+        buttonsConfig={[
+          {
+            type: 'info',
+            onClick: clickHandler
+          },
+          {
+            type: 'download',
+            section: 'ndcs-content',
+            link: downloadLink
+          },
+          {
+            type: 'addToUser'
+          }
+        ]}
+      />
+      <ShareButton />
+    </span>
     <ModalShare analyticsName="NDC Explore" />
   </div>
 );
