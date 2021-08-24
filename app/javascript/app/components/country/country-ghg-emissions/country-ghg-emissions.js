@@ -11,6 +11,7 @@ import {
 import qs from 'query-string';
 import { handleAnalytics } from 'utils/analytics';
 import { actions as modalActions } from 'components/modal-metadata';
+import { actions as pngModalActions } from 'components/modal-png-download';
 import ownActions from './country-ghg-emissions-actions';
 import reducers, { initialState } from './country-ghg-emissions-reducers';
 
@@ -29,10 +30,11 @@ import {
   getQuantificationsTagsConfig,
   getFilterOptions,
   getFiltersSelected,
-  getDownloadLink
+  getDownloadLink,
+  getPngSelectionSubtitle
 } from './country-ghg-emissions-selectors';
 
-const actions = { ...ownActions, ...modalActions };
+const actions = { ...ownActions, ...modalActions, ...pngModalActions };
 
 const mapStateToProps = (state, { location, match }) => {
   const { data, quantifications } = state.countryGhgEmissions;
@@ -68,6 +70,7 @@ const mapStateToProps = (state, { location, match }) => {
     filtersOptions: getFilterOptions(countryGhg),
     filtersSelected: getFiltersSelected(countryGhg),
     config: getChartConfig(countryGhg),
+    pngSelectionSubtitle: getPngSelectionSubtitle(countryGhg),
     selectorDefaults: getSelectorDefaults(countryGhg),
     downloadLink: getDownloadLink(countryGhg)
   };
@@ -154,17 +157,24 @@ class CountryGhgEmissionsContainer extends PureComponent {
     }
   };
 
+  handlePngDownloadModal = () => {
+    const { setModalPngDownload } = this.props;
+    setModalPngDownload({ open: true });
+  };
+
   updateUrlParam(params, clear) {
     const { history, location } = this.props;
     history.replace(getLocationParamUpdated(location, params, clear));
   }
+
   render() {
     return createElement(CountryGhgEmissionsComponent, {
       ...this.props,
       handleSourceChange: this.handleSourceChange,
       handleCalculationChange: this.handleCalculationChange,
       handleInfoClick: this.handleInfoClick,
-      handleAnalyticsClick: this.handleAnalyticsClick
+      handleAnalyticsClick: this.handleAnalyticsClick,
+      handlePngDownloadModal: this.handlePngDownloadModal
     });
   }
 }
@@ -174,6 +184,7 @@ CountryGhgEmissionsContainer.propTypes = {
   location: Proptypes.object,
   sourceSelected: Proptypes.object,
   setModalMetadata: Proptypes.func,
+  setModalPngDownload: Proptypes.func,
   fetchCountryGhgEmissionsData: Proptypes.func
 };
 

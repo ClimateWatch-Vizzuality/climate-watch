@@ -25,6 +25,7 @@ import {
   getTableData,
   getTitleLinks
 } from './ghg-emissions-selectors-table-data';
+import { getPngSelectionSubtitle } from './ghg-emissions-selectors-png';
 import { getProviderFilters } from './ghg-emissions-selectors-providers';
 
 export const getGHGEmissions = createStructuredSelector({
@@ -46,5 +47,6 @@ export const getGHGEmissions = createStructuredSelector({
   fieldToBreakBy: getModelSelected,
   hideRemoveOptions: getHideRemoveOptions,
   providerFilters: getProviderFilters,
-  dynamicSEOTitlePart: getDynamicSEOTitlePart
+  dynamicSEOTitlePart: getDynamicSEOTitlePart,
+  pngSelectionSubtitle: getPngSelectionSubtitle
 });

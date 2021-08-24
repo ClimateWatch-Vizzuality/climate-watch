@@ -1,13 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import html2canvas from 'html2canvas';
+import kebabCase from 'lodash/kebabCase';
 import computedStyleToInlineStyle from 'computed-style-to-inline-style';
+import { PropTypes } from 'prop-types';
 import actions from './modal-png-download-actions';
 import reducers, { initialState } from './modal-png-download-reducers';
 import mapStateToProps from './modal-png-download-selectors';
 import Component from './modal-png-download-component';
 
-const modalPngDownloadContainer = props => {
+const ModalPngDownloadContainer = props => {
   function handleCloseModal() {
     const { setModalPngDownload } = props;
     setModalPngDownload({ open: false });
@@ -15,7 +17,7 @@ const modalPngDownloadContainer = props => {
 
   function downloadImage(dataUrl) {
     const link = document.createElement('a');
-    link.download = 'cw-chart.png';
+    link.download = `cw-${kebabCase(props.title)}.png`;
     link.href = dataUrl;
     link.click();
   }
@@ -76,6 +78,10 @@ const modalPngDownloadContainer = props => {
   );
 };
 
+ModalPngDownloadContainer.propTypes = {
+  title: PropTypes.string.isRequired
+};
+
 export { actions, reducers, initialState };
 
-export default connect(mapStateToProps, actions)(modalPngDownloadContainer);
+export default connect(mapStateToProps, actions)(ModalPngDownloadContainer);

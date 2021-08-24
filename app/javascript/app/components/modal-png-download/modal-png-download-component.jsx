@@ -7,7 +7,6 @@ import styles from './modal-png-download-styles';
 
 const modalPngDownloadComponent = ({
   isOpen,
-  header,
   children,
   title,
   selectionSubtitle,
@@ -20,7 +19,7 @@ const modalPngDownloadComponent = ({
       theme={styles}
       isOpen={isOpen}
       onRequestClose={onRequestClose}
-      header={<ModalHeader title={header} />}
+      header={<ModalHeader title="Save as image (PNG)" />}
     >
       <div id="modal-png-content" ref={modalContentRef}>
         {/* We are inlining the svg to allow png conversion modules to access the svg DOM
@@ -60,7 +59,6 @@ const modalPngDownloadComponent = ({
 
 modalPngDownloadComponent.propTypes = {
   isOpen: PropTypes.bool.isRequired,
-  header: PropTypes.string.isRequired,
   children: PropTypes.node,
   title: PropTypes.string.isRequired,
   selectionSubtitle: PropTypes.string,
