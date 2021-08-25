@@ -37,6 +37,18 @@ const getExploreEmissionsButtonConfig = createSelector(
   }
 );
 
+const getPngSelectionSubtitle = createSelector(
+  [getEmissionCountrySelected, getEmissionTypeSelected, getMetricSelected],
+  (selectedCountry, selectedEmission, selectedMetric) => {
+    if (!selectedCountry || !selectedEmission) return null;
+    const metric =
+      selectedMetric && selectedMetric.value !== 'ABSOLUTE_VALUE'
+        ? ` Metric: ${selectedMetric.label}`
+        : '';
+    return `Country: ${selectedCountry.label}. Emissions: ${selectedEmission.label}${metric}.`;
+  }
+);
+
 export const getAllData = createStructuredSelector({
   data: getChartData,
   loading: getAgricultureEmissionsLoading,
@@ -49,5 +61,6 @@ export const getAllData = createStructuredSelector({
   emissionTypes: getEmissionTypes,
   emissionType: getEmissionTypeSelected,
   emissionMetric: getMetricSelected,
-  emissionMetrics: getMetricOptions
+  emissionMetrics: getMetricOptions,
+  pngSelectionSubtitle: getPngSelectionSubtitle
 });
