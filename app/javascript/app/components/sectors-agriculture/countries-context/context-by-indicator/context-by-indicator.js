@@ -8,6 +8,7 @@ import { isCountryIncluded } from 'app/utils';
 import { handleAnalytics } from 'utils/analytics';
 import { getLocationParamUpdated } from 'utils/navigation';
 import { actions } from 'components/modal-metadata';
+import { actions as pngModalActions } from 'components/modal-png-download';
 
 import { countriesContexts } from './context-by-indicator-selectors';
 import Component from './context-by-indicator-component';
@@ -32,7 +33,9 @@ class ContextByIndicatorContainer extends PureComponent {
   // eslint-disable-next-line react/sort-comp
   indicatorValueFormat = (value, unit) => {
     if (!value) return 'No Data';
-    if (unit.startsWith('%') || !unit) { return `${Math.round(value * 10) / 10} %`; }
+    if (unit.startsWith('%') || !unit) {
+      return `${Math.round(value * 10) / 10} %`;
+    }
     return `${format(',.2s')(value)} ${unit}`;
   };
 
@@ -95,6 +98,10 @@ class ContextByIndicatorContainer extends PureComponent {
     history.push(getLocationParamUpdated(location, params, clear));
   };
 
+  handlePngDownloadModal = () => {
+    this.props.setModalPngDownload({ open: true });
+  };
+
   render() {
     const tooltipTxt = this.getTooltipText();
     return createElement(Component, {
@@ -103,6 +110,7 @@ class ContextByIndicatorContainer extends PureComponent {
       handleCountryEnter: this.handleCountryEnter,
       handleCountryClick: this.handleCountryClick,
       handleInfoClick: this.handleInfoClick,
+      handlePngDownloadModal: this.handlePngDownloadModal,
       countryData: this.state.country
     });
   }
@@ -115,9 +123,12 @@ ContextByIndicatorContainer.propTypes = {
   history: PropTypes.shape({}),
   indicatorSelectedYear: PropTypes.shape({}),
   location: PropTypes.shape({}),
-  setModalMetadata: PropTypes.func
+  setModalMetadata: PropTypes.func,
+  setModalPngDownload: PropTypes.func.isRequired
 };
 
 export default withRouter(
-  connect(mapStateToProps, actions)(ContextByIndicatorContainer)
+  connect(mapStateToProps, { ...actions, ...pngModalActions })(
+    ContextByIndicatorContainer
+  )
 );

@@ -47,6 +47,7 @@ class LegendChart extends PureComponent {
     const mirrorX = dataSelected && dataSelected.length < 2;
     const hasColumns = config && config.columns && config.columns.y.length;
     const hasLegendNote = config && config.legendNote;
+    const isPngVariant = config && config.pngVariant;
     const renderLogo = () => {
       const pngLogo = this.state.logoErrored ? (
         <span>{model.label}</span>
@@ -58,7 +59,7 @@ class LegendChart extends PureComponent {
           />
         </a>
       );
-      return config.pngVariant ? (
+      return isPngVariant ? (
         pngLogo
       ) : (
         <a href={model.url} target="_blank">

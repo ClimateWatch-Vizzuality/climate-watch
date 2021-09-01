@@ -11,7 +11,8 @@ const modalPngDownloadComponent = ({
   title,
   selectionSubtitle,
   onRequestClose,
-  handlePngDownload
+  handlePngDownload,
+  id
 }) => {
   const modalContentRef = useRef();
   return (
@@ -21,11 +22,11 @@ const modalPngDownloadComponent = ({
       onRequestClose={onRequestClose}
       header={<ModalHeader title="Save as image (PNG)" />}
     >
-      <div id="modal-png-content" ref={modalContentRef}>
+      <div id={`modal-png-content-${id}`} ref={modalContentRef}>
         {/* We are inlining the svg to allow png conversion modules to access the svg DOM
             Imported svg going through webpack (svg-sprite-loader) are rendered inside a #shadow-root */}
         <svg
-          id="modal-png-logo"
+          id={`modal-png-logo-${id}`}
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 136 13"
           className={styles.logo}
@@ -63,7 +64,8 @@ modalPngDownloadComponent.propTypes = {
   title: PropTypes.string.isRequired,
   selectionSubtitle: PropTypes.string,
   onRequestClose: PropTypes.func.isRequired,
-  handlePngDownload: PropTypes.func.isRequired
+  handlePngDownload: PropTypes.func.isRequired,
+  id: PropTypes.string.isRequired
 };
 
 export default modalPngDownloadComponent;

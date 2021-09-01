@@ -23,7 +23,8 @@ const ModalPngDownloadContainer = props => {
   }
 
   function handlePngToCanvasDownload() {
-    const node = document.querySelector('#modal-png-content');
+    const { id } = props;
+    const node = document.querySelector(`#modal-png-content-${id}`);
     const appNode = document.querySelector('#app');
     const nodePosition = node.getBoundingClientRect();
     const appScroll = appNode ? appNode.getBoundingClientRect().top : 0;
@@ -38,8 +39,9 @@ const ModalPngDownloadContainer = props => {
       width: width + padding * 2,
       height: height + padding * 2,
       scale: SCALE,
+      useCORS: true,
       onclone: clonedDocument => {
-        const logo = clonedDocument.getElementById('modal-png-logo');
+        const logo = clonedDocument.getElementById(`modal-png-logo-${id}`);
         const style = document.createElement('style');
         // Append font to fix unit font on the chart
         style.innerHTML = `

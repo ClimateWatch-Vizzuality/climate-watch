@@ -162,6 +162,7 @@ class HistoricalEmissionsGraph extends PureComponent {
           </div>
         </TabletPortraitOnly>
         <ModalPngDownload
+          id="historical-emissions"
           title="Agriculture drivers of historical emissions"
           selectionSubtitle={pngSelectionSubtitle}
         >
