@@ -1,0 +1,11 @@
+# Public keys for logging onto EC2 instances
+# Note: Adding new keys will destroy the Bastion host and recreate it with new user data
+
+resource "aws_key_pair" "all" {
+  for_each = {
+    tgarcia_vizzuality = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCsQgoIZQAVAMFnESCsYotosbp3N2n8onp8Xmn0DZJmCnBzkfvn2SJdTQRKcyzjcHBqrseq+8Id0JYdb1aJJT2497b7NVOWvVLgqD5pYoxwLO4m3VjppUjpOfgGk3aBpzQTGwPHMqk4X4yvHNAuQcCTxo6gNIsyJZFxdzdc2P+oDLdTwekzsQvsPscFDXDYvtLTkCnSfeZAKsbb45XiAsH0HRnwzJYPvPr69V6c1R3igc2aDZ+eI2sZPvsCXWnvJYfL0QLJp+NwqJuRzHygcxsByg9p/wTPko2vEQLGvefBqjMFHbDYRyVh1omfwt3w/l5R6Abb1Mc2sNDqhBKFEe7/ tgarcia_vizzuality"
+    afigiel_vizzuality = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC6cVELA3SyaduOIdB1a5S6R8e9P4U1MEYo/qstMGlmCuer52j7BAPC8m7cQJxXOAca+JO19ADopA8vg+HznKoyyZcQdJEc9XV2lTaeCM0vJ965owUW54QgC476OOAT5qUYe+6mn4JnhGo+SncNVrb2Sf52PNkFMgcXx09EaI9gkHYJy4lWMLXxxrcc2GBznoCOKTEK+DP449l25ugME+2PLl+OAjC+wXUJRq+7n0YfC5SXDLIDGSGSV2jVUZZ+kEwKwxpC2vtVJLTVCrSltUMRQefeYGu9joymhYQcukLHWEdCC7UNCq1GqUqaaCEPqpk8FxlA++42HIMaqXz3GmxcW7I8tEGHmTIMwa9vr4Wv3w6aekhQlKHXCeWOLiiVPE+42TD8L8JX85JKxNQRwt/j7vX+Oh6OWyi7RIMcfahhwWbxS5i8UHT7aAoUDF0pQuQ1ut5/SG+QLD/K/P02DXSupMm94O+Kit9rthRHnp1/fWIdkHgrumJ9Lq4SsmmZxA4uYUjYOiTdX+uvRBWvAnHFiSm+S6rDBYXF/sfQzVFliggymIms7HegljqN1JPmZHtwQenGtzCt4rH8hV4rpEiHqbmv1Pc5wQWUDKenE8R3x48rIBJSNsZ2Z70/veB2hByjpg+HHtm+Rx2KUclxK0GTDwmTK+atSUQx5uNL+QOU5w== agnieszka.figiel@vizzuality.com"
+  }
+  key_name   = each.key
+  public_key = each.value
+}
