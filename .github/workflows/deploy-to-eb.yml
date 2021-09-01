@@ -1,4 +1,4 @@
-name: deploy-to-eb
+name: Deploy to AWS Elastic Beanstalk
 
 on:
   push:
@@ -34,5 +34,3 @@ jobs:
 
       - name: Deploy new ElasticBeanstalk Application Version
         run: aws elasticbeanstalk update-environment --environment-name climatewatch-production --version-label "ver-${{ github.sha }}"
-
-    ©
