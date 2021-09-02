@@ -6,6 +6,7 @@ import Map from 'components/map';
 import ButtonGroup from 'components/button-group';
 import Loading from 'components/loading';
 import ModalMetadata from 'components/modal-metadata';
+import ModalPngDownload from 'components/modal-png-download';
 import AbbrReplace from 'components/abbr-replace';
 import Dropdown from 'components/dropdown';
 import { PieChart, CheckInput } from 'cw-components';
@@ -27,7 +28,12 @@ import newMapTheme from 'styles/themes/map/map-new-zoom-controls.scss';
 import blueCheckboxTheme from 'styles/themes/checkbox/blue-checkbox.scss';
 import styles from './lts-explore-map-styles.scss';
 
-const renderButtonGroup = (clickHandler, downloadLink, stickyStatus) => (
+const renderButtonGroup = (
+  clickHandler,
+  downloadLink,
+  handlePngDownloadModal,
+  stickyStatus = false
+) => (
   <div
     className={cx(styles.buttonGroupContainer, {
       [styles.padded]: stickyStatus !== Sticky.STATUS_ORIGINAL
@@ -42,9 +48,18 @@ const renderButtonGroup = (clickHandler, downloadLink, stickyStatus) => (
             onClick: clickHandler
           },
           {
-            type: 'download',
-            section: 'lts-explore',
-            link: downloadLink
+            type: 'downloadCombo',
+            options: [
+              {
+                label: 'Save as image (PNG)',
+                action: handlePngDownloadModal
+              },
+              {
+                label: 'Go to data explorer',
+                link: downloadLink,
+                target: '_self'
+              }
+            ]
           },
           {
             type: 'addToUser'
@@ -114,6 +129,8 @@ function LTSExploreMap(props) {
     checked,
     tooltipValues,
     donutActiveIndex,
+    handlePngDownloadModal,
+    pngSelectionSubtitle,
     selectActiveDonutIndex
   } = props;
   const tooltipParentRef = useRef(null);
@@ -140,6 +157,24 @@ function LTSExploreMap(props) {
       />
     </div>
   );
+
+  // eslint-disable-next-line react/prop-types
+  const renderMap = ({ isTablet, png }) => {
+    const customCenter = isTablet ? [22, 20] : [10, 20];
+    return (
+      <Map
+        paths={paths}
+        tooltipId={TOOLTIP_ID}
+        onCountryClick={handleCountryClick}
+        onCountryEnter={handleCountryEnter}
+        onCountryFocus={handleCountryEnter}
+        zoomEnable={!png}
+        customCenter={customCenter}
+        theme={newMapTheme}
+        className={styles.map}
+      />
+    );
+  };
 
   const TOOLTIP_ID = 'lts-map-tooltip';
 
@@ -196,6 +231,7 @@ function LTSExploreMap(props) {
                       renderButtonGroup(
                         handleInfoClick,
                         downloadLink,
+                        handlePngDownloadModal,
                         stickyStatus
                       )}
                   </div>
@@ -230,17 +266,7 @@ function LTSExploreMap(props) {
                         text="Click on a country to see an in-depth analysis of its long-term strategy"
                       />
                       <span data-tour="lts-explore-03">
-                        <Map
-                          paths={paths}
-                          tooltipId={TOOLTIP_ID}
-                          onCountryClick={handleCountryClick}
-                          onCountryEnter={handleCountryEnter}
-                          onCountryFocus={handleCountryEnter}
-                          zoomEnable
-                          customCenter={isTablet ? [20, 20] : [10, 20]}
-                          theme={newMapTheme}
-                          className={styles.map}
-                        />
+                        {renderMap({ isTablet })}
                       </span>
                       <CheckInput
                         theme={blueCheckboxTheme}
@@ -258,13 +284,24 @@ function LTSExploreMap(props) {
                         />
                       )}
                       {!isTablet &&
-                        renderButtonGroup(handleInfoClick, downloadLink)}
+                        renderButtonGroup(
+                          handleInfoClick,
+                          downloadLink,
+                          handlePngDownloadModal
+                        )}
                     </div>
                   </div>
                 </div>
               </div>
             </div>
             <ModalMetadata />
+            <ModalPngDownload
+              title="LTS Explorer"
+              selectionSubtitle={pngSelectionSubtitle}
+            >
+              {renderMap({ isTablet: true, png: true })}
+              {legendData && renderLegend(legendData, emissionsCardData)}
+            </ModalPngDownload>
           </div>
         )}
       </TabletLandscape>
@@ -293,6 +330,8 @@ LTSExploreMap.propTypes = {
   checked: PropTypes.bool,
   handleIndicatorChange: PropTypes.func,
   selectActiveDonutIndex: PropTypes.func.isRequired,
+  handlePngDownloadModal: PropTypes.func.isRequired,
+  pngSelectionSubtitle: PropTypes.string,
   donutActiveIndex: PropTypes.number
 };
 

@@ -10,6 +10,7 @@ import Dropdown from 'components/dropdown';
 import Chart from 'components/charts/chart';
 import { TabletLandscape, TabletPortraitOnly } from 'components/responsive';
 import legendChartTheme from 'styles/themes/chart/legend-chart.scss';
+import ModalPngDownload from 'components/modal-png-download';
 
 import ExploreButtonGroup from '../explore-group';
 import styles from './emission-pathways-graph-styles.scss';
@@ -42,7 +43,12 @@ class EmissionPathwayGraph extends PureComponent {
   }
 
   renderExploreButtonGroup = () => {
-    const { downloadLink, handleInfoClick, explorePathwaysConfig } = this.props;
+    const {
+      downloadLink,
+      handleInfoClick,
+      explorePathwaysConfig,
+      handlePngDownloadModal
+    } = this.props;
     const buttonGroupConfig = [
       {
         type: 'info',
@@ -55,9 +61,18 @@ class EmissionPathwayGraph extends PureComponent {
         positionRight: true
       },
       {
-        type: 'download',
-        section: 'pathways',
-        link: downloadLink
+        type: 'downloadCombo',
+        options: [
+          {
+            label: 'Save as image (PNG)',
+            action: handlePngDownloadModal
+          },
+          {
+            label: 'Go to data explorer',
+            link: downloadLink,
+            target: '_self'
+          }
+        ]
       },
       {
         type: 'addToUser'
@@ -88,7 +103,8 @@ class EmissionPathwayGraph extends PureComponent {
       model,
       handleModelChange,
       handleSubcategoryChange,
-      handleCurrentLocationChange
+      handleCurrentLocationChange,
+      pngSelectionSubtitle
     } = this.props;
     const needsTimeSeries =
       filtersSelected && filtersSelected.location && filtersSelected.model;
@@ -96,7 +112,27 @@ class EmissionPathwayGraph extends PureComponent {
       filtersLoading.indicators ||
       filtersLoading.timeseries ||
       filtersLoading.models;
-
+    const renderChart = png => (
+      <Chart
+        className={styles.chartWrapper}
+        type="line"
+        config={{ ...config, legendNote: !png, pngVariant: png }}
+        data={data}
+        domain={domain}
+        dataOptions={filtersOptions.scenarios}
+        dataSelected={filtersSelected.scenario}
+        customMessage={this.renderCustomMessage()}
+        height={600}
+        loading={loading}
+        error={error}
+        targetParam="scenario"
+        customD3Format={'.3f'}
+        margin={{ top: 50 }}
+        espGraph
+        model={model || null}
+        theme={legendChartTheme}
+      />
+    );
     return (
       <div className={styles.wrapper}>
         <EspModelsProvider />
@@ -151,28 +187,16 @@ class EmissionPathwayGraph extends PureComponent {
             <TabletLandscape>{this.renderExploreButtonGroup()}</TabletLandscape>
           </div>
         </div>
-        <Chart
-          className={styles.chartWrapper}
-          type="line"
-          config={config}
-          data={data}
-          domain={domain}
-          dataOptions={filtersOptions.scenarios}
-          dataSelected={filtersSelected.scenario}
-          customMessage={this.renderCustomMessage()}
-          height={600}
-          loading={loading}
-          error={error}
-          targetParam="scenario"
-          customD3Format={'.3f'}
-          margin={{ top: 50 }}
-          espGraph
-          model={model || null}
-          theme={legendChartTheme}
-        />
+        {renderChart()}
         <TabletPortraitOnly>
           {this.renderExploreButtonGroup()}
         </TabletPortraitOnly>
+        <ModalPngDownload
+          title="Agriculture historical future pathways"
+          selectionSubtitle={pngSelectionSubtitle}
+        >
+          {renderChart(true)}
+        </ModalPngDownload>
         <ModalOverview
           data={modalData}
           title={'Pathways Metadata'}
@@ -205,7 +229,9 @@ EmissionPathwayGraph.propTypes = {
   handleModelChange: PropTypes.func,
   handleClearSelection: PropTypes.func,
   handleSubcategoryChange: PropTypes.func,
-  handleCurrentLocationChange: PropTypes.func
+  handleCurrentLocationChange: PropTypes.func,
+  handlePngDownloadModal: PropTypes.func.isRequired,
+  pngSelectionSubtitle: PropTypes.string
 };
 
 export default EmissionPathwayGraph;

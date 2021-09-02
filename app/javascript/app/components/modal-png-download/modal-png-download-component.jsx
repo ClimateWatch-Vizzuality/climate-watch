@@ -7,12 +7,12 @@ import styles from './modal-png-download-styles';
 
 const modalPngDownloadComponent = ({
   isOpen,
-  header,
   children,
   title,
   selectionSubtitle,
   onRequestClose,
-  handlePngDownload
+  handlePngDownload,
+  id
 }) => {
   const modalContentRef = useRef();
   return (
@@ -20,13 +20,13 @@ const modalPngDownloadComponent = ({
       theme={styles}
       isOpen={isOpen}
       onRequestClose={onRequestClose}
-      header={<ModalHeader title={header} />}
+      header={<ModalHeader title="Save as image (PNG)" />}
     >
-      <div id="modal-png-content" ref={modalContentRef}>
+      <div id={`modal-png-content-${id}`} ref={modalContentRef}>
         {/* We are inlining the svg to allow png conversion modules to access the svg DOM
             Imported svg going through webpack (svg-sprite-loader) are rendered inside a #shadow-root */}
         <svg
-          id="modal-png-logo"
+          id={`modal-png-logo-${id}`}
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 136 13"
           className={styles.logo}
@@ -60,12 +60,12 @@ const modalPngDownloadComponent = ({
 
 modalPngDownloadComponent.propTypes = {
   isOpen: PropTypes.bool.isRequired,
-  header: PropTypes.string.isRequired,
   children: PropTypes.node,
   title: PropTypes.string.isRequired,
   selectionSubtitle: PropTypes.string,
   onRequestClose: PropTypes.func.isRequired,
-  handlePngDownload: PropTypes.func.isRequired
+  handlePngDownload: PropTypes.func.isRequired,
+  id: PropTypes.string.isRequired
 };
 
 export default modalPngDownloadComponent;

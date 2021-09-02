@@ -9,6 +9,7 @@ import ButtonGroup from 'components/button-group';
 import Loading from 'components/loading';
 import Dropdown from 'components/dropdown';
 import ModalMetadata from 'components/modal-metadata';
+import ModalPngDownload from 'components/modal-png-download';
 import { PieChart, MultiLevelDropdown, CheckInput } from 'cw-components';
 import CustomTooltip from 'components/ndcs/shared/donut-tooltip';
 import ExploreMapTooltip from 'components/ndcs/shared/explore-map-tooltip';
@@ -29,7 +30,12 @@ import layout from 'styles/layout.scss';
 import blueCheckboxTheme from 'styles/themes/checkbox/blue-checkbox.scss';
 import styles from './ndcs-explore-map-styles.scss';
 
-const renderButtonGroup = (clickHandler, downloadLink, stickyStatus) => (
+const renderButtonGroup = (
+  clickHandler,
+  downloadLink,
+  handlePngDownloadModal,
+  stickyStatus = false
+) => (
   <div
     className={cx(styles.buttonGroupContainer, {
       [styles.padded]: stickyStatus !== Sticky.STATUS_ORIGINAL
@@ -44,9 +50,18 @@ const renderButtonGroup = (clickHandler, downloadLink, stickyStatus) => (
             onClick: clickHandler
           },
           {
-            type: 'download',
-            section: 'ndcs-content',
-            link: downloadLink
+            type: 'downloadCombo',
+            options: [
+              {
+                label: 'Save as image (PNG)',
+                action: handlePngDownloadModal
+              },
+              {
+                label: 'Go to data explorer',
+                link: downloadLink,
+                target: '_self'
+              }
+            ]
           },
           {
             type: 'addToUser'
@@ -118,6 +133,8 @@ function NDCSExploreMap(props) {
     selectActiveDonutIndex,
     donutActiveIndex,
     handleOnChangeChecked,
+    handlePngDownloadModal,
+    pngSelectionSubtitle,
     checked
   } = props;
 
@@ -144,6 +161,24 @@ function NDCSExploreMap(props) {
       />
     </div>
   );
+
+  // eslint-disable-next-line react/prop-types
+  const renderMap = ({ isTablet, png }) => {
+    const customCenter = isTablet ? [22, 20] : [10, 20];
+    return (
+      <Map
+        paths={paths}
+        tooltipId={TOOLTIP_ID}
+        onCountryClick={handleCountryClick}
+        onCountryEnter={handleCountryEnter}
+        onCountryFocus={handleCountryEnter}
+        zoomEnable={!png}
+        customCenter={customCenter}
+        theme={newMapTheme}
+        className={styles.map}
+      />
+    );
+  };
 
   const TOOLTIP_ID = 'ndcs-map-tooltip';
   return (
@@ -197,6 +232,7 @@ function NDCSExploreMap(props) {
                       renderButtonGroup(
                         handleInfoClick,
                         downloadLink,
+                        handlePngDownloadModal,
                         stickyStatus
                       )}
                   </div>
@@ -231,17 +267,7 @@ function NDCSExploreMap(props) {
                         text="The map reflects latest submission of each country, click on a country to see in-depth analysis of its latest NDC and previous submissions"
                       />
                       <span data-tour="ndc-explore-04">
-                        <Map
-                          paths={paths}
-                          tooltipId={TOOLTIP_ID}
-                          onCountryClick={handleCountryClick}
-                          onCountryEnter={handleCountryEnter}
-                          onCountryFocus={handleCountryEnter}
-                          zoomEnable
-                          customCenter={isTablet ? [20, 20] : [10, 20]}
-                          theme={newMapTheme}
-                          className={styles.map}
-                        />
+                        {renderMap({ isTablet })}
                       </span>
                       <CheckInput
                         theme={blueCheckboxTheme}
@@ -259,7 +285,11 @@ function NDCSExploreMap(props) {
                         />
                       )}
                       {!isTablet &&
-                        renderButtonGroup(handleInfoClick, downloadLink)}
+                        renderButtonGroup(
+                          handleInfoClick,
+                          downloadLink,
+                          handlePngDownloadModal
+                        )}
                     </div>
                   </div>
                 </div>
@@ -269,6 +299,13 @@ function NDCSExploreMap(props) {
         )}
       </TabletLandscape>
       <ModalMetadata />
+      <ModalPngDownload
+        title="NDC Explorer"
+        selectionSubtitle={pngSelectionSubtitle}
+      >
+        {renderMap({ isTablet: true, png: true })}
+        {legendData && renderLegend(legendData, emissionsCardData)}
+      </ModalPngDownload>
       <NDCSProvider
         subcategory={selectedCategory && selectedCategory.value}
         additionalIndicatorSlugs={['ndce_ghg', 'submission', 'submission_date']}
@@ -297,6 +334,8 @@ NDCSExploreMap.propTypes = {
   handleIndicatorChange: PropTypes.func,
   selectActiveDonutIndex: PropTypes.func.isRequired,
   handleOnChangeChecked: PropTypes.func.isRequired,
+  handlePngDownloadModal: PropTypes.func.isRequired,
+  pngSelectionSubtitle: PropTypes.string,
   checked: PropTypes.bool,
   donutActiveIndex: PropTypes.number
 };

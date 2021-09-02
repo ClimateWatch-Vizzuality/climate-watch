@@ -1,3 +1,4 @@
+/* eslint-disable no-confusing-arrow */
 import { createSelector } from 'reselect';
 import {
   getColorByIndex,
@@ -24,17 +25,17 @@ export const getDonutActiveIndex = state =>
   state.exploreMap.activeIndex || null;
 
 export const getCategories = createSelector(getCategoriesData, categories =>
-  (!categories
+  !categories
     ? null
     : Object.keys(categories).map(category => ({
       label: categories[category].name,
       value: categories[category].slug,
       id: category
-    })))
+    }))
 );
 
 export const getMaximumCountries = createSelector([getCountries], countries =>
-  (countries ? countries.length : null)
+  countries ? countries.length : null
 );
 
 export const getISOCountries = createSelector([getCountries], countries =>
@@ -382,10 +383,10 @@ export const getSummaryCardData = createSelector(
   }
 );
 
-export default {
-  getMapIndicator,
-  getIndicatorsParsed,
-  getEmissionsCardData,
-  getPathsWithStyles,
-  getSummaryCardData
-};
+export const getPngSelectionSubtitle = createSelector(
+  [getSelectedIndicator, getSelectedCategory],
+  (indicator, category) => {
+    if (!indicator || !category) return null;
+    return `Category: ${category.label}; Indicator: ${indicator.label}.`;
+  }
+);

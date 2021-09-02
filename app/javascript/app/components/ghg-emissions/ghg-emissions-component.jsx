@@ -103,7 +103,8 @@ function GhgEmissions(props) {
     dataZoomYears,
     dataZoomPosition,
     setDataZoomPosition,
-    dynamicSEOTitlePart
+    dynamicSEOTitlePart,
+    pngSelectionSubtitle
   } = props;
 
   const buttonGroupGHGemissions = [
@@ -410,7 +411,10 @@ function GhgEmissions(props) {
           />
         </div>
       </TabletPortraitOnly>
-      <ModalPngDownload chartParams={selectedOptions}>
+      <ModalPngDownload
+        title="Historical GHG emissions"
+        selectionSubtitle={pngSelectionSubtitle}
+      >
         {renderPngChart()}
         {renderPngLegend()}
       </ModalPngDownload>
@@ -447,6 +451,7 @@ GhgEmissions.propTypes = {
   dataZoomPosition: PropTypes.object,
   dataZoomYears: PropTypes.object,
   dynamicSEOTitlePart: PropTypes.string,
+  pngSelectionSubtitle: PropTypes.string,
   setDataZoomPosition: PropTypes.func.isRequired
 };
 

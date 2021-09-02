@@ -9,6 +9,7 @@ import { getLocationParamUpdated } from 'utils/navigation';
 import { IGNORED_COUNTRIES_ISOS } from 'data/ignored-countries';
 import { getHoverIndex } from 'components/ndcs/shared/utils';
 import { actions as modalActions } from 'components/modal-metadata';
+import { actions as pngModalActions } from 'components/modal-png-download';
 import exploreMapActions from 'components/ndcs/shared/explore-map/explore-map-actions';
 import { getIsShowEUCountriesChecked } from 'components/ndcs/shared/explore-map/explore-map-selectors';
 import Component from './ndcs-explore-map-component';
@@ -25,10 +26,11 @@ import {
   getCategoryIndicators,
   getSelectedCategory,
   getTooltipCountryValues,
-  getDonutActiveIndex
+  getDonutActiveIndex,
+  getPngSelectionSubtitle
 } from './ndcs-explore-map-selectors';
 
-const actions = { ...modalActions, ...exploreMapActions };
+const actions = { ...modalActions, ...exploreMapActions, ...pngModalActions };
 
 const mapStateToProps = (state, { location }) => {
   const { data, loading } = state.ndcs;
@@ -61,7 +63,8 @@ const mapStateToProps = (state, { location }) => {
     categories: getCategories(ndcsExploreWithSelection),
     indicators: getCategoryIndicators(ndcsExploreWithSelection),
     donutActiveIndex: getDonutActiveIndex(ndcsExploreWithSelection),
-    checked: getIsShowEUCountriesChecked(ndcsExploreWithSelection)
+    checked: getIsShowEUCountriesChecked(ndcsExploreWithSelection),
+    pngSelectionSubtitle: getPngSelectionSubtitle(ndcsExploreWithSelection)
   };
 };
 
@@ -169,6 +172,11 @@ class NDCSExploreMapContainer extends PureComponent {
     history.replace(getLocationParamUpdated(location, param, clear));
   }
 
+  handlePngDownloadModal = () => {
+    const { setModalPngDownload } = this.props;
+    setModalPngDownload({ open: true });
+  };
+
   render() {
     const {
       query,
@@ -191,6 +199,7 @@ class NDCSExploreMapContainer extends PureComponent {
       handleCategoryChange: this.handleCategoryChange,
       handleIndicatorChange: this.handleIndicatorChange,
       handleOnChangeChecked: this.handleOnChangeChecked,
+      handlePngDownloadModal: this.handlePngDownloadModal,
       checked,
       indicator,
       summaryData,
@@ -206,6 +215,7 @@ NDCSExploreMapContainer.propTypes = {
   location: PropTypes.object.isRequired,
   isoCountries: PropTypes.array.isRequired,
   setModalMetadata: PropTypes.func.isRequired,
+  setModalPngDownload: PropTypes.func.isRequired,
   query: PropTypes.object,
   summaryData: PropTypes.array,
   selectedCategory: PropTypes.array,

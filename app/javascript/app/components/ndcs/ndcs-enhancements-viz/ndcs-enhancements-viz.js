@@ -10,6 +10,7 @@ import { europeSlug, europeanCountries } from 'app/data/european-countries';
 
 import { actions as fetchActions } from 'pages/ndcs-enhancements';
 import { actions as modalActions } from 'components/modal-metadata';
+import { actions as pngModalActions } from 'components/modal-png-download';
 
 import Component from './ndcs-enhancements-viz-component';
 
@@ -24,7 +25,7 @@ import {
   MAP_COLORS
 } from './ndcs-enhancements-viz-selectors';
 
-const actions = { ...fetchActions, ...modalActions };
+const actions = { ...fetchActions, ...modalActions, ...pngModalActions };
 
 const mapStateToProps = (state, { location }) => {
   const { data, loading } = state.ndcsEnhancements;
@@ -157,6 +158,11 @@ class NDCSEnhancementsVizContainer extends PureComponent {
     history.replace(getLocationParamUpdated(location, param, clear));
   }
 
+  handlePngDownloadModal = () => {
+    const { setModalPngDownload } = this.props;
+    setModalPngDownload({ open: true });
+  };
+
   render() {
     const tooltipValues = this.getTooltipValues();
     const { query, indicator, checked, summaryData } = this.props;
@@ -170,6 +176,7 @@ class NDCSEnhancementsVizContainer extends PureComponent {
       handleCountryEnter: this.handleCountryEnter,
       handleInfoClick: this.handleInfoClick,
       handleOnChangeChecked: this.handleOnChangeChecked,
+      handlePngDownloadModal: this.handlePngDownloadModal,
       noContentMsg,
       handleSearchChange: this.handleSearchChange,
       checked,
@@ -190,6 +197,7 @@ NDCSEnhancementsVizContainer.propTypes = {
   isoCountries: PropTypes.array.isRequired,
   countries: PropTypes.array,
   setModalMetadata: PropTypes.func.isRequired,
+  setModalPngDownload: PropTypes.func.isRequired,
   fetchNDCSEnhancements: PropTypes.func.isRequired
 };
 

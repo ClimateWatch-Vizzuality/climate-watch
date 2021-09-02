@@ -10,6 +10,7 @@ import ModalOverview from 'components/modal-overview';
 import Dropdown from 'components/dropdown';
 import Chart from 'components/charts/chart';
 import ModalShare from 'components/modal-share';
+import ModalPngDownload from 'components/modal-png-download';
 import ShareButton from 'components/button/share-button';
 import { TabletLandscape, TabletPortraitOnly } from 'components/responsive';
 import { SEO_PAGES } from 'data/seo';
@@ -55,6 +56,8 @@ class EmissionPathwayGraph extends PureComponent {
       filtersSelected,
       handleSelectorChange,
       handleInfoClick,
+      handlePngDownloadModal,
+      pngSelectionSubtitle,
       modalData,
       model,
       handleModelChange,
@@ -66,6 +69,52 @@ class EmissionPathwayGraph extends PureComponent {
       filtersLoading.indicators ||
       filtersLoading.timeseries ||
       filtersLoading.models;
+
+    const renderChart = png => (
+      <Chart
+        className={styles.chartWrapper}
+        type="line"
+        config={{ ...config, legendNote: !png, pngVariant: png }}
+        data={data}
+        domain={domain}
+        dataOptions={filtersOptions.scenarios}
+        dataSelected={filtersSelected.scenario}
+        customMessage={this.renderCustomMessage()}
+        height={600}
+        loading={loading}
+        error={error}
+        targetParam="scenario"
+        customD3Format={'.3f'}
+        margin={{ top: 50 }}
+        espGraph
+        model={model || null}
+      />
+    );
+
+    const buttonsConfig = [
+      {
+        type: 'info',
+        onClick: handleInfoClick
+      },
+      {
+        type: 'downloadCombo',
+        options: [
+          {
+            label: 'Save as image (PNG)',
+            action: handlePngDownloadModal
+          },
+          {
+            label: 'Go to data explorer',
+            link: downloadLink,
+            target: '_self'
+          }
+        ]
+      },
+      {
+        type: 'addToUser'
+      }
+    ];
+
     return (
       <div className={styles.wrapper}>
         <SEOTags
@@ -94,20 +143,7 @@ class EmissionPathwayGraph extends PureComponent {
               <TabletLandscape>
                 <ButtonGroup
                   className={styles.buttonGroup}
-                  buttonsConfig={[
-                    {
-                      type: 'info',
-                      onClick: handleInfoClick
-                    },
-                    {
-                      type: 'download',
-                      section: 'emission-pathways',
-                      link: downloadLink
-                    },
-                    {
-                      type: 'addToUser'
-                    }
-                  ]}
+                  buttonsConfig={buttonsConfig}
                 />
                 <ShareButton
                   className={styles.shareButton}
@@ -170,48 +206,25 @@ class EmissionPathwayGraph extends PureComponent {
               />
             </div>
           </div>
-          <Chart
-            className={styles.chartWrapper}
-            type="line"
-            config={config}
-            data={data}
-            domain={domain}
-            dataOptions={filtersOptions.scenarios}
-            dataSelected={filtersSelected.scenario}
-            customMessage={this.renderCustomMessage()}
-            height={600}
-            loading={loading}
-            error={error}
-            targetParam="scenario"
-            customD3Format={'.3f'}
-            margin={{ top: 50 }}
-            espGraph
-            model={model || null}
-          />
+          {renderChart()}
           <TabletPortraitOnly>
             <div className="grid-column-item">
               <div className={styles.buttonsWrapper}>
                 <ButtonGroup
                   className={styles.buttonGroup}
-                  buttonsConfig={[
-                    {
-                      type: 'info',
-                      onClick: handleInfoClick
-                    },
-                    {
-                      type: 'download',
-                      section: 'ndcs-content',
-                      link: downloadLink
-                    },
-                    {
-                      type: 'addToUser'
-                    }
-                  ]}
+                  buttonsConfig={buttonsConfig}
                 />
                 <ShareButton className={styles.shareButton} />
               </div>
             </div>
           </TabletPortraitOnly>
+          <ModalPngDownload
+            id="emissions-pathways"
+            title="Emissions pathways"
+            selectionSubtitle={pngSelectionSubtitle}
+          >
+            {renderChart(true)}
+          </ModalPngDownload>
           <ModalOverview
             data={modalData}
             title={'Pathways Metadata'}
@@ -243,7 +256,9 @@ EmissionPathwayGraph.propTypes = {
   handleSelectorChange: PropTypes.func,
   handleInfoClick: PropTypes.func,
   handleModelChange: PropTypes.func,
-  handleClearSelection: PropTypes.func
+  handleClearSelection: PropTypes.func,
+  handlePngDownloadModal: PropTypes.func.isRequired,
+  pngSelectionSubtitle: PropTypes.string
 };
 
 export default EmissionPathwayGraph;

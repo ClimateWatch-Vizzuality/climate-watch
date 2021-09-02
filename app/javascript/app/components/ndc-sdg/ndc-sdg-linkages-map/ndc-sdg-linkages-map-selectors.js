@@ -9,6 +9,7 @@ const getNdcsSdgsGoalsData = state => state.goalsData || null;
 const getGoalSelected = state => state.goalSelected || null;
 const getGoalHover = state => state.goalHover || null;
 const getTargetHover = state => state.targetHover || null;
+const getGoals = state => state.meta.goals || null;
 
 const initialStep = '#d3d3dc';
 let colorScale;
@@ -97,6 +98,15 @@ export const getLinkToDataExplorer = createSelector([getSearch], search => {
   return generateLinkToDataExplorer(search, section);
 });
 
-export default {
-  getPathsWithStyles
-};
+export const getPngSelectionSubtitle = createSelector(
+  [getNdcsSdgsGoalsDataSelected, getGoals],
+  (selectedGoalData, goals) => {
+    if (!goals) {
+      return null;
+    }
+    const selectedGoal = !selectedGoalData
+      ? goals[0]
+      : goals.find(g => g.id === selectedGoalData.id);
+    return `Goal: ${selectedGoal.number} - ${selectedGoal.cw_title}`;
+  }
+);

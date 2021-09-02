@@ -7,6 +7,7 @@ import Button from 'components/button';
 import Tag from 'components/tag';
 import { CALCULATION_OPTIONS } from 'app/data/constants';
 import Chart from 'components/charts/chart';
+import ModalPngDownload from 'components/modal-png-download';
 import EmissionsMetaProvider from 'providers/ghg-emissions-meta-provider';
 import WbCountryDataProvider from 'providers/wb-country-data-provider';
 import { TabletLandscape, TabletPortraitOnly } from 'components/responsive';
@@ -51,6 +52,7 @@ class CountryGhgEmissions extends PureComponent {
       iso,
       handleInfoClick,
       handleAnalyticsClick,
+      handlePngDownloadModal,
       isEmbed,
       isNdcp,
       downloadLink
@@ -72,10 +74,18 @@ class CountryGhgEmissions extends PureComponent {
           dataTour: 'countries-05'
         },
         {
-          type: 'download',
-          section: 'ghg-emissions',
-          link: downloadLink,
-          dataTour: 'countries-04'
+          type: 'downloadCombo',
+          options: [
+            {
+              label: 'Save as image (PNG)',
+              action: handlePngDownloadModal
+            },
+            {
+              label: 'Go to data explorer',
+              link: downloadLink,
+              target: '_self'
+            }
+          ]
         },
         {
           type: 'addToUser'
@@ -169,16 +179,15 @@ class CountryGhgEmissions extends PureComponent {
   }
 
   render() {
-    const { isEmbed, countryName } = this.props;
+    const { isEmbed, countryName, pngSelectionSubtitle } = this.props;
+    const title = `Greenhouse Gas Emissions and Emissions Targets ${
+      isEmbed ? `in ${countryName}` : ''
+    }`;
     return (
       <div className={styles.container}>
         <EmissionsMetaProvider />
         <WbCountryDataProvider />
-        <h3 className={styles.title}>
-          {`Greenhouse Gas Emissions and Emissions Targets ${
-            isEmbed ? `in ${countryName}` : ''
-          }`}
-        </h3>
+        <h3 className={styles.title}>{title}</h3>
         <TabletLandscape>
           <div
             className={cx(styles.graphControls, {
@@ -202,6 +211,13 @@ class CountryGhgEmissions extends PureComponent {
           </div>
         </TabletPortraitOnly>
         <ModalMetadata />
+        <ModalPngDownload
+          title={`GHG Emissions and Emissions Targets in ${countryName}`}
+          selectionSubtitle={pngSelectionSubtitle}
+        >
+          {this.renderChart()}
+          {this.renderQuantificationsTags()}
+        </ModalPngDownload>
       </div>
     );
   }
@@ -227,8 +243,10 @@ CountryGhgEmissions.propTypes = {
   handleInfoClick: PropTypes.func.isRequired,
   handleAnalyticsClick: PropTypes.func.isRequired,
   handleYearHover: PropTypes.func,
+  handlePngDownloadModal: PropTypes.func,
   handleSourceChange: PropTypes.func.isRequired,
   handleCalculationChange: PropTypes.func.isRequired,
+  pngSelectionSubtitle: PropTypes.string,
   downloadLink: PropTypes.string
 };
 

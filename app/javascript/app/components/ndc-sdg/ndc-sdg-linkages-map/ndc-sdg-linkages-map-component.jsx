@@ -10,6 +10,7 @@ import ButtonGroup from 'components/button-group';
 import ShareButton from 'components/button/share-button';
 import { TabletLandscape } from 'components/responsive';
 import ModalShare from 'components/modal-share';
+import ModalPngDownload from 'components/modal-png-download';
 import tooltipTheme from 'styles/themes/map-tooltip/map-tooltip.scss';
 import AutocompleteSearch from 'components/autocomplete-search';
 import { isPageContained } from 'utils/navigation';
@@ -45,16 +46,15 @@ class NdcSdgLinkagesMap extends PureComponent {
     );
   }
 
-  getLegend() {
+  getLegend({ isPng = false }) {
     const { goal } = this.props;
     const colour = goal ? goal.colour : '';
 
     if (!goal) return null;
+    const LegendComponent = this.props.targetHover ? LegendSteps : LegendRange;
 
-    return this.props.targetHover ? (
-      <LegendSteps className={styles.legend} colour={colour} />
-    ) : (
-      <LegendRange className={styles.legend} colour={colour} />
+    return (
+      <LegendComponent className={!isPng && styles.legend} colour={colour} />
     );
   }
 
@@ -62,7 +62,11 @@ class NdcSdgLinkagesMap extends PureComponent {
     this.setState({ country: country.properties });
 
   renderMapHeader({ isTablet }) {
-    const { downloadLink, handleInfoClick } = this.props;
+    const {
+      downloadLink,
+      handleInfoClick,
+      handlePngDownloadModal
+    } = this.props;
     const buttonGroup = (
       <React.Fragment>
         <ButtonGroup
@@ -73,9 +77,18 @@ class NdcSdgLinkagesMap extends PureComponent {
               onClick: handleInfoClick
             },
             {
-              type: 'download',
-              section: 'ndcs-content',
-              link: downloadLink
+              type: 'downloadCombo',
+              options: [
+                {
+                  label: 'Save as image (PNG)',
+                  action: handlePngDownloadModal
+                },
+                {
+                  label: 'Go to data explorer',
+                  link: downloadLink,
+                  target: '_self'
+                }
+              ]
             },
             {
               type: 'addToUser'
@@ -105,33 +118,37 @@ class NdcSdgLinkagesMap extends PureComponent {
   }
 
   render() {
+    const { pngSelectionSubtitle, className, goalSelected } = this.props;
+
+    const renderMap = ({ isPng, isTablet }) => (
+      <Map
+        zoomEnable={!isPng && isTablet}
+        dragEnable={!isPng && isTablet}
+        paths={this.props.paths}
+        className={cx(styles.map, { [styles.png]: isPng })}
+        onCountryEnter={this.handleMapInteraction}
+        onCountryFocus={this.handleMapInteraction}
+        onCountryClick={this.props.onCountryClick}
+        customCenter={isTablet ? null : [10, 0]}
+        controlPosition="bottom"
+        tooltipId="sdg-linkages"
+      />
+    );
     return (
       <TabletLandscape>
         {isTablet => (
           <div
-            className={cx(styles.container, this.props.className, {
-              [styles.isOpen]: this.props.goalSelected !== ''
+            className={cx(styles.container, className, {
+              [styles.isOpen]: goalSelected !== ''
             })}
           >
             <div className={styles.row}>
               {this.renderMapHeader({ isTablet })}
             </div>
             <span data-tour="ndcs-sdg-02">
-              <Map
-                style={{ height: '100%', width: '100%' }}
-                zoomEnable={isTablet}
-                dragEnable={isTablet}
-                paths={this.props.paths}
-                className={styles.map}
-                onCountryEnter={this.handleMapInteraction}
-                onCountryFocus={this.handleMapInteraction}
-                onCountryClick={this.props.onCountryClick}
-                customCenter={isTablet ? null : [10, 0]}
-                controlPosition="bottom"
-                tooltipId="sdg-linkages"
-              />
+              {renderMap({ isPng: false, isTablet })}
             </span>
-            {this.getLegend()}
+            {this.getLegend({ isPng: false })}
             <ReactTooltip
               className={styles.tooltipContainer}
               id="sdg-linkages"
@@ -140,6 +157,14 @@ class NdcSdgLinkagesMap extends PureComponent {
               {this.getTooltip()}
             </ReactTooltip>
             <ModalShare analyticsName={'Ndcs-Sdgs'} />
+            <ModalPngDownload
+              id="ndc-sdg-linkages"
+              title="NDC-SDG Linkages"
+              selectionSubtitle={pngSelectionSubtitle}
+            >
+              {renderMap({ isPng: true })}
+              {this.getLegend({ isPng: true })}
+            </ModalPngDownload>
           </div>
         )}
       </TabletLandscape>
@@ -155,7 +180,9 @@ NdcSdgLinkagesMap.propTypes = {
   handleInfoClick: PropTypes.func.isRequired,
   className: PropTypes.string,
   goalSelected: PropTypes.string,
-  downloadLink: PropTypes.string
+  downloadLink: PropTypes.string,
+  handlePngDownloadModal: PropTypes.func.isRequired,
+  pngSelectionSubtitle: PropTypes.string
 };
 
 export default NdcSdgLinkagesMap;
