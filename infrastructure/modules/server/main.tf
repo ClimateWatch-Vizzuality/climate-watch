@@ -113,11 +113,11 @@ resource "aws_instance" "server" {
   associate_public_ip_address = true
   user_data                   = var.user_data
 
-  //  lifecycle {
-  //    ignore_changes = [
-  //      ami,
-  //      user_data]
-  //  }
+    lifecycle {
+      ignore_changes = [
+        ami,
+        user_data]
+    }
 
   tags = merge(
     {
