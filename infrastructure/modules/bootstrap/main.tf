@@ -25,7 +25,7 @@ resource "aws_s3_bucket" "state_bucket" {
     enabled = true
   }
 
-  tags = merge({ Resource = "Terraform State" },  var.tags)
+  tags = merge({ Resource = "Terraform State" }, var.tags)
 }
 
 # Build a DynamoDB to use for terraform state locking
