@@ -9,10 +9,10 @@ resource "aws_security_group" "site_server_ssh_security_group" {
   description = "Security group for SSH access to and from the world"
 
   tags = merge(
-  {
-    Name = "EC2 SSH access SG"
-  },
-  var.tags
+    {
+      Name = "EC2 SSH access SG"
+    },
+    var.tags
   )
 }
 
@@ -44,10 +44,10 @@ resource "aws_security_group" "site_server_http_security_group" {
   description = "Security group for HTTP access within the VPC"
 
   tags = merge(
-  {
-    Name = "EC2 HTTP access SG"
-  },
-  var.tags
+    {
+      Name = "EC2 HTTP access SG"
+    },
+    var.tags
   )
 }
 
@@ -80,10 +80,10 @@ resource "aws_security_group" "site_server_world_egress_security_group" {
   description = "Security group for access to the www"
 
   tags = merge(
-  {
-    Name = "EC2 Egress SG"
-  },
-  var.tags
+    {
+      Name = "EC2 Egress SG"
+    },
+    var.tags
   )
 }
 
@@ -91,13 +91,11 @@ resource "aws_security_group_rule" "world_egress" {
   type      = "egress"
   from_port = 0
   to_port   = 0
-  protocol  = "tcp"
-  cidr_blocks = [
-  var.vpc.cidr_block]
+  protocol  = "-1"
+  cidr_blocks = ["0.0.0.0/0"]
 
   security_group_id = aws_security_group.site_server_world_egress_security_group.id
 }
-
 
 resource "aws_instance" "server" {
   ami               = var.site_server_ami
@@ -105,7 +103,6 @@ resource "aws_instance" "server" {
   ebs_optimized     = true
   instance_type     = var.site_server_instance_type
   monitoring        = true
-  subnet_id         = var.subnet_id
   vpc_security_group_ids = concat([
     aws_security_group.site_server_ssh_security_group.id,
     aws_security_group.site_server_http_security_group.id,
@@ -113,11 +110,11 @@ resource "aws_instance" "server" {
   associate_public_ip_address = true
   user_data                   = var.user_data
 
-    lifecycle {
-      ignore_changes = [
-        ami,
-        user_data]
-    }
+  lifecycle {
+    ignore_changes = [
+      ami,
+    user_data]
+  }
 
   tags = merge(
     {
@@ -125,4 +122,9 @@ resource "aws_instance" "server" {
     },
     var.tags
   )
+}
+
+resource "aws_eip" "elastic_ip" {
+  instance = aws_instance.server.id
+  vpc      = true
 }

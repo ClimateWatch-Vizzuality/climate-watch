@@ -22,7 +22,7 @@ sudo hostnamectl set-hostname "${hostname}"
 #
 # Postgres client
 #
-sudo apt install libpq-dev
+sudo apt install -y libpq-dev
 
 #
 # RVM
@@ -53,6 +53,13 @@ sudo apt-get install -y libnginx-mod-http-passenger
 
 if [ ! -f /etc/nginx/modules-enabled/50-mod-http-passenger.conf ]; then sudo ln -s /usr/share/nginx/modules-available/mod-http-passenger.load /etc/nginx/modules-enabled/50-mod-http-passenger.conf ; fi
 
+
+#
+# Create project dir
+#
+sudo mkdir /var/www/climatewatch
+sudo chown ubuntu:ubuntu /var/www/climatewatch
+
 #
 # Server reboot to make RVM work
 #
@@ -80,5 +87,4 @@ npm install -g yarn
 #
 rvm install 2.5.9
 gem install bundler -v 1.17.3
-
 
