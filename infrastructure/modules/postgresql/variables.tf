@@ -12,7 +12,7 @@ variable "vpc_id" {
   description = "The ID of the VPC that the RDS cluster will be created in"
 }
 
-variable "private_subnet_ids" {
+variable "subnet_ids" {
   type        = list(string)
   description = "The ID's of the VPC subnets that the RDS cluster instances will be created in"
 }
@@ -30,11 +30,6 @@ variable "rds_backup_retention_period" {
 variable "tags" {
   type        = map(string)
   description = "Tags to add to resources"
-}
-
-variable "availability_zone_names" {
-  type        = list(string)
-  description = "List of availability zone names for RDS cluster"
 }
 
 variable "log_retention_period" {

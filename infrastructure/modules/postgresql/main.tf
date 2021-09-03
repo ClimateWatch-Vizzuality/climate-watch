@@ -31,7 +31,7 @@ module "db" {
   )
 
   # DB subnet group
-  subnet_ids = var.private_subnet_ids
+  subnet_ids = var.subnet_ids
 
   # DB parameter group
   family = "postgres13"
