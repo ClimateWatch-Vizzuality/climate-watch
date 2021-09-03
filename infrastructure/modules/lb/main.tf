@@ -4,29 +4,29 @@ resource "aws_security_group" "lb_access_sg" {
   description = "SG allowing access from the LB"
 
   tags = merge(
-  {
-    Name = "ALB SG"
-  },
-  var.tags
+    {
+      Name = "ALB SG"
+    },
+    var.tags
   )
 }
 
 resource "aws_security_group_rule" "lb_access_http_ingress" {
-  type                     = "ingress"
-  from_port                = "80"
-  to_port                  = "80"
-  protocol                 = "TCP"
-  security_group_id        = aws_security_group.lb_access_sg.id
-  cidr_blocks = ["0.0.0.0/0"]
+  type              = "ingress"
+  from_port         = "80"
+  to_port           = "80"
+  protocol          = "TCP"
+  security_group_id = aws_security_group.lb_access_sg.id
+  cidr_blocks       = ["0.0.0.0/0"]
 }
 
 resource "aws_security_group_rule" "lb_access_tcp_egress" {
-  type                     = "egress"
-  from_port                = "0"
-  to_port                  = "0"
-  protocol                 = "TCP"
-  security_group_id        = aws_security_group.lb_access_sg.id
-  cidr_blocks = ["0.0.0.0/0"]
+  type              = "egress"
+  from_port         = "0"
+  to_port           = "0"
+  protocol          = "TCP"
+  security_group_id = aws_security_group.lb_access_sg.id
+  cidr_blocks       = ["0.0.0.0/0"]
 }
 
 resource "aws_alb" "site_lb" {

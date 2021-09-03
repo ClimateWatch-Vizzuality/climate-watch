@@ -1,4 +1,4 @@
-server '3.90.203.220', user: 'ubuntu', roles: %w{web app db}, primary: true
+server '44.198.104.48', user: 'ubuntu', roles: %w{web app db}, primary: true
 
 set :ssh_options, forward_agent: true
 
