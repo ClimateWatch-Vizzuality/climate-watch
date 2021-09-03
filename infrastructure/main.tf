@@ -8,12 +8,12 @@ terraform {
   }
 }
 
-# Internal module which defines the VPC
-module "vpc" {
-  source  = "./modules/vpc"
-  region  = var.aws_region
-  project = var.project_name
-  tags    = local.tags
+data "aws_vpc" "default_vpc" {
+  default = true
+}
+
+data "aws_subnet_ids" "subnet_ids" {
+  vpc_id = data.aws_vpc.default_vpc.id
 }
 
 module "bootstrap" {
@@ -24,29 +24,28 @@ module "bootstrap" {
 }
 
 module "server" {
-  source             = "./modules/server"
-  project            = var.project_name
-  region             = var.aws_region
-  tags               = local.tags
-  subnet_id          = module.vpc.public_subnet_ids[0]
-  vpc                = module.vpc
-  user_data          = data.template_file.server_setup.rendered
-  site_server_ami    = data.aws_ami.latest-ubuntu-lts.id
-  availability_zone  = "us-east-1a"
-  security_group_ids = [aws_security_group.postgresql_access.id]
-  lb_security_group_id = module.load_balancer.lb_security_group_id
+  source                    = "./modules/server"
+  project                   = var.project_name
+  region                    = var.aws_region
+  tags                      = local.tags
+  vpc                       = data.aws_vpc.default_vpc
+  user_data                 = data.template_file.server_setup.rendered
+  site_server_ami           = data.aws_ami.latest-ubuntu-lts.id
+  availability_zone         = "us-east-1a"
+  security_group_ids        = [aws_security_group.postgresql_access.id]
+  lb_security_group_id      = module.load_balancer.lb_security_group_id
   site_server_instance_type = "m5a.large"
 }
 
 resource "aws_security_group" "postgresql_access" {
-  vpc_id      = module.vpc.id
+  vpc_id      = data.aws_vpc.default_vpc.id
   description = "SG allowing access to the Postgres SG"
 
   tags = merge(
-  {
-    Name = "EC2 SG to access RDS"
-  },
-  local.tags
+    {
+      Name = "EC2 SG to access RDS"
+    },
+    local.tags
   )
 }
 
@@ -62,9 +61,8 @@ resource "aws_security_group_rule" "port_forward_postgres" {
 module "postgresql" {
   source = "./modules/postgresql"
 
-  availability_zone_names     = module.vpc.private_subnets.*.availability_zone
   log_retention_period        = var.rds_log_retention_period
-  private_subnet_ids          = module.vpc.private_subnets.*.id
+  subnet_ids                  = data.aws_subnet_ids.subnet_ids.ids
   project                     = var.project_name
   rds_backup_retention_period = var.rds_backup_retention_period
   rds_db_name                 = "climatewatch"
@@ -73,15 +71,15 @@ module "postgresql" {
   rds_instance_class          = var.rds_instance_class
   rds_instance_count          = var.rds_instance_count
   tags                        = local.tags
-  vpc_id                      = module.vpc.id
+  vpc_id                      = data.aws_vpc.default_vpc.id
   rds_port                    = 5432
-  vpc_cidr_block              = module.vpc.cidr_block
+  vpc_cidr_block              = data.aws_vpc.default_vpc.cidr_block
 }
 
 module "load_balancer" {
-  source                   = "./modules/lb"
-  vpc_id                   = module.vpc.id
-  subnet_ids               = module.vpc.public_subnet_ids
-  project                  = var.project_name
+  source        = "./modules/lb"
+  vpc_id        = data.aws_vpc.default_vpc.id
+  subnet_ids    = data.aws_subnet_ids.subnet_ids.ids
+  project       = var.project_name
   ec2_target_id = module.server.ec2_instance_id
 }

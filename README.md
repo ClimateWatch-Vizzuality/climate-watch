@@ -105,6 +105,12 @@ Point your browser to `http://localhost:3000/`. Ta-da!
 ```docker-compose up```
 Ta-da!
 
+## Infrastructure
+
+This project uses [Terraform](https://www.terraform.io/) as an [infrastructure as code](https://en.wikipedia.org/wiki/Infrastructure_as_code) solution to deploy to [AWS](https://aws.amazon.com/). All this code can be found in the `/infrastructure` folder.
+
+It's worth noting that the infrastructure includes an [AWS EC2](https://aws.amazon.com/ec2/) server that is partially configured by Terraform, but that requires additional setup. You can find more details in the `/infrastructure/templates/server_setup.sh.tpl` file.
+
 ## Frontend Architectural choices
 
 The fronted uses react, redux and react-router.

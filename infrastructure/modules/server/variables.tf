@@ -16,10 +16,6 @@ variable "vpc" {
   description = "VPC to which the site server will belong"
 }
 
-variable "subnet_id" {
-  type = string
-}
-
 variable "availability_zone" {
   type        = string
   description = "The availability zone for subnet placement."
