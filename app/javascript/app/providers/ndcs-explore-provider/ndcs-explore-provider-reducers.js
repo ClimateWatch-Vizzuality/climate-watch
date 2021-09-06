@@ -1,5 +1,3 @@
-import uniqBy from 'lodash/uniqBy';
-
 export const initialState = {
   loading: false,
   loaded: false,
@@ -22,18 +20,9 @@ export default {
           {
             ...state,
             data: {
-              categories: {
-                ...state.data.categories,
-                ...payload.categories
-              },
-              sectors: {
-                ...state.data.sectors,
-                ...payload.sectors
-              },
-              indicators: uniqBy(
-                (state.data.indicators || []).concat(payload.indicators),
-                'id'
-              )
+              categories: payload.categories,
+              sectors: payload.sectors,
+              indicators: payload.indicators
             }
           },
           false

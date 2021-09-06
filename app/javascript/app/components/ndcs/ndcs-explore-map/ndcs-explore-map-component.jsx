@@ -22,6 +22,8 @@ import Sticky from 'react-stickynode';
 import cx from 'classnames';
 import ModalShare from 'components/modal-share';
 import NDCSProvider from 'providers/ndcs-provider';
+import NDCSExploreProvider from 'providers/ndcs-explore-provider';
+import DocumentsProvider from 'providers/documents-provider';
 import { SEO_PAGES } from 'data/seo';
 import SEOTags from 'components/seo-tags';
 
@@ -29,6 +31,9 @@ import newMapTheme from 'styles/themes/map/map-new-zoom-controls.scss';
 import layout from 'styles/layout.scss';
 import blueCheckboxTheme from 'styles/themes/checkbox/blue-checkbox.scss';
 import styles from './ndcs-explore-map-styles.scss';
+
+const FEATURE_ENHANCEMENT_CHANGES =
+  process.env.FEATURE_ENHANCEMENT_CHANGES === 'true';
 
 const renderButtonGroup = (
   clickHandler,
@@ -123,12 +128,15 @@ function NDCSExploreMap(props) {
     handleInfoClick,
     handleCountryClick,
     handleCountryEnter,
+    documents,
     categories,
     indicators,
-    selectedIndicator,
+    handleDocumentChange,
     handleCategoryChange,
-    selectedCategory,
     handleIndicatorChange,
+    selectedDocument,
+    selectedCategory,
+    selectedIndicator,
     tooltipValues,
     selectActiveDonutIndex,
     donutActiveIndex,
@@ -201,10 +209,27 @@ function NDCSExploreMap(props) {
                   <div className={styles.filtersLayout}>
                     <div
                       className={cx(styles.filtersGroup, {
-                        [styles.sticky]: stickyStatus === Sticky.STATUS_FIXED
+                        [styles.sticky]: stickyStatus === Sticky.STATUS_FIXED,
+                        [styles.withDocumentDropdown]: FEATURE_ENHANCEMENT_CHANGES
                       })}
                       data-tour="ndc-explore-02"
                     >
+                      {FEATURE_ENHANCEMENT_CHANGES && (
+                        <Dropdown
+                          label="Document"
+                          placeholder="Select a Document"
+                          options={documents}
+                          onValueChange={handleDocumentChange}
+                          value={selectedDocument}
+                          hideResetButton
+                          plain
+                          showTooltip={
+                            selectedDocument &&
+                            selectedDocument.label &&
+                            selectedDocument.label.length > 14
+                          }
+                        />
+                      )}
                       <Dropdown
                         label="Category"
                         placeholder="Select a category"
@@ -213,6 +238,7 @@ function NDCSExploreMap(props) {
                         value={selectedCategory}
                         hideResetButton
                         plain
+                        disabled={loading}
                         showTooltip={
                           selectedCategory &&
                           selectedCategory.label &&
@@ -306,10 +332,22 @@ function NDCSExploreMap(props) {
         {renderMap({ isTablet: true, png: true })}
         {legendData && renderLegend(legendData, emissionsCardData)}
       </ModalPngDownload>
-      <NDCSProvider
-        subcategory={selectedCategory && selectedCategory.value}
-        additionalIndicatorSlugs={['ndce_ghg', 'submission', 'submission_date']}
-      />
+      <DocumentsProvider />
+      {FEATURE_ENHANCEMENT_CHANGES ? (
+        <NDCSExploreProvider
+          document={selectedDocument && selectedDocument.value}
+          subcategory={selectedCategory && selectedCategory.value}
+        />
+      ) : (
+        <NDCSProvider
+          subcategory={selectedCategory && selectedCategory.value}
+          additionalIndicatorSlugs={[
+            'ndce_ghg',
+            'submission',
+            'submission_date'
+          ]}
+        />
+      )}
     </div>
   );
 }
@@ -325,13 +363,16 @@ NDCSExploreMap.propTypes = {
   handleCountryClick: PropTypes.func.isRequired,
   handleCountryEnter: PropTypes.func.isRequired,
   handleInfoClick: PropTypes.func.isRequired,
+  documents: PropTypes.array,
   categories: PropTypes.array,
   indicators: PropTypes.array,
-  selectedIndicator: PropTypes.object,
-  handleCategoryChange: PropTypes.func,
+  selectedDocument: PropTypes.object,
   selectedCategory: PropTypes.object,
-  tooltipValues: PropTypes.object,
+  selectedIndicator: PropTypes.object,
+  handleDocumentChange: PropTypes.func,
+  handleCategoryChange: PropTypes.func,
   handleIndicatorChange: PropTypes.func,
+  tooltipValues: PropTypes.object,
   selectActiveDonutIndex: PropTypes.func.isRequired,
   handleOnChangeChecked: PropTypes.func.isRequired,
   handlePngDownloadModal: PropTypes.func.isRequired,

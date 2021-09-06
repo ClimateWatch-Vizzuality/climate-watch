@@ -240,6 +240,10 @@
   .filtersGroup {
     @include columns(5.8);
 
+    &.withDocumentDropdown {
+      @include columns(4);
+    }
+
     > *:first-child {
       @include xy-gutters(0, $gutter-position: 'left');
     }

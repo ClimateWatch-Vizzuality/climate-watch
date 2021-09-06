@@ -1,3 +1,4 @@
+/* eslint-disable no-confusing-arrow */
 import uniqBy from 'lodash/uniqBy';
 
 export const initialState = {
@@ -13,7 +14,6 @@ const setLoaded = (state, loaded) => ({ ...state, loaded });
 
 export default {
   fetchNDCSInit: state => setLoading(state, true),
-  // eslint-disable-next-line no-confusing-arrow
   fetchNDCSReady: (state, { payload }) =>
     !state.data || !payload
       ? null
