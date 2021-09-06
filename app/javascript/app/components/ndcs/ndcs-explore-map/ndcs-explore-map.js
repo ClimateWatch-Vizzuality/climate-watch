@@ -22,8 +22,10 @@ import {
   getEmissionsCardData,
   getLegend,
   getSummaryCardData,
+  getDocuments,
   getCategories,
   getCategoryIndicators,
+  getSelectedDocument,
   getSelectedCategory,
   getTooltipCountryValues,
   getDonutActiveIndex,
@@ -33,7 +35,7 @@ import {
 const actions = { ...modalActions, ...exploreMapActions, ...pngModalActions };
 
 const mapStateToProps = (state, { location }) => {
-  const { data, loading } = state.ndcs;
+  const { data, loading } = state.ndcsExplore;
   const { countries } = state;
   const search = qs.parse(location.search);
 
@@ -51,17 +53,19 @@ const mapStateToProps = (state, { location }) => {
   return {
     loading,
     query: ndcsExploreWithSelection.query,
+    selectedDocument: getSelectedDocument(ndcsExploreWithSelection),
     selectedCategory: getSelectedCategory(ndcsExploreWithSelection),
+    selectedIndicator: getMapIndicator(ndcsExploreWithSelection),
+    documents: getDocuments(ndcsExploreWithSelection),
+    categories: getCategories(ndcsExploreWithSelection),
+    indicators: getCategoryIndicators(ndcsExploreWithSelection),
     paths: getPathsWithStyles(ndcsExploreWithSelection),
     isoCountries: getISOCountries(ndcsExploreWithSelection),
-    selectedIndicator: getMapIndicator(ndcsExploreWithSelection),
     emissionsCardData: getEmissionsCardData(ndcsExploreWithSelection),
     tooltipCountryValues: getTooltipCountryValues(ndcsExploreWithSelection),
     legendData: getLegend(ndcsExploreWithSelection),
     summaryCardData: getSummaryCardData(ndcsExploreWithSelection),
     downloadLink: getLinkToDataExplorer(ndcsExploreWithSelection),
-    categories: getCategories(ndcsExploreWithSelection),
-    indicators: getCategoryIndicators(ndcsExploreWithSelection),
     donutActiveIndex: getDonutActiveIndex(ndcsExploreWithSelection),
     checked: getIsShowEUCountriesChecked(ndcsExploreWithSelection),
     pngSelectionSubtitle: getPngSelectionSubtitle(ndcsExploreWithSelection)
@@ -78,7 +82,7 @@ class NDCSExploreMapContainer extends PureComponent {
   }
 
   handleSearchChange = query => {
-    this.updateUrlParam({ name: 'search', value: query });
+    this.updateUrlParams([{ name: 'search', value: query }]);
   };
 
   handleCountryClick = (geography, countryData) => {
@@ -135,23 +139,33 @@ class NDCSExploreMapContainer extends PureComponent {
   };
 
   handleSearchChange = query => {
-    this.updateUrlParam({ name: 'search', value: query });
+    this.updateUrlParams([{ name: 'search', value: query }]);
   };
 
-  handleCategoryChange = category => {
-    this.updateUrlParam(
+  handleDropdownChange = (type, selection) => {
+    const clearDependency = {
+      document: ['category', 'indicator'],
+      category: ['indicator']
+    }[type];
+
+    let params = [
       {
-        name: 'category',
-        value: category.value
-      },
-      true
-    );
-    handleAnalytics('NDCS Explore Map', 'Change category', category.label);
-  };
+        name: type,
+        value: selection.value
+      }
+    ];
 
-  handleIndicatorChange = indicator => {
-    this.updateUrlParam({ name: 'indicator', value: indicator.value });
-    handleAnalytics('NDCS Explore Map', 'Change indicator', indicator.label);
+    if (clearDependency) {
+      params = params.concat(
+        clearDependency.map(clearType => ({
+          name: clearType,
+          value: undefined
+        }))
+      );
+    }
+
+    this.updateUrlParams(params);
+    handleAnalytics('NDCS Explore Map', `Change ${type}`, selection.label);
   };
 
   handleInfoClick = () => {
@@ -164,12 +178,12 @@ class NDCSExploreMapContainer extends PureComponent {
   };
 
   handleOnChangeChecked = query => {
-    this.updateUrlParam({ name: 'showEUCountries', value: query });
+    this.updateUrlParams([{ name: 'showEUCountries', value: query }]);
   };
 
-  updateUrlParam(param, clear) {
+  updateUrlParams(params, clear) {
     const { history, location } = this.props;
-    history.replace(getLocationParamUpdated(location, param, clear));
+    history.replace(getLocationParamUpdated(location, params, clear));
   }
 
   handlePngDownloadModal = () => {
@@ -196,8 +210,12 @@ class NDCSExploreMapContainer extends PureComponent {
       handleInfoClick: this.handleInfoClick,
       noContentMsg,
       handleSearchChange: this.handleSearchChange,
-      handleCategoryChange: this.handleCategoryChange,
-      handleIndicatorChange: this.handleIndicatorChange,
+      handleDocumentChange: selection =>
+        this.handleDropdownChange('document', selection),
+      handleCategoryChange: selection =>
+        this.handleDropdownChange('category', selection),
+      handleIndicatorChange: selection =>
+        this.handleDropdownChange('indicator', selection),
       handleOnChangeChecked: this.handleOnChangeChecked,
       handlePngDownloadModal: this.handlePngDownloadModal,
       checked,

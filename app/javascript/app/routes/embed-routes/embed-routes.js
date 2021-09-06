@@ -2,7 +2,6 @@ import { createElement } from 'react';
 import { Redirect } from 'react-router-dom';
 
 import NDCSEnhancementsViz from 'components/ndcs/ndcs-enhancements-viz';
-import NDCSEnhancementsLegacyViz from 'components/ndcs/ndcs-enhancements-legacy-viz';
 import GhgEmissionsGraph from 'components/ghg-emissions';
 import CompareGhgChart from 'components/compare/compare-ghg-chart';
 import CountryGhg from 'components/country/country-ghg';
@@ -22,15 +21,10 @@ import NDCSExploreMap from 'components/ndcs/ndcs-explore-map';
 import NDCOverviewSection from 'components/ndcs/ndcs-overview-section';
 import KeyVisualizationsTable from 'components/key-visualizations/key-visualizations-table';
 
-const FEATURE_NDC_ENHANCEMENTS =
-  process.env.FEATURE_NDC_ENHANCEMENTS === 'true';
-
 export default [
   {
     path: '/embed/2020-ndc-tracker',
-    component: FEATURE_NDC_ENHANCEMENTS
-      ? NDCSEnhancementsViz
-      : NDCSEnhancementsLegacyViz,
+    component: NDCSEnhancementsViz,
     exact: true
   },
   {
