@@ -232,20 +232,27 @@
 
 @media #{$tablet-landscape} {
   .filtersLayout {
-    @include columns((8, 4));
+    @include row((8, 4));
 
+    justify-content: space-between;
     margin-bottom: 0;
   }
 
   .filtersGroup {
-    @include columns(5.8);
+    &:not(.withDocumentDropdown) {
+      @include columns(5.8);
+
+      > *:first-child {
+        @include xy-gutters(0, $gutter-position: 'left');
+      }
+    }
 
     &.withDocumentDropdown {
       @include columns(4);
-    }
 
-    > *:first-child {
-      @include xy-gutters(0, $gutter-position: 'left');
+      > *:first-child {
+        margin-left: 0;
+      }
     }
   }
 }
