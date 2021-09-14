@@ -14,7 +14,7 @@
         <td><%= st.title %></td>
         <td><%= st.published_at.strftime('%m-%d-%Y') %></td>
         <td><%= link_to st.link, st.link %></td>
-        <td><%= st.tags.join(', ') %></td>
+        <td><%= st.tags&.join(', ') %></td>
       </tr>
     <% end %>
   </tbody>
@@ -58,4 +58,3 @@
     </tbody>
   </table>
 <% end %>
-

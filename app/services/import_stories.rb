@@ -14,10 +14,9 @@ class ImportStories
     Story.delete_all
   end
 
-  # rubocop:disable AbcSize
   def import_stories
     existing = Story.count
-    url = 'http://www.wri.org/blog/rss2.xml'
+    url = 'https://www.wri.org/blog/rss2.xml'
     rss = open(url)
     feed = RSS::Parser.parse(rss)
     link_sanitizer = Rails::Html::LinkSanitizer.new
@@ -27,12 +26,12 @@ class ImportStories
       published_at = item.pubDate
       story = Story.find_or_initialize_by(title: title,
                                           published_at: published_at)
-      story.link = feed.channel.link + item.link.split(/href="|">/)[1].sub!(/^\//, '')
-      story.background_image_url = item.enclosure ? item.enclosure.url : nil
-      story.tags = item.category ? item.category.content.split(',').map(&:strip) : nil
+      story.link = item.link
+      story.background_image_url = item.enclosure&.url
+      # 14062021 - WRI new feed returns only climatewatch-pinned tag
+      story.tags = ['climatewatch-pinned']
       story.save
     end
-    # rubocop:enable AbcSize
     puts "#{Story.count - existing} new stories"
   end
 end
