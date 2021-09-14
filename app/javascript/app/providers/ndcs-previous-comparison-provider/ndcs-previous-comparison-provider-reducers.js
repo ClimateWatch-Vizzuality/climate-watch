@@ -2,7 +2,7 @@ export const initialState = {
   loading: false,
   loaded: false,
   error: false,
-  data: {}
+  data: null
 };
 
 const setLoading = (state, loading) => ({ ...state, loading });
@@ -13,7 +13,7 @@ export default {
   fetchPreviousNDCComparisonInit: state => setLoading(state, true),
   // eslint-disable-next-line no-confusing-arrow
   fetchPreviousNDCComparisonReady: (state, { payload }) =>
-    !state.data || !payload
+    !payload
       ? null
       : setLoaded(setLoading({ data: payload.indicators }, false), true),
   fetchPreviousNDCComparisonFail: state => setError(state, true)

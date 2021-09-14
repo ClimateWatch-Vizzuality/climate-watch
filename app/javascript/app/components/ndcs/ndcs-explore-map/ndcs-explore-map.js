@@ -131,6 +131,7 @@ class NDCSExploreMapContainer extends PureComponent {
 
       const tooltipValues = {
         value: (tooltipValue && tooltipValue.value) || 'Not Applicable',
+        indicators: tooltipValue && tooltipValue.indicators,
         countryName: geography.properties && geography.properties.name
       };
 

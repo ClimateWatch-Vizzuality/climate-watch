@@ -31,6 +31,8 @@ const getSearch = state => state.search || null;
 const getCountries = state => state.countries || null;
 const getSectors = state => state.sectors || null;
 const getDocumentData = state => state.documents && state.documents.data;
+const getPreviousComparisonIndicators = state =>
+  state.ndcsPreviousComparison && state.ndcsPreviousComparison.data;
 
 const getCategoriesData = createSelector(
   state => state.categories,
@@ -323,9 +325,26 @@ export const getLegend = createSelector(
   }
 );
 
+const getPreviousComparisonCountryValues = createSelector(
+  [getPreviousComparisonIndicators, getISOCountries],
+  (previousComparisonIndicators, isos) => {
+    if (!previousComparisonIndicators) return null;
+    const previousComparisonCountryValues = {};
+    isos.forEach(iso => {
+      previousComparisonCountryValues[
+        iso
+      ] = previousComparisonIndicators.map(indicator => [
+        indicator.name,
+        indicator.locations[iso].value
+      ]);
+    });
+    return previousComparisonCountryValues;
+  }
+);
+
 export const getTooltipCountryValues = createSelector(
-  [getIndicatorsData, getSelectedIndicator],
-  (indicators, selectedIndicator) => {
+  [getIndicatorsData, getSelectedIndicator, getPreviousComparisonCountryValues],
+  (indicators, selectedIndicator, previousComparisonCountryValues) => {
     if (!indicators || !selectedIndicator || !selectedIndicator.locations) {
       return null;
     }
@@ -335,7 +354,10 @@ export const getTooltipCountryValues = createSelector(
       if (location) {
         tooltipCountryValues[iso] = {
           labelId: location.label_id,
-          value: location.value
+          value: location.value,
+          indicators:
+            previousComparisonCountryValues &&
+            previousComparisonCountryValues[iso]
         };
       }
     });
