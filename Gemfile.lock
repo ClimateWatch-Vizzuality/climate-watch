@@ -370,8 +370,6 @@ GEM
     scenic (1.4.1)
       activerecord (>= 4.0.0)
       railties (>= 4.0.0)
-    secondbase (2.1.5)
-      rails (>= 4.0)
     selenium-webdriver (3.14.0)
       childprocess (~> 0.5)
       rubyzip (~> 1.2)
@@ -486,7 +484,6 @@ DEPENDENCIES
   rubyzip
   sass-rails (~> 5.0)
   scenic
-  secondbase
   selenium-webdriver
   sidekiq (>= 6.1.0)
   simplecov

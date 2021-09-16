@@ -15,7 +15,6 @@ gem 'puma'
 gem 'pg', '~> 0.20'
 gem 'pg_search'
 gem 'scenic'
-gem 'secondbase'
 
 # UI, assets
 gem 'coffee-rails', '~> 4.2'
