@@ -19,6 +19,9 @@ import { Link } from 'react-router-dom';
 import { LABEL_SLUGS } from './ndcs-enhancements-viz-selectors';
 import styles from './ndcs-enhancements-viz-styles.scss';
 
+const FEATURE_ENHANCEMENT_CHANGES =
+  process.env.FEATURE_ENHANCEMENT_CHANGES === 'true';
+
 const renderButtonGroup = (
   clickHandler,
   downloadLink,
@@ -64,20 +67,26 @@ const renderButtonGroup = (
             analyticsGraphName: 'Ndcs',
             positionRight: true
           },
-          {
-            type: 'downloadCombo',
-            options: [
-              {
-                label: 'Save as image (PNG)',
-                action: handlePngDownloadModal
-              },
-              {
-                label: 'Go to data explorer',
-                link: downloadLink,
-                target: '_self'
-              }
-            ]
-          },
+          FEATURE_ENHANCEMENT_CHANGES
+            ? {
+              type: 'downloadCombo',
+              options: [
+                {
+                  label: 'Save as image (PNG)',
+                  action: handlePngDownloadModal
+                },
+                {
+                  label: 'Go to data explorer',
+                  link: downloadLink,
+                  target: '_self'
+                }
+              ]
+            }
+            : {
+              type: 'download',
+              section: 'ndcs-content',
+              link: downloadLink
+            },
           {
             type: 'addToUser'
           }

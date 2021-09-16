@@ -54,20 +54,27 @@ const renderButtonGroup = (
             type: 'info',
             onClick: clickHandler
           },
-          {
-            type: 'downloadCombo',
-            options: [
-              {
-                label: 'Save as image (PNG)',
-                action: handlePngDownloadModal
-              },
-              {
-                label: 'Go to data explorer',
-                link: downloadLink,
-                target: '_self'
-              }
-            ]
-          },
+          FEATURE_ENHANCEMENT_CHANGES
+            ? {
+              type: 'downloadCombo',
+              options: [
+                {
+                  label: 'Save as image (PNG)',
+                  action: handlePngDownloadModal
+                },
+                {
+                  label: 'Go to data explorer',
+                  link: downloadLink,
+                  target: '_self'
+                }
+              ]
+            }
+            : {
+              type: 'download',
+              section: 'ndcs-content',
+              link: downloadLink
+            },
+
           {
             type: 'addToUser'
           }
