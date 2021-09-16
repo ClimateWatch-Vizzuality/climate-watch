@@ -20,6 +20,9 @@ import LegendSteps from './legend-steps';
 
 import styles from './ndc-sdg-linkages-map-styles.scss';
 
+const FEATURE_ENHANCEMENT_CHANGES =
+  process.env.FEATURE_ENHANCEMENT_CHANGES === 'true';
+
 class NdcSdgLinkagesMap extends PureComponent {
   constructor(props) {
     super(props);
@@ -76,20 +79,27 @@ class NdcSdgLinkagesMap extends PureComponent {
               type: 'info',
               onClick: handleInfoClick
             },
-            {
-              type: 'downloadCombo',
-              options: [
-                {
-                  label: 'Save as image (PNG)',
-                  action: handlePngDownloadModal
-                },
-                {
-                  label: 'Go to data explorer',
-                  link: downloadLink,
-                  target: '_self'
-                }
-              ]
-            },
+            FEATURE_ENHANCEMENT_CHANGES
+              ? {
+                type: 'downloadCombo',
+                options: [
+                  {
+                    label: 'Save as image (PNG)',
+                    action: handlePngDownloadModal
+                  },
+                  {
+                    label: 'Go to data explorer',
+                    link: downloadLink,
+                    target: '_self'
+                  }
+                ]
+              }
+              : {
+                type: 'download',
+                section: 'ndc-sdg-linkages',
+                link: downloadLink
+              },
+
             {
               type: 'addToUser'
             }

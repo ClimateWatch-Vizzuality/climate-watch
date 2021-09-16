@@ -17,6 +17,9 @@ import NDCSProvider from 'providers/ndcs-provider';
 import ModalPngDownload from 'components/modal-png-download';
 import styles from './ndcs-map-styles.scss';
 
+const FEATURE_ENHANCEMENT_CHANGES =
+  process.env.FEATURE_ENHANCEMENT_CHANGES === 'true';
+
 const getTooltip = (country, tooltipTxt) => (
   <Link className={tooltipTheme.container} to={`/ndcs/country/${country.id}`}>
     <div className={tooltipTheme.info}>
@@ -39,20 +42,26 @@ const renderButtonGroup = (
         type: 'info',
         onClick: clickHandler
       },
-      {
-        type: 'downloadCombo',
-        options: [
-          {
-            label: 'Save as image (PNG)',
-            action: handlePngDownloadModal
-          },
-          {
-            label: 'Go to data explorer',
-            link: downloadLink,
-            target: '_self'
-          }
-        ]
-      },
+      FEATURE_ENHANCEMENT_CHANGES
+        ? {
+          type: 'downloadCombo',
+          options: [
+            {
+              label: 'Save as image (PNG)',
+              action: handlePngDownloadModal
+            },
+            {
+              label: 'Go to data explorer',
+              link: downloadLink,
+              target: '_self'
+            }
+          ]
+        }
+        : {
+          type: 'download',
+          section: 'ndcs-content',
+          link: downloadLink
+        },
       {
         type: 'addToUser'
       }

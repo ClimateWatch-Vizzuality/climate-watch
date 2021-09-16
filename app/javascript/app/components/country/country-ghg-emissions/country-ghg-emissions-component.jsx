@@ -17,6 +17,9 @@ import { isPageContained } from 'utils/navigation';
 import quantificationTagTheme from 'styles/themes/tag/quantification-tag.scss';
 import styles from './country-ghg-emissions-styles.scss';
 
+const FEATURE_ENHANCEMENT_CHANGES =
+  process.env.FEATURE_ENHANCEMENT_CHANGES === 'true';
+
 class CountryGhgEmissions extends PureComponent {
   renderFilterDropdowns() {
     const {
@@ -73,20 +76,28 @@ class CountryGhgEmissions extends PureComponent {
           positionRight: true,
           dataTour: 'countries-05'
         },
-        {
-          type: 'downloadCombo',
-          options: [
-            {
-              label: 'Save as image (PNG)',
-              action: handlePngDownloadModal
-            },
-            {
-              label: 'Go to data explorer',
-              link: downloadLink,
-              target: '_self'
-            }
-          ]
-        },
+        FEATURE_ENHANCEMENT_CHANGES
+          ? {
+            type: 'downloadCombo',
+            dataTour: 'countries-04',
+            options: [
+              {
+                label: 'Save as image (PNG)',
+                action: handlePngDownloadModal
+              },
+              {
+                label: 'Go to data explorer',
+                link: downloadLink,
+                target: '_self'
+              }
+            ]
+          }
+          : {
+            type: 'download',
+            section: 'ghg-emissions',
+            link: downloadLink,
+            dataTour: 'countries-04'
+          },
         {
           type: 'addToUser'
         }
