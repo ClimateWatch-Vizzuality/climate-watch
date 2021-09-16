@@ -12,7 +12,7 @@
 #  updated_at             :datetime         not null
 #  role                   :string
 #
-class AdminUser < SecondBase::Base
+class AdminUser < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :recoverable, :rememberable, :validatable

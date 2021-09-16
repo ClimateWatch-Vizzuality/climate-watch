@@ -25,6 +25,7 @@ default: &default
 development:
   <<: *default
   url: <%= ENV['POSTGRES_URL'] %>
+  database: climate-watch
 
   # The specified database role being used to connect to postgres.
   # To create additional roles in postgres see `$ createuser --help`.
@@ -82,19 +83,3 @@ test:
 production:
   <<: *default
   url: <%= ENV['POSTGRES_URL'] %>
-
-# Config for second shared database
-secondbase:
-  production:
-    adapter: postgresql
-    encoding: unicode
-    url: <%= ENV['SHARED_POSTGRES_URL'] %>
-  development:
-    adapter: postgresql
-    encoding: unicode
-    database: climate-watch-shared_development
-    url: <%= ENV['SHARED_POSTGRES_URL'] %>
-  test:
-    adapter: postgresql
-    encoding: unicode
-    database: climate-watch-shared_test
