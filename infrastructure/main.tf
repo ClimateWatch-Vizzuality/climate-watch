@@ -65,7 +65,6 @@ module "postgresql" {
   subnet_ids                  = data.aws_subnet_ids.subnet_ids.ids
   project                     = var.project_name
   rds_backup_retention_period = var.rds_backup_retention_period
-  rds_db_name                 = "climatewatch"
   rds_user_name               = "postgres"
   rds_engine_version          = var.rds_engine_version
   rds_instance_class          = var.rds_instance_class
