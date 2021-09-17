@@ -54,10 +54,11 @@ gem 'maxmind-db'
 gem 'oj'
 gem 'rubyzip'
 
+gem 'dotenv-rails'
+
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'capybara', '~> 2.13'
-  gem 'dotenv-rails'
   gem 'factory_bot_rails'
   gem 'rails-controller-testing'
   gem 'rspec-collection_matchers'
