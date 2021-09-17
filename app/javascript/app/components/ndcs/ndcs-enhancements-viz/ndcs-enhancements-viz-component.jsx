@@ -5,6 +5,7 @@ import { TabletLandscape } from 'components/responsive';
 import Map from 'components/map';
 import MapLegend from 'components/map-legend';
 import ButtonGroup from 'components/button-group';
+import NDCSPreviousComparisonProvider from 'providers/ndcs-previous-comparison-provider';
 import AbbrReplace, { replaceStringAbbr } from 'components/abbr-replace';
 import { CheckInput } from 'cw-components';
 import Loading from 'components/loading';
@@ -18,6 +19,9 @@ import blueCheckboxTheme from 'styles/themes/checkbox/blue-checkbox.scss';
 import { Link } from 'react-router-dom';
 import { LABEL_SLUGS } from './ndcs-enhancements-viz-selectors';
 import styles from './ndcs-enhancements-viz-styles.scss';
+
+const FEATURE_ENHANCEMENT_CHANGES =
+  process.env.FEATURE_ENHANCEMENT_CHANGES === 'true';
 
 const renderButtonGroup = (
   clickHandler,
@@ -240,6 +244,7 @@ const NDCSEnhancementsViz = ({
               )}
             </ModalPngDownload>
             <ModalMetadata />
+            {FEATURE_ENHANCEMENT_CHANGES && <NDCSPreviousComparisonProvider />}
           </div>
         )}
       </TabletLandscape>

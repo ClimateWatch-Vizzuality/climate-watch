@@ -1,6 +1,9 @@
 @import '~styles/settings.scss';
 
 .tooltipContainer {
+  min-width: 400px;
+  padding: 30px 25px;
+
   p {
     margin-bottom: 1em;
   }

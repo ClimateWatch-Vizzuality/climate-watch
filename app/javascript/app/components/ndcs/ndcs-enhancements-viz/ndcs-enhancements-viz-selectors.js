@@ -37,6 +37,8 @@ const getSearch = state => state.search || null;
 const getCountries = state => state.countries || null;
 const getCategories = state => state.categories || null;
 const getIndicatorsData = state => state.indicators || null;
+const getPreviousComparisonIndicators = state =>
+  state.ndcsPreviousComparison && state.ndcsPreviousComparison.data;
 
 export const getIsEnhancedChecked = createSelector(
   getSearch,
@@ -247,6 +249,23 @@ export const getLinkToDataExplorer = createSelector(
       },
       section
     );
+  }
+);
+
+export const getPreviousComparisonCountryValues = createSelector(
+  [getPreviousComparisonIndicators, getISOCountries],
+  (previousComparisonIndicators, isos) => {
+    if (!previousComparisonIndicators) return null;
+    const previousComparisonCountryValues = {};
+    isos.forEach(iso => {
+      previousComparisonCountryValues[
+        iso
+      ] = previousComparisonIndicators.map(indicator => [
+        indicator.name,
+        indicator.locations[iso].value
+      ]);
+    });
+    return previousComparisonCountryValues;
   }
 );
 
