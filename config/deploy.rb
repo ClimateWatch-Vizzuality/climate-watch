@@ -21,7 +21,7 @@ set :deploy_to, "/var/www/climatewatch"
 # set :pty, true
 
 # Default value for :linked_files is []
-# append :linked_files, '.env'
+append :linked_files, '.env'
 
 # Default value for linked_dirs is []
 append :linked_dirs, 'log', 'tmp/pids', 'tmp/cache', 'tmp/sockets'
@@ -57,3 +57,30 @@ set :nvm_node, 'v12.22.6'
 set :nvm_map_bins, %w{node npm yarn}
 
 set :yarn_flags, '--production --silent --no-progress --frozen-lockfile --no-cache'
+
+namespace :deploy do
+  after 'yarn:install', 'deploy:import_maxmind'
+  after 'deploy:migrate', 'deploy:admin_boilerplate:create'
+
+  task :import_maxmind do
+    on roles(:db) do
+      within release_path do
+        with rails_env: fetch(:rails_env) do
+          execute :rake, 'db:import_maxmind'
+        end
+      end
+    end
+  end
+
+  namespace :admin_boilerplate do
+    task :create do
+      on roles(:db) do
+        within release_path do
+          with rails_env: fetch(:rails_env) do
+            execute :rake, 'db:admin_boilerplate:create'
+          end
+        end
+      end
+    end
+  end
+end
