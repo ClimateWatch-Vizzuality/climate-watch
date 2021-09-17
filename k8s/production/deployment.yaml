@@ -45,20 +45,12 @@ spec:
         - args:
             - start
           env:
-            - name: CW_FILES_PREFIX
-              value: climatewatch.org/www.climatewatch.org/climate-watch/
             - name: RACK_ENV
               value: production
             - name: RAILS_ENV
               value: production
             - name: PORT
               value: "3000"
-            - name: RAILS_SERVE_STATIC_FILES
-              value: "true"
-            - name: PASSWORD_PROTECT
-              value: "false"
-            - name: RAILS_LOG_TO_STDOUT
-              value: "true"
             - name: AUTH_USERNAME
               valueFrom:
                 secretKeyRef:
@@ -79,10 +71,6 @@ spec:
                 secretKeyRef:
                   key: CW_SHARED_POSTGRES_URL
                   name: dbsecrets
-            - name: S3_BUCKET_NAME
-              value: wri-sites
-            - name: AWS_REGION
-              value: eu-west-1
             - name: AWS_ACCESS_KEY_ID
               valueFrom:
                 secretKeyRef:
@@ -93,12 +81,6 @@ spec:
                 secretKeyRef:
                   key: CW_PLATFORMS_S3_SECRET_ACCESS_KEY
                   name: appsecrets
-            - name: ESP_API
-              value: https://data.emissionspathways.org/api/v1
-            - name: GFW_API
-              value: https://production-api.globalforestwatch.org
-            - name: CORS_WHITELIST
-              value: '*'
             - name: REDIS_SERVER
               value: redis://localhost:6379
           image: gfwdockerhub/climate-watch

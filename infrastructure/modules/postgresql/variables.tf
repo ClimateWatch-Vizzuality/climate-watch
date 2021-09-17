@@ -37,11 +37,6 @@ variable "log_retention_period" {
   description = "Number of days to retain logs in Cloud Watch"
 }
 
-variable "rds_db_name" {
-  type        = string
-  description = "RDS Database Name"
-}
-
 variable "rds_engine_version" {
   type        = string
   description = "RDS Database engine version"

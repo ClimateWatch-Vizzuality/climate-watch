@@ -95,7 +95,6 @@ resource "aws_secretsmanager_secret_version" "postgresql-admin" {
   secret_string = jsonencode({
     "username" = var.rds_user_name,
     "engine"   = "postgresql",
-    "dbname"   = var.rds_db_name,
     "host"     = module.db.db_instance_address
     "password" = random_password.postgresql_superuser.result,
     "port"     = var.rds_port,
