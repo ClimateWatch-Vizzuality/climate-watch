@@ -25,6 +25,11 @@ sudo hostnamectl set-hostname "${hostname}"
 sudo apt install -y libpq-dev
 
 #
+# Rails dep
+#
+sudo apt install -y libpng-dev libjpeg-dev
+
+#
 # RVM
 #
 sudo apt-get install -y software-properties-common
