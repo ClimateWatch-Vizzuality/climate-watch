@@ -8,6 +8,23 @@
   border-bottom: solid 1px rgba(#9090b2, 0.15);
 }
 
+.comparisonWithPreviousNDCContainer {
+  @include columns(4);
+
+  @media #{$tablet-portrait} {
+    @include columns(2);
+  }
+
+  @include xy-gutters(40px, $gutter-position: ('right', 'left'), $gutter-type: padding);
+  @include xy-gutters(80px, $gutter-position: ('top', 'bottom'), $gutter-type: padding);
+}
+
+.tooltipIndicatorIcon {
+  width: 30px;
+  height: 30px;
+  margin-bottom: 10px;
+}
+
 .definition {
   @include columns(12);
   @include xy-gutters(40px, $gutter-position: ('top', 'bottom'), $gutter-type: padding);
@@ -26,6 +43,10 @@
       @include xy-gutters($gutter-position: ('bottom'), $gutters: 0);
     }
   }
+}
+
+.previousNDCDefinition {
+  text-align: center;
 }
 
 .definitionTitle {
