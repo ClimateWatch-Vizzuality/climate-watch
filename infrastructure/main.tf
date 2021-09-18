@@ -32,7 +32,7 @@ module "server" {
   user_data                 = data.template_file.server_setup.rendered
   site_server_ami           = data.aws_ami.latest-ubuntu-lts.id
   availability_zone         = "us-east-1a"
-  security_group_ids        = [aws_security_group.postgresql_access.id]
+  security_group_ids        = [aws_security_group.postgresql_access.id, aws_security_group.redis_access.id]
   lb_security_group_id      = module.load_balancer.lb_security_group_id
   site_server_instance_type = "m5a.large"
 }
@@ -58,6 +58,27 @@ resource "aws_security_group_rule" "port_forward_postgres" {
   security_group_id        = aws_security_group.postgresql_access.id
 }
 
+resource "aws_security_group" "redis_access" {
+  vpc_id      = data.aws_vpc.default_vpc.id
+  description = "SG allowing access to the Redis SG"
+
+  tags = merge(
+    {
+      Name = "EC2 SG to access Redis"
+    },
+    local.tags
+  )
+}
+
+resource "aws_security_group_rule" "port_forward_redis" {
+  type                     = "egress"
+  from_port                = module.redis.port
+  to_port                  = module.redis.port
+  protocol                 = "-1"
+  source_security_group_id = module.redis.security_group_id
+  security_group_id        = aws_security_group.redis_access.id
+}
+
 module "postgresql" {
   source = "./modules/postgresql"
 
@@ -72,6 +93,17 @@ module "postgresql" {
   tags                        = local.tags
   vpc_id                      = data.aws_vpc.default_vpc.id
   rds_port                    = 5432
+  vpc_cidr_block              = data.aws_vpc.default_vpc.cidr_block
+}
+
+module "redis" {
+  source = "./modules/redis"
+
+  redis_cluster_name = "sidekiq"
+  redis_user_name = "sidekiq"
+  project                     = var.project_name
+  tags                        = local.tags
+  vpc_id                      = data.aws_vpc.default_vpc.id
   vpc_cidr_block              = data.aws_vpc.default_vpc.cidr_block
 }
 

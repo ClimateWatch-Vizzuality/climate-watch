@@ -11,3 +11,11 @@ output "ec2_instance_ip" {
 output "lb_dns" {
   value = module.load_balancer.lb_dns
 }
+
+output "redis_host" {
+  value = module.redis.host
+}
+
+output "redis_port" {
+  value = module.redis.port
+}
