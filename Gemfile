@@ -79,7 +79,6 @@ group :development do
   gem "capistrano-rails", "~> 1.3", require: false
   gem 'capistrano-bundler'
   gem 'capistrano-yarn'
-  gem 'capistrano-nvm'
   gem 'capistrano-passenger', '~> 0.2.1'
   gem 'capistrano-rvm'
 end
