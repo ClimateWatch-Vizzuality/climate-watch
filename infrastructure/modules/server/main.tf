@@ -62,18 +62,6 @@ resource "aws_security_group_rule" "http_ingress" {
   security_group_id = aws_security_group.site_server_http_security_group.id
 }
 
-resource "aws_security_group_rule" "http_egress" {
-  type      = "egress"
-  from_port = 80
-  to_port   = 80
-  protocol  = "tcp"
-  cidr_blocks = [
-  var.vpc.cidr_block]
-
-  security_group_id = aws_security_group.site_server_http_security_group.id
-}
-
-
 resource "aws_security_group" "site_server_world_egress_security_group" {
   vpc_id      = var.vpc.id
   name        = "world-egress-sg"
@@ -106,7 +94,7 @@ resource "aws_instance" "server" {
   vpc_security_group_ids = concat([
     aws_security_group.site_server_ssh_security_group.id,
     aws_security_group.site_server_http_security_group.id,
-  aws_security_group.site_server_world_egress_security_group.id], var.security_group_ids)
+    aws_security_group.site_server_world_egress_security_group.id], var.security_group_ids)
   associate_public_ip_address = true
   user_data                   = var.user_data
 
