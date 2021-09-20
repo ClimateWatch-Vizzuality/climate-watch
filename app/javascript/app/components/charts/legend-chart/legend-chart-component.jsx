@@ -10,9 +10,25 @@ import plusIcon from 'assets/icons/plus.svg';
 import styles from './legend-chart-styles.scss';
 
 class LegendChart extends PureComponent {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      logoErrored: false
+    };
+  }
+
   componentDidUpdate() {
     ReactTooltip.rebuild();
   }
+
+  onError = () => {
+    if (!this.state.errored) {
+      this.setState({
+        errored: true
+      });
+    }
+  };
 
   render() {
     const {
@@ -31,6 +47,27 @@ class LegendChart extends PureComponent {
     const mirrorX = dataSelected && dataSelected.length < 2;
     const hasColumns = config && config.columns && config.columns.y.length;
     const hasLegendNote = config && config.legendNote;
+    const isPngVariant = config && config.pngVariant;
+    const renderLogo = () => {
+      const pngLogo = this.state.logoErrored ? (
+        <span>{model.label}</span>
+      ) : (
+        <a href={model.url} target="_blank">
+          <img
+            onError={this.onError}
+            src={`https://api.codetabs.com/v1/proxy/?quest=https:${model.logo}`}
+          />
+        </a>
+      );
+      return isPngVariant ? (
+        pngLogo
+      ) : (
+        <a href={model.url} target="_blank">
+          <img src={`https:${model.logo}`} />
+        </a>
+      );
+    };
+
     return (
       <div className={styles.legendChart}>
         <div className={styles.legendContainer}>
@@ -83,9 +120,7 @@ class LegendChart extends PureComponent {
         {model && (
           <div className={styles.legendLogo}>
             <div className={styles.legendLogoTitle}>Data provided by:</div>
-            <a href={model.url} target="_blank">
-              <img src={`https:${model.logo}`} />
-            </a>
+            {renderLogo()}
           </div>
         )}
       </div>

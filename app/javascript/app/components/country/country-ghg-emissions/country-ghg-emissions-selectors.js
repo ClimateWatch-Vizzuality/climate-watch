@@ -2,6 +2,7 @@ import { createSelector } from 'reselect';
 import isEmpty from 'lodash/isEmpty';
 import uniqBy from 'lodash/uniqBy';
 import groupBy from 'lodash/groupBy';
+import startCase from 'lodash/startCase';
 import intersection from 'lodash/intersection';
 import isArray from 'lodash/isArray';
 import orderBy from 'lodash/orderBy';
@@ -175,8 +176,8 @@ export const getDownloadLink = createSelector(
 
 // Map the data from the API
 export const filterData = createSelector(
-  [getData, getSourceSelected, getCalculationSelected, getFiltersSelected],
-  (data, sourceSelected, calculation, filters) => {
+  [getData, getCalculationSelected, getFiltersSelected],
+  (data, calculation, filters) => {
     if (!data || !data.length) return [];
     const filteredData = sortEmissionsByValue(
       data.filter(d => filters.map(f => f.label).indexOf(d.sector.trim()) >= 0)
@@ -363,11 +364,14 @@ export const getChartConfig = createSelector(
   }
 );
 
-export default {
-  getSourceOptions,
-  getSourceSelected,
-  getFilterOptions,
-  getFiltersSelected,
-  getCalculationData,
-  getDownloadLink
-};
+export const getPngSelectionSubtitle = createSelector(
+  [getSourceSelected, getCalculationSelection],
+  (selectedSource, selectedCalculation) => {
+    if (!selectedSource) return null;
+    const source = `Data source: ${selectedSource && selectedSource.label}`;
+    const calculation = selectedCalculation
+      ? `; Calculation: ${startCase(selectedCalculation)}`
+      : '';
+    return `${source}${calculation}.`;
+  }
+);

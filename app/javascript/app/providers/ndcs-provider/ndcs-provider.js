@@ -13,6 +13,7 @@ const NDCSProvider = props => {
     subcategory,
     document
   } = props;
+
   useEffect(() => {
     fetchNDCS({
       overrideFilter,
@@ -21,7 +22,7 @@ const NDCSProvider = props => {
       subcategory,
       document
     });
-  }, [subcategory]);
+  }, [subcategory, document]);
 
   return null;
 };

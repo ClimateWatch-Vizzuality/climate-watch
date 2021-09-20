@@ -32,7 +32,10 @@ const NDCSEnhancementsTable = ({
         </div>
       )}
       {!loading && tableData && tableData.length > 0 && (
-        <div className={styles.tableWrapper}>
+        <div
+          className={styles.tableWrapper}
+          data-tour="ndc-enhancement-tracker-03"
+        >
           <Table
             data={tableData}
             horizontalScroll

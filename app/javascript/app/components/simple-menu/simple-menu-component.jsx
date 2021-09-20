@@ -118,7 +118,7 @@ class SimpleMenu extends PureComponent {
     return (
       <a
         className={styles.link}
-        target={(option.target || option.external) && '_blank'}
+        target={option.external ? '_blank' : option.target || '_blank'}
         href={option.link}
         onClick={this.handleLinkClick}
       >

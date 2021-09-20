@@ -6,6 +6,7 @@ import { Dropdown } from 'cw-components';
 import { TabletLandscape } from 'components/responsive';
 import Map from 'components/map';
 import MapLegend from 'components/map-legend';
+import ModalPngDownload from 'components/modal-png-download';
 import ButtonGroup from 'components/button-group';
 import Icon from 'components/icon';
 import ShareButton from 'components/button/share-button';
@@ -15,6 +16,9 @@ import dropdownTheme from 'styles/themes/dropdown/react-selectize.scss';
 
 import styles from './context-by-indicator-styles';
 import { MAP_COLORS } from './context-by-indicator-selectors';
+
+const FEATURE_ENHANCEMENT_CHANGES =
+  process.env.FEATURE_ENHANCEMENT_CHANGES === 'true';
 
 const getTooltip = (country, tooltipTxt, { label }) => (
   <Link className={tooltipTheme.container} to={`/countries/${country.id}`}>
@@ -74,21 +78,109 @@ class ContextByIndicatorComponent extends Component {
       updateIndicatorYearFilter,
       handleCountryEnter,
       handleCountryClick,
-      handleInfoClick
+      handleInfoClick,
+      pngSelectionSubtitle,
+      handlePngDownloadModal
     } = this.props;
     const buttonGroupConfig = [
       {
         type: 'info',
         onClick: handleInfoClick
       },
-      {
-        type: 'download',
-        section: 'ghg-emissions'
-      },
+      FEATURE_ENHANCEMENT_CHANGES
+        ? {
+          type: 'downloadCombo',
+          options: [
+            {
+              label: 'Save as image (PNG)',
+              action: handlePngDownloadModal
+            }
+          ]
+        }
+        : {
+          type: 'download',
+          section: 'ghg-emissions'
+        },
       {
         type: 'addToUser'
       }
     ];
+
+    const renderMapWithLegend = ({ isPNG = false }) => (
+      <React.Fragment>
+        <Map
+          paths={paths}
+          tooltipId="cc-map-tooltip"
+          onCountryClick={handleCountryClick}
+          onCountryEnter={handleCountryEnter}
+          onCountryFocus={undefined}
+          dragEnable={!isPNG}
+          zoomEnable={!isPNG}
+        />
+        <MapLegend
+          mapColors={MAP_COLORS}
+          buckets={legend}
+          className={styles.legend}
+        />
+      </React.Fragment>
+    );
+
+    const renderChart = () =>
+      topTenCountries && (
+        <div className={styles.topTenSection}>
+          <p className={styles.title}>
+            {`${selectedIndicator.label} (${selectedIndicator.unit})`}
+          </p>
+          {topTenCountries.length ? (
+            <div className={styles.topTenChart}>
+              <ul className={styles.countriesLabels}>
+                {topTenCountries.map(c => (
+                  <li
+                    key={`${c.value}-label-${Math.random()}-${
+                      selectedIndicator.label
+                    }`}
+                    className={styles.countryDataLabel}
+                    data-for="cc-chart-tooltip"
+                    data-tip={c.label}
+                  >
+                    <span className={styles.countriesLabel}>{c.label}</span>
+                  </li>
+                ))}
+              </ul>
+              <ul className={styles.countriesContainer}>
+                {topTenCountries.map(c => (
+                  <li
+                    key={`${c.value}-${Math.random()}-${
+                      selectedIndicator.label
+                    }`}
+                    className={styles.countryData}
+                    data-for="cc-chart-tooltip"
+                    data-tip={c.label}
+                  >
+                    <span
+                      data-value={c.valueLabel}
+                      style={{
+                        width: `${c.chartWidth}%`,
+                        height: '12px',
+                        backgroundColor: c.color,
+                        display: 'block'
+                      }}
+                    />
+                  </li>
+                ))}
+              </ul>
+              <ReactTooltip
+                className={styles.tooltipContainer}
+                id="cc-chart-tooltip"
+              />
+            </div>
+          ) : (
+            <div
+              className={styles.noData}
+            >{`No ${selectedIndicator.label} data for year ${indicatorSelectedYear.label}`}</div>
+          )}
+        </div>
+      );
 
     return (
       <TabletLandscape>
@@ -118,78 +210,9 @@ class ContextByIndicatorComponent extends Component {
             </div>
             <div className={styles.visualizationsContainer}>
               <div className="layout-container">
-                <Map
-                  paths={paths}
-                  tooltipId="cc-map-tooltip"
-                  onCountryClick={handleCountryClick}
-                  onCountryEnter={handleCountryEnter}
-                  onCountryFocus={undefined}
-                  dragEnable
-                  zoomEnable
-                />
-                <MapLegend
-                  mapColors={MAP_COLORS}
-                  buckets={legend}
-                  className={styles.legend}
-                />
+                {renderMapWithLegend({ isPNG: false })}
               </div>
-              {topTenCountries && (
-                <div className={styles.topTenSection}>
-                  <p className={styles.title}>
-                    {`${selectedIndicator.label} (${selectedIndicator.unit})`}
-                  </p>
-                  {topTenCountries.length ? (
-                    <div className={styles.topTenChart}>
-                      <ul className={styles.countriesLabels}>
-                        {topTenCountries.map(c => (
-                          <li
-                            key={`${c.value}-label-${Math.random()}-${
-                              selectedIndicator.label
-                            }`}
-                            className={styles.countryDataLabel}
-                            data-for="cc-chart-tooltip"
-                            data-tip={c.label}
-                          >
-                            <span className={styles.countriesLabel}>
-                              {c.label}
-                            </span>
-                          </li>
-                        ))}
-                      </ul>
-                      <ul className={styles.countriesContainer}>
-                        {topTenCountries.map(c => (
-                          <li
-                            key={`${c.value}-${Math.random()}-${
-                              selectedIndicator.label
-                            }`}
-                            className={styles.countryData}
-                            data-for="cc-chart-tooltip"
-                            data-tip={c.label}
-                          >
-                            <span
-                              data-value={c.valueLabel}
-                              style={{
-                                width: `${c.chartWidth}%`,
-                                height: '12px',
-                                backgroundColor: c.color,
-                                display: 'block'
-                              }}
-                            />
-                          </li>
-                        ))}
-                      </ul>
-                      <ReactTooltip
-                        className={styles.tooltipContainer}
-                        id="cc-chart-tooltip"
-                      />
-                    </div>
-                  ) : (
-                    <div
-                      className={styles.noData}
-                    >{`No ${selectedIndicator.label} data for year ${indicatorSelectedYear.label}`}</div>
-                  )}
-                </div>
-              )}
+              {renderChart()}
             </div>
             {!isTablet && (
               <div className={styles.buttonsContainer}>
@@ -201,6 +224,14 @@ class ContextByIndicatorComponent extends Component {
                 {getTooltip(countryData, tooltipTxt, selectedIndicator)}
               </ReactTooltip>
             )}
+            <ModalPngDownload
+              id="country-context"
+              title="Agriculture sector - Understand country context"
+              selectionSubtitle={pngSelectionSubtitle}
+            >
+              {renderMapWithLegend({ isPNG: true })}
+              {renderChart()}
+            </ModalPngDownload>
           </React.Fragment>
         )}
       </TabletLandscape>
@@ -223,7 +254,9 @@ ContextByIndicatorComponent.propTypes = {
   updateIndicatorYearFilter: PropTypes.func.isRequired,
   handleCountryEnter: PropTypes.func.isRequired,
   handleCountryClick: PropTypes.func.isRequired,
-  handleInfoClick: PropTypes.func.isRequired
+  handleInfoClick: PropTypes.func.isRequired,
+  handlePngDownloadModal: PropTypes.func.isRequired,
+  pngSelectionSubtitle: PropTypes.string
 };
 
 export default ContextByIndicatorComponent;

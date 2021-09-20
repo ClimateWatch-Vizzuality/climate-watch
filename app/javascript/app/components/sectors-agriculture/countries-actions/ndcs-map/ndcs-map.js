@@ -7,7 +7,7 @@ import { handleAnalytics } from 'utils/analytics';
 import { isCountryIncluded } from 'app/utils';
 import { getLocationParamUpdated } from 'utils/navigation';
 import { europeSlug, europeanCountries } from 'app/data/european-countries';
-
+import { actions as pngModalActions } from 'components/modal-png-download';
 import { actions as modalActions } from 'components/modal-metadata';
 
 import Component from './ndcs-map-component';
@@ -20,6 +20,7 @@ import {
   getPathsWithStyles,
   getISOCountries,
   getLinkToDataExplorer,
+  getPngSelectionSubtitle,
   MAP_COLORS
 } from './ndcs-map-selectors';
 
@@ -44,7 +45,8 @@ const mapStateToProps = (state, { location }) => {
     mapColors: MAP_COLORS,
     selectedCategory: getSelectedCategory(ndcsWithSelection),
     selectedIndicator: getSelectedIndicator(ndcsWithSelection),
-    downloadLink: getLinkToDataExplorer(ndcsWithSelection)
+    downloadLink: getLinkToDataExplorer(ndcsWithSelection),
+    pngSelectionSubtitle: getPngSelectionSubtitle(ndcsWithSelection)
   };
 };
 
@@ -125,6 +127,11 @@ class NDCMapContainer extends PureComponent {
     history.replace(getLocationParamUpdated(location, param, clear));
   }
 
+  handlePngDownloadModal = () => {
+    const { setModalPngDownload } = this.props;
+    setModalPngDownload({ open: true });
+  };
+
   render() {
     const tooltipTxt = this.getTooltipText();
     return createElement(Component, {
@@ -135,6 +142,7 @@ class NDCMapContainer extends PureComponent {
       handleCategoryChange: this.handleCategoryChange,
       handleIndicatorChange: this.handleIndicatorChange,
       handleInfoClick: this.handleInfoClick,
+      handlePngDownloadModal: this.handlePngDownloadModal,
       countryData: this.state.country
     });
   }
@@ -145,9 +153,12 @@ NDCMapContainer.propTypes = {
   location: PropTypes.object.isRequired,
   isoCountries: PropTypes.array.isRequired,
   selectedIndicator: PropTypes.object,
-  setModalMetadata: PropTypes.func.isRequired
+  setModalMetadata: PropTypes.func.isRequired,
+  setModalPngDownload: PropTypes.func.isRequired
 };
 
 export default withRouter(
-  connect(mapStateToProps, modalActions)(NDCMapContainer)
+  connect(mapStateToProps, { ...modalActions, ...pngModalActions })(
+    NDCMapContainer
+  )
 );

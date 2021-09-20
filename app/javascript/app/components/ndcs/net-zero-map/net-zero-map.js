@@ -9,6 +9,7 @@ import { getLocationParamUpdated } from 'utils/navigation';
 import { IGNORED_COUNTRIES_ISOS } from 'data/ignored-countries';
 import { actions as fetchActions } from 'pages/net-zero';
 import { actions as modalActions } from 'components/modal-metadata';
+import { actions as pngModalActions } from 'components/modal-png-download';
 import exploreMapActions from 'components/ndcs/shared/explore-map/explore-map-actions';
 import { getHoverIndex } from 'components/ndcs/shared/utils';
 
@@ -26,10 +27,16 @@ import {
   getCategoryIndicators,
   getSelectedCategory,
   getTooltipCountryValues,
-  getDonutActiveIndex
+  getDonutActiveIndex,
+  getPngSelectionSubtitle
 } from './net-zero-map-selectors';
 
-const actions = { ...fetchActions, ...modalActions, ...exploreMapActions };
+const actions = {
+  ...fetchActions,
+  ...modalActions,
+  ...exploreMapActions,
+  ...pngModalActions
+};
 
 const mapStateToProps = (state, { location }) => {
   const { data, loading } = state.NetZero;
@@ -63,7 +70,8 @@ const mapStateToProps = (state, { location }) => {
     indicators: getCategoryIndicators(netZeroWithSelection),
     selectedCategory: getSelectedCategory(netZeroWithSelection),
     checked: getIsShowEUCountriesChecked(netZeroWithSelection),
-    donutActiveIndex: getDonutActiveIndex(netZeroWithSelection)
+    donutActiveIndex: getDonutActiveIndex(netZeroWithSelection),
+    pngSelectionSubtitle: getPngSelectionSubtitle(netZeroWithSelection)
   };
 };
 
@@ -178,6 +186,11 @@ class NetZeroMapContainer extends PureComponent {
     history.replace(getLocationParamUpdated(location, param, clear));
   }
 
+  handlePngDownloadModal = () => {
+    const { setModalPngDownload } = this.props;
+    setModalPngDownload({ open: true });
+  };
+
   render() {
     const { query } = this.props;
     const noContentMsg = query
@@ -193,6 +206,7 @@ class NetZeroMapContainer extends PureComponent {
       handleCategoryChange: this.handleCategoryChange,
       handleIndicatorChange: this.handleIndicatorChange,
       handleOnChangeChecked: this.handleOnChangeChecked,
+      handlePngDownloadModal: this.handlePngDownloadModal,
       checked: this.props.checked,
       indicator: this.props.indicator,
       countryData: this.state.country,
@@ -214,6 +228,7 @@ NetZeroMapContainer.propTypes = {
   indicator: PropTypes.object,
   tooltipCountryValues: PropTypes.object,
   selectActiveDonutIndex: PropTypes.func.isRequired,
+  setModalPngDownload: PropTypes.func.isRequired,
   legendData: PropTypes.array,
   checked: PropTypes.bool
 };

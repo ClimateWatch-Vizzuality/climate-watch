@@ -34,7 +34,8 @@ function GhgEmissionsContainer(props) {
     tableData,
     data,
     dataZoomYears,
-    setModalDownloadParams
+    setModalDownloadParams,
+    pngSelectionSubtitle
   } = props;
 
   const handleSetYears = years => {
@@ -289,6 +290,7 @@ function GhgEmissionsContainer(props) {
       setYears={handleSetYears}
       dataZoomPosition={dataZoomPosition}
       dataZoomYears={dataZoomYears}
+      pngSelectionSubtitle={pngSelectionSubtitle}
       setDataZoomPosition={setDataZoomPosition}
       handleDownloadModalOpen={handleDownloadModalOpen}
     />
@@ -305,6 +307,7 @@ GhgEmissionsContainer.propTypes = {
   selected: PropTypes.object,
   legendSelected: PropTypes.array,
   fieldToBreakBy: PropTypes.string,
+  pngSelectionSubtitle: PropTypes.string,
   tableData: PropTypes.array,
   data: PropTypes.array,
   search: PropTypes.object

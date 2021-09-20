@@ -383,10 +383,10 @@ export const getSummaryCardData = createSelector(
   }
 );
 
-export default {
-  getMapIndicator,
-  getIndicatorsParsed,
-  getEmissionsCardData,
-  getPathsWithStyles,
-  getSummaryCardData
-};
+export const getPngSelectionSubtitle = createSelector(
+  [getSelectedIndicator, getSelectedCategory],
+  (indicator, category) => {
+    if (!indicator || !category) return null;
+    return `Category: ${category.label}; Indicator: ${indicator.label}.`;
+  }
+);
