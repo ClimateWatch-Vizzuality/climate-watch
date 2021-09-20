@@ -129,6 +129,7 @@ FEATURE_POP_UP: Pop up shown entering the site
 POP_UP: Name of the temporary pop up to be displayed
 FEATURE_DYNAMIC_ZIP
 FEATURE_ENHANCEMENT_CHANGES
+FEATURE_SHOW_LTS_SUMMARY
 
 ### Temporary feature tags
 

@@ -31,6 +31,9 @@ import styles from './lts-explore-map-styles.scss';
 const FEATURE_ENHANCEMENT_CHANGES =
   process.env.FEATURE_ENHANCEMENT_CHANGES === 'true';
 
+const FEATURE_SHOW_LTS_SUMMARY =
+  process.env.FEATURE_SHOW_LTS_SUMMARY === 'true';
+
 const renderButtonGroup = (
   clickHandler,
   downloadLink,
@@ -187,7 +190,6 @@ function LTSExploreMap(props) {
   };
 
   const TOOLTIP_ID = 'lts-map-tooltip';
-
   return (
     <div>
       <SEOTags
@@ -261,7 +263,9 @@ function LTSExploreMap(props) {
                     >
                       {!loading && (
                         <React.Fragment>
-                          {summaryCardData && renderSummary(summaryCardData)}
+                          {FEATURE_SHOW_LTS_SUMMARY &&
+                            summaryCardData &&
+                            renderSummary(summaryCardData)}
                           {emissionsCardData &&
                             renderDonutChart(emissionsCardData)}
                           {legendData &&
