@@ -240,6 +240,19 @@ export const getMapLegend = createSelector(getSelectedIndicator, indicator => {
   return AGRICULTURE_INDICATORS_MAP_BUCKETS[indicator.value];
 });
 
+export const getPngSelectionSubtitle = createSelector(
+  [getSelectedYear, getSelectedIndicator],
+  (selectedYear, selectedIndicator) => {
+    if (!selectedYear || !selectedIndicator) {
+      return null;
+    }
+    return `
+      ${selectedYear ? `Year: ${selectedYear.label}` : ''}
+      ${selectedIndicator ? `; Indicator: ${selectedIndicator.label}` : ''}
+    `;
+  }
+);
+
 export const countriesContexts = createStructuredSelector({
   isoCountries: getISOCountries,
   indicators: getIndicatorsParsed,
@@ -250,5 +263,6 @@ export const countriesContexts = createStructuredSelector({
   paths: getPathsWithStyles,
   legend: getMapLegend,
   mapData: getMapData,
-  topTenCountries: getTopTenConfig
+  topTenCountries: getTopTenConfig,
+  pngSelectionSubtitle: getPngSelectionSubtitle
 });

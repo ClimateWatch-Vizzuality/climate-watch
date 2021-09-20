@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { getLocationParamUpdated } from 'utils/navigation';
 import { actions } from 'components/modal-metadata';
+import { actions as pngModalActions } from 'components/modal-png-download';
 import { getAllData } from './historical-emissions-graph-selectors';
 import Component from './historical-emissions-graph-component';
 
@@ -37,12 +38,17 @@ class HistoricalEmissionsGraph extends PureComponent {
     });
   };
 
+  handlePngDownloadModal = () => {
+    this.props.setModalPngDownload({ open: true });
+  };
+
   render() {
     return createElement(Component, {
       ...this.props,
       handleCountryChange: this.handleCountryChange,
       handleEmissionTypeChange: this.handleEmissionTypeChange,
       handleMetricTypeChange: this.handleMetricTypeChange,
+      handlePngDownloadModal: this.handlePngDownloadModal,
       handleInfoClick: this.handleInfoClick
     });
   }
@@ -51,7 +57,8 @@ class HistoricalEmissionsGraph extends PureComponent {
 HistoricalEmissionsGraph.propTypes = {
   history: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
-  setModalMetadata: PropTypes.func.isRequired
+  setModalMetadata: PropTypes.func.isRequired,
+  setModalPngDownload: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state, { location }) => {
@@ -75,5 +82,7 @@ const mapStateToProps = (state, { location }) => {
 };
 
 export default withRouter(
-  connect(mapStateToProps, actions)(HistoricalEmissionsGraph)
+  connect(mapStateToProps, { ...actions, ...pngModalActions })(
+    HistoricalEmissionsGraph
+  )
 );

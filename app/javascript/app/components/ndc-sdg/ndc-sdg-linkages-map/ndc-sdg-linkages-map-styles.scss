@@ -37,7 +37,11 @@
   height: 40vh;
 
   @media #{$tablet-landscape} {
-    height: 684px;
+    height: 584px;
+  }
+
+  &.png {
+    height: 384px;
   }
 }
 

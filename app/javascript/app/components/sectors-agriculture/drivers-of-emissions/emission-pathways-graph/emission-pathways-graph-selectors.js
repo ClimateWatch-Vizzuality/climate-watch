@@ -208,10 +208,12 @@ export const getCategoryOptions = createSelector(
   [getIndicatorsWithData],
   indicators => {
     if (!indicators) return null;
-    const categories = indicators.filter(i => i.category).map(i => ({
-      label: i.category.name,
-      value: i.category.id
-    }));
+    const categories = indicators
+      .filter(i => i.category)
+      .map(i => ({
+        label: i.category.name,
+        value: i.category.id
+      }));
     return uniqBy(categories, 'value');
   }
 );
@@ -630,11 +632,20 @@ export const getExplorePathwaysButtonConfig = createSelector(
   }
 );
 
-export default {
-  getChartData,
-  getChartDomainWithYMargins,
-  getChartConfig,
-  getFiltersOptions,
-  getFiltersSelected,
-  getExplorePathwaysButtonConfig
-};
+export const getPngSelectionSubtitle = createSelector(
+  [getFiltersSelected],
+  filters => {
+    const { location, model, subcategory, indicator } = filters || {};
+
+    if (!filters || !location || !model || !subcategory || !indicator) {
+      return null;
+    }
+
+    return `
+      ${location ? `Region: ${location.label}` : ''}
+      ${model ? `; Model: ${model.label}` : ''}
+      ${subcategory ? `; Subcategory: ${subcategory.label}` : ''}
+      ${indicator ? `; Indicator: ${indicator.label}` : ''}.
+    `;
+  }
+);

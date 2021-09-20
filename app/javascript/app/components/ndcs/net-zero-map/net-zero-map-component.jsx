@@ -6,6 +6,7 @@ import Map from 'components/map';
 import ButtonGroup from 'components/button-group';
 import Loading from 'components/loading';
 import ModalMetadata from 'components/modal-metadata';
+import ModalPngDownload from 'components/modal-png-download';
 import Dropdown from 'components/dropdown';
 import { PieChart, CheckInput } from 'cw-components';
 import AbbrReplace from 'components/abbr-replace';
@@ -27,31 +28,55 @@ import newMapTheme from 'styles/themes/map/map-new-zoom-controls.scss';
 import blueCheckboxTheme from 'styles/themes/checkbox/blue-checkbox.scss';
 import styles from './net-zero-map-styles.scss';
 
-const renderButtonGroup = (clickHandler, downloadLink, stickyStatus) => (
+const FEATURE_ENHANCEMENT_CHANGES =
+  process.env.FEATURE_ENHANCEMENT_CHANGES === 'true';
+
+const renderButtonGroup = (
+  clickHandler,
+  downloadLink,
+  handlePngDownloadModal,
+  stickyStatus
+) => (
   <div
     className={cx(styles.buttonGroupContainer, {
       [styles.padded]: stickyStatus !== Sticky.STATUS_ORIGINAL
     })}
-    data-tour="net-zero-05"
   >
-    <ButtonGroup
-      className={styles.buttonGroup}
-      buttonsConfig={[
-        {
-          type: 'info',
-          onClick: clickHandler
-        },
-        {
-          type: 'download',
-          section: 'net-zero-content',
-          link: downloadLink
-        },
-        {
-          type: 'addToUser'
-        }
-      ]}
-    />
-    <ShareButton />
+    <span data-tour="net-zero-05">
+      <ButtonGroup
+        className={styles.buttonGroup}
+        buttonsConfig={[
+          {
+            type: 'info',
+            onClick: clickHandler
+          },
+          FEATURE_ENHANCEMENT_CHANGES
+            ? {
+              type: 'downloadCombo',
+              options: [
+                {
+                  label: 'Save as image (PNG)',
+                  action: handlePngDownloadModal
+                },
+                {
+                  label: 'Go to data explorer',
+                  link: downloadLink,
+                  target: '_self'
+                }
+              ]
+            }
+            : {
+              type: 'download',
+              section: 'net-zero-content',
+              link: downloadLink
+            },
+          {
+            type: 'addToUser'
+          }
+        ]}
+      />
+      <ShareButton />
+    </span>
     <ModalShare analyticsName="LTS Explore" />
   </div>
 );
@@ -110,6 +135,8 @@ function NetZeroMap(props) {
     selectedCategory,
     handleIndicatorChange,
     handleOnChangeChecked,
+    handlePngDownloadModal,
+    pngSelectionSubtitle,
     checked,
     tooltipValues,
     donutActiveIndex,
@@ -139,6 +166,24 @@ function NetZeroMap(props) {
       />
     </div>
   );
+
+  // eslint-disable-next-line react/prop-types
+  const renderMap = ({ isTablet, png }) => {
+    const customCenter = isTablet ? [22, 20] : [10, 20];
+    return (
+      <Map
+        paths={paths}
+        tooltipId={TOOLTIP_ID}
+        onCountryClick={handleCountryClick}
+        onCountryEnter={handleCountryEnter}
+        onCountryFocus={handleCountryEnter}
+        zoomEnable={!png}
+        customCenter={customCenter}
+        theme={newMapTheme}
+        className={styles.map}
+      />
+    );
+  };
 
   const TOOLTIP_ID = 'net-zero-map-tooltip';
 
@@ -195,6 +240,7 @@ function NetZeroMap(props) {
                       renderButtonGroup(
                         handleInfoClick,
                         downloadLink,
+                        handlePngDownloadModal,
                         stickyStatus
                       )}
                   </div>
@@ -231,17 +277,7 @@ function NetZeroMap(props) {
                         className={styles.mapInfo}
                         text="The map reflects latest communication of each country. Explore which countries have adopted a net-zero target below and click on a country to see its climate profile."
                       />
-                      <Map
-                        paths={paths}
-                        tooltipId={TOOLTIP_ID}
-                        onCountryClick={handleCountryClick}
-                        onCountryEnter={handleCountryEnter}
-                        onCountryFocus={handleCountryEnter}
-                        zoomEnable
-                        customCenter={isTablet ? [20, 20] : [10, 20]}
-                        theme={newMapTheme}
-                        className={styles.map}
-                      />
+                      {renderMap({ isTablet })}
                       <CheckInput
                         theme={blueCheckboxTheme}
                         label="Visualize individual targets of EU Members on the map"
@@ -258,13 +294,24 @@ function NetZeroMap(props) {
                         />
                       )}
                       {!isTablet &&
-                        renderButtonGroup(handleInfoClick, downloadLink)}
+                        renderButtonGroup(
+                          handleInfoClick,
+                          downloadLink,
+                          handlePngDownloadModal
+                        )}
                     </div>
                   </div>
                 </div>
               </div>
             </div>
             <ModalMetadata />
+            <ModalPngDownload
+              title="Net Zero"
+              selectionSubtitle={pngSelectionSubtitle}
+            >
+              {renderMap({ isTablet: true, png: true })}
+              {legendData && renderLegend(legendData, emissionsCardData)}
+            </ModalPngDownload>
           </div>
         )}
       </TabletLandscape>
@@ -292,6 +339,8 @@ NetZeroMap.propTypes = {
   handleOnChangeChecked: PropTypes.func,
   checked: PropTypes.bool,
   handleIndicatorChange: PropTypes.func,
+  handlePngDownloadModal: PropTypes.func.isRequired,
+  pngSelectionSubtitle: PropTypes.string,
   selectActiveDonutIndex: PropTypes.func.isRequired,
   donutActiveIndex: PropTypes.number
 };

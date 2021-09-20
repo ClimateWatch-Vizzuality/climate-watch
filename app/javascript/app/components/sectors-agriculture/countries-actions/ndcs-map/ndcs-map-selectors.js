@@ -240,11 +240,10 @@ export const getLinkToDataExplorer = createSelector(
   }
 );
 
-export default {
-  getCategories,
-  getSelectedIndicator,
-  getAgricultureIndicators,
-  getSelectedCategory,
-  getPathsWithStyles,
-  getCountriesCountWithProposedActions
-};
+export const getPngSelectionSubtitle = createSelector(
+  [getSelectedCategory],
+  selectedCategory => {
+    if (!selectedCategory) return null;
+    return `Category: ${selectedCategory.label}`;
+  }
+);

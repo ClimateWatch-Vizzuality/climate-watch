@@ -7,6 +7,7 @@ import { getLocationParamUpdated } from 'utils/navigation';
 import isArray from 'lodash/isArray';
 
 import { actions as modalActions } from 'components/modal-overview';
+import { actions as pngModalActions } from 'components/modal-png-download';
 
 import ownActions from './emission-pathways-graph-actions';
 import reducers, { initialState } from './emission-pathways-graph-reducers';
@@ -21,7 +22,8 @@ import {
   getExplorePathwaysButtonConfig,
   getModalData,
   getModelSelected,
-  getLinkToDataExplorer
+  getLinkToDataExplorer,
+  getPngSelectionSubtitle
 } from './emission-pathways-graph-selectors';
 
 const actions = { ...ownActions, ...modalActions };
@@ -70,6 +72,7 @@ const mapStateToProps = (state, { location }) => {
     model: getModelSelected(espData),
     error: providers.some(p => state[p].error),
     loading: providers.some(p => state[p].loading) || !filtersSelected.model,
+    pngSelectionSubtitle: getPngSelectionSubtitle(espData),
     search,
     downloadLink: getLinkToDataExplorer(espData)
   };
@@ -192,6 +195,10 @@ class EmissionPathwayGraphContainer extends PureComponent {
     this.props.toggleModalOverview({ open: true });
   };
 
+  handlePngDownloadModal = () => {
+    this.props.setModalPngDownload({ open: true });
+  };
+
   render() {
     return createElement(EmissionPathwayGraphComponent, {
       ...this.props,
@@ -200,7 +207,8 @@ class EmissionPathwayGraphContainer extends PureComponent {
       handleSelectorChange: this.handleSelectorChange,
       handleClearSelection: this.handleClearSelection,
       handleSubcategoryChange: this.handleSubcategoryChange,
-      handleCurrentLocationChange: this.handleCurrentLocationChange
+      handleCurrentLocationChange: this.handleCurrentLocationChange,
+      handlePngDownloadModal: this.handlePngDownloadModal
     });
   }
 }
@@ -211,10 +219,13 @@ EmissionPathwayGraphContainer.propTypes = {
   filtersSelected: PropTypes.object.isRequired,
   toggleModalOverview: PropTypes.func.isRequired,
   findAvailableModels: PropTypes.func.isRequired,
+  setModalPngDownload: PropTypes.func.isRequired,
   search: PropTypes.object
 };
 
 export { actions, reducers, initialState };
 export default withRouter(
-  connect(mapStateToProps, actions)(EmissionPathwayGraphContainer)
+  connect(mapStateToProps, { ...actions, ...pngModalActions })(
+    EmissionPathwayGraphContainer
+  )
 );

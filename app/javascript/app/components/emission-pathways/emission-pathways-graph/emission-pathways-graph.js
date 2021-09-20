@@ -7,6 +7,7 @@ import { getLocationParamUpdated } from 'utils/navigation';
 import isArray from 'lodash/isArray';
 
 import { actions as modalActions } from 'components/modal-overview';
+import { actions as pngModalActions } from 'components/modal-png-download';
 
 import ownActions from './emission-pathways-graph-actions';
 import reducers, { initialState } from './emission-pathways-graph-reducers';
@@ -20,10 +21,11 @@ import {
   getFiltersSelected,
   getModalData,
   getModelSelected,
-  getLinkToDataExplorer
+  getLinkToDataExplorer,
+  getPngSelectionSubtitle
 } from './emission-pathways-graph-selectors';
 
-const actions = { ...ownActions, ...modalActions };
+const actions = { ...ownActions, ...modalActions, ...pngModalActions };
 
 const mapStateToProps = (state, { location }) => {
   const { data } = state.espTimeSeries;
@@ -77,7 +79,8 @@ const mapStateToProps = (state, { location }) => {
     error: providers.some(p => state[p].error),
     loading: providers.some(p => state[p].loading) || !filtersSelected.model,
     search,
-    downloadLink: getLinkToDataExplorer(espData)
+    downloadLink: getLinkToDataExplorer(espData),
+    pngSelectionSubtitle: getPngSelectionSubtitle(espData)
   };
 };
 
@@ -186,12 +189,17 @@ class EmissionPathwayGraphContainer extends PureComponent {
     this.props.toggleModalOverview({ open: true });
   };
 
+  handlePngDownloadModal = () => {
+    this.props.setModalPngDownload({ open: true });
+  };
+
   render() {
     return createElement(EmissionPathwayGraphComponent, {
       ...this.props,
       handleInfoClick: this.handleInfoClick,
       handleModelChange: this.handleModelChange,
       handleSelectorChange: this.handleSelectorChange,
+      handlePngDownloadModal: this.handlePngDownloadModal,
       handleClearSelection: this.handleClearSelection
     });
   }
@@ -203,7 +211,8 @@ EmissionPathwayGraphContainer.propTypes = {
   filtersSelected: PropTypes.object.isRequired,
   toggleModalOverview: PropTypes.func.isRequired,
   findAvailableModels: PropTypes.func.isRequired,
-  search: PropTypes.object
+  search: PropTypes.object,
+  setModalPngDownload: PropTypes.func.isRequired
 };
 
 export { actions, reducers, initialState };

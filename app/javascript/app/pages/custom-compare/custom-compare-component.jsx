@@ -121,6 +121,7 @@ const CustomComparisonComponent = props => {
       links={anchorLinks}
       className={styles.anchorNav}
       theme={anchorNavRegularTheme}
+      dataTour="custom-compare-01"
     />
   );
   const filters = <div className={styles.content}>{renderFilters()}</div>;
