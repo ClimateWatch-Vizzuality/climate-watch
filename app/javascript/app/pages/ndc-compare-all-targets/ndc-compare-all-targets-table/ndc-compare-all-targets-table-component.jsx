@@ -10,8 +10,10 @@ import { Table } from 'cw-components';
 import NoContent from 'components/no-content';
 import Loading from 'components/loading';
 import compareTableTheme from 'styles/themes/table/compare-table-theme.scss';
-import { DOCUMENT_COLUMNS_SLUGS } from 'data/country-documents';
-import { SUBMISSION_ICON_VALUE } from 'pages/ndc-compare-all-targets/ndc-compare-all-targets-selectors';
+import {
+  DOCUMENT_COLUMNS_SLUGS,
+  SUBMISSION_ICON_VALUE
+} from 'data/country-documents';
 import styles from './ndc-compare-all-targets-table-styles.scss';
 
 const cellRenderer = (

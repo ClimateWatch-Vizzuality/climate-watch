@@ -8,3 +8,10 @@ export const DOCUMENT_COLUMNS_SLUGS = {
   'Climate Framework Laws or Policies': 'framework',
   'Sectoral Laws or Policies': 'sectoral'
 };
+
+// Needed for sorting
+export const SUBMISSION_ICON_VALUE = {
+  no: 0,
+  intends: 1,
+  yes: 2
+};

@@ -3,7 +3,8 @@ import { withRouter } from 'react-router';
 import Component from './country-climate-commitments-component';
 import {
   getPreviousComparisonCountryValues,
-  getCountriesDocumentsValues
+  getCountriesDocumentsValues,
+  getCountryName
 } from './country-climate-commitments-selectors';
 
 const mapStateToProps = (state, { match }) => {
@@ -12,8 +13,9 @@ const mapStateToProps = (state, { match }) => {
     ...state
   };
   return {
-    indicators: getPreviousComparisonCountryValues(stateWithIso),
-    countriesDocuments: getCountriesDocumentsValues(stateWithIso)
+    countryName: getCountryName(stateWithIso),
+    previousComparisonValues: getPreviousComparisonCountryValues(stateWithIso),
+    countriesDocumentsValues: getCountriesDocumentsValues(stateWithIso)
   };
 };
 
