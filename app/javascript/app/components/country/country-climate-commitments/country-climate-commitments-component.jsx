@@ -10,11 +10,9 @@ import notSubmittedIcon from 'assets/icons/compare-not-submitted.svg';
 import intendsIcon from 'assets/icons/compare-intends.svg';
 import { SUBMISSION_ICON_VALUE } from 'data/country-documents';
 import ReactTooltip from 'react-tooltip';
+import NDCSProvider from 'providers/ndcs-provider';
 
 import styles from './country-climate-commitments-styles.scss';
-
-const FEATURE_ENHANCEMENT_CHANGES =
-  process.env.FEATURE_ENHANCEMENT_CHANGES === 'true';
 
 function CountryClimateCommitments({
   countriesDocumentsValues,
@@ -87,12 +85,12 @@ function CountryClimateCommitments({
           )}
         </div>
       </div>
-      {FEATURE_ENHANCEMENT_CHANGES && (
-        <React.Fragment>
-          <NDCSPreviousComparisonProvider />
-          <CountriesDocumentsProvider location={iso} />
-        </React.Fragment>
-      )}
+      <NDCSPreviousComparisonProvider />
+      <CountriesDocumentsProvider location={iso} />
+      <NDCSProvider
+        overrideFilter
+        indicatorSlugs={['nz_status', 'ndce_status_2020']}
+      />
     </React.Fragment>
   );
 }

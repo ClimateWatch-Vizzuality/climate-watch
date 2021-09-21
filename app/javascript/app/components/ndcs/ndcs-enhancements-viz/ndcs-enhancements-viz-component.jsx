@@ -17,7 +17,7 @@ import NDCSEnhancementsTooltip from 'components/ndcs/ndcs-enhancements-viz/ndcs-
 import ReactTooltip from 'react-tooltip';
 import blueCheckboxTheme from 'styles/themes/checkbox/blue-checkbox.scss';
 import { Link } from 'react-router-dom';
-import { LABEL_SLUGS } from './ndcs-enhancements-viz-selectors';
+import { ENHANCEMENT_LABEL_SLUGS } from 'data/constants';
 import styles from './ndcs-enhancements-viz-styles.scss';
 
 const FEATURE_ENHANCEMENT_CHANGES =
@@ -182,14 +182,17 @@ const NDCSEnhancementsViz = ({
                     </ReactTooltip>
                     <div className={styles.summaryItemsContainer}>
                       {renderSummaryItem(
-                        summaryData[LABEL_SLUGS.SUBMITTED_2020].countries
+                        summaryData[ENHANCEMENT_LABEL_SLUGS.SUBMITTED_2020]
+                          .countries
                       )}
                       {renderSummaryItem(
-                        summaryData[LABEL_SLUGS.ENHANCED_MITIGATION].countries
+                        summaryData[ENHANCEMENT_LABEL_SLUGS.ENHANCED_MITIGATION]
+                          .countries
                       )}
                       <span className={styles.separator} />
                       {renderSummaryItem(
-                        summaryData[LABEL_SLUGS.INTENDS_TO_ENHANCE].countries
+                        summaryData[ENHANCEMENT_LABEL_SLUGS.INTENDS_TO_ENHANCE]
+                          .countries
                       )}
                     </div>
                   </div>

@@ -13,6 +13,7 @@ import { COUNTRY_STYLES } from 'components/ndcs/shared/constants';
 import { sortByIndexAndNotInfo, getLabels } from 'components/ndcs/shared/utils';
 import { europeSlug, europeanCountries } from 'app/data/european-countries';
 import { getIsShowEUCountriesChecked } from 'components/ndcs/shared/explore-map/explore-map-selectors';
+import { NET_ZERO_POSITIVE_LABELS } from 'data/constants';
 
 const NO_DOCUMENT_SUBMITTED = 'No Document Submitted';
 
@@ -370,13 +371,9 @@ export const getSummaryCardData = createSelector(
 
     const emissionsIndicator = indicators.find(i => i.slug === 'ndce_ghg');
     if (!emissionsIndicator) return null;
-    const positiveLabels = [
-      'Net-zero Target in Law',
-      'Net-zero Target in Policy Document',
-      'Net-zero Target in Political Pledge'
-    ];
+
     const positiveLabelIds = Object.entries(netZeroIndicator.labels)
-      .filter(([, l]) => positiveLabels.includes(l.name))
+      .filter(([, l]) => NET_ZERO_POSITIVE_LABELS.includes(l.name))
       .map(([key]) => key);
     const netZeroCountries = Object.keys(
       netZeroIndicator.locations
