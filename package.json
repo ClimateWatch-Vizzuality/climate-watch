@@ -39,7 +39,7 @@
     "@babel/polyfill": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
     "@babel/preset-react": "^7.0.0",
-    "ansi-regex": "^5.0.0",
+    "ansi-regex": "^6.0.1",
     "autoprefixer": "9.8.0",
     "axios": "^0.21.1",
     "axios-cache-adapter": "2.4.1",
