@@ -1,5 +1,6 @@
 import { createElement } from 'react';
 
+import ClimateCommitments from 'components/country/country-climate-commitments';
 import GHGCountryEmissions from 'components/country/country-ghg';
 import NDCSDGLinkages from 'components/country/country-ndc-sdg-linkages';
 import ClimateVulnerability from 'components/country/country-climate-vulnerability';
@@ -7,7 +8,16 @@ import CountryNdcOverview from 'components/country/country-ndc-overview';
 import CountryLtsOverview from 'components/country/country-lts-overview';
 import LawsAndPolicies from 'components/country/laws-and-policies';
 
+const FEATURE_ENHANCEMENT_CHANGES =
+  process.env.FEATURE_ENHANCEMENT_CHANGES === 'true';
+
 const routes = [
+  FEATURE_ENHANCEMENT_CHANGES && {
+    hash: 'climate-commitments',
+    label: 'Climate commitments',
+    anchor: true,
+    component: ClimateCommitments
+  },
   {
     hash: 'ghg-emissions',
     label: 'GHG Emissions',

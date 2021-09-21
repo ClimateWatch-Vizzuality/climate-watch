@@ -5,6 +5,7 @@ import { handleActions } from 'app/utils/redux';
 // Providers
 import * as NDCSProvider from 'providers/ndcs-provider';
 import * as NDCSExploreProvider from 'providers/ndcs-explore-provider';
+import * as NDCSPreviousComparison from 'providers/ndcs-previous-comparison-provider';
 import * as loginProvider from 'providers/login-provider';
 import * as countriesProvider from 'providers/countries-provider';
 import * as regionsProvider from 'providers/regions-provider';
@@ -48,6 +49,7 @@ import * as keyVisualizationsProvider from 'providers/key-visualizations-provide
 const providersReducers = {
   ndcs: handleActions(NDCSProvider),
   ndcsExplore: handleActions(NDCSExploreProvider),
+  ndcsPreviousComparison: handleActions(NDCSPreviousComparison),
   login: handleActions(loginProvider),
   countries: handleActions(countriesProvider),
   regions: handleActions(regionsProvider),

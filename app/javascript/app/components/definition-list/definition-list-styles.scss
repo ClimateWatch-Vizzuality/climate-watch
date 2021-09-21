@@ -9,6 +9,14 @@
   margin: auto;
 }
 
+.value {
+  display: flex;
+}
+
+.indicatorIcon {
+  margin: 2px 10px 0 0;
+}
+
 .definition {
   @include columns(12);
   @include xy-gutters(40px, $gutter-position: ('top', 'bottom'), $gutter-type: padding);

@@ -1,3 +1,4 @@
+/* eslint-disable no-confusing-arrow */
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Accordion from 'components/accordion';
@@ -29,6 +30,39 @@ class NdcsCountryAccordion extends PureComponent {
     }
     const showNoContent = !loading && (!ndcsData || !ndcsData.length);
     const showData = !loading && ndcsData && ndcsData.length > 0;
+    const renderSectoralInformationAccordion = () => (
+      <Accordion
+        className={styles.accordion}
+        param="section"
+        data={ndcsData}
+        hasNestedCollapse
+      >
+        {ndcsData &&
+          ndcsData.length > 0 &&
+          ndcsData.map(section =>
+            section.sectors && section.sectors.length > 0 ? (
+              <Accordion
+                key={section.slug}
+                isChild
+                className={styles.subAccordion}
+                param="sector"
+                data={section.sectors}
+              >
+                {section.sectors.map(desc => (
+                  <div key={desc.title} className={styles.definitionList}>
+                    <DefinitionList
+                      className={layout.content}
+                      definitions={desc.definitions}
+                      compare={compare}
+                    />
+                  </div>
+                ))}
+              </Accordion>
+            ) : null
+          )}
+      </Accordion>
+    );
+
     return (
       <div className={styles.wrapper}>
         <NdcsDocumentsProvider />
@@ -39,39 +73,7 @@ class NdcsCountryAccordion extends PureComponent {
         {showData && (
           <div>
             {category === 'sectoral_information' ? (
-              <Accordion
-                className={styles.accordion}
-                param="section"
-                data={ndcsData}
-                hasNestedCollapse
-              >
-                {ndcsData &&
-                  ndcsData.length > 0 &&
-                  ndcsData.map(section =>
-                    (section.sectors && section.sectors.length > 0 ? (
-                      <Accordion
-                        key={section.slug}
-                        isChild
-                        className={styles.subAccordion}
-                        param="sector"
-                        data={section.sectors}
-                      >
-                        {section.sectors.map(desc => (
-                          <div
-                            key={desc.title}
-                            className={styles.definitionList}
-                          >
-                            <DefinitionList
-                              className={layout.content}
-                              definitions={desc.definitions}
-                              compare={compare}
-                            />
-                          </div>
-                        ))}
-                      </Accordion>
-                    ) : null)
-                  )}
-              </Accordion>
+              renderSectoralInformationAccordion()
             ) : (
               <Accordion
                 className={styles.accordion}
@@ -85,6 +87,9 @@ class NdcsCountryAccordion extends PureComponent {
                       <DefinitionList
                         className={layout.content}
                         definitions={section.definitions}
+                        comparisonWithPreviousNDC={
+                          section.slug === 'comparison_with_previous_ndc'
+                        }
                         compare={compare}
                       />
                     </div>

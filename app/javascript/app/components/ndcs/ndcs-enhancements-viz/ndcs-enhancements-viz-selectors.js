@@ -13,18 +13,14 @@ import { europeSlug, europeanCountries } from 'app/data/european-countries';
 import { COUNTRY_STYLES } from 'components/ndcs/shared/constants';
 import { CHART_NAMED_COLORS } from 'styles/constants';
 // TODO: Remove ndc_enhancement when new data on production
-import { ENHANCEMENT_CATEGORIES } from 'data/constants';
+import {
+  ENHANCEMENT_CATEGORIES,
+  ENHANCEMENT_LABEL_SLUGS
+} from 'data/constants';
 
 const INDICATOR_SLUGS = {
   EMISSIONS: 'ndce_ghg',
   MAP: 'ndce_status_2020'
-};
-
-export const LABEL_SLUGS = {
-  INTENDS_TO_ENHANCE: 'enhance_2020',
-  SUBMITTED_2020: 'submitted_2020',
-  ENHANCED_MITIGATION: 'enhanced_migitation',
-  NO_INFO: 'no_info_2020'
 };
 
 const LABEL_COLORS = {
@@ -37,6 +33,8 @@ const getSearch = state => state.search || null;
 const getCountries = state => state.countries || null;
 const getCategories = state => state.categories || null;
 const getIndicatorsData = state => state.indicators || null;
+const getPreviousComparisonIndicators = state =>
+  state.ndcsPreviousComparison && state.ndcsPreviousComparison.data;
 
 export const getIsEnhancedChecked = createSelector(
   getSearch,
@@ -89,7 +87,9 @@ export const getMapIndicator = createSelector(
 
     const updatedMapIndicator = { ...mapIndicator };
     const noInfoId = Object.keys(updatedMapIndicator.legendBuckets).find(
-      id => updatedMapIndicator.legendBuckets[id].slug === LABEL_SLUGS.NO_INFO
+      id =>
+        updatedMapIndicator.legendBuckets[id].slug ===
+        ENHANCEMENT_LABEL_SLUGS.NO_INFO
     );
 
     // Set all countries without values to "No Information" by default
@@ -115,10 +115,11 @@ export const filterEnhancedValueOnIndicator = createSelector(
     if (isEnhancedChecked) return indicator;
     const { legendBuckets, locations } = indicator;
     const enhancedLabelId = Object.keys(legendBuckets).find(
-      key => legendBuckets[key].slug === LABEL_SLUGS.ENHANCED_MITIGATION
+      key =>
+        legendBuckets[key].slug === ENHANCEMENT_LABEL_SLUGS.ENHANCED_MITIGATION
     );
     const submittedLabelId = Object.keys(legendBuckets).find(
-      key => legendBuckets[key].slug === LABEL_SLUGS.SUBMITTED_2020
+      key => legendBuckets[key].slug === ENHANCEMENT_LABEL_SLUGS.SUBMITTED_2020
     );
 
     const updatedLegendBuckets = { ...legendBuckets };
@@ -154,11 +155,11 @@ export const sortIndicatorLegend = createSelector(
     if (!indicator) return null;
     const updatedIndicator = { ...indicator };
     const slugsLegendOrder = [
-      LABEL_SLUGS.ENHANCED_MITIGATION,
-      LABEL_SLUGS.SUBMITTED_2020,
-      LABEL_SLUGS.INTENDS_TO_ENHANCE,
+      ENHANCEMENT_LABEL_SLUGS.ENHANCED_MITIGATION,
+      ENHANCEMENT_LABEL_SLUGS.SUBMITTED_2020,
+      ENHANCEMENT_LABEL_SLUGS.INTENDS_TO_ENHANCE,
       null,
-      LABEL_SLUGS.NO_INFO
+      ENHANCEMENT_LABEL_SLUGS.NO_INFO
     ]; // null it's for 'Not Applicable'
     Object.entries(updatedIndicator.legendBuckets).forEach(([key, value]) => {
       updatedIndicator.legendBuckets[key] = {
@@ -250,6 +251,23 @@ export const getLinkToDataExplorer = createSelector(
   }
 );
 
+export const getPreviousComparisonCountryValues = createSelector(
+  [getPreviousComparisonIndicators, getISOCountries],
+  (previousComparisonIndicators, isos) => {
+    if (!previousComparisonIndicators) return null;
+    const previousComparisonCountryValues = {};
+    isos.forEach(iso => {
+      previousComparisonCountryValues[
+        iso
+      ] = previousComparisonIndicators.map(indicator => [
+        indicator.name,
+        indicator.locations[iso].value
+      ]);
+    });
+    return previousComparisonCountryValues;
+  }
+);
+
 export const summarizeIndicators = createSelector(
   [getIndicatorsParsed, getMapIndicator],
   (indicators, indicator) => {
@@ -318,8 +336,10 @@ export const summarizeIndicators = createSelector(
           summaryData[type].countries.value += 1;
 
           // Enhanced mitigation should be counted as submitted 2020
-          if (type === LABEL_SLUGS.ENHANCED_MITIGATION) {
-            summaryData[LABEL_SLUGS.SUBMITTED_2020].countries.value += 1;
+          if (type === ENHANCEMENT_LABEL_SLUGS.ENHANCED_MITIGATION) {
+            summaryData[
+              ENHANCEMENT_LABEL_SLUGS.SUBMITTED_2020
+            ].countries.value += 1;
           }
 
           if (emissionsIndicator.locations[l]) {
@@ -335,10 +355,11 @@ export const summarizeIndicators = createSelector(
     Object.keys(summaryData).forEach(type => {
       // Enhanced mitigation should be counted as submitted 2020
       const emissionsParsedValue =
-        type === LABEL_SLUGS.SUBMITTED_2020
+        type === ENHANCEMENT_LABEL_SLUGS.SUBMITTED_2020
           ? parseFloat(summaryData.submitted_2020.emissions.value) +
             parseFloat(
-              summaryData[LABEL_SLUGS.ENHANCED_MITIGATION].emissions.value
+              summaryData[ENHANCEMENT_LABEL_SLUGS.ENHANCED_MITIGATION].emissions
+                .value
             )
           : parseFloat(summaryData[type].emissions.value);
 
@@ -349,9 +370,9 @@ export const summarizeIndicators = createSelector(
     Object.keys(summaryData).forEach(type => {
       const emissionsString = `<span title="2018 emissions data">${summaryData[type].emissions.value}% of global emissions</span>`;
       summaryData[type].countries.opts.label = {
-        [LABEL_SLUGS.INTENDS_TO_ENHANCE]: `<strong>countries</strong> (${emissionsString}) have <strong>stated their intention to <span title="Definition: Strengthening mitigation ambition and/or increasing adaptation action in a new or updated NDC.">enhance ambition or action</span> in a new or updated NDC</strong>`,
-        [LABEL_SLUGS.ENHANCED_MITIGATION]: `<strong>countries</strong> (${emissionsString}) have submitted a <strong>new or updated NDC with reduced total emissions</strong> compared to their previous NDC`,
-        [LABEL_SLUGS.SUBMITTED_2020]: `<strong>countries</strong> (${emissionsString}) have submitted a <strong>new or updated NDC</strong>`
+        [ENHANCEMENT_LABEL_SLUGS.INTENDS_TO_ENHANCE]: `<strong>countries</strong> (${emissionsString}) have <strong>stated their intention to <span title="Definition: Strengthening mitigation ambition and/or increasing adaptation action in a new or updated NDC.">enhance ambition or action</span> in a new or updated NDC</strong>`,
+        [ENHANCEMENT_LABEL_SLUGS.ENHANCED_MITIGATION]: `<strong>countries</strong> (${emissionsString}) have submitted a <strong>new or updated NDC with reduced total emissions</strong> compared to their previous NDC`,
+        [ENHANCEMENT_LABEL_SLUGS.SUBMITTED_2020]: `<strong>countries</strong> (${emissionsString}) have submitted a <strong>new or updated NDC</strong>`
       }[type];
     });
     return summaryData;

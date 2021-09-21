@@ -22,6 +22,7 @@ import {
   getLinkToDataExplorer,
   summarizeIndicators,
   getIsEnhancedChecked,
+  getPreviousComparisonCountryValues,
   MAP_COLORS
 } from './ndcs-enhancements-viz-selectors';
 
@@ -32,6 +33,7 @@ const mapStateToProps = (state, { location }) => {
   const { countries } = state;
   const search = qs.parse(location.search);
   const ndcsEnhancementsWithSelection = {
+    ...state,
     ...data,
     countries: countries.data,
     query: search.search,
@@ -48,6 +50,9 @@ const mapStateToProps = (state, { location }) => {
     indicators: getIndicatorsParsed(ndcsEnhancementsWithSelection),
     summaryData: summarizeIndicators(ndcsEnhancementsWithSelection),
     downloadLink: getLinkToDataExplorer(ndcsEnhancementsWithSelection),
+    previousComparisonCountryValues: getPreviousComparisonCountryValues(
+      ndcsEnhancementsWithSelection
+    ),
     mapColors: MAP_COLORS
   };
 };
@@ -67,7 +72,11 @@ class NDCSEnhancementsVizContainer extends PureComponent {
 
   getTooltipValues() {
     const { geometryIdHover } = this.state;
-    const { indicator, indicators } = this.props;
+    const {
+      indicator,
+      indicators,
+      previousComparisonCountryValues
+    } = this.props;
     if (!geometryIdHover || !indicator) return null;
 
     const isEuropeanCountry = europeanCountries.includes(geometryIdHover);
@@ -96,7 +105,9 @@ class NDCSEnhancementsVizContainer extends PureComponent {
         label: this.getTooltipLabel(),
         value,
         statement,
-        note: 'Learn more in table below'
+        note: 'Learn more in table below',
+        indicators:
+          previousComparisonCountryValues && previousComparisonCountryValues[id]
       };
     }
     return null;
@@ -196,6 +207,7 @@ NDCSEnhancementsVizContainer.propTypes = {
   location: PropTypes.object.isRequired,
   isoCountries: PropTypes.array.isRequired,
   countries: PropTypes.array,
+  previousComparisonCountryValues: PropTypes.array,
   setModalMetadata: PropTypes.func.isRequired,
   setModalPngDownload: PropTypes.func.isRequired,
   fetchNDCSEnhancements: PropTypes.func.isRequired

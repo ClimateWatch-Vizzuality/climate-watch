@@ -23,6 +23,7 @@ import cx from 'classnames';
 import ModalShare from 'components/modal-share';
 import NDCSProvider from 'providers/ndcs-provider';
 import NDCSExploreProvider from 'providers/ndcs-explore-provider';
+import NDCSPreviousComparisonProvider from 'providers/ndcs-previous-comparison-provider';
 import DocumentsProvider from 'providers/documents-provider';
 import { SEO_PAGES } from 'data/seo';
 import SEOTags from 'components/seo-tags';
@@ -341,10 +342,13 @@ function NDCSExploreMap(props) {
       </ModalPngDownload>
       <DocumentsProvider />
       {FEATURE_ENHANCEMENT_CHANGES ? (
-        <NDCSExploreProvider
-          document={selectedDocument && selectedDocument.value}
-          subcategory={selectedCategory && selectedCategory.value}
-        />
+        <React.Fragment>
+          <NDCSExploreProvider
+            document={selectedDocument && selectedDocument.value}
+            subcategory={selectedCategory && selectedCategory.value}
+          />
+          <NDCSPreviousComparisonProvider />
+        </React.Fragment>
       ) : (
         <NDCSProvider
           subcategory={selectedCategory && selectedCategory.value}

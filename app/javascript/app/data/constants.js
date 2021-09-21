@@ -381,3 +381,16 @@ export const ENHANCEMENT_CATEGORIES = [
   '2020_ndc_tracker',
   'ndc_enhancement_tracker'
 ];
+
+export const ENHANCEMENT_LABEL_SLUGS = {
+  INTENDS_TO_ENHANCE: 'enhance_2020',
+  SUBMITTED_2020: 'submitted_2020',
+  ENHANCED_MITIGATION: 'enhanced_migitation',
+  NO_INFO: 'no_info_2020'
+};
+
+export const NET_ZERO_POSITIVE_LABELS = [
+  'Net-zero Target in Law',
+  'Net-zero Target in Policy Document',
+  'Net-zero Target in Political Pledge'
+];
