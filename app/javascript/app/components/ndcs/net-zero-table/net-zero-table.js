@@ -10,7 +10,7 @@ import Component from './net-zero-table-component';
 
 import {
   getISOCountries,
-  removeIsoFromData,
+  replaceAbbreviations,
   getDefaultColumns,
   getTitleLinks
 } from './net-zero-table-selectors';
@@ -35,7 +35,7 @@ const mapStateToProps = (state, { location }) => {
     loading,
     query: NetZeroWithSelection.query,
     isoCountries: getISOCountries(NetZeroWithSelection),
-    tableData: removeIsoFromData(NetZeroWithSelection),
+    tableData: replaceAbbreviations(NetZeroWithSelection),
     columns: getDefaultColumns(NetZeroWithSelection),
     titleLinks: getTitleLinks(NetZeroWithSelection)
   };

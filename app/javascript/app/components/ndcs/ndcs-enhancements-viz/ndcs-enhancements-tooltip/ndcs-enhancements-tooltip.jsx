@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import ReactTooltip from 'react-tooltip';
 import cx from 'classnames';
 import Icon from 'components/icon';
+import PreviousSubmissionIcon from 'components/previous-submission-icon';
 import accordionArrow from 'assets/icons/accordion-arrow.svg';
-
 import tooltipTheme from 'styles/themes/map-tooltip/map-tooltip.scss';
 import styles from 'components/ndcs/ndcs-enhancements-viz/ndcs-enhancements-tooltip/ndcs-enhancements-tooltip-styles.scss';
 
@@ -25,6 +25,23 @@ const NDCSEnhancementsTooltip = props => {
       )}
       {tooltipValues.statement && (
         <p className={tooltipTheme.text}>{tooltipValues.statement}</p>
+      )}
+      {tooltipValues.indicators && (
+        <ul className={tooltipTheme.indicators}>
+          {tooltipValues.indicators.map(([indicator, value]) => (
+            <li
+              key={`indicator-${indicator}-${tooltipValues.countryName}`}
+              className={tooltipTheme.tooltipIndicator}
+            >
+              <PreviousSubmissionIcon
+                value={value}
+                white
+                className={tooltipTheme.tooltipIndicatorIcon}
+              />
+              {indicator}
+            </li>
+          ))}
+        </ul>
       )}
       {tooltipValues.note && (
         <p className={cx(tooltipTheme.text, styles.tooltipNote)}>

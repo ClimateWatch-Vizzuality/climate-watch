@@ -2,7 +2,7 @@ import { createSelector, createStructuredSelector } from 'reselect';
 import { getColorByIndex, shouldShowPath } from 'utils/map';
 import { isEmpty, orderBy, flatten } from 'lodash';
 import { format } from 'd3-format';
-import worldPaths from 'app/data/world-50m-paths';
+import getIPPaths from 'app/data/world-50m-paths';
 import {
   AGRICULTURE_INDICATORS_NAMES,
   AGRICULTURE_INDICATORS_MAP_BUCKETS
@@ -185,9 +185,9 @@ export const getTopTenConfig = createSelector(
 );
 
 export const getPathsWithStyles = createSelector(
-  [getSelectedIndicator, getMapData],
-  (selectedIndicator, mapData) => {
-    if (!selectedIndicator) return [];
+  [getSelectedIndicator, getMapData, getIPPaths],
+  (selectedIndicator, mapData, worldPaths) => {
+    if (!selectedIndicator || !worldPaths) return [];
     const paths = [];
     worldPaths.forEach(path => {
       if (shouldShowPath(path)) {
@@ -240,6 +240,19 @@ export const getMapLegend = createSelector(getSelectedIndicator, indicator => {
   return AGRICULTURE_INDICATORS_MAP_BUCKETS[indicator.value];
 });
 
+export const getPngSelectionSubtitle = createSelector(
+  [getSelectedYear, getSelectedIndicator],
+  (selectedYear, selectedIndicator) => {
+    if (!selectedYear || !selectedIndicator) {
+      return null;
+    }
+    return `
+      ${selectedYear ? `Year: ${selectedYear.label}` : ''}
+      ${selectedIndicator ? `; Indicator: ${selectedIndicator.label}` : ''}
+    `;
+  }
+);
+
 export const countriesContexts = createStructuredSelector({
   isoCountries: getISOCountries,
   indicators: getIndicatorsParsed,
@@ -250,5 +263,6 @@ export const countriesContexts = createStructuredSelector({
   paths: getPathsWithStyles,
   legend: getMapLegend,
   mapData: getMapData,
-  topTenCountries: getTopTenConfig
+  topTenCountries: getTopTenConfig,
+  pngSelectionSubtitle: getPngSelectionSubtitle
 });

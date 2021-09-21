@@ -1,3 +1,4 @@
+/* eslint-disable no-confusing-arrow */
 import { createSelector } from 'reselect';
 import { compareIndexByKey } from 'utils/utils';
 

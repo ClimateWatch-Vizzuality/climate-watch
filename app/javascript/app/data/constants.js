@@ -301,7 +301,8 @@ export const GHG_TABLE_HEADER = {
 };
 
 export const WRI_WEBSITE = 'https://www.wri.org/';
-export const WRI_CLIMATE_BLOG = 'https://www.wri.org/blog-tags/14091';
+export const WRI_CLIMATE_BLOG =
+  'https://www.wri.org/resources/tags/climatewatch-pinned-15461';
 export const RW_WEBSITE = 'https://resourcewatch.org/';
 
 export const AGRICULTURE_TOTAL_EMISSIONS = 'Agriculture Emissions: Total';
@@ -374,3 +375,22 @@ export const CATEGORY_SOURCES = {
   NDC_EXPLORE: ['CAIT', 'WB', 'NDC Explorer'],
   NDC_CONTENT: ['CAIT', 'WB', 'NDC Explorer']
 };
+
+export const ENHANCEMENT_CATEGORIES = [
+  'ndc_enhancement',
+  '2020_ndc_tracker',
+  'ndc_enhancement_tracker'
+];
+
+export const ENHANCEMENT_LABEL_SLUGS = {
+  INTENDS_TO_ENHANCE: 'enhance_2020',
+  SUBMITTED_2020: 'submitted_2020',
+  ENHANCED_MITIGATION: 'enhanced_migitation',
+  NO_INFO: 'no_info_2020'
+};
+
+export const NET_ZERO_POSITIVE_LABELS = [
+  'Net-zero Target in Law',
+  'Net-zero Target in Policy Document',
+  'Net-zero Target in Political Pledge'
+];

@@ -9,9 +9,13 @@ import WbCountryDataProvider from 'providers/wb-country-data-provider';
 import { TabletLandscape, TabletPortraitOnly } from 'components/responsive';
 import dropdownTheme from 'styles/themes/dropdown/react-selectize.scss';
 import legendChartTheme from 'styles/themes/chart/legend-chart.scss';
+import ModalPngDownload from 'components/modal-png-download';
 
 import styles from './historical-emissions-graph-styles.scss';
 import CardPieChart from '../card-pie-chart/card-pie-chart';
+
+const FEATURE_ENHANCEMENT_CHANGES =
+  process.env.FEATURE_ENHANCEMENT_CHANGES === 'true';
 
 class HistoricalEmissionsGraph extends PureComponent {
   renderFilters = () => {
@@ -100,7 +104,8 @@ class HistoricalEmissionsGraph extends PureComponent {
     const {
       exploreEmissionsConfig,
       emissionsCountry,
-      handleInfoClick
+      handleInfoClick,
+      handlePngDownloadModal
     } = this.props;
     const buttonGroupConfig = [
       {
@@ -114,7 +119,17 @@ class HistoricalEmissionsGraph extends PureComponent {
         positionRight: true,
         shouldEmbedQueryParams: false
       },
-      { type: 'download' },
+      FEATURE_ENHANCEMENT_CHANGES
+        ? {
+          type: 'downloadCombo',
+          options: [
+            {
+              label: 'Save as image (PNG)',
+              action: handlePngDownloadModal
+            }
+          ]
+        }
+        : { type: 'download' },
       { type: 'addToUser' }
     ];
     return (
@@ -130,7 +145,7 @@ class HistoricalEmissionsGraph extends PureComponent {
   };
 
   render() {
-    const { emissionsCountry } = this.props;
+    const { emissionsCountry, pngSelectionSubtitle } = this.props;
     return (
       <div>
         <TabletLandscape>
@@ -151,6 +166,13 @@ class HistoricalEmissionsGraph extends PureComponent {
             <CardPieChart />
           </div>
         </TabletPortraitOnly>
+        <ModalPngDownload
+          id="historical-emissions"
+          title="Agriculture drivers of historical emissions"
+          selectionSubtitle={pngSelectionSubtitle}
+        >
+          {this.renderEmissionsChart()}
+        </ModalPngDownload>
         <RegionsProvider />
         <CountriesProvider />
         <WbCountryDataProvider />
@@ -166,6 +188,8 @@ HistoricalEmissionsGraph.propTypes = {
   handleCountryChange: PropTypes.func,
   handleEmissionTypeChange: PropTypes.func,
   handleMetricTypeChange: PropTypes.func,
+  handlePngDownloadModal: PropTypes.func.isRequired,
+  pngSelectionSubtitle: PropTypes.string,
   handleInfoClick: PropTypes.func,
   config: PropTypes.object,
   exploreEmissionsConfig: PropTypes.object.isRequired,

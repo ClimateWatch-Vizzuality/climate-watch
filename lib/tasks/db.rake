@@ -16,7 +16,8 @@ namespace :db do
     'quantifications:import',
     'socioeconomics:import',
     'stories:import',
-    'key_visualizations:import'
+    'key_visualizations:import',
+    'zip_files:import'
   ]
 
   desc 'Imports all data in correct order, replaces all data'
@@ -37,5 +38,22 @@ namespace :db do
     puts 'Deleting stories'
     Story.delete_all
     Rake::Task['db:import'].invoke
+  end
+
+  task import_maxmind: :environment do
+    db_path = Rails.root.join('db', 'GeoLite2-Country.mmdb')
+    tmp_file = Rails.root.join('tmp', 'tmp.mmdb.tar.gz')
+    key = ENV['MAXMIND_LICENSE_KEY']
+    url = "https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-Country&license_key=#{key}&suffix=tar.gz"
+
+    abort 'NO MAXMIND LICENSE KEY' unless key.present?
+
+    puts "DOWNLOADING MAXMIND DB..."
+    abort 'Maxmind download error' unless system "wget -q -c --tries=3 '#{url}' -O #{tmp_file}"
+    abort 'Maxmind unzip error' unless system "cd tmp && tar -xvf #{tmp_file} --wildcards --strip-components 1 '*.mmdb' && mv GeoLite2-Country.mmdb #{db_path}"
+
+    system "rm #{tmp_file}"
+
+    puts 'MAXMIND DB DOWNLOADED!'
   end
 end

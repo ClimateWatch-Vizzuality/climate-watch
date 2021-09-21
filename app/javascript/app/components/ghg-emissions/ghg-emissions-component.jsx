@@ -103,7 +103,8 @@ function GhgEmissions(props) {
     dataZoomYears,
     dataZoomPosition,
     setDataZoomPosition,
-    dynamicSEOTitlePart
+    dynamicSEOTitlePart,
+    pngSelectionSubtitle
   } = props;
 
   const buttonGroupGHGemissions = [
@@ -266,7 +267,7 @@ function GhgEmissions(props) {
       return format('.2f')(value);
     };
     return (
-      <React.Fragment>
+      <span data-tour="ghg-02">
         <Chart
           className={styles.chartWrapper}
           type={chartTypeSelected && chartTypeSelected.value}
@@ -296,32 +297,36 @@ function GhgEmissions(props) {
           }
           dataZoomComponent={
             !loading && (
-              <DataZoom
-                data={dataZoomData}
-                position={dataZoomPosition}
-                years={dataZoomYears}
-                setPosition={setDataZoomPosition}
-                onYearChange={(min, max) => setYears({ min, max })}
-              />
+              <span data-tour="ghg-03">
+                <DataZoom
+                  data={dataZoomData}
+                  position={dataZoomPosition}
+                  years={dataZoomYears}
+                  setPosition={setDataZoomPosition}
+                  onYearChange={(min, max) => setYears({ min, max })}
+                />
+              </span>
             )
           }
         />
         {tableDataReady && (
-          <Table
-            data={tableData}
-            horizontalScroll
-            firstColumnHeaders={[GHG_TABLE_HEADER[fieldToBreakBy], 'unit']}
-            flexGrow={0}
-            headerHeight={30}
-            parseHtml
-            setColumnWidth={setColumnWidth}
-            emptyValueLabel="N/A"
-            splittedColumns
-            titleLinks={titleLinks}
-            theme={ghgTableTheme}
-          />
+          <span data-tour="ghg-04">
+            <Table
+              data={tableData}
+              horizontalScroll
+              firstColumnHeaders={[GHG_TABLE_HEADER[fieldToBreakBy], 'unit']}
+              flexGrow={0}
+              headerHeight={30}
+              parseHtml
+              setColumnWidth={setColumnWidth}
+              emptyValueLabel="N/A"
+              splittedColumns
+              titleLinks={titleLinks}
+              theme={ghgTableTheme}
+            />
+          </span>
         )}
-      </React.Fragment>
+      </span>
     );
   };
 
@@ -329,6 +334,7 @@ function GhgEmissions(props) {
     <ButtonGroup
       className={styles.buttonGroup}
       buttonsConfig={buttonGroupGHGemissions}
+      dataTour="ghg-06"
     />
   );
   return (
@@ -355,19 +361,12 @@ function GhgEmissions(props) {
             sharePath={'/ghg-emissions'}
           />
         </TabletLandscape>
-        <p className={styles.bodyText}>
-          Explore GHG emissions from multiple data source (CAIT, PIK, UNFCCC,
-          GCP) and understand their differences in the{' '}
-          <a className={styles.link} href="about/faq/ghg">
-            FAQ
-          </a>
-        </p>
       </div>
       <WorldBankDataProvider />
       <RegionsProvider includeGHGSources />
       <EmissionsMetaProvider />
       {providerFilters && <EmissionsProvider filters={providerFilters} />}
-      <div className={cx(styles.col4, styles.newGHG)}>
+      <div className={cx(styles.col4, styles.newGHG)} data-tour="ghg-01">
         {renderDropdown('Data Source', 'sources')}
         <GhgMultiselectDropdown
           label={'Countries/Regions'}
@@ -412,7 +411,10 @@ function GhgEmissions(props) {
           />
         </div>
       </TabletPortraitOnly>
-      <ModalPngDownload chartParams={selectedOptions}>
+      <ModalPngDownload
+        title="Historical GHG emissions"
+        selectionSubtitle={pngSelectionSubtitle}
+      >
         {renderPngChart()}
         {renderPngLegend()}
       </ModalPngDownload>
@@ -449,6 +451,7 @@ GhgEmissions.propTypes = {
   dataZoomPosition: PropTypes.object,
   dataZoomYears: PropTypes.object,
   dynamicSEOTitlePart: PropTypes.string,
+  pngSelectionSubtitle: PropTypes.string,
   setDataZoomPosition: PropTypes.func.isRequired
 };
 

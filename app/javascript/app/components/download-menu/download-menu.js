@@ -10,6 +10,8 @@ import Component from './download-menu-component';
 const { S3_BUCKET_NAME } = process.env;
 const { CW_FILES_PREFIX } = process.env;
 
+const FEATURE_DYNAMIC_ZIP = process.env.FEATURE_DYNAMIC_ZIP === 'true';
+
 const server = `https://${S3_BUCKET_NAME}.s3.amazonaws.com`;
 const folder = `/${CW_FILES_PREFIX}climate-watch-download-zip`;
 const url = `${server}${folder}`;
@@ -19,6 +21,36 @@ const mapStateToProps = ({ modalDownload }) => ({
 });
 
 class DownloadMenuContainer extends PureComponent {
+  constructor(props) {
+    super(props);
+    this.state = { downloadMenuOptions: [] };
+  }
+
+  componentDidMount() {
+    if (FEATURE_DYNAMIC_ZIP) {
+      this.fetchData();
+    }
+  }
+
+  fetchData() {
+    fetch('/api/v1/zip_files')
+      .then(response => {
+        if (response.ok) return response.json();
+        throw Error(response.statusText);
+      })
+      .then(response => {
+        const downloadMenuOptions = response.data.map(d => ({
+          label: `${d.dropdown_title} (${d.size})`,
+          action: this.handleOnClick.bind(this, d.url, d.size)
+        }));
+
+        this.setState({ downloadMenuOptions });
+      })
+      .catch(error => {
+        console.warn(error);
+      });
+  }
+
   handleOnClick = (downloadUrl, size) => {
     const downloadAction = () => window.location.assign(downloadUrl);
 
@@ -93,9 +125,13 @@ class DownloadMenuContainer extends PureComponent {
   ];
 
   render() {
+    const downloadMenuOptions = FEATURE_DYNAMIC_ZIP
+      ? this.state.downloadMenuOptions
+      : this.downloadMenuOptionsWithSurvey;
+
     return createElement(Component, {
       ...this.props,
-      downloadMenuOptions: this.downloadMenuOptionsWithSurvey
+      downloadMenuOptions
     });
   }
 }

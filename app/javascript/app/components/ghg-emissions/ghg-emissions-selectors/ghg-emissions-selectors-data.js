@@ -1,3 +1,4 @@
+/* eslint-disable no-confusing-arrow */
 import { createSelector } from 'reselect';
 import isEmpty from 'lodash/isEmpty';
 import omit from 'lodash/omit';
@@ -97,7 +98,7 @@ const getExpandedLegendRegionsSelected = createSelector(
       );
     });
     const byLatestYearEmission = (a, b) =>
-      (latestValuesHash[a.iso] > latestValuesHash[b.iso] ? -1 : 1);
+      latestValuesHash[a.iso] > latestValuesHash[b.iso] ? -1 : 1;
     return countryOptions.sort(byLatestYearEmission);
   }
 );
@@ -440,6 +441,24 @@ export const WORLD_CORRECTION_MISSING_DATA_CALCULATION_OPTIONS = [
   GHG_CALCULATION_OPTIONS.PER_GDP.value
 ];
 
+export const sumWorldDataEmissions = (acc, value) => {
+  if (!acc.length) {
+    return value.emissions;
+  }
+  return acc.map(yearEmissions => {
+    const valueEmissions = value.emissions.find(
+      e => e.year === yearEmissions.year
+    );
+    const valueEmissionsValue = valueEmissions.value || 0;
+    return {
+      year: yearEmissions.year,
+      value: yearEmissions.value
+        ? yearEmissions.value + valueEmissionsValue
+        : valueEmissionsValue
+    };
+  });
+};
+
 // World includes emissions from international shipping, aviation and territories that are not among the list of countries
 // these are not included in country-level totals so we have to add the substraction of the single WORLD data to others
 export const getWorldCorrectedChartDataWithOthers = createSelector(
@@ -449,8 +468,11 @@ export const getWorldCorrectedChartDataWithOthers = createSelector(
     const isWorldSelected = selectedOptions.regionsSelected.some(
       region => region.value === 'WORLD'
     );
+
     const {
-      calculationSelected: { value: calculationSelectedValue }
+      calculationSelected: { value: calculationSelectedValue },
+      sectorsSelected,
+      gasesSelected
     } = selectedOptions;
     const missingDataCalculation = WORLD_CORRECTION_MISSING_DATA_CALCULATION_OPTIONS.includes(
       calculationSelectedValue
@@ -463,15 +485,26 @@ export const getWorldCorrectedChartDataWithOthers = createSelector(
     ) {
       return data;
     }
-    const worldData = rawData.find(d => d.iso_code3 === 'WORLD').emissions;
+    const selectedSectorLabels = sectorsSelected.map(s => s.label);
+    const selectedGasesLabels = gasesSelected.map(s => s.label);
+    const worldData = rawData.filter(
+      d =>
+        d.iso_code3 === 'WORLD' &&
+        selectedSectorLabels.includes(d.sector) &&
+        selectedGasesLabels.includes(d.gas)
+    );
+    const worldDataEmissions = worldData.reduce(sumWorldDataEmissions, []);
+
     let cumulativeOtherValue;
     let previousYearOtherValue;
     return data.map(d => {
       const top10Values = Object.values(omit(d, ['x', 'yOthers']));
       const top10Emissions = top10Values.reduce((acc, value) => acc + value, 0);
-      const yearWorldData = worldData.find(worldD => worldD.year === d.x);
+      const yearWorldData = worldDataEmissions.find(
+        worldD => worldD.year === d.x
+      );
       let yearWorldDataValue = yearWorldData && yearWorldData.value;
-      const updatedD = d;
+      const updatedD = { ...d };
 
       if (
         calculationSelectedValue ===

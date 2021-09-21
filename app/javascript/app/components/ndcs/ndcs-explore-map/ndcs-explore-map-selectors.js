@@ -1,11 +1,13 @@
+/* eslint-disable no-confusing-arrow */
 import { createSelector } from 'reselect';
 import { getColorByIndex, shouldShowPath } from 'utils/map';
 import uniq from 'lodash/uniq';
 import uniqBy from 'lodash/uniqBy';
+import isEmpty from 'lodash/isEmpty';
 import sortBy from 'lodash/sortBy';
 import intersection from 'lodash/intersection';
 import { generateLinkToDataExplorer } from 'utils/data-explorer';
-import worldPaths from 'app/data/world-50m-paths';
+import getIPPaths from 'app/data/world-50m-paths';
 import { COUNTRY_STYLES } from 'components/ndcs/shared/constants';
 import { getIsShowEUCountriesChecked } from 'components/ndcs/shared/explore-map/explore-map-selectors';
 import {
@@ -22,10 +24,14 @@ import {
 import { getSubmitted2020Isos } from 'utils/indicatorCalculations';
 
 const NOT_APPLICABLE_LABEL = 'Not Applicable';
+const FEATURE_ENHANCEMENT_CHANGES =
+  process.env.FEATURE_ENHANCEMENT_CHANGES === 'true';
 
 const getSearch = state => state.search || null;
 const getCountries = state => state.countries || null;
 const getSectors = state => state.sectors || null;
+const getDocumentData = state => state.documents && state.documents.data;
+
 const getCategoriesData = createSelector(
   state => state.categories,
   categories => {
@@ -45,20 +51,69 @@ const getCategoriesData = createSelector(
   }
 );
 
+export const getDocuments = createSelector([getDocumentData], documents => {
+  const allDocumentOption = [
+    {
+      label: 'All documents',
+      value: 'all'
+    }
+  ];
+  if (!documents) return allDocumentOption;
+  const documentsOptions = Object.values(documents).map(d => ({
+    label: d.long_name,
+    value: d.slug
+  }));
+  return [...allDocumentOption, ...documentsOptions];
+});
+
+export const getSelectedDocument = createSelector(
+  [getDocuments, getSearch],
+  (documents = [], search) => {
+    if (!documents || !documents.length) return null;
+    const { document: selected } = search || {};
+    const defaultDocument = documents[documents.length - 1];
+    if (selected) {
+      return (
+        documents.find(document => document.value === selected) ||
+        defaultDocument
+      );
+    }
+    return defaultDocument;
+  }
+);
+
 const getIndicatorsData = state => state.indicators || null;
 const getZoom = state => state.map.zoom || null;
 
 export const getDonutActiveIndex = state =>
   state.exploreMap.activeIndex || null;
 
-export const getCategories = createSelector(getCategoriesData, categories =>
-  (!categories
-    ? null
-    : Object.keys(categories).map(category => ({
+export const getCategories = createSelector(
+  [getCategoriesData, getIndicatorsData],
+  (categories, indicators) => {
+    if (!categories) return null;
+    if (!FEATURE_ENHANCEMENT_CHANGES) {
+      return Object.keys(categories).map(category => ({
+        label: categories[category].name,
+        value: categories[category].slug,
+        id: category
+      }));
+    }
+    const indicatorsWithData = indicators.filter(i => !isEmpty(i.locations));
+    const availableCategoryIds = indicatorsWithData.reduce(
+      (acc, value) => acc.concat(value.category_ids),
+      []
+    );
+    const uniqAvailableCategoryIds = uniq(availableCategoryIds);
+    const availableCategoryKeys = Object.keys(categories).filter(categoryId =>
+      uniqAvailableCategoryIds.includes(+categoryId)
+    );
+    return availableCategoryKeys.map(category => ({
       label: categories[category].name,
       value: categories[category].slug,
       id: category
-    })))
+    }));
+  }
 );
 
 export const getMaximumCountries = createSelector(
@@ -108,9 +163,9 @@ export const getIndicatorsParsed = createSelector(
 
     parentIndicatorNames = uniq(parentIndicatorNames);
     return parsedIndicators.map(i =>
-      (parentIndicatorNames.includes(i.label)
+      parentIndicatorNames.includes(i.label)
         ? { ...i, groupParent: i.label }
-        : i)
+        : i
     );
   }
 );
@@ -169,9 +224,9 @@ export const getMapIndicator = createSelector(
 );
 
 export const getPathsWithStyles = createSelector(
-  [getMapIndicator, getZoom, getIsShowEUCountriesChecked],
-  (indicator, zoom, showEUCountriesChecked) => {
-    if (!indicator) return [];
+  [getMapIndicator, getZoom, getIsShowEUCountriesChecked, getIPPaths],
+  (indicator, zoom, showEUCountriesChecked, worldPaths) => {
+    if (!indicator || !worldPaths) return [];
     const paths = [];
     const selectedWorldPaths = showEUCountriesChecked
       ? worldPaths
@@ -349,22 +404,22 @@ export const getSummaryCardData = createSelector(
       ind => ind.slug === 'ndce_status_2020'
     );
     const submittedIsos = getSubmitted2020Isos(submittedIndicator);
-    if (!submittedIsos.length) return null;
+    if (!submittedIsos || !submittedIsos.length) return null;
     const submittedCountriesAndParties = getCountriesAndParties(submittedIsos);
 
     return [
       {
         value: submittedCountriesAndParties.partiesNumber,
-        description: ` Parties have submitted their 2020 NDC, representing ${submittedCountriesAndParties.countriesNumber} countries`
+        description: ` Parties have submitted their new or updated NDC, representing ${submittedCountriesAndParties.countriesNumber} countries`
       }
     ];
   }
 );
 
-export default {
-  getMapIndicator,
-  getIndicatorsParsed,
-  getEmissionsCardData,
-  getPathsWithStyles,
-  getSummaryCardData
-};
+export const getPngSelectionSubtitle = createSelector(
+  [getSelectedIndicator, getSelectedCategory],
+  (indicator, category) => {
+    if (!indicator || !category) return null;
+    return `Category: ${category.label}; Indicator: ${indicator.label}.`;
+  }
+);

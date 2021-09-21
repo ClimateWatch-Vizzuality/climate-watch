@@ -14,7 +14,11 @@ import Loading from 'components/loading';
 import DataExplorerFilters from 'providers/data-explorer-provider';
 import tooltipTheme from 'styles/themes/map-tooltip/map-tooltip.scss';
 import NDCSProvider from 'providers/ndcs-provider';
+import ModalPngDownload from 'components/modal-png-download';
 import styles from './ndcs-map-styles.scss';
+
+const FEATURE_ENHANCEMENT_CHANGES =
+  process.env.FEATURE_ENHANCEMENT_CHANGES === 'true';
 
 const getTooltip = (country, tooltipTxt) => (
   <Link className={tooltipTheme.container} to={`/ndcs/country/${country.id}`}>
@@ -26,7 +30,11 @@ const getTooltip = (country, tooltipTxt) => (
   </Link>
 );
 
-const renderButtonGroup = (clickHandler, downloadLink) => (
+const renderButtonGroup = (
+  clickHandler,
+  downloadLink,
+  handlePngDownloadModal
+) => (
   <ButtonGroup
     className={styles.buttonGroup}
     buttonsConfig={[
@@ -34,11 +42,26 @@ const renderButtonGroup = (clickHandler, downloadLink) => (
         type: 'info',
         onClick: clickHandler
       },
-      {
-        type: 'download',
-        section: 'ndcs-content',
-        link: downloadLink
-      },
+      FEATURE_ENHANCEMENT_CHANGES
+        ? {
+          type: 'downloadCombo',
+          options: [
+            {
+              label: 'Save as image (PNG)',
+              action: handlePngDownloadModal
+            },
+            {
+              label: 'Go to data explorer',
+              link: downloadLink,
+              target: '_self'
+            }
+          ]
+        }
+        : {
+          type: 'download',
+          section: 'ndcs-content',
+          link: downloadLink
+        },
       {
         type: 'addToUser'
       }
@@ -59,70 +82,94 @@ const NDCMap = ({
   handleCategoryChange,
   handleInfoClick,
   handleCountryClick,
-  handleCountryEnter
-}) => (
-  <TabletLandscape>
-    {isTablet => (
-      <div className={styles.wrapper}>
-        <div className={styles.filtersLayout}>
-          <div className={styles.filtersGroup}>
-            <Dropdown
-              label="Category"
-              paceholder="Select a category"
-              options={categories}
-              onValueChange={handleCategoryChange}
-              value={selectedCategory}
-              hideResetButton
-              plain
-            />
+  handleCountryEnter,
+  handlePngDownloadModal,
+  pngSelectionSubtitle
+}) => {
+  const renderLegend = ({ png = false }) =>
+    selectedIndicator && (
+      <MapLegend
+        className={!png && styles.legend}
+        mapColors={mapColors}
+        title={selectedIndicator.legend}
+        buckets={selectedIndicator.legendBuckets}
+      />
+    );
+
+  // eslint-disable-next-line react/prop-types
+  const renderMap = ({ isTablet, png }) => (
+    <Map
+      paths={paths}
+      tooltipId="ndcs-map-tooltip"
+      onCountryClick={handleCountryClick}
+      onCountryEnter={handleCountryEnter}
+      onCountryFocus={handleCountryEnter}
+      customCenter={!isTablet ? [10, -50] : null}
+      dragEnable={!png}
+      zoomEnable={!png}
+    />
+  );
+
+  return (
+    <TabletLandscape>
+      {isTablet => (
+        <div className={styles.wrapper}>
+          <div className={styles.filtersLayout}>
+            <div className={styles.filtersGroup}>
+              <Dropdown
+                label="Category"
+                paceholder="Select a category"
+                options={categories}
+                onValueChange={handleCategoryChange}
+                value={selectedCategory}
+                hideResetButton
+                plain
+              />
+            </div>
+            {isTablet && (
+              <Fragment>
+                {renderButtonGroup(
+                  handleInfoClick,
+                  downloadLink,
+                  handlePngDownloadModal
+                )}
+                <ShareButton sharePath="/agriculture-emission/countries-actions" />
+              </Fragment>
+            )}
           </div>
-          {isTablet && (
-            <Fragment>
-              {renderButtonGroup(handleInfoClick, downloadLink)}
+          {loading && <Loading light className={styles.loader} />}
+          {renderMap({ isTablet })}
+          {!isTablet && (
+            <div className={styles.buttonsContainer}>
+              {renderButtonGroup(handleInfoClick, true, handlePngDownloadModal)}
               <ShareButton sharePath="/agriculture-emission/countries-actions" />
-            </Fragment>
+            </div>
           )}
-        </div>
-        {loading && <Loading light className={styles.loader} />}
-        <Map
-          paths={paths}
-          tooltipId="ndcs-map-tooltip"
-          onCountryClick={handleCountryClick}
-          onCountryEnter={handleCountryEnter}
-          onCountryFocus={handleCountryEnter}
-          customCenter={!isTablet ? [10, -50] : null}
-          dragEnable
-          zoomEnable
-        />
-        {!isTablet && (
-          <div className={styles.buttonsContainer}>
-            {renderButtonGroup(handleInfoClick, true)}
-            <ShareButton sharePath="/agriculture-emission/countries-actions" />
-          </div>
-        )}
-        {countryData && (
-          <ReactTooltip
-            className={styles.tooltipContainer}
-            id="ndcs-map-tooltip"
-            delayHide={isTablet ? 0 : 3000}
+          {countryData && (
+            <ReactTooltip
+              className={styles.tooltipContainer}
+              id="ndcs-map-tooltip"
+              delayHide={isTablet ? 0 : 3000}
+            >
+              {getTooltip(countryData, tooltipTxt)}
+            </ReactTooltip>
+          )}
+          {renderLegend({ png: false })}
+          <DataExplorerFilters section={'ndc-content'} />
+          <NDCSProvider />
+          <ModalPngDownload
+            id="countries-actions"
+            title="Countries actions in their NDCs"
+            selectionSubtitle={pngSelectionSubtitle}
           >
-            {getTooltip(countryData, tooltipTxt)}
-          </ReactTooltip>
-        )}
-        {selectedIndicator && (
-          <MapLegend
-            className={styles.legend}
-            mapColors={mapColors}
-            title={selectedIndicator.legend}
-            buckets={selectedIndicator.legendBuckets}
-          />
-        )}
-        <DataExplorerFilters section={'ndc-content'} />
-        <NDCSProvider />
-      </div>
-    )}
-  </TabletLandscape>
-);
+            {renderMap({ isTablet: true, png: true })}
+            {renderLegend({ png: true })}
+          </ModalPngDownload>
+        </div>
+      )}
+    </TabletLandscape>
+  );
+};
 
 NDCMap.propTypes = {
   loading: PropTypes.bool,
@@ -137,6 +184,8 @@ NDCMap.propTypes = {
   handleCountryEnter: PropTypes.func.isRequired,
   handleCategoryChange: PropTypes.func.isRequired,
   handleInfoClick: PropTypes.func.isRequired,
+  handlePngDownloadModal: PropTypes.func.isRequired,
+  pngSelectionSubtitle: PropTypes.string,
   mapColors: PropTypes.array
 };
 

@@ -1,0 +1,63 @@
+@import '~styles/layout.scss';
+
+.webTour {
+  .title {
+    font-size: $font-size;
+    margin-bottom: 10px;
+  }
+
+  .description {
+    margin-bottom: 10px;
+  }
+
+  .arrow {
+    height: 10px;
+    width: 10px;
+
+    &.leftArrow {
+      transform: rotate(180deg);
+    }
+  }
+
+  .nextButton {
+    background-color: $gray3;
+    position: absolute;
+    right: 21px;
+    bottom: 15px;
+    height: 35px;
+    width: 35px;
+    border-radius: 0 3px 3px 0;
+    cursor: pointer;
+
+    &:hover {
+      &:not(.disabled) {
+        background-color: $gray2;
+      }
+    }
+  }
+
+  .bold {
+    font-weight: $font-weight;
+  }
+
+  .prevButton {
+    @extend .nextButton;
+
+    right: 58px;
+    border-radius: 3px 0 0 3px;
+  }
+
+  .disabled {
+    opacity: 0.5;
+    cursor: default;
+  }
+}
+
+:global .reactour__dot {
+  width: 14px;
+  height: 14px;
+}
+
+:global [data-tour-elem="controls"] {
+  justify-content: flex-start;
+}

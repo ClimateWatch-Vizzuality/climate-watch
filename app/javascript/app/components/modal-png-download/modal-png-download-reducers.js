@@ -1,14 +1,10 @@
 export const initialState = {
-  isOpen: false,
-  header: 'Save as image (PNG)',
-  title: 'Historical GHG emissions'
+  isOpen: false
 };
 
 const setModalPngDownloadParams = (state, { payload }) => ({
   ...state,
-  isOpen: payload.open,
-  header: payload.header,
-  description: payload.description
+  isOpen: payload.open
 });
 
 const setModalPngDownload = (state, { payload }) => ({

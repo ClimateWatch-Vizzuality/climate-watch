@@ -602,10 +602,32 @@ export const getLinkToDataExplorer = createSelector(
   }
 );
 
-export default {
-  getChartData,
-  getChartDomainWithYMargins,
-  getChartConfig,
-  getFiltersOptions,
-  getFiltersSelected
-};
+export const getPngSelectionSubtitle = createSelector(
+  [getFiltersSelected],
+  selectedFilters => {
+    const {
+      location,
+      model,
+      category,
+      subcategory,
+      indicator
+    } = selectedFilters;
+    if (
+      !selectedFilters ||
+      !location ||
+      !model ||
+      !category ||
+      !subcategory ||
+      !indicator
+    ) {
+      return null;
+    }
+    return `
+      ${location ? `Region: ${location.label}` : ''}
+      ${model ? `; Model: ${model.label}` : ''}
+      ${category ? `; Category: ${category.label}` : ''}
+      ${subcategory ? `; Subcategory: ${subcategory.label}` : ''}
+      ${indicator ? `; Indicator: ${indicator.label}` : ''}.
+    `;
+  }
+);

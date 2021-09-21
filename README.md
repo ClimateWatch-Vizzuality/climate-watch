@@ -77,6 +77,14 @@ yarn run rails:db:migrate
 
 These will create the development database and then run the database migration tasks.
 
+#### Geolocation
+
+The App is using MAXMIND DB to geolocate users. In test and development environment we are using the MaxMind Test DB by default. In order to use real DB you need to download it
+locally setting `MAXMIND_LICENSE_KEY` and using rake task `db:import_maxmind`. Then to use real DB in dev environment you need to run project with env variable
+`MAXMIND_REAL_DB=true`.
+
+It is possible to override returned user country code in development mode using env variable `CW_USER_COUNTRY_OVERRIDE`.
+
 ### Launching The App
 
 You'll need to run both the rails server and the webpack server, which will be used internally by rails. Run, separately:
@@ -116,11 +124,16 @@ GFW_API: Global Forest Watch API
 CW_FILES_PREFIX: Prefix for the files on s3
 USER_SURVEY_SPREADSHEET_URL: URL for the script to the contact survey
 USER_NEWSLETTER_URL: Sign up to newsletter form url
-ONE_SIGNAL_ID: Id for [One signal](https://onesignal.com/) service
 
 FEATURE_POP_UP: Pop up shown entering the site
 POP_UP: Name of the temporary pop up to be displayed
+FEATURE_DYNAMIC_ZIP
+FEATURE_ENHANCEMENT_CHANGES
+FEATURE_SHOW_LTS_SUMMARY
 
+### Temporary feature tags
+
+FEATURE_WEB_TOUR
 
 ## Modules
 
@@ -314,5 +327,3 @@ and push to master!
 ## Maps geometries
 
 Geometries are stored in the world-50m-topo.json file. You can generate the geometries with this [jupyter link](https://github.com/Vizzuality/sci_team_data_bank/blob/master/Projects/CW/0.%20Add%20Islands%20%26%20Do%20Brexit.ipynb)
-
-

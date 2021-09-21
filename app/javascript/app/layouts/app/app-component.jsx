@@ -1,3 +1,4 @@
+/* eslint-disable no-confusing-arrow */
 import React, { PureComponent } from 'react';
 import Proptypes from 'prop-types';
 import { isPageContained, isEmbededComponent } from 'utils/navigation';
@@ -11,9 +12,12 @@ import NavBarMobile from 'components/navbar-mobile';
 import NavBar from 'components/navbar';
 import Footer from 'components/footer';
 import CookieConsent from 'components/cookie-consent';
+import WebTour from 'components/web-tour';
+import WebTourSwitch from 'components/web-tour/web-tour-switch';
 import styles from './app-styles.scss';
 
 const FEATURE_POP_UP = process.env.FEATURE_POP_UP === 'true';
+const FEATURE_WEB_TOUR = process.env.FEATURE_WEB_TOUR === 'true';
 
 class App extends PureComponent {
   render() {
@@ -27,13 +31,15 @@ class App extends PureComponent {
         )}
       >
         <CountriesProvider />
+        {FEATURE_WEB_TOUR && <WebTour route={route} />}
+        {FEATURE_WEB_TOUR && <WebTourSwitch />}
         <Desktop>
           {isDesktop =>
-            (isDesktop ? (
+            isDesktop ? (
               <NavBar routes={navRoutes} />
             ) : (
               <NavBarMobile routes={navRoutes} />
-            ))
+            )
           }
         </Desktop>
         <div className={styles.pageWrapper}>

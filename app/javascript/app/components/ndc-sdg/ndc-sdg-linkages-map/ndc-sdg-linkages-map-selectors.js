@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 import { scaleLinear } from 'd3-scale';
-import worldPaths from 'app/data/world-50m-paths';
+import getIPPaths from 'app/data/world-50m-paths';
 import { generateLinkToDataExplorer } from 'utils/data-explorer';
 import { shouldShowPath } from 'utils/map';
 
@@ -9,6 +9,7 @@ const getNdcsSdgsGoalsData = state => state.goalsData || null;
 const getGoalSelected = state => state.goalSelected || null;
 const getGoalHover = state => state.goalHover || null;
 const getTargetHover = state => state.targetHover || null;
+const getGoals = state => state.meta.goals || null;
 
 const initialStep = '#d3d3dc';
 let colorScale;
@@ -28,8 +29,9 @@ export const getNdcsSdgsGoalsDataSelected = createSelector(
 );
 
 export const getPathsWithStyles = createSelector(
-  [getNdcsSdgsGoalsDataSelected, getTargetHover],
-  (data, targetHover) => {
+  [getNdcsSdgsGoalsDataSelected, getTargetHover, getIPPaths],
+  (data, targetHover, worldPaths) => {
+    if (!worldPaths) return null;
     if (!data) {
       return worldPaths.filter(path => shouldShowPath(path));
     }
@@ -96,6 +98,15 @@ export const getLinkToDataExplorer = createSelector([getSearch], search => {
   return generateLinkToDataExplorer(search, section);
 });
 
-export default {
-  getPathsWithStyles
-};
+export const getPngSelectionSubtitle = createSelector(
+  [getNdcsSdgsGoalsDataSelected, getGoals],
+  (selectedGoalData, goals) => {
+    if (!goals) {
+      return null;
+    }
+    const selectedGoal = !selectedGoalData
+      ? goals[0]
+      : goals.find(g => g.id === selectedGoalData.id);
+    return `Goal: ${selectedGoal.number} - ${selectedGoal.cw_title}`;
+  }
+);

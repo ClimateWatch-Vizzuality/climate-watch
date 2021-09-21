@@ -20,7 +20,7 @@ export default [
   },
   {
     path: '/2020-ndc-tracker',
-    label: '2020 NDC Tracker',
+    label: 'NDC Enhancement Tracker',
     activeId
   },
   {
@@ -31,7 +31,8 @@ export default [
   {
     path: '/compare-all-targets',
     label: 'COMPARE ALL TARGETS',
-    activeId
+    activeId,
+    tour: 'compare-all'
   },
   {
     path: '/net-zero-tracker',

@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Collapse } from 'react-collapse';
 import Icon from 'components/icon';
+import AbbrReplace from 'components/abbr-replace';
 import cx from 'classnames';
 
 import dropdownArrow from 'assets/icons/dropdown-arrow.svg';
@@ -55,7 +56,7 @@ const Accordion = props => {
               >
                 <div className={cx(layout.content, theme.content)}>
                   <div className={cx(styles.title, theme.title)}>
-                    {title}
+                    <AbbrReplace>{title}</AbbrReplace>
                     <Icon
                       icon={dropdownArrow}
                       className={cx(

@@ -4,6 +4,7 @@ import cx from 'classnames';
 import isEmpty from 'lodash/isEmpty';
 
 import Loading from 'components/loading';
+import AbbrReplace from 'components/abbr-replace';
 import NdcsSdgsDataProvider from 'providers/ndcs-sdgs-data-provider';
 import NdcsSdgsMetaProvider from 'providers/ndcs-sdgs-meta-provider';
 import SDGCard from 'components/sdg-card';
@@ -137,13 +138,15 @@ class CountrySDGLinkages extends PureComponent {
     } = this.props;
     const description = (
       <div className={styles.descriptionContainer}>
-        The colored dots represent the Sustainable Development Goals (SDGs) for
-        which there is an aligned climate target, action, policy measure or need
-        in the NDC. This alignment was identified based only on the information
-        communicated in the NDC, not the domestic policy context. It is
-        therefore only an entry point for considering the degree of potential
-        alignment between the country’s climate and sustainable development
-        objectives.
+        <AbbrReplace>
+          The colored dots represent the Sustainable Development Goals (SDGs)
+          for which there is an aligned climate target, action, policy measure
+          or need in the NDC. This alignment was identified based only on the
+          information communicated in the NDC, not the domestic policy context.
+          It is therefore only an entry point for considering the degree of
+          potential alignment between the country’s climate and sustainable
+          development objectives.
+        </AbbrReplace>
       </div>
     );
 
@@ -189,7 +192,9 @@ class CountrySDGLinkages extends PureComponent {
         <div className={layout.content}>
           <div className={styles.header}>
             <div className={styles.buttons}>
-              <h3 className={styles.title}>NDC-SDG Linkages</h3>
+              <h3 className={styles.title}>
+                <AbbrReplace>NDC-SDG Linkages</AbbrReplace>
+              </h3>
               <TabletPortraitOnly>{description}</TabletPortraitOnly>
               {buttonGroup}
               <Dropdown

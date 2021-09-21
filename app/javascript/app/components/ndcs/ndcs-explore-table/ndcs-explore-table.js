@@ -11,7 +11,7 @@ import Component from './ndcs-explore-table-component';
 
 import {
   getISOCountries,
-  removeIsoFromData,
+  replaceAbbreviations,
   getDefaultColumns,
   getTitleLinks
 } from './ndcs-explore-table-selectors';
@@ -34,7 +34,7 @@ const mapStateToProps = (state, { location }) => {
     loading,
     query: ndcsNDCSWithSelection.query,
     isoCountries: getISOCountries(ndcsNDCSWithSelection),
-    tableData: removeIsoFromData(ndcsNDCSWithSelection),
+    tableData: replaceAbbreviations(ndcsNDCSWithSelection),
     columns: getDefaultColumns(ndcsNDCSWithSelection),
     titleLinks: getTitleLinks(ndcsNDCSWithSelection)
   };

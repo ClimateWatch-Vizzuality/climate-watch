@@ -4,6 +4,7 @@ import cx from 'classnames';
 import { themr } from 'react-css-themr';
 import { NavLink } from 'react-router-dom';
 import { NavHashLink } from 'react-router-hash-link';
+import AbbrReplace from 'components/abbr-replace';
 import qs from 'query-string';
 
 import styles from './anchor-nav-styles.scss';
@@ -16,12 +17,14 @@ const AnchorNav = props => {
     query,
     theme,
     offset,
-    activeSection
+    activeSection,
+    dataTour,
+    dataTours
   } = props;
   return (
     <div>
       <div className={cx(styles.anchorContainer)}>
-        <nav className={cx(className, theme.anchorNav)}>
+        <nav className={cx(className, theme.anchorNav)} data-tour={dataTour}>
           {links &&
             links.map((link, index) => {
               const linkProps = {
@@ -49,9 +52,13 @@ const AnchorNav = props => {
               if (useRoutes) {
                 linkProps.exact = true;
                 return (
-                  <NavLink {...linkProps} replace>
-                    {link.label}
-                  </NavLink>
+                  <span
+                    data-tour={dataTours && dataTours[link.label.toLowerCase()]}
+                  >
+                    <NavLink {...linkProps} replace>
+                      <AbbrReplace>{link.label}</AbbrReplace>
+                    </NavLink>
+                  </span>
                 );
               }
               linkProps.isActive = (match, location) =>
@@ -69,7 +76,7 @@ const AnchorNav = props => {
                   }}
                   replace
                 >
-                  {link.label}
+                  <AbbrReplace>{link.label}</AbbrReplace>
                 </NavHashLink>
               );
             })}
@@ -86,7 +93,9 @@ AnchorNav.propTypes = {
   query: PropTypes.string,
   theme: PropTypes.object,
   activeSection: PropTypes.string,
-  offset: PropTypes.array
+  offset: PropTypes.array,
+  dataTour: PropTypes.string,
+  dataTours: PropTypes.object
 };
 
 AnchorNav.defaultProps = {

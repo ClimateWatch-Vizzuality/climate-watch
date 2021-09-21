@@ -6,7 +6,7 @@ export const siteMapData = [
       { title: 'Agriculture Sector', href: '/sectors/agriculture' },
       { title: 'Explore NDCs', href: '/ndcs-explore' },
       { title: 'Explore LTS', href: '/lts-explore' },
-      { title: '2020 NDC Tracker', href: '/2020-ndc-tracker' },
+      { title: 'NDC Enhancement Tracker', href: '/2020-ndc-tracker' },
       { title: 'NDC-SDG Linkages', href: '/ndcs-sdg' },
       { title: 'Historical GHG Emissions', href: '/ghg-emissions' },
       { title: 'Pathways', href: '/pathways' }

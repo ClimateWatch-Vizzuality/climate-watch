@@ -9,7 +9,7 @@ end
 # core gems
 gem 'rails', '~> 5.2.4'
 gem 'bootsnap'
-gem 'puma', '~> 3.12.6'
+gem 'puma'
 
 # DB
 gem 'pg', '~> 0.20'
@@ -51,6 +51,7 @@ gem 'appsignal'
 # https://github.com/rails/rails/issues/24063
 gem 'activerecord-import'
 gem 'listen', '>= 3.0.5', '< 3.2'
+gem 'maxmind-db'
 gem 'oj'
 gem 'rubyzip'
 
@@ -79,6 +80,7 @@ group :test do
   gem 'json-schema'
   gem 'simplecov', require: false
   gem 'test-prof'
+  gem 'super_diff'
   gem 'vcr'
   gem 'webmock'
 end

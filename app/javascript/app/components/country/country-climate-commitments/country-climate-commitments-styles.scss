@@ -1,0 +1,49 @@
+@import '~styles/layout.scss';
+
+.grid {
+  @include row(12);
+
+  padding-top: $gutter-padding;
+  padding-bottom: $gutter-padding;
+}
+
+.container {
+  margin-bottom: $gutter-padding;
+}
+
+.title {
+  font-size: $font-size-large;
+  font-weight: $font-weight;
+  color: $theme-color;
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.documents,
+.previousComparison {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: $gutter-padding;
+}
+
+.icon {
+  width: 30px;
+  height: 30px;
+  margin-top: $gutter-padding;
+}
+
+.item {
+  width: 100px;
+}
+
+.valueDescription {
+  margin-top: 10px;
+  font-size: $font-size-sm;
+  color: $gray1;
+}
+
+.loading {
+  min-height: 462px;
+}

@@ -11,7 +11,7 @@ const renderSearch = (searchHandler, query) => (
     value={query}
     onChange={searchHandler}
     className={styles.searchBox}
-    placeholder="Search for a keyword"
+    placeholder="Search for country or keyword"
   />
 );
 
@@ -32,7 +32,10 @@ const NDCSEnhancementsTable = ({
         </div>
       )}
       {!loading && tableData && tableData.length > 0 && (
-        <div className={styles.tableWrapper}>
+        <div
+          className={styles.tableWrapper}
+          data-tour="ndc-enhancement-tracker-03"
+        >
           <Table
             data={tableData}
             horizontalScroll

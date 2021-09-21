@@ -1,8 +1,10 @@
 import { createSelector } from 'reselect';
 import { deburrUpper, filterQuery } from 'app/utils';
+import { replaceStringAbbr } from 'components/abbr-replace';
 import uniqBy from 'lodash/uniqBy';
 import sortBy from 'lodash/sortBy';
 import isEmpty from 'lodash/isEmpty';
+import { ENHANCEMENT_CATEGORIES } from 'data/constants';
 
 const getCountries = state => state.countries || null;
 const getCategories = state => state.categories || null;
@@ -17,8 +19,8 @@ export const getIndicatorsParsed = createSelector(
   [getCategories, getIndicatorsData],
   (categories, indicators) => {
     if (!categories || !indicators || !indicators.length) return null;
-    const categoryId = Object.keys(categories).find(
-      id => categories[id].slug === 'ndc_enhancement'
+    const categoryId = Object.keys(categories).find(id =>
+      ENHANCEMENT_CATEGORIES.includes(categories[id].slug)
     );
     return sortBy(
       uniqBy(
@@ -138,5 +140,19 @@ export const getFilteredDataBySearch = createSelector(
   (data, query) => {
     if (!data || isEmpty(data)) return null;
     return filterQuery(data, query);
+  }
+);
+
+export const replaceAbbreviations = createSelector(
+  [getFilteredDataBySearch],
+  data => {
+    if (!data || isEmpty(data)) return null;
+    return data.map(d => {
+      const updatedD = { ...d };
+      Object.keys(updatedD).forEach(key => {
+        updatedD[key] = replaceStringAbbr(d[key]);
+      });
+      return updatedD;
+    });
   }
 );

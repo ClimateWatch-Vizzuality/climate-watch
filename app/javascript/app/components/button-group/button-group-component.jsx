@@ -56,6 +56,7 @@ const renderButton = (buttonConfig, currentPathname, otherProps) => {
           positionRight={buttonConfig.positionRight}
           dataFor="tooltip"
           dataTip={dataTip}
+          dataTour={buttonConfig.dataTour}
         />
       );
     case 'downloadCombo':
@@ -68,6 +69,7 @@ const renderButton = (buttonConfig, currentPathname, otherProps) => {
           reverse={buttonConfig.reverseDropdown}
           dataFor="tooltip"
           dataTip={dataTip}
+          dataTour={buttonConfig.dataTour}
           inButtonGroup
         />
       );
@@ -86,6 +88,7 @@ const renderButton = (buttonConfig, currentPathname, otherProps) => {
           disabled={buttonConfig.disabled}
           dataFor="tooltip"
           dataTip={dataTip}
+          dataTour={buttonConfig.dataTour}
           target={buttonConfig.link && isPageContained ? '_blank' : undefined}
         >
           <Icon icon={iconsMap[buttonConfig.type]} />
@@ -99,7 +102,8 @@ const ButtonGroup = ({
   buttonsConfig,
   disabled,
   location,
-  otherProps
+  otherProps,
+  dataTour
 }) => {
   const { pathname: currentPathname } = location;
   return (
@@ -109,6 +113,7 @@ const ButtonGroup = ({
         disabled ? styles.disabled : '',
         className
       )}
+      data-tour={dataTour}
     >
       {buttonsConfig.map(buttonConfig =>
         renderButton(buttonConfig, currentPathname, otherProps)
@@ -123,7 +128,8 @@ ButtonGroup.propTypes = {
   buttonsConfig: PropTypes.array,
   location: PropTypes.object,
   disabled: PropTypes.bool,
-  otherProps: PropTypes.object
+  otherProps: PropTypes.object,
+  dataTour: PropTypes.string
 };
 
 export default ButtonGroup;

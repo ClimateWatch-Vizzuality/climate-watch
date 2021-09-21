@@ -6,16 +6,19 @@ import { withRouter } from 'react-router';
 import { isPageContained } from 'utils/navigation';
 
 import { actions as modalActions } from 'components/modal-metadata';
+import { actions as pngModalActions } from 'components/modal-png-download';
 
 import NdcSdgLinkagesMapComponent from './ndc-sdg-linkages-map-component';
 import {
   getNdcsSdgsGoalsDataSelected,
   getPathsWithStyles,
-  getLinkToDataExplorer
+  getLinkToDataExplorer,
+  getPngSelectionSubtitle
 } from './ndc-sdg-linkages-map-selectors';
 
 const mapStateToProps = (state, { location, goalHover, targetHover }) => {
   const { data: goalsData } = state.ndcSdg;
+  const { ndcsSdgsMeta } = state;
   const search = qs.parse(location.search);
   const goalSelected = search.goal || '';
   const data = {
@@ -23,7 +26,8 @@ const mapStateToProps = (state, { location, goalHover, targetHover }) => {
     goalSelected,
     goalHover,
     targetHover,
-    search
+    search,
+    meta: ndcsSdgsMeta.data
   };
   return {
     goal: getNdcsSdgsGoalsDataSelected(data),
@@ -32,7 +36,8 @@ const mapStateToProps = (state, { location, goalHover, targetHover }) => {
     goalSelected,
     goalHover,
     targetHover,
-    downloadLink: getLinkToDataExplorer(data)
+    downloadLink: getLinkToDataExplorer(data),
+    pngSelectionSubtitle: getPngSelectionSubtitle(data)
   };
 };
 class NdcSdgLinkagesMapContainer extends PureComponent {
@@ -67,11 +72,16 @@ class NdcSdgLinkagesMapContainer extends PureComponent {
     });
   };
 
+  handlePngDownloadModal = () => {
+    this.props.setModalPngDownload({ open: true });
+  };
+
   render() {
     return createElement(NdcSdgLinkagesMapComponent, {
       ...this.props,
       onCountryClick: this.onCountryClick,
-      handleInfoClick: this.handleInfoClick
+      handleInfoClick: this.handleInfoClick,
+      handlePngDownloadModal: this.handlePngDownloadModal
     });
   }
 }
@@ -82,12 +92,15 @@ NdcSdgLinkagesMapContainer.propTypes = {
   goalHover: PropTypes.number,
   goal: PropTypes.object,
   history: PropTypes.object.isRequired,
-  setModalMetadata: PropTypes.func.isRequired
+  setModalMetadata: PropTypes.func.isRequired,
+  setModalPngDownload: PropTypes.func.isRequired
 };
 
 export { default as component } from './ndc-sdg-linkages-map-component';
 export { default as styles } from './ndc-sdg-linkages-map-styles';
 
 export default withRouter(
-  connect(mapStateToProps, modalActions)(NdcSdgLinkagesMapContainer)
+  connect(mapStateToProps, { ...modalActions, ...pngModalActions })(
+    NdcSdgLinkagesMapContainer
+  )
 );

@@ -10,6 +10,7 @@ import { europeSlug, europeanCountries } from 'app/data/european-countries';
 
 import { actions as fetchActions } from 'pages/ndcs-enhancements';
 import { actions as modalActions } from 'components/modal-metadata';
+import { actions as pngModalActions } from 'components/modal-png-download';
 
 import Component from './ndcs-enhancements-viz-component';
 
@@ -21,16 +22,18 @@ import {
   getLinkToDataExplorer,
   summarizeIndicators,
   getIsEnhancedChecked,
+  getPreviousComparisonCountryValues,
   MAP_COLORS
 } from './ndcs-enhancements-viz-selectors';
 
-const actions = { ...fetchActions, ...modalActions };
+const actions = { ...fetchActions, ...modalActions, ...pngModalActions };
 
 const mapStateToProps = (state, { location }) => {
   const { data, loading } = state.ndcsEnhancements;
   const { countries } = state;
   const search = qs.parse(location.search);
   const ndcsEnhancementsWithSelection = {
+    ...state,
     ...data,
     countries: countries.data,
     query: search.search,
@@ -47,6 +50,9 @@ const mapStateToProps = (state, { location }) => {
     indicators: getIndicatorsParsed(ndcsEnhancementsWithSelection),
     summaryData: summarizeIndicators(ndcsEnhancementsWithSelection),
     downloadLink: getLinkToDataExplorer(ndcsEnhancementsWithSelection),
+    previousComparisonCountryValues: getPreviousComparisonCountryValues(
+      ndcsEnhancementsWithSelection
+    ),
     mapColors: MAP_COLORS
   };
 };
@@ -66,13 +72,16 @@ class NDCSEnhancementsVizContainer extends PureComponent {
 
   getTooltipValues() {
     const { geometryIdHover } = this.state;
-    const { indicator, indicators } = this.props;
+    const {
+      indicator,
+      indicators,
+      previousComparisonCountryValues
+    } = this.props;
     if (!geometryIdHover || !indicator) return null;
 
     const isEuropeanCountry = europeanCountries.includes(geometryIdHover);
     const id = isEuropeanCountry ? europeSlug : geometryIdHover;
 
-    const dateIndicator = indicators.find(i => i.value === 'ndce_date');
     const statementIndicator = indicators.find(
       i => i.value === 'ndce_statement'
     );
@@ -82,22 +91,24 @@ class NDCSEnhancementsVizContainer extends PureComponent {
       indicator.locations[id] &&
       indicator.locations[id].label_slug !== 'no_info_2020'
     ) {
-      const tooltipValues = {
+      const statement =
+        statementIndicator.locations[id] &&
+        statementIndicator.locations[id].value;
+      const indicatorLabelId = indicator.locations[id].label_id;
+      const value =
+        indicatorLabelId &&
+        indicator.legendBuckets &&
+        indicator.legendBuckets[indicatorLabelId] &&
+        indicator.legendBuckets[indicatorLabelId].name;
+
+      return {
         label: this.getTooltipLabel(),
-        value: undefined,
-        statement: undefined,
-        note: 'Learn more in table below'
+        value,
+        statement,
+        note: 'Learn more in table below',
+        indicators:
+          previousComparisonCountryValues && previousComparisonCountryValues[id]
       };
-
-      if (statementIndicator.locations[id]) {
-        tooltipValues.statement = `${statementIndicator.locations[id].value}`;
-      }
-      tooltipValues.value =
-        indicator.locations[id].label_slug === 'submitted_2020'
-          ? `Submitted a 2020 NDC on ${dateIndicator.locations[id].value}.`
-          : `${indicator.locations[id].value}`;
-
-      return tooltipValues;
     }
     return null;
   }
@@ -147,9 +158,8 @@ class NDCSEnhancementsVizContainer extends PureComponent {
 
   handleInfoClick = () => {
     this.props.setModalMetadata({
-      customTitle: 'NDC Content',
       category: 'NDC Content Map',
-      slugs: ['ndc_cw', 'ndc_wb', 'ndc_die'],
+      slugs: '2020_NDC',
       open: true
     });
   };
@@ -158,6 +168,11 @@ class NDCSEnhancementsVizContainer extends PureComponent {
     const { history, location } = this.props;
     history.replace(getLocationParamUpdated(location, param, clear));
   }
+
+  handlePngDownloadModal = () => {
+    const { setModalPngDownload } = this.props;
+    setModalPngDownload({ open: true });
+  };
 
   render() {
     const tooltipValues = this.getTooltipValues();
@@ -172,6 +187,7 @@ class NDCSEnhancementsVizContainer extends PureComponent {
       handleCountryEnter: this.handleCountryEnter,
       handleInfoClick: this.handleInfoClick,
       handleOnChangeChecked: this.handleOnChangeChecked,
+      handlePngDownloadModal: this.handlePngDownloadModal,
       noContentMsg,
       handleSearchChange: this.handleSearchChange,
       checked,
@@ -191,7 +207,9 @@ NDCSEnhancementsVizContainer.propTypes = {
   location: PropTypes.object.isRequired,
   isoCountries: PropTypes.array.isRequired,
   countries: PropTypes.array,
+  previousComparisonCountryValues: PropTypes.array,
   setModalMetadata: PropTypes.func.isRequired,
+  setModalPngDownload: PropTypes.func.isRequired,
   fetchNDCSEnhancements: PropTypes.func.isRequired
 };
 

@@ -5,6 +5,7 @@ import uniq from 'lodash/uniq';
 import Icon from 'components/icon';
 import checkIcon from 'assets/icons/check.svg';
 import downloadIcon from 'assets/icons/download.svg';
+import externalLink from 'assets/icons/external-link.svg';
 import ClickOutside from 'react-click-outside';
 import { NavLink } from 'react-router-dom';
 import includes from 'lodash/includes';
@@ -76,6 +77,19 @@ class SimpleMenu extends PureComponent {
     );
   }
 
+  // eslint-disable-next-line class-methods-use-this
+  renderExternalLink(option) {
+    return (
+      <div
+        className={cx(styles.documentLink, styles.externalLink)}
+        key={option.label}
+      >
+        <span className={styles.title}>{option.label}</span>
+        <Icon icon={externalLink} className={styles.icon} />
+      </div>
+    );
+  }
+
   renderLink(option) {
     if (option.path) {
       return (
@@ -83,27 +97,34 @@ class SimpleMenu extends PureComponent {
           className={styles.link}
           activeClassName={styles.active}
           to={option.path}
-          onClick={this.handleLinkClick}
+          onClick={() => {
+            this.handleLinkClick();
+          }}
         >
           {this.renderInsideLink(option)}
         </NavLink>
       );
     }
-    return option.action ? (
-      <button
-        className={styles.link}
-        onClick={() => this.handleActionClick(option)}
-      >
-        {this.renderInsideLink(option, true)}
-      </button>
-    ) : (
+    if (option.action) {
+      return (
+        <button
+          className={styles.link}
+          onClick={() => this.handleActionClick(option)}
+        >
+          {this.renderInsideLink(option, true)}
+        </button>
+      );
+    }
+    return (
       <a
         className={styles.link}
-        target={option.target || '_blank'}
+        target={option.external ? '_blank' : option.target || '_blank'}
         href={option.link}
         onClick={this.handleLinkClick}
       >
-        {this.renderInsideLink(option)}
+        {option.external
+          ? this.renderExternalLink(option)
+          : this.renderInsideLink(option)}
       </a>
     );
   }
@@ -117,7 +138,6 @@ class SimpleMenu extends PureComponent {
       options
     } = this.props;
     const { open } = this.state;
-
     const paths = options.map(option => option.path);
     const active = includes(paths, currentPathname);
     return (
@@ -125,7 +145,9 @@ class SimpleMenu extends PureComponent {
         className={cx(styles.button, buttonClassName, {
           [styles.active]: open || active
         })}
-        onClick={() => this.setState({ open: !open })}
+        onClick={() => {
+          this.setState({ open: !open });
+        }}
       >
         {icon && <Icon icon={icon} className={styles.icon} />}
         {title && <div>{title}</div>}
@@ -141,6 +163,7 @@ class SimpleMenu extends PureComponent {
       positionRight,
       inButton,
       inButtonGroup,
+      dataTour,
       dataFor,
       dataTip
     } = this.props;
@@ -149,7 +172,6 @@ class SimpleMenu extends PureComponent {
       'data-for': dataFor,
       'data-tip': dataTip
     };
-
     return (
       <ClickOutside
         onClickOutside={() => this.setState({ open: false })}
@@ -161,6 +183,7 @@ class SimpleMenu extends PureComponent {
           { [styles.inButtonGroup]: inButtonGroup }
         )}
         {...tooltipProps}
+        data-tour={dataTour}
       >
         {this.renderButton()}
         <ul className={cx(styles.links, { [styles.open]: open })}>
@@ -186,7 +209,8 @@ SimpleMenu.propTypes = {
   currentPathname: PropTypes.string,
   analyticsGraphName: PropTypes.string,
   dataFor: PropTypes.string,
-  dataTip: PropTypes.string
+  dataTip: PropTypes.string,
+  dataTour: PropTypes.string
 };
 
 SimpleMenu.defaultProps = {

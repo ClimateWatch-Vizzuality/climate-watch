@@ -24,6 +24,9 @@
     <meta name="theme-color" content="#ffffff">
     <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height" />
 
+    <!-- GeoIP -->
+    <%= geolocation_meta_tag %>
+
     <!-- SEO -->
     <meta name="description" content='<%= description(@actual_path) %>' />
     <meta name="twitter:creator" content="@vizzuality" />
@@ -53,6 +56,19 @@
 
     <% if @is_production %>
       <%= stylesheet_pack_tag 'main' %>
+      <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async></script>
+      <script>
+        window.OneSignal = window.OneSignal || [];
+        OneSignal.push(function() {
+          OneSignal.init({
+            appId: "27c3fb0e-bd48-409c-852a-e5a72446b9d4",
+            safari_web_id: "web.onesignal.auto.468a09a1-a4c0-43e5-8472-22975b523798",
+            notifyButton: {
+              enable: true,
+            },
+          });
+        });
+      </script>
     <% end %>
   </head>
 

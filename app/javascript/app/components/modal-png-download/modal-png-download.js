@@ -1,13 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import html2canvas from 'html2canvas';
+import kebabCase from 'lodash/kebabCase';
 import computedStyleToInlineStyle from 'computed-style-to-inline-style';
+import { PropTypes } from 'prop-types';
 import actions from './modal-png-download-actions';
 import reducers, { initialState } from './modal-png-download-reducers';
 import mapStateToProps from './modal-png-download-selectors';
 import Component from './modal-png-download-component';
 
-const modalPngDownloadContainer = props => {
+const ModalPngDownloadContainer = props => {
   function handleCloseModal() {
     const { setModalPngDownload } = props;
     setModalPngDownload({ open: false });
@@ -15,13 +17,14 @@ const modalPngDownloadContainer = props => {
 
   function downloadImage(dataUrl) {
     const link = document.createElement('a');
-    link.download = 'cw-chart.png';
+    link.download = `cw-${kebabCase(props.title)}.png`;
     link.href = dataUrl;
     link.click();
   }
 
   function handlePngToCanvasDownload() {
-    const node = document.querySelector('#modal-png-content');
+    const { id } = props;
+    const node = document.querySelector(`#modal-png-content-${id}`);
     const appNode = document.querySelector('#app');
     const nodePosition = node.getBoundingClientRect();
     const appScroll = appNode ? appNode.getBoundingClientRect().top : 0;
@@ -36,8 +39,9 @@ const modalPngDownloadContainer = props => {
       width: width + padding * 2,
       height: height + padding * 2,
       scale: SCALE,
+      useCORS: true,
       onclone: clonedDocument => {
-        const logo = clonedDocument.getElementById('modal-png-logo');
+        const logo = clonedDocument.getElementById(`modal-png-logo-${id}`);
         const style = document.createElement('style');
         // Append font to fix unit font on the chart
         style.innerHTML = `
@@ -76,6 +80,10 @@ const modalPngDownloadContainer = props => {
   );
 };
 
+ModalPngDownloadContainer.propTypes = {
+  title: PropTypes.string.isRequired
+};
+
 export { actions, reducers, initialState };
 
-export default connect(mapStateToProps, actions)(modalPngDownloadContainer);
+export default connect(mapStateToProps, actions)(ModalPngDownloadContainer);

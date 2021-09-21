@@ -15,7 +15,7 @@ const renderSearch = (searchHandler, query) => (
     value={query}
     onChange={searchHandler}
     className={styles.searchBox}
-    placeholder="Search table data"
+    placeholder="Search for a country or keyword"
   />
 );
 
@@ -40,7 +40,7 @@ const LTSExploreTable = ({
           </div>
         )}
         {!loading && tableData && tableData.length > 0 && (
-          <div className={styles.tableWrapper}>
+          <div className={styles.tableWrapper} data-tour="lts-explore-04">
             <Table
               data={tableData}
               horizontalScroll

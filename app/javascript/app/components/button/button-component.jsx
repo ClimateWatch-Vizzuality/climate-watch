@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import { NavLink } from 'react-router-dom';
-
+import AbbrReplace from 'components/abbr-replace';
 import styles from './button-styles.scss';
 
 const Button = props => {
@@ -17,6 +17,7 @@ const Button = props => {
     onClick,
     dataFor,
     dataTip,
+    dataTour,
     title,
     target
   } = props;
@@ -30,11 +31,20 @@ const Button = props => {
     'data-for': dataFor,
     'data-tip': dataTip
   };
+  const dataTourProp = {
+    'data-tour': dataTour
+  };
 
   if (href) {
     return (
-      <a className={classNames} href={href} target={target} {...tooltipProps}>
-        {children}
+      <a
+        className={classNames}
+        href={href}
+        target={target}
+        {...tooltipProps}
+        {...dataTourProp}
+      >
+        <AbbrReplace fixLayout>{children}</AbbrReplace>
       </a>
     );
   }
@@ -45,8 +55,9 @@ const Button = props => {
       onClick={disabled ? e => e.preventDefault() : onClick}
       target={target}
       {...tooltipProps}
+      {...dataTourProp}
     >
-      {children}
+      <AbbrReplace fixLayout>{children}</AbbrReplace>
     </NavLink>
   ) : (
     <button
@@ -55,8 +66,9 @@ const Button = props => {
       className={classNames}
       onClick={onClick}
       {...tooltipProps}
+      {...dataTourProp}
     >
-      {children}
+      <AbbrReplace fixLayout>{children}</AbbrReplace>
     </button>
   );
 };
@@ -73,7 +85,8 @@ Button.propTypes = {
   dataFor: PropTypes.string,
   dataTip: PropTypes.string,
   title: PropTypes.string,
-  target: PropTypes.string
+  target: PropTypes.string,
+  dataTour: PropTypes.string
 };
 
 Button.defaultProps = {

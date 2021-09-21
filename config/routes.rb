@@ -24,6 +24,8 @@ Rails.application.routes.draw do
       get 'auth/login', to: 'auth#login'
       get 'auth/logout', to: 'auth#logout'
 
+      resources :newsletters, only: [:create]
+
       resources :wb_extra, param: :code, only: [:index, :show], controller: 'wb_extra_country_data'
 
       resources :emissions, only: [:index], controller: :historical_emissions do
@@ -69,6 +71,7 @@ Rails.application.routes.draw do
       resources :notifications, only: [:index]
 
       resources :key_visualizations, only: [:index]
+      resources :zip_files, only: [:index]
 
       namespace :data do
         resources :historical_emissions, only: [:index] do

@@ -1,3 +1,4 @@
+/* eslint-disable no-confusing-arrow */
 import { createSelector } from 'reselect';
 import isEmpty from 'lodash/isEmpty';
 import sortBy from 'lodash/sortBy';
@@ -19,7 +20,7 @@ const getCountries = state => {
 };
 
 const getCountryByIso = (countries, iso) =>
-  (countries ? countries.find(country => country.iso_code3 === iso) : null);
+  countries ? countries.find(country => country.iso_code3 === iso) : null;
 
 const getSearch = state => {
   const { search } = state.location;
@@ -63,7 +64,8 @@ const getCountryDocuments = createSelector(
 const documentOption = document =>
   document && {
     label: document.long_name,
-    value: document.slug
+    value: document.slug,
+    url: document.url
   };
 
 export const getDocumentsOptions = createSelector(

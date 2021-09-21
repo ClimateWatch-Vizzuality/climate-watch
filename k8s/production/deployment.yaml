@@ -101,7 +101,7 @@ spec:
               value: '*'
             - name: REDIS_SERVER
               value: redis://localhost:6379
-          image: vizzuality/climate-watch
+          image: gfwdockerhub/climate-watch
           imagePullPolicy: Always
           name: climate-watch
           ports:
@@ -150,7 +150,7 @@ spec:
                   name: dbsecrets
             - name: REDIS_SERVER
               value: redis://localhost:6379
-          image: vizzuality/climate-watch
+          image: gfwdockerhub/climate-watch
           imagePullPolicy: Always
           name: climate-watch-sidekiq
           resources:

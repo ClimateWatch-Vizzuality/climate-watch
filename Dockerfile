@@ -22,14 +22,20 @@ ENV S3_BUCKET_NAME wri-sites
 
 ENV GOOGLE_ANALYTICS_ID UA-1981881-51
 
-ARG ONE_SIGNAL_ID
-ENV ONE_SIGNAL_ID $ONE_SIGNAL_ID
-
 ARG FEATURE_POP_UP
 ENV FEATURE_POP_UP $FEATURE_POP_UP
 
-ARG FEATURE_NDC_ENHANCEMENTS
-ENV FEATURE_NDC_ENHANCEMENTS $FEATURE_NDC_ENHANCEMENTS
+ARG FEATURE_ENHANCEMENT_CHANGES
+ENV FEATURE_ENHANCEMENT_CHANGES $FEATURE_ENHANCEMENT_CHANGES
+
+ARG FEATURE_SHOW_LTS_SUMMARY
+ENV FEATURE_SHOW_LTS_SUMMARY $FEATURE_SHOW_LTS_SUMMARY
+
+ARG FEATURE_WEB_TOUR
+ENV FEATURE_WEB_TOUR $FEATURE_WEB_TOUR
+
+ARG FEATURE_DYNAMIC_ZIP
+ENV FEATURE_DYNAMIC_ZIP $FEATURE_DYNAMIC_ZIP
 
 ARG POP_UP
 ENV POP_UP $POP_UP
@@ -43,8 +49,8 @@ ENV USER_REPORT_KEY $USER_REPORT_KEY
 # Install dependencies
 RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends \
-       postgresql-client nodejs build-essential patch zlib1g-dev liblzma-dev libicu-dev
+  && apt-get install -y --no-install-recommends \
+  postgresql-client nodejs build-essential patch zlib1g-dev liblzma-dev libicu-dev
 RUN npm install -g yarn
 
 # Create app directory
@@ -74,10 +80,16 @@ ENV USER_SURVEY_SPREADSHEET_URL $USER_SURVEY_SPREADSHEET_URL
 ARG USER_NEWSLETTER_URL
 ENV USER_NEWSLETTER_URL $USER_NEWSLETTER_URL
 
+ARG MAXMIND_LICENSE_KEY
+ENV MAXMIND_LICENSE_KEY $MAXMIND_LICENSE_KEY
+
 # Bundle app source
 COPY . ./
 
 EXPOSE 3000
+
+# Download maxmind IP db
+RUN bundle exec rails db:import_maxmind
 
 # Rails assets compile
 RUN bundle exec rake assets:precompile

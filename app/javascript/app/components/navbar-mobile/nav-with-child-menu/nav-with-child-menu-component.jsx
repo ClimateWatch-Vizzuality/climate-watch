@@ -4,6 +4,7 @@ import { NavLink } from 'react-router-dom';
 import Icon from 'components/icon';
 import cx from 'classnames';
 import arrow from 'assets/icons/arrow-down-tiny.svg';
+import externalLink from 'assets/icons/external-link.svg';
 import styles from './nav-with-child-menu-styles.scss';
 
 const NavWithChildMenu = ({
@@ -11,22 +12,46 @@ const NavWithChildMenu = ({
   options,
   closeMenu,
   theme,
-  activeClassName
+  activeClassName,
+  dataTour
 }) => (
-  <div className={cx(styles.container, theme.navWithChildContainer)}>
+  <div
+    className={cx(styles.container, theme.navWithChildContainer)}
+    data-tour={dataTour}
+  >
     <div className={cx(styles.title, theme.title)}>{title}:</div>
-    {options.map(option => (
-      <NavLink
-        key={option.label}
-        to={option.path}
-        onClick={closeMenu}
-        className={cx(styles.link, theme.link)}
-        activeClassName={activeClassName || styles.active}
-      >
-        {option.label.toUpperCase()}
-        <Icon icon={arrow} className={cx(styles.arrowIcon, theme.arrowIcon)} />
-      </NavLink>
-    ))}
+    {/* eslint-disable-next-line no-confusing-arrow */}
+    {options.map(option =>
+      option.external ? (
+        <a
+          key={option.label}
+          title={option.label}
+          href={option.link}
+          target={option.target || '_blank'}
+          className={cx(styles.link, theme.link)}
+        >
+          {option.label.toUpperCase()}
+          <Icon
+            icon={externalLink}
+            className={cx(styles.externalLinkIcon, theme.externalLinkIcon)}
+          />
+        </a>
+      ) : (
+        <NavLink
+          key={option.label}
+          to={option.path}
+          onClick={closeMenu}
+          className={cx(styles.link, theme.link)}
+          activeClassName={activeClassName || styles.active}
+        >
+          {option.label.toUpperCase()}
+          <Icon
+            icon={arrow}
+            className={cx(styles.arrowIcon, theme.arrowIcon)}
+          />
+        </NavLink>
+      )
+    )}
   </div>
 );
 
@@ -35,7 +60,8 @@ NavWithChildMenu.propTypes = {
   title: PropTypes.string,
   closeMenu: PropTypes.func,
   theme: PropTypes.object,
-  activeClassName: PropTypes.string
+  activeClassName: PropTypes.string,
+  dataTour: PropTypes.string
 };
 
 NavWithChildMenu.defaultProps = {
