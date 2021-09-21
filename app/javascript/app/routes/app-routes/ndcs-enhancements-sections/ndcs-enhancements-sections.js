@@ -1,4 +1,4 @@
-import NDCSEnhancementsViz from 'components/ndcs/ndcs-enhancements-viz';
+import NDCSEnhancementsMap from 'components/ndcs/ndcs-enhancements-map';
 import NDCSEnhancementsTable from 'components/ndcs/ndcs-enhancements-table';
 
 export default [
@@ -6,7 +6,7 @@ export default [
     hash: 'map',
     anchor: true,
     label: 'Map',
-    component: NDCSEnhancementsViz
+    component: NDCSEnhancementsMap
   },
   {
     hash: 'table',

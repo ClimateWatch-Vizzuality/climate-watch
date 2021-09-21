@@ -12,7 +12,7 @@ import { actions as fetchActions } from 'pages/ndcs-enhancements';
 import { actions as modalActions } from 'components/modal-metadata';
 import { actions as pngModalActions } from 'components/modal-png-download';
 
-import Component from './ndcs-enhancements-viz-component';
+import Component from './ndcs-enhancements-map-component';
 
 import {
   sortIndicatorLegend,
@@ -24,7 +24,7 @@ import {
   getIsEnhancedChecked,
   getPreviousComparisonCountryValues,
   MAP_COLORS
-} from './ndcs-enhancements-viz-selectors';
+} from './ndcs-enhancements-map-selectors';
 
 const actions = { ...fetchActions, ...modalActions, ...pngModalActions };
 
@@ -57,7 +57,7 @@ const mapStateToProps = (state, { location }) => {
   };
 };
 
-class NDCSEnhancementsVizContainer extends PureComponent {
+class NDCSEnhancementsMapContainer extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -197,7 +197,7 @@ class NDCSEnhancementsVizContainer extends PureComponent {
   }
 }
 
-NDCSEnhancementsVizContainer.propTypes = {
+NDCSEnhancementsMapContainer.propTypes = {
   history: PropTypes.object.isRequired,
   query: PropTypes.string,
   indicator: PropTypes.object,
@@ -214,5 +214,5 @@ NDCSEnhancementsVizContainer.propTypes = {
 };
 
 export default withRouter(
-  connect(mapStateToProps, actions)(NDCSEnhancementsVizContainer)
+  connect(mapStateToProps, actions)(NDCSEnhancementsMapContainer)
 );
