@@ -33,8 +33,11 @@ const getSearch = state => state.search || null;
 const getCountries = state => state.countries || null;
 const getCategories = state => state.categories || null;
 const getIndicatorsData = state => state.indicators || null;
+const getZoom = state => state.map.zoom || null;
+
 const getPreviousComparisonIndicators = state =>
   state.ndcsPreviousComparison && state.ndcsPreviousComparison.data;
+const getCountriesDocuments = state => state.countriesDocuments.data || null;
 
 export const getIsEnhancedChecked = createSelector(
   getSearch,
@@ -105,6 +108,29 @@ export const getMapIndicator = createSelector(
       });
     }
     return updatedMapIndicator;
+  }
+);
+
+export const getCompareLinks = createSelector(
+  [getCountriesDocuments, getIsEnhancedChecked],
+  countriesDocuments => {
+    if (!countriesDocuments) return null;
+    const links = {};
+    const baseURL =
+      '/custom-compare/overview?section=comparison_with_previous_ndc&targets=';
+    // eslint-disable-next-line consistent-return
+    Object.keys(countriesDocuments).forEach(iso => {
+      const ndcDocuments = countriesDocuments[iso].filter(d => d.is_ndc);
+      if (!ndcDocuments.length) return null;
+      const orderedDocuments = sortBy(ndcDocuments, 'ordering')
+        .reverse()
+        .slice(0, 3)
+        .reverse();
+      links[iso] = `${baseURL}${orderedDocuments
+        .map(d => `${iso}-${d.slug}`)
+        .join(',')}`;
+    });
+    return links;
   }
 );
 
@@ -180,8 +206,8 @@ export const MAP_COLORS = [
 ];
 
 export const getPathsWithStyles = createSelector(
-  [filterEnhancedValueOnIndicator, getIPPaths],
-  (indicator, worldPaths) => {
+  [filterEnhancedValueOnIndicator, getIPPaths, getZoom],
+  (indicator, worldPaths, zoom) => {
     if (!indicator || !worldPaths) return [];
     const paths = [];
     worldPaths.forEach(path => {
@@ -205,15 +231,19 @@ export const getPathsWithStyles = createSelector(
         if (countryData && countryData.label_id) {
           const legendIndex = legendBuckets[countryData.label_id].index;
           const color = getColorByIndex(legendBuckets, legendIndex, MAP_COLORS);
+          const strokeWidth = zoom > 2 ? (1 / zoom) * 2 : 0.5;
           style = {
             ...COUNTRY_STYLES,
             default: {
               ...COUNTRY_STYLES.default,
+              'stroke-width': strokeWidth,
               fill: color,
               fillOpacity: 1
             },
             hover: {
               ...COUNTRY_STYLES.hover,
+              cursor: 'pointer',
+              'stroke-width': strokeWidth,
               fill: color,
               fillOpacity: 1
             }

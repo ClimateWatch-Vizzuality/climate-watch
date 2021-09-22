@@ -5,6 +5,7 @@ import { TabletLandscape } from 'components/responsive';
 import Map from 'components/map';
 import MapLegend from 'components/map-legend';
 import ButtonGroup from 'components/button-group';
+import CountriesDocumentsProvider from 'providers/countries-documents-provider';
 import NDCSPreviousComparisonProvider from 'providers/ndcs-previous-comparison-provider';
 import AbbrReplace, { replaceStringAbbr } from 'components/abbr-replace';
 import { CheckInput } from 'cw-components';
@@ -135,6 +136,7 @@ const NDCSEnhancementsMap = ({
   mapColors,
   handleOnChangeChecked,
   handlePngDownloadModal,
+  handleCountryClick,
   checked
 }) => {
   // eslint-disable-next-line react/prop-types
@@ -144,8 +146,10 @@ const NDCSEnhancementsMap = ({
       tooltipId={TOOLTIP_ID}
       onCountryEnter={handleCountryEnter}
       onCountryFocus={handleCountryEnter}
+      onCountryClick={handleCountryClick}
       zoomEnable={!png}
       customCenter={!isTablet ? [10, -10] : null}
+      className={styles.map}
     />
   );
 
@@ -253,7 +257,12 @@ const NDCSEnhancementsMap = ({
               )}
             </ModalPngDownload>
             <ModalMetadata />
-            {FEATURE_ENHANCEMENT_CHANGES && <NDCSPreviousComparisonProvider />}
+            {FEATURE_ENHANCEMENT_CHANGES && (
+              <React.Fragment>
+                <NDCSPreviousComparisonProvider />
+                <CountriesDocumentsProvider />
+              </React.Fragment>
+            )}
           </div>
         )}
       </TabletLandscape>
@@ -272,6 +281,7 @@ NDCSEnhancementsMap.propTypes = {
   handleInfoClick: PropTypes.func.isRequired,
   handleOnChangeChecked: PropTypes.func.isRequired,
   handlePngDownloadModal: PropTypes.func.isRequired,
+  handleCountryClick: PropTypes.func.isRequired,
   checked: PropTypes.bool,
   mapColors: PropTypes.array
 };

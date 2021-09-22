@@ -23,6 +23,7 @@ import {
   summarizeIndicators,
   getIsEnhancedChecked,
   getPreviousComparisonCountryValues,
+  getCompareLinks,
   MAP_COLORS
 } from './ndcs-enhancements-map-selectors';
 
@@ -46,10 +47,12 @@ const mapStateToProps = (state, { location }) => {
     countries: countries.data,
     checked: getIsEnhancedChecked(ndcsEnhancementsWithSelection),
     isoCountries: getISOCountries(ndcsEnhancementsWithSelection),
+    compareLink: getCompareLinks(ndcsEnhancementsWithSelection),
     indicator: sortIndicatorLegend(ndcsEnhancementsWithSelection),
     indicators: getIndicatorsParsed(ndcsEnhancementsWithSelection),
     summaryData: summarizeIndicators(ndcsEnhancementsWithSelection),
     downloadLink: getLinkToDataExplorer(ndcsEnhancementsWithSelection),
+    compareLinks: getCompareLinks(ndcsEnhancementsWithSelection),
     previousComparisonCountryValues: getPreviousComparisonCountryValues(
       ndcsEnhancementsWithSelection
     ),
@@ -129,14 +132,14 @@ class NDCSEnhancementsMapContainer extends PureComponent {
   };
 
   handleCountryClick = geography => {
-    // Click action has been disabled for countries on this map per WRI request
-    const { isoCountries } = this.props;
+    const { isoCountries, history, compareLinks } = this.props;
+
     const iso = geography.properties && geography.properties.id;
     if (iso && isCountryIncluded(isoCountries, iso)) {
-      this.props.history.push(`/ndcs/country/${iso}`);
+      history.push(compareLinks[iso]);
       handleAnalytics(
-        'NDC Content Map',
-        'Use map to find country',
+        'NDC Enhancements Map',
+        'Use link to compare enhancements',
         geography.properties.name
       );
     }
@@ -206,6 +209,7 @@ NDCSEnhancementsMapContainer.propTypes = {
   checked: PropTypes.bool,
   location: PropTypes.object.isRequired,
   isoCountries: PropTypes.array.isRequired,
+  compareLinks: PropTypes.object,
   countries: PropTypes.array,
   previousComparisonCountryValues: PropTypes.array,
   setModalMetadata: PropTypes.func.isRequired,

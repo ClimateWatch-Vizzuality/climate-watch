@@ -86,12 +86,12 @@ class NDCSExploreMapContainer extends PureComponent {
   };
 
   handleCountryClick = (geography, countryData) => {
-    const { isoCountries } = this.props;
+    const { isoCountries, history } = this.props;
     const { id: iso, name } = countryData || {};
     const countryIso =
       iso || (geography && geography.properties && geography.properties.id);
     if (countryIso && isCountryIncluded(isoCountries, countryIso)) {
-      this.props.history.push(`/ndcs/country/${countryIso}`);
+      history.push(`/ndcs/country/${countryIso}`);
       handleAnalytics(
         'NDCS Explore Map',
         'Use map to find country',
@@ -99,6 +99,7 @@ class NDCSExploreMapContainer extends PureComponent {
       );
     }
   };
+
   handleCountryEnter = geography => {
     const {
       tooltipCountryValues,
