@@ -6,7 +6,7 @@ import Icon from 'components/icon';
 import PreviousSubmissionIcon from 'components/previous-submission-icon';
 import accordionArrow from 'assets/icons/accordion-arrow.svg';
 import tooltipTheme from 'styles/themes/map-tooltip/map-tooltip.scss';
-import styles from 'components/ndcs/ndcs-enhancements-viz/ndcs-enhancements-tooltip/ndcs-enhancements-tooltip-styles.scss';
+import styles from 'components/ndcs/ndcs-enhancements-map/ndcs-enhancements-tooltip/ndcs-enhancements-tooltip-styles.scss';
 
 const NDCSEnhancementsTooltip = props => {
   const { isTablet, tooltipValues, id } = props;

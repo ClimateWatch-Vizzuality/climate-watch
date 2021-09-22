@@ -12,7 +12,7 @@ import { actions as fetchActions } from 'pages/ndcs-enhancements';
 import { actions as modalActions } from 'components/modal-metadata';
 import { actions as pngModalActions } from 'components/modal-png-download';
 
-import Component from './ndcs-enhancements-viz-component';
+import Component from './ndcs-enhancements-map-component';
 
 import {
   sortIndicatorLegend,
@@ -23,8 +23,9 @@ import {
   summarizeIndicators,
   getIsEnhancedChecked,
   getPreviousComparisonCountryValues,
+  getCompareLinks,
   MAP_COLORS
-} from './ndcs-enhancements-viz-selectors';
+} from './ndcs-enhancements-map-selectors';
 
 const actions = { ...fetchActions, ...modalActions, ...pngModalActions };
 
@@ -46,10 +47,12 @@ const mapStateToProps = (state, { location }) => {
     countries: countries.data,
     checked: getIsEnhancedChecked(ndcsEnhancementsWithSelection),
     isoCountries: getISOCountries(ndcsEnhancementsWithSelection),
+    compareLink: getCompareLinks(ndcsEnhancementsWithSelection),
     indicator: sortIndicatorLegend(ndcsEnhancementsWithSelection),
     indicators: getIndicatorsParsed(ndcsEnhancementsWithSelection),
     summaryData: summarizeIndicators(ndcsEnhancementsWithSelection),
     downloadLink: getLinkToDataExplorer(ndcsEnhancementsWithSelection),
+    compareLinks: getCompareLinks(ndcsEnhancementsWithSelection),
     previousComparisonCountryValues: getPreviousComparisonCountryValues(
       ndcsEnhancementsWithSelection
     ),
@@ -57,7 +60,7 @@ const mapStateToProps = (state, { location }) => {
   };
 };
 
-class NDCSEnhancementsVizContainer extends PureComponent {
+class NDCSEnhancementsMapContainer extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -129,14 +132,14 @@ class NDCSEnhancementsVizContainer extends PureComponent {
   };
 
   handleCountryClick = geography => {
-    // Click action has been disabled for countries on this map per WRI request
-    const { isoCountries } = this.props;
+    const { isoCountries, history, compareLinks } = this.props;
+
     const iso = geography.properties && geography.properties.id;
     if (iso && isCountryIncluded(isoCountries, iso)) {
-      this.props.history.push(`/ndcs/country/${iso}`);
+      history.push(compareLinks[iso]);
       handleAnalytics(
-        'NDC Content Map',
-        'Use map to find country',
+        'NDC Enhancements Map',
+        'Use link to compare enhancements',
         geography.properties.name
       );
     }
@@ -197,7 +200,7 @@ class NDCSEnhancementsVizContainer extends PureComponent {
   }
 }
 
-NDCSEnhancementsVizContainer.propTypes = {
+NDCSEnhancementsMapContainer.propTypes = {
   history: PropTypes.object.isRequired,
   query: PropTypes.string,
   indicator: PropTypes.object,
@@ -206,6 +209,7 @@ NDCSEnhancementsVizContainer.propTypes = {
   checked: PropTypes.bool,
   location: PropTypes.object.isRequired,
   isoCountries: PropTypes.array.isRequired,
+  compareLinks: PropTypes.object,
   countries: PropTypes.array,
   previousComparisonCountryValues: PropTypes.array,
   setModalMetadata: PropTypes.func.isRequired,
@@ -214,5 +218,5 @@ NDCSEnhancementsVizContainer.propTypes = {
 };
 
 export default withRouter(
-  connect(mapStateToProps, actions)(NDCSEnhancementsVizContainer)
+  connect(mapStateToProps, actions)(NDCSEnhancementsMapContainer)
 );

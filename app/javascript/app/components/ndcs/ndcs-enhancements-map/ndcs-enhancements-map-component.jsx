@@ -5,6 +5,7 @@ import { TabletLandscape } from 'components/responsive';
 import Map from 'components/map';
 import MapLegend from 'components/map-legend';
 import ButtonGroup from 'components/button-group';
+import CountriesDocumentsProvider from 'providers/countries-documents-provider';
 import NDCSPreviousComparisonProvider from 'providers/ndcs-previous-comparison-provider';
 import AbbrReplace, { replaceStringAbbr } from 'components/abbr-replace';
 import { CheckInput } from 'cw-components';
@@ -13,12 +14,12 @@ import Icon from 'components/icon';
 import infoIcon from 'assets/icons/info.svg';
 import ModalMetadata from 'components/modal-metadata';
 import ModalPngDownload from 'components/modal-png-download';
-import NDCSEnhancementsTooltip from 'components/ndcs/ndcs-enhancements-viz/ndcs-enhancements-tooltip';
+import NDCSEnhancementsTooltip from 'components/ndcs/ndcs-enhancements-map/ndcs-enhancements-tooltip';
 import ReactTooltip from 'react-tooltip';
 import blueCheckboxTheme from 'styles/themes/checkbox/blue-checkbox.scss';
 import { Link } from 'react-router-dom';
 import { ENHANCEMENT_LABEL_SLUGS } from 'data/constants';
-import styles from './ndcs-enhancements-viz-styles.scss';
+import styles from './ndcs-enhancements-map-styles.scss';
 
 const FEATURE_ENHANCEMENT_CHANGES =
   process.env.FEATURE_ENHANCEMENT_CHANGES === 'true';
@@ -123,7 +124,7 @@ const renderSummaryItem = datum => (
 
 const TOOLTIP_ID = 'ndcs-map-tooltip';
 
-const NDCSEnhancementsViz = ({
+const NDCSEnhancementsMap = ({
   loading,
   indicator,
   paths,
@@ -135,6 +136,7 @@ const NDCSEnhancementsViz = ({
   mapColors,
   handleOnChangeChecked,
   handlePngDownloadModal,
+  handleCountryClick,
   checked
 }) => {
   // eslint-disable-next-line react/prop-types
@@ -144,8 +146,10 @@ const NDCSEnhancementsViz = ({
       tooltipId={TOOLTIP_ID}
       onCountryEnter={handleCountryEnter}
       onCountryFocus={handleCountryEnter}
+      onCountryClick={handleCountryClick}
       zoomEnable={!png}
       customCenter={!isTablet ? [10, -10] : null}
+      className={styles.map}
     />
   );
 
@@ -253,7 +257,12 @@ const NDCSEnhancementsViz = ({
               )}
             </ModalPngDownload>
             <ModalMetadata />
-            {FEATURE_ENHANCEMENT_CHANGES && <NDCSPreviousComparisonProvider />}
+            {FEATURE_ENHANCEMENT_CHANGES && (
+              <React.Fragment>
+                <NDCSPreviousComparisonProvider />
+                <CountriesDocumentsProvider />
+              </React.Fragment>
+            )}
           </div>
         )}
       </TabletLandscape>
@@ -261,7 +270,7 @@ const NDCSEnhancementsViz = ({
   );
 };
 
-NDCSEnhancementsViz.propTypes = {
+NDCSEnhancementsMap.propTypes = {
   loading: PropTypes.bool,
   indicator: PropTypes.object,
   paths: PropTypes.array.isRequired,
@@ -272,8 +281,9 @@ NDCSEnhancementsViz.propTypes = {
   handleInfoClick: PropTypes.func.isRequired,
   handleOnChangeChecked: PropTypes.func.isRequired,
   handlePngDownloadModal: PropTypes.func.isRequired,
+  handleCountryClick: PropTypes.func.isRequired,
   checked: PropTypes.bool,
   mapColors: PropTypes.array
 };
 
-export default NDCSEnhancementsViz;
+export default NDCSEnhancementsMap;
