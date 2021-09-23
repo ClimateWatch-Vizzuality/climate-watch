@@ -11,22 +11,18 @@ import { generateLinkToDataExplorer } from 'utils/data-explorer';
 import getIPPaths from 'app/data/world-50m-paths';
 import { europeSlug, europeanCountries } from 'app/data/european-countries';
 import { COUNTRY_STYLES } from 'components/ndcs/shared/constants';
-import { CHART_NAMED_COLORS } from 'styles/constants';
+
 // TODO: Remove ndc_enhancement when new data on production
 import {
   ENHANCEMENT_CATEGORIES,
-  ENHANCEMENT_LABEL_SLUGS
+  ENHANCEMENT_LABEL_SLUGS,
+  ENHANCEMENT_LABEL_COLORS,
+  INDICATOR_SLUGS
 } from 'data/constants';
 
-const INDICATOR_SLUGS = {
-  EMISSIONS: 'ndce_ghg',
-  MAP: 'ndce_status_2020'
-};
-
-const LABEL_COLORS = {
-  SUBMITTED_2020: CHART_NAMED_COLORS.color1,
-  INTENDS_TO_ENHANCE: CHART_NAMED_COLORS.color2,
-  ENHANCED_MITIGATION: CHART_NAMED_COLORS.color3
+const ENHANCEMENT_SLUGS = {
+  EMISSIONS: INDICATOR_SLUGS.emissions,
+  MAP: INDICATOR_SLUGS.enhancements
 };
 
 const getSearch = state => state.search || null;
@@ -84,7 +80,7 @@ export const getMapIndicator = createSelector(
   (indicators, isos) => {
     if (!indicators || !indicators.length) return null;
     const mapIndicator = indicators.find(
-      ind => ind.value === INDICATOR_SLUGS.MAP
+      ind => ind.value === ENHANCEMENT_SLUGS.MAP
     );
     if (!mapIndicator) return null;
 
@@ -112,7 +108,7 @@ export const getMapIndicator = createSelector(
 );
 
 export const getCompareLinks = createSelector(
-  [getCountriesDocuments, getIsEnhancedChecked],
+  [getCountriesDocuments],
   countriesDocuments => {
     if (!countriesDocuments) return null;
     const links = {};
@@ -122,13 +118,19 @@ export const getCompareLinks = createSelector(
     Object.keys(countriesDocuments).forEach(iso => {
       const ndcDocuments = countriesDocuments[iso].filter(d => d.is_ndc);
       if (!ndcDocuments.length) return null;
+
       const orderedDocuments = sortBy(ndcDocuments, 'ordering')
         .reverse()
-        .slice(0, 3)
-        .reverse();
-      links[iso] = `${baseURL}${orderedDocuments
+        .slice(0, 3);
+
+      const link = `${baseURL}${orderedDocuments
         .map(d => `${iso}-${d.slug}`)
         .join(',')}`;
+
+      links[iso] = {
+        link,
+        documents: orderedDocuments.map(d => d.description)
+      };
     });
     return links;
   }
@@ -197,7 +199,10 @@ export const sortIndicatorLegend = createSelector(
   }
 );
 
-const MAP_LABEL_COLORS = [...Object.values(LABEL_COLORS), 'rgb(204, 204, 204)'];
+const MAP_LABEL_COLORS = [
+  ...Object.values(ENHANCEMENT_LABEL_COLORS),
+  'rgb(204, 204, 204)'
+];
 export const MAP_COLORS = [
   [...MAP_LABEL_COLORS],
   [...MAP_LABEL_COLORS],
@@ -339,7 +344,7 @@ export const summarizeIndicators = createSelector(
     });
 
     const emissionsIndicator = indicators.find(
-      ind => ind.value === INDICATOR_SLUGS.EMISSIONS
+      ind => ind.value === ENHANCEMENT_SLUGS.EMISSIONS
     );
 
     // Calculate countries number and emissions

@@ -4,7 +4,14 @@ import { replaceStringAbbr } from 'components/abbr-replace';
 import uniqBy from 'lodash/uniqBy';
 import sortBy from 'lodash/sortBy';
 import isEmpty from 'lodash/isEmpty';
-import { ENHANCEMENT_CATEGORIES } from 'data/constants';
+import invert from 'lodash/invert';
+import {
+  ENHANCEMENT_CATEGORIES,
+  ENHANCEMENT_LABEL_SLUGS,
+  ENHANCEMENT_LABEL_COLORS,
+  INDICATOR_SLUGS
+} from 'data/constants';
+import { getCompareLinks } from 'components/ndcs/ndcs-enhancements-map/ndcs-enhancements-map-selectors';
 
 const getCountries = state => state.countries || null;
 const getCategories = state => state.categories || null;
@@ -56,7 +63,11 @@ export const tableGetSelectedData = createSelector(
         };
         indicators.forEach(ind => {
           if (ind.locations[iso]) {
-            row[ind.label] = ind.locations[iso].value;
+            if (ind.value === INDICATOR_SLUGS.enhancements) {
+              row[ind.label] = ind.locations[iso].label_slug;
+            } else {
+              row[ind.label] = ind.locations[iso].value;
+            }
           }
         });
         return row;
@@ -66,9 +77,20 @@ export const tableGetSelectedData = createSelector(
   }
 );
 
+const INVERTED_ENHANCEMENT_LABEL_SLUGS = invert(ENHANCEMENT_LABEL_SLUGS);
+const joinArrayWithCommas = inputArray => {
+  if (!inputArray || !inputArray.length) return null;
+  if (inputArray.length === 2) {
+    return inputArray.join(' and ');
+  } else if (inputArray.length > 2) {
+    return `${inputArray.slice(0, -1).join(', ')}, and ${inputArray.slice(-1)}`;
+  }
+  return inputArray[0];
+};
+
 export const tableRemoveIsoFromData = createSelector(
-  [tableGetSelectedData],
-  data => {
+  [tableGetSelectedData, getCompareLinks],
+  (data, compareLinks) => {
     if (!data || isEmpty(data)) return null;
     return data.filter(Boolean).map(d => {
       const updatedD = { ...d };
@@ -88,10 +110,22 @@ export const tableRemoveIsoFromData = createSelector(
         console.error(e);
       }
       updatedD['Statement Date'] = date.name;
+      updatedD['NDC Status'] =
+        ENHANCEMENT_LABEL_COLORS[
+          INVERTED_ENHANCEMENT_LABEL_SLUGS[d['NDC Status']]
+        ];
       updatedD['Source Link'] = d['Source Link']
         ? d['Source Link'].replace('href=', "target='_blank' href=")
         : undefined;
       updatedD.country = `<a href="/ndcs/country/${d.iso}">${d.country}</a>`;
+      if (compareLinks) {
+        const compareLink = compareLinks[d.iso] || {};
+
+        const documentText = joinArrayWithCommas(compareLink.documents);
+        updatedD[
+          'Compare with previous submissions'
+        ] = `<a href="${compareLink.link}" title="Compare ${documentText}">Compare previous ${documentText}</a>`;
+      }
       delete updatedD.iso;
       return updatedD;
     });
@@ -105,8 +139,9 @@ export const getDefaultColumns = createSelector(
 
     const columnIds = [
       'country',
-      'ndce_ghg',
-      'ndce_status_2020',
+      INDICATOR_SLUGS.emissions,
+      INDICATOR_SLUGS.enhancements,
+      'Compare with previous submissions',
       'ndce_statement',
       'ndce_source',
       'ndce_date'

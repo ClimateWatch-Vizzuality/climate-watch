@@ -21,6 +21,7 @@ const mapStateToProps = (state, { location }) => {
   const { countries } = state;
   const search = qs.parse(location.search);
   const ndcsEnhancementsWithSelection = {
+    ...state,
     ...data,
     countries: countries.data,
     query: search.search,

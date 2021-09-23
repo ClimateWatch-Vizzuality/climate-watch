@@ -11,7 +11,7 @@ import intendsIcon from 'assets/icons/compare-intends.svg';
 import { SUBMISSION_ICON_VALUE } from 'data/country-documents';
 import ReactTooltip from 'react-tooltip';
 import NDCSProvider from 'providers/ndcs-provider';
-
+import { INDICATOR_SLUGS } from 'data/constants';
 import styles from './country-climate-commitments-styles.scss';
 
 function CountryClimateCommitments({
@@ -89,7 +89,7 @@ function CountryClimateCommitments({
       <CountriesDocumentsProvider location={iso} />
       <NDCSProvider
         overrideFilter
-        indicatorSlugs={['nz_status', 'ndce_status_2020']}
+        indicatorSlugs={['nz_status', INDICATOR_SLUGS.enhancements]}
       />
     </React.Fragment>
   );

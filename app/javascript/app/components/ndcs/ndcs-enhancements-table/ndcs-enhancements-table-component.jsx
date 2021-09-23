@@ -5,6 +5,7 @@ import { Table } from 'cw-components';
 import NoContent from 'components/no-content';
 import Loading from 'components/loading';
 import styles from './ndcs-enhancements-table-styles.scss';
+import customCellRenderer from './ndcs-enhancements-table-cell-renderer';
 
 const renderSearch = (searchHandler, query) => (
   <Search
@@ -41,8 +42,11 @@ const NDCSEnhancementsTable = ({
             horizontalScroll
             parseHtml
             dynamicRowsHeight
-            setColumnWidth={() => 180}
+            // eslint-disable-next-line no-confusing-arrow
+            setColumnWidth={col => (col === 'NDC Status' ? 80 : 180)}
+            customCellRenderer={customCellRenderer}
             defaultColumns={columns}
+            sortBy="Share of Global GHG Emissions"
           />
         </div>
       )}
