@@ -47,6 +47,7 @@ const NDCSEnhancementsTable = ({
             customCellRenderer={customCellRenderer}
             defaultColumns={columns}
             sortBy="Share of Global GHG Emissions"
+            sortASC={false}
           />
         </div>
       )}
