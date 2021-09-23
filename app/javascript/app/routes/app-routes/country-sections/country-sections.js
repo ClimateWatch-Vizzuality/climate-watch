@@ -11,13 +11,8 @@ import LawsAndPolicies from 'components/country/laws-and-policies';
 const FEATURE_ENHANCEMENT_CHANGES =
   process.env.FEATURE_ENHANCEMENT_CHANGES === 'true';
 
-const routes = [
-  FEATURE_ENHANCEMENT_CHANGES && {
-    hash: 'climate-commitments',
-    label: 'Climate commitments',
-    anchor: true,
-    component: ClimateCommitments
-  },
+// eslint-disable-next-line import/no-mutable-exports
+let routes = [
   {
     hash: 'ghg-emissions',
     label: 'GHG Emissions',
@@ -55,5 +50,16 @@ const routes = [
     component: LawsAndPolicies
   }
 ];
+
+if (FEATURE_ENHANCEMENT_CHANGES) {
+  routes = [
+    {
+      hash: 'climate-commitments',
+      label: 'Climate commitments',
+      anchor: true,
+      component: ClimateCommitments
+    }
+  ].concat(routes);
+}
 
 export default routes;
