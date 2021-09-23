@@ -136,7 +136,7 @@ class NDCSEnhancementsMapContainer extends PureComponent {
 
     const iso = geography.properties && geography.properties.id;
     if (iso && isCountryIncluded(isoCountries, iso)) {
-      history.push(compareLinks[iso]);
+      history.push(compareLinks[iso].link);
       handleAnalytics(
         'NDC Enhancements Map',
         'Use link to compare enhancements',

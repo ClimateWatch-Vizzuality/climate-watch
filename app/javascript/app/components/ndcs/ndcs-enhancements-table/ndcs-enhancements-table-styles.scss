@@ -34,3 +34,13 @@
     align-items: flex-end;
   }
 }
+
+.submissionWithIcon {
+  display: flex;
+}
+
+.submissionIcon {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+}

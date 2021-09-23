@@ -394,3 +394,14 @@ export const NET_ZERO_POSITIVE_LABELS = [
   'Net-zero Target in Policy Document',
   'Net-zero Target in Political Pledge'
 ];
+
+export const ENHANCEMENT_LABEL_COLORS = {
+  SUBMITTED_2020: CHART_NAMED_COLORS.color1,
+  INTENDS_TO_ENHANCE: CHART_NAMED_COLORS.color2,
+  ENHANCED_MITIGATION: CHART_NAMED_COLORS.color3
+};
+
+export const INDICATOR_SLUGS = {
+  emissions: 'ndce_ghg',
+  enhancements: 'ndce_status_2020'
+};

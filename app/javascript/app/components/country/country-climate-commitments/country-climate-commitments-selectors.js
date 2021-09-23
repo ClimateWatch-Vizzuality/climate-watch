@@ -2,7 +2,7 @@ import { createSelector } from 'reselect';
 import isEmpty from 'lodash/isEmpty';
 import { getDocumentsColumns } from 'utils/country-documents';
 import { SUBMISSION_ICON_VALUE } from 'data/country-documents';
-import { ENHANCEMENT_LABEL_SLUGS } from 'data/constants';
+import { ENHANCEMENT_LABEL_SLUGS, INDICATOR_SLUGS } from 'data/constants';
 
 const getPreviousComparisonIndicators = state =>
   state.ndcsPreviousComparison && state.ndcsPreviousComparison.data;
@@ -40,7 +40,7 @@ const getNetZeroAnd2020StatusValues = createSelector(
   (indicators, iso) => {
     if (isEmpty(indicators) || !iso) return null;
     const status2020indicator = indicators.find(
-      i => i.slug === 'ndce_status_2020'
+      i => i.slug === INDICATOR_SLUGS.enhancements
     );
     const netZeroindicator = indicators.find(i => i.slug === 'nz_status');
 
