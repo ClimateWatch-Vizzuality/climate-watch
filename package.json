@@ -53,7 +53,7 @@
     "compression-webpack-plugin": "^1.1.11",
     "computed-style-to-inline-style": "^3.0.0",
     "copy-to-clipboard": "3.0.8",
-    "core-js": "^3",
+    "core-js": "2.5.1",
     "css-loader": "0.28.7",
     "cw-components": "github:ClimateWatch-Vizzuality/climate-watch-components#1.64.0",
     "d3-format": "1.2.0",
