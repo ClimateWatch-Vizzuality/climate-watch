@@ -57,7 +57,7 @@ AutocompleteSearch.propTypes = {
 };
 
 AutocompleteSearch.defaultProps = {
-  placeholder: 'Search for a country or keyword',
+  placeholder: 'Search for country or keyword',
   className: null,
   variant: 'white'
 };

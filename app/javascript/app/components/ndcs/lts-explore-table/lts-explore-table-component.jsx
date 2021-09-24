@@ -15,7 +15,7 @@ const renderSearch = (searchHandler, query) => (
     value={query}
     onChange={searchHandler}
     className={styles.searchBox}
-    placeholder="Search for a country or keyword"
+    placeholder="Search for country or keyword"
   />
 );
 
