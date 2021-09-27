@@ -98,7 +98,7 @@ const renderSummary = summaryData => (
   </div>
 );
 
-const renderLegend = (legendData, emissionsCardData) => (
+const renderLegend = (legendData, emissionsCardData, isPNG) => (
   <div className={styles.legendCardContainer}>
     <div className={styles.legendContainer}>
       {legendData &&
@@ -114,6 +114,7 @@ const renderLegend = (legendData, emissionsCardData) => (
             number={l.countriesNumber}
             value={l.value}
             color={l.color}
+            disableAttr={isPNG}
           />
         ))}
     </div>
@@ -144,7 +145,8 @@ function LTSExploreMap(props) {
     donutActiveIndex,
     handlePngDownloadModal,
     pngSelectionSubtitle,
-    selectActiveDonutIndex
+    selectActiveDonutIndex,
+    pngDownloadId
   } = props;
   const tooltipParentRef = useRef(null);
   const pieChartRef = useRef(null);
@@ -310,11 +312,12 @@ function LTSExploreMap(props) {
             </div>
             <ModalMetadata />
             <ModalPngDownload
+              id={pngDownloadId}
               title="LTS Explorer"
               selectionSubtitle={pngSelectionSubtitle}
             >
               {renderMap({ isTablet: true, png: true })}
-              {legendData && renderLegend(legendData, emissionsCardData)}
+              {legendData && renderLegend(legendData, emissionsCardData, true)}
             </ModalPngDownload>
           </div>
         )}
@@ -346,6 +349,7 @@ LTSExploreMap.propTypes = {
   selectActiveDonutIndex: PropTypes.func.isRequired,
   handlePngDownloadModal: PropTypes.func.isRequired,
   pngSelectionSubtitle: PropTypes.string,
+  pngDownloadId: PropTypes.string.isRequired,
   donutActiveIndex: PropTypes.number
 };
 

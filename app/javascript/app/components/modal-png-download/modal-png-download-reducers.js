@@ -1,18 +1,12 @@
 export const initialState = {
-  isOpen: false
+  modalIdOpen: null
 };
-
-const setModalPngDownloadParams = (state, { payload }) => ({
-  ...state,
-  isOpen: payload.open
-});
 
 const setModalPngDownload = (state, { payload }) => ({
   ...state,
-  isOpen: payload.open
+  modalIdOpen: payload.open
 });
 
 export default {
-  setModalPngDownloadParams,
   setModalPngDownload
 };

@@ -384,9 +384,11 @@ export const getSummaryCardData = createSelector(
 );
 
 export const getPngSelectionSubtitle = createSelector(
-  [getSelectedIndicator, getSelectedCategory],
-  (indicator, category) => {
+  [getSelectedIndicator, getSelectedCategory, getIsShowEUCountriesChecked],
+  (indicator, category, euChecked) => {
     if (!indicator || !category) return null;
-    return `Category: ${category.label}; Indicator: ${indicator.label}.`;
+    return `Category: ${category.label}; Indicator: ${
+      indicator.label
+    }; EU members are ${euChecked ? '' : 'not'} visualized on the map.`;
   }
 );

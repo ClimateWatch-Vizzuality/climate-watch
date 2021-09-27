@@ -80,7 +80,8 @@ class ContextByIndicatorComponent extends Component {
       handleCountryClick,
       handleInfoClick,
       pngSelectionSubtitle,
-      handlePngDownloadModal
+      handlePngDownloadModal,
+      pngDownloadId
     } = this.props;
     const buttonGroupConfig = [
       {
@@ -225,7 +226,7 @@ class ContextByIndicatorComponent extends Component {
               </ReactTooltip>
             )}
             <ModalPngDownload
-              id="country-context"
+              id={pngDownloadId}
               title="Agriculture sector - Understand country context"
               selectionSubtitle={pngSelectionSubtitle}
             >
@@ -256,7 +257,8 @@ ContextByIndicatorComponent.propTypes = {
   handleCountryClick: PropTypes.func.isRequired,
   handleInfoClick: PropTypes.func.isRequired,
   handlePngDownloadModal: PropTypes.func.isRequired,
-  pngSelectionSubtitle: PropTypes.string
+  pngSelectionSubtitle: PropTypes.string,
+  pngDownloadId: PropTypes.string.isRequired
 };
 
 export default ContextByIndicatorComponent;

@@ -418,9 +418,10 @@ export const getSummaryCardData = createSelector(
 );
 
 export const getPngSelectionSubtitle = createSelector(
-  [getSelectedIndicator, getSelectedCategory],
-  (indicator, category) => {
+  [getSelectedIndicator, getSelectedCategory, getSelectedDocument],
+  (indicator, category, document) => {
     if (!indicator || !category) return null;
-    return `Category: ${category.label}; Indicator: ${indicator.label}.`;
+    const documentText = document ? `Document: ${document.label}; ` : '';
+    return `${documentText}Category: ${category.label}; Indicator: ${indicator.label}.`;
   }
 );

@@ -1,6 +1,7 @@
 /* eslint-disable react/no-danger */
 import React from 'react';
 import PropTypes from 'prop-types';
+import cx from 'classnames';
 import { TabletLandscape } from 'components/responsive';
 import Map from 'components/map';
 import MapLegend from 'components/map-legend';
@@ -98,8 +99,13 @@ const renderButtonGroup = (
   </div>
 );
 
-const renderSummaryItem = datum => (
-  <div className={styles.summaryItemContainer}>
+const renderSummaryItem = (datum, isPNG) => (
+  <div
+    className={cx({
+      [styles.summaryItemContainer]: !isPNG,
+      [styles.pngSummaryItemContainer]: isPNG
+    })}
+  >
     <div className={styles.summaryItemValuesContainer}>
       <div className={styles.summaryItemValues}>
         <div
@@ -115,7 +121,7 @@ const renderSummaryItem = datum => (
     <div className={styles.summaryItemLabels}>
       <div
         dangerouslySetInnerHTML={{
-          __html: replaceStringAbbr(datum.opts.label)
+          __html: isPNG ? datum.opts.label : replaceStringAbbr(datum.opts.label)
         }}
       />
     </div>
@@ -137,7 +143,8 @@ const NDCSEnhancementsMap = ({
   handleOnChangeChecked,
   handlePngDownloadModal,
   handleCountryClick,
-  checked
+  checked,
+  pngDownloadId
 }) => {
   // eslint-disable-next-line react/prop-types
   const renderMap = ({ isTablet, png }) => (
@@ -152,7 +159,45 @@ const NDCSEnhancementsMap = ({
       className={styles.map}
     />
   );
-
+  const renderMapLegend = isPNG => (
+    <MapLegend
+      className={cx(styles.legend, { [styles.isPNG]: isPNG })}
+      title={indicator.legend}
+      buckets={indicator.legendBuckets}
+      mapColors={mapColors}
+    />
+  );
+  const renderSummaryItems = isPNG => (
+    <div
+      className={cx({
+        [styles.summaryItemsContainer]: !isPNG,
+        [styles.pngSummaryItemsContainer]: isPNG
+      })}
+    >
+      {renderSummaryItem(
+        summaryData[ENHANCEMENT_LABEL_SLUGS.SUBMITTED_2020].countries,
+        isPNG
+      )}
+      {renderSummaryItem(
+        summaryData[ENHANCEMENT_LABEL_SLUGS.ENHANCED_MITIGATION].countries,
+        isPNG
+      )}
+      {!isPNG && <span className={styles.separator} />}
+      {renderSummaryItem(
+        summaryData[ENHANCEMENT_LABEL_SLUGS.INTENDS_TO_ENHANCE].countries,
+        isPNG
+      )}
+    </div>
+  );
+  const covidText = (
+    <React.Fragment>
+      Some nations have signaled that the impacts of the coronavirus pandemic
+      may delay their submission of updated or enhanced NDCs. While many will
+      submit in 2020 as scheduled, some have indicated they may do so in 2021
+      ahead of COP26. The information below does not reflect these possible
+      delays.
+    </React.Fragment>
+  );
   return (
     <div className={styles.ndcTracker}>
       <TabletLandscape>
@@ -183,28 +228,9 @@ const NDCSEnhancementsMap = ({
                       id="covid-update-tooltip"
                       className={styles.covidTooltip}
                     >
-                      Some nations have signaled that the impacts of the
-                      coronavirus pandemic may delay their submission of updated
-                      or enhanced NDCs. While many will submit in 2020 as
-                      scheduled, some have indicated they may do so in 2021
-                      ahead of COP26. The information below does not reflect
-                      these possible delays.
+                      {covidText}
                     </ReactTooltip>
-                    <div className={styles.summaryItemsContainer}>
-                      {renderSummaryItem(
-                        summaryData[ENHANCEMENT_LABEL_SLUGS.SUBMITTED_2020]
-                          .countries
-                      )}
-                      {renderSummaryItem(
-                        summaryData[ENHANCEMENT_LABEL_SLUGS.ENHANCED_MITIGATION]
-                          .countries
-                      )}
-                      <span className={styles.separator} />
-                      {renderSummaryItem(
-                        summaryData[ENHANCEMENT_LABEL_SLUGS.INTENDS_TO_ENHANCE]
-                          .countries
-                      )}
-                    </div>
+                    {renderSummaryItems()}
                   </div>
                 )}
               </div>
@@ -235,26 +261,18 @@ const NDCSEnhancementsMap = ({
                     tooltipValues={tooltipValues}
                   />
                 )}
-                {indicator && (
-                  <MapLegend
-                    className={styles.legend}
-                    title={indicator.legend}
-                    buckets={indicator.legendBuckets}
-                    mapColors={mapColors}
-                  />
-                )}
+                {indicator && renderMapLegend()}
               </div>
             </div>
-            <ModalPngDownload title="NDC enhancements">
+            <ModalPngDownload id={pngDownloadId} title="NDC enhancements">
               {renderMap({ isTablet: true, png: true })}
-              {indicator && (
-                <MapLegend
-                  className={styles.legend}
-                  title={indicator.legend}
-                  buckets={indicator.legendBuckets}
-                  mapColors={mapColors}
-                />
-              )}
+              <div className={styles.pngLegendAndSummary}>
+                {indicator && renderMapLegend(true)}
+                <div className={styles.pngSummary}>
+                  {!loading && summaryData && renderSummaryItems(true)}
+                  <div className={styles.pngCovidText}>{covidText}</div>
+                </div>
+              </div>
             </ModalPngDownload>
             <ModalMetadata />
             {FEATURE_ENHANCEMENT_CHANGES && (
@@ -276,6 +294,7 @@ NDCSEnhancementsMap.propTypes = {
   paths: PropTypes.array.isRequired,
   tooltipValues: PropTypes.object,
   downloadLink: PropTypes.string,
+  pngDownloadId: PropTypes.string.isRequired,
   summaryData: PropTypes.object,
   handleCountryEnter: PropTypes.func.isRequired,
   handleInfoClick: PropTypes.func.isRequired,

@@ -20,6 +20,7 @@ const mapStateToProps = (state, { location, countries }) => {
     ...countriesContexts(cc)
   };
 };
+const pngDownloadId = 'context-by-indicator';
 
 class ContextByIndicatorContainer extends PureComponent {
   constructor(props) {
@@ -99,7 +100,7 @@ class ContextByIndicatorContainer extends PureComponent {
   };
 
   handlePngDownloadModal = () => {
-    this.props.setModalPngDownload({ open: true });
+    this.props.setModalPngDownload({ open: pngDownloadId });
   };
 
   render() {
@@ -107,6 +108,7 @@ class ContextByIndicatorContainer extends PureComponent {
     return createElement(Component, {
       ...this.props,
       tooltipTxt,
+      pngDownloadId,
       handleCountryEnter: this.handleCountryEnter,
       handleCountryClick: this.handleCountryClick,
       handleInfoClick: this.handleInfoClick,

@@ -102,7 +102,7 @@ const renderSummary = summaryData => (
   </div>
 );
 
-const renderLegend = (legendData, emissionsCardData) => (
+const renderLegend = (legendData, emissionsCardData, isPNG) => (
   <div className={styles.legendCardContainer}>
     <div className={styles.legendContainer}>
       {legendData &&
@@ -118,6 +118,7 @@ const renderLegend = (legendData, emissionsCardData) => (
             number={l.partiesNumber}
             value={l.value}
             color={l.color}
+            disableAbbr={isPNG}
           />
         ))}
     </div>
@@ -151,7 +152,8 @@ function NDCSExploreMap(props) {
     handleOnChangeChecked,
     handlePngDownloadModal,
     pngSelectionSubtitle,
-    checked
+    checked,
+    pngDownloadId
   } = props;
 
   const tooltipParentRef = useRef(null);
@@ -334,11 +336,12 @@ function NDCSExploreMap(props) {
       </TabletLandscape>
       <ModalMetadata />
       <ModalPngDownload
+        id={pngDownloadId}
         title="NDC Explorer"
         selectionSubtitle={pngSelectionSubtitle}
       >
         {renderMap({ isTablet: true, png: true })}
-        {legendData && renderLegend(legendData, emissionsCardData)}
+        {legendData && renderLegend(legendData, emissionsCardData, true)}
       </ModalPngDownload>
       <DocumentsProvider />
       {FEATURE_ENHANCEMENT_CHANGES ? (
@@ -388,6 +391,7 @@ NDCSExploreMap.propTypes = {
   handleOnChangeChecked: PropTypes.func.isRequired,
   handlePngDownloadModal: PropTypes.func.isRequired,
   pngSelectionSubtitle: PropTypes.string,
+  pngDownloadId: PropTypes.string.isRequired,
   checked: PropTypes.bool,
   donutActiveIndex: PropTypes.number
 };

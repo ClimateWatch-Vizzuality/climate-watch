@@ -12,7 +12,7 @@ import { actions as pngModalActions } from 'components/modal-png-download';
 import ownActions from './emission-pathways-graph-actions';
 import reducers, { initialState } from './emission-pathways-graph-reducers';
 
-import EmissionPathwayGraphComponent from './emission-pathways-graph-component';
+import AgricultureEmissionPathwayGraphComponent from './emission-pathways-graph-component';
 import {
   getChartData,
   getChartDomainWithYMargins,
@@ -77,8 +77,9 @@ const mapStateToProps = (state, { location }) => {
     downloadLink: getLinkToDataExplorer(espData)
   };
 };
+const pngDownloadId = 'agriculture-emission-pathways-graph';
 
-class EmissionPathwayGraphContainer extends PureComponent {
+class AgricultureEmissionPathwayGraphContainer extends PureComponent {
   componentDidMount() {
     const { location } = this.props.filtersSelected;
     if (location) {
@@ -196,12 +197,13 @@ class EmissionPathwayGraphContainer extends PureComponent {
   };
 
   handlePngDownloadModal = () => {
-    this.props.setModalPngDownload({ open: true });
+    this.props.setModalPngDownload({ open: pngDownloadId });
   };
 
   render() {
-    return createElement(EmissionPathwayGraphComponent, {
+    return createElement(AgricultureEmissionPathwayGraphComponent, {
       ...this.props,
+      pngDownloadId,
       handleInfoClick: this.handleInfoClick,
       handleModelChange: this.handleModelChange,
       handleSelectorChange: this.handleSelectorChange,
@@ -213,7 +215,7 @@ class EmissionPathwayGraphContainer extends PureComponent {
   }
 }
 
-EmissionPathwayGraphContainer.propTypes = {
+AgricultureEmissionPathwayGraphContainer.propTypes = {
   history: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
   filtersSelected: PropTypes.object.isRequired,
@@ -226,6 +228,6 @@ EmissionPathwayGraphContainer.propTypes = {
 export { actions, reducers, initialState };
 export default withRouter(
   connect(mapStateToProps, { ...actions, ...pngModalActions })(
-    EmissionPathwayGraphContainer
+    AgricultureEmissionPathwayGraphContainer
   )
 );
