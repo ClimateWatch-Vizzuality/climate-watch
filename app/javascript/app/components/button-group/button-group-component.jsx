@@ -42,11 +42,12 @@ const getButtonLink = (link, currentPathname) => {
 
 const renderButton = (buttonConfig, currentPathname) => {
   const dataTip = buttonConfig.tooltipText || tooltipText[buttonConfig.type];
+  const key = buttonConfig.type;
   switch (buttonConfig.type) {
     case 'share':
       return (
         <ShareMenu
-          key={buttonConfig.type}
+          key={key}
           className={cx(styles.button, styles.share)}
           path={buttonConfig.shareUrl}
           shouldEmbedQueryParams={buttonConfig.shouldEmbedQueryParams}
@@ -63,6 +64,7 @@ const renderButton = (buttonConfig, currentPathname) => {
       return (
         <SimpleMenu
           {...this.props}
+          key={key}
           buttonClassName={cx(styles.button, styles.download)}
           options={buttonConfig.options}
           icon={iconsMap[buttonConfig.type]}
@@ -76,7 +78,7 @@ const renderButton = (buttonConfig, currentPathname) => {
     default:
       return (
         <Button
-          key={buttonConfig.type}
+          key={key}
           className={styles.button}
           onClick={buttonConfig.onClick}
           link={buttonConfig.link}
