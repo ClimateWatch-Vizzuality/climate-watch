@@ -144,7 +144,8 @@ function LTSExploreMap(props) {
     donutActiveIndex,
     handlePngDownloadModal,
     pngSelectionSubtitle,
-    selectActiveDonutIndex
+    selectActiveDonutIndex,
+    pngDownloadId
   } = props;
   const tooltipParentRef = useRef(null);
   const pieChartRef = useRef(null);
@@ -310,6 +311,7 @@ function LTSExploreMap(props) {
             </div>
             <ModalMetadata />
             <ModalPngDownload
+              id={pngDownloadId}
               title="LTS Explorer"
               selectionSubtitle={pngSelectionSubtitle}
             >
@@ -346,6 +348,7 @@ LTSExploreMap.propTypes = {
   selectActiveDonutIndex: PropTypes.func.isRequired,
   handlePngDownloadModal: PropTypes.func.isRequired,
   pngSelectionSubtitle: PropTypes.string,
+  pngDownloadId: PropTypes.string.isRequired,
   donutActiveIndex: PropTypes.number
 };
 

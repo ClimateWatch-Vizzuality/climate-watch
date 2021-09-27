@@ -12,7 +12,7 @@ import Component from './modal-png-download-component';
 const ModalPngDownloadContainer = props => {
   function handleCloseModal() {
     const { setModalPngDownload } = props;
-    setModalPngDownload({ open: false });
+    setModalPngDownload({ open: null });
   }
 
   function downloadImage(dataUrl) {

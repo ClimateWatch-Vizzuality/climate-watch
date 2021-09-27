@@ -60,6 +60,8 @@ const mapStateToProps = (state, { location }) => {
   };
 };
 
+const pngDownloadId = 'ndcs-enhancements-map';
+
 class NDCSEnhancementsMapContainer extends PureComponent {
   constructor(props) {
     super(props);
@@ -174,7 +176,7 @@ class NDCSEnhancementsMapContainer extends PureComponent {
 
   handlePngDownloadModal = () => {
     const { setModalPngDownload } = this.props;
-    setModalPngDownload({ open: true });
+    setModalPngDownload({ open: pngDownloadId });
   };
 
   render() {
@@ -186,6 +188,7 @@ class NDCSEnhancementsMapContainer extends PureComponent {
     return createElement(Component, {
       ...this.props,
       tooltipValues,
+      pngDownloadId,
       handleCountryClick: this.handleCountryClick,
       handleCountryEnter: this.handleCountryEnter,
       handleInfoClick: this.handleInfoClick,

@@ -6,7 +6,7 @@ import Button from 'components/button';
 import styles from './modal-png-download-styles';
 
 const modalPngDownloadComponent = ({
-  isOpen,
+  modalIdOpen,
   children,
   title,
   selectionSubtitle,
@@ -18,7 +18,7 @@ const modalPngDownloadComponent = ({
   return (
     <Modal
       theme={styles}
-      isOpen={isOpen}
+      isOpen={id === modalIdOpen}
       onRequestClose={onRequestClose}
       header={<ModalHeader title="Save as image (PNG)" />}
     >
@@ -59,7 +59,7 @@ const modalPngDownloadComponent = ({
 };
 
 modalPngDownloadComponent.propTypes = {
-  isOpen: PropTypes.bool.isRequired,
+  modalIdOpen: PropTypes.bool.isRequired,
   children: PropTypes.node,
   title: PropTypes.string.isRequired,
   selectionSubtitle: PropTypes.string,

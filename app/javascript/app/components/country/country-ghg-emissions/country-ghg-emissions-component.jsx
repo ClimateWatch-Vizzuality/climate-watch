@@ -190,7 +190,12 @@ class CountryGhgEmissions extends PureComponent {
   }
 
   render() {
-    const { isEmbed, countryName, pngSelectionSubtitle } = this.props;
+    const {
+      isEmbed,
+      countryName,
+      pngSelectionSubtitle,
+      pngDownloadId
+    } = this.props;
     const title = `Greenhouse Gas Emissions and Emissions Targets ${
       isEmbed ? `in ${countryName}` : ''
     }`;
@@ -223,6 +228,7 @@ class CountryGhgEmissions extends PureComponent {
         </TabletPortraitOnly>
         <ModalMetadata />
         <ModalPngDownload
+          id={pngDownloadId}
           title={`GHG Emissions and Emissions Targets in ${countryName}`}
           selectionSubtitle={pngSelectionSubtitle}
         >
@@ -243,6 +249,7 @@ CountryGhgEmissions.propTypes = {
   config: PropTypes.object.isRequired,
   iso: PropTypes.string.isRequired,
   countryName: PropTypes.string.isRequired,
+  pngDownloadId: PropTypes.string.isRequired,
   quantifications: PropTypes.array.isRequired,
   quantificationsTagsConfig: PropTypes.array.isRequired,
   calculations: PropTypes.array.isRequired,

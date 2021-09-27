@@ -151,7 +151,8 @@ function NDCSExploreMap(props) {
     handleOnChangeChecked,
     handlePngDownloadModal,
     pngSelectionSubtitle,
-    checked
+    checked,
+    pngDownloadId
   } = props;
 
   const tooltipParentRef = useRef(null);
@@ -334,6 +335,7 @@ function NDCSExploreMap(props) {
       </TabletLandscape>
       <ModalMetadata />
       <ModalPngDownload
+        id={pngDownloadId}
         title="NDC Explorer"
         selectionSubtitle={pngSelectionSubtitle}
       >
@@ -388,6 +390,7 @@ NDCSExploreMap.propTypes = {
   handleOnChangeChecked: PropTypes.func.isRequired,
   handlePngDownloadModal: PropTypes.func.isRequired,
   pngSelectionSubtitle: PropTypes.string,
+  pngDownloadId: PropTypes.string.isRequired,
   checked: PropTypes.bool,
   donutActiveIndex: PropTypes.number
 };

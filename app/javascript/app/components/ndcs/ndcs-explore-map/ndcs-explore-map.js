@@ -71,6 +71,7 @@ const mapStateToProps = (state, { location }) => {
     pngSelectionSubtitle: getPngSelectionSubtitle(ndcsExploreWithSelection)
   };
 };
+const pngDownloadId = 'ndcs-explore-map';
 
 class NDCSExploreMapContainer extends PureComponent {
   constructor(props) {
@@ -190,7 +191,7 @@ class NDCSExploreMapContainer extends PureComponent {
 
   handlePngDownloadModal = () => {
     const { setModalPngDownload } = this.props;
-    setModalPngDownload({ open: true });
+    setModalPngDownload({ open: pngDownloadId });
   };
 
   render() {
@@ -207,6 +208,7 @@ class NDCSExploreMapContainer extends PureComponent {
       : 'There is no data for this indicator';
     return createElement(Component, {
       ...this.props,
+      pngDownloadId,
       handleCountryClick: this.handleCountryClick,
       handleCountryEnter: this.handleCountryEnter,
       handleInfoClick: this.handleInfoClick,

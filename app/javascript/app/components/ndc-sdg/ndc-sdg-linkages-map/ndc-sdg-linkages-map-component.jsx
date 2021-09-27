@@ -128,7 +128,12 @@ class NdcSdgLinkagesMap extends PureComponent {
   }
 
   render() {
-    const { pngSelectionSubtitle, className, goalSelected } = this.props;
+    const {
+      pngSelectionSubtitle,
+      className,
+      goalSelected,
+      pngDownloadId
+    } = this.props;
 
     const renderMap = ({ isPng, isTablet }) => (
       <Map
@@ -168,7 +173,7 @@ class NdcSdgLinkagesMap extends PureComponent {
             </ReactTooltip>
             <ModalShare analyticsName={'Ndcs-Sdgs'} />
             <ModalPngDownload
-              id="ndc-sdg-linkages"
+              id={pngDownloadId}
               title="NDC-SDG Linkages"
               selectionSubtitle={pngSelectionSubtitle}
             >
@@ -191,6 +196,7 @@ NdcSdgLinkagesMap.propTypes = {
   className: PropTypes.string,
   goalSelected: PropTypes.string,
   downloadLink: PropTypes.string,
+  pngDownloadId: PropTypes.string.isRequired,
   handlePngDownloadModal: PropTypes.func.isRequired,
   pngSelectionSubtitle: PropTypes.string
 };

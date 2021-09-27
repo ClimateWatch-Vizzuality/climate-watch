@@ -8,6 +8,8 @@ import { actions as pngModalActions } from 'components/modal-png-download';
 import { getAllData } from './historical-emissions-graph-selectors';
 import Component from './historical-emissions-graph-component';
 
+const pngDownloadId = 'historical-emissions-graph';
+
 class HistoricalEmissionsGraph extends PureComponent {
   updateUrlParam(params, clear) {
     const { history, location } = this.props;
@@ -39,12 +41,13 @@ class HistoricalEmissionsGraph extends PureComponent {
   };
 
   handlePngDownloadModal = () => {
-    this.props.setModalPngDownload({ open: true });
+    this.props.setModalPngDownload({ open: pngDownloadId });
   };
 
   render() {
     return createElement(Component, {
       ...this.props,
+      pngDownloadId,
       handleCountryChange: this.handleCountryChange,
       handleEmissionTypeChange: this.handleEmissionTypeChange,
       handleMetricTypeChange: this.handleMetricTypeChange,

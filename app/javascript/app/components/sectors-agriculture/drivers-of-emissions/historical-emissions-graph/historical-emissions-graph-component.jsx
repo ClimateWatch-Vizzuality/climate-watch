@@ -145,7 +145,11 @@ class HistoricalEmissionsGraph extends PureComponent {
   };
 
   render() {
-    const { emissionsCountry, pngSelectionSubtitle } = this.props;
+    const {
+      emissionsCountry,
+      pngSelectionSubtitle,
+      pngDownloadId
+    } = this.props;
     return (
       <div>
         <TabletLandscape>
@@ -167,7 +171,7 @@ class HistoricalEmissionsGraph extends PureComponent {
           </div>
         </TabletPortraitOnly>
         <ModalPngDownload
-          id="historical-emissions"
+          id={pngDownloadId}
           title="Agriculture drivers of historical emissions"
           selectionSubtitle={pngSelectionSubtitle}
         >
@@ -202,7 +206,8 @@ HistoricalEmissionsGraph.propTypes = {
   emissionType: PropTypes.object,
   loading: PropTypes.bool,
   emissionMetric: PropTypes.object,
-  emissionMetrics: PropTypes.array
+  emissionMetrics: PropTypes.array,
+  pngDownloadId: PropTypes.string.isRequired
 };
 
 HistoricalEmissionsGraph.defaultProps = {

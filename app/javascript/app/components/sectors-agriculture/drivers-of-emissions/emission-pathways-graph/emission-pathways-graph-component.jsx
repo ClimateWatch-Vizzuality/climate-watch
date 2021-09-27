@@ -18,7 +18,7 @@ import styles from './emission-pathways-graph-styles.scss';
 const FEATURE_ENHANCEMENT_CHANGES =
   process.env.FEATURE_ENHANCEMENT_CHANGES === 'true';
 
-class EmissionPathwayGraph extends PureComponent {
+class AgricultureEmissionPathwayGraph extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
   renderCustomMessage() {
     const { filtersSelected, handleClearSelection } = this.props;
@@ -113,7 +113,8 @@ class EmissionPathwayGraph extends PureComponent {
       handleModelChange,
       handleSubcategoryChange,
       handleCurrentLocationChange,
-      pngSelectionSubtitle
+      pngSelectionSubtitle,
+      pngDownloadId
     } = this.props;
     const needsTimeSeries =
       filtersSelected && filtersSelected.location && filtersSelected.model;
@@ -201,6 +202,7 @@ class EmissionPathwayGraph extends PureComponent {
           {this.renderExploreButtonGroup()}
         </TabletPortraitOnly>
         <ModalPngDownload
+          id={pngDownloadId}
           title="Agriculture historical future pathways"
           selectionSubtitle={pngSelectionSubtitle}
         >
@@ -220,7 +222,7 @@ class EmissionPathwayGraph extends PureComponent {
   }
 }
 
-EmissionPathwayGraph.propTypes = {
+AgricultureEmissionPathwayGraph.propTypes = {
   data: PropTypes.array,
   domain: PropTypes.object,
   modalData: PropTypes.array,
@@ -240,7 +242,8 @@ EmissionPathwayGraph.propTypes = {
   handleSubcategoryChange: PropTypes.func,
   handleCurrentLocationChange: PropTypes.func,
   handlePngDownloadModal: PropTypes.func.isRequired,
-  pngSelectionSubtitle: PropTypes.string
+  pngSelectionSubtitle: PropTypes.string,
+  pngDownloadId: PropTypes.string.isRequired
 };
 
-export default EmissionPathwayGraph;
+export default AgricultureEmissionPathwayGraph;

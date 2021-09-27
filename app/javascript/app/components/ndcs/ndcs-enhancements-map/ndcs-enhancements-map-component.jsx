@@ -137,7 +137,8 @@ const NDCSEnhancementsMap = ({
   handleOnChangeChecked,
   handlePngDownloadModal,
   handleCountryClick,
-  checked
+  checked,
+  pngDownloadId
 }) => {
   // eslint-disable-next-line react/prop-types
   const renderMap = ({ isTablet, png }) => (
@@ -245,7 +246,7 @@ const NDCSEnhancementsMap = ({
                 )}
               </div>
             </div>
-            <ModalPngDownload title="NDC enhancements">
+            <ModalPngDownload id={pngDownloadId} title="NDC enhancements">
               {renderMap({ isTablet: true, png: true })}
               {indicator && (
                 <MapLegend
@@ -276,6 +277,7 @@ NDCSEnhancementsMap.propTypes = {
   paths: PropTypes.array.isRequired,
   tooltipValues: PropTypes.object,
   downloadLink: PropTypes.string,
+  pngDownloadId: PropTypes.string.isRequired,
   summaryData: PropTypes.object,
   handleCountryEnter: PropTypes.func.isRequired,
   handleInfoClick: PropTypes.func.isRequired,

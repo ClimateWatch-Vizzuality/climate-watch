@@ -75,6 +75,8 @@ const mapStateToProps = (state, { location }) => {
   };
 };
 
+const pngDownloadId = 'net-zero-map';
+
 class NetZeroMapContainer extends PureComponent {
   constructor(props) {
     super(props);
@@ -188,7 +190,7 @@ class NetZeroMapContainer extends PureComponent {
 
   handlePngDownloadModal = () => {
     const { setModalPngDownload } = this.props;
-    setModalPngDownload({ open: true });
+    setModalPngDownload({ open: pngDownloadId });
   };
 
   render() {
@@ -198,6 +200,7 @@ class NetZeroMapContainer extends PureComponent {
       : 'There is no data for this indicator';
     return createElement(Component, {
       ...this.props,
+      pngDownloadId,
       handleCountryClick: this.handleCountryClick,
       handleCountryEnter: this.handleCountryEnter,
       handleInfoClick: this.handleInfoClick,
