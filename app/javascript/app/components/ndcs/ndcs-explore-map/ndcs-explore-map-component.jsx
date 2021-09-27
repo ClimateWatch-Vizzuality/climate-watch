@@ -102,7 +102,7 @@ const renderSummary = summaryData => (
   </div>
 );
 
-const renderLegend = (legendData, emissionsCardData) => (
+const renderLegend = (legendData, emissionsCardData, isPNG) => (
   <div className={styles.legendCardContainer}>
     <div className={styles.legendContainer}>
       {legendData &&
@@ -118,6 +118,7 @@ const renderLegend = (legendData, emissionsCardData) => (
             number={l.partiesNumber}
             value={l.value}
             color={l.color}
+            disableAbbr={isPNG}
           />
         ))}
     </div>
@@ -340,7 +341,7 @@ function NDCSExploreMap(props) {
         selectionSubtitle={pngSelectionSubtitle}
       >
         {renderMap({ isTablet: true, png: true })}
-        {legendData && renderLegend(legendData, emissionsCardData)}
+        {legendData && renderLegend(legendData, emissionsCardData, true)}
       </ModalPngDownload>
       <DocumentsProvider />
       {FEATURE_ENHANCEMENT_CHANGES ? (

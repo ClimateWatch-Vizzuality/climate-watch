@@ -11,7 +11,8 @@ const LegendItem = ({
   color,
   itemsName,
   hoverIndex,
-  selectActiveDonutIndex
+  selectActiveDonutIndex,
+  disableAbbr
 }) => (
   <div
     className={styles.legendItem}
@@ -19,9 +20,7 @@ const LegendItem = ({
   >
     <div className={styles.legendName}>
       <span className={styles.legendDot} style={{ backgroundColor: color }} />
-      <span>
-        <AbbrReplace>{name}</AbbrReplace>
-      </span>
+      <span>{disableAbbr ? name : <AbbrReplace>{name}</AbbrReplace>}</span>
     </div>
     <div className={styles.progressContainer}>
       <Progress value={value} className={styles.progressBar} color={color} />
@@ -39,7 +38,8 @@ LegendItem.propTypes = {
   value: PropTypes.number,
   hoverIndex: PropTypes.number.isRequired,
   color: PropTypes.string,
-  selectActiveDonutIndex: PropTypes.func.isRequired
+  selectActiveDonutIndex: PropTypes.func.isRequired,
+  disableAbbr: PropTypes.bool
 };
 
 LegendItem.defaultProps = {
