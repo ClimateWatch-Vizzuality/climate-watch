@@ -59,7 +59,7 @@ const modalPngDownloadComponent = ({
 };
 
 modalPngDownloadComponent.propTypes = {
-  modalIdOpen: PropTypes.bool.isRequired,
+  modalIdOpen: PropTypes.bool,
   children: PropTypes.node,
   title: PropTypes.string.isRequired,
   selectionSubtitle: PropTypes.string,
