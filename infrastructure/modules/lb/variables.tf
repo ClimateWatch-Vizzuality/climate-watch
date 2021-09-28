@@ -3,15 +3,26 @@ variable "project" {
   description = "Project name, used for naming resources"
 }
 
+variable "environment" {
+  type        = string
+  description = "The name of the environment this server hosts"
+}
+
+variable "domain" {
+  type        = string
+  description = "The domain to attach to the certificate"
+}
+
+variable "alt_domains" {
+  type        = list(string)
+  description = "Alternative domains to attach to the certificate"
+  default = []
+}
+
 variable "vpc_id" {
   type        = string
   description = "The ID of the VPC that the LB will be created in"
 }
-
-//variable "source_security_group_id" {
-//  type        = string
-//  description = "The ID of the source Security Group"
-//}
 
 variable "ec2_target_id" {
   type        = string

@@ -5,8 +5,8 @@
 #
 resource "aws_security_group" "site_server_ssh_security_group" {
   vpc_id      = var.vpc.id
-  name        = "public-ssh-sg"
-  description = "Security group for SSH access to and from the world"
+  name        = "public-ssh-sg-${var.environment}"
+  description = "Security group for SSH access to and from the world - ${var.environment}"
 
   tags = merge(
     {
@@ -14,6 +14,10 @@ resource "aws_security_group" "site_server_ssh_security_group" {
     },
     var.tags
   )
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_security_group_rule" "ssh_ingress" {
@@ -40,8 +44,8 @@ resource "aws_security_group_rule" "ssh_egress" {
 
 resource "aws_security_group" "site_server_http_security_group" {
   vpc_id      = var.vpc.id
-  name        = "private-http-sg"
-  description = "Security group for HTTP access within the VPC"
+  name        = "private-http-sg-${var.environment}"
+  description = "Security group for HTTP access within the VPC - ${var.environment}"
 
   tags = merge(
     {
@@ -49,6 +53,10 @@ resource "aws_security_group" "site_server_http_security_group" {
     },
     var.tags
   )
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_security_group_rule" "http_ingress" {
@@ -64,8 +72,8 @@ resource "aws_security_group_rule" "http_ingress" {
 
 resource "aws_security_group" "site_server_world_egress_security_group" {
   vpc_id      = var.vpc.id
-  name        = "world-egress-sg"
-  description = "Security group for access to the www"
+  name        = "world-egress-sg-${var.environment}"
+  description = "Security group for access to the www - ${var.environment}"
 
   tags = merge(
     {
@@ -73,6 +81,10 @@ resource "aws_security_group" "site_server_world_egress_security_group" {
     },
     var.tags
   )
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_security_group_rule" "world_egress" {
@@ -106,7 +118,7 @@ resource "aws_instance" "server" {
 
   tags = merge(
     {
-      Name = "${var.project}-Server"
+      Name = "${var.project}-Server-${var.environment}"
     },
     var.tags
   )
@@ -115,4 +127,10 @@ resource "aws_instance" "server" {
 resource "aws_eip" "elastic_ip" {
   instance = aws_instance.server.id
   vpc      = true
+  tags = merge(
+  {
+    Name = "${var.project}-ip-${var.environment}"
+  },
+  var.tags
+  )
 }
