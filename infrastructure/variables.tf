@@ -4,11 +4,6 @@ variable "project_name" {
   description = "A project namespace for the infrastructure."
 }
 
-variable "environment" {
-  type        = string
-  description = "An environment namespace for the infrastructure."
-}
-
 variable "aws_region" {
   default     = "us-east-1"
   type        = string

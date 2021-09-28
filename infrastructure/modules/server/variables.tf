@@ -3,6 +3,11 @@ variable "project" {
   description = "A project namespace for the infrastructure."
 }
 
+variable "environment" {
+  type        = string
+  description = "The name of the environment this server hosts"
+}
+
 variable "region" {
   type        = string
   description = "A valid AWS region to house VPC resources."
