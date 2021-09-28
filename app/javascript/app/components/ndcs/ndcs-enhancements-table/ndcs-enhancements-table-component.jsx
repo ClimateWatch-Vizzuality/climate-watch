@@ -46,7 +46,7 @@ const NDCSEnhancementsTable = ({
             setColumnWidth={col => (col === 'NDC Status' ? 80 : 180)}
             customCellRenderer={customCellRenderer}
             defaultColumns={columns}
-            sortBy="Share of Global GHG Emissions"
+            sortBy="Statement Date"
             sortASC={false}
           />
         </div>
