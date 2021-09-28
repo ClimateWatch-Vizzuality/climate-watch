@@ -23,20 +23,6 @@ module "bootstrap" {
   tags                 = local.tags
 }
 
-module "server" {
-  source                    = "./modules/server"
-  project                   = var.project_name
-  region                    = var.aws_region
-  tags                      = local.tags
-  vpc                       = data.aws_vpc.default_vpc
-  user_data                 = data.template_file.server_setup.rendered
-  site_server_ami           = data.aws_ami.latest-ubuntu-lts.id
-  availability_zone         = "us-east-1a"
-  security_group_ids        = [aws_security_group.postgresql_access.id, aws_security_group.redis_access.id]
-  lb_security_group_id      = module.load_balancer.lb_security_group_id
-  site_server_instance_type = "m5a.large"
-}
-
 resource "aws_security_group" "postgresql_access" {
   vpc_id      = data.aws_vpc.default_vpc.id
   description = "SG allowing access to the Postgres SG"
@@ -107,10 +93,73 @@ module "redis" {
   vpc_cidr_block              = data.aws_vpc.default_vpc.cidr_block
 }
 
-module "load_balancer" {
+module "prod_server" {
+  source                    = "./modules/server"
+  project                   = var.project_name
+  environment = "production"
+  region                    = var.aws_region
+  tags                      = local.tags
+  vpc                       = data.aws_vpc.default_vpc
+  user_data                 = data.template_file.server_setup.rendered
+  site_server_ami           = data.aws_ami.latest-ubuntu-lts.id
+  availability_zone         = "us-east-1a"
+  security_group_ids        = [aws_security_group.postgresql_access.id, aws_security_group.redis_access.id]
+  lb_security_group_id      = module.prod_load_balancer.lb_security_group_id
+  site_server_instance_type = "m5a.large"
+}
+
+module "prod_load_balancer" {
   source        = "./modules/lb"
   vpc_id        = data.aws_vpc.default_vpc.id
   subnet_ids    = data.aws_subnet_ids.subnet_ids.ids
   project       = var.project_name
-  ec2_target_id = module.server.ec2_instance_id
+  environment = "production"
+  ec2_target_id = module.prod_server.ec2_instance_id
+  domain        = "climatewatchdata.org"
+  alt_domains   = ["beta.climatewatchdata.org", "climatewatchdata.org", "www.climatedata.org", "climatedata.org"]
+}
+
+resource "aws_lb_listener_rule" "prod_redirect_domains" {
+  listener_arn = module.prod_load_balancer.lb_listener_arn
+  priority     = 100
+
+  action {
+    type = "redirect"
+    redirect {
+      status_code = "HTTP_301"
+      protocol = "HTTPS"
+      host        = "www.climatewatchdata.org"
+    }
+  }
+
+  condition {
+    host_header {
+      values = ["beta.climatewatchdata.org", "climatewatchdata.org", "www.climatedata.org", "climatedata.org"]
+    }
+  }
+}
+
+module "staging_server" {
+  source                    = "./modules/server"
+  project                   = var.project_name
+  environment = "staging"
+  region                    = var.aws_region
+  tags                      = local.tags
+  vpc                       = data.aws_vpc.default_vpc
+  user_data                 = data.template_file.server_setup.rendered
+  site_server_ami           = data.aws_ami.latest-ubuntu-lts.id
+  availability_zone         = "us-east-1a"
+  security_group_ids        = [aws_security_group.postgresql_access.id, aws_security_group.redis_access.id]
+  lb_security_group_id      = module.prod_load_balancer.lb_security_group_id
+  site_server_instance_type = "m5a.large"
+}
+
+module "staging_load_balancer" {
+  source        = "./modules/lb"
+  vpc_id        = data.aws_vpc.default_vpc.id
+  subnet_ids    = data.aws_subnet_ids.subnet_ids.ids
+  environment = "staging"
+  project       = var.project_name
+  ec2_target_id = module.staging_server.ec2_instance_id
+  domain        = "staging.climatewatchdata.org"
 }
