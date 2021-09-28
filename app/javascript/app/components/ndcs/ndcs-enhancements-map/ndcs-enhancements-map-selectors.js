@@ -116,7 +116,10 @@ export const getCompareLinks = createSelector(
       '/custom-compare/overview?section=comparison_with_previous_ndc&targets=';
     // eslint-disable-next-line consistent-return
     Object.keys(countriesDocuments).forEach(iso => {
-      const ndcDocuments = countriesDocuments[iso].filter(d => d.is_ndc);
+      // Only documents with submission date have been submitted
+      const ndcDocuments = countriesDocuments[iso].filter(
+        d => d.is_ndc && !!d.submission_date
+      );
       if (!ndcDocuments.length) return null;
 
       const orderedDocuments = sortBy(ndcDocuments, 'ordering')
