@@ -12,7 +12,7 @@ module Indc
     validates :name, presence: true
     validates :name, uniqueness: true
     scope :lts, -> { where("name ilike 'LTS'") }
-    scope :net_zero, -> { where("name ilike 'ECIU'") }
+    scope :net_zero, -> { where("name ilike 'Net_Zero'") }
     scope :ndc, -> { where.not(id: lts).where.not(id: net_zero) }
   end
 end
