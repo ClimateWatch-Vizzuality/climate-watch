@@ -403,7 +403,7 @@ class ImportIndc
 
   def import_values_ndc
     valid_sources = [@sources_index['CAIT'], @sources_index['NDC Explorer'],
-                     @sources_index['WB'], @sources_index['ECIU']]
+                     @sources_index['WB'], @sources_index['Net_Zero']]
     values = []
 
     Indc::Indicator.
