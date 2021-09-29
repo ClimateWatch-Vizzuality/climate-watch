@@ -80,6 +80,10 @@ test:
 #   production:
 #     url: <%= ENV['DATABASE_URL'] %>
 #
+staging:
+  <<: *default
+  url: <%= ENV['POSTGRES_URL'] %>
+
 production:
   <<: *default
   url: <%= ENV['POSTGRES_URL'] %>
