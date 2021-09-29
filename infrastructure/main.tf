@@ -150,7 +150,7 @@ module "staging_server" {
   site_server_ami           = data.aws_ami.latest-ubuntu-lts.id
   availability_zone         = "us-east-1a"
   security_group_ids        = [aws_security_group.postgresql_access.id, aws_security_group.redis_access.id]
-  lb_security_group_id      = module.prod_load_balancer.lb_security_group_id
+  lb_security_group_id      = module.staging_load_balancer.lb_security_group_id
   site_server_instance_type = "m5a.large"
 }
 
