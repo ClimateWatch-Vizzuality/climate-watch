@@ -12,7 +12,7 @@ jobs:
 
     services:
       postgres:
-        image: postgres:11-alpine
+        image: postgres:13.3-alpine
         env:
           POSTGRES_USER: ${{ env.POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
@@ -31,6 +31,7 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
+
       - name: Install dependencies
         run: |
           sudo apt-get -yqq install libpq-dev build-essential libcurl4-openssl-dev --fix-missing
@@ -41,9 +42,11 @@ jobs:
         with:
           path: node_modules
           key: node-modules-${{ hashFiles('yarn.lock') }}
+
       - name: Install Node Dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: yarn install --frozen-lockfile
+
       - name: Setup test database
         env:
           RAILS_ENV: test
@@ -52,6 +55,7 @@ jobs:
           PGPASSWORD: ${{ env.POSTGRES_PASSWORD }}
         run: |
           bin/rails db:drop db:create db:structure:load
+
       - name: Run tests
         env:
           RAILS_ENV: test
