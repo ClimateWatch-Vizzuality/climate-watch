@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '2.5.7'
+ruby '2.5.9'
 
 git_source(:github) do |repo_name|
   repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?('/')
@@ -15,11 +15,10 @@ gem 'puma'
 gem 'pg', '~> 0.20'
 gem 'pg_search'
 gem 'scenic'
-gem 'secondbase'
 
 # UI, assets
 gem 'coffee-rails', '~> 4.2'
-gem 'sass-rails', '~> 5.0'
+gem 'sassc-rails', '~> 2.1.2'
 gem 'sprockets',  '~> 3.7.2'
 gem 'turbolinks', '~> 5'
 gem 'uglifier', '>= 1.3.0'
@@ -55,10 +54,11 @@ gem 'maxmind-db'
 gem 'oj'
 gem 'rubyzip'
 
+gem 'dotenv-rails'
+
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'capybara', '~> 2.13'
-  gem 'dotenv-rails'
   gem 'factory_bot_rails'
   gem 'rails-controller-testing'
   gem 'rspec-collection_matchers'
@@ -74,6 +74,13 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'web-console', '>= 3.3.0'
+
+  gem "capistrano", "~> 3.10", require: false
+  gem "capistrano-rails", "~> 1.3", require: false
+  gem 'capistrano-bundler'
+  gem 'capistrano-yarn'
+  gem 'capistrano-passenger', '~> 0.2.1'
+  gem 'capistrano-rvm'
 end
 
 group :test do
