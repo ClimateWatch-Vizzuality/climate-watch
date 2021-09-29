@@ -21,7 +21,7 @@ const fetchNetZero = createThunkAction(
     ) {
       dispatch(fetchNetZeroInit());
       Promise.all([
-        apiWithCache.get('/api/v1/ndcs?source=ECIU&filter=map'),
+        apiWithCache.get('/api/v1/ndcs?source=Net_Zero&filter=map'),
         apiWithCache.get('/api/v1/ndcs?indicators=ndce_ghg,nz_source')
       ])
         .then(responses => {
