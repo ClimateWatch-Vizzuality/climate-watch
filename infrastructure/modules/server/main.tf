@@ -118,10 +118,25 @@ resource "aws_instance" "server" {
 
   tags = merge(
     {
-      Name = "${var.project}-Server-${var.environment}"
+      Name = "${var.project}-server-${var.environment}"
     },
     var.tags
   )
+}
+
+resource "aws_ebs_volume" "root_volume" {
+  availability_zone = var.availability_zone
+  size              = 20
+
+  tags = {
+    Name = "${var.project}-server-${var.environment}"
+  }
+}
+
+resource "aws_volume_attachment" "root_volume_attachment" {
+  device_name = "/dev/sda1"
+  volume_id   = aws_ebs_volume.root_volume.id
+  instance_id = aws_instance.server.id
 }
 
 resource "aws_eip" "elastic_ip" {
