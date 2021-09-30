@@ -6,5 +6,6 @@ set :branch, 'sandbox'
 
 set :default_env, {
   'RAILS_ENV' => 'staging',
-  'RACK_ENV' => 'staging'
+  'RACK_ENV' => 'staging',
+  'NODE_ENV' => 'production'
 }
