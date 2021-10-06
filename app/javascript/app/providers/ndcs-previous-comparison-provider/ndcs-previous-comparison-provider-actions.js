@@ -24,7 +24,7 @@ const fetchPreviousNDCComparison = createThunkAction(
       dispatch(fetchPreviousNDCComparisonInit());
 
       apiWithCache
-        .get('/api/v1/ndcs?subcategory=comparison_with_previous_ndc')
+        .get('/api/v1/ndcs?subcategory=overall_comparison_with_previous_ndc')
         .then(data => indcTransform(data.data))
         .then(data => {
           dispatch(fetchPreviousNDCComparisonReady(data));

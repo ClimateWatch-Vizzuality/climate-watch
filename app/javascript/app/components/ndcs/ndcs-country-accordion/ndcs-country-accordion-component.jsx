@@ -88,7 +88,8 @@ class NdcsCountryAccordion extends PureComponent {
                         className={layout.content}
                         definitions={section.definitions}
                         comparisonWithPreviousNDC={
-                          section.slug === 'comparison_with_previous_ndc'
+                          section.slug ===
+                          'overall_comparison_with_previous_ndc'
                         }
                         compare={compare}
                       />

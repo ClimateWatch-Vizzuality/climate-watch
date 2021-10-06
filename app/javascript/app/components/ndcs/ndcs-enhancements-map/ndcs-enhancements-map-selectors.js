@@ -113,7 +113,7 @@ export const getCompareLinks = createSelector(
     if (!countriesDocuments) return null;
     const links = {};
     const baseURL =
-      '/custom-compare/overview?section=comparison_with_previous_ndc&targets=';
+      '/custom-compare/overview?section=overall_comparison_with_previous_ndc&targets=';
     // eslint-disable-next-line consistent-return
     Object.keys(countriesDocuments).forEach(iso => {
       // Only documents with submission date have been submitted

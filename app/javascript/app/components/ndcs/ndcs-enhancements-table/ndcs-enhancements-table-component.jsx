@@ -46,7 +46,7 @@ const NDCSEnhancementsTable = ({
             setColumnWidth={col => (col === 'NDC Status' ? 80 : 180)}
             customCellRenderer={customCellRenderer}
             defaultColumns={columns}
-            sortBy="Statement Date"
+            sortBy="Date"
             sortASC={false}
           />
         </div>

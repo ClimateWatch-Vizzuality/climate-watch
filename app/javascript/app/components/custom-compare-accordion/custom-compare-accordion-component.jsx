@@ -75,7 +75,7 @@ const CustomCompareAccordionComponent = ({
                   compare={compare}
                   className={styles.compareDefinitionList}
                   comparisonWithPreviousNDC={
-                    section.slug === 'comparison_with_previous_ndc'
+                    section.slug === 'overall_comparison_with_previous_ndc'
                   }
                 />
               )
