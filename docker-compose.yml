@@ -21,7 +21,7 @@ services:
       - .:/usr/src/climate-watch
 
   postgres:
-    image: postgres:9.6
+    image: postgres:13.3
     restart: always
     ports:
       - "5432"

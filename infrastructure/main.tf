@@ -115,26 +115,48 @@ module "prod_load_balancer" {
   project       = var.project_name
   environment = "production"
   ec2_target_id = module.prod_server.ec2_instance_id
-  domain        = "climatewatchdata.org"
-  alt_domains   = ["beta.climatewatchdata.org", "climatewatchdata.org", "www.climatedata.org", "climatedata.org"]
+  domain        = "www.climatewatchdata.org"
+  alt_domains   = ["climatewatchdata.org", "www.beta.climatewatchdata.org", "beta.climatewatchdata.org", "www.climatedata.org", "climatedata.org", ]
 }
 
-resource "aws_lb_listener_rule" "prod_redirect_domains" {
-  listener_arn = module.prod_load_balancer.lb_listener_arn
+resource "aws_lb_listener_rule" "prod_redirect_domains_http" {
+  listener_arn = module.prod_load_balancer.lb_listener_http_arn
   priority     = 100
 
   action {
     type = "redirect"
     redirect {
+      port        = "443"
       status_code = "HTTP_301"
-      protocol = "HTTPS"
+      protocol    = "HTTPS"
       host        = "www.climatewatchdata.org"
     }
   }
 
   condition {
     host_header {
-      values = ["beta.climatewatchdata.org", "climatewatchdata.org", "www.climatedata.org", "climatedata.org"]
+      values = ["beta.climatewatchdata.org", "www.beta.climatewatchdata.org", "climatewatchdata.org", "www.climatedata.org", "climatedata.org"]
+    }
+  }
+}
+
+resource "aws_lb_listener_rule" "prod_redirect_domains_https" {
+  listener_arn = module.prod_load_balancer.lb_listener_https_arn
+  priority     = 100
+
+  action {
+    type = "redirect"
+    redirect {
+      port        = "443"
+      status_code = "HTTP_301"
+      protocol    = "HTTPS"
+      host        = "www.climatewatchdata.org"
+    }
+  }
+
+  condition {
+    host_header {
+      values = ["beta.climatewatchdata.org", "www.beta.climatewatchdata.org", "climatewatchdata.org", "www.climatedata.org", "climatedata.org"]
     }
   }
 }
