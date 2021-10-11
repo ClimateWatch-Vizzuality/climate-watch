@@ -64,7 +64,10 @@ export const tableGetSelectedData = createSelector(
         indicators.forEach(ind => {
           if (ind.locations[iso]) {
             if (ind.value === INDICATOR_SLUGS.enhancements) {
-              row[ind.label] = ind.locations[iso].label_slug;
+              row[ind.label] = {
+                slug: ind.locations[iso].label_slug,
+                label: ind.locations[iso].value
+              };
             } else {
               row[ind.label] = ind.locations[iso].value;
             }
@@ -78,15 +81,6 @@ export const tableGetSelectedData = createSelector(
 );
 
 const INVERTED_ENHANCEMENT_LABEL_SLUGS = invert(ENHANCEMENT_LABEL_SLUGS);
-const joinArrayWithCommas = inputArray => {
-  if (!inputArray || !inputArray.length) return null;
-  if (inputArray.length === 2) {
-    return inputArray.join(' and ');
-  } else if (inputArray.length > 2) {
-    return `${inputArray.slice(0, -1).join(', ')}, and ${inputArray.slice(-1)}`;
-  }
-  return inputArray[0];
-};
 
 export const tableRemoveIsoFromData = createSelector(
   [tableGetSelectedData, getCompareLinks],
@@ -110,21 +104,27 @@ export const tableRemoveIsoFromData = createSelector(
         console.error(e);
       }
       updatedD['Statement Date'] = date.name;
-      updatedD['NDC Status'] =
-        ENHANCEMENT_LABEL_COLORS[
-          INVERTED_ENHANCEMENT_LABEL_SLUGS[d['NDC Status']]
-        ];
+      updatedD['NDC Status'] = {
+        color:
+          ENHANCEMENT_LABEL_COLORS[
+            INVERTED_ENHANCEMENT_LABEL_SLUGS[d['NDC Status'].slug]
+          ],
+        text: d['NDC Status'].label
+      };
       updatedD['Source Link'] = d['Source Link']
         ? d['Source Link'].replace('href=', "target='_blank' href=")
         : undefined;
       updatedD.country = `<a href="/ndcs/country/${d.iso}">${d.country}</a>`;
       if (compareLinks) {
         const compareLink = compareLinks[d.iso] || {};
+        const hasPreviousSubmission = [
+          ENHANCEMENT_LABEL_SLUGS.SUBMITTED_2020,
+          ENHANCEMENT_LABEL_SLUGS.ENHANCED_MITIGATION
+        ].includes(d['NDC Status']);
 
-        const documentText = joinArrayWithCommas(compareLink.documents);
-        updatedD[
-          'Compare with previous submissions'
-        ] = `<a href="${compareLink.link}" title="Compare ${documentText}">Compare previous ${documentText}</a>`;
+        updatedD['Compare with previous submissions'] = hasPreviousSubmission
+          ? `<a href="${compareLink.link}" title="Compare with previous submissions">Compare with previous submissions</a>`
+          : 'No comparison available';
       }
       delete updatedD.iso;
       return updatedD;

@@ -4,6 +4,7 @@ import Search from 'components/search';
 import { Table } from 'cw-components';
 import NoContent from 'components/no-content';
 import Loading from 'components/loading';
+import ReactTooltip from 'react-tooltip';
 import styles from './ndcs-enhancements-table-styles.scss';
 import customCellRenderer from './ndcs-enhancements-table-cell-renderer';
 
@@ -49,6 +50,7 @@ const NDCSEnhancementsTable = ({
             sortBy="Date"
             sortASC={false}
           />
+          <ReactTooltip id="submission-icon-info" />
         </div>
       )}
       {!loading && (!tableData || tableData.length <= 0) && (
