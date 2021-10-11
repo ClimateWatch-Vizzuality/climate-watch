@@ -126,7 +126,7 @@
     "react-string-replace": "^0.4.4",
     "react-string-replace-recursively": "^0.2.0",
     "react-textarea-autosize": "5.2.1",
-    "react-tooltip": "3.3.0",
+    "react-tooltip": "4.2.7",
     "react-transition-group": "1.1.2",
     "react-truncate": "2.4.0",
     "react-virtualized": "9.10.1",
