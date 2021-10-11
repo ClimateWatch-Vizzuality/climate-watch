@@ -3,8 +3,7 @@ import { withRouter } from 'react-router';
 import Component from './country-climate-commitments-component';
 import {
   getPreviousComparisonCountryValues,
-  getCountriesDocumentsValues,
-  getCountryName
+  getCountriesDocumentsValues
 } from './country-climate-commitments-selectors';
 
 const mapStateToProps = (state, { match }) => {
@@ -13,7 +12,6 @@ const mapStateToProps = (state, { match }) => {
     ...state
   };
   return {
-    countryName: getCountryName(stateWithIso),
     previousComparisonValues: getPreviousComparisonCountryValues(stateWithIso),
     countriesDocumentsValues: getCountriesDocumentsValues(stateWithIso)
   };

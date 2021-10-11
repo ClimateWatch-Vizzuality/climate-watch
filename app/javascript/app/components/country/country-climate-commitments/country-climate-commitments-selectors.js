@@ -10,19 +10,8 @@ const getPreviousComparisonIndicators = state =>
 const getCountriesDocuments = state => state.countriesDocuments.data || null;
 
 const getIso = state => state.iso || null;
-const getCountries = state => (state.countries && state.countries.data) || null;
 const getNDCS = state =>
   (state.ndcs && state.ndcs.data && state.ndcs.data.indicators) || null;
-
-const getCountry = createSelector([getCountries, getIso], (countries, iso) => {
-  if (!countries || !iso) return null;
-  return countries.find(country => country.iso_code3 === iso);
-});
-
-export const getCountryName = createSelector(
-  [getCountry],
-  country => (country && country.wri_standard_name) || null
-);
 
 export const getPreviousComparisonCountryValues = createSelector(
   [getPreviousComparisonIndicators, getIso],
