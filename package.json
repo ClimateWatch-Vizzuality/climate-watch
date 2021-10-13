@@ -175,6 +175,6 @@
     "stylelint": "9.1.2",
     "stylelint-config-standard": "16.0.0",
     "stylelint-webpack-plugin": "0.8.0",
-    "webpack-dev-server": "2.6.1"
+    "webpack-dev-server": "3.1.11"
   }
 }
