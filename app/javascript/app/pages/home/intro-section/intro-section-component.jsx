@@ -6,7 +6,11 @@ import AutocompleteSearch from 'components/autocomplete-search';
 import cx from 'classnames';
 import cwLogo from 'assets/icons/cw-logo-white.svg';
 import background from 'assets/headers/home.jpg';
+import ArcOfAmbitionSection from './arc-of-ambition-section';
 import styles from './intro-section-styles.scss';
+
+const FEATURE_ENHANCEMENT_CHANGES =
+  process.env.FEATURE_ENHANCEMENT_CHANGES === 'true';
 
 const HomeIntroSection = () => (
   <Section
@@ -23,6 +27,7 @@ const HomeIntroSection = () => (
         className={styles.autocompleteSearch}
         placeholder="Search across the platform by keyword or by country"
       />
+      {FEATURE_ENHANCEMENT_CHANGES && <ArcOfAmbitionSection />}
     </div>
   </Section>
 );
