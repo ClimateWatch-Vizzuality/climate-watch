@@ -13,9 +13,7 @@
     "rails:cleanimport": "rails db:drop db:create db:migrate db:import",
     "rails:server": "bundle exec rails s",
     "precommit": "lint-staged",
-    "lint": "eslint --ext js --ext jsx .",
-    "generate": "plop --plopfile app/javascript/generators/plopfile.js component",
-    "generate:page": "plop --plopfile app/javascript/generators/plopfile.js page"
+    "lint": "eslint --ext js --ext jsx ."
   },
   "private": true,
   "dependencies": {
