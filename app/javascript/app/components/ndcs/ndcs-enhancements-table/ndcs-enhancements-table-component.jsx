@@ -37,6 +37,7 @@ const NDCSEnhancementsTable = ({
         <div
           className={styles.tableWrapper}
           data-tour="ndc-enhancement-tracker-03"
+          onScroll={() => ReactTooltip.rebuild()}
         >
           <Table
             data={tableData}

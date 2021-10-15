@@ -3,8 +3,7 @@ import { createThunkAction } from 'utils/redux';
 import isEmpty from 'lodash/isEmpty';
 import { apiWithCache } from 'services/api';
 
-/* @tmpfix: remove usage of indcTransform */
-import indcTransform from 'utils/indctransform';
+import { getFirstDocumentValue } from 'utils/indctransform';
 
 const fetchNetZeroInit = createAction('fetchNetZeroInit');
 const fetchNetZeroReady = createAction('fetchNetZeroReady');
@@ -36,7 +35,7 @@ const fetchNetZero = createThunkAction(
             ]
           };
         })
-        .then(data => indcTransform(data))
+        .then(data => getFirstDocumentValue(data))
         .then(data => {
           dispatch(fetchNetZeroReady(data));
         })
