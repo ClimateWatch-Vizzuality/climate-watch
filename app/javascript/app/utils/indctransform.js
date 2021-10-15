@@ -14,7 +14,10 @@ export const getValueWithLabelId = payload => ({
   indicators: payload.indicators.map(indicator => ({
     ...indicator,
     locations: mapValues(indicator.locations, v => {
-      const lastDocumentValue = v.find(value => value.label_id);
+      const documentsWithLabelIdValues = v.filter(value => value.label_id);
+      const lastDocumentValue =
+        documentsWithLabelIdValues.length &&
+        documentsWithLabelIdValues[documentsWithLabelIdValues.length - 1];
       if (!lastDocumentValue) {
         console.warn(`${v} Country does not have label_id document value`);
       }
