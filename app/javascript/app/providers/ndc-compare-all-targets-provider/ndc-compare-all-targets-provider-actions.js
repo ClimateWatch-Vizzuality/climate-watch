@@ -3,8 +3,7 @@ import { createThunkAction } from 'utils/redux';
 import isEmpty from 'lodash/isEmpty';
 import { apiWithCache } from 'services/api';
 
-/* @tmpfix: remove usage of indcTransform */
-import indcTransform from 'utils/indctransform';
+import { getFirstDocumentValue } from 'utils/indctransform';
 
 const fetchCompareAllInit = createAction('fetchCompareAllInit');
 const fetchCompareAllReady = createAction('fetchCompareAllReady');
@@ -26,7 +25,7 @@ const fetchCompareAll = createThunkAction(
           if (response.data) return response.data;
           throw Error(response.statusText);
         })
-        .then(data => indcTransform(data))
+        .then(data => getFirstDocumentValue(data))
         .then(data => {
           dispatch(fetchCompareAllReady(data));
         })

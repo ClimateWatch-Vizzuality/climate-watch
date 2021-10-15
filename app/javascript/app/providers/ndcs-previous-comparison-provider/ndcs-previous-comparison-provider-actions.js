@@ -1,9 +1,7 @@
 import { createAction } from 'redux-actions';
 import { createThunkAction } from 'utils/redux';
 import { apiWithCache } from 'services/api';
-
-/* @tmpfix: remove usage of indcTransform */
-import indcTransform from 'utils/indctransform';
+import { getValueWithLabelId } from 'utils/indctransform';
 
 const fetchPreviousNDCComparisonInit = createAction(
   'fetchPreviousNDCComparisonInit'
@@ -25,7 +23,7 @@ const fetchPreviousNDCComparison = createThunkAction(
 
       apiWithCache
         .get('/api/v1/ndcs?subcategory=overall_comparison_with_previous_ndc')
-        .then(data => indcTransform(data.data))
+        .then(data => getValueWithLabelId(data.data))
         .then(data => {
           dispatch(fetchPreviousNDCComparisonReady(data));
         })

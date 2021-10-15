@@ -26,9 +26,12 @@ const ENHANCEMENT_SLUGS = {
 };
 
 const getSearch = state => state.search || null;
-const getCountries = state => state.countries || null;
-const getCategories = state => state.categories || null;
-const getIndicatorsData = state => state.indicators || null;
+export const getCountries = state =>
+  (state.countries && state.countries.data) || null;
+const getCategories = state =>
+  (state.ndcs && state.ndcs.data && state.ndcs.data.categories) || null;
+const getIndicatorsData = state =>
+  (state.ndcs && state.ndcs.data && state.ndcs.data.indicators) || null;
 const getZoom = state => state.map.zoom || null;
 
 const getPreviousComparisonIndicators = state =>
@@ -122,7 +125,7 @@ export const getCompareLinks = createSelector(
       );
       if (!ndcDocuments.length) return null;
 
-      const orderedDocuments = sortBy(ndcDocuments, 'ordering')
+      const orderedDocuments = sortBy(uniqBy(ndcDocuments, 'id'), 'ordering')
         .reverse()
         .slice(0, 3);
 
@@ -135,6 +138,7 @@ export const getCompareLinks = createSelector(
         documents: orderedDocuments.map(d => d.description)
       };
     });
+
     return links;
   }
 );
