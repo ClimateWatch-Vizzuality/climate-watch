@@ -125,7 +125,7 @@ export const getCompareLinks = createSelector(
       );
       if (!ndcDocuments.length) return null;
 
-      const orderedDocuments = sortBy(ndcDocuments, 'ordering')
+      const orderedDocuments = sortBy(uniqBy(ndcDocuments, 'id'), 'ordering')
         .reverse()
         .slice(0, 3);
 
@@ -138,6 +138,7 @@ export const getCompareLinks = createSelector(
         documents: orderedDocuments.map(d => d.description)
       };
     });
+
     return links;
   }
 );
