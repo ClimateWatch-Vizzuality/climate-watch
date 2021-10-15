@@ -103,7 +103,8 @@ class NDCSEnhancementsMapContainer extends PureComponent {
         label: this.getTooltipLabel(),
         value,
         statement,
-        note: 'Learn more in table below',
+        note:
+          'Click on the country or see table below to compare with previous NDC',
         indicators:
           previousComparisonCountryValues && previousComparisonCountryValues[id]
       };
