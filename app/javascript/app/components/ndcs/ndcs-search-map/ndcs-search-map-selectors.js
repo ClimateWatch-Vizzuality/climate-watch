@@ -1,3 +1,4 @@
+/* eslint-disable no-confusing-arrow */
 import { createSelector } from 'reselect';
 import getIPPaths from 'app/data/world-50m-paths';
 import { shouldShowPath } from 'utils/map';
