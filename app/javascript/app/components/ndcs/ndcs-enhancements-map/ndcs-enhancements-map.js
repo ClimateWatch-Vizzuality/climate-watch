@@ -8,7 +8,6 @@ import { isCountryIncluded } from 'app/utils';
 import { getLocationParamUpdated } from 'utils/navigation';
 import { europeSlug, europeanCountries } from 'app/data/european-countries';
 
-import { actions as fetchActions } from 'pages/ndcs-enhancements';
 import { actions as modalActions } from 'components/modal-metadata';
 import { actions as pngModalActions } from 'components/modal-png-download';
 
@@ -24,27 +23,25 @@ import {
   getIsEnhancedChecked,
   getPreviousComparisonCountryValues,
   getCompareLinks,
+  getCountries,
   MAP_COLORS
 } from './ndcs-enhancements-map-selectors';
 
-const actions = { ...fetchActions, ...modalActions, ...pngModalActions };
+const actions = { ...modalActions, ...pngModalActions };
 
 const mapStateToProps = (state, { location }) => {
-  const { data, loading } = state.ndcsEnhancements;
-  const { countries } = state;
   const search = qs.parse(location.search);
   const ndcsEnhancementsWithSelection = {
     ...state,
-    ...data,
-    countries: countries.data,
     query: search.search,
     search
   };
+
   return {
-    loading,
+    loading: state.ndcs && state.ndcs.loading,
     query: ndcsEnhancementsWithSelection.query,
     paths: getPathsWithStyles(ndcsEnhancementsWithSelection),
-    countries: countries.data,
+    countries: getCountries(ndcsEnhancementsWithSelection),
     checked: getIsEnhancedChecked(ndcsEnhancementsWithSelection),
     isoCountries: getISOCountries(ndcsEnhancementsWithSelection),
     compareLink: getCompareLinks(ndcsEnhancementsWithSelection),
@@ -69,10 +66,6 @@ class NDCSEnhancementsMapContainer extends PureComponent {
       geometryIdHover: null,
       country: null
     };
-  }
-
-  componentWillMount() {
-    this.props.fetchNDCSEnhancements();
   }
 
   getTooltipValues() {
@@ -216,8 +209,7 @@ NDCSEnhancementsMapContainer.propTypes = {
   countries: PropTypes.array,
   previousComparisonCountryValues: PropTypes.array,
   setModalMetadata: PropTypes.func.isRequired,
-  setModalPngDownload: PropTypes.func.isRequired,
-  fetchNDCSEnhancements: PropTypes.func.isRequired
+  setModalPngDownload: PropTypes.func.isRequired
 };
 
 export default withRouter(

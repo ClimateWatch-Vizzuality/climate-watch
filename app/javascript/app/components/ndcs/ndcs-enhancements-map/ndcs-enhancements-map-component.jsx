@@ -8,6 +8,7 @@ import MapLegend from 'components/map-legend';
 import ButtonGroup from 'components/button-group';
 import CountriesDocumentsProvider from 'providers/countries-documents-provider';
 import NDCSPreviousComparisonProvider from 'providers/ndcs-previous-comparison-provider';
+import NdcsProvider from 'providers/ndcs-provider';
 import AbbrReplace, { replaceStringAbbr } from 'components/abbr-replace';
 import { CheckInput } from 'cw-components';
 import Loading from 'components/loading';
@@ -19,7 +20,7 @@ import NDCSEnhancementsTooltip from 'components/ndcs/ndcs-enhancements-map/ndcs-
 import ReactTooltip from 'react-tooltip';
 import blueCheckboxTheme from 'styles/themes/checkbox/blue-checkbox.scss';
 import { Link } from 'react-router-dom';
-import { ENHANCEMENT_LABEL_SLUGS } from 'data/constants';
+import { ENHANCEMENT_LABEL_SLUGS, INDICATOR_SLUGS } from 'data/constants';
 import styles from './ndcs-enhancements-map-styles.scss';
 
 const FEATURE_ENHANCEMENT_CHANGES =
@@ -275,12 +276,19 @@ const NDCSEnhancementsMap = ({
               </div>
             </ModalPngDownload>
             <ModalMetadata />
-            {FEATURE_ENHANCEMENT_CHANGES && (
-              <React.Fragment>
-                <NDCSPreviousComparisonProvider />
-                <CountriesDocumentsProvider />
-              </React.Fragment>
-            )}
+            <NDCSPreviousComparisonProvider />
+            <CountriesDocumentsProvider />
+            <NdcsProvider
+              overrideFilter
+              indicatorSlugs={[
+                INDICATOR_SLUGS.enhancements,
+                INDICATOR_SLUGS.emissions,
+                'ndce_compare',
+                'ndce_statement',
+                'ndce_source',
+                'ndce_date'
+              ]}
+            />
           </div>
         )}
       </TabletLandscape>
