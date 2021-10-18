@@ -637,7 +637,9 @@ export const getPngSelectionSubtitle = createSelector(
   filters => {
     const { location, model, subcategory, indicator } = filters || {};
 
-    if (!filters || !location || !model || !subcategory || !indicator) { return null; }
+    if (!filters || !location || !model || !subcategory || !indicator) {
+      return null;
+    }
 
     return `
       ${location ? `Region: ${location.label}` : ''}
