@@ -122,13 +122,15 @@ export const tableRemoveIsoFromData = createSelector(
         console.error(e);
       }
       updatedD['Statement Date'] = date.name;
-      updatedD['NDC Status'] = {
-        color:
-          ENHANCEMENT_LABEL_COLORS[
-            INVERTED_ENHANCEMENT_LABEL_SLUGS[d['NDC Status'].slug]
-          ],
-        text: d['NDC Status'].label
-      };
+      updatedD['NDC Status'] = FEATURE_ENHANCEMENT_CHANGES
+        ? {
+          color:
+              ENHANCEMENT_LABEL_COLORS[
+                INVERTED_ENHANCEMENT_LABEL_SLUGS[d['NDC Status'].slug]
+              ],
+          text: d['NDC Status'].label
+        }
+        : d['NDC Status'].label;
       updatedD['Source Link'] = d['Source Link']
         ? d['Source Link'].replace('href=', "target='_blank' href=")
         : undefined;
