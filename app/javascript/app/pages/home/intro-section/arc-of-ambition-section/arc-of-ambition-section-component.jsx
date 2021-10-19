@@ -84,6 +84,7 @@ class ArcOfAmbitionSectionComponent extends Component {
           primarySlider="bottom"
           autoplay
           theme={{ pagingTitle: styles.pagingTitle }}
+          config={{ secondarySlider: { fade: true } }}
         >
           {this.renderSlides(this.props)}
         </Carousel>
