@@ -4,6 +4,7 @@
 .wrapper {
   position: relative;
   margin-bottom: 40px;
+  min-height: 535px;
 }
 
 .column {
@@ -35,7 +36,9 @@
   }
 }
 
-.submissionWithIcon {
+.submissionWithIcon,
+.overallComparison,
+.comparisonValue {
   display: flex;
 }
 
@@ -43,4 +46,37 @@
   width: 20px;
   height: 20px;
   border-radius: 50%;
+}
+
+.comparisonIcon {
+  min-width: 24px;
+  min-height: 24px;
+  max-width: 24px;
+  max-height: 24px;
+  margin-right: 5px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &.withBorder {
+    border: 3px solid $black;
+  }
+
+  &.tooltipIcon {
+    min-width: 20px;
+    min-height: 20px;
+    max-width: 20px;
+    max-height: 20px;
+  }
+}
+
+.comparisonTooltip {
+  display: flex;
+  flex-direction: column;
+}
+
+.comparisonTooltipTitle {
+  font-weight: $font-weight-bold;
+  margin-bottom: 10px;
 }

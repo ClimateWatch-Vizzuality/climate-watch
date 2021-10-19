@@ -9,13 +9,19 @@ import {
   ENHANCEMENT_CATEGORIES,
   ENHANCEMENT_LABEL_SLUGS,
   ENHANCEMENT_LABEL_COLORS,
+  ENHANCEMENT_LABELS_WITH_LETTERS,
   INDICATOR_SLUGS
 } from 'data/constants';
 import { getCompareLinks } from 'components/ndcs/ndcs-enhancements-map/ndcs-enhancements-map-selectors';
 
+const FEATURE_ENHANCEMENT_CHANGES =
+  process.env.FEATURE_ENHANCEMENT_CHANGES === 'true';
+
 const getCountries = state => state.countries || null;
 const getCategories = state => state.categories || null;
 const getIndicatorsData = state => state.indicators || null;
+const getPreviousComparisonData = state =>
+  (state.ndcsPreviousComparison && state.ndcsPreviousComparison.data) || null;
 const getQuery = state => deburrUpper(state.query) || '';
 
 export const getISOCountries = createSelector([getCountries], countries =>
@@ -23,24 +29,36 @@ export const getISOCountries = createSelector([getCountries], countries =>
 );
 
 export const getIndicatorsParsed = createSelector(
-  [getCategories, getIndicatorsData],
-  (categories, indicators) => {
+  [getCategories, getIndicatorsData, getPreviousComparisonData],
+  (categories, indicators, previousComparisonIndicators) => {
     if (!categories || !indicators || !indicators.length) return null;
     const categoryId = Object.keys(categories).find(id =>
       ENHANCEMENT_CATEGORIES.includes(categories[id].slug)
     );
-    return sortBy(
-      uniqBy(
-        indicators.map(i => ({
-          label: i.name,
-          value: i.slug,
-          categoryIds: i.category_ids,
-          locations: i.locations
-        })),
-        'value'
-      ),
-      'label'
-    ).filter(ind => ind.categoryIds.indexOf(parseInt(categoryId, 10)) > -1);
+    const sortAndParseIndicators = (ind, isPreviousComparison) =>
+      sortBy(
+        uniqBy(
+          ind &&
+            ind.map(i => ({
+              label: i.name,
+              value: i.slug,
+              categoryIds: i.category_ids,
+              locations: i.locations,
+              isPreviousComparison
+            })),
+          'value'
+        ),
+        'label'
+      );
+    const filteredIndicators = sortAndParseIndicators(indicators).filter(
+      ind => ind.categoryIds.indexOf(parseInt(categoryId, 10)) > -1
+    );
+
+    return previousComparisonIndicators
+      ? filteredIndicators.concat(
+        sortAndParseIndicators(previousComparisonIndicators)
+      )
+      : filteredIndicators;
   }
 );
 
@@ -121,6 +139,12 @@ export const tableRemoveIsoFromData = createSelector(
           ENHANCEMENT_LABEL_SLUGS.SUBMITTED_2020,
           ENHANCEMENT_LABEL_SLUGS.ENHANCED_MITIGATION
         ].includes(d['NDC Status']);
+        updatedD[
+          'Overall comparison with previous NDC'
+        ] = ENHANCEMENT_LABELS_WITH_LETTERS.map(enhancementLabelWithLetter => ({
+          ...enhancementLabelWithLetter,
+          value: d[enhancementLabelWithLetter.label]
+        }));
 
         updatedD['Compare with previous submissions'] = hasPreviousSubmission
           ? `<a href="${compareLink.link}" title="Compare with previous submissions">Compare with previous submissions</a>`
@@ -137,15 +161,25 @@ export const getDefaultColumns = createSelector(
   indicators => {
     if (!indicators || isEmpty(indicators)) return [];
 
-    const columnIds = [
-      'country',
-      INDICATOR_SLUGS.emissions,
-      INDICATOR_SLUGS.enhancements,
-      'Compare with previous submissions',
-      'ndce_statement',
-      'ndce_source',
-      'ndce_date'
-    ];
+    const columnIds = FEATURE_ENHANCEMENT_CHANGES
+      ? [
+        'country',
+        INDICATOR_SLUGS.emissions,
+        INDICATOR_SLUGS.enhancements,
+        'Compare with previous submissions',
+        'Overall comparison with previous NDC',
+        'ndce_statement',
+        'ndce_source',
+        'ndce_date'
+      ]
+      : [
+        'country',
+        INDICATOR_SLUGS.emissions,
+        INDICATOR_SLUGS.enhancements,
+        'ndce_statement',
+        'ndce_source',
+        'ndce_date'
+      ];
 
     return columnIds.map(id => {
       const match = indicators.find(indicator => indicator.value === id);
