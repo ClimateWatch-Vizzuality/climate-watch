@@ -4,25 +4,11 @@ import PropTypes from 'prop-types';
 import { sanitize } from 'utils';
 import ReactDOMServer from 'react-dom/server';
 import cx from 'classnames';
+import {
+  ENHANCEMENT_VALUE_COLORS,
+  ALL_ENHANCEMENT_VALUES_COLORS
+} from 'data/constants';
 import styles from './ndcs-enhancements-table-styles.scss';
-
-const ENHANCEMENT_COLORS = {
-  blue: '#62C0FF',
-  red: '#FF6C2F',
-  orange: '#FFB800',
-  white: 'white'
-};
-
-const colors = {
-  'Revised NDC compared with previous version': ENHANCEMENT_COLORS.blue,
-  'Revised from the previous submission': ENHANCEMENT_COLORS.blue,
-  'Yes, enhancement in the revised submission': ENHANCEMENT_COLORS.blue,
-  'No, no enhancement in the revised submission': ENHANCEMENT_COLORS.red,
-  Unclear: ENHANCEMENT_COLORS.orange,
-  'No revision compared with previous version': ENHANCEMENT_COLORS.white,
-  'No previous submission available': ENHANCEMENT_COLORS.white,
-  'No Document Submitted"': ENHANCEMENT_COLORS.white
-};
 
 const renderTooltipContent = (indicator, indicatorColor) =>
   ReactDOMServer.renderToStaticMarkup(
@@ -32,10 +18,11 @@ const renderTooltipContent = (indicator, indicatorColor) =>
         <span
           className={cx(styles.comparisonIcon, styles.tooltipIcon, {
             [styles.withBorder]:
-              indicatorColor && indicatorColor !== ENHANCEMENT_COLORS.white
+              indicatorColor &&
+              indicatorColor !== ENHANCEMENT_VALUE_COLORS.white
           })}
           style={{
-            backgroundColor: colors[indicator.value] || 'lightgray'
+            backgroundColor: indicatorColor || 'lightgray'
           }}
         />
         <span>{indicator.value}</span>
@@ -61,7 +48,8 @@ const cellRenderer = props => {
       <div className={styles.overallComparison}>
         {cellData &&
           cellData.map(indicator => {
-            const indicatorColor = colors[indicator.value];
+            const indicatorColor =
+              ALL_ENHANCEMENT_VALUES_COLORS[indicator.value];
             return (
               <div
                 key={`${columnIndex}${indicator.letter}`}
@@ -70,7 +58,7 @@ const cellRenderer = props => {
                 className={cx(styles.comparisonIcon, {
                   [styles.withBorder]:
                     indicatorColor &&
-                    indicatorColor !== ENHANCEMENT_COLORS.white
+                    indicatorColor !== ENHANCEMENT_VALUE_COLORS.white
                 })}
                 style={{
                   'background-color': indicatorColor || 'lightgray'

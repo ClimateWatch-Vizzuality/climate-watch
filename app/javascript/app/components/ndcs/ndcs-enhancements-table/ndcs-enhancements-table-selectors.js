@@ -9,6 +9,7 @@ import {
   ENHANCEMENT_CATEGORIES,
   ENHANCEMENT_LABEL_SLUGS,
   ENHANCEMENT_LABEL_COLORS,
+  ENHANCEMENT_LABELS_WITH_LETTERS,
   INDICATOR_SLUGS
 } from 'data/constants';
 import { getCompareLinks } from 'components/ndcs/ndcs-enhancements-map/ndcs-enhancements-map-selectors';
@@ -138,47 +139,12 @@ export const tableRemoveIsoFromData = createSelector(
           ENHANCEMENT_LABEL_SLUGS.SUBMITTED_2020,
           ENHANCEMENT_LABEL_SLUGS.ENHANCED_MITIGATION
         ].includes(d['NDC Status']);
-        updatedD['Overall comparison with previous NDC'] = [
-          {
-            label: 'Revised from previous submission',
-            letter: 'R',
-            value: d['Revised from previous submission']
-          },
-          {
-            label: 'Reduced total GHG emissions in 2030',
-            letter: 'M',
-            value: d['Reduced total GHG emissions in 2030']
-          },
-          {
-            label: 'Strengthened or added GHG target',
-            letter: 'G',
-            value: d['Strengthened or added GHG target']
-          },
-          {
-            label: 'Strengthened or added sectoral target',
-            letter: 'S',
-            value: d['Strengthened or added sectoral target']
-          },
-          {
-            label: 'Strengthened or added policies and actions',
-            letter: 'P',
-            value: d['Strengthened or added policies and actions']
-          },
-          {
-            label: 'Strengthened adaptation',
-            letter: 'A',
-            value: d['Strengthened adaptation']
-          },
-          {
-            label:
-              'Provided additional Information for clarity, transparency, and understanding',
-            letter: 'I',
-            value:
-              d[
-                'Provided additional Information for clarity, transparency, and understanding'
-              ]
-          }
-        ];
+        updatedD[
+          'Overall comparison with previous NDC'
+        ] = ENHANCEMENT_LABELS_WITH_LETTERS.map(enhancementLabelWithLetter => ({
+          ...enhancementLabelWithLetter,
+          value: d[enhancementLabelWithLetter.label]
+        }));
 
         updatedD['Compare with previous submissions'] = hasPreviousSubmission
           ? `<a href="${compareLink.link}" title="Compare with previous submissions">Compare with previous submissions</a>`

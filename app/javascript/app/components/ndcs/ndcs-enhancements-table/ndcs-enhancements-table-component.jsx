@@ -7,6 +7,7 @@ import Loading from 'components/loading';
 import ReactTooltip from 'react-tooltip';
 import styles from './ndcs-enhancements-table-styles.scss';
 import customCellRenderer from './ndcs-enhancements-table-cell-renderer';
+import EnhancementsLegend from './enhancements-legend';
 
 const FEATURE_ENHANCEMENT_CHANGES =
   process.env.FEATURE_ENHANCEMENT_CHANGES === 'true';
@@ -20,15 +21,17 @@ const renderSearch = (searchHandler, query) => (
   />
 );
 const setColumnWidth = FEATURE_ENHANCEMENT_CHANGES
-  ? col =>
-    ({
+  ? col => {
+    const columnWidth = {
       country: 100,
       'NDC Status': 64,
       'Share of Global GHG Emissions': 120,
       'Overall comparison with previous NDC': 200,
       Statement: 150,
       Date: 68
-    }[col] || 170)
+    }[col];
+    return columnWidth || 170;
+  }
   : () => 180;
 
 const NDCSEnhancementsTable = ({
@@ -65,6 +68,7 @@ const NDCSEnhancementsTable = ({
             sortASC={false}
           />
           <ReactTooltip id="submission-icon-info" html />
+          <EnhancementsLegend />
         </div>
       )}
       {!loading && (!tableData || tableData.length <= 0) && (

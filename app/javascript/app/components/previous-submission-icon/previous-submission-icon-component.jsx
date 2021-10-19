@@ -19,7 +19,7 @@ const icons = {
     Unclear: unclearIconWhite,
     'No revision compared with previous version': missingIconWhite,
     'No previous submission available': missingIconWhite,
-    'No Document Submitted"': missingIconWhite
+    'No Document Submitted': missingIconWhite
   },
   color: {
     'Revised NDC compared with previous version': enhancementIcon,
@@ -28,7 +28,7 @@ const icons = {
     Unclear: unclearIcon,
     'No revision compared with previous version': missingIcon,
     'No previous submission available': missingIcon,
-    'No Document Submitted"': missingIcon
+    'No Document Submitted': missingIcon
   }
 };
 
