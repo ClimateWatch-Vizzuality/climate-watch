@@ -41,6 +41,11 @@
   }
 }
 
+.background {
+  background-position: top;
+  background-size: contain;
+}
+
 .cwLogo {
   fill: $white;
   height: 31px;
