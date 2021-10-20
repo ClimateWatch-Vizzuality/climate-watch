@@ -37,10 +37,10 @@ export const slidesData = [
     ]
   },
   {
-    pagingTitle: 'NDCs',
+    pagingTitle: 'Nationally Determined Contributions',
     title: 'Nationally Determined Contributions (NDCs)',
     text: [
-      'The Paris Agreement requires countries to submit more ambitious climate commitments every five years. In every five-year cycle, countries submit documents called Nationally Determined Contributions (NDCs). These documents communicate the actions they will take to reduce their greenhouse gas emissions and increase resilience to the impacts of climate change, typically within the next 10 years.',
+      'The Paris Agreement requires countries to submit more ambitious climate commitments every five years. In every five-year cycle, countries submit documents called Nationally Determined Contributions (NDCs). These documents communicate the targets and actions they will take to reduce their greenhouse gas emissions and increase resilience to the impacts of climate change, typically within the next 10 years.',
       'Explore and compare the content of countries’ NDCs and track future submissions: '
     ],
     buttons: [
@@ -68,7 +68,7 @@ export const slidesData = [
     altText: 'Nationally Determined Contributions (NDCs)'
   },
   {
-    pagingTitle: 'LTS',
+    pagingTitle: 'Long-term Strategies',
     title: 'Long-Term Strategies (LTS)',
     text: [
       'The Paris Agreement invites countries to submit long-term low greenhouse gas emissions development strategies (LTS). These documents typically target the mid-century (2050) timeframe, presenting long-term targets and pathways for achieving them.',
@@ -126,7 +126,7 @@ export const slidesData = [
     ],
     buttons: [
       {
-        text: 'Historic GHG Emissions',
+        text: 'Historical GHG Emissions',
         link: '/ghg',
         variant: 'primary',
         type: 'button'

@@ -68,7 +68,7 @@ const NDCSEnhancementsTable = ({
             sortASC={false}
           />
           <ReactTooltip id="submission-icon-info" html />
-          <EnhancementsLegend />
+          {FEATURE_ENHANCEMENT_CHANGES && <EnhancementsLegend />}
         </div>
       )}
       {!loading && (!tableData || tableData.length <= 0) && (

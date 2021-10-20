@@ -10,6 +10,9 @@ import {
 } from 'data/constants';
 import styles from './ndcs-enhancements-table-styles.scss';
 
+const FEATURE_ENHANCEMENT_CHANGES =
+  process.env.FEATURE_ENHANCEMENT_CHANGES === 'true';
+
 const renderTooltipContent = (indicator, indicatorColor) =>
   ReactDOMServer.renderToStaticMarkup(
     <div className={styles.comparisonTooltip}>
@@ -32,7 +35,7 @@ const renderTooltipContent = (indicator, indicatorColor) =>
 
 const cellRenderer = props => {
   const { cellData, dataKey, columnIndex } = props;
-  if (dataKey === 'NDC Status') {
+  if (FEATURE_ENHANCEMENT_CHANGES && dataKey === 'NDC Status') {
     return (
       <div
         data-for="submission-icon-info"

@@ -36,9 +36,14 @@
 
     &.extraPadding {
       padding-top: 120px;
-      padding-bottom: 100px;
+      padding-bottom: 60px;
     }
   }
+}
+
+.background {
+  background-position: top;
+  background-size: contain;
 }
 
 .cwLogo {

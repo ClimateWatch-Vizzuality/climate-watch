@@ -9,12 +9,11 @@ import tooltipTheme from 'styles/themes/map-tooltip/map-tooltip.scss';
 import styles from 'components/ndcs/ndcs-enhancements-map/ndcs-enhancements-tooltip/ndcs-enhancements-tooltip-styles.scss';
 
 const NDCSEnhancementsTooltip = props => {
-  const { isTablet, tooltipValues, id } = props;
+  const { tooltipValues, id } = props;
   return (
     <ReactTooltip
       className={cx(tooltipTheme.tooltipContainer, styles.tooltipContainer)}
       id={id}
-      delayHide={isTablet ? 0 : 3000}
     >
       <div className={tooltipTheme.countryName}>{tooltipValues.label}</div>
       {tooltipValues.value && (
@@ -54,7 +53,6 @@ const NDCSEnhancementsTooltip = props => {
 };
 
 NDCSEnhancementsTooltip.propTypes = {
-  isTablet: PropTypes.bool,
   tooltipValues: PropTypes.object,
   id: PropTypes.string
 };
