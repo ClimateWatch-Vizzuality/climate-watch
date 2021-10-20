@@ -29,9 +29,8 @@ const TopSlide = ({ smImage, bgImage, altText }) => (
   </div>
 );
 
-const BottomSlide = ({ title, text, buttons }) => (
-  <div className={styles.slideWrapper} key={title}>
-    <h3 className={styles.slideTitle}>{title}</h3>
+const BottomSlide = ({ key, text, buttons }) => (
+  <div className={styles.slideWrapper} key={key}>
     {text.map(paragraph => (
       <p key={paragraph} className={styles.slideParagraph}>
         <AbbrReplace>{paragraph}</AbbrReplace>
@@ -65,7 +64,6 @@ class ArcOfAmbitionSectionComponent extends Component {
       slidesData.map(slide => (
         <BottomSlide
           key={slide.title}
-          title={slide.title}
           text={slide.text}
           buttons={slide.buttons}
           countriesOptions={countriesOptions}
@@ -94,7 +92,7 @@ class ArcOfAmbitionSectionComponent extends Component {
 }
 
 BottomSlide.propTypes = {
-  title: PropTypes.string,
+  key: PropTypes.string,
   text: PropTypes.arrayOf(PropTypes.string),
   buttons: PropTypes.arrayOf(PropTypes.shape({}))
 };
