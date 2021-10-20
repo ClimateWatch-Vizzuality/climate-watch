@@ -35,8 +35,6 @@ development:
 
   dev_server:
     https: false
-    hmr: true
-    inline: true
 
 test:
   <<: *default
