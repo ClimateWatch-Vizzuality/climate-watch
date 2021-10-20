@@ -123,7 +123,7 @@ export const tableRemoveIsoFromData = createSelector(
       }
       updatedD['Statement Date'] = date.name;
       updatedD['NDC Status'] = FEATURE_ENHANCEMENT_CHANGES
-        ? {
+        ? d['NDC Status'] && {
           color:
               ENHANCEMENT_LABEL_COLORS[
                 INVERTED_ENHANCEMENT_LABEL_SLUGS[d['NDC Status'].slug]
