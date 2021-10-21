@@ -2,7 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Accordion from 'components/accordion';
-import DefinitionList from 'components/definition-list';
+import CompareDefinitionList from 'components/compare-definition-list';
 import Loading from 'components/loading';
 import NoContent from 'components/no-content';
 import cx from 'classnames';
@@ -21,7 +21,6 @@ const getNoContentMessage = locationsDocuments => {
 
 const CustomCompareAccordionComponent = ({
   data,
-  compare,
   isSectoralInformation,
   locationsDocuments,
   loading
@@ -61,18 +60,16 @@ const CustomCompareAccordionComponent = ({
                     theme={subAccordionTheme}
                   >
                     {section.sectors.map(desc => (
-                      <DefinitionList
+                      <CompareDefinitionList
                         {...desc}
-                        compare={compare}
                         className={styles.compareDefinitionList}
                       />
                     ))}
                   </Accordion>
                 )
               ) : (
-                <DefinitionList
+                <CompareDefinitionList
                   {...section}
-                  compare={compare}
                   className={styles.compareDefinitionList}
                   comparisonWithPreviousNDC={
                     section.slug === 'overall_comparison_with_previous_ndc'
@@ -88,7 +85,6 @@ const CustomCompareAccordionComponent = ({
 
 CustomCompareAccordionComponent.propTypes = {
   data: PropTypes.array,
-  compare: PropTypes.bool,
   isSectoralInformation: PropTypes.bool,
   loading: PropTypes.bool,
   locationsDocuments: PropTypes.string

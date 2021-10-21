@@ -16,7 +16,8 @@ export default [
     path: '/ndcs/country/:iso/overview',
     component: () =>
       createElement(NDCCountryAccordion, {
-        category: 'overview'
+        category: 'overview',
+        defaultSection: 'overview_of_commitment'
       }),
     exact: true,
     anchor: true,
