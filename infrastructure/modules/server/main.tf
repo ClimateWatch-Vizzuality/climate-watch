@@ -126,7 +126,7 @@ resource "aws_instance" "server" {
 
 resource "aws_ebs_volume" "root_volume" {
   availability_zone = var.availability_zone
-  size              = 20
+  size              = 32
 
   tags = {
     Name = "${var.project}-server-${var.environment}"
