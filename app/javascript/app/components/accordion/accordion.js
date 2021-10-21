@@ -7,17 +7,17 @@ import { getLocationParamUpdated } from 'utils/navigation';
 
 import AccordionComponent from './accordion-component';
 
-const mapStateToProps = (state, { location, param }) => {
+const mapStateToProps = (state, { location, param, openSlug }) => {
   const search = qs.parse(location.search);
-  const openSlug = search[param] || null;
+  const openSlugFromSearch = search[param] || openSlug || null;
   return {
-    openSlug
+    openSlug: openSlugFromSearch
   };
 };
 
 const AccordionContainer = props => {
-  const { data, param, history, location } = props;
-  const { openSlug } = props;
+  const { data, param, history, location, openSlug } = props;
+
   const [updatedOpenSlug, setOpenSlug] = useState(openSlug);
   useEffect(() => {
     if (data.length === 1) setOpenSlug(data[0].slug);

@@ -1,13 +1,13 @@
 import { createElement } from 'react';
 import { Redirect } from 'react-router-dom';
 
-import CompareAccordion from 'components/custom-compare-accordion';
+import CustomCompareAccordion from 'components/custom-compare-accordion';
 
 export default [
   {
     path: '/custom-compare/overview',
     component: ({ targets }) =>
-      createElement(CompareAccordion, {
+      createElement(CustomCompareAccordion, {
         category: 'overview',
         compare: true,
         targets
@@ -20,9 +20,8 @@ export default [
   {
     path: '/custom-compare/mitigation',
     component: ({ targets }) =>
-      createElement(CompareAccordion, {
+      createElement(CustomCompareAccordion, {
         category: 'mitigation',
-        compare: true,
         targets
       }),
     exact: true,
@@ -33,9 +32,8 @@ export default [
   {
     path: '/custom-compare/adaptation',
     component: ({ targets }) =>
-      createElement(CompareAccordion, {
+      createElement(CustomCompareAccordion, {
         category: 'adaptation',
-        compare: true,
         targets
       }),
     exact: true,
@@ -46,9 +44,8 @@ export default [
   {
     path: '/custom-compare/sectoral-information',
     component: ({ targets }) =>
-      createElement(CompareAccordion, {
+      createElement(CustomCompareAccordion, {
         category: 'sectoral_information',
-        compare: true,
         targets
       }),
     exact: true,

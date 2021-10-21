@@ -1,81 +1,103 @@
-import React from 'react';
+/* eslint-disable no-confusing-arrow */
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
-import AbbrReplace, { replaceStringAbbr } from 'components/abbr-replace';
-import layout from 'styles/layout.scss';
 import PreviousSubmissionIcon from 'components/previous-submission-icon';
+import AbbrReplace, { replaceStringAbbr } from 'components/abbr-replace';
+import layoutStyles from 'app/styles/layout.scss';
 import ReactTooltip from 'react-tooltip';
 import styles from './definition-list-styles.scss';
 
 const FEATURE_ENHANCEMENT_CHANGES =
   process.env.FEATURE_ENHANCEMENT_CHANGES === 'true';
 
-const renderComparisonWithPreviousNDCIcon = value => (
-  <div>
-    <PreviousSubmissionIcon
-      value={value}
-      tooltipId="definition-icon"
-      className={styles.indicatorIcon}
-    />
-    <ReactTooltip id="definition-icon" />
-  </div>
-);
+class DefinitionList extends PureComponent {
+  // eslint-disable-line react/prefer-stateless-function
+  render() {
+    const {
+      definitions,
+      compare,
+      className,
+      comparisonWithPreviousNDC
+    } = this.props;
 
-const DefinitionList = ({
-  className,
-  title: sectionTitle,
-  definitions,
-  compare,
-  comparisonWithPreviousNDC
-}) => (
-  <dl className={className} key={sectionTitle}>
-    {definitions &&
-      definitions.map(({ slug, title, descriptions }) => (
-        <div className={styles.definitionRow} key={slug}>
-          <div
-            key={`${slug}-${title}-${sectionTitle}`}
-            className={cx(
-              layout.content,
-              compare ? styles.definitionCompare : styles.definition
-            )}
-          >
-            <dt className={styles.definitionTitle}>
-              <AbbrReplace>{title}</AbbrReplace>:
-            </dt>
-            {descriptions &&
-              descriptions.map(({ iso, value }) => (
-                <dd key={`${slug}-${iso}`} className={styles.definitionDesc}>
-                  {compare && value === '-' ? (
-                    <div className={styles.noComparable}>
-                      No comparable data available
-                    </div>
-                  ) : (
-                    <div className={styles.value}>
-                      {FEATURE_ENHANCEMENT_CHANGES &&
-                        comparisonWithPreviousNDC &&
-                        renderComparisonWithPreviousNDCIcon(value)}
+    const renderComparisonWithPreviousNDC = () =>
+      definitions.map(def => (
+        <div
+          key={`${def.slug}-${def.title}-${Math.random()}`}
+          className={styles.previousNDCDefinition}
+        >
+          {def.descriptions &&
+            def.descriptions.map(desc => (
+              <dd
+                key={`${def.slug}-${desc.iso}`}
+                className={styles.definitionDesc}
+              >
+                <PreviousSubmissionIcon
+                  value={desc.value}
+                  tooltipId="definition-icon"
+                  className={styles.tooltipIndicatorIcon}
+                />
+                <ReactTooltip id="definition-icon" />
+              </dd>
+            ))}
+          <dt className={styles.definitionTitle}>
+            <AbbrReplace>{def.title}</AbbrReplace>
+          </dt>
+        </div>
+      ));
+
+    const renderDefinitions = () =>
+      FEATURE_ENHANCEMENT_CHANGES && comparisonWithPreviousNDC
+        ? renderComparisonWithPreviousNDC()
+        : definitions.map(def => (
+          <div className="grid-column-item" key={def.slug}>
+            <div
+              key={`${def.slug}-${def.title}-${Math.random()}`}
+              className={cx(
+                compare ? styles.definitionCompare : styles.definition
+              )}
+            >
+              <dt className={styles.definitionTitle}>
+                <AbbrReplace>{def.title}</AbbrReplace>
+              </dt>
+              {def.descriptions &&
+                  def.descriptions.map(desc => (
+                    <dd
+                      key={`${def.slug}-${desc.iso}`}
+                      className={styles.definitionDesc}
+                    >
                       <div
+                        className={layoutStyles.parsedHTML}
                         // eslint-disable-next-line react/no-danger
                         dangerouslySetInnerHTML={{
-                          __html: replaceStringAbbr(value)
+                          __html: replaceStringAbbr(desc.value)
                         }}
                       />
-                    </div>
-                  )}
-                </dd>
-              ))}
+                    </dd>
+                  ))}
+            </div>
           </div>
-        </div>
-      ))}
-  </dl>
-);
+        ));
+
+    return (
+      <dl
+        className={cx({
+          [className]: !comparisonWithPreviousNDC,
+          [styles.comparisonWithPreviousNDCContainer]: comparisonWithPreviousNDC
+        })}
+      >
+        {definitions && definitions.length > 0 && renderDefinitions()}
+      </dl>
+    );
+  }
+}
 
 DefinitionList.propTypes = {
   className: PropTypes.string,
-  title: PropTypes.string,
   definitions: PropTypes.array,
-  comparisonWithPreviousNDC: PropTypes.bool,
-  compare: PropTypes.bool
+  compare: PropTypes.bool,
+  comparisonWithPreviousNDC: PropTypes.bool
 };
 
 export default DefinitionList;
