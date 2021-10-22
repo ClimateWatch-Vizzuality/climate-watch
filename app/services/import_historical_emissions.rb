@@ -8,6 +8,7 @@ class ImportHistoricalEmissions
   DATA_PIK_FILEPATH = "#{CW_FILES_PREFIX}historical_emissions/CW_HistoricalEmissions_PIK.csv".freeze
   DATA_UNFCCC_FILEPATH = "#{CW_FILES_PREFIX}historical_emissions/CW_HistoricalEmissions_UNFCCC.csv".freeze
   DATA_GCP_FILEPATH = "#{CW_FILES_PREFIX}historical_emissions/CW_HistoricalEmissions_GCP.csv".freeze
+  DATA_US_FILEPATH = "#{CW_FILES_PREFIX}historical_emissions/CW_HistoricalEmissions_US.csv".freeze
   # rubocop:enable LineLength
   #
   def call
@@ -21,6 +22,7 @@ class ImportHistoricalEmissions
       import_records(S3CSVReader.read(DATA_PIK_FILEPATH), DATA_PIK_FILEPATH)
       import_records(S3CSVReader.read(DATA_UNFCCC_FILEPATH), DATA_UNFCCC_FILEPATH)
       import_records(S3CSVReader.read(DATA_GCP_FILEPATH), DATA_GCP_FILEPATH)
+      import_records(S3CSVReader.read(DATA_US_FILEPATH), DATA_US_FILEPATH)
 
       Rails.logger.info 'Refreshing materialized views'
       HistoricalEmissions::NormalisedRecord.refresh
@@ -121,7 +123,7 @@ class ImportHistoricalEmissions
 
   def record_attributes(row)
     {
-      location: @locations_cache[row[:country]],
+      location: @locations_cache[row[:country] || row[:state]],
       data_source: @sources_cache[row[:source]],
       sector: @sectors_cache["#{row[:source]}_#{row[:sector]}"],
       gas: find_or_create_gas(row[:gas]),
