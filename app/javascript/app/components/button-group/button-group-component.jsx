@@ -104,8 +104,8 @@ const ButtonGroup = ({
   buttonsConfig,
   disabled,
   location,
-  dataTour,
-  otherProps
+  otherProps,
+  dataTour
 }) => {
   const { pathname: currentPathname } = location;
   return (
@@ -117,7 +117,7 @@ const ButtonGroup = ({
       )}
       data-tour={dataTour}
     >
-      {buttonsConfig.map((buttonConfig) =>
+      {buttonsConfig.map(buttonConfig =>
         renderButton(buttonConfig, currentPathname, otherProps)
       )}
       <ReactTooltip id="tooltip" effect="solid" />

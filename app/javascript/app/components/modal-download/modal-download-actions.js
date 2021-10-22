@@ -1,3 +1,4 @@
+/* eslint-disable no-confusing-arrow */
 import { createAction } from 'redux-actions';
 import { createThunkAction } from 'utils/redux';
 import {
@@ -16,9 +17,9 @@ const setProcessing = createAction('setProcessing');
 
 function toQueryParams(data) {
   return Object.keys(data).map(key =>
-    (key === 'sector' || key === 'country'
+    key === 'sector' || key === 'country'
       ? `${key}=${encodeURIComponent(data[key].value)}`
-      : `${key}=${encodeURIComponent(data[key])}`)
+      : `${key}=${encodeURIComponent(data[key])}`
   );
 }
 
