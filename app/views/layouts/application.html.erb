@@ -52,7 +52,7 @@
       <meta name="robots" content="noindex">
     <% end %>
 
-    <%= javascript_pack_tag 'main', defer: true %>
+    <%= javascript_packs_with_chunks_tag 'main', defer: true, 'data-turbolinks-track': 'reload' %>
 
     <% if @use_precompiled_assets %>
       <%= stylesheet_pack_tag 'main' %>

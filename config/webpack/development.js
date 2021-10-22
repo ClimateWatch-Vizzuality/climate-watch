@@ -4,6 +4,10 @@ const merge = require('webpack-merge');
 const sharedConfig = require('./shared.js');
 const { settings, output } = require('./configuration.js');
 
+// if (!module.hot) {
+//   environment.loaders.get('sass').use.find(item => item.loader === 'sass-loader').options.sourceMapContents = false;
+// }
+
 module.exports = merge(sharedConfig, {
   mode: 'development',
   devtool: 'cheap-source-map',
@@ -13,13 +17,19 @@ module.exports = merge(sharedConfig, {
     // removeEmptyChunks: false,
     // splitChunks: false
   },
+  target: 'web',
   cache: true,
   resolve: {
     symlinks: false,
+    extensions: ['.jsx', '.js'],
     alias: {
       react: path.resolve('./node_modules/react'),
       'react-dom': path.resolve('./node_modules/react-dom')
-    }
+    },
+    modules: [
+      path.resolve(__dirname, 'src'),
+      path.resolve(__dirname, 'node_modules')
+    ]
   },
 
   stats: {
@@ -33,18 +43,19 @@ module.exports = merge(sharedConfig, {
   plugins: [],
 
   devServer: {
-    contentBase: output.path,
     compress: true,
     port: settings.dev_server.port,
-    clientLogLevel: 'none',
     https: settings.dev_server.https,
     host: settings.dev_server.host,
-    publicPath: output.publicPath,
+    static: {
+      directory: output.path,
+      publicPath: output.publicPath,
+      watch: {
+        ignored: /node_modules([\\]+|\/)+(?!cw-components)/,
+        usePolling: true
+      }
+    },
     headers: { 'Access-Control-Allow-Origin': '*' },
-    historyApiFallback: true,
-    watchOptions: {
-      ignored: /node_modules([\\]+|\/)+(?!cw-components)/,
-      poll: 1000
-    }
+    historyApiFallback: true
   }
 });

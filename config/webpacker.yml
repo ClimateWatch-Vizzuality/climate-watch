@@ -35,10 +35,6 @@ default: &default
   # Additional paths webpack should lookup modules
   # ['app/assets', 'engine/foo/app/assets']
   resolved_paths: []
-  cache_path: tmp/cache/webpacker
-
-  # Reload manifest.json on all requests so we reload latest compiled packs
-  cache_manifest: false
 
   extensions:
     - .coffee
@@ -58,7 +54,6 @@ default: &default
     - .gif
     - .jpeg
     - .jpg
-  extract_css: true
 
 development:
   <<: *default
@@ -66,8 +61,19 @@ development:
 
   dev_server:
     https: false
-    hmr: true
-    inline: true
+    host: localhost
+    port: 3000
+    watch_options:
+      ignored: /node_modules/,
+      aggregateTimeout: 300,
+      poll: 500
+
+    static:
+      directory: packs
+      public_path: public
+      watch:
+        ignored: '**/node_modules/**'
+        usePolling: true
 
 
 test:
