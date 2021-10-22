@@ -32,17 +32,10 @@ default: &default
     - .woff
     - .woff2
 
-  # Additional paths webpack should lookup modules
-  # ['app/assets', 'engine/foo/app/assets']
-  resolved_paths: []
-
   extensions:
-    - .coffee
     - .erb
     - .js
     - .jsx
-    - .ts
-    - .vue
     - .sass
     - .scss
     - .css
@@ -57,23 +50,27 @@ default: &default
 
 development:
   <<: *default
-  compile: true
+  compile: false
 
+  # Reference: https://webpack.js.org/configuration/dev-server/
   dev_server:
     https: false
     host: localhost
-    port: 3000
+    port: 3035
+    public: localhost:3035
+    hmr: false
+    # Inline should be set to true if using HMR
+    inline: true
+    overlay: true
+    compress: true
+    disable_host_check: true
+    use_local_ip: false
+    quiet: false
+    pretty: false
+    headers:
+      'Access-Control-Allow-Origin': '*'
     watch_options:
-      ignored: /node_modules/,
-      aggregateTimeout: 300,
-      poll: 500
-
-    static:
-      directory: packs
-      public_path: public
-      watch:
-        ignored: '**/node_modules/**'
-        usePolling: true
+      ignored: '**/node_modules/**'
 
 
 test:
@@ -89,14 +86,14 @@ production: &production
   # Production depends on precompilation of packs prior to booting for performance.
   compile: false
 
-  # Cache manifest.json for performance
-  cache_manifest: true
+  # Extract and emit a css file
   extract_css: true
 
+  # Cache manifest.json for performance
+  cache_manifest: true
 
 staging:
   <<: *default
-
   compile: false
   extract_css: true
   cache_manifest: true

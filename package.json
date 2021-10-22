@@ -7,7 +7,7 @@
   "scripts": {
     "start": "run-p -r rails:server js:server",
     "reinstall": "rm -rf ./node_modules && yarn install",
-    "js:server": "yarn install && ./bin/webpack-dev-server",
+    "js:server": "yarn install && ./bin/webpack-dev-server -c config/webpack/development.js",
     "dev": "webpack-dev-server -c config/webpack/development.js",
     "test": "jest",
     "build": "webpack -c config/webpack/production.js",

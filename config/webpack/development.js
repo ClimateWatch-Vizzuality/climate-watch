@@ -4,10 +4,6 @@ const merge = require('webpack-merge');
 const sharedConfig = require('./shared.js');
 const { settings, output } = require('./configuration.js');
 
-// if (!module.hot) {
-//   environment.loaders.get('sass').use.find(item => item.loader === 'sass-loader').options.sourceMapContents = false;
-// }
-
 module.exports = merge(sharedConfig, {
   mode: 'development',
   devtool: 'cheap-source-map',
