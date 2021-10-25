@@ -8,7 +8,10 @@ module.exports = {
       options: {
         publicPath,
         name:
-          env.NODE_ENV === 'production' ? '[name]-[hash].[ext]' : '[name].[ext]'
+          env.NODE_ENV === 'production'
+            ? '[name]-[hash].[ext]'
+            : '[name].[ext]',
+        esModule: false
       }
     }
   ]

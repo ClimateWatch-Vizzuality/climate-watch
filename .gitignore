@@ -54,9 +54,23 @@ bower.json
 # Editors
 .vscode/
 .idea/
+/public/packs
+/public/packs-test
+/public/assets
+/node_modules
+/yarn-error.log
+yarn-debug.log*
+.yarn-integrity
 
 # maxmind db
 db/*.mmdb
 !db/GeoLite2-Country-Test.mmdb
 
 /infrastructure/.terraform/
+/public/packs
+/public/packs-test
+/public/assets
+/node_modules
+/yarn-error.log
+yarn-debug.log*
+.yarn-integrity

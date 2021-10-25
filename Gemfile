@@ -22,7 +22,7 @@ gem 'sassc-rails', '~> 2.1.2'
 gem 'sprockets',  '~> 3.7.2'
 gem 'turbolinks', '~> 5'
 gem 'uglifier', '>= 1.3.0'
-gem 'webpacker'
+gem 'webpacker', '~> 5.4.2'
 
 # API
 gem 'active_model_serializers', '~> 0.10.0'
@@ -75,8 +75,8 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'web-console', '>= 3.3.0'
 
-  gem "capistrano", "~> 3.10", require: false
-  gem "capistrano-rails", "~> 1.3", require: false
+  gem 'capistrano', '~> 3.10', require: false
+  gem 'capistrano-rails', '~> 1.3', require: false
   gem 'capistrano-bundler'
   gem 'capistrano-yarn'
   gem 'capistrano-passenger', '~> 0.2.1'

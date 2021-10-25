@@ -40,7 +40,7 @@ const getButtonLink = (link, currentPathname) => {
   return `${updatedPath}${link}`;
 };
 
-const renderButton = (buttonConfig, currentPathname) => {
+const renderButton = (buttonConfig, currentPathname, otherProps) => {
   const dataTip = buttonConfig.tooltipText || tooltipText[buttonConfig.type];
   const key = buttonConfig.type;
   switch (buttonConfig.type) {
@@ -63,8 +63,8 @@ const renderButton = (buttonConfig, currentPathname) => {
     case 'downloadCombo':
       return (
         <SimpleMenu
-          {...this.props}
           key={key}
+          {...otherProps}
           buttonClassName={cx(styles.button, styles.download)}
           options={buttonConfig.options}
           icon={iconsMap[buttonConfig.type]}
@@ -104,6 +104,7 @@ const ButtonGroup = ({
   buttonsConfig,
   disabled,
   location,
+  otherProps,
   dataTour
 }) => {
   const { pathname: currentPathname } = location;
@@ -117,7 +118,7 @@ const ButtonGroup = ({
       data-tour={dataTour}
     >
       {buttonsConfig.map(buttonConfig =>
-        renderButton(buttonConfig, currentPathname)
+        renderButton(buttonConfig, currentPathname, otherProps)
       )}
       <ReactTooltip id="tooltip" effect="solid" />
     </div>
@@ -129,7 +130,8 @@ ButtonGroup.propTypes = {
   buttonsConfig: PropTypes.array,
   location: PropTypes.object,
   disabled: PropTypes.bool,
-  dataTour: PropTypes.string
+  dataTour: PropTypes.string,
+  otherProps: PropTypes.object
 };
 
 export default ButtonGroup;

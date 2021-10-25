@@ -7,7 +7,7 @@ const sourceMap = env.NODE_ENV === 'development';
 const sassConfig = [
   {
     loader: 'css-loader',
-    query: {
+    options: {
       modules: true,
       localIdentName: '[name]__[local]__[hash:base64:5]'
     }
