@@ -72,7 +72,7 @@ export const commitmentsData = [
         answerLabel: ['In Policy Document', 'In Law'],
         link: '/net-zero-tracker',
         slug: 'nz_status',
-        metadataSlug: 'eciu',
+        metadataSlug: 'net_zero',
         hasExternalLink: true
       },
       {
