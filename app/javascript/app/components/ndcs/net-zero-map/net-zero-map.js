@@ -178,7 +178,7 @@ class NetZeroMapContainer extends PureComponent {
     this.props.setModalMetadata({
       customTitle: 'Net Zero Tracker',
       category: 'Net Zero Map',
-      slugs: ['eciu'],
+      slugs: ['net_zero'],
       open: true
     });
   };

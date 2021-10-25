@@ -27,7 +27,7 @@ import NDCSPreviousComparisonProvider from 'providers/ndcs-previous-comparison-p
 import DocumentsProvider from 'providers/documents-provider';
 import { SEO_PAGES } from 'data/seo';
 import SEOTags from 'components/seo-tags';
-
+import { INDICATOR_SLUGS } from 'data/constants';
 import newMapTheme from 'styles/themes/map/map-new-zoom-controls.scss';
 import layout from 'styles/layout.scss';
 import blueCheckboxTheme from 'styles/themes/checkbox/blue-checkbox.scss';
@@ -358,7 +358,8 @@ function NDCSExploreMap(props) {
           additionalIndicatorSlugs={[
             'ndce_ghg',
             'submission',
-            'submission_date'
+            'submission_date',
+            INDICATOR_SLUGS.enhancements
           ]}
         />
       )}
