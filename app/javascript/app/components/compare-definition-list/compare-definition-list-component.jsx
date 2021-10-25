@@ -21,11 +21,10 @@ const renderComparisonWithPreviousNDCIcon = value => (
   </div>
 );
 
-const DefinitionList = ({
+const CompareDefinitionList = ({
   className,
   title: sectionTitle,
   definitions,
-  compare,
   comparisonWithPreviousNDC
 }) => (
   <dl className={className} key={sectionTitle}>
@@ -34,10 +33,7 @@ const DefinitionList = ({
         <div className={styles.definitionRow} key={slug}>
           <div
             key={`${slug}-${title}-${sectionTitle}`}
-            className={cx(
-              layout.content,
-              compare ? styles.definitionCompare : styles.definition
-            )}
+            className={cx(layout.content, styles.definitionCompare)}
           >
             <dt className={styles.definitionTitle}>
               <AbbrReplace>{title}</AbbrReplace>:
@@ -45,7 +41,7 @@ const DefinitionList = ({
             {descriptions &&
               descriptions.map(({ iso, value }) => (
                 <dd key={`${slug}-${iso}`} className={styles.definitionDesc}>
-                  {compare && value === '-' ? (
+                  {value === '-' ? (
                     <div className={styles.noComparable}>
                       No comparable data available
                     </div>
@@ -70,12 +66,11 @@ const DefinitionList = ({
   </dl>
 );
 
-DefinitionList.propTypes = {
+CompareDefinitionList.propTypes = {
   className: PropTypes.string,
   title: PropTypes.string,
   definitions: PropTypes.array,
-  comparisonWithPreviousNDC: PropTypes.bool,
-  compare: PropTypes.bool
+  comparisonWithPreviousNDC: PropTypes.bool
 };
 
-export default DefinitionList;
+export default CompareDefinitionList;
