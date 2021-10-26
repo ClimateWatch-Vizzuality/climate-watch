@@ -2,7 +2,6 @@
 
 /* eslint global-require: 0 */
 
-const TerserPlugin = require('terser-webpack-plugin');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
 const CompressionPlugin = require('compression-webpack-plugin');
@@ -10,14 +9,9 @@ const sharedConfig = require('./shared.js');
 const ImageminWebpWebpackPlugin = require('imagemin-webp-webpack-plugin');
 
 module.exports = merge(sharedConfig, {
-  mode: 'production',
   output: { filename: '[name]-[chunkhash].js' },
   stats: 'normal',
-  optimization: {
-    minimize: true,
-    minimizer: [new TerserPlugin()]
-  },
-  target: 'defaults',
+
   plugins: [
     new webpack.EnvironmentPlugin([
       'GOOGLE_ANALYTICS_ID',
@@ -26,12 +20,24 @@ module.exports = merge(sharedConfig, {
       'ESP_API',
       'GFW_API'
     ]),
+
+    new webpack.optimize.UglifyJsPlugin({
+      minimize: true,
+      sourceMap: false,
+
+      compress: {
+        warnings: false
+      },
+
+      output: {
+        comments: false
+      }
+    }),
     new ImageminWebpWebpackPlugin(),
     new CompressionPlugin({
       asset: '[path].gz[query]',
       algorithm: 'gzip',
-      test: /\.(js|css|html|json|ico|svg|eot|otf|ttf)$/,
-      deleteOriginalAssets: 'keep-source-map'
+      test: /\.(js|css|html|json|ico|svg|eot|otf|ttf)$/
     })
   ]
 });

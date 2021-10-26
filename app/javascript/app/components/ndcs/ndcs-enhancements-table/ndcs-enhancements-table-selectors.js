@@ -130,7 +130,7 @@ export const tableRemoveIsoFromData = createSelector(
               ],
           text: d['NDC Status'].label
         }
-        : d['NDC Status'] && d['NDC Status'].label;
+        : d['NDC Status'].label;
       updatedD['Source Link'] = d['Source Link']
         ? d['Source Link'].replace('href=', "target='_blank' href=")
         : undefined;

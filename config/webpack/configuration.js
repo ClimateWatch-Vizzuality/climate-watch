@@ -7,9 +7,7 @@ const { readFileSync } = require('fs');
 
 const configPath = resolve('config', 'webpacker.yml');
 const loadersDir = join(__dirname, 'loaders');
-const settings = safeLoad(readFileSync(configPath), 'utf8')[
-  env.NODE_ENV || 'development'
-];
+const settings = safeLoad(readFileSync(configPath), 'utf8')[env.NODE_ENV];
 
 function removeOuterSlashes(string) {
   return string.replace(/^\/*/, '').replace(/\/*$/, '');

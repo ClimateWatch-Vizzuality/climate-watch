@@ -1,31 +1,20 @@
 // Note: You must restart bin/webpack-dev-server for changes to take effect
+const webpack = require('webpack');
 const path = require('path');
+const dotenv = require('dotenv').config(); // eslint-disable-line
 const merge = require('webpack-merge');
 const sharedConfig = require('./shared.js');
-const { settings, output } = require('./configuration.js');
+const { env, settings, output } = require('./configuration.js');
 
 module.exports = merge(sharedConfig, {
-  mode: 'development',
-  devtool: 'cheap-source-map',
-  optimization: {
-    // runtimeChunk: true,
-    // removeAvailableModules: false,
-    // removeEmptyChunks: false,
-    // splitChunks: false
-  },
-  target: 'web',
-  cache: true,
+  devtool: '#eval-source-map',
+
   resolve: {
     symlinks: false,
-    extensions: ['.jsx', '.js'],
     alias: {
       react: path.resolve('./node_modules/react'),
       'react-dom': path.resolve('./node_modules/react-dom')
-    },
-    modules: [
-      path.resolve(__dirname, 'src'),
-      path.resolve(__dirname, 'node_modules')
-    ]
+    }
   },
 
   stats: {
@@ -36,22 +25,24 @@ module.exports = merge(sharedConfig, {
     pathinfo: true
   },
 
-  plugins: [],
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env.USER_REPORT_KEY': JSON.stringify(env.USER_REPORT_KEY_STAGING)
+    })
+  ],
 
   devServer: {
-    compress: true,
-    port: settings.dev_server.port,
+    clientLogLevel: 'none',
     https: settings.dev_server.https,
     host: settings.dev_server.host,
-    static: {
-      directory: output.path,
-      publicPath: output.publicPath,
-      watch: {
-        ignored: /node_modules([\\]+|\/)+(?!cw-components)/,
-        usePolling: true
-      }
-    },
+    port: settings.dev_server.port,
+    contentBase: output.path,
+    publicPath: output.publicPath,
+    compress: true,
     headers: { 'Access-Control-Allow-Origin': '*' },
-    historyApiFallback: true
+    historyApiFallback: true,
+    watchOptions: {
+      ignored: /node_modules([\\]+|\/)+(?!cw-components)/
+    }
   }
 });

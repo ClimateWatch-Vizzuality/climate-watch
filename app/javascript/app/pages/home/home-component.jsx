@@ -30,6 +30,9 @@ const Home = () => (
       <ReactPlayer
         width="100%"
         height="100%"
+        ref={player => {
+          this.player = player;
+        }}
         url="https://youtu.be/C2nIcBqrHsk"
         controls={false}
         light={videoThumbnailImage}
