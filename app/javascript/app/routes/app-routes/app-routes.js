@@ -19,6 +19,7 @@ import EmissionPathways from 'pages/emission-pathways';
 import GHGEmissions from 'pages/ghg-emissions';
 import NDCSearch from 'pages/ndc-search';
 import error from 'pages/error';
+import thankYouPage from 'pages/thank-you';
 import EmissionPathwaysModel from 'pages/emission-pathways-model';
 import EmissionPathwaysScenario from 'pages/emission-pathways-scenario';
 import Sectors from 'pages/sectors';
@@ -282,6 +283,10 @@ export default [
   {
     path: '/error-page',
     component: error
+  },
+  {
+    path: '/thank-you',
+    component: thankYouPage
   },
   {
     path: '/my-climate-watch',

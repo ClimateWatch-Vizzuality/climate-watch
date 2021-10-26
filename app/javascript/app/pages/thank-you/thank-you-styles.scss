@@ -1,0 +1,35 @@
+@import '~styles/settings.scss';
+@import '~styles/layout.scss';
+
+.container {
+  height: calc(100vh - #{$navbar-height} - 139px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-top: solid 1px $gray2;
+}
+
+.link {
+  margin: 0 0 0 5px;
+  color: $theme-color;
+  cursor: pointer;
+
+  &:hover {
+    color: rgba($theme-color, 0.7);
+  }
+
+  border-bottom: solid 1px $theme-secondary;
+}
+
+.title {
+  margin-bottom: 20px;
+}
+
+.content {
+  font-family: $font-family-1;
+  font-size: $font-size-m;
+  color: $theme-color;
+  display: inline-block;
+  text-align: center;
+  line-height: $line-height-title;
+}
