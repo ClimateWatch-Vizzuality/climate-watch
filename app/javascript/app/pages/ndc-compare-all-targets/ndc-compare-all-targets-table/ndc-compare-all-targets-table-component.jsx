@@ -1,11 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Button from 'components/button';
-import Icon from 'components/icon';
 import cx from 'classnames';
-import compareSubmittedIcon from 'assets/icons/compare-submitted.svg';
-import compareNotSubmittedIcon from 'assets/icons/compare-not-submitted.svg';
-import compareIntendsIcon from 'assets/icons/compare-intends.svg';
+import PreviousSubmissionIcon from 'components/previous-submission-icon';
 import { Table } from 'cw-components';
 import NoContent from 'components/no-content';
 import Loading from 'components/loading';
@@ -76,7 +73,10 @@ const cellRenderer = (
               : 'Select document to compare'
           }
         >
-          <Icon icon={compareSubmittedIcon} className={styles.submitIcon} />
+          <PreviousSubmissionIcon
+            submissionIconValue={SUBMISSION_ICON_VALUE.yes}
+            className={styles.submitIcon}
+          />
         </Button>
       );
     }
@@ -87,7 +87,10 @@ const cellRenderer = (
             [styles.lastColumn]: isLastColumn
           })}
         >
-          <Icon icon={compareIntendsIcon} className={styles.submitIcon} />
+          <PreviousSubmissionIcon
+            submissionIconValue={SUBMISSION_ICON_VALUE.intends}
+            className={styles.submitIcon}
+          />
         </button>
       );
     }
@@ -98,7 +101,10 @@ const cellRenderer = (
             [styles.lastColumn]: isLastColumn
           })}
         >
-          <Icon icon={compareNotSubmittedIcon} className={styles.submitIcon} />
+          <PreviousSubmissionIcon
+            submissionIconValue={SUBMISSION_ICON_VALUE.no}
+            className={styles.submitIcon}
+          />
         </button>
       );
     }
