@@ -28,7 +28,7 @@ const setColumnWidth = FEATURE_ENHANCEMENT_CHANGES
       'Share of Global GHG Emissions': 120,
       'Overall comparison with previous NDC': 200,
       Statement: 150,
-      Date: 68
+      Date: 76
     }[col];
     return columnWidth || 170;
   }
