@@ -12,8 +12,7 @@ module Api
 
       has_many :members,
                serializer: Api::V1::LocationSerializer,
-               if: -> { object.location_type != 'COUNTRY' }
-
+               if: -> { instance_options[:members] }
       attribute :topojson, if: -> { instance_options[:topojson] }
       attribute :ghg_sources, if: -> { instance_options[:ghg_sources] }
 
