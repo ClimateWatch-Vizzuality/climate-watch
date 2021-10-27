@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable no-confusing-arrow */
 import { createSelector } from 'reselect';
 import { getColorByIndex, shouldShowPath } from 'utils/map';
@@ -60,10 +61,12 @@ export const getDocuments = createSelector([getDocumentData], documents => {
     }
   ];
   if (!documents) return allDocumentOption;
-  const documentsOptions = Object.values(documents).map(d => ({
-    label: d.long_name,
-    value: d.slug
-  }));
+  const documentsOptions = sortBy(Object.values(documents), 'ordering').map(
+    d => ({
+      label: d.long_name,
+      value: d.slug
+    })
+  );
   return [...allDocumentOption, ...documentsOptions];
 });
 
@@ -72,7 +75,7 @@ export const getSelectedDocument = createSelector(
   (documents = [], search) => {
     if (!documents || !documents.length) return null;
     const { document: selected } = search || {};
-    const defaultDocument = documents[documents.length - 1];
+    const defaultDocument = documents.find(d => d.value === 'all');
     if (selected) {
       return (
         documents.find(document => document.value === selected) ||
@@ -172,12 +175,16 @@ export const getIndicatorsParsed = createSelector(
 );
 
 export const getSelectedCategory = createSelector(
-  [state => state.categorySelected, getCategories],
-  (selected, categories = []) => {
+  [state => state.categorySelected, getCategories, getSelectedDocument],
+  (selected, categories = [], selectedDocument) => {
     if (!categories || !categories.length) return null;
     const defaultCategory =
-      categories.find(cat => cat.value === DEFAULT_NDC_EXPLORE_CATEGORY_SLUG) ||
-      categories[0];
+      (selectedDocument && selectedDocument.value === 'all') ||
+      FEATURE_ENHANCEMENT_CHANGES
+        ? categories.find(
+          cat => cat.value === DEFAULT_NDC_EXPLORE_CATEGORY_SLUG
+        ) || categories[0]
+        : categories.find(cat => cat.value === 'mitigation') || categories[0];
     if (selected) {
       return (
         categories.find(category => category.value === selected) ||
