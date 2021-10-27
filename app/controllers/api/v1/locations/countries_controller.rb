@@ -12,10 +12,22 @@ module Api
                 iso_code3: 'EUU'
               )
             ).order(:wri_standard_name)
+          countries = countries.includes(:members) if includes_members?
 
           render json: countries,
                  each_serializer: Api::V1::LocationSerializer,
-                 topojson: params.key?(:topojson)
+                 members: includes_members?,
+                 topojson: includes_topojson?
+        end
+
+        private
+
+        def includes_topojson?
+          params[:topojson]&.downcase == 'true'
+        end
+
+        def includes_members?
+          params[:members]&.downcase == 'true'
         end
       end
     end
