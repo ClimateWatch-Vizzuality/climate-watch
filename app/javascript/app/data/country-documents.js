@@ -11,7 +11,7 @@ export const DOCUMENT_COLUMNS_SLUGS = {
 
 // Needed for sorting
 export const SUBMISSION_ICON_VALUE = {
-  no: 0,
-  intends: 1,
-  yes: 2
+  no: '0',
+  intends: '1',
+  yes: '2'
 };

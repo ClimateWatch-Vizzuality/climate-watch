@@ -9,6 +9,9 @@ import enhancementIcon from 'assets/icons/enhancement/icon-enhancement.png';
 import noEnhancementIcon from 'assets/icons/enhancement/icon-no-enhancement.png';
 import unclearIcon from 'assets/icons/enhancement/icon-unclear.png';
 import missingIcon from 'assets/icons/enhancement/icon-missing.png';
+
+import { SUBMISSION_ICON_VALUE } from 'data/country-documents';
+
 import styles from './previous-submission-icon-styles.scss';
 
 const icons = {
@@ -28,12 +31,22 @@ const icons = {
     Unclear: unclearIcon,
     'No revision compared with previous version': missingIcon,
     'No previous submission available': missingIcon,
-    'No Document Submitted': missingIcon
+    'No Document Submitted': missingIcon,
+    [SUBMISSION_ICON_VALUE.yes]: enhancementIcon,
+    [SUBMISSION_ICON_VALUE.no]: noEnhancementIcon,
+    [SUBMISSION_ICON_VALUE.intends]: missingIcon
   }
 };
 
-const PreviousSubmissionIcon = ({ value, white, className, tooltipId }) => {
-  const icon = icons[white ? 'white' : 'color'][value];
+const PreviousSubmissionIcon = ({
+  value,
+  submissionIconValue,
+  white,
+  className,
+  tooltipId
+}) => {
+  const iconValue = submissionIconValue || value;
+  const icon = icons[white ? 'white' : 'color'][iconValue];
   if (!icon) return null;
   return (
     <img
@@ -46,6 +59,7 @@ const PreviousSubmissionIcon = ({ value, white, className, tooltipId }) => {
 };
 
 PreviousSubmissionIcon.propTypes = {
+  submissionIconValue: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
   white: PropTypes.bool,
   tooltipId: PropTypes.string,
