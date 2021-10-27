@@ -5,19 +5,17 @@ import Button from 'components/button';
 import Header from 'components/header';
 import Intro from 'components/intro';
 import ButtonGroup from 'components/button-group';
-import Icon from 'components/icon';
+import PreviousSubmissionIcon from 'components/previous-submission-icon';
 import cx from 'classnames';
 import layout from 'styles/layout.scss';
 import HandIconInfo from 'components/ndcs/shared/hand-icon-info';
-import compareSubmittedIcon from 'assets/icons/compare-submitted.svg';
-import compareNotSubmittedIcon from 'assets/icons/compare-not-submitted.svg';
-import compareIntendsIcon from 'assets/icons/compare-intends.svg';
 import Search from 'components/search';
 import { SEO_PAGES } from 'data/seo';
 import SEOTags from 'components/seo-tags';
 import NdcCompareAllTargetsProvider from 'providers/ndc-compare-all-targets-provider';
 import CountriesDocumentsProvider from 'providers/countries-documents-provider';
 import ModalMetadata from 'components/modal-metadata';
+import { SUBMISSION_ICON_VALUE } from 'data/country-documents';
 
 import CompareAllTable from './ndc-compare-all-targets-table/ndc-compare-all-targets-table';
 import styles from './ndc-compare-all-targets-styles.scss';
@@ -25,15 +23,24 @@ import styles from './ndc-compare-all-targets-styles.scss';
 const renderLegend = () => (
   <div className={styles.legend} data-tour="compare-all-01">
     <span className={styles.legendItem}>
-      <Icon icon={compareSubmittedIcon} className={styles.submitIcon} />
+      <PreviousSubmissionIcon
+        submissionIconValue={SUBMISSION_ICON_VALUE.yes}
+        className={styles.submitIcon}
+      />
       Submitted
     </span>
     <span className={styles.legendItem}>
-      <Icon icon={compareNotSubmittedIcon} className={styles.submitIcon} />
+      <PreviousSubmissionIcon
+        submissionIconValue={SUBMISSION_ICON_VALUE.no}
+        className={styles.submitIcon}
+      />
       Not submitted
     </span>
     <span className={styles.legendItem}>
-      <Icon icon={compareIntendsIcon} className={styles.submitIcon} />
+      <PreviousSubmissionIcon
+        submissionIconValue={SUBMISSION_ICON_VALUE.intends}
+        className={styles.submitIcon}
+      />
       Intends to submit
     </span>
   </div>
