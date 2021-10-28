@@ -8,6 +8,9 @@ import accordionArrow from 'assets/icons/accordion-arrow.svg';
 import tooltipTheme from 'styles/themes/map-tooltip/map-tooltip.scss';
 import styles from 'components/ndcs/ndcs-enhancements-map/ndcs-enhancements-tooltip/ndcs-enhancements-tooltip-styles.scss';
 
+const FEATURE_ENHANCEMENT_CHANGES =
+  process.env.FEATURE_ENHANCEMENT_CHANGES === 'true';
+
 const NDCSEnhancementsTooltip = props => {
   const { tooltipValues, id } = props;
   return (
@@ -25,7 +28,7 @@ const NDCSEnhancementsTooltip = props => {
       {tooltipValues.statement && (
         <p className={tooltipTheme.text}>{tooltipValues.statement}</p>
       )}
-      {tooltipValues.indicators && (
+      {FEATURE_ENHANCEMENT_CHANGES && tooltipValues.indicators && (
         <ul className={tooltipTheme.indicators}>
           {tooltipValues.indicators.map(([indicator, value]) => (
             <li
@@ -42,7 +45,7 @@ const NDCSEnhancementsTooltip = props => {
           ))}
         </ul>
       )}
-      {tooltipValues.note && (
+      {FEATURE_ENHANCEMENT_CHANGES && tooltipValues.note && (
         <p className={cx(tooltipTheme.text, styles.tooltipNote)}>
           {tooltipValues.note}
         </p>
