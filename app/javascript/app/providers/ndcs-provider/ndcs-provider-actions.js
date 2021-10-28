@@ -2,9 +2,7 @@ import { createAction } from 'redux-actions';
 import { createThunkAction } from 'utils/redux';
 import { apiWithCache } from 'services/api';
 import uniqBy from 'lodash/uniqBy';
-
-/* @tmpfix: remove usage of indcTransform */
-import indcTransform from 'utils/indctransform';
+import { getFirstDocumentValue } from 'utils/indctransform';
 
 const fetchNDCSInit = createAction('fetchNDCSInit');
 const fetchNDCSReady = createAction('fetchNDCSReady');
@@ -88,7 +86,7 @@ const fetchNDCS = createThunkAction('fetchNDCS', props => (dispatch, state) => {
       }
       throw Error(response.statusText);
     })
-    .then(data => indcTransform(data))
+    .then(data => getFirstDocumentValue(data))
     .then(data => {
       dispatch(fetchNDCSReady(data));
     })

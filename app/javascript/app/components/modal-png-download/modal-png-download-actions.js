@@ -1,9 +1,7 @@
 import { createAction } from 'redux-actions';
 
-const setModalPngDownloadParams = createAction('setModalPngDownloadParams');
-const setModalPngDownload = createAction('toggleModalPngDownload');
+const setModalPngDownload = createAction('setModalPngDownloadIdOpen');
 
 export default {
-  setModalPngDownloadParams,
   setModalPngDownload
 };

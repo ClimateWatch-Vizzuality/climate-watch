@@ -64,7 +64,8 @@ class EmissionPathwayGraph extends PureComponent {
       modalData,
       model,
       handleModelChange,
-      downloadLink
+      downloadLink,
+      pngDownloadId
     } = this.props;
     const needsTimeSeries =
       filtersSelected && filtersSelected.location && filtersSelected.model;
@@ -229,7 +230,7 @@ class EmissionPathwayGraph extends PureComponent {
             </div>
           </TabletPortraitOnly>
           <ModalPngDownload
-            id="emissions-pathways"
+            id={pngDownloadId}
             title="Emissions pathways"
             selectionSubtitle={pngSelectionSubtitle}
           >
@@ -258,6 +259,7 @@ EmissionPathwayGraph.propTypes = {
   model: PropTypes.object,
   config: PropTypes.object,
   downloadLink: PropTypes.string,
+  pngDownloadId: PropTypes.string.isRequired,
   loading: PropTypes.bool,
   error: PropTypes.bool,
   filtersLoading: PropTypes.object,

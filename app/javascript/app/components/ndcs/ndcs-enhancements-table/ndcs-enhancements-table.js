@@ -4,7 +4,6 @@ import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
 import qs from 'query-string';
 import { getLocationParamUpdated } from 'utils/navigation';
-import { actions as fetchActions } from 'pages/ndcs-enhancements';
 
 import Component from './ndcs-enhancements-table-component';
 
@@ -14,13 +13,12 @@ import {
   getDefaultColumns
 } from './ndcs-enhancements-table-selectors';
 
-const actions = { ...fetchActions };
-
 const mapStateToProps = (state, { location }) => {
-  const { data, loading } = state.ndcsEnhancements;
+  const { data, loading } = state.ndcs || {};
   const { countries } = state;
   const search = qs.parse(location.search);
   const ndcsEnhancementsWithSelection = {
+    ...state,
     ...data,
     countries: countries.data,
     query: search.search,
@@ -40,10 +38,6 @@ class NDCSEnhancementsTableContainer extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {};
-  }
-
-  componentWillMount() {
-    this.props.fetchNDCSEnhancements();
   }
 
   handleSearchChange = query => {
@@ -73,10 +67,9 @@ NDCSEnhancementsTableContainer.propTypes = {
   history: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
   query: PropTypes.string,
-  tableData: PropTypes.array,
-  fetchNDCSEnhancements: PropTypes.func.isRequired
+  tableData: PropTypes.array
 };
 
 export default withRouter(
-  connect(mapStateToProps, actions)(NDCSEnhancementsTableContainer)
+  connect(mapStateToProps, null)(NDCSEnhancementsTableContainer)
 );

@@ -23,6 +23,7 @@
       "@babel/preset-env",
       {
         "modules": false,
+        "forceAllTransforms": true,
         "targets": {
           "browsers": [
             "> 1%",
@@ -30,8 +31,7 @@
             "Firefox ESR",
             "Safari >= 8",
             "IE >= 11"
-          ],
-          "uglify": true
+          ]
         },
         "useBuiltIns": "entry",
         "corejs": "^3"

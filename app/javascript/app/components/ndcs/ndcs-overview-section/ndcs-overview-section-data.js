@@ -1,3 +1,5 @@
+import { INDICATOR_SLUGS } from 'data/constants';
+
 /* eslint-disable max-len */
 export const commitmentsData = [
   {
@@ -44,7 +46,7 @@ export const commitmentsData = [
         questionText:
           'How many Parties intend to enhance ambition or action in their NDCs?',
         link: '/2020-ndc-tracker',
-        slug: 'ndce_status_2020',
+        slug: INDICATOR_SLUGS.enhancements,
         metadataSlug: 'ndc_cw',
         answerLabel: 'Intends to Enhance Ambition or Action in 2020 NDC'
       },
@@ -70,7 +72,7 @@ export const commitmentsData = [
         answerLabel: ['In Policy Document', 'In Law'],
         link: '/net-zero-tracker',
         slug: 'nz_status',
-        metadataSlug: 'eciu',
+        metadataSlug: 'net_zero',
         hasExternalLink: true
       },
       {

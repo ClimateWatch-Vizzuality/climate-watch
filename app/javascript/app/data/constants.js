@@ -381,3 +381,83 @@ export const ENHANCEMENT_CATEGORIES = [
   '2020_ndc_tracker',
   'ndc_enhancement_tracker'
 ];
+
+export const ENHANCEMENT_LABEL_SLUGS = {
+  INTENDS_TO_ENHANCE: 'enhance_2020',
+  SUBMITTED_2020: 'submitted_2020',
+  ENHANCED_MITIGATION: 'enhanced_migitation',
+  NO_INFO: 'no_info_2020'
+};
+
+export const NET_ZERO_POSITIVE_LABELS = [
+  'Net-zero Target in Law',
+  'Net-zero Target in Policy Document',
+  'Net-zero Target in Political Pledge'
+];
+
+export const ENHANCEMENT_LABEL_COLORS = {
+  SUBMITTED_2020: CHART_NAMED_COLORS.color1,
+  INTENDS_TO_ENHANCE: CHART_NAMED_COLORS.color2,
+  ENHANCED_MITIGATION: CHART_NAMED_COLORS.color3
+};
+
+export const INDICATOR_SLUGS = {
+  emissions: 'ndce_ghg',
+  enhancements: 'ndce_status_2020'
+};
+
+export const ENHANCEMENT_VALUE_COLORS = {
+  blue: '#62C0FF',
+  red: '#FF6C2F',
+  orange: '#FFB800',
+  white: 'white'
+};
+
+export const ENHANCEMENT_VALUES_COLORS = {
+  'Revised NDC compared with previous version': ENHANCEMENT_VALUE_COLORS.blue,
+  'Revised from the previous submission': ENHANCEMENT_VALUE_COLORS.blue,
+  'Yes, enhancement in the revised submission': ENHANCEMENT_VALUE_COLORS.blue,
+  'No, no enhancement in the revised submission': ENHANCEMENT_VALUE_COLORS.red,
+  Unclear: ENHANCEMENT_VALUE_COLORS.orange,
+  'No revision compared with previous version': ENHANCEMENT_VALUE_COLORS.white,
+  'No previous submission available': ENHANCEMENT_VALUE_COLORS.white,
+  'No Document Submitted': ENHANCEMENT_VALUE_COLORS.white
+};
+
+export const ALL_ENHANCEMENT_VALUES_COLORS = {
+  'Revised NDC compared with previous version': ENHANCEMENT_VALUE_COLORS.blue,
+  'Revised from the previous submission': ENHANCEMENT_VALUE_COLORS.blue,
+  ...ENHANCEMENT_VALUES_COLORS
+};
+
+export const ENHANCEMENT_LABELS_WITH_LETTERS = [
+  {
+    label: 'Revised from previous submission',
+    letter: 'R'
+  },
+  {
+    label: 'Reduced total GHG emissions in 2030',
+    letter: 'M'
+  },
+  {
+    label: 'Strengthened or added GHG target',
+    letter: 'G'
+  },
+  {
+    label: 'Strengthened or added sectoral target',
+    letter: 'S'
+  },
+  {
+    label: 'Strengthened or added policies and actions',
+    letter: 'P'
+  },
+  {
+    label: 'Strengthened adaptation',
+    letter: 'A'
+  },
+  {
+    label:
+      'Provided additional Information for clarity, transparency, and understanding',
+    letter: 'I'
+  }
+];

@@ -94,6 +94,7 @@ function getFiltersParsed(props) {
   filter.source = sourceSelected.value || null;
   return filter;
 }
+const pngDownloadId = 'country-ghg-emissions';
 
 class CountryGhgEmissionsContainer extends PureComponent {
   constructor(props) {
@@ -159,7 +160,7 @@ class CountryGhgEmissionsContainer extends PureComponent {
 
   handlePngDownloadModal = () => {
     const { setModalPngDownload } = this.props;
-    setModalPngDownload({ open: true });
+    setModalPngDownload({ open: pngDownloadId });
   };
 
   updateUrlParam(params, clear) {
@@ -170,6 +171,7 @@ class CountryGhgEmissionsContainer extends PureComponent {
   render() {
     return createElement(CountryGhgEmissionsComponent, {
       ...this.props,
+      pngDownloadId,
       handleSourceChange: this.handleSourceChange,
       handleCalculationChange: this.handleCalculationChange,
       handleInfoClick: this.handleInfoClick,

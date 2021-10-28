@@ -1,0 +1,97 @@
+@import '~styles/layout.scss';
+
+.gridContainer {
+  background-color: $gray3;
+  border-bottom: 1px solid $gray1;
+}
+
+.grid {
+  @include row(12);
+
+  padding-top: $gutter-padding + $gutter-padding / 2;
+  padding-bottom: $gutter-padding;
+}
+
+.container {
+  margin-bottom: $gutter-padding;
+}
+
+.title {
+  font-size: $font-size-large;
+  font-weight: $font-weight;
+  color: $theme-color;
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.documentsTitle {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+
+  .title {
+    margin-bottom: unset;
+  }
+}
+
+.item {
+  height: 130px;
+  width: 180px;
+  text-align: center;
+}
+
+.documentsContainer {
+  margin-bottom: $gutter-padding + $gutter-padding / 2;
+}
+
+.documents {
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  padding-bottom: $gutter-padding + $gutter-padding / 2;
+  border-bottom: 1px solid $gray2;
+  justify-content: space-between;
+
+  @media #{$tablet-landscape} {
+    justify-content: flex-start;
+  }
+
+  .item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .icon {
+      margin-bottom: 5px;
+    }
+  }
+}
+
+.commitmentsButton {
+  width: 270px;
+}
+
+.previousComparison {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: $gutter-padding;
+}
+
+.icon {
+  width: 30px;
+  height: 30px;
+  margin-top: $gutter-padding;
+}
+
+.valueDescription {
+  margin-top: 10px;
+  font-size: $font-size-sm;
+  color: $gray1;
+}
+
+.loading {
+  min-height: 462px;
+}

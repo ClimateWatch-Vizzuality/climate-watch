@@ -1,5 +1,6 @@
 import { createElement } from 'react';
 
+import ClimateCommitments from 'components/country/country-climate-commitments';
 import GHGCountryEmissions from 'components/country/country-ghg';
 import NDCSDGLinkages from 'components/country/country-ndc-sdg-linkages';
 import ClimateVulnerability from 'components/country/country-climate-vulnerability';
@@ -7,7 +8,11 @@ import CountryNdcOverview from 'components/country/country-ndc-overview';
 import CountryLtsOverview from 'components/country/country-lts-overview';
 import LawsAndPolicies from 'components/country/laws-and-policies';
 
-const routes = [
+const FEATURE_ENHANCEMENT_CHANGES =
+  process.env.FEATURE_ENHANCEMENT_CHANGES === 'true';
+
+// eslint-disable-next-line import/no-mutable-exports
+let routes = [
   {
     hash: 'ghg-emissions',
     label: 'GHG Emissions',
@@ -45,5 +50,16 @@ const routes = [
     component: LawsAndPolicies
   }
 ];
+
+if (FEATURE_ENHANCEMENT_CHANGES) {
+  routes = [
+    {
+      hash: 'climate-commitments',
+      label: 'Climate commitments',
+      anchor: true,
+      component: ClimateCommitments
+    }
+  ].concat(routes);
+}
 
 export default routes;

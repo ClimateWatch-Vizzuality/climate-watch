@@ -40,6 +40,9 @@ const mapStateToProps = (state, { location, goalHover, targetHover }) => {
     pngSelectionSubtitle: getPngSelectionSubtitle(data)
   };
 };
+
+const pngDownloadId = 'ndc-sdg-linkages-map';
+
 class NdcSdgLinkagesMapContainer extends PureComponent {
   onCountryClick = geometry => {
     const { history, targetHover, goalSelected, goalHover, goal } = this.props;
@@ -73,12 +76,13 @@ class NdcSdgLinkagesMapContainer extends PureComponent {
   };
 
   handlePngDownloadModal = () => {
-    this.props.setModalPngDownload({ open: true });
+    this.props.setModalPngDownload({ open: pngDownloadId });
   };
 
   render() {
     return createElement(NdcSdgLinkagesMapComponent, {
       ...this.props,
+      pngDownloadId,
       onCountryClick: this.onCountryClick,
       handleInfoClick: this.handleInfoClick,
       handlePngDownloadModal: this.handlePngDownloadModal

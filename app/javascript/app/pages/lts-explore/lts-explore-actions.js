@@ -3,8 +3,7 @@ import { createThunkAction } from 'utils/redux';
 import isEmpty from 'lodash/isEmpty';
 import { apiWithCache } from 'services/api';
 
-/* @tmpfix: remove usage of indcTransform */
-import indcTransform from 'utils/indctransform';
+import { getFirstDocumentValue } from 'utils/indctransform';
 
 const fetchLTSInit = createAction('fetchLTSInit');
 const fetchLTSReady = createAction('fetchLTSReady');
@@ -24,7 +23,7 @@ const fetchLTS = createThunkAction('fetchLTS', () => (dispatch, state) => {
         if (response.data) return response.data;
         throw Error(response.statusText);
       })
-      .then(data => indcTransform(data))
+      .then(data => getFirstDocumentValue(data))
       .then(data => {
         dispatch(fetchLTSReady(data));
       })

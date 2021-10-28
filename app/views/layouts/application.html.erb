@@ -54,7 +54,7 @@
 
     <%= javascript_pack_tag 'main' %>
 
-    <% if @is_production %>
+    <% if @use_precompiled_assets %>
       <%= stylesheet_pack_tag 'main' %>
       <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async></script>
       <script>
