@@ -71,6 +71,7 @@ const mapStateToProps = (state, { location }) => {
     pngSelectionSubtitle: getPngSelectionSubtitle(ndcsExploreWithSelection)
   };
 };
+const pngDownloadId = 'ndcs-explore-map';
 
 class NDCSExploreMapContainer extends PureComponent {
   constructor(props) {
@@ -86,12 +87,12 @@ class NDCSExploreMapContainer extends PureComponent {
   };
 
   handleCountryClick = (geography, countryData) => {
-    const { isoCountries } = this.props;
+    const { isoCountries, history } = this.props;
     const { id: iso, name } = countryData || {};
     const countryIso =
       iso || (geography && geography.properties && geography.properties.id);
     if (countryIso && isCountryIncluded(isoCountries, countryIso)) {
-      this.props.history.push(`/ndcs/country/${countryIso}`);
+      history.push(`/ndcs/country/${countryIso}`);
       handleAnalytics(
         'NDCS Explore Map',
         'Use map to find country',
@@ -99,6 +100,7 @@ class NDCSExploreMapContainer extends PureComponent {
       );
     }
   };
+
   handleCountryEnter = geography => {
     const {
       tooltipCountryValues,
@@ -131,6 +133,7 @@ class NDCSExploreMapContainer extends PureComponent {
 
       const tooltipValues = {
         value: (tooltipValue && tooltipValue.value) || 'Not Applicable',
+        indicators: tooltipValue && tooltipValue.indicators,
         countryName: geography.properties && geography.properties.name
       };
 
@@ -188,7 +191,7 @@ class NDCSExploreMapContainer extends PureComponent {
 
   handlePngDownloadModal = () => {
     const { setModalPngDownload } = this.props;
-    setModalPngDownload({ open: true });
+    setModalPngDownload({ open: pngDownloadId });
   };
 
   render() {
@@ -205,6 +208,7 @@ class NDCSExploreMapContainer extends PureComponent {
       : 'There is no data for this indicator';
     return createElement(Component, {
       ...this.props,
+      pngDownloadId,
       handleCountryClick: this.handleCountryClick,
       handleCountryEnter: this.handleCountryEnter,
       handleInfoClick: this.handleInfoClick,
@@ -236,8 +240,8 @@ NDCSExploreMapContainer.propTypes = {
   setModalPngDownload: PropTypes.func.isRequired,
   query: PropTypes.object,
   summaryData: PropTypes.array,
-  selectedCategory: PropTypes.array,
-  emissionsCardData: PropTypes.array,
+  selectedCategory: PropTypes.object,
+  emissionsCardData: PropTypes.object,
   indicator: PropTypes.object,
   selectActiveDonutIndex: PropTypes.func.isRequired,
   legendData: PropTypes.array,

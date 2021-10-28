@@ -4,7 +4,7 @@ set :ssh_options, forward_agent: true
 
 set :branch, 'sandbox'
 
-set :default_env, {
-  'RAILS_ENV' => 'staging',
-  'RACK_ENV' => 'staging'
-}
+set :default_env,
+    'RAILS_ENV' => 'staging',
+    'RACK_ENV' => 'staging',
+    'NODE_ENV' => 'production'

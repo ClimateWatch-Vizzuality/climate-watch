@@ -84,6 +84,8 @@ const mapStateToProps = (state, { location }) => {
   };
 };
 
+const pngDownloadId = 'emission-pathway-graph';
+
 class EmissionPathwayGraphContainer extends PureComponent {
   componentDidMount() {
     const { location } = this.props.filtersSelected;
@@ -190,12 +192,13 @@ class EmissionPathwayGraphContainer extends PureComponent {
   };
 
   handlePngDownloadModal = () => {
-    this.props.setModalPngDownload({ open: true });
+    this.props.setModalPngDownload({ open: pngDownloadId });
   };
 
   render() {
     return createElement(EmissionPathwayGraphComponent, {
       ...this.props,
+      pngDownloadId,
       handleInfoClick: this.handleInfoClick,
       handleModelChange: this.handleModelChange,
       handleSelectorChange: this.handleSelectorChange,

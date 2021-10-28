@@ -23,6 +23,7 @@ export const CHART_NAMED_GRAY_COLORS = getColorsFromSettings('chartGrayColors');
 export const CHART_NAMED_EXTENDED_COLORS = getColorsFromSettings(
   'chartColorsExtended'
 );
+
 export const CHART_NAMED_EXTRA_COLORS = getColorsFromSettings(
   'chartColorsExtra'
 );

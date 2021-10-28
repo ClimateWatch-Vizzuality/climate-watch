@@ -23,6 +23,8 @@ const mapStateToProps = (state, props) => {
   return getGHGEmissions(state, { ...props, search });
 };
 
+const pngDownloadId = 'ghg-emissions';
+
 function GhgEmissionsContainer(props) {
   const {
     search,
@@ -256,7 +258,7 @@ function GhgEmissionsContainer(props) {
 
   const handlePngDownloadModal = () => {
     const { setModalPngDownload } = props;
-    setModalPngDownload({ open: true });
+    setModalPngDownload({ open: pngDownloadId });
   };
 
   const setColumnWidth = column => {
@@ -293,6 +295,7 @@ function GhgEmissionsContainer(props) {
       pngSelectionSubtitle={pngSelectionSubtitle}
       setDataZoomPosition={setDataZoomPosition}
       handleDownloadModalOpen={handleDownloadModalOpen}
+      pngDownloadId={pngDownloadId}
     />
   );
 }

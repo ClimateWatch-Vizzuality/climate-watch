@@ -1,0 +1,233 @@
+@import '~styles/layout.scss';
+@import '~styles/settings.scss';
+
+.wrapper {
+  position: relative;
+}
+
+.column {
+  @include columns();
+}
+
+.buttonGroup {
+  width: auto;
+  margin-top: 1em;
+  min-width: 200px;
+  float: right;
+
+  .containerControls & {
+    @media #{$tablet-portrait} {
+      margin-top: 0;
+      width: 100%;
+      min-width: 0;
+    }
+  }
+}
+
+.containerControls {
+  @media #{$tablet-portrait} {
+    @include columns((8,4));
+  }
+
+  margin-bottom: 40px;
+  margin-top: 20px;
+
+  @include clearFix();
+}
+
+.searchBox {
+  @media #{$tablet-landscape} {
+    @include column-offset(9, $gutters: true);
+
+    margin-top: 20px;
+  }
+}
+
+.legend {
+  position: absolute;
+  left: 0;
+  bottom: 12%;
+  max-width: 100%;
+
+  @media #{$tablet-portrait} {
+    max-width: 160px;
+  }
+
+  @media #{$tablet-landscape} {
+    bottom: 0;
+  }
+
+  &.isPNG {
+    position: relative;
+  }
+}
+
+.summary {
+  min-height: 300px;
+
+  @media #{$tablet-landscape} {
+    min-height: 500px;
+  }
+}
+
+:global .__react_component_tooltip {
+  max-width: 250px;
+  white-space: pre-line;
+}
+
+.loader {
+  min-height: 500px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: $z-index-loader;
+}
+
+.containerUpper,
+.containerCharts,
+.containerMap {
+  position: relative;
+}
+
+.containerMap {
+  @media #{$tablet-landscape} {
+    padding-left: calc(#{$gutter-padding} / 2);
+  }
+
+  padding-top: calc(#{$gutter-padding} / 2);
+
+  [class*=map-styles__wrapper] {
+    &,
+    &[class*=__notDraggable] {
+      cursor: default;
+    }
+  }
+}
+
+.containerUpper {
+  @media #{$desktop} {
+    @include columns((4,8));
+  }
+}
+
+.containerCharts {
+  background-color: $white;
+  box-shadow: $box-shadow-light;
+}
+
+.summaryTitle {
+  font-weight: $font-weight-bold;
+  text-align: center;
+  padding: 20px 0;
+  cursor: default;
+}
+
+.infoIcon {
+  margin-left: 5px;
+  transform: translateY(1px);
+}
+
+.covidTooltip {
+  line-height: $line-height-medium;
+}
+
+.summaryItemsContainer {
+  display: flex;
+  flex-direction: column;
+  min-height: 432px;
+}
+
+.separator {
+  height: 2px;
+  background: $gray2;
+  margin: 20px 60px 0;
+}
+
+.summaryItemContainer {
+  position: relative;
+  flex: 1;
+  height: 170px;
+  margin: 0;
+  overflow: visible;
+  display: flex;
+  flex-direction: row;
+  font-size: $font-size-s;
+
+  @media #{$tablet-portrait} {
+    font-size: 1em;
+    padding: 0 calc(#{$gutter-padding} / 2);
+  }
+}
+
+.pngLegendAndSummary {
+  display: flex;
+}
+
+.pngSummary {
+  flex: 1;
+}
+
+.pngCovidText {
+  font-size: $font-size-xs;
+}
+
+.pngSummaryItemsContainer {
+  font-size: $font-size-s;
+  margin-top: 10px;
+  padding: 5px;
+}
+
+.pngSummaryItemContainer {
+  display: flex;
+  margin-bottom: 10px;
+
+  .summaryItemValuesContainer {
+    display: inline-block;
+    flex: none;
+
+    .summaryItemValues {
+      font-size: $font-size-s;
+      margin-right: 10px;
+    }
+  }
+}
+
+.summaryItemValuesContainer {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.summaryItemValues {
+  font-weight: $font-weight-bold;
+  font-size: 4.5em;
+}
+
+.summaryItemLabels {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: left;
+
+  span[title] {
+    display: inline;
+    border-bottom: 1px solid #aaa;
+    cursor: default;
+
+    &:hover {
+      border-bottom-color: #000;
+    }
+  }
+}
+
+.checkboxContainer {
+  position: absolute;
+  left: 210px;
+  bottom: 6px;
+}
+
+.map {
+  cursor: grab;
+}

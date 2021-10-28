@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
     @actual_path = request.original_fullpath
     @is_contained = @actual_path.include?('contained') ||
       @actual_path.include?('embed')
-    @is_production = Rails.env.production?
+    @use_precompiled_assets = Rails.env.production? || Rails.env.staging?
     response.headers['X-FRAME-OPTIONS'] = 'ALLOWALL'
     render 'index'
   end

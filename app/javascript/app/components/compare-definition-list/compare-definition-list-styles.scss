@@ -1,0 +1,72 @@
+@import '~styles/settings.scss';
+@import '~styles/layout.scss';
+
+.definitionCompare {
+  @include columns((3, 3, 3, 3));
+  @include xy-gutters(40px, $gutter-position: ('top', 'bottom'), $gutter-type: padding);
+  @include xy-gutters(60px);
+
+  margin: auto;
+}
+
+.value {
+  display: flex;
+}
+
+.indicatorIcon {
+  margin: 2px 10px 0 0;
+}
+
+.definition {
+  @include columns(12);
+  @include xy-gutters(40px, $gutter-position: ('top', 'bottom'), $gutter-type: padding);
+
+  > *:first-child {
+    @include xy-gutters($gutter-position: ('bottom'));
+  }
+
+  @media #{$tablet-landscape} {
+    @include columns((3, 9));
+    @include xy-gutters(60px);
+
+    > * {
+      @include xy-gutters($gutter-position: ('bottom'), $gutters: 0);
+    }
+  }
+}
+
+.definitionTitle {
+  color: $theme-color;
+  font-weight: $font-weight-bold;
+  font-family: $font-family-1;
+  margin-left: 0;
+  flex: 0.4;
+}
+
+.noComparable {
+  color: $gray1;
+  font-style: $font-style-italic;
+}
+
+.definitionDesc {
+  color: $theme-color;
+  font-family: $font-family-1;
+  line-height: 1.4em;
+  word-break: break-word;
+  flex: 1;
+
+  a {
+    color: $theme-color;
+    word-wrap: break-word;
+    background-image: linear-gradient(to right, $theme-secondary 100%, transparent 100%);
+    background-position: 0 1.07em;
+    background-repeat: repeat-x;
+    background-size: 10px 2px;
+  }
+}
+
+.definitionRow {
+  border-bottom: 1px solid $gray1;
+  padding: 50px 0;
+  width: 100%;
+}

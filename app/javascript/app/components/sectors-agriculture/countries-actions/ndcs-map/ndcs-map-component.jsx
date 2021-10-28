@@ -84,7 +84,8 @@ const NDCMap = ({
   handleCountryClick,
   handleCountryEnter,
   handlePngDownloadModal,
-  pngSelectionSubtitle
+  pngSelectionSubtitle,
+  pngDownloadId
 }) => {
   const renderLegend = ({ png = false }) =>
     selectedIndicator && (
@@ -158,7 +159,7 @@ const NDCMap = ({
           <DataExplorerFilters section={'ndc-content'} />
           <NDCSProvider />
           <ModalPngDownload
-            id="countries-actions"
+            id={pngDownloadId}
             title="Countries actions in their NDCs"
             selectionSubtitle={pngSelectionSubtitle}
           >
@@ -186,7 +187,8 @@ NDCMap.propTypes = {
   handleInfoClick: PropTypes.func.isRequired,
   handlePngDownloadModal: PropTypes.func.isRequired,
   pngSelectionSubtitle: PropTypes.string,
-  mapColors: PropTypes.array
+  mapColors: PropTypes.array,
+  pngDownloadId: PropTypes.string.isRequired
 };
 
 export default NDCMap;

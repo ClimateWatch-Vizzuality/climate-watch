@@ -1,5 +1,9 @@
 @import '~styles/settings.scss';
 
+.withIndicators {
+  min-width: fit-content;
+}
+
 .tooltipButton {
   margin: 0;
   padding: 0;
@@ -13,4 +17,15 @@
 
 .tooltipValue {
   font-size: $font-size-sm;
+}
+
+.indicators {
+  display: flex;
+  flex-direction: column;
+  min-width: 400px;
+}
+
+.indicator {
+  display: flex;
+  font-size: $font-size-xs;
 }

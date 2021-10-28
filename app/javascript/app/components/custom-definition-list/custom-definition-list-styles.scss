@@ -1,0 +1,48 @@
+@import '~styles/layout.scss';
+
+.comparisonWithPreviousNDCContainer {
+  @include columns(4);
+
+  @media #{$tablet-portrait} {
+    @include columns(2);
+  }
+
+  @include xy-gutters(40px, $gutter-position: ('right', 'left'), $gutter-type: padding);
+  @include xy-gutters(80px, $gutter-position: ('top', 'bottom'), $gutter-type: padding);
+}
+
+.tooltipIndicatorIcon {
+  width: 30px;
+  height: 30px;
+  margin-bottom: 10px;
+}
+
+.previousNDCDefinition {
+  text-align: center;
+}
+
+.definitionTitle {
+  color: $theme-color;
+  font-weight: $font-weight-bold;
+  font-family: $font-family-1;
+}
+
+.definitionDesc {
+  color: $theme-color;
+  font-family: $font-family-1;
+  line-height: 1.4em;
+  word-break: break-word;
+
+  a {
+    color: $theme-color;
+    word-wrap: break-word;
+    background-image: linear-gradient(to right, $theme-secondary 100%, transparent 100%);
+    background-position: 0 1.07em;
+    background-repeat: repeat-x;
+    background-size: 10px 2px;
+  }
+}
+
+.overallContainer {
+  margin-top: 40px;
+}

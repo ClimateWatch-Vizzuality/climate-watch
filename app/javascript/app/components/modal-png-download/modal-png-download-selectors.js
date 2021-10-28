@@ -1,7 +1,7 @@
 import { createStructuredSelector } from 'reselect';
 
-const getIsModalOpen = ({ modalPngDownload }) => modalPngDownload.isOpen;
+const getIsModalOpen = ({ modalPngDownload }) => modalPngDownload.modalIdOpen;
 
 export default createStructuredSelector({
-  isOpen: getIsModalOpen
+  modalIdOpen: getIsModalOpen
 });

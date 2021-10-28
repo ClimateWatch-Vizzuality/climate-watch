@@ -5,6 +5,7 @@ import { handleActions } from 'app/utils/redux';
 // Providers
 import * as NDCSProvider from 'providers/ndcs-provider';
 import * as NDCSExploreProvider from 'providers/ndcs-explore-provider';
+import * as NDCSPreviousComparison from 'providers/ndcs-previous-comparison-provider';
 import * as loginProvider from 'providers/login-provider';
 import * as countriesProvider from 'providers/countries-provider';
 import * as regionsProvider from 'providers/regions-provider';
@@ -48,6 +49,7 @@ import * as keyVisualizationsProvider from 'providers/key-visualizations-provide
 const providersReducers = {
   ndcs: handleActions(NDCSProvider),
   ndcsExplore: handleActions(NDCSExploreProvider),
+  ndcsPreviousComparison: handleActions(NDCSPreviousComparison),
   login: handleActions(loginProvider),
   countries: handleActions(countriesProvider),
   regions: handleActions(regionsProvider),
@@ -92,7 +94,6 @@ const providersReducers = {
 };
 
 // Pages
-import * as NDCSEnhancementsPage from 'pages/ndcs-enhancements';
 import * as LTSPage from 'pages/lts-explore';
 import * as NetZeroPage from 'pages/net-zero';
 import * as countryNDCFullPage from 'pages/ndc-country-full';
@@ -100,7 +101,6 @@ import * as ndcSearchPage from 'pages/ndc-search';
 import * as myCWEditor from 'pages/my-climate-watch/my-cw-editor';
 
 const pagesReducers = {
-  ndcsEnhancements: handleActions(NDCSEnhancementsPage),
   LTS: handleActions(LTSPage),
   NetZero: handleActions(NetZeroPage),
   countryNDCFull: handleActions(countryNDCFullPage),

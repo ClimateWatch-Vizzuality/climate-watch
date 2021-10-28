@@ -1,8 +1,10 @@
+/* eslint-disable no-confusing-arrow */
 import { createSelector } from 'reselect';
 import isArray from 'lodash/isArray';
 import intersection from 'lodash/intersection';
 import { europeSlug, europeanCountries } from 'app/data/european-countries';
 import { getSubmitted2020Isos } from 'utils/indicatorCalculations';
+import { INDICATOR_SLUGS } from 'data/constants';
 
 const getIndicators = state =>
   (state.ndcs && state.ndcs.data.indicators) || null;
@@ -38,7 +40,7 @@ const getSecondNDCSubmittedIsos = createSelector(
       return null;
     }
     const submittedIndicator = indicators.find(
-      ind => ind.slug === 'ndce_status_2020'
+      ind => ind.slug === INDICATOR_SLUGS.enhancements
     );
     return getSubmitted2020Isos(submittedIndicator);
   }
@@ -71,9 +73,9 @@ const getPositiveAnswerIsos = createSelector(
     if (!indicator) return null;
     const moreThanOneTrueAnswer = isArray(answerLabel);
     return Object.keys(indicator.locations).filter(k =>
-      (moreThanOneTrueAnswer
+      moreThanOneTrueAnswer
         ? answerLabel.includes(indicator.locations[k].value)
-        : indicator.locations[k].value === answerLabel)
+        : indicator.locations[k].value === answerLabel
     );
   }
 );

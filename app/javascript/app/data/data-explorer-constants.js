@@ -156,7 +156,7 @@ export const DATA_EXPLORER_METHODOLOGY_SOURCE = {
   'ndc-sdg-linkages': ['ndc_sdg_all indicators'],
   'ndc-content': ['ndc_cw', 'ndc_wb', 'ndc_die'],
   'lts-content': ['lts'],
-  'net-zero-content': ['eciu'],
+  'net-zero-content': ['net_zero'],
   'emission-pathways': [null] // model, scenario and indicator related metadata
 };
 

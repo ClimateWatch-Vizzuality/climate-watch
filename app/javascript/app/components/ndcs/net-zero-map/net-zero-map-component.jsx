@@ -140,7 +140,8 @@ function NetZeroMap(props) {
     checked,
     tooltipValues,
     donutActiveIndex,
-    selectActiveDonutIndex
+    selectActiveDonutIndex,
+    pngDownloadId
   } = props;
   const tooltipParentRef = useRef(null);
   const pieChartRef = useRef(null);
@@ -306,6 +307,7 @@ function NetZeroMap(props) {
             </div>
             <ModalMetadata />
             <ModalPngDownload
+              id={pngDownloadId}
               title="Net Zero"
               selectionSubtitle={pngSelectionSubtitle}
             >
@@ -341,6 +343,7 @@ NetZeroMap.propTypes = {
   handleIndicatorChange: PropTypes.func,
   handlePngDownloadModal: PropTypes.func.isRequired,
   pngSelectionSubtitle: PropTypes.string,
+  pngDownloadId: PropTypes.string.isRequired,
   selectActiveDonutIndex: PropTypes.func.isRequired,
   donutActiveIndex: PropTypes.number
 };

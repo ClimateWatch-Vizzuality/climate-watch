@@ -1,3 +1,4 @@
+/* eslint-disable no-confusing-arrow */
 import { createSelector } from 'reselect';
 import isEmpty from 'lodash/isEmpty';
 import omit from 'lodash/omit';
@@ -97,7 +98,7 @@ const getExpandedLegendRegionsSelected = createSelector(
       );
     });
     const byLatestYearEmission = (a, b) =>
-      (latestValuesHash[a.iso] > latestValuesHash[b.iso] ? -1 : 1);
+      latestValuesHash[a.iso] > latestValuesHash[b.iso] ? -1 : 1;
     return countryOptions.sort(byLatestYearEmission);
   }
 );

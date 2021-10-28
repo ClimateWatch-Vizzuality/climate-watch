@@ -3,13 +3,7 @@ import { filterQuery } from 'app/utils';
 import deburr from 'lodash/deburr';
 import isEmpty from 'lodash/isEmpty';
 import { DOCUMENT_COLUMNS_SLUGS } from 'data/country-documents';
-
-// Needed for sorting
-export const SUBMISSION_ICON_VALUE = {
-  no: 0,
-  intends: 1,
-  yes: 2
-};
+import { getDocumentsColumns } from 'utils/country-documents';
 
 const getCountries = state => (state.countries && state.countries.data) || null;
 const getCountriesDocuments = state =>
@@ -38,36 +32,13 @@ const getData = createSelector(
       const countryEmissions = emissionsIndicator.locations[c.iso_code3];
       const countryDocuments =
         countriesDocuments && countriesDocuments[c.iso_code3];
-      const getIconValue = slug => {
-        const countryDocument =
-          countryDocuments && countryDocuments.find(d => d.slug === slug);
-        // Intend to submit documents are only Second NDC without submitted date
-        if (
-          slug === 'second_ndc' &&
-          countryDocument &&
-          !countryDocument.submission_date
-        ) {
-          return SUBMISSION_ICON_VALUE.intends;
-        }
-        return countryDocument
-          ? SUBMISSION_ICON_VALUE.yes
-          : SUBMISSION_ICON_VALUE.no;
-      };
-
-      const documentsColumns = Object.keys(DOCUMENT_COLUMNS_SLUGS).reduce(
-        (acc, nextColumn) => {
-          const slug = DOCUMENT_COLUMNS_SLUGS[nextColumn];
-          return { ...acc, [nextColumn]: getIconValue(slug) };
-        },
-        {}
-      );
 
       return {
         Country: c.wri_standard_name,
         'Share of global GHG emissions':
           countryEmissions && countryEmissions.value,
         iso: c.iso_code3,
-        ...documentsColumns
+        ...getDocumentsColumns(countryDocuments)
       };
     });
     return rows;

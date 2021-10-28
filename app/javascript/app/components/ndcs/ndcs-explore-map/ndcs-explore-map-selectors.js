@@ -19,7 +19,8 @@ import { europeSlug, europeanCountries } from 'app/data/european-countries';
 import {
   DEFAULT_NDC_EXPLORE_CATEGORY_SLUG,
   CATEGORY_SOURCES,
-  NOT_COVERED_LABEL
+  NOT_COVERED_LABEL,
+  INDICATOR_SLUGS
 } from 'data/constants';
 import { getSubmitted2020Isos } from 'utils/indicatorCalculations';
 
@@ -401,7 +402,7 @@ export const getSummaryCardData = createSelector(
   indicators => {
     if (!indicators) return null;
     const submittedIndicator = indicators.find(
-      ind => ind.slug === 'ndce_status_2020'
+      ind => ind.slug === INDICATOR_SLUGS.enhancements
     );
     const submittedIsos = getSubmitted2020Isos(submittedIndicator);
     if (!submittedIsos || !submittedIsos.length) return null;
@@ -417,9 +418,10 @@ export const getSummaryCardData = createSelector(
 );
 
 export const getPngSelectionSubtitle = createSelector(
-  [getSelectedIndicator, getSelectedCategory],
-  (indicator, category) => {
+  [getSelectedIndicator, getSelectedCategory, getSelectedDocument],
+  (indicator, category, document) => {
     if (!indicator || !category) return null;
-    return `Category: ${category.label}; Indicator: ${indicator.label}.`;
+    const documentText = document ? `Document: ${document.label}; ` : '';
+    return `${documentText}Category: ${category.label}; Indicator: ${indicator.label}.`;
   }
 );
