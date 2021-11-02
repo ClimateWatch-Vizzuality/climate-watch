@@ -1,3 +1,4 @@
+/* eslint-disable no-confusing-arrow */
 import React, { useState, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
@@ -31,7 +32,8 @@ const GhgMultiselectDropdowComponent = ({
   options,
   values,
   handleSelectionUpdate,
-  handleClearSelection
+  handleClearSelection,
+  groups
 }) => {
   const [inputContent, setInputContent] = useState('');
   const [expandedRegions, setExpandedRegion] = useState([]);
@@ -44,7 +46,7 @@ const GhgMultiselectDropdowComponent = ({
     ) || [];
 
   const selectedCountriesLabel = selected =>
-    (selected.length === 1 ? selected[0].label : `${selected.length} selected`);
+    selected.length === 1 ? selected[0].label : `${selected.length} selected`;
 
   const getGroupedOptions = filteredOptions =>
     filteredOptions.length && groupBy(filteredOptions, 'groupId');
@@ -89,7 +91,7 @@ const GhgMultiselectDropdowComponent = ({
       }
     }
   });
-
+  const [{ title: regionsTitle }, { title: countryTitle }] = groups;
   return (
     <div className={styles.container}>
       <div {...getComboboxProps()}>
@@ -129,7 +131,7 @@ const GhgMultiselectDropdowComponent = ({
             />
             <div className={styles.optionsContainer}>
               <section className={styles.optionsSection}>
-                <p className={styles.sectionTitle}>Regions</p>
+                <p className={styles.sectionTitle}>{regionsTitle}</p>
                 {getFilteredGroup('regions') &&
                   getFilteredGroup('regions').map(region => (
                     <div
@@ -181,7 +183,7 @@ const GhgMultiselectDropdowComponent = ({
                   ))}
               </section>
               <section className={styles.optionsSection}>
-                <p className={styles.sectionTitle}>Countries</p>
+                <p className={styles.sectionTitle}>{countryTitle}</p>
                 {getFilteredGroup('countries') &&
                   getFilteredGroup('countries').map(country => (
                     <div
@@ -212,7 +214,8 @@ GhgMultiselectDropdowComponent.propTypes = {
   options: PropTypes.array,
   values: PropTypes.array,
   handleSelectionUpdate: PropTypes.func,
-  handleClearSelection: PropTypes.func
+  handleClearSelection: PropTypes.func,
+  groups: PropTypes.array
 };
 
 export default GhgMultiselectDropdowComponent;

@@ -53,17 +53,6 @@ const icons = {
   '100% stacked area chart': percentageIcon
 };
 
-const regionGroups = [
-  {
-    groupId: 'regions',
-    title: 'Regions'
-  },
-  {
-    groupId: 'countries',
-    title: 'Countries'
-  }
-];
-
 const sectorGroups = [
   {
     groupId: 'totals',
@@ -109,6 +98,17 @@ function GhgEmissions(props) {
     pngSelectionSubtitle,
     pngDownloadId
   } = props;
+
+  const regionGroups = [
+    {
+      groupId: 'regions',
+      title: isSubnationalSource ? 'Country' : 'Regions'
+    },
+    {
+      groupId: 'countries',
+      title: isSubnationalSource ? 'Subnational' : 'Countries'
+    }
+  ];
 
   const buttonGroupGHGemissions = [
     {

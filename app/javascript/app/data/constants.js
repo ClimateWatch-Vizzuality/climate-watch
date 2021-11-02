@@ -299,6 +299,8 @@ export const GAS_AGGREGATES = {
 
 export const COMPARE_GHG_AGGREGATES = ['KYOTOGHG', 'All GHG', 'Aggregate GHGs'];
 
+export const SUBNATIONAL_SOURCE_NAMES = ['US'];
+
 export const GHG_TABLE_HEADER = {
   regions: 'Country/Region',
   gas: 'Gas',
