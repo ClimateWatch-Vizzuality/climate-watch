@@ -9,8 +9,12 @@ import {
   getModelSelected,
   getBreakByOptionSelected,
   getChartTypeSelected,
-  getMetricSelected
+  getMetricSelected,
+  getIsSubnationalSource
 } from './ghg-emissions-selectors-filters';
+
+const FEATURE_ENHANCEMENT_CHANGES =
+  process.env.FEATURE_ENHANCEMENT_CHANGES === 'true';
 
 const getOverlappingConflicts = optionsSelected => {
   if (!optionsSelected || optionsSelected.length <= 1) return [];
@@ -114,7 +118,11 @@ export const getIncompatibleSectorConflicts = (
   return [];
 };
 
-const getCountryRegionConflicts = (placesSelected, breakBySelected) => {
+const getCountryRegionConflicts = (
+  placesSelected,
+  breakBySelected,
+  isSubnational
+) => {
   const regionsGroupSelected = placesSelected?.filter(
     r => r.groupId === 'regions'
   );
@@ -125,12 +133,19 @@ const getCountryRegionConflicts = (placesSelected, breakBySelected) => {
     breakBySelected.value === 'countries' &&
     (numberOfRegionsSelected > 1 || oneRegionAndCountriesSelected)
   ) {
+    if (FEATURE_ENHANCEMENT_CHANGES) {
+      return [
+        isSubnational
+          ? 'A country and at least one subnational jurisdiction are selected'
+          : 'More than one region or a region and at least one country are selected'
+      ];
+    }
     return ['More than one region is selected'];
   }
   const onlyCountriesAreSelected =
     placesSelected?.length && numberOfRegionsSelected === 0;
   if (breakBySelected.value === 'regions' && onlyCountriesAreSelected) {
-    return ['No region is selected'];
+    return [`No ${isSubnational ? 'country' : 'region'} is selected`];
   }
   return [];
 };
@@ -169,7 +184,8 @@ export const getFiltersConflicts = createSelector(
     getModelSelected,
     getMetricSelected,
     getChartTypeSelected,
-    getBreakByOptionSelected
+    getBreakByOptionSelected,
+    getIsSubnationalSource
   ],
   (
     regionSelected,
@@ -178,7 +194,8 @@ export const getFiltersConflicts = createSelector(
     modelSelected,
     metricSelected,
     chartSelected,
-    breakBySelected
+    breakBySelected,
+    isSubnational
   ) => {
     const isNotLineChart = chartSelected.value !== 'line';
 
@@ -194,7 +211,8 @@ export const getFiltersConflicts = createSelector(
     const regionConflicts = getOverlappingConflicts(regionSelected);
     const countryRegionConflicts = getCountryRegionConflicts(
       regionSelected,
-      breakBySelected
+      breakBySelected,
+      isSubnational
     );
     const gasConflicts = getGasConflicts(gasSelected);
     const chartConflicts = getChartConflicts(

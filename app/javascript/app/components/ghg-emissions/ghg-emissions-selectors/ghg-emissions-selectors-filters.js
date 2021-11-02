@@ -12,8 +12,10 @@ import {
   GAS_AGGREGATES,
   TOP_EMITTERS_OPTION,
   GHG_CALCULATION_OPTIONS,
-  CHART_TYPE_OPTIONS
+  CHART_TYPE_OPTIONS,
+  SUBNATIONAL_SOURCE_NAMES
 } from 'data/constants';
+
 import {
   getMeta,
   getRegions,
@@ -70,14 +72,22 @@ const getCalculationOptions = () =>
     []
   );
 
+export const getIsSubnationalSource = createSelector(
+  [getSourceSelected],
+  sourceSelected => {
+    if (!sourceSelected) return false;
+    return SUBNATIONAL_SOURCE_NAMES.includes(sourceSelected.name);
+  }
+);
+
 // BreakBy selectors
-const breakByOptions = [
+const breakByOptions = isSubnational => [
   {
-    label: 'Countries',
+    label: isSubnational ? 'Subnational' : 'Countries',
     value: 'countries'
   },
   {
-    label: 'Regions',
+    label: isSubnational ? 'Country' : 'Regions',
     value: 'regions'
   },
   {
@@ -90,7 +100,10 @@ const breakByOptions = [
   }
 ];
 
-const getBreakByOptions = () => breakByOptions;
+const getBreakByOptions = createSelector(
+  [getIsSubnationalSource],
+  breakByOptions
+);
 
 // Filtered calculation selectors
 const getFilteredCalculationOptions = createSelector(
@@ -185,11 +198,16 @@ const getFieldOptions = field =>
   });
 
 const getRegionOptions = createSelector(
-  [getRegions, getSourceSelected, getFieldOptions('location'), getCountries],
-  (regions, sourceSelected, options, countries) => {
+  [
+    getRegions,
+    getSourceSelected,
+    getFieldOptions('location'),
+    getCountries,
+    getIsSubnationalSource
+  ],
+  (regions, sourceSelected, options, countries, isSubnational) => {
     if (!regions || !sourceSelected) return null;
 
-    const isSubnational = sourceSelected.name === 'US';
     const regionOptions = isSubnational ? [] : [TOP_EMITTERS_OPTION];
     const updatedRegions = isSubnational
       ? countries.filter(c => c.iso_code3 === 'USA')
