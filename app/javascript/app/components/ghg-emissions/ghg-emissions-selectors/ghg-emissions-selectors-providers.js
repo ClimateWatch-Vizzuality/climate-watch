@@ -43,3 +43,14 @@ export const getProviderFilters = createSelector(
     return filter;
   }
 );
+
+export const getIsSubnationalSource = createSelector(
+  [getOptionsSelected],
+  selectedOptions => {
+    if (!selectedOptions || !selectedOptions.sourcesSelected) return null;
+    const SUBNATIONAL_SOURCE_NAMES = ['US'];
+    return SUBNATIONAL_SOURCE_NAMES.includes(
+      selectedOptions.sourcesSelected.name
+    );
+  }
+);

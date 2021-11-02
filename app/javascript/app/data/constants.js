@@ -113,6 +113,11 @@ export const DEFAULT_EMISSIONS_SELECTIONS = {
     gas: 'CO2',
     sector: 'Total fossil fuels and cement',
     location: 'WORLD'
+  },
+  US: {
+    gas: 'All GHG',
+    sector: 'Total including LUCF',
+    location: 'USA'
   }
 };
 
