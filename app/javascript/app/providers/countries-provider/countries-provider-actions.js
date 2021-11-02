@@ -1,21 +1,23 @@
 import { createAction } from 'redux-actions';
 import { createThunkAction } from 'utils/redux';
 import isEmpty from 'lodash/isEmpty';
+import { apiWithCache } from 'services/api';
 
 const getCountriesInit = createAction('getCountriesInit');
 const getCountriesReady = createAction('getCountriesReady');
 
 const getCountries = createThunkAction(
   'getCountries',
-  () => (dispatch, state) => {
+  isSubnationalSource => (dispatch, state) => {
     const { countries } = state();
-    if (countries && isEmpty(countries.data)) {
+    if (countries && (isSubnationalSource || isEmpty(countries.data))) {
       dispatch(getCountriesInit());
-      fetch('/api/v1/locations/countries')
-        .then(response => {
-          if (response.ok) return response.json();
-          throw Error(response.statusText);
-        })
+      apiWithCache
+        .get(
+          `/api/v1/locations/countries${
+            isSubnationalSource ? '?members=true' : ''
+          }`
+        )
         .then(data => {
           dispatch(getCountriesReady(data));
         })

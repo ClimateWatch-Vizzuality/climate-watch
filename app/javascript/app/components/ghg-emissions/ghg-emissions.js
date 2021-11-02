@@ -236,7 +236,7 @@ function GhgEmissionsContainer(props) {
       calculationSelected,
       breakBySelected
     } = selected;
-    const filterSelectionLabels = `Countries/Regions: ${encodeParam(
+    const filterSelectionLabels = `Location: ${encodeParam(
       regionsSelected
     )}. Sectors/Subsectors: ${encodeParam(
       sectorsSelected

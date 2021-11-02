@@ -10,9 +10,6 @@ const setLoaded = (loaded, state) => ({ ...state, loaded });
 
 export default {
   getCountriesInit: state => setLoading(true, state),
-  getCountriesReady: (state, { payload }) =>
-    setLoaded(
-      true,
-      setLoading(false, { ...state, data: payload, count: payload.length })
-    )
+  getCountriesReady: (state, { payload: { data } }) =>
+    setLoaded(true, setLoading(false, { ...state, data, count: data.length }))
 };

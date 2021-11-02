@@ -1,3 +1,4 @@
+/* eslint-disable no-confusing-arrow */
 import { createSelector, createStructuredSelector } from 'reselect';
 import isEmpty from 'lodash/isEmpty';
 import { useSlug } from 'utils/utils';
@@ -16,6 +17,7 @@ import {
 import {
   getMeta,
   getRegions,
+  getCountries,
   getSources,
   getSelection
 } from './ghg-emissions-selectors-get';
@@ -183,32 +185,43 @@ const getFieldOptions = field =>
   });
 
 const getRegionOptions = createSelector(
-  [getRegions, getSourceSelected, getFieldOptions('location')],
-  (regions, sourceSelected, options) => {
+  [getRegions, getSourceSelected, getFieldOptions('location'), getCountries],
+  (regions, sourceSelected, options, countries) => {
     if (!regions || !sourceSelected) return null;
 
-    const regionOptions = [TOP_EMITTERS_OPTION];
-    regions.forEach(region => {
+    const isSubnational = sourceSelected.name === 'US';
+    const regionOptions = isSubnational ? [] : [TOP_EMITTERS_OPTION];
+    const updatedRegions = isSubnational
+      ? countries.filter(c => c.iso_code3 === 'USA')
+      : regions;
+    updatedRegions.forEach(region => {
       if (
-        (sourceSelected.name.startsWith('UNFCCC') &&
+        !isSubnational &&
+        ((sourceSelected.name.startsWith('UNFCCC') &&
           region.iso_code3 === 'WORLD') ||
-        !region.ghg_sources ||
-        !region.ghg_sources.includes(sourceSelected.name)
+          !region.ghg_sources ||
+          !region.ghg_sources.includes(sourceSelected.name))
       ) {
         return;
       }
-      const regionMembers = region.members.map(m => m.iso_code3);
+      const regionMembers =
+        region.members && region.members.map(m => m.iso_code3);
+      const regionCountries =
+        region.members &&
+        region.members
+          .filter(
+            m => isSubnational || m.ghg_sources.includes(sourceSelected.name)
+          )
+          .map(country => ({
+            label: country.wri_standard_name,
+            iso: country.iso_code3
+          }));
       regionOptions.push({
         label: region.wri_standard_name,
         value: region.iso_code3,
         iso: region.iso_code3,
         expandsTo: regionMembers,
-        regionCountries: region.members
-          .filter(m => m.ghg_sources.includes(sourceSelected.name))
-          .map(country => ({
-            label: country.wri_standard_name,
-            iso: country.iso_code3
-          })),
+        regionCountries,
         groupId: 'regions'
       });
     });
@@ -225,9 +238,11 @@ const getRegionOptions = createSelector(
         });
       }
     });
+    // eslint-disable-next-line no-confusing-arrow
     const sortedRegions = sortLabelByAlpha(regionOptions).sort(x =>
-      (x.value === 'TOP' ? -1 : 0)
+      x.value === 'TOP' ? -1 : 0
     );
+
     return sortedRegions.concat(sortLabelByAlpha(countryOptions));
   }
 );
