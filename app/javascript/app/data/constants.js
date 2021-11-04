@@ -8,6 +8,8 @@ import {
 const { GFW_API } = process.env;
 const { CW_API } = process.env;
 const { ESP_API } = process.env;
+const FEATURE_ENHANCEMENT_CHANGES =
+  process.env.FEATURE_ENHANCEMENT_CHANGES === 'true';
 
 export const LOGIN_URL = `${GFW_API}/auth/`;
 export const LOGIN_PARAMS = `?applications=climate-watch&token=true&callbackUrl=${location.origin}${CW_API}/auth/login`;
@@ -404,7 +406,9 @@ export const NET_ZERO_POSITIVE_LABELS = [
 
 export const ENHANCEMENT_LABEL_COLORS = {
   SUBMITTED_2020: CHART_NAMED_COLORS.color1,
-  INTENDS_TO_ENHANCE: CHART_NAMED_COLORS.color2,
+  ...(!FEATURE_ENHANCEMENT_CHANGES && {
+    INTENDS_TO_ENHANCE: CHART_NAMED_COLORS.color2
+  }),
   ENHANCED_MITIGATION: CHART_NAMED_COLORS.color3
 };
 
