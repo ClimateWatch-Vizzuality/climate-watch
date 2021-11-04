@@ -1,10 +1,7 @@
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
-import Component from './country-climate-commitments-component';
-import {
-  getCountriesDocumentsValues,
-  getCountryName
-} from './country-climate-commitments-selectors';
+import Component from './country-climate-enhancements-component';
+import { getPreviousComparisonCountryValues } from './country-climate-enhancements-selectors';
 
 const mapStateToProps = (state, { match }) => {
   const stateWithIso = {
@@ -12,8 +9,7 @@ const mapStateToProps = (state, { match }) => {
     ...state
   };
   return {
-    countriesDocumentsValues: getCountriesDocumentsValues(stateWithIso),
-    countryName: getCountryName(stateWithIso)
+    previousComparisonValues: getPreviousComparisonCountryValues(stateWithIso)
   };
 };
 

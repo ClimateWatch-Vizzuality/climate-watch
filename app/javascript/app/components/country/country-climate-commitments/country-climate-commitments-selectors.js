@@ -4,6 +4,8 @@ import { getDocumentsColumns } from 'utils/country-documents';
 import { SUBMISSION_ICON_VALUE } from 'data/country-documents';
 import { ENHANCEMENT_LABEL_SLUGS, INDICATOR_SLUGS } from 'data/constants';
 
+const getCountries = state => (state.countries && state.countries.data) || null;
+
 const getPreviousComparisonIndicators = state =>
   state.ndcsPreviousComparison && state.ndcsPreviousComparison.data;
 
@@ -12,6 +14,16 @@ const getCountriesDocuments = state => state.countriesDocuments.data || null;
 const getIso = state => state.iso || null;
 const getNDCS = state =>
   (state.ndcs && state.ndcs.data && state.ndcs.data.indicators) || null;
+
+const getCountry = createSelector([getCountries, getIso], (countries, iso) => {
+  if (!countries || !iso) return null;
+  return countries.find(country => country.iso_code3 === iso);
+});
+
+export const getCountryName = createSelector(
+  [getCountry],
+  country => (country && country.wri_standard_name) || null
+);
 
 export const getPreviousComparisonCountryValues = createSelector(
   [getPreviousComparisonIndicators, getIso],
@@ -82,8 +94,6 @@ export const getCountriesDocumentsValues = createSelector(
       countriesDocuments[iso],
       DOCUMENT_COLUMNS_SLUGS
     );
-    return Object.entries(documentColumns)
-      .map(entry => entry)
-      .concat(netZeroAnd2020Values || []);
+    return Object.entries(documentColumns).concat(netZeroAnd2020Values || []);
   }
 );
