@@ -1,6 +1,7 @@
 import { createElement } from 'react';
 
 import ClimateCommitments from 'components/country/country-climate-commitments';
+import ClimateEnhancements from 'components/country/country-climate-enhancements';
 import GHGCountryEmissions from 'components/country/country-ghg';
 import NDCSDGLinkages from 'components/country/country-ndc-sdg-linkages';
 import ClimateVulnerability from 'components/country/country-climate-vulnerability';
@@ -58,6 +59,12 @@ if (FEATURE_ENHANCEMENT_CHANGES) {
       label: 'Climate commitments',
       anchor: true,
       component: ClimateCommitments
+    },
+    {
+      hash: 'climate-enhancements',
+      label: 'Climate enhancements',
+      anchor: true,
+      component: ClimateEnhancements
     }
   ].concat(routes);
 }
