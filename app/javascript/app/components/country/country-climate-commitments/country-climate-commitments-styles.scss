@@ -2,18 +2,13 @@
 
 .gridContainer {
   background-color: $gray3;
-  border-bottom: 1px solid $gray1;
+  border-bottom: 1px solid $gray2;
 }
 
 .grid {
   @include row(12);
 
   padding-top: $gutter-padding + $gutter-padding / 2;
-  padding-bottom: $gutter-padding;
-}
-
-.container {
-  margin-bottom: $gutter-padding;
 }
 
 .title {
@@ -37,24 +32,31 @@
 
 .item {
   height: 130px;
-  width: 180px;
+  width: 145px;
   text-align: center;
+}
+
+.ambitionContainer {
+  display: flex;
+}
+
+.arcOfAmbition {
+  margin-left: -65px;
 }
 
 .documentsContainer {
   margin-bottom: $gutter-padding + $gutter-padding / 2;
+  min-height: 388px;
 }
 
 .documents {
   display: flex;
   align-items: flex-end;
   flex-wrap: wrap;
-  padding-bottom: $gutter-padding + $gutter-padding / 2;
-  border-bottom: 1px solid $gray2;
   justify-content: space-between;
 
   @media #{$tablet-landscape} {
-    justify-content: flex-start;
+    justify-content: flex-end;
   }
 
   .item {
@@ -72,24 +74,10 @@
   width: 270px;
 }
 
-.previousComparison {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: flex-end;
-  margin-bottom: $gutter-padding;
-}
-
 .icon {
   width: 30px;
   height: 30px;
   margin-top: $gutter-padding;
-}
-
-.valueDescription {
-  margin-top: 10px;
-  font-size: $font-size-sm;
-  color: $gray1;
 }
 
 .loading {
