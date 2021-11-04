@@ -20,7 +20,12 @@ export const getGhgEmissionDefaults = (source, meta) => {
 export const getGhgEmissionDefaultSlugs = (source, meta) => {
   const sourceName = source.name || source.label;
   const defaults = DEFAULT_EMISSIONS_SELECTIONS[sourceName];
-  if (!defaults) return {};
+  if (!defaults) {
+    console.warn(
+      'Remember to add the defaults for a new sournce on DEFAULT_EMISSIONS_SELECTIONS'
+    );
+    return {};
+  }
   const gas = meta.gas.find(g => g.label === defaults.gas);
   const sector = meta.sector.find(s => s.label === defaults.sector);
   return {

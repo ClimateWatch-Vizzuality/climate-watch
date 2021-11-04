@@ -23,6 +23,6 @@ export const getPngSelectionSubtitle = createSelector(
     const calculation = `Calculation: ${calculationSelected &&
       calculationSelected.label}`;
     const dataBy = `Show data by ${breakBySelected && breakBySelected.label}`;
-    return `${source}; Countries/Regions: ${regions}; Sectors/Subsectors: ${sectors}; Gases: ${gases}; ${calculation}; ${dataBy}.`;
+    return `${source}; Location: ${regions}; Sectors/Subsectors: ${sectors}; Gases: ${gases}; ${calculation}; ${dataBy}.`;
   }
 );

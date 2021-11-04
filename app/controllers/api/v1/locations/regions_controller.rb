@@ -10,6 +10,7 @@ module Api
 
           render json: regions,
                  each_serializer: Api::V1::LocationSerializer,
+                 members: true,
                  topojson: params.key?(:topojson),
                  ghg_sources: params.key?(:ghg_sources)
         end

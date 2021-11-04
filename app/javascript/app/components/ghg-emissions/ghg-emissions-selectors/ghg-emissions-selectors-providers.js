@@ -1,6 +1,7 @@
 import { createSelector } from 'reselect';
 import uniq from 'lodash/uniq';
 import flatMap from 'lodash/flatMap';
+import { SUBNATIONAL_SOURCE_NAMES } from 'data/constants';
 import { getOptionsSelected } from './ghg-emissions-selectors-filters';
 
 export const getProviderFilters = createSelector(
@@ -41,5 +42,15 @@ export const getProviderFilters = createSelector(
     // do not allow empty filters
     if (Object.keys(filter).some(k => !filter[k])) return null;
     return filter;
+  }
+);
+
+export const getIsSubnationalSource = createSelector(
+  [getOptionsSelected],
+  selectedOptions => {
+    if (!selectedOptions || !selectedOptions.sourcesSelected) return null;
+    return SUBNATIONAL_SOURCE_NAMES.includes(
+      selectedOptions.sourcesSelected.name
+    );
   }
 );

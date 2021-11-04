@@ -20,6 +20,7 @@ import LegendChart from 'components/charts/legend-chart';
 import EmissionsMetaProvider from 'providers/ghg-emissions-meta-provider';
 import EmissionsProvider from 'providers/emissions-provider';
 import RegionsProvider from 'providers/regions-provider';
+import CountriesProvider from 'providers/countries-provider';
 import WorldBankDataProvider from 'providers/wb-country-data-provider';
 import ButtonGroup from 'components/button-group';
 import ShareButton from 'components/button/share-button';
@@ -52,17 +53,6 @@ const icons = {
   '100% stacked area chart': percentageIcon
 };
 
-const regionGroups = [
-  {
-    groupId: 'regions',
-    title: 'Regions'
-  },
-  {
-    groupId: 'countries',
-    title: 'Countries'
-  }
-];
-
 const sectorGroups = [
   {
     groupId: 'totals',
@@ -94,6 +84,7 @@ function GhgEmissions(props) {
     legendSelected,
     loading,
     providerFilters,
+    isSubnationalSource,
     dataZoomData,
     handlePngDownloadModal,
     handleDownloadModalOpen,
@@ -107,6 +98,17 @@ function GhgEmissions(props) {
     pngSelectionSubtitle,
     pngDownloadId
   } = props;
+
+  const regionGroups = [
+    {
+      groupId: 'regions',
+      title: isSubnationalSource ? 'Country' : 'Regions'
+    },
+    {
+      groupId: 'countries',
+      title: isSubnationalSource ? 'Subnational' : 'Countries'
+    }
+  ];
 
   const buttonGroupGHGemissions = [
     {
@@ -338,6 +340,7 @@ function GhgEmissions(props) {
       dataTour="ghg-06"
     />
   );
+
   return (
     <div>
       <SEOTags
@@ -364,13 +367,14 @@ function GhgEmissions(props) {
         </TabletLandscape>
       </div>
       <WorldBankDataProvider />
-      <RegionsProvider includeGHGSources />
+      {!isSubnationalSource && <RegionsProvider includeGHGSources />}
+      {isSubnationalSource && <CountriesProvider isSubnationalSource />}
       <EmissionsMetaProvider />
       {providerFilters && <EmissionsProvider filters={providerFilters} />}
       <div className={cx(styles.col4, styles.newGHG)} data-tour="ghg-01">
         {renderDropdown('Data Source', 'sources')}
         <GhgMultiselectDropdown
-          label={'Countries/Regions'}
+          label={'Location'}
           groups={regionGroups}
           options={options.regions || []}
           values={getValues(selectedOptions.regionsSelected)}
@@ -448,6 +452,7 @@ GhgEmissions.propTypes = {
   setColumnWidth: PropTypes.func.isRequired,
   providerFilters: PropTypes.object,
   loading: PropTypes.bool,
+  isSubnationalSource: PropTypes.bool,
   downloadLink: PropTypes.string,
   hideRemoveOptions: PropTypes.bool,
   dataZoomPosition: PropTypes.object,

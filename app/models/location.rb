@@ -44,7 +44,7 @@ class Location < ApplicationRecord
   }
   validates :wri_standard_name, presence: true, if: proc { |l| l.show_in_cw? }
   validates :location_type, presence: true, inclusion: {
-    in: %w(COUNTRY REGION GROUP)
+    in: %w(COUNTRY REGION GROUP STATE)
   }
 
   before_validation :populate_wri_standard_name, if: proc { |l|

@@ -113,6 +113,11 @@ export const DEFAULT_EMISSIONS_SELECTIONS = {
     gas: 'CO2',
     sector: 'Total fossil fuels and cement',
     location: 'WORLD'
+  },
+  US: {
+    gas: 'All GHG',
+    sector: 'Total including LUCF',
+    location: 'USA'
   }
 };
 
@@ -293,6 +298,8 @@ export const GAS_AGGREGATES = {
 };
 
 export const COMPARE_GHG_AGGREGATES = ['KYOTOGHG', 'All GHG', 'Aggregate GHGs'];
+
+export const SUBNATIONAL_SOURCE_NAMES = ['US'];
 
 export const GHG_TABLE_HEADER = {
   regions: 'Country/Region',
