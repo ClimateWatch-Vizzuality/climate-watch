@@ -183,11 +183,17 @@ const NDCSEnhancementsMap = ({
         summaryData[ENHANCEMENT_LABEL_SLUGS.ENHANCED_MITIGATION].countries,
         isPNG
       )}
-      {!isPNG && <span className={styles.separator} />}
-      {renderSummaryItem(
-        summaryData[ENHANCEMENT_LABEL_SLUGS.INTENDS_TO_ENHANCE].countries,
-        isPNG
-      )}
+      {!FEATURE_ENHANCEMENT_CHANGES &&
+        !isPNG &&
+        summaryData[ENHANCEMENT_LABEL_SLUGS.INTENDS_TO_ENHANCE] && (
+          <span className={styles.separator} />
+        )}
+      {!FEATURE_ENHANCEMENT_CHANGES &&
+        summaryData[ENHANCEMENT_LABEL_SLUGS.INTENDS_TO_ENHANCE] &&
+        renderSummaryItem(
+          summaryData[ENHANCEMENT_LABEL_SLUGS.INTENDS_TO_ENHANCE].countries,
+          isPNG
+        )}
     </div>
   );
   const covidText = (
