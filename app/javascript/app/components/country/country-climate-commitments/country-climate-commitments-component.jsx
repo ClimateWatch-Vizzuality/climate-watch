@@ -11,7 +11,7 @@ import { handleAnalytics } from 'utils/analytics';
 import { SUBMISSION_ICON_VALUE } from 'data/country-documents';
 import NDCSProvider from 'providers/ndcs-provider';
 import { INDICATOR_SLUGS } from 'data/constants';
-import arcOfAmbition from 'assets/home/arc-of-ambition-1.png';
+import arcOfAmbition from 'assets/countries/arc-of-ambition.png';
 import styles from './country-climate-commitments-styles.scss';
 
 function CountryClimateCommitments({

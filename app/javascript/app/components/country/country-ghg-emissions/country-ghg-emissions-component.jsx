@@ -61,6 +61,21 @@ class CountryGhgEmissions extends PureComponent {
       downloadLink
     } = this.props;
 
+    const link = `/ghg-emissions?breakBy=regions-${CALCULATION_OPTIONS.ABSOLUTE_VALUE.value}&regions=${iso}`;
+    const href = `/contained${link}&isNdcp=true`;
+    const exploreButton = (
+      <Button
+        key="action2"
+        className={styles.exploreBtn}
+        variant="primary"
+        href={isNdcp ? href : null}
+        link={isNdcp ? null : link}
+        onClick={handleAnalyticsClick}
+        dataTour="countries-03"
+      >
+        Explore Emissions
+      </Button>
+    );
     const buttonGroupConfig = isEmbed
       ? [{ type: 'info', onClick: handleInfoClick }]
       : [
@@ -103,27 +118,17 @@ class CountryGhgEmissions extends PureComponent {
         }
       ];
 
-    const link = `/ghg-emissions?breakBy=regions-${CALCULATION_OPTIONS.ABSOLUTE_VALUE.value}&regions=${iso}`;
-    const href = `/contained${link}&isNdcp=true`;
-
-    return [
+    const buttons = [
       <ButtonGroup
         key="action1"
         className={styles.btnGroup}
         buttonsConfig={buttonGroupConfig}
-      />,
-      <Button
-        key="action2"
-        className={styles.exploreBtn}
-        variant="primary"
-        href={isNdcp ? href : null}
-        link={isNdcp ? null : link}
-        onClick={handleAnalyticsClick}
-        dataTour="countries-03"
-      >
-        Explore Emissions
-      </Button>
+      />
     ];
+    if (!FEATURE_ENHANCEMENT_CHANGES) {
+      buttons.push(exploreButton);
+    }
+    return buttons;
   }
 
   renderChart() {
@@ -203,7 +208,9 @@ class CountryGhgEmissions extends PureComponent {
       <div className={styles.container}>
         <EmissionsMetaProvider />
         <WbCountryDataProvider />
-        <h3 className={styles.title}>{title}</h3>
+        {!FEATURE_ENHANCEMENT_CHANGES && (
+          <h3 className={styles.title}>{title}</h3>
+        )}
         <TabletLandscape>
           <div
             className={cx(styles.graphControls, {

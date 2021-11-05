@@ -31,17 +31,21 @@
 }
 
 .item {
-  height: 130px;
+  height: 180px;
   width: 145px;
   text-align: center;
 }
 
 .ambitionContainer {
-  display: flex;
+  @include row(12);
+
+  @media #{$tablet-landscape} {
+    @include row((8,4));
+  }
 }
 
 .arcOfAmbition {
-  margin-left: -65px;
+  max-width: 800px;
 }
 
 .documentsContainer {

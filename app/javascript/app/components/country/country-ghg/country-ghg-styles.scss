@@ -1,6 +1,6 @@
 @import '~styles/layout.scss';
 
-.grid {
+.content {
   @include row(12);
 
   padding-top: 30px;
@@ -27,4 +27,41 @@
   @media #{$tablet-landscape} {
     margin-top: -140px;
   }
+}
+
+.titleRow {
+  @include row(12);
+
+  @media #{$tablet-landscape} {
+    @include row((9,3));
+  }
+
+  padding-top: 30px;
+  padding-bottom: 30px;
+  align-items: flex-start;
+}
+
+.title {
+  font-size: $font-size-large;
+  font-weight: $font-weight;
+  color: $theme-color;
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.description {
+  margin-bottom: 15px;
+}
+
+.infoBtn {
+  border-radius: 4px !important;
+  border: solid 2.5px $gray3;
+  min-width: 45px;
+  margin: 10px;
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
 }
