@@ -72,7 +72,7 @@ export const getSourceSelected = createSelector(
   (sources, selected) => {
     if (!sources || !sources.length) return null;
     if (!selected) return sources[0];
-    return sources.find(category => category.value === parseInt(selected, 10));
+    return sources.find(category => category.label === selected);
   }
 );
 
