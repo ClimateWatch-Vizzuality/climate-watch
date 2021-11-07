@@ -1,4 +1,4 @@
-import { createElement, PureComponent } from 'react';
+import { createElement, useEffect, useState } from 'react';
 import Proptypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
@@ -8,6 +8,7 @@ import {
   isEmbededComponent,
   isPageNdcp
 } from 'utils/navigation';
+import { usePrevious } from 'utils';
 import qs from 'query-string';
 import { handleAnalytics } from 'utils/analytics';
 import { actions as modalActions } from 'components/modal-metadata';
@@ -31,7 +32,9 @@ import {
   getFilterOptions,
   getFiltersSelected,
   getDownloadLink,
-  getPngSelectionSubtitle
+  getPngSelectionSubtitle,
+  getDataZoomYears,
+  getDataZoomData
 } from './country-ghg-emissions-selectors';
 
 const actions = { ...ownActions, ...modalActions, ...pngModalActions };
@@ -72,51 +75,115 @@ const mapStateToProps = (state, { location, match }) => {
     config: getChartConfig(countryGhg),
     pngSelectionSubtitle: getPngSelectionSubtitle(countryGhg),
     selectorDefaults: getSelectorDefaults(countryGhg),
-    downloadLink: getDownloadLink(countryGhg)
+    downloadLink: getDownloadLink(countryGhg),
+    dataZoomYears: getDataZoomYears(countryGhg),
+    dataZoomData: getDataZoomData(countryGhg)
   };
 };
 
-function needsRequestData(props, nextProps) {
-  const { iso, sourceSelected } = nextProps;
-  const isNewCountry = iso !== props.iso;
-  if (isNewCountry) return true;
-  const hasValues = sourceSelected && sourceSelected.value;
-  if (!hasValues) return false;
-  const hasChanged = sourceSelected.value !== props.sourceSelected.value;
-  return hasChanged;
-}
-
-function getFiltersParsed(props) {
-  const { sourceSelected, selectorDefaults } = props;
-  const filter = {};
-  filter.location = props.iso;
-  filter.gas = selectorDefaults.gas;
-  filter.source = sourceSelected.value || null;
-  return filter;
-}
 const pngDownloadId = 'country-ghg-emissions';
 
-class CountryGhgEmissionsContainer extends PureComponent {
-  constructor(props) {
-    super(props);
-    if (props.sourceSelected.value) {
-      const filters = getFiltersParsed(props);
-      props.fetchCountryGhgEmissionsData(filters);
-    }
-  }
+function CountryGhgEmissionsContainer(props) {
+  const {
+    fetchCountryGhgEmissionsData,
+    sourceSelected: { source },
+    setModalMetadata,
+    location: { search },
+    setModalPngDownload,
+    history,
+    location,
+    iso,
+    sourceSelected,
+    data,
+    dataZoomYears,
+    selectorDefaults
+  } = props;
 
-  componentWillReceiveProps(nextProps) {
-    if (needsRequestData(this.props, nextProps)) {
-      const { fetchCountryGhgEmissionsData } = nextProps;
-      const filters = getFiltersParsed(nextProps);
+  useEffect(() => {
+    if (sourceSelected.value) {
+      const filters = {
+        location: iso,
+        gas: selectorDefaults && selectorDefaults.gas,
+        source: sourceSelected.value || null
+      };
       fetchCountryGhgEmissionsData(filters);
     }
-  }
+  }, [iso, sourceSelected]);
 
-  handleInfoClick = () => {
-    const { source } = this.props.sourceSelected;
+  // Data Zoom Logic
+
+  const handleSetYears = years => {
+    const { min, max } = years || {};
+    updateUrlParam([
+      {
+        name: 'start_year',
+        value: min
+      },
+      {
+        name: 'end_year',
+        value: max
+      }
+    ]);
+  };
+
+  const [updatedData, setUpdatedData] = useState(data);
+  const DATA_ZOOM_START_POSITION = {
+    min: 0,
+    max: 0
+  };
+  const [dataZoomPosition, setDataZoomPosition] = useState(
+    DATA_ZOOM_START_POSITION
+  );
+
+  // Filter data with dataZoomYears
+  useEffect(() => {
+    if (!data) {
+      return undefined;
+    }
+    if (dataZoomYears.min && dataZoomYears.max) {
+      setUpdatedData(
+        data.filter(
+          d =>
+            (!dataZoomYears.min || d.x >= dataZoomYears.min) &&
+            (!dataZoomYears.max || d.x <= dataZoomYears.max)
+        )
+      );
+    } else {
+      setUpdatedData(data);
+    }
+    return undefined;
+  }, [dataZoomYears, data]);
+
+  const previousData = usePrevious(data);
+
+  // Set data limit years on URL when we don't have any years selected or reset when we change the data (source)
+  useEffect(() => {
+    const hasDataChanged =
+      (!previousData && data) ||
+      (data && data.length) !== (previousData && previousData.length);
+
+    if (
+      hasDataChanged &&
+      data &&
+      data.length &&
+      (!dataZoomYears.min || !dataZoomYears.max)
+    ) {
+      const firstDataYear = data[0].x;
+      const lastDataYear = data[data.length - 1].x;
+
+      handleSetYears({ min: firstDataYear, max: lastDataYear });
+    }
+
+    return undefined;
+  }, [dataZoomYears, data]);
+
+  const updateUrlParam = (params, clear) => {
+    history.replace(getLocationParamUpdated(location, params, clear));
+  };
+
+  const handleInfoClick = () => {
     if (source) {
-      this.props.setModalMetadata({
+      setModalMetadata({
         category: 'Country',
         slugs: isPageContained ? [source] : [source, 'ndc_quantification_UNDP'],
         customTitle: 'Greenhouse Gas Emissions and Emissions Targets',
@@ -129,15 +196,14 @@ class CountryGhgEmissionsContainer extends PureComponent {
     }
   };
 
-  handleAnalyticsClick = () => {
+  const handleAnalyticsClick = () => {
     handleAnalytics('Country', 'Leave page to explore data', 'Ghg emissions');
   };
 
-  handleSourceChange = category => {
-    const { search } = this.props.location;
+  const handleSourceChange = category => {
     const searchQuery = qs.parse(search);
     if (category) {
-      this.updateUrlParam(
+      updateUrlParam(
         [
           {
             name: 'source',
@@ -152,33 +218,30 @@ class CountryGhgEmissionsContainer extends PureComponent {
     }
   };
 
-  handleCalculationChange = calculation => {
+  const handleCalculationChange = calculation => {
     if (calculation) {
-      this.updateUrlParam({ name: 'calculation', value: calculation.value });
+      updateUrlParam({ name: 'calculation', value: calculation.value });
     }
   };
 
-  handlePngDownloadModal = () => {
-    const { setModalPngDownload } = this.props;
+  const handlePngDownloadModal = () => {
     setModalPngDownload({ open: pngDownloadId });
   };
 
-  updateUrlParam(params, clear) {
-    const { history, location } = this.props;
-    history.replace(getLocationParamUpdated(location, params, clear));
-  }
-
-  render() {
-    return createElement(CountryGhgEmissionsComponent, {
-      ...this.props,
-      pngDownloadId,
-      handleSourceChange: this.handleSourceChange,
-      handleCalculationChange: this.handleCalculationChange,
-      handleInfoClick: this.handleInfoClick,
-      handleAnalyticsClick: this.handleAnalyticsClick,
-      handlePngDownloadModal: this.handlePngDownloadModal
-    });
-  }
+  return createElement(CountryGhgEmissionsComponent, {
+    ...props,
+    pngDownloadId,
+    handleSourceChange,
+    handleCalculationChange,
+    handleInfoClick,
+    handleAnalyticsClick,
+    handlePngDownloadModal,
+    dataZoomYears,
+    setYears: handleSetYears,
+    setDataZoomPosition,
+    dataZoomPosition,
+    data: updatedData
+  });
 }
 
 CountryGhgEmissionsContainer.propTypes = {

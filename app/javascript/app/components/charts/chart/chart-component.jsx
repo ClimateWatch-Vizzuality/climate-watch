@@ -5,7 +5,7 @@ import LineChart from 'components/charts/line';
 import LegendChart from 'components/charts/legend-chart';
 import Loading from 'components/loading';
 import NoContent from 'components/no-content';
-
+import isEmpty from 'lodash/isEmpty';
 import styles from './chart-styles.scss';
 
 class Chart extends PureComponent {
@@ -24,7 +24,8 @@ class Chart extends PureComponent {
       targetParam,
       customMessage,
       model,
-      hideRemoveOptions
+      hideRemoveOptions,
+      dataZoomComponent
     } = this.props;
     const hasData = data && data.length > 0;
     const getMessage = () => {
@@ -33,9 +34,8 @@ class Chart extends PureComponent {
       if (!dataSelected || !dataSelected.length > 0) return 'No data selected';
       return 'No data available';
     };
-
     const ChartComponent = type === 'line' ? LineChart : ChartStackedArea;
-    const hasError = !loading && (error || !hasData);
+    const hasError = !loading && (error || !hasData || !config);
     const hasDataOptions = !loading && dataOptions;
     return (
       <div className={className}>
@@ -47,7 +47,10 @@ class Chart extends PureComponent {
             minHeight={height}
           />
         )}
-        {!loading && hasData && config && <ChartComponent {...this.props} />}
+        {!loading && hasData && config && !isEmpty(config) && (
+          <ChartComponent {...this.props} />
+        )}
+        {dataZoomComponent}
         {hasDataOptions && (
           <LegendChart
             className={styles.legend}
@@ -77,12 +80,14 @@ Chart.propTypes = {
   height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   customMessage: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   model: PropTypes.object,
-  targetParam: PropTypes.string
+  targetParam: PropTypes.string,
+  dataZoomComponent: PropTypes.node
 };
 
 Chart.defaultProps = {
   height: 300,
-  hideRemoveOptions: false
+  hideRemoveOptions: false,
+  dataZoomComponent: null
 };
 
 export default Chart;

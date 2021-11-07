@@ -43,7 +43,7 @@ import multiLevelDropdownTheme from 'styles/themes/dropdown/multi-level-dropdown
 import legendChartTheme from 'styles/themes/chart/legend-chart.scss';
 import { SEO_PAGES } from 'data/seo';
 import SEOTags from 'components/seo-tags';
-import DataZoom from './data-zoom';
+import DataZoom from 'components/data-zoom';
 
 import styles from './ghg-emissions-styles.scss';
 

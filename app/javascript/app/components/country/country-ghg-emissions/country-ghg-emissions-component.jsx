@@ -13,7 +13,7 @@ import WbCountryDataProvider from 'providers/wb-country-data-provider';
 import { TabletLandscape, TabletPortraitOnly } from 'components/responsive';
 import ModalMetadata from 'components/modal-metadata';
 import { isPageContained } from 'utils/navigation';
-
+import DataZoom from 'components/data-zoom';
 import quantificationTagTheme from 'styles/themes/tag/quantification-tag.scss';
 import styles from './country-ghg-emissions-styles.scss';
 
@@ -142,7 +142,12 @@ class CountryGhgEmissions extends PureComponent {
       handleYearHover,
       filtersOptions,
       filtersSelected,
-      sourceSelected
+      sourceSelected,
+      dataZoomData,
+      dataZoomPosition,
+      setDataZoomPosition,
+      setYears,
+      dataZoomYears
     } = this.props;
 
     const points = !isPageContained ? quantifications : [];
@@ -153,7 +158,6 @@ class CountryGhgEmissions extends PureComponent {
       calculationSelected.value === CALCULATION_OPTIONS.PER_CAPITA.value
         ? '.2f'
         : '.0f';
-
     return (
       <Chart
         className={styles.graph}
@@ -169,6 +173,19 @@ class CountryGhgEmissions extends PureComponent {
         height={360}
         customD3Format={customD3Format}
         stepped={sourceSelected.label === 'UNFCCC'}
+        dataZoomComponent={
+          !loading && (
+            <span data-tour="ghg-03">
+              <DataZoom
+                data={dataZoomData}
+                position={dataZoomPosition}
+                years={dataZoomYears}
+                setPosition={setDataZoomPosition}
+                onYearChange={(min, max) => setYears({ min, max })}
+              />
+            </span>
+          )
+        }
       />
     );
   }
@@ -272,7 +289,12 @@ CountryGhgEmissions.propTypes = {
   handleSourceChange: PropTypes.func.isRequired,
   handleCalculationChange: PropTypes.func.isRequired,
   pngSelectionSubtitle: PropTypes.string,
-  downloadLink: PropTypes.string
+  downloadLink: PropTypes.string,
+  dataZoomData: PropTypes.array,
+  dataZoomPosition: PropTypes.object,
+  setDataZoomPosition: PropTypes.func.isRequired,
+  setYears: PropTypes.func.isRequired,
+  dataZoomYears: PropTypes.object
 };
 
 CountryGhgEmissions.defaultProps = {
