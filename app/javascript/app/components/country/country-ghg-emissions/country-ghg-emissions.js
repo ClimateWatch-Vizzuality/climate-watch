@@ -156,12 +156,13 @@ function CountryGhgEmissionsContainer(props) {
 
   const previousData = usePrevious(data);
 
-  // Set data limit years on URL when we don't have any years selected or reset when we change the data (source)
+  // Set data limit years on URL when we don't have any years selected
   useEffect(() => {
     const hasDataChanged =
       (!previousData && data) ||
       (data && data.length) !== (previousData && previousData.length);
 
+    // reset data zoom when we change the data (source)
     if (
       hasDataChanged &&
       data &&
@@ -214,6 +215,7 @@ function CountryGhgEmissionsContainer(props) {
         ],
         true
       );
+      setDataZoomPosition(DATA_ZOOM_START_POSITION);
       handleAnalytics('Country', 'Change Emissions source', category.label);
     }
   };
