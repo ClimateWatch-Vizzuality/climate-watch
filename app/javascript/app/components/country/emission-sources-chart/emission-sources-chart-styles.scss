@@ -1,0 +1,39 @@
+@import '~styles/layout.scss';
+
+.emissionSources {
+  @include row();
+}
+
+.worldSharePosition {
+  width: 100%;
+  height: 18px;
+  display: flex;
+  background-color: $gray3;
+  margin-bottom: 30px;
+
+  .emissionCountry {
+    position: relative;
+    height: 18px;
+    display: inline-block;
+
+    &.currentCountry {
+      min-width: 2px;
+      border: 5px solid $theme-color;
+    }
+
+    .currentCountryText {
+      position: absolute;
+      top: -50px;
+      min-width: 280px;
+      text-align: center;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+}
+
+.countrySector {
+  width: 100%;
+  height: 75px;
+  background-color: $gray3;
+}

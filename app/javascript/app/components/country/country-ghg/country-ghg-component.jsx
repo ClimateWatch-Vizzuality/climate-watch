@@ -8,6 +8,7 @@ import throttle from 'lodash/throttle';
 import { CALCULATION_OPTIONS } from 'app/data/constants';
 import { TabletLandscape } from 'components/responsive';
 import Button from 'components/button';
+import EmissionSourcesChart from 'components/country/emission-sources-chart';
 import InfoButton from 'components/button/info-button';
 import Disclaimer from 'components/disclaimer';
 import ModalMetadata from 'components/modal-metadata';
@@ -63,28 +64,31 @@ function CountryGhg(props) {
     <div>
       <div>
         {FEATURE_ENHANCEMENT_CHANGES && (
-          <div className={styles.titleRow}>
-            <div>
-              <h3 className={styles.title}>
-                What are {countryName}
-                {"'"}s greenhouse gas emissions and emission targets?{' '}
-              </h3>
-              <p className={styles.description}>
-                The default data source is CAIT. For non-annex I countries,
-                national inventory data can be found in the UNFCCC timeline on
-                the top of the page.
-              </p>
+          <React.Fragment>
+            <div className={styles.titleRow}>
+              <div>
+                <h3 className={styles.title}>
+                  What are {countryName}
+                  {"'"}s greenhouse gas emissions and emission targets?{' '}
+                </h3>
+                <p className={styles.description}>
+                  The default data source is CAIT. For non-annex I countries,
+                  national inventory data can be found in the UNFCCC timeline on
+                  the top of the page.
+                </p>
+              </div>
+              <div className={styles.buttons}>
+                <InfoButton
+                  className={styles.infoBtn}
+                  infoOpen={false}
+                  handleInfoClick={handleInfoClick}
+                  square
+                />
+                {renderExploreButton()}
+              </div>
             </div>
-            <div className={styles.buttons}>
-              <InfoButton
-                className={styles.infoBtn}
-                infoOpen={false}
-                handleInfoClick={handleInfoClick}
-                square
-              />
-              {renderExploreButton()}
-            </div>
-          </div>
+            <EmissionSourcesChart iso={iso} />
+          </React.Fragment>
         )}
         <div className={cx(styles.content, { [styles.embedded]: isEmbedded })}>
           <EmissionsMetaProvider />
