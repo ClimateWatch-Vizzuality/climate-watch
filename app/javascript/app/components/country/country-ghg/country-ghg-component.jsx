@@ -1,12 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import CountryGHGEmissions from 'components/country/country-ghg-emissions';
-import CountryGHGMap from 'components/country/country-ghg-map';
 import EmissionsMetaProvider from 'providers/ghg-emissions-meta-provider';
 import WbCountryDataProvider from 'providers/wb-country-data-provider';
 import PropTypes from 'prop-types';
-import throttle from 'lodash/throttle';
 import { CALCULATION_OPTIONS } from 'app/data/constants';
-import { TabletLandscape } from 'components/responsive';
 import Button from 'components/button';
 import EmissionSourcesChart from 'components/country/emission-sources-chart';
 import InfoButton from 'components/button/info-button';
@@ -22,14 +19,6 @@ const FEATURE_ENHANCEMENT_CHANGES =
   process.env.FEATURE_ENHANCEMENT_CHANGES === 'true';
 
 function CountryGhg(props) {
-  const [year, setYear] = useState(null);
-
-  const handleYearHover = throttle(hoveredYear => {
-    if (hoveredYear) {
-      setYear(hoveredYear);
-    }
-  }, 10);
-
   const {
     search,
     isEmbedded,
@@ -93,18 +82,7 @@ function CountryGhg(props) {
         <div className={cx(styles.content, { [styles.embedded]: isEmbedded })}>
           <EmissionsMetaProvider />
           {needsWBData && <WbCountryDataProvider />}
-          <CountryGHGEmissions handleYearHover={handleYearHover} />
-          <TabletLandscape>
-            {!isEmbedded && (
-              <div className={styles.map}>
-                <CountryGHGMap
-                  search={search}
-                  className={styles.map}
-                  year={year}
-                />
-              </div>
-            )}
-          </TabletLandscape>
+          <CountryGHGEmissions />
         </div>
       </div>
       {!isPageContained && (
