@@ -5,6 +5,16 @@
 
   padding-top: 30px;
   padding-bottom: 30px;
+
+  @media #{$tablet-landscape} {
+    &.legacy {
+      @include row((8,4));
+
+      &.embedded {
+        @include row(12);
+      }
+    }
+  }
 }
 
 .map {

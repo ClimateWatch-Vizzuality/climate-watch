@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import CountryGHGEmissions from 'components/country/country-ghg-emissions';
+import CountryGHGMap from 'components/country/country-ghg-map';
 import EmissionsMetaProvider from 'providers/ghg-emissions-meta-provider';
 import WbCountryDataProvider from 'providers/wb-country-data-provider';
 import PropTypes from 'prop-types';
+import throttle from 'lodash/throttle';
 import { CALCULATION_OPTIONS } from 'app/data/constants';
+import { TabletLandscape } from 'components/responsive';
 import Button from 'components/button';
 import EmissionSourcesChart from 'components/country/emission-sources-chart';
 import InfoButton from 'components/button/info-button';
@@ -28,6 +31,14 @@ function CountryGhg(props) {
     iso,
     handleInfoClick
   } = props;
+
+  const [year, setYear] = useState(null);
+
+  const handleYearHover = throttle(hoveredYear => {
+    if (hoveredYear) {
+      setYear(hoveredYear);
+    }
+  }, 10);
 
   const renderExploreButton = () => {
     const link = `/ghg-emissions?breakBy=regions-${CALCULATION_OPTIONS.ABSOLUTE_VALUE.value}&regions=${iso}`;
@@ -79,9 +90,30 @@ function CountryGhg(props) {
             <EmissionSourcesChart iso={iso} />
           </React.Fragment>
         )}
-        <div className={cx(styles.content, { [styles.embedded]: isEmbedded })}>
+        <div
+          className={cx(styles.content, {
+            [styles.embedded]: isEmbedded,
+            [styles.legacy]: !FEATURE_ENHANCEMENT_CHANGES
+          })}
+        >
           <EmissionsMetaProvider />
           {needsWBData && <WbCountryDataProvider />}
+          {!FEATURE_ENHANCEMENT_CHANGES && (
+            <React.Fragment>
+              <CountryGHGEmissions handleYearHover={handleYearHover} />
+              <TabletLandscape>
+                {!isEmbedded && (
+                  <div className={styles.map}>
+                    <CountryGHGMap
+                      search={search}
+                      className={styles.map}
+                      year={year}
+                    />
+                  </div>
+                )}
+              </TabletLandscape>
+            </React.Fragment>
+          )}
           <CountryGHGEmissions />
         </div>
       </div>
