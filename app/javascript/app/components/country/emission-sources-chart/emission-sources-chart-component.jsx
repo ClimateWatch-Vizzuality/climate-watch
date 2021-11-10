@@ -8,6 +8,13 @@ import { INDICATOR_SLUGS } from 'data/constants';
 import ReactDOMServer from 'react-dom/server';
 import styles from './emission-sources-chart-styles.scss';
 
+const getOrdinal = i => {
+  if (i === 0) return '1st';
+  if (i === 1) return '2nd';
+  if (i === 2) return '3rd';
+  return `${i}th`;
+};
+
 function EmissionSourcesChart({
   emissions,
   iso,
@@ -29,9 +36,8 @@ function EmissionSourcesChart({
       return renderTooltip(
         i > 5 ? (
           <div>
-            The remaining
-            {otherParties && otherParties.number} Parties represent a share of{' '}
-            {otherParties && otherParties.percentage}%
+            The remaining {otherParties && otherParties.number} Parties
+            represent a share of {otherParties && otherParties.percentage}%
           </div>
         ) : (
           <div>
@@ -106,9 +112,8 @@ function EmissionSourcesChart({
             >
               {iso === e.iso && (
                 <span className={styles.currentCountryText}>
-                  {countryNames[iso]} is the World{"'"}s{' '}
-                  {i === 0 ? '1st' : `${i + 1}rd`} largest emitter, with a total
-                  share of {e.percentage}%{' '}
+                  {countryNames[iso]} is the World{"'"}s {getOrdinal(i)} largest
+                  emitter, with a total share of {e.percentage}%{' '}
                 </span>
               )}
             </span>
