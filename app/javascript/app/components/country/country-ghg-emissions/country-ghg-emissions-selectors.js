@@ -60,6 +60,13 @@ export const getCountry = createSelector(
   getCountryByIso
 );
 
+const getSearch = state => state.search || null;
+
+export const getDataZoomYears = createSelector(getSearch, search => ({
+  min: search && search.start_year,
+  max: search && search.end_year
+}));
+
 export const getCountryName = createSelector(
   [getCountry],
   (country = {}) => country.wri_standard_name || ''
@@ -114,11 +121,13 @@ export const getAllowedSectors = createSelector(
   [getSourceSelected, getSectors],
   (source, sectors) => {
     if (!source || !source.sectors || !sectors) return null;
-    return sectors
-      .filter(d => d.label !== 'Bunker Fuels')
-      .filter(d => source.sectors.indexOf(d.value) > -1)
-      .filter(d => isEmpty(d.aggregatedSectorIds))
-      .filter(d => !d.parentId);
+    return sectors.filter(
+      d =>
+        !d.parentId &&
+        source.sectors.indexOf(d.value) > -1 &&
+        isEmpty(d.aggregatedSectorIds) &&
+        d.label !== 'Bunker Fuels'
+    );
   }
 );
 
@@ -312,6 +321,22 @@ export const getChartData = createSelector(
     return dataParsed;
   }
 );
+
+export const getDataZoomData = createSelector([getChartData], data => {
+  if (!data) return null;
+  const t = data.map(d => {
+    const updatedD = {};
+    updatedD.x = d.x;
+    const intermediateD = { ...d };
+    delete intermediateD.x;
+    updatedD.total = Object.values(intermediateD).reduce(
+      (acc, value) => acc + value,
+      0
+    );
+    return updatedD;
+  });
+  return t;
+});
 
 export const getChartDomain = createSelector([getChartData], data => {
   if (!data) return null;

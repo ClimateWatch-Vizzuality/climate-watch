@@ -7,10 +7,12 @@
   padding-bottom: 30px;
 
   @media #{$tablet-landscape} {
-    @include row((8,4));
+    &.legacy {
+      @include row((8,4));
 
-    &.embedded {
-      @include row(12);
+      &.embedded {
+        @include row(12);
+      }
     }
   }
 }
