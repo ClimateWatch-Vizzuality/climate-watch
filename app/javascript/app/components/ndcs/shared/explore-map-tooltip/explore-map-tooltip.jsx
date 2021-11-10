@@ -7,10 +7,6 @@ import Button from 'components/button';
 import tooltipTheme from 'styles/themes/map-tooltip/map-tooltip.scss';
 import styles from './explore-map-tooltip-styles.scss';
 
-const icons = {
-  'No revision compared to the provious submission': 'A'
-};
-
 const ExploreMapTooltip = props => {
   const {
     isTablet,
@@ -19,7 +15,6 @@ const ExploreMapTooltip = props => {
     tooltipValues,
     id
   } = props;
-
   return (
     <ReactTooltip
       id={id}
@@ -40,18 +35,6 @@ const ExploreMapTooltip = props => {
             className={styles.tooltipValue}
             dangerouslySetInnerHTML={{ __html: tooltipValues.value }} // eslint-disable-line
           />
-          {tooltipValues.indicators && (
-            <ul className={styles.indicators}>
-              {tooltipValues.indicators.map(([indicator, value]) => (
-                <li
-                  key={`indicator-${indicator}-${tooltipValues.countryName}`}
-                  className={styles.indicator}
-                >
-                  {icons[value]} {indicator}
-                </li>
-              ))}
-            </ul>
-          )}
         </div>
       </Button>
     </ReactTooltip>
