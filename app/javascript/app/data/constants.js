@@ -447,7 +447,7 @@ export const ENHANCEMENT_LABELS_WITH_LETTERS = [
     letter: 'R'
   },
   {
-    label: 'Reduced total GHG emissions in 2030',
+    label: 'Reduced Total GHG Emissions in 2030',
     letter: 'M'
   },
   {
