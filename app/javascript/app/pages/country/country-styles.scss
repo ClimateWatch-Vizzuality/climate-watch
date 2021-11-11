@@ -1,12 +1,17 @@
 @import '~styles/layout.scss';
 @import '~styles/settings.scss';
 
-.header {
-  @include row((8, 4));
+.headerContainer {
+  @include row(12);
 
   @media #{$tablet-landscape} {
-    @include row((10, 2));
+    @include row(6);
   }
+}
+
+.compareButton {
+  max-width: 160px;
+  margin-bottom: 30px;
 }
 
 .section {
@@ -24,4 +29,13 @@
 
 .anchorNav {
   @include row('shrink', $wrap: false);
+}
+
+.introDescription {
+  font-size: $font-size-m;
+  font-weight: $font-weight-light;
+}
+
+.bold {
+  font-weight: $font-weight-bold;
 }
