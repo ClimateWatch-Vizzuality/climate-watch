@@ -39,6 +39,7 @@ platforms:
           - CW_HistoricalEmissions_PIK
           - CW_HistoricalEmissions_UNFCCC
           - CW_HistoricalEmissions_GCP
+          - CW_HistoricalEmissions_US
       - name: indc
         importer: ImportIndc
         datasets:
@@ -101,6 +102,8 @@ platforms:
         datasets:
           - population
           - gdp
+          - us_population
+          - us_gdp
       - name: wri_metadata
         importer: ImportWriMetadata
         datasets:
