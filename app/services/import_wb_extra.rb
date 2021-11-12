@@ -63,18 +63,22 @@ class ImportWbExtra
       end
     end
 
-    WbExtra::CountryData.import! location_data
+    WbExtra::CountryData.import! location_data.compact
 
     Rails.logger.info "Locations not included in the data
       #{not_included_locations.uniq}"
   end
 
   def build_location_data(location_code, year)
+    gdp = @gdp_by_location.dig(location_code, year)&.to_f
+    population = @population_by_location.dig(location_code, year)&.to_f
+    return if gdp.nil? && population.nil?
+
     WbExtra::CountryData.new(
       location: find_location(location_code),
       year: year,
-      population: @population_by_location.dig(location_code, year)&.to_f,
-      gdp: @gdp_by_location.dig(location_code, year)&.to_f
+      population: population,
+      gdp: gdp
     )
   end
 
