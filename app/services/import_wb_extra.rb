@@ -1,6 +1,4 @@
 class ImportWbExtra
-  include ClimateWatchEngine::CSVImporter
-
   POPULATION_FILEPATH = "#{CW_FILES_PREFIX}wb_extra/population.csv".freeze
   GDP_FILEPATH = "#{CW_FILES_PREFIX}wb_extra/gdp.csv".freeze
   US_POPULATION_FILEPATH = "#{CW_FILES_PREFIX}wb_extra/us_population.csv".freeze
