@@ -1,3 +1,5 @@
+import { EXTERNAL_COUNTRY_LINKS } from 'data/constants';
+
 export const siteMapData = [
   {
     title: 'Tools',
@@ -22,8 +24,8 @@ export const siteMapData = [
   {
     title: 'Country Platforms',
     links: [
-      { title: 'India', href: 'https://indiaclimateexplorer.org/' },
-      { title: 'Indonesia', href: 'https://indonesia.climatewatchdata.org' }
+      { title: 'India', href: EXTERNAL_COUNTRY_LINKS.india },
+      { title: 'Indonesia', href: EXTERNAL_COUNTRY_LINKS.indonesia }
     ]
   },
   {
