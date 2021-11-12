@@ -5,7 +5,7 @@ import { withRouter } from 'react-router';
 import { isCountryIncluded } from 'app/utils';
 import { isPageContained, isPageNdcp } from 'utils/navigation';
 import { handleAnalytics } from 'utils/analytics';
-
+import { EXTERNAL_COUNTRY_LINKS } from 'data/constants';
 import actions from './countries-select-actions';
 import reducers, { initialState } from './countries-select-reducers';
 import CountrySelectComponent from './countries-select-component';
@@ -80,13 +80,13 @@ class CountrySelectContainer extends PureComponent {
     const markers = [
       {
         coordinates: [79.2167, 20.6448],
-        link: 'https://indiaclimateexplorer.org/',
+        link: EXTERNAL_COUNTRY_LINKS.india,
         name: 'India platform',
         pin
       },
       {
         coordinates: [112.0149, -3.54],
-        link: 'https://indonesia.climatewatchdata.org',
+        link: EXTERNAL_COUNTRY_LINKS.indonesia,
         name: 'Indonesia Platform',
         pin
       }

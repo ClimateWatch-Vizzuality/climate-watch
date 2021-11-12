@@ -472,3 +472,8 @@ export const ENHANCEMENT_LABELS_WITH_LETTERS = [
     letter: 'I'
   }
 ];
+
+export const EXTERNAL_COUNTRY_LINKS = {
+  indonesia: 'https://indonesia.climatewatchdata.org',
+  india: 'https://indiaclimateexplorer.org/'
+};
