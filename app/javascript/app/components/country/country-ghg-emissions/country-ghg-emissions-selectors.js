@@ -241,6 +241,14 @@ export const getQuantificationsData = createSelector(
         qParsed.push(valuesParsed);
       });
     });
+    const netZeroPoint = {
+      x: 2050,
+      y: 0,
+      label: QUANTIFICATIONS_CONFIG.net_zero.label,
+      isRange: false
+    };
+    qParsed.push(netZeroPoint);
+
     // Sort desc to avoid z-index problem in the graph
     return orderBy(qParsed, 'y', 'desc');
   }
@@ -249,8 +257,8 @@ export const getQuantificationsData = createSelector(
 export const getQuantificationsTagsConfig = createSelector(
   getQuantifications,
   quantifications => {
-    if (!quantifications) return [];
-    const config = [];
+    const config = [QUANTIFICATIONS_CONFIG.net_zero];
+    if (!quantifications) return config;
     const bau = quantifications.find(
       q => q.label.includes('BAU') && q.value !== null
     );
