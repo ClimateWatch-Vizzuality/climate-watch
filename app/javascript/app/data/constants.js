@@ -73,7 +73,8 @@ export const CALCULATION_OPTIONS = {
 export const QUANTIFICATION_COLORS = {
   BAU: '#113750',
   QUANTIFIED: '#ffc735',
-  NOT_QUANTIFIABLE: '#868697'
+  NOT_QUANTIFIABLE: '#868697',
+  NET_ZERO: '#D3187C'
 };
 
 export const QUANTIFICATIONS_CONFIG = {
@@ -85,6 +86,10 @@ export const QUANTIFICATIONS_CONFIG = {
   not_quantifiable: {
     label: 'Target not quantifiable',
     color: QUANTIFICATION_COLORS.NOT_QUANTIFIABLE
+  },
+  net_zero: {
+    label: 'Net-Zero Target',
+    color: QUANTIFICATION_COLORS.NET_ZERO
   }
 };
 
@@ -472,3 +477,8 @@ export const ENHANCEMENT_LABELS_WITH_LETTERS = [
     letter: 'I'
   }
 ];
+
+export const EXTERNAL_COUNTRY_LINKS = {
+  indonesia: 'https://indonesia.climatewatchdata.org',
+  india: 'https://indiaclimateexplorer.org/'
+};

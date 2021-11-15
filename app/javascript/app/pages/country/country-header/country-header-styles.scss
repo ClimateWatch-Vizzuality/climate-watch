@@ -13,6 +13,14 @@
   position: relative;
 }
 
+.legacyHeader {
+  @include row((8, 4));
+
+  @media #{$tablet-landscape} {
+    @include row((10, 2));
+  }
+}
+
 .compareButton {
   max-width: 160px;
   margin-bottom: 30px;

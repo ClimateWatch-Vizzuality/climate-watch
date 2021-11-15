@@ -18,8 +18,7 @@ import cx from 'classnames';
 import layout from 'styles/layout';
 import styles from './country-ghg-styles.scss';
 
-const FEATURE_ENHANCEMENT_CHANGES =
-  process.env.FEATURE_ENHANCEMENT_CHANGES === 'true';
+const FEATURE_COUNTRY_CHANGES = process.env.FEATURE_COUNTRY_CHANGES === 'true';
 
 function CountryGhg(props) {
   const {
@@ -63,7 +62,7 @@ function CountryGhg(props) {
   return (
     <div>
       <div>
-        {FEATURE_ENHANCEMENT_CHANGES && (
+        {FEATURE_COUNTRY_CHANGES && (
           <React.Fragment>
             <div className={styles.titleRow}>
               <div>
@@ -93,12 +92,14 @@ function CountryGhg(props) {
         <div
           className={cx(styles.content, {
             [styles.embedded]: isEmbedded,
-            [styles.legacy]: !FEATURE_ENHANCEMENT_CHANGES
+            [styles.legacy]: !FEATURE_COUNTRY_CHANGES
           })}
         >
           <EmissionsMetaProvider />
           {needsWBData && <WbCountryDataProvider />}
-          {!FEATURE_ENHANCEMENT_CHANGES && (
+          {FEATURE_COUNTRY_CHANGES ? (
+            <CountryGHGEmissions />
+          ) : (
             <React.Fragment>
               <CountryGHGEmissions handleYearHover={handleYearHover} />
               <TabletLandscape>
@@ -114,7 +115,6 @@ function CountryGhg(props) {
               </TabletLandscape>
             </React.Fragment>
           )}
-          <CountryGHGEmissions />
         </div>
       </div>
       {!isPageContained && (

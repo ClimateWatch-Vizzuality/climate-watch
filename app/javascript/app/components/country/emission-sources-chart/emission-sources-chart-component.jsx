@@ -134,21 +134,6 @@ function EmissionSourcesChart({
             />
           </svg>
         )}
-      {/* <svg height={height} xmlns="http://www.w3.org/2000/svg">
-        <g>
-          <path
-            d={`
-              m${startPoint},0 q${startPoint /
-              2},${height} -${startPoint},${height}
-              L${totalWidth},${height}
-              m0,0 q-${calculatedWidth / 2},-${height /
-              2} -${calculatedWidth},-${height}
-              L-${width},0`}
-            strokeLinecap="square"
-            fill="#cccdcf"
-          />
-        </g>
-      </svg> */}
       <div className={styles.countrySectors}>
         {sectorData &&
           sectorData.map((e, i) => (
