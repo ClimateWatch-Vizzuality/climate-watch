@@ -27,6 +27,8 @@ import {
   DATA_SCALE
 } from 'data/constants';
 
+const FEATURE_COUNTRY_CHANGES = process.env.FEATURE_COUNTRY_CHANGES === 'true';
+
 // constants needed for data parsing
 const BASE_COLORS = ['#25597C', '#DFE9ED'];
 
@@ -247,7 +249,10 @@ export const getQuantificationsData = createSelector(
       label: QUANTIFICATIONS_CONFIG.net_zero.label,
       isRange: false
     };
-    qParsed.push(netZeroPoint);
+
+    if (FEATURE_COUNTRY_CHANGES) {
+      qParsed.push(netZeroPoint);
+    }
 
     // Sort desc to avoid z-index problem in the graph
     return orderBy(qParsed, 'y', 'desc');
@@ -275,7 +280,10 @@ export const getQuantificationsTagsConfig = createSelector(
     if (nq) {
       config.push(QUANTIFICATIONS_CONFIG.not_quantifiable);
     }
-    config.push(QUANTIFICATIONS_CONFIG.net_zero);
+    if (FEATURE_COUNTRY_CHANGES) {
+      config.push(QUANTIFICATIONS_CONFIG.net_zero);
+    }
+
     return config;
   }
 );
