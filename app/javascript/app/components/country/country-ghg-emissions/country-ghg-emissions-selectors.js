@@ -257,7 +257,7 @@ export const getQuantificationsData = createSelector(
 export const getQuantificationsTagsConfig = createSelector(
   getQuantifications,
   quantifications => {
-    const config = [QUANTIFICATIONS_CONFIG.net_zero];
+    const config = [];
     if (!quantifications) return config;
     const bau = quantifications.find(
       q => q.label.includes('BAU') && q.value !== null
@@ -275,6 +275,7 @@ export const getQuantificationsTagsConfig = createSelector(
     if (nq) {
       config.push(QUANTIFICATIONS_CONFIG.not_quantifiable);
     }
+    config.push(QUANTIFICATIONS_CONFIG.net_zero);
     return config;
   }
 );
