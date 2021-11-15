@@ -3,7 +3,10 @@ module Api
     module CountryProfile
       class ValuesController < ApiController
         def index
-          values = ::CountryProfile::Value.all.order(:location_id, :indicator_id)
+          values = ::CountryProfile::Value.
+            all.
+            includes(:location, :indicator).
+            order(:location_id, :indicator_id)
 
           render json: values,
                  adapter: :json,
