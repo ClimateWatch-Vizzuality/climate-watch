@@ -97,7 +97,7 @@ function CountryHeader(props) {
   }
   return (
     <React.Fragment>
-      <div className={styles.header}>
+      <div className={styles.legacyHeader}>
         <Intro title={country.name} description={description} />
         {!isPageContained && (
           <Button
