@@ -83,27 +83,29 @@ export const getDescriptionText = createSelector(
 );
 
 export const getLegacyDescriptionText = createSelector(
-  [getSocioeconomicsData],
-  socioeconomicsData => {
-    if (!socioeconomicsData) return null;
+  [getSocioeconomicsData, getIso],
+  (socioeconomicsData, iso) => {
+    if (!socioeconomicsData || !socioeconomicsData.data) return null;
+    const { data } = socioeconomicsData;
+    const isoData = data[iso];
+    if (!isoData) return null;
     const gdpPerCapitaLocale =
-      socioeconomicsData.gdp_per_capita &&
-      truncateDecimals(socioeconomicsData.gdp_per_capita, 0).toLocaleString();
+      isoData.gdp_per_capita &&
+      truncateDecimals(isoData.gdp_per_capita, 0).toLocaleString();
     const populationLocale =
-      socioeconomicsData.population &&
-      socioeconomicsData.population.toLocaleString();
+      isoData.population && isoData.population.toLocaleString();
     const populationGrowthLocale = (
-      Math.round(socioeconomicsData.population_growth * 100) / 100
+      Math.round(isoData.population_growth * 100) / 100
     ).toLocaleString();
 
     let text = '';
-    if (gdpPerCapitaLocale && socioeconomicsData.gdp_per_capita_rank) {
-      text += `GDP per capita (${socioeconomicsData.gdp_per_capita_year}) - USD
-      ${gdpPerCapitaLocale} (ranked ${socioeconomicsData.gdp_per_capita_rank} globally)
+    if (gdpPerCapitaLocale && isoData.gdp_per_capita_rank) {
+      text += `GDP per capita (${isoData.gdp_per_capita_year}) - USD
+      ${gdpPerCapitaLocale} (ranked ${isoData.gdp_per_capita_rank} globally)
       <br/>`;
     }
     if (populationLocale && populationGrowthLocale) {
-      text += `Population (${socioeconomicsData.population_year}) - ${populationLocale}
+      text += `Population (${isoData.population_year}) - ${populationLocale}
       (${populationGrowthLocale}% annual growth)`;
     }
     return text;
