@@ -52,12 +52,11 @@ Rails.application.routes.draw do
       end
 
       namespace :country_profile, only: [:index] do
-        resources :values, only: [:index]
+        resources :indicators, only: [:index]
       end
 
       resources :adaptations, only: [:index]
       resources :quantifications, only: [:index]
-      resources :country_profiles, only: [:index]
 
       resources :locations, param: :code, only: [] do
         resources :socioeconomics, only: [:index] do
