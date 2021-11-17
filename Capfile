@@ -39,5 +39,11 @@ require "capistrano/rails/migrations"
 require "capistrano/passenger"
 require 'capistrano/yarn'
 
+require 'capistrano/sidekiq'
+install_plugin Capistrano::Sidekiq # Default sidekiq tasks
+# Then select your service manager
+install_plugin Capistrano::Sidekiq::Systemd
+# service unit in /etc/systemd/user/sidekiq.service
+
 # Load custom tasks from `lib/capistrano/tasks` if you have any defined
 Dir.glob("lib/capistrano/tasks/*.rake").each { |r| import r }

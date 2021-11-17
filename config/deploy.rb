@@ -55,6 +55,8 @@ set :rvm_ruby_version, '2.5.9'
 
 set :yarn_flags, '--production --silent --no-progress --frozen-lockfile --no-cache'
 
+set :sidekiq_service_unit_user, :system
+
 namespace :deploy do
   after 'yarn:install', 'deploy:import_maxmind'
   after 'deploy:migrate', 'deploy:admin_boilerplate:create'
