@@ -32,6 +32,9 @@ ActiveRecord::Migration.maintain_test_schema!
 RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
+  config.request_snapshots_dir = 'spec/fixtures/snapshots'
+  # config.request_snapshots_dynamic_attributes = %w(id created_at updated_at)
+  # config.request_snapshots_ignore_order = %w(indicator_values)
 
   config.include Devise::Test::ControllerHelpers, type: :controller
   config.include FactoryBot::Syntax::Methods

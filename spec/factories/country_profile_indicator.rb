@@ -8,7 +8,7 @@ FactoryBot.define do
         location { build(:location) }
       end
 
-      after(:value) do |i, evaluator|
+      after(:create) do |i, evaluator|
         create_list :country_profile_value, 4, indicator: i, location: evaluator.location
       end
     end

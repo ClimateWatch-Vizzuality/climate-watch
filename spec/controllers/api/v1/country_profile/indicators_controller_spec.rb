@@ -13,8 +13,7 @@ describe Api::V1::CountryProfile::IndicatorsController, type: :controller do
 
     it 'lists all indicators' do
       get :index
-      parsed_body = JSON.parse(response.body)
-      expect(parsed_body['data'].length).to eq(3)
+      expect(response.body).to match_snapshot('api/v1/country_profile/indicators')
     end
   end
 end

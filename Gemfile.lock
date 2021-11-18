@@ -317,6 +317,10 @@ GEM
       actionpack (>= 5.0)
       railties (>= 5.0)
     rexml (3.2.5)
+    rspec (3.9.0)
+      rspec-core (~> 3.9.0)
+      rspec-expectations (~> 3.9.0)
+      rspec-mocks (~> 3.9.0)
     rspec-collection_matchers (1.2.0)
       rspec-expectations (>= 2.99.0.beta1)
     rspec-core (3.9.3)
@@ -335,6 +339,8 @@ GEM
       rspec-expectations (~> 3.9.0)
       rspec-mocks (~> 3.9.0)
       rspec-support (~> 3.9.0)
+    rspec-request_snapshot (0.7.3)
+      rspec (~> 3.0)
     rspec-support (3.9.4)
     rubocop (1.23.0)
       parallel (~> 1.10)
@@ -473,6 +479,7 @@ DEPENDENCIES
   rails-controller-testing
   rspec-collection_matchers
   rspec-rails (~> 3.5)
+  rspec-request_snapshot
   rubocop
   rubyzip
   sassc-rails (~> 2.1.2)

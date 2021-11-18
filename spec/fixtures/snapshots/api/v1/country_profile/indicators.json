@@ -1,0 +1,94 @@
+{
+  "data": [
+    {
+      "slug": "indicator_slug_1",
+      "name": "Indicator name",
+      "values": [
+        {
+          "location": "AAB",
+          "category": null,
+          "year": 1990,
+          "value": "10"
+        },
+        {
+          "location": "AAB",
+          "category": null,
+          "year": 1990,
+          "value": "10"
+        },
+        {
+          "location": "AAB",
+          "category": null,
+          "year": 1990,
+          "value": "10"
+        },
+        {
+          "location": "AAB",
+          "category": null,
+          "year": 1990,
+          "value": "10"
+        }
+      ]
+    },
+    {
+      "slug": "indicator_slug_2",
+      "name": "Indicator name",
+      "values": [
+        {
+          "location": "AAB",
+          "category": null,
+          "year": 1990,
+          "value": "10"
+        },
+        {
+          "location": "AAB",
+          "category": null,
+          "year": 1990,
+          "value": "10"
+        },
+        {
+          "location": "AAB",
+          "category": null,
+          "year": 1990,
+          "value": "10"
+        },
+        {
+          "location": "AAB",
+          "category": null,
+          "year": 1990,
+          "value": "10"
+        }
+      ]
+    },
+    {
+      "slug": "indicator_slug_3",
+      "name": "Indicator name",
+      "values": [
+        {
+          "location": "AAB",
+          "category": null,
+          "year": 1990,
+          "value": "10"
+        },
+        {
+          "location": "AAB",
+          "category": null,
+          "year": 1990,
+          "value": "10"
+        },
+        {
+          "location": "AAB",
+          "category": null,
+          "year": 1990,
+          "value": "10"
+        },
+        {
+          "location": "AAB",
+          "category": null,
+          "year": 1990,
+          "value": "10"
+        }
+      ]
+    }
+  ]
+}
