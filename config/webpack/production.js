@@ -3,6 +3,7 @@
 /* eslint global-require: 0 */
 
 const TerserPlugin = require('terser-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
 const CompressionPlugin = require('compression-webpack-plugin');
@@ -17,8 +18,9 @@ module.exports = merge(sharedConfig, {
     minimize: true,
     minimizer: [new TerserPlugin()]
   },
-  target: 'defaults',
+  target: 'web',
   plugins: [
+    new MiniCssExtractPlugin({ filename: '[name]-[hash].css' }),
     new webpack.EnvironmentPlugin([
       'GOOGLE_ANALYTICS_ID',
       'USER_REPORT_KEY',
@@ -30,8 +32,8 @@ module.exports = merge(sharedConfig, {
     new CompressionPlugin({
       asset: '[path].gz[query]',
       algorithm: 'gzip',
-      test: /\.(js|css|html|json|ico|svg|eot|otf|ttf)$/,
-      deleteOriginalAssets: 'keep-source-map'
+      test: /\.(js|css|html|json|ico|svg|eot|otf|ttf)$/
+      /* deleteOriginalAssets: 'keep-source-map' */
     })
   ]
 });

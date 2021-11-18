@@ -3,7 +3,7 @@
 /* eslint global-require: 0 */
 /* eslint import/no-dynamic-require: 0 */
 
-// const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const webpack = require('webpack');
 const { basename, dirname, join, relative, resolve } = require('path');
@@ -40,7 +40,6 @@ const entry = packPaths.reduce((map, entryParam) => {
 const sourceMap = env.NODE_ENV === 'development';
 
 const sassConfig = [
-  // MiniCssExtractPlugin.loader,
   {
     loader: 'css-loader',
     options: {
@@ -61,11 +60,13 @@ const sassConfig = [
   }
 ];
 
+const prodConfig = [MiniCssExtractPlugin.loader, ...sassConfig];
+
 const devConfig = [{ loader: 'style-loader' }, ...sassConfig];
 
 const sassLoader = {
   test: /\.(scss|sass)$/i,
-  use: devConfig,
+  use: env.NODE_ENV === 'production' ? prodConfig : devConfig,
   exclude: /node_modules/
 };
 module.exports = {
@@ -164,7 +165,6 @@ module.exports = {
     new webpack.ProvidePlugin({
       process: 'process/browser'
     })
-    // new MiniCssExtractPlugin({ filename: env.NODE_ENV === 'production' ? '[name]-[hash].css' : '[name].css' })
   ],
 
   resolve: {
@@ -184,6 +184,7 @@ module.exports = {
     },
     fallback: {
       path: require.resolve('path-browserify'),
+      querystring: require.resolve('querystring-es3'),
       process: false,
       fs: false,
       tls: false,
@@ -192,7 +193,8 @@ module.exports = {
       http: false,
       https: false,
       stream: false,
-      crypto: false
+      crypto: false,
+      util: false
     }
   },
 
