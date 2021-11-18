@@ -178,7 +178,6 @@
     "precommit": "1.2.2",
     "prettier": "^1.19.1",
     "process": "^0.11.10",
-    "rails-erb-loader": "5.2.1",
     "react-hot-loader": "3.0.0-beta.7",
     "redux-logger": "3.0.6",
     "release": "github:vizzuality/release#4.0.0",

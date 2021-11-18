@@ -118,26 +118,12 @@ module.exports = {
         ]
       },
       {
-        test: /\.js(\.erb)?$/,
-        exclude: /node_modules/,
-        loader: 'babel-loader'
-      },
-      {
         test: /\.(css)$/i,
         use: [{ loader: 'style-loader' }, { loader: 'raw-loader' }],
         include: /node_modules/
       },
       {
-        test: /\.erb$/,
-        enforce: 'pre',
-        exclude: /node_modules/,
-        loader: 'rails-erb-loader',
-        options: {
-          runner: 'bin/rails runner'
-        }
-      },
-      {
-        test: /\.(js|jsx)?(\.erb)?$/,
+        test: /\.(js|jsx)$/,
         exclude: /node_modules/,
         loader: 'babel-loader'
       },
