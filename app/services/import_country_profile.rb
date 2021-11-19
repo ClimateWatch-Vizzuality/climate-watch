@@ -39,7 +39,12 @@ class ImportCountryProfile
 
   def import_indicators(path)
     import_each_with_logging(S3CSVReader.read(path), path) do |row|
-      CountryProfile::Indicator.create_with(name: row[:long_name]).find_or_create_by!(
+      CountryProfile::Indicator.create_with(
+        name: row[:long_name],
+        short_name: row[:short_name],
+        file: row[:file],
+        metadata_source: row[:metadata_info_button]
+      ).find_or_create_by!(
         slug: row[:column_name]
       )
     end

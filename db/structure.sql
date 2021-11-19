@@ -570,6 +570,9 @@ CREATE TABLE public.country_profile_indicators (
     id bigint NOT NULL,
     slug character varying NOT NULL,
     name character varying,
+    short_name character varying,
+    metadata_source character varying,
+    file character varying,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
