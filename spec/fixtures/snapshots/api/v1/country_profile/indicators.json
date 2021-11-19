@@ -6,29 +6,27 @@
       "values": [
         {
           "location": "AAB",
-          "category": null,
           "year": 1990,
           "value": "10"
         },
         {
           "location": "AAB",
-          "category": null,
           "year": 1990,
           "value": "10"
         },
         {
           "location": "AAB",
-          "category": null,
           "year": 1990,
           "value": "10"
         },
         {
           "location": "AAB",
-          "category": null,
           "year": 1990,
           "value": "10"
         }
-      ]
+      ],
+      "short_name": "Indicator short",
+      "metadata_source": "CAIT"
     },
     {
       "slug": "indicator_slug_2",
@@ -36,29 +34,27 @@
       "values": [
         {
           "location": "AAB",
-          "category": null,
           "year": 1990,
           "value": "10"
         },
         {
           "location": "AAB",
-          "category": null,
           "year": 1990,
           "value": "10"
         },
         {
           "location": "AAB",
-          "category": null,
           "year": 1990,
           "value": "10"
         },
         {
           "location": "AAB",
-          "category": null,
           "year": 1990,
           "value": "10"
         }
-      ]
+      ],
+      "short_name": "Indicator short",
+      "metadata_source": "CAIT"
     },
     {
       "slug": "indicator_slug_3",
@@ -66,29 +62,27 @@
       "values": [
         {
           "location": "AAB",
-          "category": null,
           "year": 1990,
           "value": "10"
         },
         {
           "location": "AAB",
-          "category": null,
           "year": 1990,
           "value": "10"
         },
         {
           "location": "AAB",
-          "category": null,
           "year": 1990,
           "value": "10"
         },
         {
           "location": "AAB",
-          "category": null,
           "year": 1990,
           "value": "10"
         }
-      ]
+      ],
+      "short_name": "Indicator short",
+      "metadata_source": "CAIT"
     }
   ]
 }

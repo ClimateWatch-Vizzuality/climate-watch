@@ -4,6 +4,8 @@ module Api
       class IndicatorSerializer < ActiveModel::Serializer
         attribute :slug
         attribute :name
+        attribute :short_name
+        attribute :metadata_source
 
         has_many :values, serializer: ValueSerializer
       end

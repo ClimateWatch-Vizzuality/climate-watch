@@ -2,6 +2,8 @@ FactoryBot.define do
   factory :country_profile_indicator, class: 'CountryProfile::Indicator' do
     sequence(:slug) { |n| "indicator_slug_#{n}" }
     name { 'Indicator name' }
+    short_name { 'Indicator short' }
+    metadata_source { 'CAIT' }
 
     trait :with_values do
       transient do

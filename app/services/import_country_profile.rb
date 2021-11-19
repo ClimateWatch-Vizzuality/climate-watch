@@ -161,7 +161,7 @@ class ImportCountryProfile
     return if value.blank?
 
     value = CountryProfile::Value.new(
-      location: find_location(row[:iso]),
+      location: find_location(row[:iso] || row[:country]),
       indicator: find_indicator(indicator),
       value: value
     )

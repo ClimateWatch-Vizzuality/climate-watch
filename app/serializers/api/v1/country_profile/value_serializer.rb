@@ -2,6 +2,8 @@ module Api
   module V1
     module CountryProfile
       class ValueSerializer < ActiveModel::Serializer
+        include NullAttributeRemover
+
         attribute :location
         attribute :category
         attribute :year
