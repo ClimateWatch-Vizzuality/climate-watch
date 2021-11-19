@@ -7,6 +7,7 @@ import Loading from 'components/loading';
 import DefinitionList from 'components/definition-list';
 import CustomDefinitionList from 'components/custom-definition-list';
 import NdcsDocumentsProvider from 'providers/documents-provider';
+import { CATEGORY_SLUGS } from 'data/constants';
 
 import layout from 'styles/layout.scss';
 import styles from './ndcs-country-accordion-styles.scss';
@@ -72,7 +73,7 @@ class NdcsCountryAccordion extends PureComponent {
       if (
         FEATURE_ENHANCEMENT_CHANGES &&
         category === 'overview' &&
-        section.slug === 'overview_of_commitment'
+        section.slug === CATEGORY_SLUGS.commitmentSummary
       ) {
         const comparisonData = ndcsData.find(
           s => s.slug === 'overall_comparison_with_previous_ndc'

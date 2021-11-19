@@ -422,6 +422,10 @@ export const INDICATOR_SLUGS = {
   enhancements: 'ndce_status_2020'
 };
 
+export const CATEGORY_SLUGS = {
+  commitmentSummary: 'summary_of_commitment'
+};
+
 export const ENHANCEMENT_VALUE_COLORS = {
   blue: '#62C0FF',
   red: '#FF6C2F',
