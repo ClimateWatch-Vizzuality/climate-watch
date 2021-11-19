@@ -85,7 +85,7 @@ group :development do
 end
 
 group :test do
-  gem 'json-schema'
+  gem 'json-schema', '2.8.0'
   gem 'simplecov', require: false
   gem 'test-prof'
   gem 'super_diff'
