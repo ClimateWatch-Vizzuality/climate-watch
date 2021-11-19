@@ -127,14 +127,11 @@
   transform: translateY(1px);
 }
 
-.covidTooltip {
-  line-height: $line-height-medium;
-}
-
 .summaryItemsContainer {
   display: flex;
   flex-direction: column;
   min-height: 432px;
+  height: 100%;
 }
 
 .separator {
