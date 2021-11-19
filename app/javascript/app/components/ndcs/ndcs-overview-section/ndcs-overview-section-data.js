@@ -44,11 +44,11 @@ export const commitmentsData = [
     questions: [
       {
         questionText:
-          'How many Parties intend to enhance ambition or action in their NDCs?',
+          'How many Parties submitted a new or updated NDC with reduced total GHG emissions in 2030?',
         link: '/2020-ndc-tracker',
         slug: INDICATOR_SLUGS.enhancements,
         metadataSlug: 'ndc_cw',
-        answerLabel: 'Intends to Enhance Ambition or Action in 2020 NDC'
+        answerLabel: 'Submitted New or Updated NDC with Reduced Total Emissions'
       },
       {
         questionText: 'How many Parties submitted an updated or second NDC?',
