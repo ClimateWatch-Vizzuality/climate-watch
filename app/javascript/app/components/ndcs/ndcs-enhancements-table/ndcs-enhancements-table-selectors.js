@@ -140,7 +140,7 @@ export const tableRemoveIsoFromData = createSelector(
         const hasPreviousSubmission = [
           ENHANCEMENT_LABEL_SLUGS.SUBMITTED_2020,
           ENHANCEMENT_LABEL_SLUGS.ENHANCED_MITIGATION
-        ].includes(d['NDC Status']);
+        ].includes(d['NDC Status'].slug);
         updatedD[
           'Overall comparison with previous NDC'
         ] = ENHANCEMENT_LABELS_WITH_LETTERS.map(enhancementLabelWithLetter => ({
@@ -149,8 +149,8 @@ export const tableRemoveIsoFromData = createSelector(
         }));
 
         updatedD['Compare with previous submissions'] = hasPreviousSubmission
-          ? `<a href="${compareLink.link}" title="Compare with previous submissions">Compare with previous submissions</a>`
-          : 'No comparison available';
+          ? `<a href="${compareLink.link}" title=${d['NDCE Compare']}">${d['NDCE Compare']}</a>`
+          : d['NDCE Compare'];
       }
       delete updatedD.iso;
       return updatedD;

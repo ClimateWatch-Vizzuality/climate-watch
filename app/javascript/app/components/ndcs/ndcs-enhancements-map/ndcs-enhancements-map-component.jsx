@@ -12,12 +12,9 @@ import NdcsProvider from 'providers/ndcs-provider';
 import AbbrReplace, { replaceStringAbbr } from 'components/abbr-replace';
 import { CheckInput } from 'cw-components';
 import Loading from 'components/loading';
-import Icon from 'components/icon';
-import infoIcon from 'assets/icons/info.svg';
 import ModalMetadata from 'components/modal-metadata';
 import ModalPngDownload from 'components/modal-png-download';
 import NDCSEnhancementsTooltip from 'components/ndcs/ndcs-enhancements-map/ndcs-enhancements-tooltip';
-import ReactTooltip from 'react-tooltip';
 import blueCheckboxTheme from 'styles/themes/checkbox/blue-checkbox.scss';
 import { Link } from 'react-router-dom';
 import { ENHANCEMENT_LABEL_SLUGS, INDICATOR_SLUGS } from 'data/constants';
@@ -183,21 +180,18 @@ const NDCSEnhancementsMap = ({
         summaryData[ENHANCEMENT_LABEL_SLUGS.ENHANCED_MITIGATION].countries,
         isPNG
       )}
-      {!isPNG && <span className={styles.separator} />}
-      {renderSummaryItem(
-        summaryData[ENHANCEMENT_LABEL_SLUGS.INTENDS_TO_ENHANCE].countries,
-        isPNG
-      )}
+      {!FEATURE_ENHANCEMENT_CHANGES &&
+        !isPNG &&
+        summaryData[ENHANCEMENT_LABEL_SLUGS.INTENDS_TO_ENHANCE] && (
+          <span className={styles.separator} />
+        )}
+      {!FEATURE_ENHANCEMENT_CHANGES &&
+        summaryData[ENHANCEMENT_LABEL_SLUGS.INTENDS_TO_ENHANCE] &&
+        renderSummaryItem(
+          summaryData[ENHANCEMENT_LABEL_SLUGS.INTENDS_TO_ENHANCE].countries,
+          isPNG
+        )}
     </div>
-  );
-  const covidText = (
-    <React.Fragment>
-      Some nations have signaled that the impacts of the coronavirus pandemic
-      may delay their submission of updated or enhanced NDCs. While many will
-      submit in 2020 as scheduled, some have indicated they may do so in 2021
-      ahead of COP26. The information below does not reflect these possible
-      delays.
-    </React.Fragment>
   );
   return (
     <div className={styles.ndcTracker}>
@@ -216,23 +210,7 @@ const NDCSEnhancementsMap = ({
             <div className={styles.containerUpper}>
               <div className={styles.containerCharts}>
                 {!loading && summaryData && (
-                  <div className={styles.summary}>
-                    <div
-                      data-tip
-                      data-for="covid-update-tooltip"
-                      className={styles.summaryTitle}
-                    >
-                      COVID-19 Update
-                      <Icon icon={infoIcon} className={styles.infoIcon} />
-                    </div>
-                    <ReactTooltip
-                      id="covid-update-tooltip"
-                      className={styles.covidTooltip}
-                    >
-                      {covidText}
-                    </ReactTooltip>
-                    {renderSummaryItems()}
-                  </div>
+                  <div className={styles.summary}>{renderSummaryItems()}</div>
                 )}
               </div>
               <div className={styles.containerMap}>
@@ -271,7 +249,6 @@ const NDCSEnhancementsMap = ({
                 {indicator && renderMapLegend(true)}
                 <div className={styles.pngSummary}>
                   {!loading && summaryData && renderSummaryItems(true)}
-                  <div className={styles.pngCovidText}>{covidText}</div>
                 </div>
               </div>
             </ModalPngDownload>

@@ -1,0 +1,55 @@
+@import '~styles/layout.scss';
+
+.gridContainer {
+  background-color: $gray3;
+}
+
+.grid {
+  @include row(12);
+
+  padding-top: $gutter-padding + $gutter-padding / 2;
+  padding-bottom: $gutter-padding * 2;
+}
+
+.container {
+  margin-bottom: $gutter-padding;
+}
+
+.title {
+  font-size: $font-size-large;
+  font-weight: $font-weight;
+  color: $theme-color;
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.item {
+  height: 130px;
+  width: 145px;
+  text-align: center;
+}
+
+.previousComparison {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: $gutter-padding;
+}
+
+.icon {
+  width: 30px;
+  height: 30px;
+  margin: $gutter-padding 0 $gutter-padding / 2;
+}
+
+.valueDescription {
+  margin-top: 10px;
+  font-size: $font-size-sm;
+  color: $gray1;
+}
+
+.loading {
+  min-height: 462px;
+}

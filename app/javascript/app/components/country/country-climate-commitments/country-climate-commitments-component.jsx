@@ -1,11 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import NDCSPreviousComparisonProvider from 'providers/ndcs-previous-comparison-provider';
 import CountriesDocumentsProvider from 'providers/countries-documents-provider';
 import Icon from 'components/icon';
 import Loading from 'components/loading';
 import Button from 'components/button';
-import PreviousSubmissionIcon from 'components/previous-submission-icon';
 import submittedIcon from 'assets/icons/compare-submitted.svg';
 import notSubmittedIcon from 'assets/icons/compare-not-submitted.svg';
 import intendsIcon from 'assets/icons/compare-intends.svg';
@@ -13,12 +11,13 @@ import { handleAnalytics } from 'utils/analytics';
 import { SUBMISSION_ICON_VALUE } from 'data/country-documents';
 import NDCSProvider from 'providers/ndcs-provider';
 import { INDICATOR_SLUGS } from 'data/constants';
+import arcOfAmbition from 'assets/countries/arc-of-ambition.png';
 import styles from './country-climate-commitments-styles.scss';
 
 function CountryClimateCommitments({
   countriesDocumentsValues,
-  previousComparisonValues,
-  iso
+  iso,
+  countryName
 }) {
   const countryDocumentsIcons = {
     [SUBMISSION_ICON_VALUE.yes]: submittedIcon,
@@ -36,48 +35,35 @@ function CountryClimateCommitments({
     countriesDocumentsValues && (
       <div className={styles.documentsContainer}>
         <div className={styles.documentsTitle}>
-          <h3 className={styles.title}>Submitted climate submissions</h3>
+          <h3 className={styles.title}>
+            {countryName
+              ? `What climate commitments has ${countryName} submitted?`
+              : 'What climate commitments have been submitted?'}
+          </h3>
           {renderButton()}
         </div>
-        <div className={styles.documents}>
-          {countriesDocumentsValues.map(([key, value]) => (
-            <div className={styles.item}>
-              {countryDocumentsIcons[+value] && (
-                <React.Fragment>
-                  <Icon
-                    icon={countryDocumentsIcons[+value]}
-                    className={styles.icon}
-                  />
-                  <span>{key}</span>
-                  <div className={styles.valueDescription}>
-                    {countryDocumentsLabels[+value]}
-                  </div>
-                </React.Fragment>
-              )}
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-
-  const renderPreviousComparisonPart = () =>
-    previousComparisonValues && (
-      <div className={styles.previousComparisonContainer}>
-        <h3 className={styles.title}>
-          Enhancements compared with previous submission
-        </h3>
-        <div className={styles.previousComparison}>
-          {previousComparisonValues.map(([key, value]) => (
-            <div className={styles.item}>
-              <PreviousSubmissionIcon
-                value={value}
-                tooltipId="definition-icon"
-                className={styles.icon}
-              />
-              <div className>{key}</div>
-              <div className={styles.valueDescription}>{value}</div>
-            </div>
-          ))}
+        <div className={styles.ambitionContainer}>
+          <div className={styles.arcOfAmbition}>
+            <img src={arcOfAmbition} title="Arc of ambition" />
+          </div>
+          <div className={styles.documents}>
+            {countriesDocumentsValues.map(([key, value]) => (
+              <div className={styles.item}>
+                {countryDocumentsIcons[+value] && (
+                  <React.Fragment>
+                    <Icon
+                      icon={countryDocumentsIcons[+value]}
+                      className={styles.icon}
+                    />
+                    <span>{key}</span>
+                    <div className={styles.valueDescription}>
+                      {countryDocumentsLabels[+value]}
+                    </div>
+                  </React.Fragment>
+                )}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     );
@@ -99,17 +85,13 @@ function CountryClimateCommitments({
     <div className={styles.gridContainer}>
       <div className={styles.grid}>
         <div className={styles.container}>
-          {countriesDocumentsValues && previousComparisonValues ? (
-            <React.Fragment>
-              {renderDocumentsPart()}
-              {renderPreviousComparisonPart()}
-            </React.Fragment>
+          {countriesDocumentsValues ? (
+            <React.Fragment>{renderDocumentsPart()}</React.Fragment>
           ) : (
             <Loading light className={styles.loading} />
           )}
         </div>
       </div>
-      <NDCSPreviousComparisonProvider />
       <CountriesDocumentsProvider location={iso} />
       <NDCSProvider
         overrideFilter
@@ -121,8 +103,8 @@ function CountryClimateCommitments({
 
 CountryClimateCommitments.propTypes = {
   countriesDocumentsValues: PropTypes.array,
-  previousComparisonValues: PropTypes.array,
-  iso: PropTypes.string
+  iso: PropTypes.string,
+  countryName: PropTypes.string
 };
 
 export default CountryClimateCommitments;

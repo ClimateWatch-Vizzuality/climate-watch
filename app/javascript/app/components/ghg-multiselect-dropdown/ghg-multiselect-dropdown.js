@@ -7,13 +7,13 @@ const GhgMultiselectDropdownContainer = props => {
 
   const handleClearSelection = () => onSelectionChange([]);
 
-  const handleSelectionUpdate = (sectedItems, clickedOption) => {
-    if (sectedItems.some(item => item.label === clickedOption.label)) {
+  const handleSelectionUpdate = (selectedItems, clickedOption) => {
+    if (selectedItems.some(item => item.label === clickedOption.label)) {
       onSelectionChange(
-        sectedItems.filter(v => v.label !== clickedOption.label)
+        selectedItems.filter(v => v.label !== clickedOption.label)
       );
     } else {
-      onSelectionChange([...sectedItems, clickedOption]);
+      onSelectionChange([...selectedItems, clickedOption]);
     }
   };
   return (

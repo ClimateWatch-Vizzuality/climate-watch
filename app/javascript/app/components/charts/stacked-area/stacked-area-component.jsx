@@ -25,7 +25,7 @@ import {
 import TooltipChart from 'components/charts/tooltip-chart';
 import { formatSIwithDecimals } from 'utils/d3-custom-format';
 
-import { QUANTIFICATION_COLORS } from 'data/constants';
+import { QUANTIFICATION_COLORS, QUANTIFICATIONS_CONFIG } from 'data/constants';
 import DividerLine from './divider-line';
 
 const NUMBER_PRECISION = '2';
@@ -71,19 +71,26 @@ class ChartStackedArea extends PureComponent {
     const { activePoint } = this.state;
     const isEdgeOrExplorer = isMicrosoftBrowser();
 
+    const getColorPoint = point => {
+      switch (true) {
+        case point.y === null:
+          return QUANTIFICATION_COLORS.NOT_QUANTIFIABLE;
+        case point.label.includes('BAU'):
+          return QUANTIFICATION_COLORS.BAU;
+        case point.label.includes(QUANTIFICATIONS_CONFIG.net_zero.label):
+          return QUANTIFICATION_COLORS.NET_ZERO;
+        default:
+          return QUANTIFICATION_COLORS.QUANTIFIED;
+      }
+    };
+
     return (
       points &&
       points.length > 0 &&
       points.map(point => {
         const isActivePoint =
           activePoint && point.x === activePoint.x && point.y === activePoint.y;
-        let colorPoint = point.label.includes('BAU')
-          ? QUANTIFICATION_COLORS.BAU
-          : QUANTIFICATION_COLORS.QUANTIFIED;
-        if (point.y === null) {
-          colorPoint = QUANTIFICATION_COLORS.NOT_QUANTIFIABLE;
-        }
-
+        const colorPoint = getColorPoint(point);
         // LABELS
         // yearLabel
         const LENGHT_LIMIT = 15;

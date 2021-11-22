@@ -1,0 +1,16 @@
+@import '~styles/settings.scss';
+
+.card {
+  position: relative;
+  box-shadow: none;
+  color: $theme-color;
+}
+
+.contentContainer {
+  display: none;
+}
+
+.data {
+  min-height: 145px;
+  height: 145px;
+}

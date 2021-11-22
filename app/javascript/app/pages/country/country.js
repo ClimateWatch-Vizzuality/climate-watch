@@ -2,11 +2,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { actions } from 'components/anchor-nav';
 
-import {
-  getCountryName,
-  getDescriptionText,
-  getAnchorLinks
-} from './country-selectors';
+import { getCountryName, getAnchorLinks } from './country-selectors';
 
 import Component from './country-component';
 
@@ -16,7 +12,8 @@ const mapStateToProps = (state, { location, match, route }) => {
   const stateWithIso = {
     iso,
     countries: state.countries,
-    socioeconomics: data ? data[iso] : {}
+    socioeconomics: data ? data[iso] : {},
+    ...state
   };
 
   const routeData = {
@@ -30,7 +27,6 @@ const mapStateToProps = (state, { location, match, route }) => {
       iso,
       name: getCountryName(stateWithIso)
     },
-    description: getDescriptionText(stateWithIso),
     anchorLinks: getAnchorLinks(routeData)
   };
 };

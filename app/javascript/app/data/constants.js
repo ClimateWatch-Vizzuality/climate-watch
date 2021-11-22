@@ -8,6 +8,8 @@ import {
 const { GFW_API } = process.env;
 const { CW_API } = process.env;
 const { ESP_API } = process.env;
+const FEATURE_ENHANCEMENT_CHANGES =
+  process.env.FEATURE_ENHANCEMENT_CHANGES === 'true';
 
 export const LOGIN_URL = `${GFW_API}/auth/`;
 export const LOGIN_PARAMS = `?applications=climate-watch&token=true&callbackUrl=${location.origin}${CW_API}/auth/login`;
@@ -71,7 +73,8 @@ export const CALCULATION_OPTIONS = {
 export const QUANTIFICATION_COLORS = {
   BAU: '#113750',
   QUANTIFIED: '#ffc735',
-  NOT_QUANTIFIABLE: '#868697'
+  NOT_QUANTIFIABLE: '#868697',
+  NET_ZERO: '#D3187C'
 };
 
 export const QUANTIFICATIONS_CONFIG = {
@@ -83,6 +86,10 @@ export const QUANTIFICATIONS_CONFIG = {
   not_quantifiable: {
     label: 'Target not quantifiable',
     color: QUANTIFICATION_COLORS.NOT_QUANTIFIABLE
+  },
+  net_zero: {
+    label: 'Net-Zero Target',
+    color: QUANTIFICATION_COLORS.NET_ZERO
   }
 };
 
@@ -113,6 +120,11 @@ export const DEFAULT_EMISSIONS_SELECTIONS = {
     gas: 'CO2',
     sector: 'Total fossil fuels and cement',
     location: 'WORLD'
+  },
+  US: {
+    gas: 'All GHG',
+    sector: 'Total including LUCF',
+    location: 'USA'
   }
 };
 
@@ -294,6 +306,8 @@ export const GAS_AGGREGATES = {
 
 export const COMPARE_GHG_AGGREGATES = ['KYOTOGHG', 'All GHG', 'Aggregate GHGs'];
 
+export const SUBNATIONAL_SOURCE_NAMES = ['US'];
+
 export const GHG_TABLE_HEADER = {
   regions: 'Country/Region',
   gas: 'Gas',
@@ -397,13 +411,19 @@ export const NET_ZERO_POSITIVE_LABELS = [
 
 export const ENHANCEMENT_LABEL_COLORS = {
   SUBMITTED_2020: CHART_NAMED_COLORS.color1,
-  INTENDS_TO_ENHANCE: CHART_NAMED_COLORS.color2,
+  ...(!FEATURE_ENHANCEMENT_CHANGES && {
+    INTENDS_TO_ENHANCE: CHART_NAMED_COLORS.color2
+  }),
   ENHANCED_MITIGATION: CHART_NAMED_COLORS.color3
 };
 
 export const INDICATOR_SLUGS = {
   emissions: 'ndce_ghg',
   enhancements: 'ndce_status_2020'
+};
+
+export const CATEGORY_SLUGS = {
+  commitmentSummary: 'summary_of_commitment'
 };
 
 export const ENHANCEMENT_VALUE_COLORS = {
@@ -436,7 +456,7 @@ export const ENHANCEMENT_LABELS_WITH_LETTERS = [
     letter: 'R'
   },
   {
-    label: 'Reduced total GHG emissions in 2030',
+    label: 'Reduced Total GHG Emissions in 2030',
     letter: 'M'
   },
   {
@@ -461,3 +481,8 @@ export const ENHANCEMENT_LABELS_WITH_LETTERS = [
     letter: 'I'
   }
 ];
+
+export const EXTERNAL_COUNTRY_LINKS = {
+  indonesia: 'https://indonesia.climatewatchdata.org',
+  india: 'https://indiaclimateexplorer.org/'
+};

@@ -1,5 +1,6 @@
 import { createElement } from 'react';
 import { Redirect } from 'react-router-dom';
+import { CATEGORY_SLUGS } from 'data/constants';
 
 import CountryNdcOverview from 'components/country/country-ndc-overview';
 import NDCCountryAccordion from 'components/ndcs/ndcs-country-accordion';
@@ -17,7 +18,7 @@ export default [
     component: () =>
       createElement(NDCCountryAccordion, {
         category: 'overview',
-        defaultSection: 'overview_of_commitment'
+        defaultSection: CATEGORY_SLUGS.commitmentSummary
       }),
     exact: true,
     anchor: true,

@@ -238,6 +238,7 @@ function NDCSExploreMap(props) {
                             selectedDocument.label &&
                             selectedDocument.label.length > 14
                           }
+                          noAutoSort
                         />
                       )}
                       <Dropdown

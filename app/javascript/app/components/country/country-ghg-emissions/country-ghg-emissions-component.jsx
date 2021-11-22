@@ -13,7 +13,7 @@ import WbCountryDataProvider from 'providers/wb-country-data-provider';
 import { TabletLandscape, TabletPortraitOnly } from 'components/responsive';
 import ModalMetadata from 'components/modal-metadata';
 import { isPageContained } from 'utils/navigation';
-
+import DataZoom from 'components/data-zoom';
 import quantificationTagTheme from 'styles/themes/tag/quantification-tag.scss';
 import styles from './country-ghg-emissions-styles.scss';
 
@@ -61,6 +61,21 @@ class CountryGhgEmissions extends PureComponent {
       downloadLink
     } = this.props;
 
+    const link = `/ghg-emissions?breakBy=regions-${CALCULATION_OPTIONS.ABSOLUTE_VALUE.value}&regions=${iso}`;
+    const href = `/contained${link}&isNdcp=true`;
+    const exploreButton = (
+      <Button
+        key="action2"
+        className={styles.exploreBtn}
+        variant="primary"
+        href={isNdcp ? href : null}
+        link={isNdcp ? null : link}
+        onClick={handleAnalyticsClick}
+        dataTour="countries-03"
+      >
+        Explore Emissions
+      </Button>
+    );
     const buttonGroupConfig = isEmbed
       ? [{ type: 'info', onClick: handleInfoClick }]
       : [
@@ -103,27 +118,17 @@ class CountryGhgEmissions extends PureComponent {
         }
       ];
 
-    const link = `/ghg-emissions?breakBy=regions-${CALCULATION_OPTIONS.ABSOLUTE_VALUE.value}&regions=${iso}`;
-    const href = `/contained${link}&isNdcp=true`;
-
-    return [
+    const buttons = [
       <ButtonGroup
         key="action1"
         className={styles.btnGroup}
         buttonsConfig={buttonGroupConfig}
-      />,
-      <Button
-        key="action2"
-        className={styles.exploreBtn}
-        variant="primary"
-        href={isNdcp ? href : null}
-        link={isNdcp ? null : link}
-        onClick={handleAnalyticsClick}
-        dataTour="countries-03"
-      >
-        Explore Emissions
-      </Button>
+      />
     ];
+    if (!FEATURE_ENHANCEMENT_CHANGES) {
+      buttons.push(exploreButton);
+    }
+    return buttons;
   }
 
   renderChart() {
@@ -137,7 +142,12 @@ class CountryGhgEmissions extends PureComponent {
       handleYearHover,
       filtersOptions,
       filtersSelected,
-      sourceSelected
+      sourceSelected,
+      dataZoomData,
+      dataZoomPosition,
+      setDataZoomPosition,
+      setYears,
+      dataZoomYears
     } = this.props;
 
     const points = !isPageContained ? quantifications : [];
@@ -148,7 +158,6 @@ class CountryGhgEmissions extends PureComponent {
       calculationSelected.value === CALCULATION_OPTIONS.PER_CAPITA.value
         ? '.2f'
         : '.0f';
-
     return (
       <Chart
         className={styles.graph}
@@ -164,6 +173,19 @@ class CountryGhgEmissions extends PureComponent {
         height={360}
         customD3Format={customD3Format}
         stepped={sourceSelected.label === 'UNFCCC'}
+        dataZoomComponent={
+          !loading && (
+            <span data-tour="ghg-03">
+              <DataZoom
+                data={dataZoomData}
+                position={dataZoomPosition}
+                years={dataZoomYears}
+                setPosition={setDataZoomPosition}
+                onYearChange={(min, max) => setYears({ min, max })}
+              />
+            </span>
+          )
+        }
       />
     );
   }
@@ -203,7 +225,9 @@ class CountryGhgEmissions extends PureComponent {
       <div className={styles.container}>
         <EmissionsMetaProvider />
         <WbCountryDataProvider />
-        <h3 className={styles.title}>{title}</h3>
+        {!FEATURE_ENHANCEMENT_CHANGES && (
+          <h3 className={styles.title}>{title}</h3>
+        )}
         <TabletLandscape>
           <div
             className={cx(styles.graphControls, {
@@ -265,7 +289,12 @@ CountryGhgEmissions.propTypes = {
   handleSourceChange: PropTypes.func.isRequired,
   handleCalculationChange: PropTypes.func.isRequired,
   pngSelectionSubtitle: PropTypes.string,
-  downloadLink: PropTypes.string
+  downloadLink: PropTypes.string,
+  dataZoomData: PropTypes.array,
+  dataZoomPosition: PropTypes.object,
+  setDataZoomPosition: PropTypes.func.isRequired,
+  setYears: PropTypes.func.isRequired,
+  dataZoomYears: PropTypes.object
 };
 
 CountryGhgEmissions.defaultProps = {

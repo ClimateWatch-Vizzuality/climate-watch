@@ -1,6 +1,7 @@
 import { createElement } from 'react';
 
 import ClimateCommitments from 'components/country/country-climate-commitments';
+import ClimateEnhancements from 'components/country/country-climate-enhancements';
 import GHGCountryEmissions from 'components/country/country-ghg';
 import NDCSDGLinkages from 'components/country/country-ndc-sdg-linkages';
 import ClimateVulnerability from 'components/country/country-climate-vulnerability';
@@ -8,8 +9,10 @@ import CountryNdcOverview from 'components/country/country-ndc-overview';
 import CountryLtsOverview from 'components/country/country-lts-overview';
 import LawsAndPolicies from 'components/country/laws-and-policies';
 
-const FEATURE_ENHANCEMENT_CHANGES =
-  process.env.FEATURE_ENHANCEMENT_CHANGES === 'true';
+const FEATURE_COUNTRY_CHANGES = process.env.FEATURE_COUNTRY_CHANGES === 'true';
+
+const FEATURE_SHOW_COUNTRY_LAWS_AND_POLICIES =
+  process.env.FEATURE_SHOW_COUNTRY_LAWS_AND_POLICIES === 'true';
 
 // eslint-disable-next-line import/no-mutable-exports
 let routes = [
@@ -43,21 +46,27 @@ let routes = [
     anchor: true,
     component: NDCSDGLinkages
   },
-  {
+  FEATURE_SHOW_COUNTRY_LAWS_AND_POLICIES && {
     hash: 'laws-and-policies',
     label: 'Targets in Laws and Policies',
     anchor: true,
     component: LawsAndPolicies
   }
-];
+].filter(Boolean);
 
-if (FEATURE_ENHANCEMENT_CHANGES) {
+if (FEATURE_COUNTRY_CHANGES) {
   routes = [
     {
       hash: 'climate-commitments',
       label: 'Climate commitments',
       anchor: true,
       component: ClimateCommitments
+    },
+    {
+      hash: 'climate-enhancements',
+      label: 'Climate enhancements',
+      anchor: true,
+      component: ClimateEnhancements
     }
   ].concat(routes);
 }

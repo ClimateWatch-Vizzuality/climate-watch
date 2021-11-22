@@ -3,8 +3,16 @@
 .comparisonWithPreviousNDCContainer {
   @include columns(4);
 
-  @media #{$tablet-portrait} {
-    @include columns(2);
+  > div {
+    padding-bottom: 30px;
+  }
+
+  @media #{$tablet-landscape} {
+    @include columns(1.71); // 12 / 7 indicators
+
+    > div {
+      padding-bottom: 0;
+    }
   }
 
   @include xy-gutters(40px, $gutter-position: ('right', 'left'), $gutter-type: padding);

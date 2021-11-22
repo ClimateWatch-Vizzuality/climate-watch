@@ -81,6 +81,7 @@ group :development do
   gem 'capistrano-yarn'
   gem 'capistrano-passenger', '~> 0.2.1'
   gem 'capistrano-rvm'
+  gem 'capistrano-sidekiq'
 end
 
 group :test do

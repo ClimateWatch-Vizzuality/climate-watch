@@ -27,6 +27,8 @@ import {
   DATA_SCALE
 } from 'data/constants';
 
+const FEATURE_COUNTRY_CHANGES = process.env.FEATURE_COUNTRY_CHANGES === 'true';
+
 // constants needed for data parsing
 const BASE_COLORS = ['#25597C', '#DFE9ED'];
 
@@ -59,6 +61,13 @@ export const getCountry = createSelector(
   [getCountries, getIso],
   getCountryByIso
 );
+
+const getSearch = state => state.search || null;
+
+export const getDataZoomYears = createSelector(getSearch, search => ({
+  min: search && search.start_year,
+  max: search && search.end_year
+}));
 
 export const getCountryName = createSelector(
   [getCountry],
@@ -114,11 +123,13 @@ export const getAllowedSectors = createSelector(
   [getSourceSelected, getSectors],
   (source, sectors) => {
     if (!source || !source.sectors || !sectors) return null;
-    return sectors
-      .filter(d => d.label !== 'Bunker Fuels')
-      .filter(d => source.sectors.indexOf(d.value) > -1)
-      .filter(d => isEmpty(d.aggregatedSectorIds))
-      .filter(d => !d.parentId);
+    return sectors.filter(
+      d =>
+        !d.parentId &&
+        source.sectors.indexOf(d.value) > -1 &&
+        isEmpty(d.aggregatedSectorIds) &&
+        d.label !== 'Bunker Fuels'
+    );
   }
 );
 
@@ -232,6 +243,17 @@ export const getQuantificationsData = createSelector(
         qParsed.push(valuesParsed);
       });
     });
+    const netZeroPoint = {
+      x: 2050,
+      y: 0,
+      label: QUANTIFICATIONS_CONFIG.net_zero.label,
+      isRange: false
+    };
+
+    if (FEATURE_COUNTRY_CHANGES) {
+      qParsed.push(netZeroPoint);
+    }
+
     // Sort desc to avoid z-index problem in the graph
     return orderBy(qParsed, 'y', 'desc');
   }
@@ -240,8 +262,8 @@ export const getQuantificationsData = createSelector(
 export const getQuantificationsTagsConfig = createSelector(
   getQuantifications,
   quantifications => {
-    if (!quantifications) return [];
     const config = [];
+    if (!quantifications) return config;
     const bau = quantifications.find(
       q => q.label.includes('BAU') && q.value !== null
     );
@@ -258,6 +280,10 @@ export const getQuantificationsTagsConfig = createSelector(
     if (nq) {
       config.push(QUANTIFICATIONS_CONFIG.not_quantifiable);
     }
+    if (FEATURE_COUNTRY_CHANGES) {
+      config.push(QUANTIFICATIONS_CONFIG.net_zero);
+    }
+
     return config;
   }
 );
@@ -312,6 +338,22 @@ export const getChartData = createSelector(
     return dataParsed;
   }
 );
+
+export const getDataZoomData = createSelector([getChartData], data => {
+  if (!data) return null;
+  const t = data.map(d => {
+    const updatedD = {};
+    updatedD.x = d.x;
+    const intermediateD = { ...d };
+    delete intermediateD.x;
+    updatedD.total = Object.values(intermediateD).reduce(
+      (acc, value) => acc + value,
+      0
+    );
+    return updatedD;
+  });
+  return t;
+});
 
 export const getChartDomain = createSelector([getChartData], data => {
   if (!data) return null;

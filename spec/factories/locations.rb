@@ -30,6 +30,16 @@ FactoryBot.define do
     location_type { 'COUNTRY' }
     show_in_cw { true }
 
+    trait :with_states do
+      after :create do |location|
+        location.members = create_list(
+          :location,
+          3,
+          location_type: 'STATE'
+        )
+      end
+    end
+
     factory :location_region do
       location_type { 'REGION' }
 
