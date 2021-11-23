@@ -2,7 +2,7 @@ server '18.215.21.86', user: 'ubuntu', roles: %w{web app db}, primary: true
 
 set :ssh_options, forward_agent: true
 
-set :branch, 'sandbox'
+set :branch, ENV.fetch('DEPLOY_BRANCH') { 'sandbox' }
 
 set :default_env, {
   'RAILS_ENV' => 'staging',
