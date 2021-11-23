@@ -126,6 +126,8 @@ platforms:
           - country_key
           - country_context
           - country_adaptation
+          - country_driver
+          - country_driver_electricity
           - subnational_city
           - subnational_company
           - subnational_count
