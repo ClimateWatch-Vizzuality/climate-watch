@@ -10,6 +10,9 @@ class ImportCountryProfile
   COUNTRY_CONTEXT_FILEPATH = "#{CW_FILES_PREFIX}country_profile/country_context.csv".freeze
   COUNTRY_ADAPTATION_FILEPATH = "#{CW_FILES_PREFIX}country_profile/country_adaptation.csv".freeze
 
+  COUNTRY_DRIVER_FILEPATH = "#{CW_FILES_PREFIX}country_profile/country_driver.csv".freeze
+  COUNTRY_DRIVER_ELE_FILEPATH = "#{CW_FILES_PREFIX}country_profile/country_driver_electricity.csv".freeze
+
   def call
     prepare_cache
 
@@ -19,10 +22,12 @@ class ImportCountryProfile
 
       import_time_series(SUBNATIONAL_CITIES_FILEPATH, :city_badge_type)
       import_time_series(SUBNATIONAL_COMPANIES_FILEPATH, :company_target_qualification)
+      import_time_series(COUNTRY_DRIVER_ELE_FILEPATH, :electricity_consumption)
 
       import_multiple_columns_file(SUBNATIONAL_COUNT_FILEPATH)
       import_multiple_columns_file(COUNTRY_CONTEXT_FILEPATH)
       import_multiple_columns_file(COUNTRY_ADAPTATION_FILEPATH)
+      import_multiple_columns_file(COUNTRY_DRIVER_FILEPATH)
     end
   end
 
