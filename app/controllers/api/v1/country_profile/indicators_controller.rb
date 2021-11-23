@@ -5,6 +5,7 @@ module Api
         def index
           indicators = ::CountryProfile::Indicator.all.includes(values: :location)
           indicators = indicators.where(slug: params[:indicator].split(',')) if params[:indicator].present?
+          indicators = indicators.order(:slug)
 
           render json: indicators,
                  adapter: :json,

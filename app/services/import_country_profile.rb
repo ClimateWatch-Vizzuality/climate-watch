@@ -28,6 +28,8 @@ class ImportCountryProfile
       import_multiple_columns_file(COUNTRY_CONTEXT_FILEPATH)
       import_multiple_columns_file(COUNTRY_ADAPTATION_FILEPATH)
       import_multiple_columns_file(COUNTRY_DRIVER_FILEPATH)
+
+      sync_indc_indicators
     end
   end
 
@@ -79,7 +81,7 @@ class ImportCountryProfile
       end
     end
 
-    CountryProfile::Value.import! values, all_or_none: true
+    CountryProfile::Value.import! values
   end
 
   def import_multiple_columns_file(path)
@@ -94,7 +96,11 @@ class ImportCountryProfile
       end
     end
 
-    CountryProfile::Value.import! values.compact, all_or_none: true
+    CountryProfile::Value.import! values.compact
+  end
+
+  def sync_indc_indicators
+    CountryProfile::Indicator.sync_indc_indicators
   end
 
   def build_value(row, indicator)

@@ -54,6 +54,7 @@ class ImportIndc
 
     generate_subsectors_map_data
     Indc::SearchableValue.refresh
+    sync_indc_indicators
   end
 
   def generate_subsectors_map_data
@@ -609,6 +610,10 @@ class ImportIndc
         indicator.destroy
       end
     end
+  end
+
+  def sync_indc_indicators
+    CountryProfile::Indicator.sync_indc_indicators
   end
 end
 # rubocop:enable ClassLength
