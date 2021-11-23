@@ -69,6 +69,7 @@ const sassLoader = {
   use: env.NODE_ENV === 'production' ? prodConfig : devConfig,
   exclude: /node_modules/
 };
+
 module.exports = {
   entry,
   output: {
@@ -119,7 +120,10 @@ module.exports = {
       },
       {
         test: /\.(css)$/i,
-        use: [{ loader: 'style-loader' }, { loader: 'raw-loader' }],
+        use: [
+          { loader: 'style-loader', options: { insertAt: 'top' } },
+          { loader: 'raw-loader' }
+        ],
         include: /node_modules/
       },
       {
