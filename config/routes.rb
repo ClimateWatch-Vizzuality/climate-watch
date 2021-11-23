@@ -141,5 +141,5 @@ Rails.application.routes.draw do
   end
 
   root 'application#index'
-  get '(*frontend)', to: 'application#index'
+  get '(*frontend)', to: 'application#index', constraints: ->(req) { req.format.html? }
 end

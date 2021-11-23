@@ -1,9 +1,10 @@
+/* eslint-disable no-confusing-arrow */
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import Disclaimer from 'components/disclaimer';
 import { toStartCase } from 'utils/utils';
-import { isArray } from 'util';
+import isArray from 'lodash/isArray';
 import ReactMarkdown from 'react-markdown/with-html';
 
 import styles from './metadata-text-styles.scss';

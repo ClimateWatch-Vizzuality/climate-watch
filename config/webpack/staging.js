@@ -5,6 +5,7 @@
 const webpack = require('webpack');
 const merge = require('webpack-merge');
 const CompressionPlugin = require('compression-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const sharedConfig = require('./shared.js');
 const ImageminWebpWebpackPlugin = require('imagemin-webp-webpack-plugin');
 
@@ -13,6 +14,7 @@ module.exports = merge(sharedConfig, {
   stats: 'normal',
 
   plugins: [
+    new MiniCssExtractPlugin({ filename: '[name]-[hash].css' }),
     new webpack.EnvironmentPlugin([
       'GOOGLE_ANALYTICS_ID',
       'USER_REPORT_KEY',
