@@ -51,6 +51,10 @@ Rails.application.routes.draw do
           action: :content_overview
       end
 
+      namespace :country_profile, only: [:index] do
+        resources :indicators, only: [:index]
+      end
+
       resources :adaptations, only: [:index]
       resources :quantifications, only: [:index]
 

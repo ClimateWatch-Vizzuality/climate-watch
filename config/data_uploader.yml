@@ -120,3 +120,14 @@ platforms:
         importer: ImportZipFiles
         datasets:
           - zip_files
+      - name: country_profile
+        importer: ImportCountryProfile
+        datasets:
+          - country_key
+          - country_context
+          - country_adaptation
+          - country_driver
+          - country_driver_electricity
+          - subnational_city
+          - subnational_company
+          - subnational_count

@@ -563,6 +563,74 @@ CREATE TABLE public.ar_internal_metadata (
 
 
 --
+-- Name: country_profile_indicators; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.country_profile_indicators (
+    id bigint NOT NULL,
+    slug character varying NOT NULL,
+    name character varying,
+    short_name character varying,
+    metadata_source character varying,
+    file character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: country_profile_indicators_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.country_profile_indicators_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: country_profile_indicators_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.country_profile_indicators_id_seq OWNED BY public.country_profile_indicators.id;
+
+
+--
+-- Name: country_profile_values; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.country_profile_values (
+    id bigint NOT NULL,
+    location_id bigint NOT NULL,
+    indicator_id bigint,
+    category character varying,
+    value character varying NOT NULL,
+    year integer
+);
+
+
+--
+-- Name: country_profile_values_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.country_profile_values_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: country_profile_values_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.country_profile_values_id_seq OWNED BY public.country_profile_values.id;
+
+
+--
 -- Name: datasets; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2342,6 +2410,20 @@ ALTER TABLE ONLY public.agriculture_profile_metadata ALTER COLUMN id SET DEFAULT
 
 
 --
+-- Name: country_profile_indicators id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.country_profile_indicators ALTER COLUMN id SET DEFAULT nextval('public.country_profile_indicators_id_seq'::regclass);
+
+
+--
+-- Name: country_profile_values id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.country_profile_values ALTER COLUMN id SET DEFAULT nextval('public.country_profile_values_id_seq'::regclass);
+
+
+--
 -- Name: datasets id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2863,6 +2945,22 @@ ALTER TABLE ONLY public.ar_internal_metadata
 
 
 --
+-- Name: country_profile_indicators country_profile_indicators_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.country_profile_indicators
+    ADD CONSTRAINT country_profile_indicators_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: country_profile_values country_profile_values_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.country_profile_values
+    ADD CONSTRAINT country_profile_values_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: datasets datasets_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3373,6 +3471,27 @@ CREATE INDEX index_agriculture_profile_meat_productions_on_location_id ON public
 --
 
 CREATE INDEX index_agriculture_profile_meat_trades_on_location_id ON public.agriculture_profile_meat_trades USING btree (location_id);
+
+
+--
+-- Name: index_country_profile_indicators_on_slug; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_country_profile_indicators_on_slug ON public.country_profile_indicators USING btree (slug);
+
+
+--
+-- Name: index_country_profile_values_on_indicator_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_country_profile_values_on_indicator_id ON public.country_profile_values USING btree (indicator_id);
+
+
+--
+-- Name: index_country_profile_values_on_location_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_country_profile_values_on_location_id ON public.country_profile_values USING btree (location_id);
 
 
 --
@@ -4084,6 +4203,14 @@ ALTER TABLE ONLY public.sections
 
 
 --
+-- Name: country_profile_values fk_rails_7cbd8bd4ec; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.country_profile_values
+    ADD CONSTRAINT fk_rails_7cbd8bd4ec FOREIGN KEY (indicator_id) REFERENCES public.country_profile_indicators(id) ON DELETE CASCADE;
+
+
+--
 -- Name: indc_indicators_categories fk_rails_7f8ee8d66f; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4233,6 +4360,14 @@ ALTER TABLE ONLY public.historical_emissions_records
 
 ALTER TABLE ONLY public.quantification_values
     ADD CONSTRAINT fk_rails_c3ca9bbcf7 FOREIGN KEY (location_id) REFERENCES public.locations(id) ON DELETE CASCADE;
+
+
+--
+-- Name: country_profile_values fk_rails_c3d5733660; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.country_profile_values
+    ADD CONSTRAINT fk_rails_c3d5733660 FOREIGN KEY (location_id) REFERENCES public.locations(id) ON DELETE CASCADE;
 
 
 --
@@ -4502,6 +4637,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210310203949'),
 ('20210715112941'),
 ('20210916120344'),
-('20210916121403');
+('20210916121403'),
+('20211109130022'),
+('20211109130329');
 
 

@@ -1,0 +1,88 @@
+{
+  "data": [
+    {
+      "slug": "indicator_slug_1",
+      "name": "Indicator name",
+      "values": [
+        {
+          "location": "AAB",
+          "year": 1990,
+          "value": "10"
+        },
+        {
+          "location": "AAB",
+          "year": 1990,
+          "value": "10"
+        },
+        {
+          "location": "AAB",
+          "year": 1990,
+          "value": "10"
+        },
+        {
+          "location": "AAB",
+          "year": 1990,
+          "value": "10"
+        }
+      ],
+      "short_name": "Indicator short",
+      "metadata_source": "CAIT"
+    },
+    {
+      "slug": "indicator_slug_2",
+      "name": "Indicator name",
+      "values": [
+        {
+          "location": "AAB",
+          "year": 1990,
+          "value": "10"
+        },
+        {
+          "location": "AAB",
+          "year": 1990,
+          "value": "10"
+        },
+        {
+          "location": "AAB",
+          "year": 1990,
+          "value": "10"
+        },
+        {
+          "location": "AAB",
+          "year": 1990,
+          "value": "10"
+        }
+      ],
+      "short_name": "Indicator short",
+      "metadata_source": "CAIT"
+    },
+    {
+      "slug": "indicator_slug_3",
+      "name": "Indicator name",
+      "values": [
+        {
+          "location": "AAB",
+          "year": 1990,
+          "value": "10"
+        },
+        {
+          "location": "AAB",
+          "year": 1990,
+          "value": "10"
+        },
+        {
+          "location": "AAB",
+          "year": 1990,
+          "value": "10"
+        },
+        {
+          "location": "AAB",
+          "year": 1990,
+          "value": "10"
+        }
+      ],
+      "short_name": "Indicator short",
+      "metadata_source": "CAIT"
+    }
+  ]
+}
