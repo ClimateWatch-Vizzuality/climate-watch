@@ -14,7 +14,8 @@ class Card extends PureComponent {
       children,
       theme,
       contentFirst,
-      keyValue
+      keyValue,
+      info
     } = this.props;
     const keyValueChildren = `children-${keyValue}`;
 
@@ -33,28 +34,31 @@ class Card extends PureComponent {
         key={`content-${keyValue}`}
         className={cx(styles.contentContainer, theme.contentContainer)}
       >
-        {typeof title === 'object' ? (
-          <a
-            role="button"
-            tabIndex={0}
-            onKeyPress={() => handleClick(title.link)}
-            onClick={() => handleClick(title.link)}
-            className={cx(styles.title, styles.link, theme.title)}
-          >
-            <AbbrReplace>{title.title}</AbbrReplace>
-          </a>
-        ) : (
-          title && (
-            <p className={cx(styles.title, theme.title)}>
-              <AbbrReplace>{title}</AbbrReplace>
+        <div className={styles.titleContainer}>
+          {typeof title === 'object' ? (
+            <a
+              role="button"
+              tabIndex={0}
+              onKeyPress={() => handleClick(title.link)}
+              onClick={() => handleClick(title.link)}
+              className={cx(styles.title, styles.link, theme.title)}
+            >
+              <AbbrReplace>{title.title}</AbbrReplace>
+            </a>
+          ) : (
+            title && (
+              <p className={cx(styles.title, theme.title)}>
+                <AbbrReplace>{title}</AbbrReplace>
+              </p>
+            )
+          )}
+          {subtitle && (
+            <p className={cx(styles.subtitle, theme.subtitle)}>
+              <AbbrReplace>{subtitle}</AbbrReplace>
             </p>
-          )
-        )}
-        {subtitle && (
-          <p className={cx(styles.subtitle, theme.subtitle)}>
-            <AbbrReplace>{subtitle}</AbbrReplace>
-          </p>
-        )}
+          )}
+        </div>
+        {info && <div>{info}</div>}
       </div>
     );
 
@@ -80,7 +84,8 @@ Card.propTypes = {
     data: PropTypes.data
   }),
   contentFirst: PropTypes.bool,
-  keyValue: PropTypes.string
+  keyValue: PropTypes.string,
+  info: PropTypes.node
 };
 
 Card.defaultProps = {
