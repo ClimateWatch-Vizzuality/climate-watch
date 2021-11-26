@@ -191,6 +191,9 @@ const NDCSEnhancementsMap = ({
           summaryData[ENHANCEMENT_LABEL_SLUGS.INTENDS_TO_ENHANCE].countries,
           isPNG
         )}
+      <div className={styles.summaryHint}>
+        Click on the country or see table below to compare with previous NDC
+      </div>
     </div>
   );
   return (

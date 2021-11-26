@@ -137,10 +137,12 @@ export const tableRemoveIsoFromData = createSelector(
       updatedD.country = `<a href="/ndcs/country/${d.iso}">${d.country}</a>`;
       if (compareLinks) {
         const compareLink = compareLinks[d.iso] || {};
-        const hasPreviousSubmission = [
-          ENHANCEMENT_LABEL_SLUGS.SUBMITTED_2020,
-          ENHANCEMENT_LABEL_SLUGS.ENHANCED_MITIGATION
-        ].includes(d['NDC Status'].slug);
+        const hasPreviousSubmission =
+          d['NDC Status'] &&
+          [
+            ENHANCEMENT_LABEL_SLUGS.SUBMITTED_2020,
+            ENHANCEMENT_LABEL_SLUGS.ENHANCED_MITIGATION
+          ].includes(d['NDC Status'].slug);
         updatedD[
           'Overall comparison with previous NDC'
         ] = ENHANCEMENT_LABELS_WITH_LETTERS.map(enhancementLabelWithLetter => ({
