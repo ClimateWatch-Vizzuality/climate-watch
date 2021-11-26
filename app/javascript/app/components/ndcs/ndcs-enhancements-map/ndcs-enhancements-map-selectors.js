@@ -43,8 +43,7 @@ const getCountriesDocuments = state => state.countriesDocuments.data || null;
 
 export const getIsEnhancedChecked = createSelector(
   getSearch,
-  search =>
-    !search.showEnhancedAmbition || search.showEnhancedAmbition !== 'false'
+  search => search.showEnhancedAmbition === 'true'
 );
 
 export const getISOCountries = createSelector([getCountries], countries =>
@@ -410,7 +409,6 @@ export const summarizeIndicators = createSelector(
 
       summaryData[type].emissions.value = emissionsParsedValue.toFixed(1);
     });
-
     // Add text
     Object.keys(summaryData).forEach(type => {
       const emissionsString = `<span title="2018 emissions data">${summaryData[type].emissions.value}% of global emissions</span>`;
@@ -418,7 +416,9 @@ export const summarizeIndicators = createSelector(
         ...(!FEATURE_ENHANCEMENT_CHANGES && {
           [ENHANCEMENT_LABEL_SLUGS.INTENDS_TO_ENHANCE]: `<strong>countries</strong> (${emissionsString}) have <strong>stated their intention to <span title="Definition: Strengthening mitigation ambition and/or increasing adaptation action in a new or updated NDC.">enhance ambition or action</span> in a new or updated NDC</strong>`
         }),
-        [ENHANCEMENT_LABEL_SLUGS.ENHANCED_MITIGATION]: `<strong>countries</strong> (${emissionsString}) have submitted a <strong>new or updated NDC with reduced total emissions</strong> compared to their previous NDC`,
+        [ENHANCEMENT_LABEL_SLUGS.ENHANCED_MITIGATION]: `<strong>of the ${
+          summaryData[ENHANCEMENT_LABEL_SLUGS.SUBMITTED_2020].countries.value
+        } countries</strong> (${emissionsString}) have submitted a <strong>new or updated NDC with reduced total emissions</strong> compared to their previous NDC`,
         [ENHANCEMENT_LABEL_SLUGS.SUBMITTED_2020]: `<strong>countries</strong> (${emissionsString}) have submitted a <strong>new or updated NDC</strong>`
       }[type];
     });
