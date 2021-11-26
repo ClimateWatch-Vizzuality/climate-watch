@@ -26,3 +26,16 @@
     padding: 10px 0;
   }
 }
+
+.comparisonTitleContainer {
+  border-bottom: 1px solid $gray1;
+  padding: 50px 0;
+  width: 100%;
+  padding-left: 30px;
+
+  .comparisonTitle {
+    @include row();
+
+    font-size: $font-size-large;
+  }
+}
