@@ -8,6 +8,7 @@ import ClimateVulnerability from 'components/country/country-climate-vulnerabili
 import CountryNdcOverview from 'components/country/country-ndc-overview';
 import CountryLtsOverview from 'components/country/country-lts-overview';
 import LawsAndPolicies from 'components/country/laws-and-policies';
+import SubnationalActions from 'components/country/country-subnational-actions';
 
 const FEATURE_COUNTRY_CHANGES = process.env.FEATURE_COUNTRY_CHANGES === 'true';
 
@@ -15,7 +16,19 @@ const FEATURE_SHOW_COUNTRY_LAWS_AND_POLICIES =
   process.env.FEATURE_SHOW_COUNTRY_LAWS_AND_POLICIES === 'true';
 
 // eslint-disable-next-line import/no-mutable-exports
-let routes = [
+const routes = [
+  FEATURE_COUNTRY_CHANGES && {
+    hash: 'climate-commitments',
+    label: 'Climate commitments',
+    anchor: true,
+    component: ClimateCommitments
+  },
+  FEATURE_COUNTRY_CHANGES && {
+    hash: 'climate-enhancements',
+    label: 'Climate enhancements',
+    anchor: true,
+    component: ClimateEnhancements
+  },
   {
     hash: 'ghg-emissions',
     label: 'GHG Emissions',
@@ -40,6 +53,12 @@ let routes = [
     anchor: true,
     component: () => createElement(CountryLtsOverview, { isCountryPage: true })
   },
+  FEATURE_COUNTRY_CHANGES && {
+    hash: 'subnational-actions',
+    label: 'Subnational Actions',
+    anchor: true,
+    component: SubnationalActions
+  },
   {
     hash: 'ndc-sdg-linkages',
     label: 'NDC-SDG Linkages',
@@ -53,22 +72,5 @@ let routes = [
     component: LawsAndPolicies
   }
 ].filter(Boolean);
-
-if (FEATURE_COUNTRY_CHANGES) {
-  routes = [
-    {
-      hash: 'climate-commitments',
-      label: 'Climate commitments',
-      anchor: true,
-      component: ClimateCommitments
-    },
-    {
-      hash: 'climate-enhancements',
-      label: 'Climate enhancements',
-      anchor: true,
-      component: ClimateEnhancements
-    }
-  ].concat(routes);
-}
 
 export default routes;
