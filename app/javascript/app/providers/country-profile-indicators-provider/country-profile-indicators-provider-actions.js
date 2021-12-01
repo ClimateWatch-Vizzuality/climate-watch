@@ -17,7 +17,9 @@ const fetchIndicators = createThunkAction(
       dispatch(fetchIndicatorsInit());
 
       const params = new URLSearchParams();
-      if (indicatorSlugs?.length > 0) { params.append('indicator', indicatorSlugs.join(',')); }
+      if (indicatorSlugs?.length > 0) {
+        params.append('indicator', indicatorSlugs.join(','));
+      }
       if (locations?.length > 0) params.append('location', locations.join(','));
       const queryString =
         Array.from(params).length > 0 ? `?${params.toString()}` : '';
@@ -28,10 +30,10 @@ const fetchIndicators = createThunkAction(
           throw Error(response.statusText);
         })
         .then(data => {
-          if (data) {
-            dispatch(fetchIndicatorsReady(data));
+          if (data && data.data) {
+            dispatch(fetchIndicatorsReady(data.data));
           } else {
-            dispatch(fetchIndicatorsReady({}));
+            dispatch(fetchIndicatorsReady([]));
           }
         })
         .catch(error => {
