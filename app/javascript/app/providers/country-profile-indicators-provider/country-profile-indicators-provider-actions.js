@@ -17,9 +17,7 @@ const fetchIndicators = createThunkAction(
       dispatch(fetchIndicatorsInit());
 
       const params = new URLSearchParams();
-      if (indicatorSlugs?.length > 0) {
-        params.append('indicator', indicatorSlugs.join(','));
-      }
+      if (indicatorSlugs?.length > 0) { params.append('indicator', indicatorSlugs.join(',')); }
       if (locations?.length > 0) params.append('location', locations.join(','));
       const queryString =
         Array.from(params).length > 0 ? `?${params.toString()}` : '';
