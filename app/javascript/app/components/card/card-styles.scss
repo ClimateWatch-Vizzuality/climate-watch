@@ -49,6 +49,14 @@
   color: $theme-color;
   font-size: $font-size-sm;
   line-height: $line-height-medium;
+
+  @media #{$tablet-portrait} {
+    font-size: $font-size-xs;
+  }
+
+  @media #{$desktop} {
+    font-size: $font-size-sm;
+  }
 }
 
 .link {
