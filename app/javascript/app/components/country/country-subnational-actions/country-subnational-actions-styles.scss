@@ -22,3 +22,45 @@
 .loading {
   min-height: 462px;
 }
+
+.cardsContainer {
+  @include columns();
+
+  @media #{$tablet-portrait} {
+    @include columns((6, 6));
+  }
+}
+
+.cardTitle {
+  font-size: $font-size-large;
+  font-weight: $font-weight;
+}
+
+.cardData {
+  height: auto;
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+}
+
+.statContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.actionIndicator {
+  padding: 40px;
+  text-align: center;
+}
+
+.actionIndicatorValue {
+  font-size: $font-size-xl-large;
+}
+
+.actionIndicatorLabel {
+  margin-top: 10px;
+  font-size: $font-size-m;
+}

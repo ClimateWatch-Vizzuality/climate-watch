@@ -5,8 +5,11 @@ import Component from './country-subnational-actions-component';
 
 const mapStateToProps = (state, { match }) => {
   const iso = match.params.iso;
+  const { countryProfileIndicators } = state;
+
   return {
-    iso
+    iso,
+    indicators: countryProfileIndicators.data
   };
 };
 
