@@ -25,7 +25,7 @@ class Card extends PureComponent {
       </div>
     );
 
-    const handleClick = url => {
+    const handleClick = (url) => {
       window.open(url, '_blank');
     };
 
@@ -35,7 +35,7 @@ class Card extends PureComponent {
         className={cx(styles.contentContainer, theme.contentContainer)}
       >
         <div className={styles.titleContainer}>
-          {typeof title === 'object' ? (
+          {typeof title === 'object' && title.title ? (
             <a
               role="button"
               tabIndex={0}
