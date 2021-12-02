@@ -29,7 +29,7 @@ export default {
     );
     const newState = {
       ...state,
-      data: newData
+      data: { ...newData }
     };
     return setLoaded(true, setLoading(false, newState));
   },

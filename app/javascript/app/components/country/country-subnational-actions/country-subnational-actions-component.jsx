@@ -5,7 +5,7 @@ import uniq from 'lodash/uniq';
 import orderBy from 'lodash/orderBy';
 import sortBy from 'lodash/sortBy';
 import PropTypes from 'prop-types';
-import { Chart } from 'cw-components';
+import { Chart, Tag } from 'cw-components';
 
 import Card from 'components/card';
 
@@ -30,7 +30,7 @@ function mergeForChart({ data, mergeBy, labelKey, valueKey }) {
   return sortBy(Object.values(dataObj), mergeBy);
 }
 
-function Statistic({ value, label }) {
+function Indicator({ label, value }) {
   return (
     <div className={styles.actionIndicator}>
       <div className={styles.actionIndicatorValue}>{value}</div>
@@ -39,14 +39,19 @@ function Statistic({ value, label }) {
   );
 }
 
-Statistic.propTypes = {
+Indicator.propTypes = {
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   label: PropTypes.string
 };
 
 function SourceLink({ title, link }) {
   return (
-    <a href={link} target="_blank" rel="noopener noreferrer">
+    <a
+      className={styles.sourceLink}
+      href={link}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
       {title}
     </a>
   );
@@ -58,19 +63,12 @@ SourceLink.propTypes = {
 };
 
 function SubnationalActions({ iso, indicators }) {
-  const cityCommited = indicators.city_commited?.values?.find(
-    v => v.location === iso
-  )?.value;
+  const cityCommited = indicators.city_commited?.value;
   const cityPopulation = Number(
-    (indicators.city_ppl?.values?.find(v => v.location === iso)?.value || 0) /
-      1000000
+    (indicators.city_ppl?.value || 0) / 1000000
   ).toFixed(2);
-  const companyCommited = indicators.company_commited?.values?.find(
-    v => v.location === iso
-  )?.value;
-  const companyTarget = indicators.company_target?.values?.find(
-    v => v.location === iso
-  )?.value;
+  const companyCommited = indicators.company_commited?.value;
+  const companyTarget = indicators.company_target?.value;
   const citiesBadgeValues = (
     indicators.city_badge_type?.values || []
   ).map(x => ({ ...x, value: Number(x.value) }));
@@ -91,6 +89,16 @@ function SubnationalActions({ iso, indicators }) {
     labelKey: 'category',
     valueKey: 'value'
   });
+  const latestYear = Math.max(
+    ...uniq(companyTargetQualValues.map(x => x.year))
+  );
+  const latestCompaniesTargetQualification = companiesChartData.find(
+    x => x.x === latestYear
+  );
+  const domain = {
+    x: ['dataMin', 'dataMax'],
+    y: ['auto', 'auto']
+  };
 
   const getTheme = values =>
     values.reduce(
@@ -135,6 +143,10 @@ function SubnationalActions({ iso, indicators }) {
     data: styles.cardData
   };
 
+  const tagTheme = {
+    tag: styles.tag
+  };
+
   return (
     <div className={styles.gridContainer}>
       <div className={styles.grid}>
@@ -167,18 +179,40 @@ function SubnationalActions({ iso, indicators }) {
             >
               <div>
                 <div className={styles.statContainer}>
-                  <Statistic value={cityCommited} label="Cities Committed" />
-                  <div>Representing</div>
-                  <Statistic value={cityPopulation} label="Million People" />
+                  <Indicator value={cityCommited} label="Cities Committed" />
+                  <div className={styles.representing}>Representing</div>
+                  <Indicator value={cityPopulation} label="Million People" />
                 </div>
 
                 <Chart
                   type="area"
                   config={citiesChartConfig}
+                  domain={domain}
                   data={citiesChartData}
                   height={200}
                   loading={!citiesChartData}
                 />
+
+                <h3>{indicators.city_badge_type?.name}</h3>
+
+                <div>
+                  <p>Stages:</p>
+
+                  <div className={styles.stagesWrapper}>
+                    {Object.keys(citiesChartConfig.theme).map(badge => (
+                      <Tag
+                        color={citiesChartConfig.theme[badge].fill}
+                        theme={tagTheme}
+                        label={badge}
+                      />
+                    ))}
+                  </div>
+                  <Tag
+                    color="#cccdcf"
+                    theme={tagTheme}
+                    label="Total Population"
+                  />
+                </div>
               </div>
             </Card>
             <Card
@@ -194,11 +228,11 @@ function SubnationalActions({ iso, indicators }) {
             >
               <div>
                 <div className={styles.statContainer}>
-                  <Statistic
+                  <Indicator
                     value={companyTarget}
                     label="Companies Set a Target"
                   />
-                  <Statistic
+                  <Indicator
                     value={companyCommited}
                     label="Companies Committed"
                   />
@@ -210,6 +244,28 @@ function SubnationalActions({ iso, indicators }) {
                   height={200}
                   loading={!citiesChartData}
                 />
+
+                <h3>{indicators.company_target_qualification?.name}</h3>
+
+                <div>
+                  <div className={styles.targetsWrapper}>
+                    {Object.keys(companyChartConfig.theme).map(target => (
+                      <div key={target}>
+                        <Tag
+                          color={companyChartConfig.theme[target].fill}
+                          theme={tagTheme}
+                          label={target}
+                        />
+                        {latestCompaniesTargetQualification[target]}
+                      </div>
+                    ))}
+                  </div>
+                  <Tag
+                    color="#cccdcf"
+                    theme={tagTheme}
+                    label="Total Companies"
+                  />
+                </div>
               </div>
             </Card>
           </div>
