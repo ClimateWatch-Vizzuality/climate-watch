@@ -32,9 +32,14 @@ const icons = {
     'No revision compared with previous version': missingIcon,
     'No previous submission available': missingIcon,
     'No Document Submitted': missingIcon,
+    // Submission icon
     [SUBMISSION_ICON_VALUE.yes]: enhancementIcon,
     [SUBMISSION_ICON_VALUE.no]: noEnhancementIcon,
-    [SUBMISSION_ICON_VALUE.intends]: missingIcon
+    [SUBMISSION_ICON_VALUE.intends]: missingIcon,
+    // Adaptation
+    'Adaptation Included': enhancementIcon,
+    Mentioned: enhancementIcon,
+    'Not Specified': unclearIcon
   }
 };
 
