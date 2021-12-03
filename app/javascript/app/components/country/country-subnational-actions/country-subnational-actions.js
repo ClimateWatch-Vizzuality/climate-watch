@@ -10,7 +10,7 @@ const mapStateToProps = (state, { match }) => {
 
   return {
     iso,
-    indicatorsLoading: state.countryProfileIndicators.loading,
+    loading: state.countryProfileIndicators.loading,
     indicators: getIndicators({ ...state, iso })
   };
 };
