@@ -1,8 +1,9 @@
-/* eslint-disable no-confusing-arrow */
+/* eslint-disable no-confusing-arrow, no-nested-ternary */
 
 import React from 'react';
 import uniq from 'lodash/uniq';
 import sortBy from 'lodash/sortBy';
+import isEmpty from 'lodash/isEmpty';
 import PropTypes from 'prop-types';
 import { Tag } from 'cw-components';
 
@@ -27,6 +28,33 @@ function mergeForChart({ data, mergeBy, labelKey, valueKey }) {
     };
   });
   return sortBy(Object.values(dataObj), mergeBy);
+}
+
+function getChartConfig(categories) {
+  const getTheme = values =>
+    values.reduce(
+      (acc, value, i) => ({
+        ...acc,
+        [value]: { stroke: CHART_COLORS[i], fill: CHART_COLORS[i] }
+      }),
+      {}
+    );
+  const getTooltipConfig = values =>
+    values.reduce((acc, value) => ({ ...acc, [value]: { label: value } }), {});
+
+  return {
+    axes: {
+      xBottom: { name: 'Year', unit: 'date', format: 'YYYY' },
+      yLeft: { format: 'number' }
+    },
+    animation: false,
+    columns: {
+      x: [{ label: 'Year', value: 'x' }],
+      y: categories.map(b => ({ label: b, value: b }))
+    },
+    tooltip: getTooltipConfig(categories),
+    theme: getTheme(categories)
+  };
 }
 
 function Indicator({ name, value }) {
@@ -91,53 +119,31 @@ function SubnationalActions({ iso, indicators, loading }) {
     x => x.x === latestYear
   );
 
-  const getTheme = values =>
-    values.reduce(
-      (acc, value, i) => ({
-        ...acc,
-        [value]: { stroke: CHART_COLORS[i], fill: CHART_COLORS[i] }
-      }),
-      {}
-    );
-  const getTooltipConfig = values =>
-    values.reduce((acc, value) => ({ ...acc, [value]: { label: value } }), {});
-
-  const citiesChartConfig = {
-    axes: {
-      xBottom: { name: 'Year', unit: 'date', format: 'YYYY' },
-      yLeft: { format: 'number' }
-    },
-    animation: false,
-    columns: {
-      x: [{ label: 'Year', value: 'x' }],
-      y: BADGES.map(b => ({ label: b, value: b }))
-    },
-    tooltip: getTooltipConfig(BADGES),
-    theme: getTheme(BADGES)
-  };
-  const companiesChartConfig = {
-    axes: {
-      xBottom: { name: 'Year', unit: 'date', format: 'YYYY' },
-      yLeft: { format: 'number' }
-    },
-    animation: false,
-    columns: {
-      x: [{ label: 'Year', value: 'x' }],
-      y: targets.map(b => ({ label: b, value: b }))
-    },
-    tooltip: getTooltipConfig(targets),
-    theme: getTheme(targets)
-  };
+  const citiesChartConfig = getChartConfig(BADGES);
+  const companiesChartConfig = getChartConfig(targets);
 
   const cardTheme = {
     title: styles.cardTitle,
     data: styles.cardData
   };
-
   const tagTheme = {
     tag: styles.tag
   };
+
   const noPadding = { left: 0, right: 0, top: 0, bottom: 0 };
+
+  const citiesNoData =
+    !loading &&
+    indicators.city_badge_type &&
+    isEmpty(indicators.city_badge_type.values);
+  const companiesNoData =
+    !loading &&
+    indicators.company_target_qualification &&
+    isEmpty(indicators.company_target_qualification.values);
+
+  const renderNoData = () => (
+    <div className={styles.noData}>No data available.</div>
+  );
 
   return (
     <div className={styles.gridContainer}>
@@ -171,6 +177,8 @@ function SubnationalActions({ iso, indicators, loading }) {
             >
               {loading ? (
                 <Loading light className={styles.loading} />
+              ) : citiesNoData ? (
+                renderNoData()
               ) : (
                 <React.Fragment>
                   <div className={styles.statContainer}>
@@ -234,6 +242,8 @@ function SubnationalActions({ iso, indicators, loading }) {
             >
               {loading ? (
                 <Loading light className={styles.loading} />
+              ) : companiesNoData ? (
+                renderNoData()
               ) : (
                 <React.Fragment>
                   <div className={styles.statContainer}>

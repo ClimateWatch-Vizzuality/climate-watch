@@ -37,7 +37,7 @@
 }
 
 .cardData {
-  height: auto;
+  height: 100%;
   padding: 30px 40px;
 }
 
@@ -133,4 +133,10 @@
   border: none;
   box-shadow: none;
   padding: 0;
+}
+
+.noData {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
