@@ -127,7 +127,8 @@ function SubnationalActions({ iso, indicators, loading }) {
     data: styles.cardData
   };
   const tagTheme = {
-    tag: styles.tag
+    tag: styles.tag,
+    label: styles.tagLabel
   };
 
   const noPadding = { left: 0, right: 0, top: 0, bottom: 0 };
