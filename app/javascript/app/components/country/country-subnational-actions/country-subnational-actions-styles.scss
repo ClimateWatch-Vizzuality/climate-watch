@@ -77,7 +77,15 @@
   font-size: $font-size-m;
 }
 
-.stagesWrapper {
+.chartTitle {
+  margin-top: 10px;
+}
+
+.stagesContainer {
+  margin-top: 15px;
+}
+
+.stages {
   border-radius: 30px;
   border: 1px solid $gray1;
   margin-top: 15px;
@@ -87,7 +95,7 @@
   justify-content: space-between;
 
   > * {
-    padding: 5px 10px;
+    padding: 5px 20px;
   }
 
   > *:not(:first-child) {
