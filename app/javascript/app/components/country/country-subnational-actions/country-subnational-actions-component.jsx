@@ -2,12 +2,13 @@
 
 import React from 'react';
 import uniq from 'lodash/uniq';
-import orderBy from 'lodash/orderBy';
 import sortBy from 'lodash/sortBy';
 import PropTypes from 'prop-types';
-import { Chart, Tag } from 'cw-components';
+import { Tag } from 'cw-components';
 
 import Card from 'components/card';
+import Chart from 'components/charts/chart';
+import Loading from 'components/loading';
 
 import CountryProfileIndicatorsProvider from 'providers/country-profile-indicators-provider';
 
@@ -18,9 +19,7 @@ import styles from './country-subnational-actions-styles.scss';
 function mergeForChart({ data, mergeBy, labelKey, valueKey }) {
   if (!data || !data.length) return [];
   const dataObj = {};
-  const keepOthersLast = d => (d[labelKey] === 'Others' ? -Infinity : d.value);
-  const sorted = orderBy(data, ['date', keepOthersLast], ['asc', 'desc']);
-  sorted.forEach(rd => {
+  data.forEach(rd => {
     dataObj[rd[mergeBy]] = {
       x: rd[mergeBy],
       ...dataObj[rd[mergeBy]],
@@ -30,18 +29,18 @@ function mergeForChart({ data, mergeBy, labelKey, valueKey }) {
   return sortBy(Object.values(dataObj), mergeBy);
 }
 
-function Indicator({ label, value }) {
+function Indicator({ name, value }) {
   return (
     <div className={styles.actionIndicator}>
       <div className={styles.actionIndicatorValue}>{value}</div>
-      <div className={styles.actionIndicatorLabel}>{label}</div>
+      <div className={styles.actionIndicatorLabel}>{name}</div>
     </div>
   );
 }
 
 Indicator.propTypes = {
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  label: PropTypes.string
+  name: PropTypes.string
 };
 
 function SourceLink({ title, link }) {
@@ -62,20 +61,16 @@ SourceLink.propTypes = {
   link: PropTypes.string
 };
 
-function SubnationalActions({ iso, indicators }) {
-  const cityCommited = indicators.city_commited?.value;
-  const cityPopulation = Number(
-    (indicators.city_ppl?.value || 0) / 1000000
-  ).toFixed(2);
-  const companyCommited = indicators.company_commited?.value;
-  const companyTarget = indicators.company_target?.value;
+const BADGES = ['Joined', 'Plan', 'Target'];
+
+function SubnationalActions({ iso, indicators, loading }) {
+  const showByMillion = value => Number((value || 0) / 1000000).toFixed(2);
   const citiesBadgeValues = (
     indicators.city_badge_type?.values || []
-  ).map(x => ({ ...x, value: Number(x.value) }));
+  ).map(x => ({ ...x, value: parseInt(x.value, 10) }));
   const companyTargetQualValues = (
     indicators.company_target_qualification?.values || []
-  ).map(x => ({ ...x, value: Number(x.value) }));
-  const badges = uniq(citiesBadgeValues.map(x => x.category));
+  ).map(x => ({ ...x, value: parseInt(x.value, 10) }));
   const targets = uniq(companyTargetQualValues.map(x => x.category));
   const citiesChartData = mergeForChart({
     data: citiesBadgeValues,
@@ -95,10 +90,6 @@ function SubnationalActions({ iso, indicators }) {
   const latestCompaniesTargetQualification = companiesChartData.find(
     x => x.x === latestYear
   );
-  const domain = {
-    x: ['dataMin', 'dataMax'],
-    y: ['auto', 'auto']
-  };
 
   const getTheme = values =>
     values.reduce(
@@ -119,12 +110,12 @@ function SubnationalActions({ iso, indicators }) {
     animation: false,
     columns: {
       x: [{ label: 'Year', value: 'x' }],
-      y: badges.map(b => ({ label: b, value: b }))
+      y: BADGES.map(b => ({ label: b, value: b }))
     },
-    tooltip: getTooltipConfig(badges),
-    theme: getTheme(badges)
+    tooltip: getTooltipConfig(BADGES),
+    theme: getTheme(BADGES)
   };
-  const companyChartConfig = {
+  const companiesChartConfig = {
     axes: {
       xBottom: { name: 'Year', unit: 'date', format: 'YYYY' },
       yLeft: { format: 'number' }
@@ -146,6 +137,7 @@ function SubnationalActions({ iso, indicators }) {
   const tagTheme = {
     tag: styles.tag
   };
+  const noPadding = { left: 0, right: 0, top: 0, bottom: 0 };
 
   return (
     <div className={styles.gridContainer}>
@@ -177,43 +169,57 @@ function SubnationalActions({ iso, indicators }) {
               theme={cardTheme}
               contentFirst
             >
-              <div>
-                <div className={styles.statContainer}>
-                  <Indicator value={cityCommited} label="Cities Committed" />
-                  <div className={styles.representing}>Representing</div>
-                  <Indicator value={cityPopulation} label="Million People" />
-                </div>
-
-                <Chart
-                  type="area"
-                  config={citiesChartConfig}
-                  domain={domain}
-                  data={citiesChartData}
-                  height={200}
-                  loading={!citiesChartData}
-                />
-
-                <h3>{indicators.city_badge_type?.name}</h3>
-
-                <div>
-                  <p>Stages:</p>
-
-                  <div className={styles.stagesWrapper}>
-                    {Object.keys(citiesChartConfig.theme).map(badge => (
-                      <Tag
-                        color={citiesChartConfig.theme[badge].fill}
-                        theme={tagTheme}
-                        label={badge}
-                      />
-                    ))}
+              {loading ? (
+                <Loading light className={styles.loading} />
+              ) : (
+                <React.Fragment>
+                  <div className={styles.statContainer}>
+                    <Indicator {...indicators.city_commited} />
+                    <div className={styles.representing}>Representing</div>
+                    <Indicator
+                      value={showByMillion(indicators.city_ppl?.value)}
+                      name={indicators.city_ppl?.name}
+                    />
                   </div>
-                  <Tag
-                    color="#cccdcf"
-                    theme={tagTheme}
-                    label="Total Population"
+
+                  <Chart
+                    type="area"
+                    config={citiesChartConfig}
+                    data={citiesChartData}
+                    height={200}
+                    padding={noPadding}
+                    loading={!citiesChartData}
+                    includeTotalLine={false}
+                    highlightLastPoint={false}
+                    unit={false}
+                    ghgChart={false}
+                    formatValue={v => v}
                   />
-                </div>
-              </div>
+
+                  <h3 className={styles.chartTitle}>
+                    {indicators.city_badge_type?.name}
+                  </h3>
+
+                  <div className={styles.stagesContainer}>
+                    <p>Stages:</p>
+
+                    <div className={styles.stages}>
+                      {BADGES.map(badge => (
+                        <Tag
+                          color={citiesChartConfig.theme[badge].fill}
+                          theme={tagTheme}
+                          label={badge}
+                        />
+                      ))}
+                    </div>
+                    {/* <Tag
+                        color="#cccdcf"
+                        theme={tagTheme}
+                        label="Total Population"
+                        /> */}
+                  </div>
+                </React.Fragment>
+              )}
             </Card>
             <Card
               title={
@@ -226,47 +232,53 @@ function SubnationalActions({ iso, indicators }) {
               theme={cardTheme}
               contentFirst
             >
-              <div>
-                <div className={styles.statContainer}>
-                  <Indicator
-                    value={companyTarget}
-                    label="Companies Set a Target"
-                  />
-                  <Indicator
-                    value={companyCommited}
-                    label="Companies Committed"
-                  />
-                </div>
-                <Chart
-                  type="area"
-                  config={companyChartConfig}
-                  data={companiesChartData}
-                  height={200}
-                  loading={!citiesChartData}
-                />
-
-                <h3>{indicators.company_target_qualification?.name}</h3>
-
-                <div>
-                  <div className={styles.targetsWrapper}>
-                    {Object.keys(companyChartConfig.theme).map(target => (
-                      <div key={target}>
-                        <Tag
-                          color={companyChartConfig.theme[target].fill}
-                          theme={tagTheme}
-                          label={target}
-                        />
-                        {latestCompaniesTargetQualification[target]}
-                      </div>
-                    ))}
+              {loading ? (
+                <Loading light className={styles.loading} />
+              ) : (
+                <React.Fragment>
+                  <div className={styles.statContainer}>
+                    <Indicator {...indicators.company_target} />
+                    <Indicator {...indicators.company_commited} />
                   </div>
-                  <Tag
-                    color="#cccdcf"
-                    theme={tagTheme}
-                    label="Total Companies"
+                  <Chart
+                    type="area"
+                    config={companiesChartConfig}
+                    data={companiesChartData}
+                    height={200}
+                    padding={noPadding}
+                    loading={!citiesChartData}
+                    includeTotalLine={false}
+                    highlightLastPoint={false}
+                    unit={false}
+                    ghgChart={false}
+                    formatValue={v => v}
                   />
-                </div>
-              </div>
+
+                  <h3 className={styles.chartTitle}>
+                    {indicators.company_target_qualification?.name}
+                  </h3>
+
+                  <div>
+                    <div className={styles.targetsWrapper}>
+                      {Object.keys(companiesChartConfig.theme).map(target => (
+                        <div key={target}>
+                          <Tag
+                            color={companiesChartConfig.theme[target].fill}
+                            theme={tagTheme}
+                            label={target}
+                          />
+                          {latestCompaniesTargetQualification[target]}
+                        </div>
+                      ))}
+                    </div>
+                    {/* <Tag
+                        color="#cccdcf"
+                        theme={tagTheme}
+                        label="Total Companies"
+                        /> */}
+                  </div>
+                </React.Fragment>
+              )}
             </Card>
           </div>
         </div>
@@ -277,7 +289,8 @@ function SubnationalActions({ iso, indicators }) {
 
 SubnationalActions.propTypes = {
   iso: PropTypes.string.isRequired,
-  indicators: PropTypes.object.isRequired
+  indicators: PropTypes.object.isRequired,
+  loading: PropTypes.bool.isRequired
 };
 
 export default SubnationalActions;
