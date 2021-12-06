@@ -31,6 +31,18 @@
   }
 }
 
+.sectionError {
+  @include row(12);
+
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: $font-size-m;
+  font-weight: $font-weight-bold;
+  color: $error;
+}
+
 .anchorNav {
   @include row('shrink', $wrap: false);
 }
