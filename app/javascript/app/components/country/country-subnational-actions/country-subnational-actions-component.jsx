@@ -3,7 +3,9 @@
 import React from 'react';
 import uniq from 'lodash/uniq';
 import sortBy from 'lodash/sortBy';
+import orderBy from 'lodash/orderBy';
 import isEmpty from 'lodash/isEmpty';
+import mapValues from 'lodash/mapValues';
 import PropTypes from 'prop-types';
 import { Tag } from 'cw-components';
 
@@ -14,9 +16,16 @@ import Loading from 'components/loading';
 import CountryProfileIndicatorsProvider from 'providers/country-profile-indicators-provider';
 
 import { CHART_COLORS } from 'data/constants';
+import {
+  CHART_NAMED_EXTENDED_COLORS,
+  CHART_NAMED_GRAY_COLORS
+} from 'app/styles/constants';
 
 import styles from './country-subnational-actions-styles.scss';
 
+/**
+ * Gets the data format that most of recharts charts expect
+ */
 function mergeForChart({ data, mergeBy, labelKey, valueKey }) {
   if (!data || !data.length) return [];
   const dataObj = {};
@@ -89,23 +98,45 @@ SourceLink.propTypes = {
   link: PropTypes.string
 };
 
-const BADGES = ['Joined', 'Plan', 'Target'];
+const CITY_BADGES = {
+  Joined: { color: CHART_NAMED_EXTENDED_COLORS.color1 },
+  Plan: { color: CHART_NAMED_EXTENDED_COLORS.color3 },
+  Target: { color: CHART_NAMED_EXTENDED_COLORS.color4 },
+  'Total Population': { color: CHART_NAMED_GRAY_COLORS.grayColor1 }
+};
 
 function SubnationalActions({ iso, indicators, loading }) {
   const showByMillion = value => Number((value || 0) / 1000000).toFixed(2);
-  const citiesBadgeValues = (
-    indicators.city_badge_type?.values || []
-  ).map(x => ({ ...x, value: parseInt(x.value, 10) }));
-  const companyTargetQualValues = (
-    indicators.company_target_qualification?.values || []
-  ).map(x => ({ ...x, value: parseInt(x.value, 10) }));
-  const targets = uniq(companyTargetQualValues.map(x => x.category));
+
+  const citiesBadgeValues = (indicators.city_badge_type?.values || []).map(
+    x => ({
+      ...x,
+      category: x.category === 'Not Joined' ? 'Total Population' : x.category,
+      value: parseInt(x.value, 10)
+    })
+  );
+  const keepNotJoinedLast = d =>
+    d.category === 'Total Population' ? -Infinity : d.value;
+  const sortedCitiesBadgeValues = orderBy(
+    citiesBadgeValues,
+    ['year', keepNotJoinedLast],
+    ['asc', 'desc']
+  );
   const citiesChartData = mergeForChart({
-    data: citiesBadgeValues,
+    data: sortedCitiesBadgeValues,
     mergeBy: 'year',
     labelKey: 'category',
     valueKey: 'value'
   });
+  const citiesChartConfig = {
+    ...getChartConfig(Object.keys(CITY_BADGES)),
+    theme: mapValues(CITY_BADGES, v => ({ fill: v.color, stroke: v.color }))
+  };
+
+  const companyTargetQualValues = (
+    indicators.company_target_qualification?.values || []
+  ).map(x => ({ ...x, value: parseInt(x.value, 10) }));
+  const targets = uniq(companyTargetQualValues.map(x => x.category));
   const companiesChartData = mergeForChart({
     data: companyTargetQualValues,
     mergeBy: 'year',
@@ -118,8 +149,6 @@ function SubnationalActions({ iso, indicators, loading }) {
   const latestCompaniesTargetQualification = companiesChartData.find(
     x => x.x === latestYear
   );
-
-  const citiesChartConfig = getChartConfig(BADGES);
   const companiesChartConfig = getChartConfig(targets);
 
   const cardTheme = {
@@ -195,7 +224,7 @@ function SubnationalActions({ iso, indicators, loading }) {
                     type="area"
                     config={citiesChartConfig}
                     data={citiesChartData}
-                    height={200}
+                    height={300}
                     padding={noPadding}
                     loading={!citiesChartData}
                     includeTotalLine={false}
@@ -213,19 +242,21 @@ function SubnationalActions({ iso, indicators, loading }) {
                     <p>Stages:</p>
 
                     <div className={styles.stages}>
-                      {BADGES.map(badge => (
-                        <Tag
-                          color={citiesChartConfig.theme[badge].fill}
-                          theme={tagTheme}
-                          label={badge}
-                        />
-                      ))}
+                      {Object.keys(CITY_BADGES)
+                        .filter(b => b !== 'Total Population')
+                        .map(badge => (
+                          <Tag
+                            color={citiesChartConfig.theme[badge].fill}
+                            theme={tagTheme}
+                            label={badge}
+                          />
+                        ))}
                     </div>
-                    {/* <Tag
-                        color="#cccdcf"
-                        theme={tagTheme}
-                        label="Total Population"
-                        /> */}
+                    <Tag
+                      color={CITY_BADGES['Total Population'].color}
+                      theme={tagTheme}
+                      label="Total Population"
+                    />
                   </div>
                 </React.Fragment>
               )}
@@ -255,7 +286,7 @@ function SubnationalActions({ iso, indicators, loading }) {
                     type="area"
                     config={companiesChartConfig}
                     data={companiesChartData}
-                    height={200}
+                    height={300}
                     padding={noPadding}
                     loading={!citiesChartData}
                     includeTotalLine={false}
