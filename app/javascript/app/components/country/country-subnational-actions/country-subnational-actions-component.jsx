@@ -102,7 +102,7 @@ const CITY_BADGES = {
   Joined: { color: CHART_NAMED_EXTENDED_COLORS.color1 },
   Plan: { color: CHART_NAMED_EXTENDED_COLORS.color3 },
   Target: { color: CHART_NAMED_EXTENDED_COLORS.color4 },
-  'Total Population': { color: CHART_NAMED_GRAY_COLORS.grayColor1 }
+  'Not Joined': { color: CHART_NAMED_GRAY_COLORS.grayColor1 }
 };
 
 function SubnationalActions({ iso, indicators, loading }) {
@@ -111,12 +111,11 @@ function SubnationalActions({ iso, indicators, loading }) {
   const citiesBadgeValues = (indicators.city_badge_type?.values || []).map(
     x => ({
       ...x,
-      category: x.category === 'Not Joined' ? 'Total Population' : x.category,
       value: parseInt(x.value, 10)
     })
   );
   const keepNotJoinedLast = d =>
-    d.category === 'Total Population' ? -Infinity : d.value;
+    d.category === 'Not Joined' ? -Infinity : d.value;
   const sortedCitiesBadgeValues = orderBy(
     citiesBadgeValues,
     ['year', keepNotJoinedLast],
@@ -243,7 +242,7 @@ function SubnationalActions({ iso, indicators, loading }) {
 
                     <div className={styles.stages}>
                       {Object.keys(CITY_BADGES)
-                        .filter(b => b !== 'Total Population')
+                        .filter(b => b !== 'Not Joined')
                         .map(badge => (
                           <Tag
                             color={citiesChartConfig.theme[badge].fill}
@@ -252,11 +251,14 @@ function SubnationalActions({ iso, indicators, loading }) {
                           />
                         ))}
                     </div>
-                    <Tag
-                      color={CITY_BADGES['Total Population'].color}
-                      theme={tagTheme}
-                      label="Total Population"
-                    />
+
+                    <div className={styles.citiesTotalPopulationTag}>
+                      <Tag
+                        color={CITY_BADGES['Not Joined'].color}
+                        theme={tagTheme}
+                        label="Total Population"
+                      />
+                    </div>
                   </div>
                 </React.Fragment>
               )}
@@ -313,11 +315,6 @@ function SubnationalActions({ iso, indicators, loading }) {
                         </div>
                       ))}
                     </div>
-                    {/* <Tag
-                        color="#cccdcf"
-                        theme={tagTheme}
-                        label="Total Companies"
-                        /> */}
                   </div>
                 </React.Fragment>
               )}
