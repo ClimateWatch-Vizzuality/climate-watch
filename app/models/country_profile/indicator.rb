@@ -36,6 +36,7 @@ module CountryProfile
 
         # maybe remove old values just in case
         min_year = indicator.values.minimum(:year)
+        return if min_year.nil?
 
         values_to_add = []
 
