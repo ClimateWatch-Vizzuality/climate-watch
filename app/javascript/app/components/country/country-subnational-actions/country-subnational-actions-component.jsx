@@ -30,6 +30,14 @@ const CITY_BADGES = {
   'Not Joined': { color: CHART_NAMED_GRAY_COLORS.grayColor1 }
 };
 
+const TARGETS = {
+  Committed: { color: '#04537d' },
+  '2°C': { color: '#0677B3' },
+  'Well-below 2°C': { color: '#599BC9' },
+  '1.5°C/Well-below 2°C': { color: '#84B6D7' },
+  '1.5°C': { color: '#ADCEE4' }
+};
+
 function SubnationalActions({ iso, indicators, loading }) {
   const showByMillion = value => Number((value || 0) / 1000000).toFixed(2);
 
@@ -60,7 +68,6 @@ function SubnationalActions({ iso, indicators, loading }) {
   const companyTargetQualValues = (
     indicators.company_target_qualification?.values || []
   ).map(x => ({ ...x, value: parseInt(x.value, 10) }));
-  const targets = uniq(companyTargetQualValues.map(x => x.category));
   const companiesChartData = mergeForChart({
     data: companyTargetQualValues,
     mergeBy: 'year',
@@ -73,7 +80,10 @@ function SubnationalActions({ iso, indicators, loading }) {
   const latestCompaniesTargetQualification = companiesChartData.find(
     x => x.x === latestYear
   );
-  const companiesChartConfig = getChartConfig(targets);
+  const companiesChartConfig = {
+    ...getChartConfig(Object.keys(TARGETS)),
+    theme: mapValues(TARGETS, v => ({ fill: v.color, stroke: v.color }))
+  };
 
   const cardTheme = {
     title: styles.cardTitle,
@@ -85,6 +95,7 @@ function SubnationalActions({ iso, indicators, loading }) {
   };
 
   const noPadding = { left: 0, right: 0, top: 0, bottom: 0 };
+  const tooltipConfig = { showTotal: true, sortByValue: false };
 
   const citiesNoData =
     !loading &&
@@ -161,6 +172,7 @@ function SubnationalActions({ iso, indicators, loading }) {
                     highlightLastPoint={false}
                     unit={false}
                     ghgChart={false}
+                    tooltipConfig={tooltipConfig}
                     formatValue={v => v}
                   />
 
@@ -232,6 +244,7 @@ function SubnationalActions({ iso, indicators, loading }) {
                     highlightLastPoint={false}
                     unit={false}
                     ghgChart={false}
+                    tooltipConfig={tooltipConfig}
                     formatValue={v => v}
                   />
 
@@ -241,14 +254,15 @@ function SubnationalActions({ iso, indicators, loading }) {
 
                   <div>
                     <div className={styles.targetsWrapper}>
-                      {Object.keys(companiesChartConfig.theme).map(target => (
+                      {Object.keys(TARGETS).map(target => (
                         <div key={target}>
                           <Tag
                             color={companiesChartConfig.theme[target].fill}
                             theme={tagTheme}
                             label={target}
                           />
-                          {latestCompaniesTargetQualification[target]}
+                          {latestCompaniesTargetQualification &&
+                            latestCompaniesTargetQualification[target]}
                         </div>
                       ))}
                     </div>
