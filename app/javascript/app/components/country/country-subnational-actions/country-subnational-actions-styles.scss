@@ -29,6 +29,8 @@
   @media #{$tablet-portrait} {
     @include columns((6, 6));
   }
+
+  color: $theme-color;
 }
 
 .cardTitle {
@@ -39,6 +41,10 @@
 .cardData {
   height: 100%;
   padding: 30px 40px;
+
+  > * {
+    flex: unset;
+  }
 }
 
 .cardHeader {
@@ -52,23 +58,8 @@
   justify-content: space-between;
 }
 
-.actionIndicator {
-  text-align: center;
-}
-
 .representing {
   color: $light-blue;
-}
-
-.actionIndicatorValue {
-  font-size: $font-size-xxl-large;
-  font-weight: $font-weight-light;
-  color: $light-blue;
-}
-
-.actionIndicatorLabel {
-  margin-top: 10px;
-  font-size: $font-size-m;
 }
 
 .sourceLink {
