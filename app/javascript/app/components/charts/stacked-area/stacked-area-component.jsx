@@ -253,7 +253,8 @@ class ChartStackedArea extends PureComponent {
       stepped,
       lastData,
       padding,
-      unit
+      unit,
+      tooltipConfig
     } = this.props;
     if (!dataWithTotal.length) return null;
     const tickColumns = {
@@ -313,8 +314,8 @@ class ChartStackedArea extends PureComponent {
                 <TooltipChart
                   content={content}
                   config={config}
-                  showTotal
                   customFormatFunction={value => this.formatValue(value)}
+                  {...tooltipConfig}
                 />
               )}
               filterNull={false}
@@ -370,7 +371,11 @@ ChartStackedArea.propTypes = {
   highlightLastPoint: PropTypes.bool.isRequired,
   ghgChart: PropTypes.bool.isRequired,
   stepped: PropTypes.bool.isRequired,
-  formatValue: PropTypes.func
+  formatValue: PropTypes.func,
+  tooltipConfig: PropTypes.shape({
+    showTotal: PropTypes.bool,
+    sortByValue: PropTypes.bool
+  })
 };
 
 ChartStackedArea.defaultProps = {
@@ -387,7 +392,11 @@ ChartStackedArea.defaultProps = {
   ghgChart: true,
   stepped: false,
   unit: 't',
-  points: []
+  points: [],
+  tooltipConfig: {
+    showTotal: true,
+    sortByValue: true
+  }
 };
 
 export default ChartStackedArea;
