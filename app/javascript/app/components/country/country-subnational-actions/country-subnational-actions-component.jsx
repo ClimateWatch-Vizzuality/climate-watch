@@ -2,7 +2,6 @@
 
 import React from 'react';
 import uniq from 'lodash/uniq';
-import sortBy from 'lodash/sortBy';
 import orderBy from 'lodash/orderBy';
 import isEmpty from 'lodash/isEmpty';
 import mapValues from 'lodash/mapValues';
@@ -15,88 +14,14 @@ import Loading from 'components/loading';
 
 import CountryProfileIndicatorsProvider from 'providers/country-profile-indicators-provider';
 
-import { CHART_COLORS } from 'data/constants';
 import {
   CHART_NAMED_EXTENDED_COLORS,
   CHART_NAMED_GRAY_COLORS
 } from 'app/styles/constants';
 
+import Indicator from './indicator';
+import { mergeForChart, getChartConfig } from './utils';
 import styles from './country-subnational-actions-styles.scss';
-
-/**
- * Gets the data format that most of recharts charts expect
- */
-function mergeForChart({ data, mergeBy, labelKey, valueKey }) {
-  if (!data || !data.length) return [];
-  const dataObj = {};
-  data.forEach(rd => {
-    dataObj[rd[mergeBy]] = {
-      x: rd[mergeBy],
-      ...dataObj[rd[mergeBy]],
-      [rd[labelKey]]: rd[valueKey]
-    };
-  });
-  return sortBy(Object.values(dataObj), mergeBy);
-}
-
-function getChartConfig(categories) {
-  const getTheme = values =>
-    values.reduce(
-      (acc, value, i) => ({
-        ...acc,
-        [value]: { stroke: CHART_COLORS[i], fill: CHART_COLORS[i] }
-      }),
-      {}
-    );
-  const getTooltipConfig = values =>
-    values.reduce((acc, value) => ({ ...acc, [value]: { label: value } }), {});
-
-  return {
-    axes: {
-      xBottom: { name: 'Year', unit: 'date', format: 'YYYY' },
-      yLeft: { format: 'number' }
-    },
-    animation: false,
-    columns: {
-      x: [{ label: 'Year', value: 'x' }],
-      y: categories.map(b => ({ label: b, value: b }))
-    },
-    tooltip: getTooltipConfig(categories),
-    theme: getTheme(categories)
-  };
-}
-
-function Indicator({ name, value }) {
-  return (
-    <div className={styles.actionIndicator}>
-      <div className={styles.actionIndicatorValue}>{value}</div>
-      <div className={styles.actionIndicatorLabel}>{name}</div>
-    </div>
-  );
-}
-
-Indicator.propTypes = {
-  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  name: PropTypes.string
-};
-
-function SourceLink({ title, link }) {
-  return (
-    <a
-      className={styles.sourceLink}
-      href={link}
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-      {title}
-    </a>
-  );
-}
-
-SourceLink.propTypes = {
-  title: PropTypes.string,
-  link: PropTypes.string
-};
 
 const CITY_BADGES = {
   Joined: { color: CHART_NAMED_EXTENDED_COLORS.color1 },
@@ -197,8 +122,14 @@ function SubnationalActions({ iso, indicators, loading }) {
               title={
                 <div className={styles.cardHeader}>
                   <div>Cities</div>
-
-                  <SourceLink title="Explore more on GCOM" link="#" />
+                  <a
+                    className={styles.sourceLink}
+                    href="https://www.globalcovenantofmayors.org/our-cities/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Explore more on GCOM
+                  </a>
                 </div>
               }
               theme={cardTheme}
@@ -267,8 +198,14 @@ function SubnationalActions({ iso, indicators, loading }) {
               title={
                 <div className={styles.cardHeader}>
                   <div>Companies</div>
-
-                  <SourceLink title="Explore more on SBTi" link="#" />
+                  <a
+                    className={styles.sourceLink}
+                    href="https://sciencebasedtargets.org/companies-taking-action"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Explore more on SBTi
+                  </a>
                 </div>
               }
               theme={cardTheme}
