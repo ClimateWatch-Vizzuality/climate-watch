@@ -26,7 +26,7 @@
 .cardsContainer {
   @include columns();
 
-  @media #{$tablet-portrait} {
+  @media #{$tablet-landscape} {
     @include columns((6, 6));
   }
 
@@ -137,6 +137,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex: 1;
 }
 
 .citiesTotalPopulationTag {
