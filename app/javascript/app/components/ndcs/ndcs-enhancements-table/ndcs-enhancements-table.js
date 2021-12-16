@@ -9,7 +9,7 @@ import Component from './ndcs-enhancements-table-component';
 
 import {
   getISOCountries,
-  getFilteredData,
+  replaceAbbreviations,
   getDefaultColumns,
   getLoadingCompareLinks
 } from './ndcs-enhancements-table-selectors';
@@ -30,7 +30,7 @@ const mapStateToProps = (state, { location }) => {
     loading: loading || getLoadingCompareLinks(ndcsEnhancementsWithSelection),
     query: ndcsEnhancementsWithSelection.query,
     isoCountries: getISOCountries(ndcsEnhancementsWithSelection),
-    tableData: getFilteredData(ndcsEnhancementsWithSelection),
+    tableData: replaceAbbreviations(ndcsEnhancementsWithSelection),
     columns: getDefaultColumns(ndcsEnhancementsWithSelection)
   };
 };
