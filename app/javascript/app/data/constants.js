@@ -443,9 +443,9 @@ export const ENHANCEMENT_VALUES_COLORS = {
   'Revised from the previous submission': ENHANCEMENT_VALUE_COLORS.blue,
   'Yes, enhancement in the revised submission': ENHANCEMENT_VALUE_COLORS.blue,
   'No, no enhancement in the revised submission': ENHANCEMENT_VALUE_COLORS.red,
-  'No previous submission available': ENHANCEMENT_VALUE_COLORS.red,
-  'No revision compared with previous version': ENHANCEMENT_VALUE_COLORS.red,
   Unclear: ENHANCEMENT_VALUE_COLORS.orange,
+  'No previous submission available': ENHANCEMENT_VALUE_COLORS.white,
+  'No revision compared with previous version': ENHANCEMENT_VALUE_COLORS.white,
   'No Document Submitted': ENHANCEMENT_VALUE_COLORS.white
 };
 
@@ -474,22 +474,23 @@ export const ENHANCEMENT_LABELS_WITH_LETTERS = [
   {
     value: 'ndce_sectoral',
     letter: 'S',
-    label: 'Sectoral'
+    label: 'Sectoral: Strengthened or added sectoral target'
   },
   {
     value: 'ndce_pa',
     letter: 'P',
-    label: 'Policy'
+    label: 'Policy: Strengthened or added policies and actions'
   },
   {
     value: 'ndce_adp',
     letter: 'A',
-    label: 'Adaptation'
+    label: 'Adaptation: Strengthened adaptation'
   },
   {
     value: 'ndce_ctu',
     letter: 'I',
-    label: 'Information'
+    label:
+      'Information: Provided additional Information for clarity, transparency, and understanding'
   }
 ];
 
