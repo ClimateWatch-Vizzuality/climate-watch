@@ -457,38 +457,37 @@ export const ALL_ENHANCEMENT_VALUES_COLORS = {
 
 export const ENHANCEMENT_LABELS_WITH_LETTERS = [
   {
-    value: 'Revised from previous submission',
+    value: 'ndce_revised',
     letter: 'R',
     label: 'Revised: Revised from the previous submission'
   },
   {
-    value: 'Reduced Total GHG Emissions in 2030',
+    value: 'ndce_rdcd_ghg',
     letter: 'M',
     label: 'Mitigation: Reduced total GHG emissions in 2030'
   },
   {
-    value: 'Strengthened or added GHG target',
+    value: 'ndce_ghgt',
     letter: 'G',
     label: 'GHG: Strengthened or added GHG target'
   },
   {
-    value: 'Strengthened or added sectoral target',
+    value: 'ndce_sectoral',
     letter: 'S',
     label: 'Sectoral'
   },
   {
-    value: 'Strengthened or added policies and actions',
+    value: 'ndce_pa',
     letter: 'P',
     label: 'Policy'
   },
   {
-    value: 'Strengthened adaptation',
+    value: 'ndce_adp',
     letter: 'A',
     label: 'Adaptation'
   },
   {
-    value:
-      'Provided additional Information for clarity, transparency, and understanding',
+    value: 'ndce_ctu',
     letter: 'I',
     label: 'Information'
   }

@@ -57,7 +57,7 @@ export const getIndicatorsParsed = createSelector(
 
     return previousComparisonIndicators
       ? filteredIndicators.concat(
-        sortAndParseIndicators(previousComparisonIndicators)
+        sortAndParseIndicators(previousComparisonIndicators, true)
       )
       : filteredIndicators;
   }
@@ -88,7 +88,8 @@ export const tableGetSelectedData = createSelector(
                 label: ind.locations[iso].value
               };
             } else {
-              row[ind.label] = ind.locations[iso].value;
+              row[ind.isPreviousComparison ? ind.value : ind.label] =
+                ind.locations[iso].value;
             }
           }
         });
@@ -116,7 +117,9 @@ export const tableRemoveIsoFromData = createSelector(
       !data ||
       isEmpty(data) ||
       (FEATURE_ENHANCEMENT_CHANGES && !compareLinks)
-    ) { return null; }
+    ) {
+      return null;
+    }
     const updatedData = data.filter(Boolean).map(d => {
       const updatedD = { ...d };
       let date = d['Statement Date'];
