@@ -8,6 +8,7 @@ import * as NDCSExploreProvider from 'providers/ndcs-explore-provider';
 import * as NDCSPreviousComparison from 'providers/ndcs-previous-comparison-provider';
 import * as loginProvider from 'providers/login-provider';
 import * as countriesProvider from 'providers/countries-provider';
+import * as countryProfileIndicatorsProvider from 'providers/country-profile-indicators-provider';
 import * as regionsProvider from 'providers/regions-provider';
 import * as documentsProvider from 'providers/documents-provider';
 import * as LSEProvider from 'providers/lse-provider';
@@ -56,6 +57,7 @@ const providersReducers = {
   documents: handleActions(documentsProvider),
   lse: handleActions(LSEProvider),
   countriesDocuments: handleActions(countriesDocumentsProvider),
+  countryProfileIndicators: handleActions(countryProfileIndicatorsProvider),
   adaptations: handleActions(adaptationsProvider),
   emissions: handleActions(emissionsProvider),
   ndcsSdgsMeta: handleActions(ndcsSdgsMetaProvider),

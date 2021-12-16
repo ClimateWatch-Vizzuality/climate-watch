@@ -2,13 +2,14 @@ module Api
   module V1
     class WbExtraCountryDataController < ApiController
       def index
-        collection = ::WbExtra::CountryData.
+        data = ::WbExtra::CountryData.
           includes(:location).
-          filter_by_dates(params[:startYear], params[:endYear]).
-          order(:year).
-          all
+          order(:year)
 
-        render json: collection,
+        data = data.filter_by_start_year(params[:startYear]) if params[:startYear].present?
+        data = data.filter_by_end_year(params[:endYear]) if params[:endYear].present?
+
+        render json: data,
                serializer: Api::V1::WbExtra::IndexSerializer
       end
 
@@ -22,11 +23,12 @@ module Api
           }, status: :not_found and return
         end
 
-        collection = ::WbExtra::CountryData.
-          where(location: location).
-          filter_by_dates(params[:startYear], params[:endYear])
+        data = ::WbExtra::CountryData.where(location: location)
 
-        render json: collection,
+        data = data.filter_by_start_year(params[:startYear]) if params[:startYear].present?
+        data = data.filter_by_end_year(params[:endYear]) if params[:endYear].present?
+
+        render json: data,
                each_serializer: Api::V1::WbExtra::CountryDataSerializer
       end
 

@@ -410,13 +410,13 @@ export const NET_ZERO_POSITIVE_LABELS = [
 ];
 
 export const ENHANCEMENT_LABEL_COLORS = {
-  SUBMITTED_2020: FEATURE_ENHANCEMENT_CHANGES
-    ? CHART_NAMED_COLORS.color2
-    : CHART_NAMED_COLORS.color1,
+  SUBMITTED_2020: CHART_NAMED_COLORS.color1,
   ...(!FEATURE_ENHANCEMENT_CHANGES && {
     INTENDS_TO_ENHANCE: CHART_NAMED_COLORS.color2
   }),
-  ENHANCED_MITIGATION: CHART_NAMED_COLORS.color3
+  ENHANCED_MITIGATION: FEATURE_ENHANCEMENT_CHANGES
+    ? CHART_NAMED_COLORS.color2
+    : CHART_NAMED_COLORS.color3
 };
 
 export const INDICATOR_SLUGS = {
@@ -436,13 +436,16 @@ export const ENHANCEMENT_VALUE_COLORS = {
 };
 
 export const ENHANCEMENT_VALUES_COLORS = {
+  'Submitted New or Updated NDC': ENHANCEMENT_VALUE_COLORS.blue,
+  'Submitted New or Updated NDC with Reduced Total Emissions':
+    ENHANCEMENT_VALUE_COLORS.blue,
   'Revised NDC compared with previous version': ENHANCEMENT_VALUE_COLORS.blue,
   'Revised from the previous submission': ENHANCEMENT_VALUE_COLORS.blue,
   'Yes, enhancement in the revised submission': ENHANCEMENT_VALUE_COLORS.blue,
   'No, no enhancement in the revised submission': ENHANCEMENT_VALUE_COLORS.red,
   Unclear: ENHANCEMENT_VALUE_COLORS.orange,
-  'No revision compared with previous version': ENHANCEMENT_VALUE_COLORS.white,
   'No previous submission available': ENHANCEMENT_VALUE_COLORS.white,
+  'No revision compared with previous version': ENHANCEMENT_VALUE_COLORS.white,
   'No Document Submitted': ENHANCEMENT_VALUE_COLORS.white
 };
 
@@ -454,33 +457,40 @@ export const ALL_ENHANCEMENT_VALUES_COLORS = {
 
 export const ENHANCEMENT_LABELS_WITH_LETTERS = [
   {
-    label: 'Revised from previous submission',
-    letter: 'R'
+    value: 'ndce_revised',
+    letter: 'R',
+    label: 'Revised: Revised from the previous submission'
   },
   {
-    label: 'Reduced Total GHG Emissions in 2030',
-    letter: 'M'
+    value: 'ndce_rdcd_ghg',
+    letter: 'M',
+    label: 'Mitigation: Reduced total GHG emissions in 2030'
   },
   {
-    label: 'Strengthened or added GHG target',
-    letter: 'G'
+    value: 'ndce_ghgt',
+    letter: 'G',
+    label: 'GHG: Strengthened or added GHG target'
   },
   {
-    label: 'Strengthened or added sectoral target',
-    letter: 'S'
+    value: 'ndce_sectoral',
+    letter: 'S',
+    label: 'Sectoral: Strengthened or added sectoral target'
   },
   {
-    label: 'Strengthened or added policies and actions',
-    letter: 'P'
+    value: 'ndce_pa',
+    letter: 'P',
+    label: 'Policy: Strengthened or added policies and actions'
   },
   {
-    label: 'Strengthened adaptation',
-    letter: 'A'
+    value: 'ndce_adp',
+    letter: 'A',
+    label: 'Adaptation: Strengthened adaptation'
   },
   {
+    value: 'ndce_ctu',
+    letter: 'I',
     label:
-      'Provided additional Information for clarity, transparency, and understanding',
-    letter: 'I'
+      'Information: Provided additional Information for clarity, transparency, and understanding'
   }
 ];
 

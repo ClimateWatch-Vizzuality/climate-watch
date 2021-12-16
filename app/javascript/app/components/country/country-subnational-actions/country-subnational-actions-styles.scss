@@ -1,0 +1,147 @@
+@import '~styles/layout.scss';
+
+.gridContainer {
+  border-bottom: 1px solid $gray2;
+}
+
+.grid {
+  @include row(12);
+
+  padding-top: $gutter-padding + $gutter-padding / 2;
+}
+
+.title {
+  font-size: $font-size-large;
+  font-weight: $font-weight;
+  color: $theme-color;
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.loading {
+  min-height: 462px;
+}
+
+.cardsContainer {
+  @include columns();
+
+  @media #{$tablet-landscape} {
+    @include columns((6, 6));
+  }
+
+  color: $theme-color;
+}
+
+.cardTitle {
+  font-size: $font-size-large;
+  font-weight: $font-weight;
+}
+
+.cardData {
+  height: 100%;
+  padding: 30px 40px;
+
+  > * {
+    flex: unset;
+  }
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+}
+
+.statContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.representing {
+  color: $light-blue;
+}
+
+.sourceLink {
+  color: inherit;
+  text-decoration: underline;
+  font-size: $font-size-m;
+}
+
+.chartTitle {
+  margin-top: 10px;
+}
+
+.stagesContainer {
+  margin-top: 15px;
+}
+
+.stages {
+  border-radius: 30px;
+  border: 1px solid $gray1;
+  margin-top: 15px;
+  color: $gray1;
+  padding: 0;
+  display: flex;
+  justify-content: space-between;
+
+  > * {
+    padding: 5px 20px;
+    flex: 1;
+  }
+
+  > *:not(:first-child) {
+    position: relative;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: -15px;
+      top: 50%;
+      display: block;
+      border-right: 1px solid $gray1;
+      border-bottom: 1px solid $gray1;
+      width: 30px;
+      height: 30px;
+      transform: translate(-50%, -50%) rotate(-45deg);
+    }
+  }
+}
+
+.targetsWrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 20px;
+  margin-top: 15px;
+
+  > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: $theme-color;
+    font-size: $font-size;
+  }
+}
+
+.tag {
+  border: none;
+  box-shadow: none;
+  padding: 0;
+}
+
+.tagLabel {
+  font-size: $font-size;
+  color: $theme-color;
+}
+
+.noData {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+}
+
+.citiesTotalPopulationTag {
+  margin-left: 20px;
+  margin-top: 10px;
+}
