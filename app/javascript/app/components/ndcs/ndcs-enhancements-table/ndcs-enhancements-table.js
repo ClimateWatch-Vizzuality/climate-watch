@@ -9,8 +9,9 @@ import Component from './ndcs-enhancements-table-component';
 
 import {
   getISOCountries,
-  replaceAbbreviations,
-  getDefaultColumns
+  getFilteredData,
+  getDefaultColumns,
+  getLoadingCompareLinks
 } from './ndcs-enhancements-table-selectors';
 
 const mapStateToProps = (state, { location }) => {
@@ -26,10 +27,10 @@ const mapStateToProps = (state, { location }) => {
   };
 
   return {
-    loading,
+    loading: loading || getLoadingCompareLinks(ndcsEnhancementsWithSelection),
     query: ndcsEnhancementsWithSelection.query,
     isoCountries: getISOCountries(ndcsEnhancementsWithSelection),
-    tableData: replaceAbbreviations(ndcsEnhancementsWithSelection),
+    tableData: getFilteredData(ndcsEnhancementsWithSelection),
     columns: getDefaultColumns(ndcsEnhancementsWithSelection)
   };
 };
