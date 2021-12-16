@@ -64,7 +64,7 @@ const NDCSEnhancementsTable = ({
             setColumnWidth={setColumnWidth}
             customCellRenderer={customCellRenderer}
             defaultColumns={columns}
-            sortBy="Date"
+            sortBy="Share of Global GHG Emissions"
             sortASC={false}
           />
           <ReactTooltip id="submission-icon-info" html />
