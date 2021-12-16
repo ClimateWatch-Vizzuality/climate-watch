@@ -1,0 +1,16 @@
+@import '~styles/layout.scss';
+
+.indicator {
+  text-align: center;
+}
+
+.value {
+  font-size: $font-size-xxl-large;
+  font-weight: $font-weight-light;
+  color: $light-blue;
+}
+
+.label {
+  margin-top: 10px;
+  font-size: $font-size-m;
+}

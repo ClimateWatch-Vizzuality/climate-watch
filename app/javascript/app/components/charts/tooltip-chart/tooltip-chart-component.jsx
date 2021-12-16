@@ -1,3 +1,5 @@
+/* eslint-disable no-confusing-arrow */
+
 import React from 'react';
 import Proptypes from 'prop-types';
 import { format } from 'd3-format';
@@ -9,6 +11,7 @@ const TooltipChartComponent = ({
   config,
   content,
   showTotal,
+  sortByValue,
   customD3Format = '.2',
   customFormatFunction
 }) => {
@@ -32,7 +35,7 @@ const TooltipChartComponent = ({
     return hasData ? `${formatValue(total)}` : 'n/a';
   };
 
-  const sortByValue = payload => {
+  const sortByValueFunction = payload => {
     const yValues = payload[0].payload;
     const compare = (a, b) => {
       if (yValues[b.dataKey] === undefined) return -1;
@@ -41,6 +44,9 @@ const TooltipChartComponent = ({
     };
     return payload.sort(compare);
   };
+
+  const getContent = () =>
+    sortByValue ? sortByValueFunction(content.payload) : content.payload;
 
   return (
     <div className={styles.tooltip}>
@@ -62,8 +68,8 @@ const TooltipChartComponent = ({
       {content &&
         content.payload &&
         content.payload.length > 0 &&
-        sortByValue(content.payload, config).map(y =>
-          (y.payload && y.dataKey !== 'total' ? (
+        getContent().map(y =>
+          y.payload && y.dataKey !== 'total' ? (
             <div key={`${y.dataKey}`} className={styles.label}>
               <div className={styles.legend}>
                 <span
@@ -87,7 +93,7 @@ const TooltipChartComponent = ({
                   : 'n/a'}
               </p>
             </div>
-          ) : null)
+          ) : null
         )}
       {content && !content.payload && <div>No data fool</div>}
     </div>
@@ -98,8 +104,13 @@ TooltipChartComponent.propTypes = {
   content: Proptypes.object,
   config: Proptypes.object,
   showTotal: Proptypes.bool,
+  sortByValue: Proptypes.bool,
   customD3Format: Proptypes.string,
   customFormatFunction: Proptypes.func
+};
+
+TooltipChartComponent.defaultProps = {
+  sortByValue: true
 };
 
 export default TooltipChartComponent;

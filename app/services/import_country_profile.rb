@@ -30,6 +30,7 @@ class ImportCountryProfile
       import_multiple_columns_file(COUNTRY_DRIVER_FILEPATH)
 
       sync_indc_indicators
+      generate_subnational_actions_missing_data
     end
   end
 
@@ -101,6 +102,10 @@ class ImportCountryProfile
 
   def sync_indc_indicators
     CountryProfile::Indicator.sync_indc_indicators
+  end
+
+  def generate_subnational_actions_missing_data
+    CountryProfile::Indicator.generate_subnational_actions_missing_data
   end
 
   def build_value(row, indicator)

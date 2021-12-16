@@ -9,7 +9,9 @@ import Header from 'components/header';
 import AnchorNav from 'components/anchor-nav';
 import SocioeconomicsProvider from 'providers/socioeconomics-provider';
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
+import ErrorBoundary from 'components/error-boundary';
 import CountryHeader from './country-header';
+
 import styles from './country-styles.scss';
 
 function Country(props) {
@@ -53,7 +55,12 @@ function Country(props) {
           >
             <div className={styles.section}>
               <div id={section.hash} className={styles.sectionHash} />
-              <section.component />
+              <ErrorBoundary
+                className={styles.sectionError}
+                errorMessage={`Something went wrong while rendering ${section.label} section.`}
+              >
+                <section.component />
+              </ErrorBoundary>
             </div>
           </Waypoint>
         ))}

@@ -29,7 +29,6 @@ import { QUANTIFICATION_COLORS, QUANTIFICATIONS_CONFIG } from 'data/constants';
 import DividerLine from './divider-line';
 
 const NUMBER_PRECISION = '2';
-const formatLabel = value => formatSIwithDecimals(value, NUMBER_PRECISION, 't');
 
 class ChartStackedArea extends PureComponent {
   constructor() {
@@ -44,6 +43,14 @@ class ChartStackedArea extends PureComponent {
   setLastPoint = showLastPoint => {
     this.setState({ showLastPoint });
   };
+
+  formatValue(value) {
+    const { formatValue, unit } = this.props;
+    if (!formatValue) {
+      return formatSIwithDecimals(value, NUMBER_PRECISION, unit);
+    }
+    return formatValue(value);
+  }
 
   debouncedMouseMove = debounce(year => {
     this.props.onMouseMove(year);
@@ -131,8 +138,8 @@ class ChartStackedArea extends PureComponent {
 
         // value label
         const valueLabelValue = point.isRange
-          ? `${formatLabel(point.y[0])} - ${formatLabel(point.y[1])}`
-          : `${formatLabel(point.y)}`;
+          ? `${this.formatValue(point.y[0])} - ${this.formatValue(point.y[1])}`
+          : `${this.formatValue(point.y)}`;
         const valueLabel = (
           <Label
             value={valueLabelValue}
@@ -220,7 +227,7 @@ class ChartStackedArea extends PureComponent {
           style={{ paintOrder: 'stroke' }}
         />
         <Label
-          value={`${formatLabel(lastData.y)}`}
+          value={`${this.formatValue(lastData.y)}`}
           position="top"
           fill="#113750"
           fontSize="18px"
@@ -237,12 +244,17 @@ class ChartStackedArea extends PureComponent {
     const {
       config,
       dataWithTotal,
+      ghgChart,
       height,
       points,
       includeTotalLine,
+      highlightLastPoint,
       domain,
       stepped,
-      lastData
+      lastData,
+      padding,
+      unit,
+      tooltipConfig
     } = this.props;
     if (!dataWithTotal.length) return null;
     const tickColumns = {
@@ -268,7 +280,7 @@ class ChartStackedArea extends PureComponent {
             domain={domain.x}
             type="number"
             dataKey="x"
-            padding={{ left: 30, right: 40 }}
+            padding={{ left: padding.left, right: padding.right }}
             tick={<CustomXAxisTick customstrokeWidth="0" />}
             tickSize={8}
             allowDecimals={false}
@@ -279,9 +291,14 @@ class ChartStackedArea extends PureComponent {
             domain={domain.y}
             interval={0}
             axisLine={false}
-            padding={{ top: 0, bottom: 0 }}
+            padding={{ top: padding.top, bottom: padding.bottom }}
             tickLine={false}
-            tick={<CustomYAxisTick customstrokeWidth="0" unit="t" />}
+            tick={
+              <CustomYAxisTick
+                customstrokeWidth="0"
+                unit={unit === false ? '' : unit}
+              />
+            }
             ticks={tickValues.ticks}
           />
           <CartesianGrid vertical={false} />
@@ -297,8 +314,8 @@ class ChartStackedArea extends PureComponent {
                 <TooltipChart
                   content={content}
                   config={config}
-                  showTotal
-                  customFormatFunction={value => formatLabel(value)}
+                  customFormatFunction={value => this.formatValue(value)}
+                  {...tooltipConfig}
                 />
               )}
               filterNull={false}
@@ -327,9 +344,9 @@ class ChartStackedArea extends PureComponent {
               type={stepped ? 'step' : 'linear'}
             />
           )}
-          {!isPageContained && DividerLine({ x: lastData.x })}
-          {showLastPoint && this.renderLastPoint()}
-          {this.renderQuantificationPoints()}
+          {!isPageContained && ghgChart && DividerLine({ x: lastData.x })}
+          {highlightLastPoint && showLastPoint && this.renderLastPoint()}
+          {ghgChart && this.renderQuantificationPoints()}
         </ComposedChart>
       </ResponsiveContainer>
     );
@@ -343,21 +360,43 @@ ChartStackedArea.propTypes = {
   domain: PropTypes.object,
   dataMaxMin: PropTypes.object,
   lastData: PropTypes.object,
+  unit: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   height: PropTypes.oneOfType([
     PropTypes.number,
     PropTypes.string // % accepted
   ]).isRequired,
+  padding: PropTypes.object,
   onMouseMove: PropTypes.func.isRequired,
   includeTotalLine: PropTypes.bool.isRequired,
-  stepped: PropTypes.bool.isRequired
+  highlightLastPoint: PropTypes.bool.isRequired,
+  ghgChart: PropTypes.bool.isRequired,
+  stepped: PropTypes.bool.isRequired,
+  formatValue: PropTypes.func,
+  tooltipConfig: PropTypes.shape({
+    showTotal: PropTypes.bool,
+    sortByValue: PropTypes.bool
+  })
 };
 
 ChartStackedArea.defaultProps = {
   height: 500,
+  padding: {
+    top: 0,
+    bottom: 0,
+    left: 30,
+    right: 40
+  },
   onMouseMove: () => {},
   includeTotalLine: true,
+  highlightLastPoint: true,
+  ghgChart: true,
   stepped: false,
-  points: []
+  unit: 't',
+  points: [],
+  tooltipConfig: {
+    showTotal: true,
+    sortByValue: true
+  }
 };
 
 export default ChartStackedArea;

@@ -33,7 +33,7 @@ class Card extends PureComponent {
         key={`content-${keyValue}`}
         className={cx(styles.contentContainer, theme.contentContainer)}
       >
-        {typeof title === 'object' ? (
+        {typeof title === 'object' && title.title ? (
           <a
             role="button"
             tabIndex={0}
@@ -45,15 +45,15 @@ class Card extends PureComponent {
           </a>
         ) : (
           title && (
-            <p className={cx(styles.title, theme.title)}>
+            <div className={cx(styles.title, theme.title)}>
               <AbbrReplace>{title}</AbbrReplace>
-            </p>
+            </div>
           )
         )}
         {subtitle && (
-          <p className={cx(styles.subtitle, theme.subtitle)}>
+          <div className={cx(styles.subtitle, theme.subtitle)}>
             <AbbrReplace>{subtitle}</AbbrReplace>
-          </p>
+          </div>
         )}
       </div>
     );
