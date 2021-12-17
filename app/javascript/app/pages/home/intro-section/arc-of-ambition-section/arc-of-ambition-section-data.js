@@ -17,7 +17,7 @@ export const slidesData = [
     altText: 'Arc of Ambition',
     buttons: [
       {
-        text: 'Overview of commitments',
+        text: 'Overview of Commitments',
         link: '/ndc-overview',
         variant: 'primary',
         type: 'button'
@@ -29,7 +29,7 @@ export const slidesData = [
         type: 'button'
       },
       {
-        text: 'Historical greenhouse emissions',
+        text: 'Historical GHG Emissions',
         link: '/ghg',
         variant: 'primary',
         type: 'button'
