@@ -23,11 +23,12 @@ const renderSearch = (searchHandler, query) => (
 const setColumnWidth = FEATURE_ENHANCEMENT_CHANGES
   ? col => {
     const columnWidth = {
-      country: 100,
+      country: 80,
       'NDC Status': 64,
       'Share of Global GHG Emissions': 120,
       'Overall comparison with previous NDC': 200,
-      Statement: 150,
+      'Source Link': 80,
+      Statement: 260,
       Date: 76
     }[col];
     return columnWidth || 170;
@@ -66,6 +67,15 @@ const NDCSEnhancementsTable = ({
             defaultColumns={columns}
             sortBy="Share of Global GHG Emissions"
             sortASC={false}
+            dynamicRowsConfig={{
+              fontWidth: 8,
+              // px
+              fontSize: 10,
+              // px
+              extraMargin: 30,
+              // px
+              lineHeight: 1
+            }}
           />
           <ReactTooltip id="submission-icon-info" html />
           {FEATURE_ENHANCEMENT_CHANGES && <EnhancementsLegend />}
