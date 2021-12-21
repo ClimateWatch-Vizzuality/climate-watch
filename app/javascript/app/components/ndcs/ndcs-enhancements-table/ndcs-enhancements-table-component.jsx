@@ -23,8 +23,8 @@ const setColumnWidth = col => {
     'NDC Status': 64,
     'Share of Global GHG Emissions': 120,
     'Overall comparison with previous NDC': 200,
-    'Source Link': 80,
-    Statement: 260,
+    'Source Link': 120,
+    Statement: 220,
     Date: 76
   }[col];
   return columnWidth || 170;
