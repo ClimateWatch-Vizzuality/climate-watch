@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import cx from 'classnames';
 import Dropdown from 'components/dropdown';
 import ButtonGroup from 'components/button-group';
-import Button from 'components/button';
 import Tag from 'components/tag';
 import { CALCULATION_OPTIONS } from 'app/data/constants';
 import Chart from 'components/charts/chart';
@@ -16,9 +15,6 @@ import { isPageContained } from 'utils/navigation';
 import DataZoom from 'components/data-zoom';
 import quantificationTagTheme from 'styles/themes/tag/quantification-tag.scss';
 import styles from './country-ghg-emissions-styles.scss';
-
-const FEATURE_ENHANCEMENT_CHANGES =
-  process.env.FEATURE_ENHANCEMENT_CHANGES === 'true';
 
 class CountryGhgEmissions extends PureComponent {
   renderFilterDropdowns() {
@@ -54,28 +50,11 @@ class CountryGhgEmissions extends PureComponent {
     const {
       iso,
       handleInfoClick,
-      handleAnalyticsClick,
       handlePngDownloadModal,
       isEmbed,
-      isNdcp,
       downloadLink
     } = this.props;
 
-    const link = `/ghg-emissions?breakBy=regions-${CALCULATION_OPTIONS.ABSOLUTE_VALUE.value}&regions=${iso}`;
-    const href = `/contained${link}&isNdcp=true`;
-    const exploreButton = (
-      <Button
-        key="action2"
-        className={styles.exploreBtn}
-        variant="primary"
-        href={isNdcp ? href : null}
-        link={isNdcp ? null : link}
-        onClick={handleAnalyticsClick}
-        dataTour="countries-03"
-      >
-        Explore Emissions
-      </Button>
-    );
     const buttonGroupConfig = isEmbed
       ? [{ type: 'info', onClick: handleInfoClick }]
       : [
@@ -91,28 +70,21 @@ class CountryGhgEmissions extends PureComponent {
           positionRight: true,
           dataTour: 'countries-05'
         },
-        FEATURE_ENHANCEMENT_CHANGES
-          ? {
-            type: 'downloadCombo',
-            dataTour: 'countries-04',
-            options: [
-              {
-                label: 'Save as image (PNG)',
-                action: handlePngDownloadModal
-              },
-              {
-                label: 'Go to data explorer',
-                link: downloadLink,
-                target: '_self'
-              }
-            ]
-          }
-          : {
-            type: 'download',
-            section: 'ghg-emissions',
-            link: downloadLink,
-            dataTour: 'countries-04'
-          },
+        {
+          type: 'downloadCombo',
+          dataTour: 'countries-04',
+          options: [
+            {
+              label: 'Save as image (PNG)',
+              action: handlePngDownloadModal
+            },
+            {
+              label: 'Go to data explorer',
+              link: downloadLink,
+              target: '_self'
+            }
+          ]
+        },
         {
           type: 'addToUser'
         }
@@ -125,9 +97,6 @@ class CountryGhgEmissions extends PureComponent {
         buttonsConfig={buttonGroupConfig}
       />
     ];
-    if (!FEATURE_ENHANCEMENT_CHANGES) {
-      buttons.push(exploreButton);
-    }
     return buttons;
   }
 
@@ -218,16 +187,10 @@ class CountryGhgEmissions extends PureComponent {
       pngSelectionSubtitle,
       pngDownloadId
     } = this.props;
-    const title = `Greenhouse Gas Emissions and Emissions Targets ${
-      isEmbed ? `in ${countryName}` : ''
-    }`;
     return (
       <div className={styles.container}>
         <EmissionsMetaProvider />
         <WbCountryDataProvider />
-        {!FEATURE_ENHANCEMENT_CHANGES && (
-          <h3 className={styles.title}>{title}</h3>
-        )}
         <TabletLandscape>
           <div
             className={cx(styles.graphControls, {
@@ -266,7 +229,6 @@ class CountryGhgEmissions extends PureComponent {
 
 CountryGhgEmissions.propTypes = {
   isEmbed: PropTypes.bool,
-  isNdcp: PropTypes.bool,
   loading: PropTypes.bool.isRequired,
   data: PropTypes.array.isRequired,
   domain: PropTypes.object,
@@ -283,7 +245,6 @@ CountryGhgEmissions.propTypes = {
   filtersOptions: PropTypes.array,
   filtersSelected: PropTypes.array,
   handleInfoClick: PropTypes.func.isRequired,
-  handleAnalyticsClick: PropTypes.func.isRequired,
   handleYearHover: PropTypes.func,
   handlePngDownloadModal: PropTypes.func,
   handleSourceChange: PropTypes.func.isRequired,

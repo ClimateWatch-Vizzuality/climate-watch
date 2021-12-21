@@ -20,9 +20,6 @@ import {
   INDICATOR_SLUGS
 } from 'data/constants';
 
-const FEATURE_ENHANCEMENT_CHANGES =
-  process.env.FEATURE_ENHANCEMENT_CHANGES === 'true';
-
 const ENHANCEMENT_SLUGS = {
   EMISSIONS: INDICATOR_SLUGS.emissions,
   MAP: INDICATOR_SLUGS.enhancements
@@ -413,9 +410,6 @@ export const summarizeIndicators = createSelector(
     Object.keys(summaryData).forEach(type => {
       const emissionsString = `<span title="2018 emissions data">${summaryData[type].emissions.value}% of global emissions</span>`;
       summaryData[type].countries.opts.label = {
-        ...(!FEATURE_ENHANCEMENT_CHANGES && {
-          [ENHANCEMENT_LABEL_SLUGS.INTENDS_TO_ENHANCE]: `<strong>countries</strong> (${emissionsString}) have <strong>stated their intention to <span title="Definition: Strengthening mitigation ambition and/or increasing adaptation action in a new or updated NDC.">enhance ambition or action</span> in a new or updated NDC</strong>`
-        }),
         [ENHANCEMENT_LABEL_SLUGS.ENHANCED_MITIGATION]: `<strong>of the ${
           summaryData[ENHANCEMENT_LABEL_SLUGS.SUBMITTED_2020].countries.value
         } countries</strong> (${emissionsString}) have submitted a <strong>new or updated NDC with reduced total emissions</strong> compared to their previous NDC`,

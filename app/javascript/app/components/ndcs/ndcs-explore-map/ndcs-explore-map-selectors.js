@@ -26,8 +26,6 @@ import {
 import { getSubmitted2020Isos } from 'utils/indicatorCalculations';
 
 const NOT_APPLICABLE_LABEL = 'Not Applicable';
-const FEATURE_ENHANCEMENT_CHANGES =
-  process.env.FEATURE_ENHANCEMENT_CHANGES === 'true';
 
 const getSearch = state => state.search || null;
 const getCountries = state => state.countries || null;
@@ -96,13 +94,6 @@ export const getCategories = createSelector(
   [getCategoriesData, getIndicatorsData],
   (categories, indicators) => {
     if (!categories) return null;
-    if (!FEATURE_ENHANCEMENT_CHANGES) {
-      return Object.keys(categories).map(category => ({
-        label: categories[category].name,
-        value: categories[category].slug,
-        id: category
-      }));
-    }
     const indicatorsWithData = indicators.filter(i => !isEmpty(i.locations));
     const availableCategoryIds = indicatorsWithData.reduce(
       (acc, value) => acc.concat(value.category_ids),
@@ -180,11 +171,8 @@ export const getSelectedCategory = createSelector(
     if (!categories || !categories.length) return null;
     const defaultCategory =
       (selectedDocument && selectedDocument.value === 'all') ||
-      FEATURE_ENHANCEMENT_CHANGES
-        ? categories.find(
-          cat => cat.value === DEFAULT_NDC_EXPLORE_CATEGORY_SLUG
-        ) || categories[0]
-        : categories.find(cat => cat.value === 'mitigation') || categories[0];
+      categories.find(cat => cat.value === DEFAULT_NDC_EXPLORE_CATEGORY_SLUG) ||
+      categories[0];
     if (selected) {
       return (
         categories.find(category => category.value === selected) ||
