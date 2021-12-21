@@ -13,9 +13,6 @@ import subAccordionTheme from 'styles/themes/accordion/sub-accordion-custom-comp
 
 import styles from './custom-compare-accordion-styles.scss';
 
-const FEATURE_ENHANCEMENT_CHANGES =
-  process.env.FEATURE_ENHANCEMENT_CHANGES === 'true';
-
 const getNoContentMessage = locationsDocuments => {
   if (!locationsDocuments) {
     return 'Select a country and a document to start';
@@ -54,10 +51,7 @@ const CustomCompareAccordionComponent = ({
       );
     }
 
-    if (
-      FEATURE_ENHANCEMENT_CHANGES &&
-      section.slug === CATEGORY_SLUGS.commitmentSummary
-    ) {
+    if (section.slug === CATEGORY_SLUGS.commitmentSummary) {
       const comparisonSection = data.find(
         s => s.slug === 'overall_comparison_with_previous_ndc'
       );
@@ -90,7 +84,7 @@ const CustomCompareAccordionComponent = ({
   };
 
   const dataWithoutComparison =
-    data && FEATURE_ENHANCEMENT_CHANGES && isOverviewCategory
+    data && isOverviewCategory
       ? data.filter(
         d => d.slug !== 'overall_comparison_with_previous_ndc' // Overall comparison will be included on the overview section so we won't render it again
       )
@@ -115,9 +109,7 @@ const CustomCompareAccordionComponent = ({
           theme={accordionTheme}
           hasNestedCollapse={!!isSectoralInformation}
           openSlug={
-            FEATURE_ENHANCEMENT_CHANGES &&
-            isOverviewCategory &&
-            'overall_comparison_with_previous_ndc'
+            isOverviewCategory && 'overall_comparison_with_previous_ndc'
           }
         >
           {dataWithoutComparison &&

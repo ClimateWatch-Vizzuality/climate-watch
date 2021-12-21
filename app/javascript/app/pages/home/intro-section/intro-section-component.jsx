@@ -9,14 +9,9 @@ import background from 'assets/headers/home.jpg';
 import ArcOfAmbitionSection from './arc-of-ambition-section';
 import styles from './intro-section-styles.scss';
 
-const FEATURE_ENHANCEMENT_CHANGES =
-  process.env.FEATURE_ENHANCEMENT_CHANGES === 'true';
-
 const HomeIntroSection = () => (
   <Section
-    className={cx(styles.section, styles.extraPadding, {
-      [styles.background]: FEATURE_ENHANCEMENT_CHANGES
-    })}
+    className={cx(styles.section, styles.extraPadding, styles.background)}
     backgroundImage={background}
     backgroundColor="linear-gradient(90deg, rgba(10,69,202,1) 45%, rgba(24,162,224,1) 100%)"
   >
@@ -30,7 +25,7 @@ const HomeIntroSection = () => (
         className={styles.autocompleteSearch}
         placeholder="Search across the platform by keyword or by country"
       />
-      {FEATURE_ENHANCEMENT_CHANGES && <ArcOfAmbitionSection />}
+      <ArcOfAmbitionSection />
     </div>
   </Section>
 );

@@ -20,9 +20,6 @@ import { Link } from 'react-router-dom';
 import { ENHANCEMENT_LABEL_SLUGS, INDICATOR_SLUGS } from 'data/constants';
 import styles from './ndcs-enhancements-map-styles.scss';
 
-const FEATURE_ENHANCEMENT_CHANGES =
-  process.env.FEATURE_ENHANCEMENT_CHANGES === 'true';
-
 const renderButtonGroup = (
   clickHandler,
   downloadLink,
@@ -68,26 +65,20 @@ const renderButtonGroup = (
             analyticsGraphName: 'Ndcs',
             positionRight: true
           },
-          FEATURE_ENHANCEMENT_CHANGES
-            ? {
-              type: 'downloadCombo',
-              options: [
-                {
-                  label: 'Save as image (PNG)',
-                  action: handlePngDownloadModal
-                },
-                {
-                  label: 'Go to data explorer',
-                  link: downloadLink,
-                  target: '_self'
-                }
-              ]
-            }
-            : {
-              type: 'download',
-              section: 'ndcs-content',
-              link: downloadLink
-            },
+          {
+            type: 'downloadCombo',
+            options: [
+              {
+                label: 'Save as image (PNG)',
+                action: handlePngDownloadModal
+              },
+              {
+                label: 'Go to data explorer',
+                link: downloadLink,
+                target: '_self'
+              }
+            ]
+          },
           {
             type: 'addToUser'
           }
@@ -180,17 +171,6 @@ const NDCSEnhancementsMap = ({
         summaryData[ENHANCEMENT_LABEL_SLUGS.ENHANCED_MITIGATION].countries,
         isPNG
       )}
-      {!FEATURE_ENHANCEMENT_CHANGES &&
-        !isPNG &&
-        summaryData[ENHANCEMENT_LABEL_SLUGS.INTENDS_TO_ENHANCE] && (
-          <span className={styles.separator} />
-        )}
-      {!FEATURE_ENHANCEMENT_CHANGES &&
-        summaryData[ENHANCEMENT_LABEL_SLUGS.INTENDS_TO_ENHANCE] &&
-        renderSummaryItem(
-          summaryData[ENHANCEMENT_LABEL_SLUGS.INTENDS_TO_ENHANCE].countries,
-          isPNG
-        )}
       <div className={styles.summaryHint}>
         Click on the country or see table below to compare with previous NDC
       </div>

@@ -17,9 +17,6 @@ import dropdownTheme from 'styles/themes/dropdown/react-selectize.scss';
 import styles from './context-by-indicator-styles';
 import { MAP_COLORS } from './context-by-indicator-selectors';
 
-const FEATURE_ENHANCEMENT_CHANGES =
-  process.env.FEATURE_ENHANCEMENT_CHANGES === 'true';
-
 const getTooltip = (country, tooltipTxt, { label }) => (
   <Link className={tooltipTheme.container} to={`/countries/${country.id}`}>
     <div className={tooltipTheme.info}>
@@ -88,20 +85,15 @@ class ContextByIndicatorComponent extends Component {
         type: 'info',
         onClick: handleInfoClick
       },
-      FEATURE_ENHANCEMENT_CHANGES
-        ? {
-          type: 'downloadCombo',
-          options: [
-            {
-              label: 'Save as image (PNG)',
-              action: handlePngDownloadModal
-            }
-          ]
-        }
-        : {
-          type: 'download',
-          section: 'ghg-emissions'
-        },
+      {
+        type: 'downloadCombo',
+        options: [
+          {
+            label: 'Save as image (PNG)',
+            action: handlePngDownloadModal
+          }
+        ]
+      },
       {
         type: 'addToUser'
       }
