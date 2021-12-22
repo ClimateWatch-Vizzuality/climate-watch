@@ -170,9 +170,12 @@ export const getSelectedCategory = createSelector(
   (selected, categories = [], selectedDocument) => {
     if (!categories || !categories.length) return null;
     const defaultCategory =
-      (selectedDocument && selectedDocument.value === 'all') ||
-      categories.find(cat => cat.value === DEFAULT_NDC_EXPLORE_CATEGORY_SLUG) ||
-      categories[0];
+      selectedDocument &&
+      selectedDocument.value === 'all' &&
+      (categories.find(
+        cat => cat.value === DEFAULT_NDC_EXPLORE_CATEGORY_SLUG
+      ) ||
+        categories[0]);
     if (selected) {
       return (
         categories.find(category => category.value === selected) ||
@@ -190,6 +193,7 @@ export const getCategoryIndicators = createSelector(
     const categoryIndicators = indicatorsParsed.filter(
       indicator => indicator.categoryIds.indexOf(parseInt(category.id, 10)) > -1
     );
+
     return categoryIndicators;
   }
 );
