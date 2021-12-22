@@ -15,9 +15,6 @@ import {
 } from 'data/constants';
 import { getCompareLinks } from 'components/ndcs/ndcs-enhancements-map/ndcs-enhancements-map-selectors';
 
-const FEATURE_ENHANCEMENT_CHANGES =
-  process.env.FEATURE_ENHANCEMENT_CHANGES === 'true';
-
 const getCountries = state => state.countries || null;
 const getCategories = state => state.categories || null;
 const getIndicatorsData = state => state.indicators || null;
@@ -105,7 +102,7 @@ const INVERTED_ENHANCEMENT_LABEL_SLUGS = invert(ENHANCEMENT_LABEL_SLUGS);
 export const getLoadingCompareLinks = createSelector(
   [getCompareLinks],
   compareLinks => {
-    if (FEATURE_ENHANCEMENT_CHANGES && !compareLinks) return true;
+    if (!compareLinks) return true;
     return false;
   }
 );
@@ -113,11 +110,7 @@ export const getLoadingCompareLinks = createSelector(
 export const tableRemoveIsoFromData = createSelector(
   [tableGetSelectedData, getCompareLinks],
   (data, compareLinks) => {
-    if (
-      !data ||
-      isEmpty(data) ||
-      (FEATURE_ENHANCEMENT_CHANGES && !compareLinks)
-    ) {
+    if (!data || isEmpty(data) || !compareLinks) {
       return null;
     }
     const updatedData = data.filter(Boolean).map(d => {
@@ -139,21 +132,16 @@ export const tableRemoveIsoFromData = createSelector(
       }
       updatedD['Statement Date'] = date.name;
 
-      if (FEATURE_ENHANCEMENT_CHANGES) {
-        const color =
-          d['NDC Status'] &&
-          ENHANCEMENT_LABEL_COLORS[
-            INVERTED_ENHANCEMENT_LABEL_SLUGS[d['NDC Status'].slug]
-          ];
-        updatedD['NDC Status'] = d['NDC Status'] && {
-          color,
-          text: d['NDC Status'].label,
-          sortIndex:
-            color === ENHANCEMENT_LABEL_COLORS.SUBMITTED_2020 ? '1' : '0'
-        };
-      } else {
-        updatedD['NDC Status'] = d['NDC Status'] && d['NDC Status'].label;
-      }
+      const color =
+        d['NDC Status'] &&
+        ENHANCEMENT_LABEL_COLORS[
+          INVERTED_ENHANCEMENT_LABEL_SLUGS[d['NDC Status'].slug]
+        ];
+      updatedD['NDC Status'] = d['NDC Status'] && {
+        color,
+        text: d['NDC Status'].label,
+        sortIndex: color === ENHANCEMENT_LABEL_COLORS.SUBMITTED_2020 ? '1' : '0'
+      };
 
       updatedD['Source Link'] = d['Source Link']
         ? d['Source Link'].replace('href=', "target='_blank' href=")
@@ -192,25 +180,16 @@ export const getDefaultColumns = createSelector(
   indicators => {
     if (!indicators || isEmpty(indicators)) return [];
 
-    const columnIds = FEATURE_ENHANCEMENT_CHANGES
-      ? [
-        'country',
-        INDICATOR_SLUGS.emissions,
-        INDICATOR_SLUGS.enhancements,
-        'Compare with previous submissions',
-        'Overall comparison with previous NDC',
-        'ndce_statement',
-        'ndce_source',
-        'ndce_date'
-      ]
-      : [
-        'country',
-        INDICATOR_SLUGS.emissions,
-        INDICATOR_SLUGS.enhancements,
-        'ndce_statement',
-        'ndce_source',
-        'ndce_date'
-      ];
+    const columnIds = [
+      'country',
+      INDICATOR_SLUGS.emissions,
+      INDICATOR_SLUGS.enhancements,
+      'Compare with previous submissions',
+      'Overall comparison with previous NDC',
+      'ndce_statement',
+      'ndce_source',
+      'ndce_date'
+    ];
 
     return columnIds.map(id => {
       const match = indicators.find(indicator => indicator.value === id);

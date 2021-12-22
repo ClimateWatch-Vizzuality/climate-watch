@@ -12,9 +12,6 @@ import { CATEGORY_SLUGS } from 'data/constants';
 import layout from 'styles/layout.scss';
 import styles from './ndcs-country-accordion-styles.scss';
 
-const FEATURE_ENHANCEMENT_CHANGES =
-  process.env.FEATURE_ENHANCEMENT_CHANGES === 'true';
-
 class NdcsCountryAccordion extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
   render() {
@@ -71,7 +68,6 @@ class NdcsCountryAccordion extends PureComponent {
 
     const renderDefinitionList = section => {
       if (
-        FEATURE_ENHANCEMENT_CHANGES &&
         category === 'overview' &&
         section.slug === CATEGORY_SLUGS.commitmentSummary
       ) {
@@ -106,7 +102,7 @@ class NdcsCountryAccordion extends PureComponent {
     };
 
     const ndcsDataWithoutComparison =
-      ndcsData && FEATURE_ENHANCEMENT_CHANGES && category === 'overview'
+      ndcsData && category === 'overview'
         ? ndcsData.filter(
           d => d.slug !== 'overall_comparison_with_previous_ndc' // Overall comparison will be included on the overview section so we won't render it again
         )

@@ -21,20 +21,15 @@ import ShareButton from 'components/button/share-button';
 import Sticky from 'react-stickynode';
 import cx from 'classnames';
 import ModalShare from 'components/modal-share';
-import NDCSProvider from 'providers/ndcs-provider';
 import NDCSExploreProvider from 'providers/ndcs-explore-provider';
 import NDCSPreviousComparisonProvider from 'providers/ndcs-previous-comparison-provider';
 import DocumentsProvider from 'providers/documents-provider';
 import { SEO_PAGES } from 'data/seo';
 import SEOTags from 'components/seo-tags';
-import { INDICATOR_SLUGS } from 'data/constants';
 import newMapTheme from 'styles/themes/map/map-new-zoom-controls.scss';
 import layout from 'styles/layout.scss';
 import blueCheckboxTheme from 'styles/themes/checkbox/blue-checkbox.scss';
 import styles from './ndcs-explore-map-styles.scss';
-
-const FEATURE_ENHANCEMENT_CHANGES =
-  process.env.FEATURE_ENHANCEMENT_CHANGES === 'true';
 
 const renderButtonGroup = (
   clickHandler,
@@ -55,27 +50,20 @@ const renderButtonGroup = (
             type: 'info',
             onClick: clickHandler
           },
-          FEATURE_ENHANCEMENT_CHANGES
-            ? {
-              type: 'downloadCombo',
-              options: [
-                {
-                  label: 'Save as image (PNG)',
-                  action: handlePngDownloadModal
-                },
-                {
-                  label: 'Go to data explorer',
-                  link: downloadLink,
-                  target: '_self'
-                }
-              ]
-            }
-            : {
-              type: 'download',
-              section: 'ndcs-content',
-              link: downloadLink
-            },
-
+          {
+            type: 'downloadCombo',
+            options: [
+              {
+                label: 'Save as image (PNG)',
+                action: handlePngDownloadModal
+              },
+              {
+                label: 'Go to data explorer',
+                link: downloadLink,
+                target: '_self'
+              }
+            ]
+          },
           {
             type: 'addToUser'
           }
@@ -218,29 +206,30 @@ function NDCSExploreMap(props) {
                 <div className="grid-column-item">
                   <div className={styles.filtersLayout}>
                     <div
-                      className={cx(styles.filtersGroup, {
-                        [styles.sticky]: stickyStatus === Sticky.STATUS_FIXED,
-                        [styles.withDocumentDropdown]: FEATURE_ENHANCEMENT_CHANGES
-                      })}
+                      className={cx(
+                        styles.filtersGroup,
+                        styles.withDocumentDropdown,
+                        {
+                          [styles.sticky]: stickyStatus === Sticky.STATUS_FIXED
+                        }
+                      )}
                       data-tour="ndc-explore-02"
                     >
-                      {FEATURE_ENHANCEMENT_CHANGES && (
-                        <Dropdown
-                          label="Document"
-                          placeholder="Select a Document"
-                          options={documents}
-                          onValueChange={handleDocumentChange}
-                          value={selectedDocument}
-                          hideResetButton
-                          plain
-                          showTooltip={
-                            selectedDocument &&
-                            selectedDocument.label &&
-                            selectedDocument.label.length > 14
-                          }
-                          noAutoSort
-                        />
-                      )}
+                      <Dropdown
+                        label="Document"
+                        placeholder="Select a Document"
+                        options={documents}
+                        onValueChange={handleDocumentChange}
+                        value={selectedDocument}
+                        hideResetButton
+                        plain
+                        showTooltip={
+                          selectedDocument &&
+                          selectedDocument.label &&
+                          selectedDocument.label.length > 14
+                        }
+                        noAutoSort
+                      />
                       <Dropdown
                         label="Category"
                         placeholder="Select a category"
@@ -345,25 +334,13 @@ function NDCSExploreMap(props) {
         {legendData && renderLegend(legendData, emissionsCardData, true)}
       </ModalPngDownload>
       <DocumentsProvider />
-      {FEATURE_ENHANCEMENT_CHANGES ? (
-        <React.Fragment>
-          <NDCSExploreProvider
-            document={selectedDocument && selectedDocument.value}
-            subcategory={selectedCategory && selectedCategory.value}
-          />
-          <NDCSPreviousComparisonProvider />
-        </React.Fragment>
-      ) : (
-        <NDCSProvider
+      <React.Fragment>
+        <NDCSExploreProvider
+          document={selectedDocument && selectedDocument.value}
           subcategory={selectedCategory && selectedCategory.value}
-          additionalIndicatorSlugs={[
-            'ndce_ghg',
-            'submission',
-            'submission_date',
-            INDICATOR_SLUGS.enhancements
-          ]}
         />
-      )}
+        <NDCSPreviousComparisonProvider />
+      </React.Fragment>
     </div>
   );
 }
