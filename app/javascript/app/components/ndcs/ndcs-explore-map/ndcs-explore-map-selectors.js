@@ -168,14 +168,10 @@ export const getIndicatorsParsed = createSelector(
 export const getSelectedCategory = createSelector(
   [state => state.categorySelected, getCategories, getSelectedDocument],
   (selected, categories = [], selectedDocument) => {
-    if (!categories || !categories.length) return null;
+    if (!categories || !categories.length || !selectedDocument) return null;
     const defaultCategory =
-      selectedDocument &&
-      selectedDocument.value === 'all' &&
-      (categories.find(
-        cat => cat.value === DEFAULT_NDC_EXPLORE_CATEGORY_SLUG
-      ) ||
-        categories[0]);
+      categories.find(cat => cat.value === DEFAULT_NDC_EXPLORE_CATEGORY_SLUG) ||
+      categories[0];
     if (selected) {
       return (
         categories.find(category => category.value === selected) ||
