@@ -14,9 +14,6 @@ import ModalPngDownload from 'components/modal-png-download';
 import styles from './historical-emissions-graph-styles.scss';
 import CardPieChart from '../card-pie-chart/card-pie-chart';
 
-const FEATURE_ENHANCEMENT_CHANGES =
-  process.env.FEATURE_ENHANCEMENT_CHANGES === 'true';
-
 class HistoricalEmissionsGraph extends PureComponent {
   renderFilters = () => {
     const {
@@ -119,17 +116,15 @@ class HistoricalEmissionsGraph extends PureComponent {
         positionRight: true,
         shouldEmbedQueryParams: false
       },
-      FEATURE_ENHANCEMENT_CHANGES
-        ? {
-          type: 'downloadCombo',
-          options: [
-            {
-              label: 'Save as image (PNG)',
-              action: handlePngDownloadModal
-            }
-          ]
-        }
-        : { type: 'download' },
+      {
+        type: 'downloadCombo',
+        options: [
+          {
+            label: 'Save as image (PNG)',
+            action: handlePngDownloadModal
+          }
+        ]
+      },
       { type: 'addToUser' }
     ];
     return (
