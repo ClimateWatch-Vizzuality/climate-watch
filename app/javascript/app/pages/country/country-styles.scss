@@ -45,6 +45,7 @@
 
 .anchorNav {
   @include row('shrink', $wrap: false);
+  overflow: auto;
 }
 
 .introDescription {

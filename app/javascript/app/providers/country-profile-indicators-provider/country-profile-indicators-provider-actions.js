@@ -31,7 +31,7 @@ const fetchIndicators = createThunkAction(
         })
         .then(data => {
           if (data) {
-            dispatch(fetchIndicatorsReady(data));
+            dispatch(fetchIndicatorsReady(data.data));
           } else {
             dispatch(fetchIndicatorsReady({}));
           }
