@@ -12,8 +12,6 @@ import Card from 'components/card';
 import Chart from 'components/charts/chart';
 import Loading from 'components/loading';
 
-import CountryProfileIndicatorsProvider from 'providers/country-profile-indicators-provider';
-
 import {
   CHART_NAMED_EXTENDED_COLORS,
   CHART_NAMED_GRAY_COLORS
@@ -38,16 +36,16 @@ const TARGETS = {
   '1.5°C': { color: '#ADCEE4' }
 };
 
-function SubnationalActions({ iso, indicators, loading }) {
-  const showByMillion = (value) => Number((value || 0) / 1000000).toFixed(2);
+function SubnationalActions({ indicators, loading }) {
+  const showByMillion = value => Number((value || 0) / 1000000).toFixed(2);
 
   const citiesBadgeValues = (indicators.city_badge_type?.values || []).map(
-    (x) => ({
+    x => ({
       ...x,
       value: parseInt(x.value, 10)
     })
   );
-  const keepNotJoinedLast = (d) =>
+  const keepNotJoinedLast = d =>
     d.category === 'Not Joined' ? -Infinity : d.value;
   const sortedCitiesBadgeValues = orderBy(
     citiesBadgeValues,
@@ -62,12 +60,12 @@ function SubnationalActions({ iso, indicators, loading }) {
   });
   const citiesChartConfig = {
     ...getChartConfig(Object.keys(CITY_BADGES)),
-    theme: mapValues(CITY_BADGES, (v) => ({ fill: v.color, stroke: v.color }))
+    theme: mapValues(CITY_BADGES, v => ({ fill: v.color, stroke: v.color }))
   };
 
   const companyTargetQualValues = (
     indicators.company_target_qualification?.values || []
-  ).map((x) => ({ ...x, value: parseInt(x.value, 10) }));
+  ).map(x => ({ ...x, value: parseInt(x.value, 10) }));
   const companiesChartData = mergeForChart({
     data: companyTargetQualValues,
     mergeBy: 'year',
@@ -75,14 +73,14 @@ function SubnationalActions({ iso, indicators, loading }) {
     valueKey: 'value'
   });
   const latestYear = Math.max(
-    ...uniq(companyTargetQualValues.map((x) => x.year))
+    ...uniq(companyTargetQualValues.map(x => x.year))
   );
   const latestCompaniesTargetQualification = companiesChartData.find(
-    (x) => x.x === latestYear
+    x => x.x === latestYear
   );
   const companiesChartConfig = {
     ...getChartConfig(Object.keys(TARGETS)),
-    theme: mapValues(TARGETS, (v) => ({ fill: v.color, stroke: v.color }))
+    theme: mapValues(TARGETS, v => ({ fill: v.color, stroke: v.color }))
   };
 
   const cardTheme = {
@@ -113,18 +111,6 @@ function SubnationalActions({ iso, indicators, loading }) {
   return (
     <div className={styles.gridContainer}>
       <div className={styles.grid}>
-        <CountryProfileIndicatorsProvider
-          indicatorSlugs={[
-            'city_badge_type',
-            'city_commited',
-            'city_ppl',
-            'company_commited',
-            'company_target',
-            'company_target_qualification'
-          ]}
-          locations={[iso]}
-        />
-
         <div className={styles.container}>
           <h3 className={styles.title}>Subnational Actions</h3>
 
@@ -173,7 +159,7 @@ function SubnationalActions({ iso, indicators, loading }) {
                     unit={false}
                     ghgChart={false}
                     tooltipConfig={tooltipConfig}
-                    formatValue={(v) => v}
+                    formatValue={v => v}
                   />
 
                   <h3 className={styles.chartTitle}>
@@ -185,8 +171,8 @@ function SubnationalActions({ iso, indicators, loading }) {
 
                     <div className={styles.stages}>
                       {Object.keys(CITY_BADGES)
-                        .filter((b) => b !== 'Not Joined')
-                        .map((badge) => (
+                        .filter(b => b !== 'Not Joined')
+                        .map(badge => (
                           <Tag
                             color={citiesChartConfig.theme[badge].fill}
                             theme={tagTheme}
@@ -245,7 +231,7 @@ function SubnationalActions({ iso, indicators, loading }) {
                     unit={false}
                     ghgChart={false}
                     tooltipConfig={tooltipConfig}
-                    formatValue={(v) => v}
+                    formatValue={v => v}
                   />
 
                   <h3 className={styles.chartTitle}>
@@ -254,7 +240,7 @@ function SubnationalActions({ iso, indicators, loading }) {
 
                   <div>
                     <div className={styles.targetsWrapper}>
-                      {Object.keys(TARGETS).map((target) => (
+                      {Object.keys(TARGETS).map(target => (
                         <div key={target}>
                           <Tag
                             color={companiesChartConfig.theme[target].fill}
@@ -278,7 +264,6 @@ function SubnationalActions({ iso, indicators, loading }) {
 }
 
 SubnationalActions.propTypes = {
-  iso: PropTypes.string.isRequired,
   indicators: PropTypes.object.isRequired,
   loading: PropTypes.bool.isRequired
 };

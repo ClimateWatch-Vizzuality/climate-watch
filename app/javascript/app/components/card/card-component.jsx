@@ -25,7 +25,7 @@ class Card extends PureComponent {
       </div>
     );
 
-    const handleClick = (url) => {
+    const handleClick = url => {
       window.open(url, '_blank');
     };
 
@@ -58,7 +58,7 @@ class Card extends PureComponent {
             </p>
           )}
         </div>
-        {info && <div>{info}</div>}
+        {info && <div className={styles.info}>{info}</div>}
       </div>
     );
 

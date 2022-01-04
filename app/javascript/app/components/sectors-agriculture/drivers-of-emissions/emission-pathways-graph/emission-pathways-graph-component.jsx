@@ -15,9 +15,6 @@ import ModalPngDownload from 'components/modal-png-download';
 import ExploreButtonGroup from '../explore-group';
 import styles from './emission-pathways-graph-styles.scss';
 
-const FEATURE_ENHANCEMENT_CHANGES =
-  process.env.FEATURE_ENHANCEMENT_CHANGES === 'true';
-
 class AgricultureEmissionPathwayGraph extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
   renderCustomMessage() {
@@ -63,26 +60,20 @@ class AgricultureEmissionPathwayGraph extends PureComponent {
         analyticsGraphName: 'Drivers of Emissions',
         positionRight: true
       },
-      FEATURE_ENHANCEMENT_CHANGES
-        ? {
-          type: 'downloadCombo',
-          options: [
-            {
-              label: 'Save as image (PNG)',
-              action: handlePngDownloadModal
-            },
-            {
-              label: 'Go to data explorer',
-              link: downloadLink,
-              target: '_self'
-            }
-          ]
-        }
-        : {
-          type: 'download',
-          section: 'emission-pathways',
-          link: downloadLink
-        },
+      {
+        type: 'downloadCombo',
+        options: [
+          {
+            label: 'Save as image (PNG)',
+            action: handlePngDownloadModal
+          },
+          {
+            label: 'Go to data explorer',
+            link: downloadLink,
+            target: '_self'
+          }
+        ]
+      },
       {
         type: 'addToUser'
       }

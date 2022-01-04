@@ -6,6 +6,7 @@ module Api
         attribute :name
         attribute :short_name
         attribute :metadata_source
+        attribute :max_value
 
         has_many :values, serializer: ValueSerializer
 
@@ -17,6 +18,16 @@ module Api
 
         def locations
           instance_options[:locations]
+        end
+
+        # used for _rank indicators only
+        def max_value
+          return unless object.slug.include? '_rank'
+
+          object.values.maximum('value::integer')
+        rescue ActiveRecord::StatementInvalid => e
+          Appsignal.set_error(e)
+          Rails.logger.error "Country Profile API Error max_value for #{object.slug} indicator"
         end
       end
     end

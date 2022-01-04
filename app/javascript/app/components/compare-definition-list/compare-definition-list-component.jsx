@@ -7,9 +7,6 @@ import PreviousSubmissionIcon from 'components/previous-submission-icon';
 import ReactTooltip from 'react-tooltip';
 import styles from './compare-definition-list-styles.scss';
 
-const FEATURE_ENHANCEMENT_CHANGES =
-  process.env.FEATURE_ENHANCEMENT_CHANGES === 'true';
-
 const renderComparisonWithPreviousNDCIcon = value => (
   <div>
     <PreviousSubmissionIcon
@@ -47,8 +44,7 @@ const CompareDefinitionList = ({
                     </div>
                   ) : (
                     <div className={styles.value}>
-                      {FEATURE_ENHANCEMENT_CHANGES &&
-                        comparisonWithPreviousNDC &&
+                      {comparisonWithPreviousNDC &&
                         renderComparisonWithPreviousNDCIcon(value)}
                       <div
                         // eslint-disable-next-line react/no-danger

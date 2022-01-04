@@ -19,9 +19,6 @@ import SEOTags from 'components/seo-tags';
 import layout from 'styles/layout.scss';
 import styles from './emission-pathways-graph-styles.scss';
 
-const FEATURE_ENHANCEMENT_CHANGES =
-  process.env.FEATURE_ENHANCEMENT_CHANGES === 'true';
-
 class EmissionPathwayGraph extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
   renderCustomMessage() {
@@ -100,27 +97,20 @@ class EmissionPathwayGraph extends PureComponent {
         type: 'info',
         onClick: handleInfoClick
       },
-      FEATURE_ENHANCEMENT_CHANGES
-        ? {
-          type: 'downloadCombo',
-          options: [
-            {
-              label: 'Save as image (PNG)',
-              action: handlePngDownloadModal
-            },
-            {
-              label: 'Go to data explorer',
-              link: downloadLink,
-              target: '_self'
-            }
-          ]
-        }
-        : {
-          type: 'download',
-          section: 'emission-pathways',
-          link: downloadLink
-        },
-
+      {
+        type: 'downloadCombo',
+        options: [
+          {
+            label: 'Save as image (PNG)',
+            action: handlePngDownloadModal
+          },
+          {
+            label: 'Go to data explorer',
+            link: downloadLink,
+            target: '_self'
+          }
+        ]
+      },
       {
         type: 'addToUser'
       }

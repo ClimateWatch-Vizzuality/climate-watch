@@ -33,11 +33,18 @@
 .contentContainer {
   background-color: $gray3;
   display: flex;
-  align-items: baseline;
-  justify-content: space-between;
   height: 80px;
   padding: 15px 20px;
   color: $theme-color;
+  align-items: left;
+  justify-content: space-between;
+}
+
+.titleContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
 }
 
 .title {
