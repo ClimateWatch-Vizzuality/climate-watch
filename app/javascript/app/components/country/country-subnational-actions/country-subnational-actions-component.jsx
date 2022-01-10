@@ -12,8 +12,6 @@ import Card from 'components/card';
 import Chart from 'components/charts/chart';
 import Loading from 'components/loading';
 
-import CountryProfileIndicatorsProvider from 'providers/country-profile-indicators-provider';
-
 import {
   CHART_NAMED_EXTENDED_COLORS,
   CHART_NAMED_GRAY_COLORS
@@ -38,7 +36,7 @@ const TARGETS = {
   '1.5°C': { color: '#ADCEE4' }
 };
 
-function SubnationalActions({ iso, indicators, loading }) {
+function SubnationalActions({ indicators, loading }) {
   const showByMillion = value => Number((value || 0) / 1000000).toFixed(2);
 
   const citiesBadgeValues = (indicators.city_badge_type?.values || []).map(
@@ -113,18 +111,6 @@ function SubnationalActions({ iso, indicators, loading }) {
   return (
     <div className={styles.gridContainer}>
       <div className={styles.grid}>
-        <CountryProfileIndicatorsProvider
-          indicatorSlugs={[
-            'city_badge_type',
-            'city_commited',
-            'city_ppl',
-            'company_commited',
-            'company_target',
-            'company_target_qualification'
-          ]}
-          locations={[iso]}
-        />
-
         <div className={styles.container}>
           <h3 className={styles.title}>Subnational Actions</h3>
 
@@ -278,7 +264,6 @@ function SubnationalActions({ iso, indicators, loading }) {
 }
 
 SubnationalActions.propTypes = {
-  iso: PropTypes.string.isRequired,
   indicators: PropTypes.object.isRequired,
   loading: PropTypes.bool.isRequired
 };
