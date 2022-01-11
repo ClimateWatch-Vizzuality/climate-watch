@@ -36,7 +36,7 @@ function CountryHeader(props) {
         <div className={styles.progressBar}>
           <div
             className={styles.marker}
-            style={{ left: c.worldPositionPercentage }}
+            style={{ left: `${c.worldPositionPercentage}%` }}
           />
         </div>
         <div className={styles.value}>{c.value}</div>
