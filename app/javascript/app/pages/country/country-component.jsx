@@ -57,7 +57,17 @@ function Country(props) {
           'city_ppl',
           'company_commited',
           'company_target',
-          'company_target_qualification'
+          'company_target_qualification',
+          'emissions_capita',
+          'emissions_capita_rank',
+          'emissions_gdp',
+          'emissions_gdp_rank',
+          'emissions_total',
+          'emissions_total_rank',
+          'population',
+          'population_rank',
+          'gdp_capita',
+          'gdp_capita_rank'
         ]}
         locations={country && [country.iso]}
       />
