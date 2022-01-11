@@ -113,7 +113,12 @@ function SubnationalActions({ indicators, loading }) {
       <div className={styles.grid}>
         <div className={styles.container}>
           <h3 className={styles.title}>Subnational Actions</h3>
-
+          <div className={styles.descriptionContainer}>
+            Addressing climate change, requires actions across all of society.
+            Explore how national and sub-national actions, including regions,
+            cities, companies, investors, and other organizations commit to act
+            on climate change.
+          </div>
           <div className={styles.cardsContainer}>
             <Card
               title={
