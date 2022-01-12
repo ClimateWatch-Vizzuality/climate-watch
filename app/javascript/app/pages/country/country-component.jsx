@@ -67,7 +67,17 @@ function Country(props) {
           'population',
           'population_rank',
           'gdp_capita',
-          'gdp_capita_rank'
+          'gdp_capita_rank',
+          'share_re',
+          'share_re_rank',
+          'share_coal',
+          'share_coal_rank',
+          'tree_cover_loss',
+          'tree_cover_loss_rank',
+          'food_intensity',
+          'food_intensity_rank',
+          'electricity_consumption',
+          'electricity_consumption_rank'
         ]}
         locations={country && [country.iso]}
       />
