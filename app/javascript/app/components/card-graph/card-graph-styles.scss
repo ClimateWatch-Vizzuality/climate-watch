@@ -6,7 +6,7 @@
 
 .lineChartContainer {
   position: relative;
-  height: $vulnerability-chart-height;
+  height: $card-chart-height;
   margin: $card-content-margin;
   display: flex;
   align-items: center;
@@ -81,6 +81,10 @@
 
 .lineChart {
   width: 450px;
+}
+
+.pieChart {
+  margin-top: 2rem;
 }
 
 .pieLegend {
