@@ -3,6 +3,7 @@ import { createElement } from 'react';
 import ClimateCommitments from 'components/country/country-climate-commitments';
 import ClimateEnhancements from 'components/country/country-climate-enhancements';
 import GHGCountryEmissions from 'components/country/country-ghg';
+import EmissionDrivers from 'components/country/country-emission-drivers';
 import NDCSDGLinkages from 'components/country/country-ndc-sdg-linkages';
 import ClimateVulnerability from 'components/country/country-climate-vulnerability';
 import CountryNdcOverview from 'components/country/country-ndc-overview';
@@ -34,6 +35,12 @@ const routes = [
     label: 'GHG Emissions',
     anchor: true,
     component: GHGCountryEmissions
+  },
+  FEATURE_COUNTRY_CHANGES && {
+    hash: 'emission-drivers',
+    label: 'Emission drivers',
+    anchor: true,
+    component: EmissionDrivers
   },
   {
     hash: 'climate-vulnerability',
