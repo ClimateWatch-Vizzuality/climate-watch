@@ -3,7 +3,7 @@ import React from 'react';
 import Proptypes from 'prop-types';
 
 import Card from 'components/card';
-import VulnerabilityGraph from 'components/vulnerability-graph';
+import CardGraph from 'components/card-graph';
 import ReactTooltip from 'react-tooltip';
 import InfoButton from 'components/button/info-button';
 import ModalMetadata from 'components/modal-metadata';
@@ -15,7 +15,6 @@ import styles from './country-emission-drivers-styles.scss';
 function CountryEmissionDrivers(props) {
   const {
     sectionData,
-    countries,
     countryName,
     setModalMetadata,
     maximumCountries
@@ -56,9 +55,8 @@ function CountryEmissionDrivers(props) {
                     data: styles.cardData
                   }}
                 >
-                  <VulnerabilityGraph
+                  <CardGraph
                     sectionData={card}
-                    countries={countries}
                     maximumCountries={maximumCountries}
                     noInfo
                     type={card.type}
@@ -70,16 +68,15 @@ function CountryEmissionDrivers(props) {
                 title={sectionData.electricity.title}
                 contentFirst
                 info={infoButton('electricity')}
-                theme={{ card: styles.chartCard }}
+                theme={{ card: styles.chartCard, data: styles.chartCardData }}
               >
                 {' '}
-                {/* <VulnerabilityGraph
+                <CardGraph
                   sectionData={sectionData.electricity.data}
-                  countries={countries}
                   noInfo
                   maximumCountries={maximumCountries}
-                  type="CHART"
-                /> */}
+                  type="LINE_CHART"
+                />
               </Card>
             )}
           </div>
@@ -99,7 +96,6 @@ function CountryEmissionDrivers(props) {
 
 CountryEmissionDrivers.propTypes = {
   sectionData: Proptypes.array,
-  countries: Proptypes.array,
   setModalMetadata: Proptypes.func.isRequired,
   countryName: Proptypes.string,
   maximumCountries: Proptypes.number

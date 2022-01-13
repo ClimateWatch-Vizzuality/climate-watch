@@ -1,0 +1,124 @@
+@import '~styles/layout.scss';
+
+.countriesNumber {
+  color: $gray1;
+}
+
+.lineChartContainer {
+  position: relative;
+  height: $vulnerability-chart-height;
+  margin: $card-content-margin;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex: 1;
+
+  .rankValue {
+    font-size: $font-size-m;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+
+    @media #{$tablet-landscape} {
+      font-size: $font-size-large;
+    }
+  }
+
+  .rankMeter {
+    position: absolute;
+    bottom: 1%;
+    left: 5%;
+    width: 95%;
+
+    .rankMarker {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      border-radius: 8px;
+      bottom: 0;
+      border: 2px solid $gray3;
+    }
+
+    .rankAbsoluteValue {
+      width: 100%;
+      text-align: center;
+    }
+
+    .rankTick {
+      height: 6px;
+      display: inline-block;
+      width: 10%;
+
+      &.meter-1 {
+        border-radius: 5px 0 0 5px;
+      }
+
+      &:last-child {
+        border-radius: 0 25% 25% 0;
+      }
+
+      @for $i from 1 through length($climate-risk-colors) {
+        &.meter-#{$i} {
+          background-color: nth($climate-risk-colors, $i);
+        }
+      }
+    }
+  }
+}
+
+.pieChart {
+  align-items: center;
+}
+
+.data {
+  height: 100%;
+}
+
+.lineChartContainer {
+  margin: 1rem;
+}
+
+.lineChart {
+  width: 450px;
+}
+
+.pieLegend {
+  margin-top: 1rem;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  margin: 0 0 0.8rem 2rem;
+
+  .dot {
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+  }
+
+  .percentage {
+    display: flex;
+    margin-left: 1em;
+    width: 4em;
+  }
+
+  .label {
+    margin-left: 1em;
+  }
+}
+
+.rankMarkContainer {
+  position: absolute;
+  height: 50px;
+  width: 100%;
+  padding: 0 2px;
+}
+
+.rankMark {
+  position: absolute;
+  height: 25px;
+  background-color: $theme-color;
+  width: 2px;
+}

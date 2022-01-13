@@ -1,10 +1,8 @@
 /* eslint-disable no-confusing-arrow */
 import { createSelector } from 'reselect';
 import isEmpty from 'lodash/isEmpty';
-import sortBy from 'lodash/sortBy';
 import pickBy from 'lodash/pickBy';
 import qs from 'query-string';
-import { getLabels } from 'components/ndcs/shared/utils';
 import { CHART_NAMED_EXTENDED_COLORS } from 'app/styles/constants';
 
 const getIso = state => state.iso || null;
@@ -69,27 +67,38 @@ export const getHazardsLegend = createSelector([getHazards], hazards => {
   return legendItems;
 });
 
-export const getHazardsChart = createSelector(
-  [getHazardsLegend, getHazards],
-  (legend, hazards) => {
-    if (!legend || !hazards) {
+export const getElectricityChart = createSelector(
+  [getCountryIndicators],
+  countryIndicators => {
+    if (!countryIndicators || !countryIndicators.electricity_consumption) {
       return null;
     }
-
-    const data = sortBy(
-      legend.map(l => ({ name: l.name, value: +l.value })),
-      'value'
-    ).reverse();
+    const { values } = countryIndicators.electricity_consumption;
     const config = {
-      animation: true,
-      innerRadius: 100,
-      outerRadius: 120,
-      hideLabel: true,
-      hideLegend: true,
-      innerHoverLabel: true,
-      minAngle: 3,
-      ...getLabels({ legend })
+      axes: {
+        xBottom: { name: 'Year', unit: 'date', format: 'YYYY' },
+        yLeft: {
+          name: 'Emissions',
+          unit: 'Electricity consumption (kWh, billions)',
+          format: 'number'
+        }
+      },
+      theme: {
+        yElectricity: { stroke: '#3498db', fill: '#3498db' }
+      },
+      tooltip: {
+        yElectricity: { label: 'Electricity' }
+      },
+      animation: false,
+      columns: {
+        x: [{ label: 'year', value: 'x' }],
+        y: [{ label: 'Electricity', value: 'yElectricity' }]
+      }
     };
+    const data = values.map(v => ({
+      x: v.year,
+      yElectricity: v.value
+    }));
     return {
       config,
       data
@@ -98,8 +107,8 @@ export const getHazardsChart = createSelector(
 );
 
 export const getSectionData = createSelector(
-  [getCountryIndicators, getHazardsChart],
-  (countryIndicators, hazards) => {
+  [getCountryIndicators, getElectricityChart],
+  (countryIndicators, electricityChart) => {
     const hasCountryIndicators = !isEmpty(countryIndicators);
     if (!countryIndicators || !hasCountryIndicators) return null;
 
@@ -147,7 +156,7 @@ export const getSectionData = createSelector(
         type: 'CHART',
         title: countryIndicators.electricity_consumption.name,
         slug: 'electricity_consumption',
-        data: hazards
+        data: [electricityChart, countryIndicators.electricity_consumption_rank]
       }
     };
   }
