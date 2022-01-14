@@ -17,7 +17,8 @@ function CountryEmissionDrivers(props) {
     sectionData,
     countryName,
     setModalMetadata,
-    maximumCountries
+    maximumCountries,
+    iso
   } = props;
   const handleInfoClick = slug => {
     setModalMetadata({
@@ -60,6 +61,7 @@ function CountryEmissionDrivers(props) {
                     maximumCountries={maximumCountries}
                     noInfo
                     type={card.type}
+                    iso={iso}
                   />
                 </Card>
               ))}
@@ -76,6 +78,7 @@ function CountryEmissionDrivers(props) {
                   noInfo
                   maximumCountries={maximumCountries}
                   type="LINE_CHART"
+                  iso={iso}
                 />
               </Card>
             )}
@@ -98,6 +101,7 @@ CountryEmissionDrivers.propTypes = {
   sectionData: Proptypes.array,
   setModalMetadata: Proptypes.func.isRequired,
   countryName: Proptypes.string,
+  iso: Proptypes.string,
   maximumCountries: Proptypes.number
 };
 

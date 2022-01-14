@@ -21,12 +21,21 @@ class CardGraph extends PureComponent {
   };
 
   renderRank() {
-    const { sectionData, maximumCountries } = this.props;
+    const { sectionData, maximumCountries, iso } = this.props;
     if (!sectionData || !sectionData.data) return null;
 
-    const [vulnerability, vulnerabilityRank] = sectionData.data;
-    const { value } = vulnerability.values[0];
-    const { value: rank } = vulnerabilityRank.values[0];
+    const [data, dataRank] = sectionData.data;
+    if (!data || !data.values || !dataRank || !dataRank.values) {
+      return null;
+    }
+    const values = data.values.find(v => v.location === iso);
+    const rankValues = dataRank.values.find(v => v.location === iso);
+
+    if (!values || !rankValues) {
+      return null;
+    }
+    const { value } = values;
+    const { value: rank } = rankValues;
     const percentage = (rank * 100) / maximumCountries;
     return (
       <div className={styles.lineChartContainer}>
@@ -121,11 +130,13 @@ class CardGraph extends PureComponent {
   }
 
   renderLineChart() {
-    const { sectionData, maximumCountries } = this.props;
+    const { sectionData, maximumCountries, iso } = this.props;
     if (!sectionData) return null;
     const [chartData, chartDataRank] = sectionData;
-    const { data, config } = chartData;
-    const { value: rank } = chartDataRank.values[0];
+    const { data, config, domain } = chartData;
+    const values = chartDataRank.values.find(v => v.location === iso);
+    if (!values) return null;
+    const { value: rank } = values;
     const percentage = (rank * 100) / maximumCountries;
     return (
       <div className={styles.lineChartContainer}>
@@ -135,7 +146,8 @@ class CardGraph extends PureComponent {
             config={config}
             data={data}
             dots={false}
-            height={500}
+            height={450}
+            domain={domain}
             showUnit
           />
         </div>
@@ -184,7 +196,8 @@ CardGraph.propTypes = {
   sectionData: PropTypes.object,
   setModalMetadata: PropTypes.func.isRequired,
   type: PropTypes.string,
-  maximumCountries: PropTypes.number
+  maximumCountries: PropTypes.number,
+  iso: PropTypes.string.isRequired
 };
 
 export default CardGraph;
