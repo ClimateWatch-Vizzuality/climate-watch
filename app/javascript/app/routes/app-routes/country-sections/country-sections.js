@@ -10,6 +10,7 @@ import CountryNdcOverview from 'components/country/country-ndc-overview';
 import CountryLtsOverview from 'components/country/country-lts-overview';
 import LawsAndPolicies from 'components/country/laws-and-policies';
 import SubnationalActions from 'components/country/country-subnational-actions';
+import EmploymentAndCosts from 'components/country/country-employment-and-costs';
 
 const FEATURE_COUNTRY_CHANGES = process.env.FEATURE_COUNTRY_CHANGES === 'true';
 
@@ -66,17 +67,23 @@ const routes = [
     anchor: true,
     component: SubnationalActions
   },
-  {
-    hash: 'ndc-sdg-linkages',
-    label: 'NDC-SDG Linkages',
-    anchor: true,
-    component: NDCSDGLinkages
-  },
   FEATURE_SHOW_COUNTRY_LAWS_AND_POLICIES && {
     hash: 'laws-and-policies',
     label: 'Targets in Laws and Policies',
     anchor: true,
     component: LawsAndPolicies
+  },
+  FEATURE_COUNTRY_CHANGES && {
+    hash: 'employment-and-costs',
+    label: 'Employment and costs',
+    anchor: true,
+    component: EmploymentAndCosts
+  },
+  {
+    hash: 'ndc-sdg-linkages',
+    label: 'NDC-SDG Linkages',
+    anchor: true,
+    component: NDCSDGLinkages
   }
 ].filter(Boolean);
 
