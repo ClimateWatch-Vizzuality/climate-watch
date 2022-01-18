@@ -7,7 +7,8 @@ import {
   getDescriptionText,
   getLegacyDescriptionText,
   getEmissionProviderFilters,
-  getCardData
+  getCardData,
+  getLoading
 } from './country-header-selectors';
 
 import Component from './country-header-component';
@@ -29,6 +30,7 @@ const mapStateToProps = (state, { match }) => {
       iso,
       name: getCountryName(stateWithIso)
     },
+    loading: getLoading(stateWithIso),
     description: FEATURE_COUNTRY_CHANGES
       ? getDescriptionText(stateWithIso)
       : getLegacyDescriptionText(stateWithIso),

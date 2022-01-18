@@ -17,6 +17,8 @@ const getIndicators =
 const getCountryIndicators = state =>
   state.countryProfileIndicators.data || null;
 
+export const getLoading = state => state.countryProfileIndicators.loading;
+
 const getMeta = state =>
   (state.ghgEmissionsMeta && state.ghgEmissionsMeta.meta) || null;
 const getData = state => (state.emissions && state.emissions.data) || null;
@@ -73,10 +75,10 @@ export const getDescriptionText = createSelector(
     const isoData = indicator.locations[iso];
     const emissionsData = data[0];
     const emissionIndicator = countryIndicators.emissions_total;
-    const emissionValue =
+    const emissionValues =
       emissionIndicator &&
-      emissionIndicator.values[0] &&
-      emissionIndicator.values[0].value;
+      emissionIndicator.values.find(v => v.location === iso);
+    const emissionValue = emissionValues && emissionValues.value;
     const { year: lastYear } = emissionsData
       ? emissionsData.emissions[emissionsData.emissions.length - 1]
       : {};
@@ -130,8 +132,8 @@ export const getMaximumCountries = createSelector([getCountries], countries =>
   countries ? countries.length : null
 );
 export const getCardData = createSelector(
-  [getCountryIndicators, getMaximumCountries],
-  (countryIndicators, maximumCountries) => {
+  [getCountryIndicators, getMaximumCountries, getIso],
+  (countryIndicators, maximumCountries, iso) => {
     const placeholder = [
       {
         slug: 'emissions_total'
@@ -154,7 +156,7 @@ export const getCardData = createSelector(
       }
     ];
 
-    if (!countryIndicators) {
+    if (!countryIndicators || !iso) {
       return placeholder;
     }
 
@@ -165,18 +167,21 @@ export const getCardData = createSelector(
       if (!countryIndicator || !rankCountryIndicator) {
         return { slug: p.slug };
       }
-      let value =
-        countryIndicator.values[0] && countryIndicator.values[0].value;
+
+      const values = countryIndicator.values.find(v => v.location === iso);
+      const rankValues = rankCountryIndicator.values.find(
+        v => v.location === iso
+      );
+      let value = values && values.value;
 
       if (p.decimals) {
         value /= 10 ** p.decimals;
       }
-      const rankValue =
-        rankCountryIndicator.values[0] && rankCountryIndicator.values[0].value;
+      const rankValue = rankValues && rankValues.value;
       return {
         slug: p.slug,
         title: countryIndicator.name,
-        value: (Math.round(value * 100) / 100).toLocaleString(),
+        value: value && (Math.round(value * 100) / 100).toLocaleString(),
         worldPositionPercentage:
           rankValue && (rankValue * 100) / maximumCountries
       };

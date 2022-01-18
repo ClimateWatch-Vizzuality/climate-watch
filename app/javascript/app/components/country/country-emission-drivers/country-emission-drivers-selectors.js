@@ -2,6 +2,7 @@
 import { createSelector } from 'reselect';
 import isEmpty from 'lodash/isEmpty';
 import pickBy from 'lodash/pickBy';
+import sortBy from 'lodash/sortBy';
 import qs from 'query-string';
 import { CHART_NAMED_EXTENDED_COLORS } from 'app/styles/constants';
 
@@ -42,38 +43,43 @@ export const getHazards = createSelector(
   }
 );
 
-export const getHazardsLegend = createSelector([getHazards], hazards => {
-  if (!hazards) {
-    return null;
-  }
-  const percentage = (value, total) => (value * 100) / total;
-  const getValue = key =>
-    hazards[key].values &&
-    hazards[key].values[0] &&
-    +hazards[key].values[0].value;
-  const totalValue = Object.keys(hazards).reduce((acc, key) => {
-    const value = getValue(key);
-    return acc + (value ? +value : 0);
-  }, 0);
-  const legendItems = Object.keys(hazards)
-    .map((key, i) => ({
-      id: hazards[key].slug,
-      name: hazards[key].name,
-      value: Math.round(percentage(getValue(key), totalValue) * 100) / 100,
-      color: Object.values(CHART_NAMED_EXTENDED_COLORS)[i]
-    }))
-    .filter(i => i.value !== 0);
+export const getHazardsLegend = createSelector(
+  [getHazards, getIso],
+  (hazards, iso) => {
+    if (!hazards) {
+      return null;
+    }
+    const percentage = (value, total) => (value * 100) / total;
+    const getValue = key => {
+      const keyValues =
+        hazards[key].values && hazards[key].values.find(v => v.iso === iso);
+      return keyValues && +keyValues.value;
+    };
+    const totalValue = Object.keys(hazards).reduce((acc, key) => {
+      const value = getValue(key);
+      return acc + (value ? +value : 0);
+    }, 0);
+    const legendItems = Object.keys(hazards)
+      .map((key, i) => ({
+        id: hazards[key].slug,
+        name: hazards[key].name,
+        value: Math.round(percentage(getValue(key), totalValue) * 100) / 100,
+        color: Object.values(CHART_NAMED_EXTENDED_COLORS)[i]
+      }))
+      .filter(i => i.value !== 0);
 
-  return legendItems;
-});
+    return legendItems;
+  }
+);
 
 export const getElectricityChart = createSelector(
-  [getCountryIndicators],
-  countryIndicators => {
+  [getCountryIndicators, getIso],
+  (countryIndicators, iso) => {
     if (!countryIndicators || !countryIndicators.electricity_consumption) {
       return null;
     }
     const { values } = countryIndicators.electricity_consumption;
+    const countryValues = values.filter(v => v.location === iso);
     const config = {
       axes: {
         xBottom: { name: 'Year', unit: 'date', format: 'YYYY' },
@@ -95,13 +101,23 @@ export const getElectricityChart = createSelector(
         y: [{ label: 'Electricity', value: 'yElectricity' }]
       }
     };
-    const data = values.map(v => ({
-      x: v.year,
-      yElectricity: v.value
-    }));
+    const plainValues = countryValues.map(v => v.value);
+    const years = countryValues.map(v => v.year);
+    const domain = {
+      x: [Math.min(...years), Math.max(...years)],
+      y: [Math.min(...plainValues), Math.max(...plainValues)]
+    };
+    const data = sortBy(
+      countryValues.map(v => ({
+        x: v.year,
+        yElectricity: v.value
+      })),
+      'x'
+    );
     return {
       config,
-      data
+      data,
+      domain
     };
   }
 );
