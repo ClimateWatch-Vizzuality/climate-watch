@@ -4,62 +4,85 @@
   border-top: solid 1px $gray2;
   padding-top: 40px;
   padding-bottom: 40px;
+  min-height: 300px;
+}
+
+.chartContainer {
+  margin-top: 5rem;
+  @include row();
+}
+
+.chartLegend {
+  @include row((4, 8));
+
+  .legend {
+    @include column-offset(4);
+  }
+
+  .legendUnit {
+    margin-bottom: 1rem;
+  }
+
+  .legendUnit {
+    text-align: center;
+    font-size: $font-size-m;
+    color: $gray1;
+  }
+}
+
+.axis {
+  position: relative;
+}
+
+.chart {
+  position: absolute;
+  top: 60px;
+  width: 100%;
+}
+
+.barContainer {
+  height: 30px;
+  display: flex;
+  padding: 10px 0 0 10px;
+}
+
+.bar {
+  border-radius: 20px;
+  height: 20px;
+  margin-right: 1rem;
+}
+
+.yLabels {
+  padding-top: 100px;
+  font-size: $font-size-large;
 }
 
 .header {
   margin-bottom: 10px;
 }
 
-.cards {
-  display: grid;
-  grid-template-columns: 1fr;
-
-  @media #{$tablet-portrait} {
-    grid-template-columns: 0.6fr 0.6fr 1.3fr;
-    grid-template-rows: 0.75fr 0.75fr;
-  }
-
-  @media #{$tablet-landscape} {
-    grid-template-areas:
-      "card1 card2 chart"
-      "card3 card4 chart";
-  }
-
-  .squareCard1 {
-    grid-area: card1;
-  }
-
-  .squareCard2 {
-    grid-area: card2;
-  }
-
-  .squareCard3 {
-    grid-area: card3;
-  }
-
-  .squareCard4 {
-    grid-area: card4;
-  }
-
-  .chartCard {
-    grid-area: chart;
-  }
+.switchWrapper {
+  display: flex;
+  justify-content: center;
+  margin: 1rem 0 2rem;
 }
 
-.cardData {
-  height: 300px;
-  min-height: auto;
+.link {
+  display: flex;
+  align-items: center;
+  text-decoration: underline;
 }
 
-.chartCardData {
-  height: 600px;
+.icon {
+  fill: $theme-color;
+  margin-left: 5px;
 }
 
 .titleContainer {
-  display: inline-flex;
+  display: flex;
   position: relative;
   align-items: center;
-  flex-wrap: wrap;
+  justify-content: space-between;
 }
 
 .title {
@@ -71,15 +94,12 @@
   margin-bottom: 20px;
 }
 
-.paddedBottom {
-  padding-bottom: 100px;
-  min-height: 600px;
+.hidden {
+  display: none;
 }
 
-.tooltipTrigger {
-  font-weight: $font-weight-bold;
-}
-
-.tooltip {
-  min-width: 300px;
+.axisLegend {
+  line {
+    stroke: $gray2;
+  }
 }
