@@ -1,5 +1,6 @@
 import { createAction } from 'redux-actions';
 import { createThunkAction } from 'utils/redux';
+import { apiWithCache } from 'services/api';
 
 const fetchIndicatorsInit = createAction('fetchIndicatorsInit');
 const fetchIndicatorsReady = createAction('fetchIndicatorsReady');
@@ -17,17 +18,16 @@ const fetchIndicators = createThunkAction(
     if (locations?.length > 0) params.append('location', locations.join(','));
     const queryString =
       Array.from(params).length > 0 ? `?${params.toString()}` : '';
-
-    fetch(`/api/v1/country_profile/indicators${queryString}`)
+    apiWithCache
+      .get(`/api/v1/country_profile/indicators${queryString}`)
       .then(response => {
-        if (response.ok) return response.json();
-        throw Error(response.statusText);
-      })
-      .then(data => {
-        if (data && data.data) {
-          dispatch(fetchIndicatorsReady(data.data));
+        if (response) {
+          const {
+            data: { data }
+          } = response;
+          dispatch(fetchIndicatorsReady(data));
         } else {
-          dispatch(fetchIndicatorsReady([]));
+          dispatch(fetchIndicatorsReady({}));
         }
       })
       .catch(error => {

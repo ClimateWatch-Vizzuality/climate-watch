@@ -8,9 +8,6 @@ import layoutStyles from 'app/styles/layout.scss';
 import ReactTooltip from 'react-tooltip';
 import styles from './definition-list-styles.scss';
 
-const FEATURE_ENHANCEMENT_CHANGES =
-  process.env.FEATURE_ENHANCEMENT_CHANGES === 'true';
-
 class DefinitionList extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
   render() {
@@ -48,7 +45,7 @@ class DefinitionList extends PureComponent {
       ));
 
     const renderDefinitions = () =>
-      FEATURE_ENHANCEMENT_CHANGES && comparisonWithPreviousNDC
+      comparisonWithPreviousNDC
         ? renderComparisonWithPreviousNDC()
         : definitions.map(def => (
           <div className="grid-column-item" key={def.slug}>

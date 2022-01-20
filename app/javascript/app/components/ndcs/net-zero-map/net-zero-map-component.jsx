@@ -28,9 +28,6 @@ import newMapTheme from 'styles/themes/map/map-new-zoom-controls.scss';
 import blueCheckboxTheme from 'styles/themes/checkbox/blue-checkbox.scss';
 import styles from './net-zero-map-styles.scss';
 
-const FEATURE_ENHANCEMENT_CHANGES =
-  process.env.FEATURE_ENHANCEMENT_CHANGES === 'true';
-
 const renderButtonGroup = (
   clickHandler,
   downloadLink,
@@ -50,26 +47,20 @@ const renderButtonGroup = (
             type: 'info',
             onClick: clickHandler
           },
-          FEATURE_ENHANCEMENT_CHANGES
-            ? {
-              type: 'downloadCombo',
-              options: [
-                {
-                  label: 'Save as image (PNG)',
-                  action: handlePngDownloadModal
-                },
-                {
-                  label: 'Go to data explorer',
-                  link: downloadLink,
-                  target: '_self'
-                }
-              ]
-            }
-            : {
-              type: 'download',
-              section: 'net-zero-content',
-              link: downloadLink
-            },
+          {
+            type: 'downloadCombo',
+            options: [
+              {
+                label: 'Save as image (PNG)',
+                action: handlePngDownloadModal
+              },
+              {
+                label: 'Go to data explorer',
+                link: downloadLink,
+                target: '_self'
+              }
+            ]
+          },
           {
             type: 'addToUser'
           }

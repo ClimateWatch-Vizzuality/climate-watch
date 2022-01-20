@@ -13,9 +13,6 @@ import {
   getIsSubnationalSource
 } from './ghg-emissions-selectors-filters';
 
-const FEATURE_ENHANCEMENT_CHANGES =
-  process.env.FEATURE_ENHANCEMENT_CHANGES === 'true';
-
 const getOverlappingConflicts = optionsSelected => {
   if (!optionsSelected || optionsSelected.length <= 1) return [];
 
@@ -133,14 +130,11 @@ const getCountryRegionConflicts = (
     breakBySelected.value === 'countries' &&
     (numberOfRegionsSelected > 1 || oneRegionAndCountriesSelected)
   ) {
-    if (FEATURE_ENHANCEMENT_CHANGES) {
-      return [
-        isSubnational
-          ? 'A country and at least one subnational jurisdiction are selected'
-          : 'More than one region or a region and at least one country are selected'
-      ];
-    }
-    return ['More than one region is selected'];
+    return [
+      isSubnational
+        ? 'A country and at least one subnational jurisdiction are selected'
+        : 'More than one region or a region and at least one country are selected'
+    ];
   }
   const onlyCountriesAreSelected =
     placesSelected?.length && numberOfRegionsSelected === 0;

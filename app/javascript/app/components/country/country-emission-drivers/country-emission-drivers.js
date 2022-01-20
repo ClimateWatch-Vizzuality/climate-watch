@@ -1,36 +1,30 @@
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { CLIMATE_VULNERABILITY_DEFINITIONS } from 'data/constants';
 import { actions } from 'components/modal-metadata';
-import Component from './country-climate-vulnerability-component';
+import Component from './country-emission-drivers-component';
 import {
   getSectionData,
   getQueryIsos,
   getCountryName,
   getMaximumCountries
-} from './country-climate-vulnerability-selectors';
+} from './country-emission-drivers-selectors';
 
 const mapStateToProps = (state, { match, location }) => {
   const iso = match.params.iso;
   const search = location.search;
   const countriesData = state.countries.data;
-  const { adaptations } = state;
   const climateVulnerability = {
     ...state,
     iso,
-    adaptations,
     search,
     countriesData
   };
-  const definitions = CLIMATE_VULNERABILITY_DEFINITIONS;
 
   return {
     sectionData: getSectionData(climateVulnerability),
     countries: getQueryIsos(search),
     maximumCountries: getMaximumCountries(climateVulnerability),
     countryName: getCountryName(climateVulnerability),
-    ready: adaptations.loaded,
-    definitions,
     iso
   };
 };

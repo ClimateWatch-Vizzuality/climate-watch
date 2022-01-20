@@ -9,9 +9,6 @@ import styles from './ndcs-enhancements-table-styles.scss';
 import customCellRenderer from './ndcs-enhancements-table-cell-renderer';
 import EnhancementsLegend from './enhancements-legend';
 
-const FEATURE_ENHANCEMENT_CHANGES =
-  process.env.FEATURE_ENHANCEMENT_CHANGES === 'true';
-
 const renderSearch = (searchHandler, query) => (
   <Search
     value={query}
@@ -20,19 +17,18 @@ const renderSearch = (searchHandler, query) => (
     placeholder="Search for country or keyword"
   />
 );
-const setColumnWidth = FEATURE_ENHANCEMENT_CHANGES
-  ? col => {
-    const columnWidth = {
-      country: 100,
-      'NDC Status': 64,
-      'Share of Global GHG Emissions': 120,
-      'Overall comparison with previous NDC': 200,
-      Statement: 150,
-      Date: 76
-    }[col];
-    return columnWidth || 170;
-  }
-  : () => 180;
+const setColumnWidth = col => {
+  const columnWidth = {
+    country: 80,
+    'NDC Status': 64,
+    'Share of Global GHG Emissions': 120,
+    'Overall comparison with previous NDC': 200,
+    'Source Link': 120,
+    Statement: 220,
+    Date: 76
+  }[col];
+  return columnWidth || 170;
+};
 
 const NDCSEnhancementsTable = ({
   loading,
@@ -66,9 +62,18 @@ const NDCSEnhancementsTable = ({
             defaultColumns={columns}
             sortBy="Share of Global GHG Emissions"
             sortASC={false}
+            dynamicRowsConfig={{
+              fontWidth: 8,
+              // px
+              fontSize: 10,
+              // px
+              extraMargin: 30,
+              // px
+              lineHeight: 1
+            }}
           />
           <ReactTooltip id="submission-icon-info" html />
-          {FEATURE_ENHANCEMENT_CHANGES && <EnhancementsLegend />}
+          <EnhancementsLegend />
         </div>
       )}
       {!loading && (!tableData || tableData.length <= 0) && (
