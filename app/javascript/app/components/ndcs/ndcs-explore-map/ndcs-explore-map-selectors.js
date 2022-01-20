@@ -406,7 +406,7 @@ export const getSummaryCardData = createSelector(
     return [
       {
         value: submittedCountriesAndParties.partiesNumber,
-        description: ` Parties representing ${submittedCountriesAndParties.countriesNumber} countries have submitted their new or updated NDC. `
+        description: ` Parties (representing ${submittedCountriesAndParties.countriesNumber} countries) have submitted their new or updated NDCs. `
       }
     ];
   }
