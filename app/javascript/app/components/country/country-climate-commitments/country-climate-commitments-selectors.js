@@ -43,7 +43,9 @@ const getNetZeroAnd2020StatusValues = createSelector(
     const status2020indicator = indicators.find(
       i => i.slug === INDICATOR_SLUGS.enhancements
     );
-    const netZeroindicator = indicators.find(i => i.slug === 'nz_status');
+    const netZeroIndicator = indicators.find(i => i.slug === 'nz_status');
+
+    if (!status2020indicator || !netZeroIndicator) return null;
 
     const status2020Label =
       status2020indicator &&
@@ -59,14 +61,14 @@ const getNetZeroAnd2020StatusValues = createSelector(
       }[status2020Label] || SUBMISSION_ICON_VALUE.no;
 
     const statusNetZeroLabelId =
-      netZeroindicator &&
-      netZeroindicator.locations[iso] &&
-      netZeroindicator.locations[iso].label_id;
+      netZeroIndicator &&
+      netZeroIndicator.locations[iso] &&
+      netZeroIndicator.locations[iso].label_id;
     const statusNetZeroLabel =
-      netZeroindicator &&
-      netZeroindicator.labels &&
+      netZeroIndicator &&
+      netZeroIndicator.labels &&
       statusNetZeroLabelId &&
-      netZeroindicator.labels[statusNetZeroLabelId];
+      netZeroIndicator.labels[statusNetZeroLabelId];
     const statusNetZeroValue =
       {
         'Net-zero Target in Law': SUBMISSION_ICON_VALUE.yes,
