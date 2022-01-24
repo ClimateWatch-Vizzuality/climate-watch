@@ -14,7 +14,7 @@ const getIndicators =
   (state => state.ndcs && state.ndcs.data && state.ndcs.data.indicators) ||
   null;
 
-const getCountryIndicators = state =>
+export const getCountryIndicators = state =>
   state.countryProfileIndicators.data || null;
 
 export const getLoading = state => state.countryProfileIndicators.loading;

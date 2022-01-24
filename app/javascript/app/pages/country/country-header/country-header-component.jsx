@@ -49,7 +49,7 @@ function CountryHeader(props) {
       <InfoButton
         className={styles.infoBtn}
         infoOpen={false}
-        handleInfoClick={() => handleInfoClick(0)}
+        handleInfoClick={() => handleInfoClick(c.slug)}
       />
     </Card>
   );

@@ -1,6 +1,10 @@
+import { createElement } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { actions } from 'components/anchor-nav';
+import { actions as modalActions } from 'components/modal-metadata';
+
+import { handleInfoMetadataClick } from 'components/country/country-utils';
 
 import {
   getCountryName,
@@ -8,7 +12,8 @@ import {
   getLegacyDescriptionText,
   getEmissionProviderFilters,
   getCardData,
-  getLoading
+  getLoading,
+  getCountryIndicators
 } from './country-header-selectors';
 
 import Component from './country-header-component';
@@ -35,8 +40,23 @@ const mapStateToProps = (state, { match }) => {
       ? getDescriptionText(stateWithIso)
       : getLegacyDescriptionText(stateWithIso),
     emissionProviderFilters: getEmissionProviderFilters(stateWithIso),
-    cardData: getCardData(stateWithIso)
+    cardData: getCardData(stateWithIso),
+    indicators: getCountryIndicators(stateWithIso)
   };
 };
 
-export default withRouter(connect(mapStateToProps, actions)(Component));
+const CountryHeader = props => {
+  const { setModalMetadata, indicators } = props;
+  const handleInfoClick = slug =>
+    handleInfoMetadataClick(
+      slug,
+      'Country Header',
+      indicators,
+      setModalMetadata
+    );
+  return createElement(Component, { ...props, handleInfoClick });
+};
+
+export default withRouter(
+  connect(mapStateToProps, { ...actions, ...modalActions })(CountryHeader)
+);

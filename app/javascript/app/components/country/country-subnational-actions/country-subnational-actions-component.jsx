@@ -7,7 +7,7 @@ import isEmpty from 'lodash/isEmpty';
 import mapValues from 'lodash/mapValues';
 import PropTypes from 'prop-types';
 import { Tag } from 'cw-components';
-
+import InfoButton from 'components/button/info-button';
 import Card from 'components/card';
 import Chart from 'components/charts/chart';
 import Loading from 'components/loading';
@@ -36,7 +36,7 @@ const TARGETS = {
   '1.5°C': { color: '#ADCEE4' }
 };
 
-function SubnationalActions({ indicators, loading }) {
+function SubnationalActions({ indicators, loading, handleInfoClick }) {
   const showByMillion = value => Number((value || 0) / 1000000).toFixed(2);
 
   const citiesBadgeValues = (indicators.city_badge_type?.values || []).map(
@@ -66,12 +66,14 @@ function SubnationalActions({ indicators, loading }) {
   const companyTargetQualValues = (
     indicators.company_target_qualification?.values || []
   ).map(x => ({ ...x, value: parseInt(x.value, 10) }));
+
   const companiesChartData = mergeForChart({
     data: companyTargetQualValues,
     mergeBy: 'year',
     labelKey: 'category',
     valueKey: 'value'
   });
+
   const latestYear = Math.max(
     ...uniq(companyTargetQualValues.map(x => x.year))
   );
@@ -123,7 +125,20 @@ function SubnationalActions({ indicators, loading }) {
             <Card
               title={
                 <div className={styles.cardHeader}>
-                  <div>Cities</div>
+                  <div className={styles.titleContainer}>
+                    <span>Cities</span>
+                    <InfoButton
+                      className={styles.infoBtn}
+                      infoOpen={false}
+                      handleInfoClick={() =>
+                        handleInfoClick(
+                          indicators &&
+                            indicators.city_badge_type &&
+                            indicators.city_badge_type.metadata_source
+                        )
+                      }
+                    />
+                  </div>
                   <a
                     className={styles.sourceLink}
                     href="https://www.globalcovenantofmayors.org/our-cities/"
@@ -200,7 +215,21 @@ function SubnationalActions({ indicators, loading }) {
             <Card
               title={
                 <div className={styles.cardHeader}>
-                  <div>Companies</div>
+                  <div className={styles.titleContainer}>
+                    <span>Companies</span>
+                    <InfoButton
+                      className={styles.infoBtn}
+                      infoOpen={false}
+                      handleInfoClick={() =>
+                        handleInfoClick(
+                          indicators &&
+                            indicators.company_target_qualification &&
+                            indicators.company_target_qualification
+                              .metadata_source
+                        )
+                      }
+                    />
+                  </div>
                   <a
                     className={styles.sourceLink}
                     href="https://sciencebasedtargets.org/companies-taking-action"
@@ -270,7 +299,8 @@ function SubnationalActions({ indicators, loading }) {
 
 SubnationalActions.propTypes = {
   indicators: PropTypes.object.isRequired,
-  loading: PropTypes.bool.isRequired
+  loading: PropTypes.bool.isRequired,
+  handleInfoClick: PropTypes.func.isRequired
 };
 
 export default SubnationalActions;

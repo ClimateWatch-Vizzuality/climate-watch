@@ -11,6 +11,7 @@ import SocioeconomicsProvider from 'providers/socioeconomics-provider';
 import CountryProfileIndicatorsProvider from 'providers/country-profile-indicators-provider';
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
 import ErrorBoundary from 'components/error-boundary';
+import ModalMetadata from 'components/modal-metadata';
 import CountryHeader from './country-header';
 
 import styles from './country-styles.scss';
@@ -92,6 +93,7 @@ function Country(props) {
           />
         </Sticky>
       </Header>
+      <ModalMetadata />
       {route.sections &&
         route.sections.length > 0 &&
         route.sections.map(section => (
