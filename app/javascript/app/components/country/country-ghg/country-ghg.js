@@ -29,16 +29,17 @@ const mapStateToProps = (state, { location, match }) => {
 };
 
 function CountryGhgContainer(props) {
+  const { setModalMetadata } = props;
   const handleAnalyticsClick = () => {
     handleAnalytics('Country', 'Leave page to explore data', 'Ghg emissions');
   };
 
-  const handleInfoClick = () => {
-    props.setModalMetadata({
-      slugs: ['ndc_lts'],
+  const handleInfoClick = () =>
+    setModalMetadata({
+      category: 'Country comparison',
+      slugs: 'historical_emissions_cait',
       open: true
     });
-  };
 
   return (
     <Component
@@ -50,7 +51,8 @@ function CountryGhgContainer(props) {
 }
 
 CountryGhgContainer.propTypes = {
-  setModalMetadata: PropTypes.func
+  setModalMetadata: PropTypes.func.isRequired.isRequired,
+  indicators: PropTypes.object
 };
 
 export default withRouter(

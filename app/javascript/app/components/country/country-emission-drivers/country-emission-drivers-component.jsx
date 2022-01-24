@@ -6,7 +6,6 @@ import Card from 'components/card';
 import CardGraph from 'components/card-graph';
 import ReactTooltip from 'react-tooltip';
 import InfoButton from 'components/button/info-button';
-import ModalMetadata from 'components/modal-metadata';
 
 import layout from 'styles/layout.scss';
 
@@ -16,17 +15,10 @@ function CountryEmissionDrivers(props) {
   const {
     sectionData,
     countryName,
-    setModalMetadata,
     maximumCountries,
-    iso
+    iso,
+    handleInfoClick
   } = props;
-  const handleInfoClick = slug => {
-    setModalMetadata({
-      category: 'Emission Drivers',
-      slug,
-      open: true
-    });
-  };
 
   const infoButton = slug => (
     <InfoButton
@@ -91,7 +83,6 @@ function CountryEmissionDrivers(props) {
 
   return (
     <div className={styles.wrapper}>
-      <ModalMetadata />
       <div className={layout.content}>{renderContent()}</div>
     </div>
   );
@@ -99,7 +90,7 @@ function CountryEmissionDrivers(props) {
 
 CountryEmissionDrivers.propTypes = {
   sectionData: Proptypes.array,
-  setModalMetadata: Proptypes.func.isRequired,
+  handleInfoClick: Proptypes.func.isRequired,
   countryName: Proptypes.string,
   iso: Proptypes.string,
   maximumCountries: Proptypes.number

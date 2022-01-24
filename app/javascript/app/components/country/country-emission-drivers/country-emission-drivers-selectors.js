@@ -7,7 +7,7 @@ import qs from 'query-string';
 import { CHART_NAMED_EXTENDED_COLORS } from 'app/styles/constants';
 
 const getIso = state => state.iso || null;
-const getCountryIndicators = state =>
+export const getCountryIndicators = state =>
   state.countryProfileIndicators.data || null;
 const getCountries = state => state.countriesData || null;
 

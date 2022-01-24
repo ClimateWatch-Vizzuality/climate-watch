@@ -6,7 +6,6 @@ import cx from 'classnames';
 import { Switch } from 'cw-components';
 import externalLink from 'assets/icons/external-link.svg';
 import ReactTooltip from 'react-tooltip';
-import ModalMetadata from 'components/modal-metadata';
 import { scaleLinear } from 'd3-scale';
 import { axisTop } from 'd3-axis';
 import { select } from 'd3-selection';
@@ -161,7 +160,6 @@ function CountryEmploymentAndCosts(props) {
 
   return (
     <div className={styles.wrapper}>
-      <ModalMetadata />
       <div className={layout.content}>{renderContent()}</div>
     </div>
   );
