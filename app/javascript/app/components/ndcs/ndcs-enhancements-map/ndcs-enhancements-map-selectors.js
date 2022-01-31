@@ -40,7 +40,7 @@ const getCountriesDocuments = state => state.countriesDocuments.data || null;
 
 export const getIsEnhancedChecked = createSelector(
   getSearch,
-  search => search.showEnhancedAmbition === 'true'
+  search => search.showEnhancedAmbition !== 'false'
 );
 
 export const getISOCountries = createSelector([getCountries], countries =>
