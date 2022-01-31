@@ -21,7 +21,7 @@
 
   @media #{$tablet-landscape} {
     border-bottom: none;
-    padding: 0 20px 0;
+    padding: 0 20px;
     border-right: 3px solid $gray3;
   }
 }
@@ -29,7 +29,7 @@
 .enhancementsLegendValues {
   min-width: 310px;
   border-bottom: 3px solid $gray3;
-  padding: 20px 0 20px;
+  padding: 20px 0;
 
   @media #{$tablet-landscape} {
     border-bottom: none;
