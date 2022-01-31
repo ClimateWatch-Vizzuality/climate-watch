@@ -442,6 +442,13 @@ export const ENHANCEMENT_VALUES_COLORS = {
   'No Document Submitted': ENHANCEMENT_VALUE_COLORS.white
 };
 
+export const LEGEND_ENHANCEMENT_VALUES_COLORS = {
+  'Revised NDC compared with previous version': ENHANCEMENT_VALUE_COLORS.blue,
+  'Submitted New or Updated NDC': ENHANCEMENT_VALUE_COLORS.blue,
+  'No, no enhancement in the revised submission': ENHANCEMENT_VALUE_COLORS.red,
+  Unclear: ENHANCEMENT_VALUE_COLORS.orange
+};
+
 export const ALL_ENHANCEMENT_VALUES_COLORS = {
   'Revised NDC compared with previous version': ENHANCEMENT_VALUE_COLORS.blue,
   'Revised from the previous submission': ENHANCEMENT_VALUE_COLORS.blue,
