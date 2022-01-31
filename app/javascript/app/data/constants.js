@@ -444,7 +444,7 @@ export const ENHANCEMENT_VALUES_COLORS = {
 
 export const LEGEND_ENHANCEMENT_VALUES_COLORS = {
   'Revised NDC compared with previous version': ENHANCEMENT_VALUE_COLORS.blue,
-  'Submitted New or Updated NDC': ENHANCEMENT_VALUE_COLORS.blue,
+  'Yes, enhancement in the revised submission': ENHANCEMENT_VALUE_COLORS.blue,
   'No, no enhancement in the revised submission': ENHANCEMENT_VALUE_COLORS.red,
   Unclear: ENHANCEMENT_VALUE_COLORS.orange
 };
