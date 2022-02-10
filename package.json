@@ -88,7 +88,7 @@
     "luxon": "^1.25.0",
     "mini-css-extract-plugin": "^1.4.1",
     "moment-timezone": "^0.5.32",
-    "node-sass": ">=4.13.1",
+    "node-sass": ">=7.0.0",
     "path-browserify": "^1.0.1",
     "path-complete-extname": "^1.0.0",
     "pluralize": "^8.0.0",
