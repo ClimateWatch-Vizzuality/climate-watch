@@ -30,7 +30,7 @@ export const slidesData = [
       },
       {
         text: 'Historical GHG Emissions',
-        link: '/ghg',
+        link: '/ghg-emissions',
         variant: 'primary',
         type: 'button'
       }
@@ -127,7 +127,7 @@ export const slidesData = [
     buttons: [
       {
         text: 'Historical GHG Emissions',
-        link: '/ghg',
+        link: '/ghg-emissions',
         variant: 'primary',
         type: 'button'
       },
@@ -139,7 +139,7 @@ export const slidesData = [
       },
       {
         text: 'Key Visualizations',
-        link: '/key-visualization',
+        link: '/key-visualizations',
         variant: 'primary',
         type: 'button'
       }
