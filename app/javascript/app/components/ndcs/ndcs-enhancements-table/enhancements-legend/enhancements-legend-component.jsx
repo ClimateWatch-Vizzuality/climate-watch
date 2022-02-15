@@ -18,7 +18,7 @@ function EnhancementsLegend() {
               backgroundColor: ENHANCEMENT_LABEL_COLORS.ENHANCED_MITIGATION
             }}
           />
-          <div>Submitted new or updated NDC with Reduced Total Emissions</div>
+          <div>Submitted New or Updated NDC with Reduced Total Emissions</div>
         </div>
         <div className={styles.value}>
           <div
@@ -27,7 +27,7 @@ function EnhancementsLegend() {
               backgroundColor: ENHANCEMENT_LABEL_COLORS.SUBMITTED_2020
             }}
           />
-          <div>Submitted new or updated NDC</div>
+          <div>Submitted New or Updated NDC</div>
         </div>
       </div>
       <div className={styles.enhancementsLegendValues}>
