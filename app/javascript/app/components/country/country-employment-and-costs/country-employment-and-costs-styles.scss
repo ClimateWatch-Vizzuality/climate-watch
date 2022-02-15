@@ -1,0 +1,106 @@
+@import '~styles/layout.scss';
+
+.wrapper {
+  border-top: solid 1px $gray2;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  min-height: 300px;
+}
+
+.chartContainer {
+  margin-top: 5rem;
+
+  @include row();
+}
+
+.chartLegend {
+  @include row((4, 8));
+
+  .legend {
+    @include column-offset(4);
+  }
+
+  .legendUnit {
+    margin-bottom: 1rem;
+  }
+
+  .legendUnit {
+    text-align: center;
+    font-size: $font-size-m;
+    color: $gray1;
+  }
+}
+
+.axis {
+  position: relative;
+}
+
+.chart {
+  position: absolute;
+  top: 60px;
+  width: 100%;
+}
+
+.barContainer {
+  height: 30px;
+  display: flex;
+  padding: 10px 0 0 10px;
+}
+
+.bar {
+  border-radius: 20px;
+  height: 20px;
+  margin-right: 1rem;
+}
+
+.yLabels {
+  padding-top: 100px;
+  font-size: $font-size-large;
+}
+
+.header {
+  margin-bottom: 10px;
+}
+
+.switchWrapper {
+  display: flex;
+  justify-content: center;
+  margin: 1rem 0 2rem;
+}
+
+.link {
+  display: flex;
+  align-items: center;
+  text-decoration: underline;
+}
+
+.icon {
+  fill: $theme-color;
+  margin-left: 5px;
+}
+
+.titleContainer {
+  display: flex;
+  position: relative;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.title {
+  font-size: $font-size-large;
+  font-weight: $font-weight;
+  color: $theme-color;
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.hidden {
+  display: none;
+}
+
+.axisLegend {
+  line {
+    stroke: $gray2;
+  }
+}

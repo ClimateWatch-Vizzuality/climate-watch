@@ -40,7 +40,7 @@
   @include row(12);
 
   @media #{$tablet-landscape} {
-    @include row((8,4));
+    @include columns((8,4));
   }
 }
 

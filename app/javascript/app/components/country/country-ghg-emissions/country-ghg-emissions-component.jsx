@@ -10,7 +10,6 @@ import ModalPngDownload from 'components/modal-png-download';
 import EmissionsMetaProvider from 'providers/ghg-emissions-meta-provider';
 import WbCountryDataProvider from 'providers/wb-country-data-provider';
 import { TabletLandscape, TabletPortraitOnly } from 'components/responsive';
-import ModalMetadata from 'components/modal-metadata';
 import { isPageContained } from 'utils/navigation';
 import DataZoom from 'components/data-zoom';
 import quantificationTagTheme from 'styles/themes/tag/quantification-tag.scss';
@@ -213,7 +212,6 @@ class CountryGhgEmissions extends PureComponent {
             {this.renderActionButtons()}
           </div>
         </TabletPortraitOnly>
-        <ModalMetadata />
         <ModalPngDownload
           id={pngDownloadId}
           title={`GHG Emissions and Emissions Targets in ${countryName}`}

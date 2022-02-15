@@ -25,26 +25,31 @@ function CountryHeader(props) {
     description,
     emissionProviderFilters,
     handleInfoClick,
-    cardData
+    cardData,
+    loading
   } = props;
   const countryName = (country && country.name) || '';
+  const getValue = value =>
+    !loading && value && !Number.isNaN(value) ? value : null;
 
   const renderCard = c => (
     <Card theme={cardSimpleTheme} key={c.slug}>
       <div className={styles.cardContent}>
         <div className={styles.title}>{c.title}</div>
         <div className={styles.progressBar}>
-          <div
-            className={styles.marker}
-            style={{ left: c.worldPositionPercentage }}
-          />
+          {c.worldPositionPercentage && (
+            <div
+              className={styles.marker}
+              style={{ left: `${c.worldPositionPercentage}%` }}
+            />
+          )}
         </div>
-        <div className={styles.value}>{c.value}</div>
+        <div className={styles.value}>{getValue(c.value)}</div>
       </div>
       <InfoButton
         className={styles.infoBtn}
         infoOpen={false}
-        handleInfoClick={() => handleInfoClick(0)}
+        handleInfoClick={() => handleInfoClick(c.slug)}
       />
     </Card>
   );
@@ -123,7 +128,8 @@ CountryHeader.propTypes = {
   description: PropTypes.string,
   cardData: PropTypes.array,
   handleInfoClick: PropTypes.func.isRequired,
-  emissionProviderFilters: PropTypes.oobject
+  emissionProviderFilters: PropTypes.object,
+  loading: PropTypes.bool
 };
 
 export default CountryHeader;

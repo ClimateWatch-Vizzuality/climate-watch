@@ -1,3 +1,4 @@
+/* eslint-disable no-confusing-arrow */
 import { includeTotalData } from 'utils/stacked-area';
 import min from 'lodash/min';
 import max from 'lodash/max';

@@ -39,11 +39,11 @@ const renderButtonGroup = (
             or by referring to the table below. To request changes or additions,
             please contact &nbsp;
             <a
-              href="mailto:Rhys.Gerholdt@wri.org?subject=NDC Enhancement Tracker Update"
+              href="mailto:Mengpin.Ge@wri.org?subject=NDC Enhancement Tracker Update"
               target="_blank"
               rel="noopener noreferrer"
             >
-              Rhys Gerholdt
+              Mengpin Ge
             </a>
             .
           </AbbrReplace>
@@ -211,7 +211,7 @@ const NDCSEnhancementsMap = ({
                   <div className={styles.checkboxContainer}>
                     <CheckInput
                       theme={blueCheckboxTheme}
-                      label="Show which new NDCs reduce total emissions"
+                      label="Show which new NDCs reduce total emissions from previous NDC"
                       checked={checked}
                       onChange={() => handleOnChangeChecked(!checked)}
                     />

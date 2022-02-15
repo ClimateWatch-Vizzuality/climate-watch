@@ -26,7 +26,8 @@
         }
       ],
       "short_name": "Indicator short",
-      "metadata_source": "CAIT"
+      "metadata_source": "CAIT",
+      "max_value": null
     },
     {
       "slug": "indicator_slug_2",
@@ -54,7 +55,8 @@
         }
       ],
       "short_name": "Indicator short",
-      "metadata_source": "CAIT"
+      "metadata_source": "CAIT",
+      "max_value": null
     },
     {
       "slug": "indicator_slug_3",
@@ -82,7 +84,32 @@
         }
       ],
       "short_name": "Indicator short",
-      "metadata_source": "CAIT"
+      "metadata_source": "CAIT",
+      "max_value": null
+    },
+    {
+      "slug": "some_rank",
+      "name": "Indicator name",
+      "short_name": "Indicator short",
+      "metadata_source": "CAIT",
+      "max_value": 4,
+      "values": [
+        {
+          "location": "AAC",
+          "year": 1990,
+          "value": "2"
+        },
+        {
+          "location": "AAD",
+          "year": 1990,
+          "value": "4"
+        },
+        {
+          "location": "AAE",
+          "year": 1990,
+          "value": "1"
+        }
+      ]
     }
   ]
 }

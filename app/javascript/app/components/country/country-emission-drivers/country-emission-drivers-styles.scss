@@ -1,0 +1,86 @@
+@import '~styles/layout.scss';
+
+.wrapper {
+  border-top: solid 1px $gray2;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  min-height: 865px;
+}
+
+.header {
+  margin-bottom: 10px;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: 1fr;
+
+  @media #{$tablet-portrait} {
+    grid-template-columns: 0.6fr 0.6fr 1.3fr;
+    grid-template-rows: 0.75fr 0.75fr;
+  }
+
+  @media #{$tablet-landscape} {
+    grid-template-areas:
+      "card1 card2 chart"
+      "card3 card4 chart";
+  }
+
+  .squareCard1 {
+    grid-area: card1;
+  }
+
+  .squareCard2 {
+    grid-area: card2;
+  }
+
+  .squareCard3 {
+    grid-area: card3;
+  }
+
+  .squareCard4 {
+    grid-area: card4;
+  }
+
+  .chartCard {
+    grid-area: chart;
+  }
+}
+
+.cardData {
+  height: 300px;
+  min-height: auto;
+}
+
+.chartCardData {
+  height: 600px;
+}
+
+.titleContainer {
+  display: inline-flex;
+  position: relative;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.title {
+  font-size: $font-size-large;
+  font-weight: $font-weight;
+  color: $theme-color;
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.paddedBottom {
+  padding-bottom: 100px;
+  min-height: 600px;
+}
+
+.tooltipTrigger {
+  font-weight: $font-weight-bold;
+}
+
+.tooltip {
+  min-width: 300px;
+}

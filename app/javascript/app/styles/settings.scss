@@ -266,6 +266,7 @@ $desktop: 'screen and (min-width: #{$breakpoint-desktop})';
 
 // Fixed heights
 $vulnerability-chart-height: calc(100% - 30px);
+$card-chart-height: calc(100% - 30px);
 
 $sdg-1: #e5243b;
 $sdg-2: #dda63a;

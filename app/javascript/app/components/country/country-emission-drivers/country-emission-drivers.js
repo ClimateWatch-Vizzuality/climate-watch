@@ -1,46 +1,42 @@
 import { createElement } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { CLIMATE_VULNERABILITY_DEFINITIONS } from 'data/constants';
 import { actions } from 'components/modal-metadata';
-import Component from './country-climate-vulnerability-component';
 import { handleInfoMetadataClick } from '../country-utils';
+import Component from './country-emission-drivers-component';
+
 import {
   getSectionData,
   getQueryIsos,
   getCountryName,
   getMaximumCountries,
   getCountryIndicators
-} from './country-climate-vulnerability-selectors';
+} from './country-emission-drivers-selectors';
 
 const mapStateToProps = (state, { match, location }) => {
   const iso = match.params.iso;
   const search = location.search;
   const countriesData = state.countries.data;
-  const { adaptations } = state;
   const climateVulnerability = {
     ...state,
     iso,
-    adaptations,
     search,
     countriesData
   };
-  const definitions = CLIMATE_VULNERABILITY_DEFINITIONS;
 
   return {
     sectionData: getSectionData(climateVulnerability),
+    indicators: getCountryIndicators(climateVulnerability),
     countries: getQueryIsos(search),
     maximumCountries: getMaximumCountries(climateVulnerability),
     countryName: getCountryName(climateVulnerability),
-    indicators: getCountryIndicators(climateVulnerability),
-    ready: adaptations.loaded,
-    definitions,
     iso
   };
 };
 
-const CountryClimateVulnerability = props => {
+const EmissionDrivers = props => {
   const { setModalMetadata, indicators } = props;
+
   const handleInfoClick = slug =>
     handleInfoMetadataClick(
       slug,
@@ -48,9 +44,11 @@ const CountryClimateVulnerability = props => {
       indicators,
       setModalMetadata
     );
-  return createElement(Component, { ...props, handleInfoClick });
+
+  return createElement(Component, {
+    ...props,
+    handleInfoClick
+  });
 };
 
-export default withRouter(
-  connect(mapStateToProps, actions)(CountryClimateVulnerability)
-);
+export default withRouter(connect(mapStateToProps, actions)(EmissionDrivers));

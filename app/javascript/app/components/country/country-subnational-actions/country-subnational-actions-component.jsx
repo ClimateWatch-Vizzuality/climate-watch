@@ -7,12 +7,10 @@ import isEmpty from 'lodash/isEmpty';
 import mapValues from 'lodash/mapValues';
 import PropTypes from 'prop-types';
 import { Tag } from 'cw-components';
-
+import InfoButton from 'components/button/info-button';
 import Card from 'components/card';
 import Chart from 'components/charts/chart';
 import Loading from 'components/loading';
-
-import CountryProfileIndicatorsProvider from 'providers/country-profile-indicators-provider';
 
 import {
   CHART_NAMED_EXTENDED_COLORS,
@@ -38,7 +36,7 @@ const TARGETS = {
   '1.5°C': { color: '#ADCEE4' }
 };
 
-function SubnationalActions({ iso, indicators, loading }) {
+function SubnationalActions({ indicators, loading, handleInfoClick }) {
   const showByMillion = value => Number((value || 0) / 1000000).toFixed(2);
 
   const citiesBadgeValues = (indicators.city_badge_type?.values || []).map(
@@ -68,12 +66,14 @@ function SubnationalActions({ iso, indicators, loading }) {
   const companyTargetQualValues = (
     indicators.company_target_qualification?.values || []
   ).map(x => ({ ...x, value: parseInt(x.value, 10) }));
+
   const companiesChartData = mergeForChart({
     data: companyTargetQualValues,
     mergeBy: 'year',
     labelKey: 'category',
     valueKey: 'value'
   });
+
   const latestYear = Math.max(
     ...uniq(companyTargetQualValues.map(x => x.year))
   );
@@ -113,26 +113,32 @@ function SubnationalActions({ iso, indicators, loading }) {
   return (
     <div className={styles.gridContainer}>
       <div className={styles.grid}>
-        <CountryProfileIndicatorsProvider
-          indicatorSlugs={[
-            'city_badge_type',
-            'city_commited',
-            'city_ppl',
-            'company_commited',
-            'company_target',
-            'company_target_qualification'
-          ]}
-          locations={[iso]}
-        />
-
         <div className={styles.container}>
           <h3 className={styles.title}>Subnational Actions</h3>
-
+          <div className={styles.descriptionContainer}>
+            Addressing climate change, requires actions across all of society.
+            Explore how national and sub-national actions, including regions,
+            cities, companies, investors, and other organizations commit to act
+            on climate change.
+          </div>
           <div className={styles.cardsContainer}>
             <Card
               title={
                 <div className={styles.cardHeader}>
-                  <div>Cities</div>
+                  <div className={styles.titleContainer}>
+                    <span>Cities</span>
+                    <InfoButton
+                      className={styles.infoBtn}
+                      infoOpen={false}
+                      handleInfoClick={() =>
+                        handleInfoClick(
+                          indicators &&
+                            indicators.city_badge_type &&
+                            indicators.city_badge_type.metadata_source
+                        )
+                      }
+                    />
+                  </div>
                   <a
                     className={styles.sourceLink}
                     href="https://www.globalcovenantofmayors.org/our-cities/"
@@ -209,7 +215,21 @@ function SubnationalActions({ iso, indicators, loading }) {
             <Card
               title={
                 <div className={styles.cardHeader}>
-                  <div>Companies</div>
+                  <div className={styles.titleContainer}>
+                    <span>Companies</span>
+                    <InfoButton
+                      className={styles.infoBtn}
+                      infoOpen={false}
+                      handleInfoClick={() =>
+                        handleInfoClick(
+                          indicators &&
+                            indicators.company_target_qualification &&
+                            indicators.company_target_qualification
+                              .metadata_source
+                        )
+                      }
+                    />
+                  </div>
                   <a
                     className={styles.sourceLink}
                     href="https://sciencebasedtargets.org/companies-taking-action"
@@ -278,9 +298,9 @@ function SubnationalActions({ iso, indicators, loading }) {
 }
 
 SubnationalActions.propTypes = {
-  iso: PropTypes.string.isRequired,
   indicators: PropTypes.object.isRequired,
-  loading: PropTypes.bool.isRequired
+  loading: PropTypes.bool.isRequired,
+  handleInfoClick: PropTypes.func.isRequired
 };
 
 export default SubnationalActions;
