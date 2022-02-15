@@ -12,7 +12,8 @@ export const getIndicators = createSelector(
     if (!indicators) return {};
 
     return mapValues(indicators, indicator => {
-      const values = indicator.values.filter(x => x.location === iso);
+      const values =
+        indicator.values && indicator.values.filter(x => x.location === iso);
       return {
         ...indicator,
         value: values[0]?.value,

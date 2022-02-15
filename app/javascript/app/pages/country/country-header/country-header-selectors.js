@@ -8,12 +8,16 @@ import isEmpty from 'lodash/isEmpty';
 import styles from './country-header-styles.scss';
 
 const getCountries = state => state.countries.data || null;
-const getAdaptationData = state => state.adaptations.data || null;
 const getIso = state => state.iso;
 const getSocioeconomicsData = state => state.socioeconomics;
 const getIndicators =
   (state => state.ndcs && state.ndcs.data && state.ndcs.data.indicators) ||
   null;
+
+export const getCountryIndicators = state =>
+  state.countryProfileIndicators.data || null;
+
+export const getLoading = state => state.countryProfileIndicators.loading;
 
 const getMeta = state =>
   (state.ghgEmissionsMeta && state.ghgEmissionsMeta.meta) || null;
@@ -59,12 +63,23 @@ export const getEmissionProviderFilters = createSelector(
 );
 
 export const getDescriptionText = createSelector(
-  [getIso, getEmissionsIndicator, getCountryName, getData],
-  (iso, indicator, countryName, data) => {
-    if (!indicator || !iso || !data) return null;
+  [
+    getIso,
+    getEmissionsIndicator,
+    getCountryName,
+    getData,
+    getCountryIndicators
+  ],
+  (iso, indicator, countryName, data, countryIndicators) => {
+    if (!indicator || !countryIndicators || !iso || !data) return null;
     const isoData = indicator.locations[iso];
     const emissionsData = data[0];
-    const { year: lastYear, value: emission } = emissionsData
+    const emissionIndicator = countryIndicators.emissions_total;
+    const emissionValues =
+      emissionIndicator &&
+      emissionIndicator.values.find(v => v.location === iso);
+    const emissionValue = emissionValues && emissionValues.value;
+    const { year: lastYear } = emissionsData
       ? emissionsData.emissions[emissionsData.emissions.length - 1]
       : {};
     const percentage = isoData && isoData.value;
@@ -73,7 +88,8 @@ export const getDescriptionText = createSelector(
         In {lastYear}, {countryName} emmited
         <span className={styles.bold}>
           {' '}
-          {emission && Math.round(emission * 100) / 100} million tonnes
+          {emissionValue && Math.round(emissionValue * 100) / 100} million
+          tonnes
         </span>{' '}
         of CO2 equivalent representing{' '}
         <span className={styles.bold}>{percentage} of global emissions</span>
@@ -116,125 +132,59 @@ export const getMaximumCountries = createSelector([getCountries], countries =>
   countries ? countries.length : null
 );
 export const getCardData = createSelector(
-  [
-    getSocioeconomicsData,
-    getData,
-    getMaximumCountries,
-    getIso,
-    getAdaptationData
-  ],
-  (socioeconomicsData, data, countriesNumber, iso, adaptationData) => {
-    if (
-      !socioeconomicsData ||
-      !socioeconomicsData.data ||
-      !socioeconomicsData.data[iso] ||
-      !data ||
-      !countriesNumber
-    ) {
-      // Just as a placeholder
-      return [
-        {
-          slug: 'total-emissions'
-        },
-        {
-          slug: 'emissions-per-capita'
-        },
-        {
-          slug: 'emissions-per-gdp'
-        },
-        {
-          slug: 'vulnerability'
-        },
-        {
-          slug: 'population'
-        },
-        {
-          slug: 'gdp-per-capita'
-        }
-      ];
-    }
-
-    const {
-      population,
-      gdp,
-      gdp_per_capita,
-      gdp_per_capita_rank,
-      population_rank
-    } = socioeconomicsData.data[iso];
-    const vulnerabilityIndicator =
-      adaptationData &&
-      !isEmpty(adaptationData) &&
-      adaptationData.find(a => a.slug === 'vulnerability');
-    const countryVulnerability =
-      vulnerabilityIndicator &&
-      vulnerabilityIndicator.values &&
-      vulnerabilityIndicator.values.find(v => v.location === iso);
-    const { value: vulnerability, rank } = countryVulnerability || {};
-    const gdpPerCapitaLocale = truncateDecimals(
-      gdp_per_capita,
-      0
-    ).toLocaleString();
-    const gdpPerCapitaRank =
-      gdp_per_capita_rank && parseInt(gdp_per_capita_rank, 10);
-    const emissionsData = data[0];
-    const populationRank = population_rank && parseInt(population_rank, 10);
-    const { value: emission } = emissionsData
-      ? emissionsData.emissions[emissionsData.emissions.length - 1]
-      : {};
-    const temporaryWorldPosition = 1; // TODO
-    const getWorldPositionPercentage = position =>
-      (position * 100) / countriesNumber;
-    return [
+  [getCountryIndicators, getMaximumCountries, getIso],
+  (countryIndicators, maximumCountries, iso) => {
+    const placeholder = [
       {
-        slug: 'total-emissions',
-        title: 'Total Emissions (MtCO2e)',
-        value: emission && Math.round(emission * 100) / 100,
-        worldPositionPercentage: getWorldPositionPercentage(
-          temporaryWorldPosition
-        )
+        slug: 'emissions_total'
       },
       {
-        slug: 'emissions-per-capita',
-        title: 'Emissions per Capita (tCO2e/person)',
-        value:
-          emission &&
-          population &&
-          Math.round(((emission * 1000_000) / population) * 100) / 100,
-        worldPositionPercentage: getWorldPositionPercentage(
-          temporaryWorldPosition
-        )
+        slug: 'emissions_capita'
       },
       {
-        slug: 'emissions-per-gdp',
-        title: 'Emissions per GDP (CO2e/M$ GDP)',
-        value:
-          emission &&
-          Math.round(((emission * 1000_000) / (gdp / 1000_000)) * 100) / 100,
-        worldPositionPercentage: getWorldPositionPercentage(
-          temporaryWorldPosition
-        )
+        slug: 'emissions_gdp'
       },
       {
-        slug: 'vulnerability',
-        title: 'Vulnerability',
-        value: countryVulnerability && Math.round(vulnerability * 100) / 100,
-        worldPositionPercentage:
-          countryVulnerability &&
-          rank &&
-          getWorldPositionPercentage(rank.absolute)
+        slug: 'vulnerability'
       },
       {
         slug: 'population',
-        title: 'Population (millions)',
-        value: Math.round((population / 1000_000) * 100) / 100,
-        worldPositionPercentage: getWorldPositionPercentage(populationRank)
+        decimals: 6
       },
       {
-        slug: 'gdp-per-capita',
-        title: 'GDP per capita (USD)',
-        value: gdpPerCapitaLocale,
-        worldPositionPercentage: getWorldPositionPercentage(gdpPerCapitaRank)
+        slug: 'gdp_capita'
       }
     ];
+
+    if (!countryIndicators || !iso) {
+      return placeholder;
+    }
+
+    return placeholder.map(p => {
+      const countryIndicator = countryIndicators[p.slug];
+      const rankCountryIndicator = countryIndicators[`${p.slug}_rank`];
+
+      if (!countryIndicator || !rankCountryIndicator) {
+        return { slug: p.slug };
+      }
+
+      const values = countryIndicator.values.find(v => v.location === iso);
+      const rankValues = rankCountryIndicator.values.find(
+        v => v.location === iso
+      );
+      let value = values && values.value;
+
+      if (p.decimals) {
+        value /= 10 ** p.decimals;
+      }
+      const rankValue = rankValues && rankValues.value;
+      return {
+        slug: p.slug,
+        title: countryIndicator.name,
+        value: value && (Math.round(value * 100) / 100).toLocaleString(),
+        worldPositionPercentage:
+          rankValue && (rankValue * 100) / maximumCountries
+      };
+    });
   }
 );
