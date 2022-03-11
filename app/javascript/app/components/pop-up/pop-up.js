@@ -7,7 +7,7 @@ const TEMPORARY_POP_UP_NAME = process.env.POP_UP;
 const popUpName = TEMPORARY_POP_UP_NAME || POP_UP_SHOWN;
 const TemporaryPopUpComponent = { webinarCountdown }[TEMPORARY_POP_UP_NAME];
 
-const PopUpContainer = () => {
+const PopUpContainer = props => {
   const [hasBeenShown, setHasBeenShown] = useState(
     JSON.parse(localStorage.getItem(popUpName))
   );
@@ -30,7 +30,7 @@ const PopUpContainer = () => {
     hasBeenShown,
     handleOnRequestClose,
     setStale,
-    ...this.props
+    props
   });
 };
 
