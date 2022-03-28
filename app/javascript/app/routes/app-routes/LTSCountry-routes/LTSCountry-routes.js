@@ -49,18 +49,6 @@ export default [
     param: 'adaptation'
   },
   {
-    path: '/lts/country/:iso/sectoral-information',
-    component: () =>
-      createElement(NDCCountryAccordion, {
-        category: 'sectoral_information',
-        lts: true
-      }),
-    exact: true,
-    anchor: true,
-    label: 'Sectoral Information',
-    param: 'sectoral-information'
-  },
-  {
     path: '/lts/country/:iso',
     component: ({ match }) =>
       createElement(Redirect, {
