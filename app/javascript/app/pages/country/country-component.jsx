@@ -12,6 +12,7 @@ import CountryProfileIndicatorsProvider from 'providers/country-profile-indicato
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
 import ErrorBoundary from 'components/error-boundary';
 import ModalMetadata from 'components/modal-metadata';
+import HotJarScript from 'components/hot-jar-script';
 import CountryHeader from './country-header';
 
 import styles from './country-styles.scss';
@@ -31,6 +32,7 @@ function Country(props) {
           canonicalAttribute={country && country.iso}
         />
       )}
+      <HotJarScript countryIso={country.iso} />
       <SocioeconomicsProvider />
       <CountryProfileIndicatorsProvider
         indicatorSlugs={[
