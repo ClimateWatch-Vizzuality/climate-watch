@@ -339,7 +339,9 @@ function NDCSExploreMap(props) {
           document={selectedDocument && selectedDocument.value}
           subcategory={selectedCategory && selectedCategory.value}
         />
-        <NDCSPreviousComparisonProvider />
+        <NDCSPreviousComparisonProvider
+          document={selectedDocument && selectedDocument.value}
+        />
       </React.Fragment>
     </div>
   );

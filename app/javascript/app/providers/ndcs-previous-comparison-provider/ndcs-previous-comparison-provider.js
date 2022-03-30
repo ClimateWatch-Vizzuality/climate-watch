@@ -7,11 +7,11 @@ import reducers, {
 import actions from './ndcs-previous-comparison-provider-actions';
 
 const NDCSExploreProvider = props => {
-  const { fetchPreviousNDCComparison } = props;
+  const { fetchPreviousNDCComparison, document } = props;
 
   useEffect(() => {
-    fetchPreviousNDCComparison();
-  }, []);
+    fetchPreviousNDCComparison({ document });
+  }, [document]);
 
   return null;
 };
