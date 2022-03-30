@@ -15,14 +15,23 @@ const fetchPreviousNDCComparisonFail = createAction(
 
 const fetchPreviousNDCComparison = createThunkAction(
   'fetchPreviousNDCComparison',
-  () => (dispatch, state) => {
+  props => (dispatch, state) => {
     const { ndcsPreviousComparison } = state();
+    const { document } = props || {};
 
     if (ndcsPreviousComparison && !ndcsPreviousComparison.loading) {
       dispatch(fetchPreviousNDCComparisonInit());
+      const params = [];
+      if (document && document !== 'all') {
+        params.push(`document=${document}`);
+      }
 
       apiWithCache
-        .get('/api/v1/ndcs?subcategory=overall_comparison_with_previous_ndc')
+        .get(
+          `/api/v1/ndcs?subcategory=overall_comparison_with_previous_ndc${
+            params.length ? `&${params.join('&')}` : ''
+          }`
+        )
         .then(data => getValueWithLabelId(data.data))
         .then(data => {
           dispatch(fetchPreviousNDCComparisonReady(data));
