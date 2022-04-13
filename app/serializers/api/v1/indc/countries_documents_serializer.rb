@@ -114,7 +114,7 @@ module Api
         def query_location_with_intent_to_submit(location_codes)
           ::Indc::Label.
             joins(:indicator, indc_values: :location).
-            where(locations: {id: location_codes}).
+            where(locations: {iso_code3: location_codes}).
             where(slug: ['enhance_2020', 'intend_2020']).
             where(indc_indicators: {slug: 'ndce_status_2020'}).
             select('DISTINCT iso_code3').
@@ -125,7 +125,7 @@ module Api
           ::Indc::Document.
             joins(submissions: :location).
             select('indc_documents.*, locations.iso_code3, indc_submissions.submission_date, indc_submissions.url').
-            where(locations: {id: location_codes, show_in_cw: true}).
+            where(locations: {iso_code3: location_codes, show_in_cw: true}).
             where(::Indc::Value.where('location_id = locations.id and document_id = indc_documents.id').exists).
             order(:ordering).
             distinct.
