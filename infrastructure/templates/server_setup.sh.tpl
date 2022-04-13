@@ -87,6 +87,5 @@ sudo npm install -g yarn
 #
 # Ruby
 #
-rvm install 2.5.9
-gem install bundler -v 1.17.3
-
+rvm install 2.6.10
+gem install bundler -v 2.3.11

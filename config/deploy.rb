@@ -51,7 +51,7 @@ namespace :deploy do
 end
 
 
-set :rvm_ruby_version, '2.5.9'
+set :rvm_ruby_version, File.read('.ruby-version').strip
 
 set :yarn_flags, '--production --silent --no-progress --frozen-lockfile --no-cache'
 
