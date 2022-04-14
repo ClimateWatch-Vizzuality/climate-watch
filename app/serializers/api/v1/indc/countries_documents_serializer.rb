@@ -18,7 +18,7 @@ module Api
             # if country hasn't submitted a second_ndc, but they have expressed
             # the intention of doing so, by responding 'enhance_2020', or 'intend_2020'
             # on indicator with slug: ndce_status_2020 / ndce_status_2020_label
-            if docs.select{|t| t['slug'] == 'second_ndc'}.empty? &&
+            if docs.select { |t| t['slug'] == 'second_ndc' }.empty? &&
                 location_with_intent_to_submit.include?(location.iso_code3)
               docs += ::Indc::Document.select('indc_documents.*, NULL AS submission_date').
                 where(slug: 'second_ndc')
@@ -53,8 +53,8 @@ module Api
 
         def documents
           ::Indc::Document.order(:ordering).map do |d|
-            total_countries = Location.where(id: ::Indc::Submission.select(:location_id).where(document_id: d.id).
-                                             distinct.pluck(:location_id)).count
+            total_countries = ::Indc::Submission.where(document_id: d.id).distinct.count(:location_id)
+
             {
               id: d.id,
               ordering: d.ordering,
@@ -122,10 +122,11 @@ module Api
         end
 
         def query_documents_by_location(location_codes)
-          ::Indc::Document.joins(values: :location).
-            joins('JOIN indc_submissions ON indc_submissions.document_id = indc_documents.id AND indc_submissions.location_id = locations.id').
+          ::Indc::Document.
+            joins(submissions: :location).
             select('indc_documents.*, locations.iso_code3, indc_submissions.submission_date, indc_submissions.url').
             where(locations: {iso_code3: location_codes, show_in_cw: true}).
+            where(::Indc::Value.where('location_id = locations.id and document_id = indc_documents.id').exists).
             order(:ordering).
             distinct.
             group_by(&:iso_code3)

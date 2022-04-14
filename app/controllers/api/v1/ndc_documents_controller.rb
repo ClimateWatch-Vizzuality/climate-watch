@@ -9,7 +9,6 @@ module Api
 
       def index
         laws_info = SingleRecordFetcher.new(LSE_API, 'laws-info').call
-
         laws_and_policies = fetch_laws_and_policies if params[:location].present?
 
         render json: CountriesDocuments.new(locations, laws_info, laws_and_policies),

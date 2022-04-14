@@ -290,7 +290,7 @@ module Api
 
         # to not break distinct on clause
         if @indc_locations_documents || @lse_locations_documents
-          indicator_ids = indicators.map(&:id).uniq
+          indicator_ids = indicators.map(&:id)
         else
           indicator_ids = indicators.ids
         end
@@ -299,7 +299,7 @@ module Api
         # to get all category_ids for indicator has many and belongs for example
         ::Indc::Indicator.
           includes(:labels, :source, :categories).
-          where(id: indicator_ids).
+          where(id: indicator_ids.uniq).
           order(:order)
       end
 
