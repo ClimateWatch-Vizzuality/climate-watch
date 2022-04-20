@@ -13,6 +13,9 @@ class ImportCountryProfile
   COUNTRY_DRIVER_FILEPATH = "#{CW_FILES_PREFIX}country_profile/country_driver.csv".freeze
   COUNTRY_DRIVER_ELE_FILEPATH = "#{CW_FILES_PREFIX}country_profile/country_driver_electricity.csv".freeze
 
+  RE_COST_FILEPATH = "#{CW_FILES_PREFIX}country_profile/re_cost.csv".freeze
+  RE_EMPLOYMENT_FILEPATH = "#{CW_FILES_PREFIX}country_profile/re_employment.csv".freeze
+
   def call
     prepare_cache
 
@@ -23,11 +26,13 @@ class ImportCountryProfile
       import_time_series(SUBNATIONAL_CITIES_FILEPATH, :city_badge_type)
       import_time_series(SUBNATIONAL_COMPANIES_FILEPATH, :company_target_qualification)
       import_time_series(COUNTRY_DRIVER_ELE_FILEPATH, :electricity_consumption)
+      import_time_series(RE_COST_FILEPATH, :technology)
 
       import_multiple_columns_file(SUBNATIONAL_COUNT_FILEPATH)
       import_multiple_columns_file(COUNTRY_CONTEXT_FILEPATH)
       import_multiple_columns_file(COUNTRY_ADAPTATION_FILEPATH)
       import_multiple_columns_file(COUNTRY_DRIVER_FILEPATH)
+      import_multiple_columns_file(RE_EMPLOYMENT_FILEPATH)
 
       sync_indc_indicators
       generate_subnational_actions_missing_data
