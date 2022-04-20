@@ -2,6 +2,7 @@ import { createSelector, createStructuredSelector } from 'reselect';
 import groupBy from 'lodash/groupBy';
 import isEmpty from 'lodash/isEmpty';
 import uniqBy from 'lodash/uniqBy';
+import orderBy from 'lodash/orderBy';
 
 const CARDS_IN_ROW = 2;
 const DEFAULT_SECTOR_CODE = 'economy-wide';
@@ -57,12 +58,11 @@ export const getNdcContent = createSelector(
 
     const ndcTargets = targets.filter(target => target.doc_type === 'ndc');
     const parsedNdcsPerSector = groupBy(ndcTargets, 'sector');
+    const sectorTargets = parsedNdcsPerSector[activeSector];
 
-    return (
-      parsedNdcsPerSector[activeSector] &&
-      parsedNdcsPerSector[activeSector].length &&
-      parsedNdcsPerSector[activeSector][0]
-    );
+    if (!sectorTargets?.length) return null;
+
+    return orderBy(sectorTargets, 'year', 'desc')[0];
   }
 );
 
@@ -94,7 +94,9 @@ export const getLawsAndPolicies = createSelector(
         sectors.find(sector => sector.value === DEFAULT_SECTOR_CODE) &&
         sectors.find(sector => sector.value === DEFAULT_SECTOR_CODE).value);
 
-    const lawsTargets = targets.filter(target => target.doc_type === 'law');
+    const lawsTargets = targets.filter(target =>
+      ('law', 'policy').includes(target.doc_type)
+    );
     const parsedLawsTargetsPerSector = groupBy(lawsTargets, 'sector');
 
     const groupedBySources = [];
@@ -143,7 +145,7 @@ export const getLawsAndPolicies = createSelector(
 );
 
 const getLawsTargets = createSelector([getAllTargets], targets =>
-  targets.filter(target => target.doc_type === 'law')
+  targets.filter(target => ('law', 'policy').includes(target.doc_type))
 );
 
 const getSectorLabels = createSelector(
