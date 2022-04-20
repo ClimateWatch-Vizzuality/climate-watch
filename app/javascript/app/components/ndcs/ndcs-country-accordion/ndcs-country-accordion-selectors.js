@@ -9,7 +9,7 @@ const getAllIndicators = state => (state.data ? state.data.indicators : {});
 const getCategories = state => (state.data ? state.data.categories : {});
 const getSectors = state => (state.data ? state.data.sectors : {});
 const getSearch = (state, { search }) =>
-  (search ? deburrUpper(search.search) : null);
+  search ? deburrUpper(search.search) : null;
 const getSearchDocument = (state, { search }) =>
   (search && search.document) || null;
 const getDocuments = state => state.documents && state.documents.data;
@@ -113,25 +113,33 @@ export const parsedCategoriesWithSectors = createSelector(
           cat.sectors.map(sec => {
             const definitions = [];
             cat.indicators.forEach(ind => {
-              const descriptions = countries.reduce((acc, loc) => {
-                const valueObject = ind.locations[loc]
-                  ? ind.locations[loc].find(v => v.sector_id === sec)
-                  : null;
-                if (valueObject && valueObject.value) {
-                  return [
-                    ...acc,
-                    {
-                      iso: loc,
-                      value: valueObject.value
+              const valuesPerLocation = countries.reduce(
+                (acc, loc) => ({
+                  ...acc,
+                  [loc]:
+                    ind.locations[loc]?.filter(v => v.sector_id === sec) || []
+                }),
+                {}
+              );
+              const maxValuesCount = Math.max(
+                ...Object.values(valuesPerLocation).map(v => v.length)
+              );
+              let order = 0;
+              for (let i = 0; i < maxValuesCount; i++) {
+                const descriptions = [];
+                countries.forEach(loc => {
+                  const value = valuesPerLocation[loc][i];
+                  if (value && value.value) {
+                    if (valuesPerLocation[loc].length === maxValuesCount) {
+                      order = value.order;
                     }
-                  ];
-                }
-                return acc;
-              }, []);
-              if (descriptions.length) {
+                    descriptions.push({ iso: loc, value: value.value });
+                  }
+                });
                 definitions.push({
                   title: ind.name,
                   slug: ind.slug,
+                  order,
                   descriptions
                 });
               }
@@ -142,7 +150,7 @@ export const parsedCategoriesWithSectors = createSelector(
               title: sectors[sec].name,
               slug: snakeCase(sectors[sec].name),
               parent,
-              definitions
+              definitions: sortBy(definitions, 'order')
             };
           }),
         ['parent.name', 'title']
