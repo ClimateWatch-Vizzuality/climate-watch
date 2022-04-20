@@ -1177,7 +1177,8 @@ CREATE TABLE public.indc_sectors (
     parent_id bigint,
     name text NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    sector_type character varying
 );
 
 
@@ -4644,5 +4645,4 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20211109130329'),
 ('20220519084239'),
 ('20220520090514');
-
-
+('20220420150714');

@@ -489,11 +489,13 @@ class ImportIndc
     @sectors_index = {}
     sectors.uniq.each do |d|
       parent = Indc::Sector.find_or_create_by(
-        name: d[:sector]
+        name: d[:sector],
+        sector_type: 'lts'
       )
       sector = Indc::Sector.find_or_create_by(
         name: d[:subsector],
-        parent: parent
+        parent: parent,
+        sector_type: 'lts'
       )
 
       @sectors_index[d[:subsector]] = sector
@@ -533,11 +535,13 @@ class ImportIndc
     @sectors_index = {}
     sectors.uniq.each do |d|
       parent = Indc::Sector.find_or_create_by(
-        name: d[:sector]
+        name: d[:sector],
+        sector_type: 'wb'
       )
       sector = Indc::Sector.find_or_create_by(
         name: d[:subsector],
-        parent: parent
+        parent: parent,
+        sector_type: 'wb'
       )
 
       @sectors_index[d[:subsector]] = sector

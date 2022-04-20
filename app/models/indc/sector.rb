@@ -10,11 +10,14 @@
 #
 module Indc
   class Sector < ApplicationRecord
+    SECTOR_TYPES = %w[lts wb adapt_now].freeze
+
     belongs_to :parent, class_name: 'Indc::Sector', optional: true
     has_many :children, class_name: 'Indc::Sector', foreign_key: :parent_id
 
     has_many :values, class_name: 'Indc::Value'
 
     validates :name, presence: true
+    validates :sector_type, inclusion: {in: SECTOR_TYPES}
   end
 end
