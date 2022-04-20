@@ -11,5 +11,6 @@
 FactoryBot.define do
   factory :indc_sector, class: 'Indc::Sector' do
     name { 'MyName' }
+    sector_type { 'lts' }
   end
 end

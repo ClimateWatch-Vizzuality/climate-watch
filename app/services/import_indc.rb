@@ -133,6 +133,7 @@ class ImportIndc
   private
 
   def cleanup
+    Indc::AdaptationAction.delete_all
     Indc::Value.delete_all
     Indc::Category.delete_all
     Indc::CategoryType.delete_all
@@ -552,6 +553,10 @@ class ImportIndc
     indicator_index = indicators_hash_by_source('WB')
     values = []
     value_group_index = {}
+    adaptation_actions = []
+    current_action = nil
+    current_adapt_sector = nil
+
     @wb_sectoral_data.each do |r|
       location = @locations_by_iso2[r[:country]]
       unless location
@@ -576,10 +581,46 @@ class ImportIndc
       value_group_index[group_key] += 1 if group_indicator == indicator.slug
       group_index = value_group_index[group_key]
 
+      if r[:questioncode] == 'ad_sec_action'
+        adaptation_actions << current_action if current_action.present?
+        doc_slug ||= r[:document]&.parameterize&.gsub('-', '_')
+        current_action = Indc::AdaptationAction.new(
+          action: r[:responsetext],
+          document_id: @documents_cache[doc_slug].id,
+          location: location
+        )
+        current_action.adaptation_action_sectors.build(sector_id: @sectors_index[r[:subsector]].id)
+      end
+
+      if r[:questioncode].start_with?('GCA_Sector')
+        current_adapt_sector = Indc::Sector.find_or_create_by!(
+          name: r[:responsetext], sector_type: 'adapt_now'
+        )
+      elsif r[:questioncode].start_with?('GCA_subsector')
+        current_adapt_sector = Indc::Sector.find_or_create_by!(
+          name: r[:responsetext], parent_id: current_adapt_sector.id, sector_type: 'adapt_now'
+        )
+      elsif current_action.present? && current_adapt_sector.present?
+        unless current_action.adaptation_action_sectors.map(&:sector_id).include?(current_adapt_sector.id)
+          current_action.adaptation_action_sectors.build(sector_id: current_adapt_sector.id)
+        end
+        current_adapt_sector = nil
+      end
+
       values << Indc::Value.new(
         value_wb_attributes(r, location, indicator, nil, group_index)
       )
     end
+
+    if current_action.present?
+      if current_adapt_sector.present? &&
+          !current_action.adaptation_action_sectors.map(&:sector_id).include?(current_adapt_sector.id)
+        current_action.adaptation_action_sectors.build(sector_id: current_adapt_sector.id)
+      end
+      adaptation_actions << current_action
+    end
+
+    Indc::AdaptationAction.import!(adaptation_actions, recursive: true)
     Indc::Value.import!(values)
   end
 
