@@ -27,12 +27,12 @@ class ImportCountryProfile
       import_time_series(SUBNATIONAL_COMPANIES_FILEPATH, :company_target_qualification)
       import_time_series(COUNTRY_DRIVER_ELE_FILEPATH, :electricity_consumption)
       import_time_series(RE_COST_FILEPATH, :technology)
+      import_time_series(RE_EMPLOYMENT_FILEPATH, :employment_by_technology)
 
       import_multiple_columns_file(SUBNATIONAL_COUNT_FILEPATH)
       import_multiple_columns_file(COUNTRY_CONTEXT_FILEPATH)
       import_multiple_columns_file(COUNTRY_ADAPTATION_FILEPATH)
       import_multiple_columns_file(COUNTRY_DRIVER_FILEPATH)
-      import_multiple_columns_file(RE_EMPLOYMENT_FILEPATH)
 
       sync_indc_indicators
       generate_subnational_actions_missing_data
