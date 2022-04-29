@@ -139,6 +139,7 @@ export const parsedCategoriesWithSectors = createSelector(
                 definitions.push({
                   title: ind.name,
                   slug: ind.slug,
+                  separator: ind.slug === 'ad_sec_action' && i > 0,
                   order,
                   descriptions
                 });
