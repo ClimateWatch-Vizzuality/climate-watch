@@ -25,7 +25,7 @@ export const sectionsData = [
         type: 'html',
         title: 'How do I cite Climate Watch data as a source?',
         answer:
-          '<span>Use the info button next to each dataset and figure on Climate Watch to see its citation information.  A general citation for Climate Watch is as follows: Climate Watch. 2019. Washington, D.C.: World Resources Institute. Available online at: <link to="/" innerText="www.climatewatchdata.org"></link>. See our <Link to="/about/permissions" innertext="Permissions and Licensing" />  page for more information about citation.  '
+          '<span>Use the info button next to each dataset and figure on Climate Watch to see its citation information.  A general citation for Climate Watch is as follows: Climate Watch. 2022. Washington, D.C.: World Resources Institute. Available online at: <link to="/" innerText="www.climatewatchdata.org"></link>. See our <Link to="/about/permissions" innertext="Permissions and Licensing" />  page for more information about citation.  '
       },
       {
         type: 'html',
@@ -204,7 +204,7 @@ export const sectionsData = [
             CAIT:
               'The CAIT dataset is the most comprehensive included on Climate Watch and includes all sectors and gases. In order to emphasize comparability of data across countries, it does not use countries’ official inventories reported to the UNFCCC. It has a 3 year lag.',
             'PIK PRIMAP-hist':
-              'The PIK PRIMAP-hist dataset included on Climate Watch combines UNFCCC reported data where available and fills gaps with other sources. It does not include land use change and forestry (LUCF) but covers all other sectors and has a 3 year lag. Additional data to what is shown on Climate Watch is available from <a href="http://dataservices.gfz-potsdam.de/pik/showshort.php?id=escidoc:3842934">PIK</a>.',
+              'The PIK PRIMAP-hist dataset included on Climate Watch combines UNFCCC reported data where available and fills gaps with other sources. It does not include land use change and forestry (LUCF) but covers all other sectors and has a 3 year lag. Additional data to what is shown on Climate Watch is available from <a href="https://www.pik-potsdam.de/paris-reality-check/primap-hist/">PIK</a>.',
             UNFCCC:
               'UNFCCC includes only officially reported data by countries. It has large data gaps for non-Annex I countries. Due to different reporting requirements for Annex I and non-Annex I countries, the data is not internally comparable. It covers all sectors and has 2-3 year lag.',
             GCP:
@@ -213,31 +213,31 @@ export const sectionsData = [
           {
             '': 'Original data sources used',
             CAIT:
-              'Carbon Dioxide Information Analysis Center (CDIAC), International Energy Agency (IEA), U.S. Environmental Protection Agency, U.N. Food and Agriculture Organization, and U.S. Energy Information Administration. See more detailed information about sources <a href="http://cait.wri.org/docs/CAIT2.0_CountryGHG_Methods.pdf">here</a>.',
+              'International Energy Agency (IEA), U.S. Environmental Protection Agency, U.N. Food and Agriculture Organization, Global Carbon Project. See more detailed information about sources <a href="https://wri-sites.s3.us-east-1.amazonaws.com/climatewatch.org/www.climatewatch.org/climate-watch/wri_metadata/CW_GHG_Method_Note.pdf">here</a>.',
             'PIK PRIMAP-hist':
-              'Uses countries’ official inventories reported to the UNFCCC as a basis, and fills in with data from other sources, including CDIAC, Emissions Database for Global Atmospheric Research (EDGAR), and FAO, among others. See all sources <a href="http://dataservices.gfz-potsdam.de/pik/showshort.php?id=escidoc:3842934">here</a>.',
+              'Uses countries’ official inventories reported to the UNFCCC as a basis, and fills in with data from other sources, including CDIAC, Emissions Database for Global Atmospheric Research (EDGAR), and FAO, among others. See all sources <a href="https://doi.org/10.5194/essd-8-571-2016">here</a>.',
             UNFCCC:
               'The inventory data are provided in the annual GHG inventory submissions by Annex I Parties and in the National Communications and Biennial Update Reports by non-Annex I Parties.',
             GCP:
-              'CDIAC for fossil fuel and industry data for 1959-2014; where available countries’ data reported to the UNFCCC are used in preference. BP Statistical Review of World Energy is used for preliminary estimates of 2015-2017 data. For more information about methodology and sources, see Section 2.1.1 <a href="https://www.earth-syst-sci-data.net/10/2141/2018/essd-10-2141-2018.pdf">here</a>.'
+              ' The CDIAC-FF emissions dataset, derived largely from UN energy data, forms the foundation. Emissions are extended to year Y-1 using energy growth   rates reported by BP. Estimates are then replaced using data from what consider to be superior sources, for example Annex 1 countries’ official submissions to the UNFCCC. For full details see sources section on Global Carbon Atlas <a href="http://www.globalcarbonatlas.org/en/CO2-emissions">here</a>.'
           },
           {
             '': 'Temporal coverage',
-            CAIT: '1990-2016',
-            'PIK PRIMAP-hist': '1850-2016',
+            CAIT: '1990-2019',
+            'PIK PRIMAP-hist': '1850-2019',
             UNFCCC:
-              '1990-2017 for Annex I countries; Varied coverage for non-Annex I countries',
-            GCP: '1960-2018'
+              '1990-2019 for Annex I countries; Varied coverage for non-Annex I countries',
+            GCP: '1960-2020'
           },
           {
             '': 'Geographic coverage',
-            CAIT: '197 Parties to the UNFCCC (196 countries plus the EU)',
+            CAIT: 'UNFCCC member states',
             'PIK PRIMAP-hist':
-              '216 countries, regions and country groups, with the 196 of the 197 Parties to the UNFCCC shown on Climate Watch (State of Palestine is not included).',
+              'UNFCCC member states and non-UNFCCC territories',
             UNFCCC:
               'All 43 Annex I Parties; 148 of the 154 non-Annex I Parties',
             GCP:
-              '229 countries, regions, and country groups; 195 of 197 Parties to the UNFCCC shown on Climate Watch (Monaco and San Marino are not included).'
+              'UNFCCC member states and non-UNFCCC territories, additional regions and country groups'
           },
           {
             '': 'Sector coverage (sector definitions may vary across sources)',
@@ -313,12 +313,12 @@ export const sectionsData = [
         title:
           'Can you explain some of the terms used, like target, policy, action and plan?',
         answer:
-          '<ul><li>Targets are an intention to achieve a specific result, for example, to reduce GHG emissions to a specific level (a GHG target) or increase energy efficiency or renewable energy to a specific level (a non-GHG target), typically by a certain date.</li><li>Actions are an intention to implement specific means of achieving GHG reductions, such as policies or projects.</li><li>Policies are larger in scale while projects are implemented at a smaller and more specific scale. </li><li>Plans and strategies are broader than specific policies or projects, such as a general intention to ‘improve efficiency’, ‘develop renewable energy’, etc. The terms come from the World Bank\'s <a href="http://spappssecext.worldbank.org/sites/indc/Pages/INDCHome.aspx" rel="noopener noreferrer" target="_blank" >NDC platform</a> and WRI\'s <a href="https://www.wri.org/sites/default/files/designing-preparing-indcs-report.pdf" rel="noopener noreferrer" target="_blank" >publication</a> (Figure 4.1). </li></ul>'
+          '<ul><li>Targets are an intention to achieve a specific result, for example, to reduce GHG emissions to a specific level (a GHG target) or increase energy efficiency or renewable energy to a specific level (a non-GHG target), typically by a certain date.</li><li>Actions are an intention to implement specific means of achieving GHG reductions, usually in forms of concrete projects.</li><li>Policies are domestic planning documents such as policies, regulations or guidlines. </li><li>Plans and strategies are broader than specific policies or actions, such as a general intention to ‘improve efficiency’, ‘develop renewable energy’, etc. The terms come from the World Bank\'s <a href="http://spappssecext.worldbank.org/sites/indc/Pages/INDCHome.aspx" rel="noopener noreferrer" target="_blank" >NDC platform</a> and WRI\'s <a href="https://www.wri.org/research/designing-and-preparing-intended-nationally-determined-contributions-indcs" rel="noopener noreferrer" target="_blank" >publication</a> (Figure 4.1). </li></ul>'
       },
       {
         type: 'html',
         title: 'What is the methodology behind the data? ',
-        answer: `<p>The structured indicators used for presenting NDC information are adapted from several data sources, including the <a href="http://cait.wri.org/indc/?_ga=2.28118332.1668429314.1539630180-1825175710.1480702135" rel="noopener noreferrer" target="_blank">CAIT Paris Contributions Map</a>, <a href="http://spappssecext.worldbank.org/sites/indc/Pages/INDCHome.aspx" rel="noopener noreferrer" target="_blank">World Bank’s NDC Platform</a>, and  <a href="https://klimalog.die-gdi.de/ndc/#NDCExplorer/worldMap?NDC??income???catIncome" rel="noopener noreferrer" target="_blank">DIE’s NDC Explorer</a>. Please refer to respective resources for detailed documentation. The terms and phrases used in this tool follow, to the extent possible, WRI’s publication <a href="https://www.wri.org/publication/designing-and-preparing-indcs" rel="noopener noreferrer" target="_blank">“Designing and Preparing INDCs.”</a></p><p>Some of the key indicators are explained <a href="https://wri-sites.s3.us-east-1.amazonaws.com/climatewatch.org/www.climatewatch.org/climate-watch/wri_metadata/NDC_methodology.pdf" rel="noopener noreferrer" target="_blank">in this document</a>.</p>`
+        answer: `<p>The structured indicators used for presenting NDC information are adapted from several data sources, including the <a href="http://cait.wri.org/indc/" rel="noopener noreferrer" target="_blank">CAIT Paris Contributions Map</a>, <a href="http://spappssecext.worldbank.org/sites/indc/Pages/INDCHome.aspx" rel="noopener noreferrer" target="_blank">World Bank’s NDC Platform</a>, and  <a href="https://klimalog.die-gdi.de/ndc/#NDCExplorer/worldMap?NDC??income???catIncome" rel="noopener noreferrer" target="_blank">DIE’s NDC Explorer</a>. Please refer to respective resources for detailed documentation. The terms and phrases used in this tool follow, to the extent possible, WRI’s publication <a href="https://www.wri.org/publication/designing-and-preparing-indcs" rel="noopener noreferrer" target="_blank">“Designing and Preparing INDCs.”</a></p><p>Some of the key indicators are explained <a href="https://wri-sites.s3.us-east-1.amazonaws.com/climatewatch.org/www.climatewatch.org/climate-watch/wri_metadata/NDC_methodology.pdf" rel="noopener noreferrer" target="_blank">in this document</a>.</p>`
       },
       {
         type: 'text',
@@ -442,12 +442,6 @@ export const sectionsData = [
         answer:
           '<p>The NDC-SDG highlighted text feature only works with the English version of the latest I/NDC submitted countries.</p><p>On each country page, clicking on one of the dots in the NDC-SDG linkage summary at the bottom of the page will direct the users to the country’s latest NDC submission and highlight where the linkage between the NDC’s text and that SDG target was identified. However, if this latest submission is not in English, no highlights will appear. The users will have to refer to the English version of that same submission to be able to use the NDC-SDG highlighted text feature.</p><p>On the NDC-SDG Linkages Map, clicking on a country will direct you to the country’s latest NDC submission. However, if this latest submission is not in English, no highlights will appear. The users will have to refer to the English version of that same submission to be able to use the NDC-SDG highlighted text feature.</p>'
       },
-      {
-        type: 'text',
-        title: 'Why are data missing for some countries? ',
-        answer:
-          'As per our methodology, no data could be captured for the following Parties: Andorra, Iceland, Kyrgyzstan, New Zealand, Serbia, Ukraine and the United Arab Emirates (UAE).  '
-      }
     ]
   },
   {
@@ -509,7 +503,7 @@ export const sectionsData = [
         type: 'text',
         title: 'Is there a country profile for every country? ',
         answer:
-          'There are country profiles for all parties to the United National Framework Convention on Climate Change (UNFCCC) – 196 countries plus the European Union group of 28 counties, which submitted their NDC together.'
+          'There are country profiles for all parties to the United Nations Framework Convention on Climate Change (UNFCCC).'
       },
       {
         type: 'text',
@@ -566,7 +560,7 @@ export const sectionsData = [
               'These were one-time only pledges submitted at the 2010 Conference of the Parties in Cancun, Mexico.'
           },
           {
-            'Document type': 'I/NDC',
+            'Document type': 'NDC',
             Purpose:
               'Post-2020 climate actions submitted by countries in the run up to COP21 in Paris in 2015. The “I” is dropped once countries as Parties formally join the agreement. Some countries also submitted NDCs either as an update to their INDC or as their first submission. There is no standard format for I/NDCs, but they should be ambitious, equitable, and transparent.',
             'Submitting Parties': 'All Parties',
