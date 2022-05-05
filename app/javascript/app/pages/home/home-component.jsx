@@ -3,6 +3,7 @@ import ReactPlayer from 'react-player';
 import videoThumbnailImage from 'assets/home/videobg@2x';
 import SEOTags from 'components/seo-tags';
 import { SEO_PAGES } from 'data/seo';
+import HotJarScript from 'components/hot-jar-script';
 
 import IntroSection from './intro-section/intro-section';
 import LatestUpdatesSection from './latest-updates-section/latest-updates-section';
@@ -16,6 +17,7 @@ import styles from './home-styles.scss';
 const Home = () => (
   <div className={styles.homeBg}>
     <SEOTags href={location.href} page={SEO_PAGES.home} />
+    <HotJarScript />
     <IntroSection />
     <div data-tour="step-02">
       <LatestUpdatesSection />
