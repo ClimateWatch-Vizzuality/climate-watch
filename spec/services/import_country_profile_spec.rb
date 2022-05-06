@@ -14,7 +14,7 @@ RSpec.describe ImportCountryProfile do
         "subnational_company.csv","SBT","company_target_qualification",,"Targets set by company","TRUE"
         "subnational_count.csv","GCOM","city_commited",,"Cities Commited","FALSE"
         country_driver_electricity.csv,IRENA,electricity_consumption,,Electricity Net Consumption (billion kWh),TRUE
-        re_cost.csv,IRENA,technology,,Levelised Cost of Electricity (2020 USD/kWh),TRUE
+        re_cost.csv,IRENA,cost_by_technology,,Levelised Cost of Electricity (2020 USD/kWh),TRUE
         re_employment.csv,IRENA,employment_by_technology,,Employment by technology,TRUE
       END
       "#{CW_FILES_PREFIX}country_profile/country_adaptation.csv" => <<~END,
