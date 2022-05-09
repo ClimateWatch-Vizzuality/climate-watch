@@ -44,7 +44,7 @@ const AboutPermissions = ({ location }) => (
       </p>
       <h3>Citation of the Climate Watch platform and data:</h3>
       <p>
-        Climate Watch. 2020. Washington, DC: World Resources Institute.
+        Climate Watch. 2022. Washington, DC: World Resources Institute.
         Available online at:{' '}
         <a href="https://www.climatewatchdata.org">
           https://www.climatewatchdata.org
@@ -100,7 +100,7 @@ const AboutPermissions = ({ location }) => (
           .
         </li>
         <li>
-          NDCs: UNFCCC. 2020. NDC Registry (interim). Available at:{' '}
+          NDCs: UNFCCC. 2022. NDC Registry (interim). Available at:{' '}
           <a href="http://www4.unfccc.int/ndcregistry/Pages/All.aspx">
             http://www4.unfccc.int/ndcregistry/Pages/All.aspx
           </a>
@@ -138,7 +138,7 @@ const AboutPermissions = ({ location }) => (
       <h4>GHG Emissions:</h4>
       <ul>
         <li>
-          CAIT data: Climate Watch. 2020. GHG Emissions. Washington, DC: World
+          Climate Watch data: Climate Watch. 2022. GHG Emissions. Washington, DC: World
           Resources Institute. Available at:{' '}
           <a href="https://www.climatewatchdata.org/ghg-emissions">
             https://www.climatewatchdata.org/ghg-emissions
@@ -156,21 +156,16 @@ const AboutPermissions = ({ location }) => (
             <li>
               CAIT data are derived from several sources. Any use of the
               Land-Use Change and Forestry or Agriculture indicator should be
-              cited as FAO 2020, FAOSTAT Emissions Database. Any use of CO2
-              emissions from fuel combustion data should be cited as CO2
-              Emissions from Fuel Combustion, OECD/IEA, 2019
+              cited as FAO 2022, FAOSTAT Emissions Database. Any use of 
+              emissions from fuel combustion data should be cited as GHG
+              Emissions from Fuel Combustion, OECD/IEA, 2021
             </li>
           </ul>
         </li>
 
         <li>
-          PIK data: Gtschow, Johannes; Jeffery, Louise; Gieseke, Robert; Gebel,
-          Ronja (2017): The PRIMAP-hist national historical emissions time
-          series (1850-2014). V. 1.1. GFZ Data Services.{' '}
-          <a href="http://doi.org/10.5880/PIK.2017.001">
-            http://doi.org/10.5880/PIK.2017.001
-          </a>
-          .
+          PIK data: Gütschow, J.; Günther, A.; Pflüger, M. (2021): The PRIMAP-hist national historical emissions time
+          series v2.3.1 (1850-2019). zenodo. doi:10.5281/zenodo.5494497.
           <ul>
             <li>
               When using this dataset or one of its updates, please also cite
@@ -183,63 +178,27 @@ const AboutPermissions = ({ location }) => (
         </li>
 
         <li>
-          UNFCCC data: UNFCCC. 2019. Greenhouse Gas Inventory Data - Detailed
-          data by Party. Accessed October 5.{' '}
-          <a href="http://di.unfccc.int/detailed_data_by_party">
-            http://di.unfccc.int/detailed_data_by_party
+          UNFCCC data: UNFCCC. 2022. Greenhouse Gas Inventory Data.{' '}
+          <a href="http://di.unfccc.int/">
+            http://di.unfccc.int/
           </a>
           .
         </li>
+Global Carbon Project. (2021). Supplemental data of Global Carbon Budget 2021 (Version 1.0) [Data set]. Global Carbon Project. https://doi.org/10.18160/gcp-2021 
 
         <li>
-          GCP data: Global Carbon Project (2019) Carbon budget and trends 2019.{' '}
-          <a href="www.globalcarbonproject.org/carbonbudget">
-            www.globalcarbonproject.org/carbonbudget
+          GCP data: Global Carbon Project. (2021). Supplemental data of Global Carbon Budget 2021 (Version 1.0) [Data set]. Global Carbon Project.{' '}
+          <a href="https://doi.org/10.18160/gcp-2021">
+            https://doi.org/10.18160/gcp-2021
           </a>
-          , published on 4 December 2019, along with any other original
-          peer-reviewed papers and data sources as appropriate.
+          .
+          <ul>
+            <li>
+             The use of data is conditional on citing the original data sources. Full details on how to cite the data are given at the top of each page in the accompanying database. The Global Carbon Project facilitates access to data to encourage its use and promote a good understanding of the carbon cycle. Respecting original data sources is key to help secure the support of data providers to enhance, maintain and update valuable data.
+            </li>
+          </ul>
         </li>
 
-        <li>
-          <p>
-            The use of data is conditional on citing the original data sources.
-            Full details on how to cite the data are given below and in the
-            corresponding web links.
-          </p>
-          <p>
-            FOSSIL FUEL EMISSIONS CDIAC: Gilfillan, D., Marland, G., Boden, T.
-            and Andres, R.: Global, Regional, and National Fossil-Fuel CO2
-            Emissions. Available at:{' '}
-            <a href="https://energy.appstate.edu/CDIAC">
-              https://energy.appstate.edu/CDIAC
-            </a>
-            , last access: 27 September 2019.
-          </p>
-          <p>
-            UNFCCC, 2019. National Inventory Submissions 2019. United Nations
-            Framework Convention on Climate Change. Available at:{' '}
-            <a href="https://unfccc.int/process-and-meetings/transparency-and-reporting/reporting-and-review-under-the-convention/greenhouse-gas-inventories-annex-i-parties/national-inventory-submissions-2019">
-              https://unfccc.int/process-and-meetings/transparency-and-reporting/reporting-and-review-under-the-convention/greenhouse-gas-inventories-annex-i-parties/national-inventory-submissions-2019
-            </a>
-            , last access: September 2019.
-          </p>
-          <p>
-            BP, 2019. Statistical Review of World Energy. Available at:{' '}
-            <a href="https://www.bp.com/en/global/corporate/energy-economics/statistical-review-of-world-energy.html">
-              https://www.bp.com/en/global/corporate/energy-economics/statistical-review-of-world-energy.html
-            </a>
-            .
-          </p>
-          <p>
-            CEMENT EMISSIONS Updated from Andrew, R., 2018. Global CO2 emissions
-            from cement production. Earth System Science Data, 10, 195-217. DOI:
-            10.5194/essd-10-195-2018. Available at:{' '}
-            <a href="https://www.earth-syst-sci-data.net/10/195/2018/">
-              https://www.earth-syst-sci-data.net/10/195/2018/
-            </a>
-            .
-          </p>
-        </li>
       </ul>
       <h4>NDC-SDG Linkages Methodology:</h4>
       <ul>
@@ -265,7 +224,7 @@ const AboutPermissions = ({ location }) => (
       <h4>World Development Indicators:</h4>
       <ul>
         <li>
-          World Development Indicators. 2020. The World Bank. Available at:{' '}
+          World Development Indicators. 2022. The World Bank. Available at:{' '}
           <a href="http://databank.worldbank.org/data/reports.aspx?source=world-development-indicators">
             http://databank.worldbank.org/data/reports.aspx?source=world-development-indicators
           </a>
