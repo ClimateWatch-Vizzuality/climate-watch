@@ -113,7 +113,7 @@ export const parsedCategoriesWithSectors = createSelector(
           cat.sectors.map(sec => {
             const definitions = [];
             cat.indicators.forEach(ind => {
-              const valuesPerLocation = countries.reduce(
+              const valuesByLocation = countries.reduce(
                 (acc, loc) => ({
                   ...acc,
                   [loc]:
@@ -122,15 +122,15 @@ export const parsedCategoriesWithSectors = createSelector(
                 {}
               );
               const maxValuesCount = Math.max(
-                ...Object.values(valuesPerLocation).map(v => v.length)
+                ...Object.values(valuesByLocation).map(v => v.length)
               );
               let order = 0;
               for (let i = 0; i < maxValuesCount; i++) {
                 const descriptions = [];
                 countries.forEach(loc => {
-                  const value = valuesPerLocation[loc][i];
+                  const value = valuesByLocation[loc][i];
                   if (value && value.value) {
-                    if (valuesPerLocation[loc].length === maxValuesCount) {
+                    if (valuesByLocation[loc].length === maxValuesCount) {
                       order = value.order;
                     }
                     descriptions.push({ iso: loc, value: value.value });
