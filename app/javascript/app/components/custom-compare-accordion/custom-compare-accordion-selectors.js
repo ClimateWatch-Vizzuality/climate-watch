@@ -2,17 +2,17 @@ import { createSelector } from 'reselect';
 import { uniq, sortBy, snakeCase } from 'lodash';
 
 const getIndicators = state =>
-  (state.customCompareAccordion && state.customCompareAccordion.data
+  state.customCompareAccordion && state.customCompareAccordion.data
     ? state.customCompareAccordion.data.indicators
-    : {});
+    : {};
 const getCategories = state =>
-  (state.customCompareAccordion && state.customCompareAccordion.data
+  state.customCompareAccordion && state.customCompareAccordion.data
     ? state.customCompareAccordion.data.categories
-    : {});
+    : {};
 const getSectors = state =>
-  (state.customCompareAccordion && state.customCompareAccordion.data
+  state.customCompareAccordion && state.customCompareAccordion.data
     ? state.customCompareAccordion.data.sectors
-    : {});
+    : {};
 export const getSelectedTargets = (state, { targets }) => targets;
 
 export const parseIndicatorsDefs = createSelector(
@@ -133,11 +133,15 @@ export const getSectoralInformationData = createSelector(
                   };
                 }
               );
-              definitions.push({
-                title: ind.name,
-                slug: ind.slug,
-                descriptions
-              });
+              const anyDescriptions =
+                descriptions.filter(d => d.value && d.value !== '-').length > 0;
+              if (anyDescriptions) {
+                definitions.push({
+                  title: ind.name,
+                  slug: ind.slug,
+                  descriptions
+                });
+              }
             });
             const parent =
               sectors[sector].parent_id && sectors[sectors[sector].parent_id];
