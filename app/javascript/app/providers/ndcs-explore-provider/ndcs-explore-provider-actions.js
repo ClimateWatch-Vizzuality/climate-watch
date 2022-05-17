@@ -2,7 +2,7 @@ import { createAction } from 'redux-actions';
 import { createThunkAction } from 'utils/redux';
 import { apiWithCache } from 'services/api';
 import uniqBy from 'lodash/uniqBy';
-import { getFirstDocumentValue } from 'utils/indctransform';
+import { getFirstDocumentValue, sortByLatestDocument } from 'utils/indctransform';
 
 const fetchNDCSInit = createAction('fetchNDCSInit');
 const fetchNDCSReady = createAction('fetchNDCSReady');
@@ -12,8 +12,9 @@ const fetchNDCS = createThunkAction('fetchNDCS', props => (dispatch, state) => {
   const { document } = props || {};
   const { ndcsExplore } = state();
   const params = [];
+  const isDocumentSelected = document && document !== 'all';
 
-  if (document && document !== 'all') {
+  if (isDocumentSelected) {
     params.push(`document=${document}`);
   }
 
@@ -59,6 +60,10 @@ const fetchNDCS = createThunkAction('fetchNDCS', props => (dispatch, state) => {
         };
       }
       throw Error(response.statusText);
+    })
+    .then(data => {
+      if (isDocumentSelected) return data;
+      return sortByLatestDocument(data);
     })
     .then(data => getFirstDocumentValue(data))
     .then(data => {
