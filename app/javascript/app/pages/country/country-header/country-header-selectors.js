@@ -2,6 +2,7 @@
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import { createSelector } from 'reselect';
+import { format } from 'd3-format';
 import { truncateDecimals } from 'utils/utils';
 import { INDICATOR_SLUGS } from 'data/constants';
 import isEmpty from 'lodash/isEmpty';
@@ -181,7 +182,7 @@ export const getCardData = createSelector(
       return {
         slug: p.slug,
         title: countryIndicator.name,
-        value: value && (Math.round(value * 100) / 100).toLocaleString(),
+        value: format(',.2f')(value),
         rank: rankValue,
         totalCountries,
         worldPositionPercentage:
