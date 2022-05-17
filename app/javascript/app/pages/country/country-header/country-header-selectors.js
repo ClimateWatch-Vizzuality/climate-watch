@@ -132,8 +132,8 @@ export const getMaximumCountries = createSelector([getCountries], countries =>
   countries ? countries.length : null
 );
 export const getCardData = createSelector(
-  [getCountryIndicators, getMaximumCountries, getIso],
-  (countryIndicators, maximumCountries, iso) => {
+  [getCountryIndicators, getMaximumCountries, getIso, getMaximumCountries],
+  (countryIndicators, maximumCountries, iso, totalCountries) => {
     const placeholder = [
       {
         slug: 'emissions_total'
@@ -182,6 +182,8 @@ export const getCardData = createSelector(
         slug: p.slug,
         title: countryIndicator.name,
         value: value && (Math.round(value * 100) / 100).toLocaleString(),
+        rank: rankValue,
+        totalCountries,
         worldPositionPercentage:
           rankValue && (rankValue * 100) / maximumCountries
       };
