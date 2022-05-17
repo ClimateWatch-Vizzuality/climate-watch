@@ -167,6 +167,7 @@ module Api
           NdcIndicators.new(indicators, categories, sectors),
           locations_documents: @locations_documents,
           location_list: location_list,
+          document_order: ::Indc::Document.order(ordering: :desc).pluck(:slug),
           document: params[:document],
           lse_data: get_lse_data,
           filter: params[:filter]

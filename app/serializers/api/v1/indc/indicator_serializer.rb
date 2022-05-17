@@ -113,7 +113,15 @@ module Api
               end
             end
           end
-          indexed_data
+
+          # sorting by document ordering to have latest document values first
+          if instance_options[:document_order]
+            indexed_data.transform_values do |va|
+              va.sort_by { |v| instance_options[:document_order].index(v[:document_slug]) || 999_999 }
+            end
+          else
+            indexed_data
+          end
         end
       end
     end
