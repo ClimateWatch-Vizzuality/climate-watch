@@ -33,7 +33,8 @@ jobs:
           bundler-cache: true
       - name: Install dependencies
         run: |
-          sudo apt-get -yqq install libpq-dev build-essential libcurl4-openssl-dev --fix-missing
+          sudo apt-get update
+          sudo apt-get -yqq install libpq-dev build-essential libcurl4-openssl-dev
 
       - name: Cache Node Modules
         id: cache-node-modules
