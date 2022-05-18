@@ -1,6 +1,6 @@
 import mapValues from 'lodash/mapValues';
 
-// This transform picks always the first value (the first document value. They might not be ordered)
+// This transform picks always the first value (the first document value. which should be latest document for the country)
 export const getFirstDocumentValue = payload => ({
   ...payload,
   indicators: payload.indicators.map(indicator => ({
@@ -15,13 +15,11 @@ export const getValueWithLabelId = payload => ({
     ...indicator,
     locations: mapValues(indicator.locations, v => {
       const documentsWithLabelIdValues = v.filter(value => value.label_id);
-      const lastDocumentValue =
-        documentsWithLabelIdValues.length &&
-        documentsWithLabelIdValues[documentsWithLabelIdValues.length - 1];
-      if (!lastDocumentValue) {
+      const latestDocumentValue = documentsWithLabelIdValues[0]; // latest is the first one, API values are ordered
+      if (!latestDocumentValue) {
         console.warn(`${v} Country does not have label_id document value`);
       }
-      return lastDocumentValue || v[0];
+      return latestDocumentValue || v[0];
     })
   }))
 });
