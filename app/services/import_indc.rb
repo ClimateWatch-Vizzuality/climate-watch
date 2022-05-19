@@ -226,7 +226,7 @@ class ImportIndc
         indicator: indicator
       ).pluck(:id).first,
       value: row[:"#{indicator.slug.downcase}"],
-      document_id: Indc::Document.where(slug: doc_slug).pluck(:id).first
+      document_id: @documents_cache[doc_slug]&.id
     }
   end
 
@@ -240,7 +240,7 @@ class ImportIndc
       sector: @sectors_index[row[:subsector]],
       value: row[:responsetext],
       group_index: group_index,
-      document_id: Indc::Document.where(slug: doc_slug).pluck(:id).first
+      document_id: @documents_cache[doc_slug]&.id
     }
   end
 
@@ -263,7 +263,7 @@ class ImportIndc
       language: submission[:language],
       submission_date: submission[:date_of_submission],
       url: submission[:url],
-      document_id: Indc::Document.where(slug: doc_slug).pluck(:id).first
+      document_id: @documents_cache[doc_slug]&.id
     }
   end
 
@@ -346,13 +346,17 @@ class ImportIndc
   end
 
   def import_indicators
-    @metadata.
+    indicators = @metadata.
       map { |r| [[r[:column_name], r[:source]], r] }.
       uniq(&:first).
       map(&:second).
-      each_with_index do |indicator, index|
-        Indc::Indicator.create!(indicator_attributes(indicator, index))
+      map.
+      with_index do |indicator, index|
+        indicator = Indc::Indicator.new(indicator_attributes(indicator, index))
+        indicator.validate!
+        indicator
       end
+    Indc::Indicator.import!(indicators)
   end
 
   def import_indicators_categories
@@ -563,7 +567,7 @@ class ImportIndc
       to_h
 
     values = []
-    pi_group_index = {}
+    value_group_index = {}
     @wb_sectoral_data.each do |r|
       location = @locations_by_iso2[r[:country]]
       unless location
@@ -579,17 +583,14 @@ class ImportIndc
 
       next unless r[:responsetext]
 
-      parent_indicator = PARENT_INDICATOR[indicator.slug]
-      group_index = 1
-      if parent_indicator
-        pi_group_key = r.slice(:country, :document, :sector, :subsector).
-          values.
-          push(parent_indicator).
-          join('_')
-        pi_group_index[pi_group_key] ||= 0
-        pi_group_index[pi_group_key] += 1 if parent_indicator == indicator.slug
-        group_index = pi_group_index[pi_group_key]
-      end
+      group_indicator = PARENT_INDICATOR[indicator.slug] || indicator.slug
+      group_key = r.slice(:country, :document, :sector, :subsector).
+        values.
+        push(group_indicator).
+        join('_')
+      value_group_index[group_key] ||= 0
+      value_group_index[group_key] += 1 if group_indicator == indicator.slug
+      group_index = value_group_index[group_key]
 
       values << Indc::Value.new(
         value_wb_attributes(r, location, indicator, nil, group_index)
@@ -602,6 +603,7 @@ class ImportIndc
     @documents.each do |doc|
       Indc::Document.create!(document_attributes(doc))
     end
+    @documents_cache = Indc::Document.all.map { |d| [d.slug, d] }.to_h
   end
 
   def import_submissions
