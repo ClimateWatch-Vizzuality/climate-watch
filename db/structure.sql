@@ -1279,7 +1279,8 @@ CREATE TABLE public.indc_values (
     value text NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    document_id bigint
+    document_id bigint,
+    group_index integer
 );
 
 
@@ -4639,6 +4640,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210916120344'),
 ('20210916121403'),
 ('20211109130022'),
-('20211109130329');
+('20211109130329'),
+('20220519084239');
 
 

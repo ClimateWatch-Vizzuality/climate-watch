@@ -39,7 +39,7 @@ module Indc
         select(
           'locations.iso_code3 AS iso_code3, NULL AS label_slug, indc_values.label_id,
           indc_values.sector_id, indc_documents.slug AS document_slug,
-          indc_values.value AS value, indc_values.id'
+          indc_values.value AS value, indc_values.id, indc_values.group_index'
         )
       where_clause = locations_documents.map do |loc, doc|
         "(locations.iso_code3 = '#{loc}' AND indc_documents.slug = '#{doc}')"

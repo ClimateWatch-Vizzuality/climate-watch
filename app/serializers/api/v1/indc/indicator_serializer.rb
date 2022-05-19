@@ -48,7 +48,7 @@ module Api
                        joins(:label, :location).
                        joins('LEFT JOIN indc_documents ON indc_documents.id = indc_values.document_id').
                        select('indc_values.id as id, locations.iso_code3 AS iso_code3, indc_labels.slug AS label_slug, indc_values.label_id,
-                              indc_values.sector_id, indc_documents.slug AS document_slug, indc_values.value AS value')
+                              indc_values.sector_id, indc_documents.slug AS document_slug, indc_values.value AS value, indc_values.group_index')
                    else
                      object.
                        values.
@@ -56,7 +56,7 @@ module Api
                        joins('LEFT JOIN indc_documents ON indc_documents.id = indc_values.document_id').
                        joins('LEFT JOIN indc_labels ON indc_labels.id = indc_values.label_id').
                        select('indc_values.id as id, locations.iso_code3 AS iso_code3, indc_labels.slug AS label_slug, indc_values.label_id,
-                              indc_values.sector_id, indc_documents.slug AS document_slug, indc_values.value AS value')
+                              indc_values.sector_id, indc_documents.slug AS document_slug, indc_values.value AS value, indc_values.group_index')
                    end
 
           # filter out values for filtered locations

@@ -21,6 +21,24 @@ class ImportIndc
   PLEDGES_DATA_FILEPATH = "#{CW_FILES_PREFIX}indc/pledges_data.csv".freeze
   COMPARISON_FILEPATH = "#{CW_FILES_PREFIX}indc/comparison_matrix.csv".freeze
 
+  PARENT_INDICATOR = {
+    'ad_sec_action' => 'ad_sec_action',
+    'ad_sec_tar' => 'ad_sec_action',
+    'ad_sec_time' => 'ad_sec_action',
+    'ad_sec_conc' => 'ad_sec_action',
+    'ad_sec_unconc' => 'ad_sec_action',
+    'GCA_Sector' => 'ad_sec_action',
+    'GCA_subsector' => 'ad_sec_action',
+    'GCA_Sector_2' => 'ad_sec_action',
+    'GCA_Subsector_2' => 'ad_sec_action',
+    'GCA_Sector_3' => 'ad_sec_action',
+    'GCA_Subsector_3' => 'ad_sec_action',
+    'CW_Sector_2' => 'ad_sec_action',
+    'CW_Subsector_2' => 'ad_sec_action',
+    'CW_Sector_3' => 'ad_sec_action',
+    'CW_Subsector_3' => 'ad_sec_action'
+  }.freeze
+
   def call
     ActiveRecord::Base.transaction do
       cleanup
@@ -214,13 +232,14 @@ class ImportIndc
 
   # for datasets that don't have multiple files we can pass the doc_slug
   # as a param, for example for LTS
-  def value_wb_attributes(row, location, indicator, doc_slug = nil)
+  def value_wb_attributes(row, location, indicator, doc_slug = nil, group_index = 1)
     doc_slug ||= row[:document]&.parameterize&.gsub('-', '_')
     {
       location: location,
       indicator: indicator,
       sector: @sectors_index[row[:subsector]],
       value: row[:responsetext],
+      group_index: group_index,
       document_id: Indc::Document.where(slug: doc_slug).pluck(:id).first
     }
   end
@@ -544,6 +563,7 @@ class ImportIndc
       to_h
 
     values = []
+    pi_group_index = {}
     @wb_sectoral_data.each do |r|
       location = @locations_by_iso2[r[:country]]
       unless location
@@ -559,8 +579,20 @@ class ImportIndc
 
       next unless r[:responsetext]
 
+      parent_indicator = PARENT_INDICATOR[indicator.slug]
+      group_index = 1
+      if parent_indicator
+        pi_group_key = r.slice(:country, :document, :sector, :subsector).
+          values.
+          push(parent_indicator).
+          join('_')
+        pi_group_index[pi_group_key] ||= 0
+        pi_group_index[pi_group_key] += 1 if parent_indicator == indicator.slug
+        group_index = pi_group_index[pi_group_key]
+      end
+
       values << Indc::Value.new(
-        value_wb_attributes(r, location, indicator)
+        value_wb_attributes(r, location, indicator, nil, group_index)
       )
     end
     Indc::Value.import!(values)

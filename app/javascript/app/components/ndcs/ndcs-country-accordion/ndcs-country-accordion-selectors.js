@@ -2,6 +2,8 @@ import { createSelector } from 'reselect';
 import { deburrUpper } from 'app/utils';
 import uniq from 'lodash/uniq';
 import sortBy from 'lodash/sortBy';
+import groupBy from 'lodash/groupBy';
+import orderBy from 'lodash/orderBy';
 import snakeCase from 'lodash/snakeCase';
 
 const getCountries = state => state.countries;
@@ -112,38 +114,35 @@ export const parsedCategoriesWithSectors = createSelector(
           cat.sectors.length &&
           cat.sectors.map(sec => {
             const definitions = [];
-            cat.indicators.forEach(ind => {
-              const valuesByLocation = countries.reduce(
-                (acc, loc) => ({
+            cat.indicators.forEach((ind, indIndex) => {
+              const values = countries.reduce(
+                (acc, loc) => [
                   ...acc,
-                  [loc]:
-                    ind.locations[loc]?.filter(v => v.sector_id === sec) || []
-                }),
-                {}
+                  ...(ind.locations[loc] || [])
+                    .filter(v => v.sector_id === sec)
+                    .map(v => ({ ...v, loc }))
+                ],
+                []
               );
-              const maxValuesCount = Math.max(
-                ...Object.values(valuesByLocation).map(v => v.length)
-              );
-              let order = 0;
-              for (let i = 0; i < maxValuesCount; i++) {
-                const descriptions = [];
-                countries.forEach(loc => {
-                  const value = valuesByLocation[loc][i];
-                  if (value && value.value) {
-                    if (valuesByLocation[loc].length === maxValuesCount) {
-                      order = value.order;
+              Object.entries(groupBy(values, 'group_index')).forEach(
+                ([groupIndex, groupIndexValues]) => {
+                  const descriptions = [];
+                  countries.forEach(loc => {
+                    const value = groupIndexValues.find(v => v.loc === loc);
+                    if (value) {
+                      descriptions.push({ iso: loc, value: value.value });
                     }
-                    descriptions.push({ iso: loc, value: value.value });
-                  }
-                });
-                definitions.push({
-                  title: ind.name,
-                  slug: ind.slug,
-                  separator: ind.slug === 'ad_sec_action' && i > 0,
-                  order,
-                  descriptions
-                });
-              }
+                  });
+                  definitions.push({
+                    title: ind.name,
+                    slug: ind.slug,
+                    separator: ind.slug === 'ad_sec_action' && groupIndex > 1,
+                    indIndex,
+                    groupIndex,
+                    descriptions
+                  });
+                }
+              );
             });
             const parent =
               sectors[sec].parent_id && sectors[sectors[sec].parent_id];
@@ -151,7 +150,7 @@ export const parsedCategoriesWithSectors = createSelector(
               title: sectors[sec].name,
               slug: snakeCase(sectors[sec].name),
               parent,
-              definitions: sortBy(definitions, 'order')
+              definitions: orderBy(definitions, ['groupIndex', 'indIndex'])
             };
           }),
         ['parent.name', 'title']
