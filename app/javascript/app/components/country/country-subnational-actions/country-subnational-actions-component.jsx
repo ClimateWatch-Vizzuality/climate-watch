@@ -139,7 +139,7 @@ function SubnationalActions({
             } subnational climate actions?`}
           </h3>
           <div className={styles.descriptionContainer}>
-            Addressing climate change, requires actions across all of society.
+            Addressing climate change requires actions across all of society.
             Explore how national and sub-national actions, including regions,
             cities, companies, investors, and other organizations commit to act
             on climate change.
