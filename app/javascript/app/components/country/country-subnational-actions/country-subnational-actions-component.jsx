@@ -1,6 +1,6 @@
 /* eslint-disable no-confusing-arrow, no-nested-ternary */
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import uniq from 'lodash/uniq';
 import orderBy from 'lodash/orderBy';
 import isEmpty from 'lodash/isEmpty';
@@ -36,7 +36,13 @@ const TARGETS = {
   '1.5°C': { color: '#ADCEE4' }
 };
 
-function SubnationalActions({ indicators, loading, handleInfoClick }) {
+function SubnationalActions({
+  indicators,
+  iso,
+  countries,
+  loading,
+  handleInfoClick
+}) {
   const showByMillion = value => Number((value || 0) / 1000000).toFixed(2);
 
   const citiesBadgeValues = (indicators.city_badge_type?.values || []).map(
@@ -110,11 +116,25 @@ function SubnationalActions({ indicators, loading, handleInfoClick }) {
     <div className={styles.noData}>No data available.</div>
   );
 
+  const countryName = useMemo(() => {
+    if (!iso) return null;
+
+    return (
+      countries.find(({ iso_code3: countryISO }) => iso === countryISO) || {}
+    ).wri_standard_name;
+  }, [countries, iso]);
+
   return (
     <div className={styles.gridContainer}>
       <div className={styles.grid}>
         <div className={styles.container}>
-          <h3 className={styles.title}>Subnational Actions</h3>
+          <h3 className={styles.title}>
+            {`What are ${
+              countryName && countryName.endsWith('s')
+                ? `${countryName}'`
+                : `${countryName}'s`
+            } subnational climate actions?`}
+          </h3>
           <div className={styles.descriptionContainer}>
             Addressing climate change, requires actions across all of society.
             Explore how national and sub-national actions, including regions,
@@ -298,6 +318,8 @@ function SubnationalActions({ indicators, loading, handleInfoClick }) {
 }
 
 SubnationalActions.propTypes = {
+  countries: PropTypes.array,
+  iso: PropTypes.string,
   indicators: PropTypes.object.isRequired,
   loading: PropTypes.bool.isRequired,
   handleInfoClick: PropTypes.func.isRequired
