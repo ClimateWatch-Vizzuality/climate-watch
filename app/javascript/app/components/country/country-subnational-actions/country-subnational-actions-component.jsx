@@ -12,6 +12,8 @@ import InfoButton from 'components/button/info-button';
 import Card from 'components/card';
 import Chart from 'components/charts/chart';
 import Loading from 'components/loading';
+import Icon from 'components/icon';
+import externalLink from 'assets/icons/external-link.svg';
 
 import {
   CHART_NAMED_EXTENDED_COLORS,
@@ -167,6 +169,7 @@ function SubnationalActions({
                     rel="noopener noreferrer"
                   >
                     Explore more on GCOM
+                    <Icon icon={externalLink} className={styles.externalLink} />
                   </a>
                 </div>
               }
@@ -258,6 +261,7 @@ function SubnationalActions({
                     rel="noopener noreferrer"
                   >
                     Explore more on SBTi
+                    <Icon icon={externalLink} className={styles.externalLink} />
                   </a>
                 </div>
               }
