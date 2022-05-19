@@ -33,8 +33,7 @@ function CountryEmissionDrivers(props) {
       <div className={styles.header}>
         <div className={styles.titleContainer}>
           <h3 className={styles.title}>
-            What is driving {countryName}
-            {"'"}s emissions?{' '}
+            What are important sectoral trends in {countryName}?
           </h3>
           <div className={styles.cards}>
             {sectionData &&
