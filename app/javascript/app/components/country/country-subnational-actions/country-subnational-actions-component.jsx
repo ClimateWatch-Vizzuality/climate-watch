@@ -5,6 +5,7 @@ import uniq from 'lodash/uniq';
 import orderBy from 'lodash/orderBy';
 import isEmpty from 'lodash/isEmpty';
 import mapValues from 'lodash/mapValues';
+import { format } from 'd3-format';
 import PropTypes from 'prop-types';
 import { Tag } from 'cw-components';
 import InfoButton from 'components/button/info-button';
@@ -199,7 +200,7 @@ function SubnationalActions({
                     unit={false}
                     ghgChart={false}
                     tooltipConfig={tooltipConfig}
-                    formatValue={v => v}
+                    formatValue={v => format('.2s')(v)}
                   />
 
                   <h3 className={styles.chartTitle}>
