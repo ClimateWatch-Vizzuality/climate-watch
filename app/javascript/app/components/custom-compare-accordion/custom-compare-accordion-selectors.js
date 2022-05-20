@@ -161,20 +161,25 @@ export const getSectoralInformationData = createSelector(
                 }
               );
             });
-            const parent =
-              sectors[sector].parent_id && sectors[sectors[sector].parent_id];
+            const sectorObj = sectors[sector];
+            const parent = sectorObj.parent_id && sectors[sectorObj.parent_id];
+            // place titles with "General" word at first place in subsector's order
+            const order = sectorObj.name.toLowerCase().includes('general')
+              ? `!${sectorObj.name}`
+              : sectorObj.name;
 
             if (definitions && definitions.length) {
               acc.push({
-                title: sectors[sector].name,
-                slug: snakeCase(sectors[sector].name),
+                title: sectorObj.name,
+                slug: snakeCase(sectorObj.name),
+                order,
                 parent,
                 definitions: orderBy(definitions, ['groupIndex', 'indIndex'])
               });
             }
             return acc;
           }, []),
-        ['parent.name', 'title']
+        ['parent.name', 'order']
       );
       return {
         title: cat.name,

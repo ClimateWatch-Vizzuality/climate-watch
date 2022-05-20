@@ -144,16 +144,22 @@ export const parsedCategoriesWithSectors = createSelector(
                 }
               );
             });
-            const parent =
-              sectors[sec].parent_id && sectors[sectors[sec].parent_id];
+            const sector = sectors[sec];
+            const parent = sector.parent_id && sectors[sector.parent_id];
+            // place titles with "General" word at first place in subsector's order
+            const order = sector.name.toLowerCase().includes('general')
+              ? `!${sector.name}`
+              : sector.name;
+
             return {
-              title: sectors[sec].name,
-              slug: snakeCase(sectors[sec].name),
+              title: sector.name,
+              slug: snakeCase(sector.name),
+              order,
               parent,
               definitions: orderBy(definitions, ['groupIndex', 'indIndex'])
             };
           }),
-        ['parent.name', 'title']
+        ['parent.name', 'order']
       );
       return {
         title: cat.name,
