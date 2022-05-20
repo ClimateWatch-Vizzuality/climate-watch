@@ -14,6 +14,8 @@ RSpec.describe ImportCountryProfile do
         "subnational_company.csv","SBT","company_target_qualification",,"Targets set by company","TRUE"
         "subnational_count.csv","GCOM","city_commited",,"Cities Commited","FALSE"
         country_driver_electricity.csv,IRENA,electricity_consumption,,Electricity Net Consumption (billion kWh),TRUE
+        re_cost.csv,IRENA,cost_by_technology,,Levelised Cost of Electricity (2020 USD/kWh),TRUE
+        re_employment.csv,IRENA,employment_by_technology,,Employment by technology,TRUE
       END
       "#{CW_FILES_PREFIX}country_profile/country_adaptation.csv" => <<~END,
         country,vulnerability
@@ -48,6 +50,10 @@ RSpec.describe ImportCountryProfile do
       END
       "#{CW_FILES_PREFIX}country_profile/country_driver_electricity.csv" => <<~END,
       END
+      "#{CW_FILES_PREFIX}country_profile/re_employment.csv" => <<~END,
+      END
+      "#{CW_FILES_PREFIX}country_profile/re_cost.csv" => <<~END,
+      END
     }
   end
 
@@ -72,7 +78,7 @@ RSpec.describe ImportCountryProfile do
 
   it 'Creates new country profile values' do
     expect { subject }.
-      to change { CountryProfile::Indicator.count }.by(7).
+      to change { CountryProfile::Indicator.count }.by(9).
       and change { CountryProfile::Value.count }.by(2 + 4 + 6 * 4 + 7 * 4 + 2)
 
     indicator = CountryProfile::Indicator.find_by(slug: 'emissions_capita')

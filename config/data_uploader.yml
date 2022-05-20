@@ -131,3 +131,5 @@ platforms:
           - subnational_city
           - subnational_company
           - subnational_count
+          - re_cost
+          - re_employment
