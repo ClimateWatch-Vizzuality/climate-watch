@@ -26,8 +26,13 @@ const CompareDefinitionList = ({
 }) => (
   <dl className={className} key={sectionTitle}>
     {definitions &&
-      definitions.map(({ slug, title, descriptions }) => (
-        <div className={styles.definitionRow} key={slug}>
+      definitions.map(({ slug, title, descriptions, separator }) => (
+        <div
+          className={cx(styles.definitionRow, {
+            [styles.definitionSeparator]: separator
+          })}
+          key={slug}
+        >
           <div
             key={`${slug}-${title}-${sectionTitle}`}
             className={cx(layout.content, styles.definitionCompare)}

@@ -13,7 +13,10 @@ import CustomCompareAccordionComponent from './custom-compare-accordion-componen
 const targetsToURLParams = targets => {
   const parsedTargets =
     targets &&
-    targets.map(({ country, document }) => `${country}-${document}`).join(',');
+    targets
+      .filter(t => t.country && t.document)
+      .map(({ country, document }) => `${country}-${document}`)
+      .join(',');
   return parsedTargets;
 };
 
@@ -31,8 +34,7 @@ const mapStateToProps = (state, { category, targets }) => {
   return {
     data,
     loading:
-      (state.customCompareAccordion && state.customCompareAccordion.loading) ||
-      !data, // data should be an array when loaded
+      state.customCompareAccordion && state.customCompareAccordion.loading,
     category,
     targets,
     isSectoralInformation

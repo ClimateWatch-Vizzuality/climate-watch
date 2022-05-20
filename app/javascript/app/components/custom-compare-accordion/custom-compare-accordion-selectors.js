@@ -1,18 +1,18 @@
 import { createSelector } from 'reselect';
-import { uniq, sortBy, snakeCase } from 'lodash';
+import { uniq, sortBy, groupBy, orderBy, snakeCase } from 'lodash';
 
 const getIndicators = state =>
-  (state.customCompareAccordion && state.customCompareAccordion.data
+  state.customCompareAccordion && state.customCompareAccordion.data
     ? state.customCompareAccordion.data.indicators
-    : {});
+    : {};
 const getCategories = state =>
-  (state.customCompareAccordion && state.customCompareAccordion.data
+  state.customCompareAccordion && state.customCompareAccordion.data
     ? state.customCompareAccordion.data.categories
-    : {});
+    : {};
 const getSectors = state =>
-  (state.customCompareAccordion && state.customCompareAccordion.data
+  state.customCompareAccordion && state.customCompareAccordion.data
     ? state.customCompareAccordion.data.sectors
-    : {});
+    : {};
 export const getSelectedTargets = (state, { targets }) => targets;
 
 export const parseIndicatorsDefs = createSelector(
@@ -115,44 +115,71 @@ export const getSectoralInformationData = createSelector(
           cat.sectors.length &&
           cat.sectors.reduce((acc, sector) => {
             const definitions = [];
-            cat.indicators.forEach(ind => {
-              const descriptions = selectedTargets.map(
-                ({ country, document }) => {
-                  const valueObject = ind.locations[country]
-                    ? ind.locations[country].find(
+            cat.indicators.forEach((ind, indIndex) => {
+              const values = selectedTargets.reduce(
+                (accV, { country, document }) => [
+                  ...accV,
+                  ...(ind.locations[country] || [])
+                    .filter(
                       v =>
                         v.sector_id === sector && v.document_slug === document
                     )
-                    : null;
-                  const value =
-                    (valueObject && valueObject.value) ||
-                    (isNaN(parseInt(country, 10)) ? '-' : null);
-                  return {
-                    iso: country,
-                    value
-                  };
+                    .map(v => ({ ...v, country }))
+                ],
+                []
+              );
+              const countries = uniq(
+                selectedTargets.map(({ country }) => country)
+              );
+
+              Object.entries(groupBy(values, 'group_index')).forEach(
+                ([groupIndex, groupIndexValues]) => {
+                  const descriptions = [];
+                  countries.forEach(country => {
+                    const valueObject = groupIndexValues.find(
+                      v => v.country === country
+                    );
+                    const value =
+                      (valueObject && valueObject.value) ||
+                      (isNaN(parseInt(country, 10)) ? '-' : null);
+                    descriptions.push({ iso: country, value });
+                  });
+                  const anyDescriptions =
+                    descriptions.filter(d => d.value && d.value !== '-')
+                      .length > 0;
+
+                  if (anyDescriptions) {
+                    definitions.push({
+                      title: ind.name,
+                      slug: ind.slug,
+                      separator: ind.grouping_indicator && groupIndex > 1,
+                      indIndex,
+                      groupIndex,
+                      descriptions
+                    });
+                  }
                 }
               );
-              definitions.push({
-                title: ind.name,
-                slug: ind.slug,
-                descriptions
-              });
             });
-            const parent =
-              sectors[sector].parent_id && sectors[sectors[sector].parent_id];
+            const sectorObj = sectors[sector];
+            const parent = sectorObj.parent_id && sectors[sectorObj.parent_id];
+            // place titles with "General" word at first place in subsector's order
+            const order = sectorObj.name.toLowerCase().includes('general')
+              ? `!${sectorObj.name}`
+              : sectorObj.name;
 
             if (definitions && definitions.length) {
               acc.push({
-                title: sectors[sector].name,
-                slug: snakeCase(sectors[sector].name),
+                title: sectorObj.name,
+                slug: snakeCase(sectorObj.name),
+                order,
                 parent,
-                definitions
+                definitions: orderBy(definitions, ['groupIndex', 'indIndex'])
               });
             }
             return acc;
           }, []),
-        ['parent.name', 'title']
+        ['parent.name', 'order']
       );
       return {
         title: cat.name,

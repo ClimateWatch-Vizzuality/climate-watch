@@ -33,7 +33,7 @@ export const slidesData = [
       },
       {
         text: 'Compare NDCs',
-        link: '/ndcs/compare',
+        link: '/custom-compare',
         variant: 'secondary',
         type: 'button'
       }

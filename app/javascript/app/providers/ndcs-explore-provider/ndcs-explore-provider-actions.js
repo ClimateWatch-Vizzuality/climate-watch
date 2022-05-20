@@ -12,8 +12,9 @@ const fetchNDCS = createThunkAction('fetchNDCS', props => (dispatch, state) => {
   const { document } = props || {};
   const { ndcsExplore } = state();
   const params = [];
+  const isDocumentSelected = document && document !== 'all';
 
-  if (document && document !== 'all') {
+  if (isDocumentSelected) {
     params.push(`document=${document}`);
   }
 

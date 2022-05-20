@@ -29,15 +29,16 @@ export const getCountriesDocumentsLoading = state =>
   (state.countriesDocuments && state.countriesDocuments.loading) || false;
 const getQuery = (state, { search }) => search || '';
 
-const createDropdownOption = (data, group) =>
-  (data
+const createDropdownOption = (data, group, isDefault = false) =>
+  data
     ? {
       label: data.long_name,
       value: data.slug,
       id: data.id,
-      optGroup: group
+      optGroup: group,
+      isDefault
     }
-    : null);
+    : null;
 
 export const getBackButtonLink = createSelector([getQuery], query => {
   if (!query) return '/compare-all-targets';
@@ -68,19 +69,28 @@ export const getDocumentsOptionsByCountry = createSelector(
       return null;
     }
     const selectedCountries = Object.keys(countriesDocumentsData);
+
     const rows = selectedCountries.reduce((acc, iso3) => {
       const otherDocuments = OTHER_DOCUMENTS_SLUGS.map(slug => {
-        const countryDocument =
-          countriesDocumentsData &&
-          countriesDocumentsData[iso3] &&
-          countriesDocumentsData[iso3]
-            .filter(
-              d =>
-                d.slug !== 'second_ndc' ||
-                (d.slug === 'second_ndc' && !!d.submission_date)
-            ) // filter out 'intends to submit' second NDC
-            .find(d => d.slug === slug);
-        return createDropdownOption(countryDocument, '');
+        const countryDocuments = countriesDocumentsData[iso3];
+        if (!countryDocuments) return null;
+        const latestNDCSubmissionDate = countryDocuments
+          .filter(d => d.is_ndc)
+          .map(d => d.submission_date)
+          .sort()
+          .reverse()[0];
+        const countryDocument = countryDocuments
+          .filter(
+            d =>
+              d.slug !== 'second_ndc' ||
+              (d.slug === 'second_ndc' && !!d.submission_date)
+          ) // filter out 'intends to submit' second NDC
+          .find(d => d.slug === slug);
+        const isDefault =
+          countryDocument &&
+          countryDocument.is_ndc &&
+          countryDocument.submission_date === latestNDCSubmissionDate;
+        return createDropdownOption(countryDocument, '', isDefault);
       }).filter(Boolean);
 
       const { framework, sectoral } = countriesDocuments;
@@ -121,6 +131,14 @@ export const getSelectedTargets = createSelector(
           documentOptions[country].find(
             ({ optGroup }) => optGroup === document
           );
+        defaultDocument = defaultOption && defaultOption.value;
+      }
+      // if country selected but not document, select default option
+      if (country && !document) {
+        const defaultOption =
+          documentOptions[country] &&
+          documentOptions[country].find(o => o.isDefault);
+
         defaultDocument = defaultOption && defaultOption.value;
       }
 
