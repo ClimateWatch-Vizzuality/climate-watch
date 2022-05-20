@@ -390,22 +390,26 @@ class ImportIndc
       nds_label_obj = labels.detect { |obj| obj[:label] == no_document_submitted }
       labels.reject! { |obj| obj[:label] == no_document_submitted }
       labels.each_with_index do |label_obj, index|
-        labels_to_create << Indc::Label.new(
+        label = Indc::Label.new(
           indicator: indicator,
           value: label_obj[:label],
           slug: label_obj[:slug],
           index: index + 1
         )
+        label.validate!
+        labels_to_create << label
       end
       next unless nds_label_obj.present?
 
       # fixed index for the No Document Submitted label
-      labels_to_create << Indc::Label.new(
+      label = Indc::Label.new(
         indicator: indicator,
         value: nds_label_obj[:label],
         slug: nds_label_obj[:slug],
         index: -2
       )
+      label.validate!
+      labels_to_create << label
     end
     Indc::Label.import!(labels_to_create)
   end
