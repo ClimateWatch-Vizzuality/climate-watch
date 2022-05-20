@@ -146,7 +146,10 @@ class CardGraph extends PureComponent {
     const [chartData, chartDataRank] = sectionData;
     const { data, config, domain } = chartData;
     const values = chartDataRank.values.find(v => v.location === iso);
-    if (!values) return this.setState({ noData: true });
+    if (!values) {
+      this.setState({ noData: true });
+      return null;
+    }
     const { value: rank } = values;
     const percentage = (rank * 100) / maximumCountries;
     return (
