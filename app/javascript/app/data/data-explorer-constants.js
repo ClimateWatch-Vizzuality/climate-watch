@@ -154,7 +154,7 @@ export const DATA_EXPLORER_METHODOLOGY_SOURCE = {
     GCP: ['historical_emissions_gcp']
   },
   'ndc-sdg-linkages': ['ndc_sdg_all indicators'],
-  'ndc-content': ['ndc_cw', 'ndc_wb', 'ndc_die'],
+  'ndc-content': ['ndc_cw', 'ndc_wb', 'ndc_die', 'ndc_adaptation'],
   'lts-content': ['lts'],
   'net-zero-content': ['net_zero'],
   'emission-pathways': [null] // model, scenario and indicator related metadata
