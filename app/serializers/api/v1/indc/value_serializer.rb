@@ -8,7 +8,6 @@ module Api
         attribute :sector_id, if: -> { object.sector_id }
         attribute :document_slug
         attribute :group_index
-        attribute :id, key: :order
       end
     end
   end
