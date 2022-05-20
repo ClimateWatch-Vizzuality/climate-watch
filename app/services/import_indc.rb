@@ -21,24 +21,6 @@ class ImportIndc
   PLEDGES_DATA_FILEPATH = "#{CW_FILES_PREFIX}indc/pledges_data.csv".freeze
   COMPARISON_FILEPATH = "#{CW_FILES_PREFIX}indc/comparison_matrix.csv".freeze
 
-  PARENT_INDICATOR = {
-    'ad_sec_action' => 'ad_sec_action',
-    'ad_sec_tar' => 'ad_sec_action',
-    'ad_sec_time' => 'ad_sec_action',
-    'ad_sec_conc' => 'ad_sec_action',
-    'ad_sec_unconc' => 'ad_sec_action',
-    'GCA_Sector' => 'ad_sec_action',
-    'GCA_subsector' => 'ad_sec_action',
-    'GCA_Sector_2' => 'ad_sec_action',
-    'GCA_Subsector_2' => 'ad_sec_action',
-    'GCA_Sector_3' => 'ad_sec_action',
-    'GCA_Subsector_3' => 'ad_sec_action',
-    'CW_Sector_2' => 'ad_sec_action',
-    'CW_Subsector_2' => 'ad_sec_action',
-    'CW_Sector_3' => 'ad_sec_action',
-    'CW_Subsector_3' => 'ad_sec_action'
-  }.freeze
-
   def call
     ActiveRecord::Base.transaction do
       cleanup
@@ -209,6 +191,7 @@ class ImportIndc
       slug: indicator[:column_name],
       description: indicator[:definition],
       source: @sources_index[indicator[:source]],
+      group_indicator_slug: indicator[:group_indicator],
       order: index * 10,
       multiple_versions: indicator[:multiple_version]
     }
@@ -576,7 +559,7 @@ class ImportIndc
 
       next unless r[:responsetext]
 
-      group_indicator = PARENT_INDICATOR[indicator.slug] || indicator.slug
+      group_indicator = indicator.group_indicator_slug || indicator.slug
       group_key = r.slice(:country, :document, :sector, :subsector).
         values.
         push(group_indicator).

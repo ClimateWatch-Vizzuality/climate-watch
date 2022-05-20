@@ -1078,7 +1078,8 @@ CREATE TABLE public.indc_indicators (
     "order" integer,
     multiple_versions boolean,
     normalized_slug character varying,
-    normalized_label character varying
+    normalized_label character varying,
+    group_indicator_slug character varying
 );
 
 
@@ -4641,6 +4642,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210916121403'),
 ('20211109130022'),
 ('20211109130329'),
-('20220519084239');
+('20220519084239'),
+('20220520090514');
 
 

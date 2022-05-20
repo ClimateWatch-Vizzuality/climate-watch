@@ -136,7 +136,7 @@ export const parsedCategoriesWithSectors = createSelector(
                   definitions.push({
                     title: ind.name,
                     slug: ind.slug,
-                    separator: ind.slug === 'ad_sec_action' && groupIndex > 1,
+                    separator: ind.grouping_indicator && groupIndex > 1,
                     indIndex,
                     groupIndex,
                     descriptions

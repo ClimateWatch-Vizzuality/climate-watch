@@ -6,6 +6,7 @@ module Api
         attribute :source
         attribute :name
         attribute :slug
+        attribute :grouping_indicator
         attribute :description, if: -> { object.description }
         attribute :category_ids, if: -> { object.category_ids.length.positive? }
         attribute :labels
@@ -21,6 +22,10 @@ module Api
 
         def source
           object.source.name
+        end
+
+        def grouping_indicator
+          (instance_options[:group_indicator_slugs] || []).include?(object.slug)
         end
 
         def labels
