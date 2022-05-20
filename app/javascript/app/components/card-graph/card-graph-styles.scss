@@ -126,3 +126,10 @@
   background-color: $theme-color;
   width: 2px;
 }
+
+.noDataContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}

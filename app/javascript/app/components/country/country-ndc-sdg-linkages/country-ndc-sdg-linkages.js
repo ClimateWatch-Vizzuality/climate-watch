@@ -32,6 +32,10 @@ const actions = {
 const mapStateToProps = (state, { match, location }) => {
   const { countrySDGLinkages, ndcsSdgsMeta, ndcsSdgsData } = state;
   const { iso } = match.params;
+  const countries = state.countries.data;
+  const countryName = (
+    countries.find(({ iso_code3: countryISO }) => iso === countryISO) || {}
+  ).wri_standard_name;
   const search = qs.parse(location.search);
   const isNdcp = isPageNdcp(location) || isPageContained;
   const isEmbed = isEmbededComponent(location);
@@ -59,6 +63,7 @@ const mapStateToProps = (state, { match, location }) => {
     loading:
       (!ndcsSdgsData.error && ndcsSdgsData.loading) || ndcsSdgsMeta.loading,
     iso,
+    countryName,
     isNdcp,
     isEmbed
   };

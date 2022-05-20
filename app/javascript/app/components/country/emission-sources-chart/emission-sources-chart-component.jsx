@@ -36,8 +36,7 @@ function EmissionSourcesChart({
       return renderTooltip(
         i > 5 ? (
           <div>
-            The remaining {otherParties && otherParties.number} Parties
-            represent a share of {otherParties && otherParties.percentage}%
+            Rest of the world representing a share of {otherParties.percentage}%
           </div>
         ) : (
           <div>

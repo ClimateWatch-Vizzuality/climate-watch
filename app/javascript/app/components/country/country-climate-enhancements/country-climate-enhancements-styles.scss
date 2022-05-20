@@ -25,23 +25,22 @@
 }
 
 .item {
-  height: 130px;
-  width: 145px;
+  margin: $gutter-padding 0 0;
   text-align: center;
 }
 
 .previousComparison {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: flex-end;
-  margin-bottom: $gutter-padding;
+  @include columns(4);
+  justify-content: center;
 }
 
 .icon {
   width: 30px;
   height: 30px;
-  margin: $gutter-padding 0 $gutter-padding / 2;
+}
+
+.valueKey {
+  margin: 10px 0 0;
 }
 
 .valueDescription {
