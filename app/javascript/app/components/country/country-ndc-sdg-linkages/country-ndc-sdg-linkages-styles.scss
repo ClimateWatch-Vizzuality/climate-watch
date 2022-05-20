@@ -61,13 +61,12 @@
 }
 
 .title {
+  display: block;
+  margin-bottom: 20px;
+  margin-top: 25px;
   font-size: $font-size-large;
   font-weight: $font-weight;
   color: $theme-color;
-  display: flex;
-  align-items: center;
-  margin-bottom: 20px;
-  margin-top: 25px;
 }
 
 .tooltipContainer {

@@ -1,16 +1,19 @@
 /* eslint-disable no-confusing-arrow, no-nested-ternary */
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import uniq from 'lodash/uniq';
 import orderBy from 'lodash/orderBy';
 import isEmpty from 'lodash/isEmpty';
 import mapValues from 'lodash/mapValues';
+import { format } from 'd3-format';
 import PropTypes from 'prop-types';
 import { Tag } from 'cw-components';
 import InfoButton from 'components/button/info-button';
 import Card from 'components/card';
 import Chart from 'components/charts/chart';
 import Loading from 'components/loading';
+import Icon from 'components/icon';
+import externalLink from 'assets/icons/external-link.svg';
 
 import {
   CHART_NAMED_EXTENDED_COLORS,
@@ -36,7 +39,13 @@ const TARGETS = {
   '1.5°C': { color: '#ADCEE4' }
 };
 
-function SubnationalActions({ indicators, loading, handleInfoClick }) {
+function SubnationalActions({
+  indicators,
+  iso,
+  countries,
+  loading,
+  handleInfoClick
+}) {
   const showByMillion = value => Number((value || 0) / 1000000).toFixed(2);
 
   const citiesBadgeValues = (indicators.city_badge_type?.values || []).map(
@@ -110,13 +119,27 @@ function SubnationalActions({ indicators, loading, handleInfoClick }) {
     <div className={styles.noData}>No data available.</div>
   );
 
+  const countryName = useMemo(() => {
+    if (!iso) return null;
+
+    return (
+      countries.find(({ iso_code3: countryISO }) => iso === countryISO) || {}
+    ).wri_standard_name;
+  }, [countries, iso]);
+
   return (
     <div className={styles.gridContainer}>
       <div className={styles.grid}>
         <div className={styles.container}>
-          <h3 className={styles.title}>Subnational Actions</h3>
+          <h3 className={styles.title}>
+            {`What are ${
+              countryName && countryName.endsWith('s')
+                ? `${countryName}'`
+                : `${countryName}'s`
+            } subnational climate actions?`}
+          </h3>
           <div className={styles.descriptionContainer}>
-            Addressing climate change, requires actions across all of society.
+            Addressing climate change requires actions across all of society.
             Explore how national and sub-national actions, including regions,
             cities, companies, investors, and other organizations commit to act
             on climate change.
@@ -146,6 +169,7 @@ function SubnationalActions({ indicators, loading, handleInfoClick }) {
                     rel="noopener noreferrer"
                   >
                     Explore more on GCOM
+                    <Icon icon={externalLink} className={styles.externalLink} />
                   </a>
                 </div>
               }
@@ -179,7 +203,7 @@ function SubnationalActions({ indicators, loading, handleInfoClick }) {
                     unit={false}
                     ghgChart={false}
                     tooltipConfig={tooltipConfig}
-                    formatValue={v => v}
+                    formatValue={v => format('.2s')(v)}
                   />
 
                   <h3 className={styles.chartTitle}>
@@ -237,6 +261,7 @@ function SubnationalActions({ indicators, loading, handleInfoClick }) {
                     rel="noopener noreferrer"
                   >
                     Explore more on SBTi
+                    <Icon icon={externalLink} className={styles.externalLink} />
                   </a>
                 </div>
               }
@@ -298,6 +323,8 @@ function SubnationalActions({ indicators, loading, handleInfoClick }) {
 }
 
 SubnationalActions.propTypes = {
+  countries: PropTypes.array,
+  iso: PropTypes.string,
   indicators: PropTypes.object.isRequired,
   loading: PropTypes.bool.isRequired,
   handleInfoClick: PropTypes.func.isRequired

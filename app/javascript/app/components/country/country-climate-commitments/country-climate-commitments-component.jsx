@@ -25,10 +25,19 @@ function CountryClimateCommitments({
     [SUBMISSION_ICON_VALUE.intends]: intendsIcon
   };
 
-  const countryDocumentsLabels = {
-    [SUBMISSION_ICON_VALUE.yes]: 'Submitted',
-    [SUBMISSION_ICON_VALUE.no]: 'Not submitted',
-    [SUBMISSION_ICON_VALUE.intends]: 'Intends to submit'
+  const countryDocumentsLabels = (key, value) => {
+    const dictionary = {
+      [SUBMISSION_ICON_VALUE.yes]:
+        key === 'Net Zero Target' ? 'Communicated' : 'Submitted',
+      [SUBMISSION_ICON_VALUE.no]:
+        key === 'Net Zero Target' ? 'Not Communicated' : 'Not submitted',
+      [SUBMISSION_ICON_VALUE.intends]:
+        key === 'Net Zero Target'
+          ? 'Intends to communicate'
+          : 'Intends to submit'
+    };
+
+    return dictionary[value];
   };
 
   const renderDocumentsPart = () =>
@@ -57,7 +66,7 @@ function CountryClimateCommitments({
                     />
                     <span>{key}</span>
                     <div className={styles.valueDescription}>
-                      {countryDocumentsLabels[+value]}
+                      {countryDocumentsLabels(key, +value)}
                     </div>
                   </React.Fragment>
                 )}

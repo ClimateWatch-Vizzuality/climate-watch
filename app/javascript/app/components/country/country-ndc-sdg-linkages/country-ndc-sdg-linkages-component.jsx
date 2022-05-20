@@ -134,7 +134,8 @@ class CountrySDGLinkages extends PureComponent {
       isEmbed,
       handleSectorChange,
       handleInfoClick,
-      handleAnalyticsClick
+      handleAnalyticsClick,
+      countryName
     } = this.props;
     const description = (
       <div className={styles.descriptionContainer}>
@@ -193,7 +194,13 @@ class CountrySDGLinkages extends PureComponent {
           <div className={styles.header}>
             <div className={styles.buttons}>
               <h3 className={styles.title}>
-                <AbbrReplace>NDC-SDG Linkages</AbbrReplace>
+                <AbbrReplace>
+                  {`What are the linkages between ${
+                    countryName && countryName.endsWith('s')
+                      ? `${countryName}'`
+                      : `${countryName}'s`
+                  } NDCs and the SDGs?`}
+                </AbbrReplace>
               </h3>
               <TabletPortraitOnly>{description}</TabletPortraitOnly>
               {buttonGroup}
@@ -237,6 +244,7 @@ CountrySDGLinkages.propTypes = {
   tooltipSectorIds: Proptypes.array,
   targetsMeta: Proptypes.object,
   iso: Proptypes.string,
+  countryName: Proptypes.string,
   handleInfoClick: Proptypes.func.isRequired,
   handleOnDotClick: Proptypes.func.isRequired,
   handleAnalyticsClick: Proptypes.func.isRequired

@@ -1,6 +1,7 @@
 /* eslint-disable no-confusing-arrow */
 import React from 'react';
 import PropTypes from 'prop-types';
+import ReactTooltip from 'react-tooltip';
 import { INDICATOR_SLUGS, EXTERNAL_COUNTRY_LINKS } from 'data/constants';
 import Card from 'components/card';
 import InfoButton from 'components/button/info-button';
@@ -36,7 +37,14 @@ function CountryHeader(props) {
     <Card theme={cardSimpleTheme} key={c.slug}>
       <div className={styles.cardContent}>
         <div className={styles.title}>{c.title}</div>
-        <div className={styles.progressBar}>
+        <div
+          className={styles.progressBar}
+          data-tip
+          data-for={`percentage-tooltip-${c.slug}`}
+          onMouseEnter={() => {
+            ReactTooltip.show(`percentage-tooltip-${c.slug}`);
+          }}
+        >
           {c.worldPositionPercentage && (
             <div
               className={styles.marker}
@@ -51,6 +59,9 @@ function CountryHeader(props) {
         infoOpen={false}
         handleInfoClick={() => handleInfoClick(c.slug)}
       />
+      <ReactTooltip id={`percentage-tooltip-${c.slug}`}>
+        {`${c.rank} of ${c.totalCountries} countries`}
+      </ReactTooltip>
     </Card>
   );
 

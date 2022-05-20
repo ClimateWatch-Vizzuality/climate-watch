@@ -95,7 +95,7 @@ export const getSectorData = createSelector(
       Energy: '#F36C34',
       Agriculture: '#F6C12E',
       'Industrial Processes': '#F281A1',
-      'Land Use': '#709EA1'
+      'Land-Use Change and Forestry': '#709EA1'
     };
 
     const notAggregatedSectors = uniq(

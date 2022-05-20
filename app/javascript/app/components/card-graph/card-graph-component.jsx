@@ -10,6 +10,12 @@ import styles from './card-graph-styles.scss';
 
 class CardGraph extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
+  constructor(props) {
+    super(props);
+    this.state = {
+      noData: false
+    };
+  }
 
   handleInfoClick = slug => {
     const { setModalMetadata } = this.props;
@@ -26,12 +32,14 @@ class CardGraph extends PureComponent {
 
     const [data, dataRank] = sectionData.data;
     if (!data || !data.values || !dataRank || !dataRank.values) {
+      this.setState({ noData: true });
       return null;
     }
     const values = data.values.find(v => v.location === iso);
     const rankValues = dataRank.values.find(v => v.location === iso);
 
     if (!values || !rankValues) {
+      this.setState({ noData: true });
       return null;
     }
     const { value } = values;
@@ -70,7 +78,10 @@ class CardGraph extends PureComponent {
 
   renderPieChart() {
     const { sectionData } = this.props;
-    if (!sectionData || !sectionData.data) return null;
+    if (!sectionData || !sectionData.data) {
+      this.setState({ noData: true });
+      return null;
+    }
     const CustomInnerHoverLabel = ({
       x,
       y,
@@ -135,7 +146,10 @@ class CardGraph extends PureComponent {
     const [chartData, chartDataRank] = sectionData;
     const { data, config, domain } = chartData;
     const values = chartDataRank.values.find(v => v.location === iso);
-    if (!values) return null;
+    if (!values) {
+      this.setState({ noData: true });
+      return null;
+    }
     const { value: rank } = values;
     const percentage = (rank * 100) / maximumCountries;
     return (
@@ -179,6 +193,16 @@ class CardGraph extends PureComponent {
 
   render() {
     const { type } = this.props;
+    const { noData } = this.state;
+
+    if (noData) {
+      return (
+        <div className={styles.noDataContainer}>
+          <span>No data available.</span>
+        </div>
+      );
+    }
+
     switch (type) {
       case 'RANK':
         return this.renderRank();

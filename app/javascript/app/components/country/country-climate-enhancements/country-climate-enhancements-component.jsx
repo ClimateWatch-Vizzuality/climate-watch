@@ -10,7 +10,7 @@ function CountryClimateEnhancements({ previousComparisonValues }) {
     previousComparisonValues && (
       <div className={styles.previousComparisonContainer}>
         <h3 className={styles.title}>
-          Have there been enhancements compared with previous submission?
+          Have there been enhancements compared with previous NDC submission?
         </h3>
         <div className={styles.previousComparison}>
           {previousComparisonValues.map(([key, value]) => (
@@ -20,7 +20,7 @@ function CountryClimateEnhancements({ previousComparisonValues }) {
                 tooltipId="definition-icon"
                 className={styles.icon}
               />
-              <div className>{key}</div>
+              <div className={styles.valueKey}>{key}</div>
               <div className={styles.valueDescription}>{value}</div>
             </div>
           ))}
