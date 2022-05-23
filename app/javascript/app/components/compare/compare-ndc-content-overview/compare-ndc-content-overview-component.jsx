@@ -56,7 +56,7 @@ class CompareNDCContentOverview extends PureComponent {
     const compareButton = (
       <Button
         variant="primary"
-        link={`/ndcs/compare/mitigation?locations=${selectedLocationsFilter}`}
+        link={`/custom-compare/mitigation?targets=${selectedLocationsFilter}`}
         onClick={handleAnalyticsClick}
       >
         Compare the NDCs

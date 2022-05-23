@@ -33,4 +33,11 @@ LawsAndPoliciesProvider.propTypes = {
 };
 
 export { actions, reducers, initialState };
-export default withRouter(connect(null, actions)(LawsAndPoliciesProvider));
+
+const mapStateToProps = state => ({
+  lawsAndPolicies: state.lawsAndPolicies
+});
+
+export default withRouter(
+  connect(mapStateToProps, actions)(LawsAndPoliciesProvider)
+);

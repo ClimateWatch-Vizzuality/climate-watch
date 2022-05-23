@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '2.5.9'
+ruby '2.6.10'
 
 git_source(:github) do |repo_name|
   repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?('/')
@@ -58,7 +58,6 @@ gem 'dotenv-rails'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
-  gem 'capybara', '~> 2.13'
   gem 'factory_bot_rails'
   gem 'rails-controller-testing'
   gem 'rspec-collection_matchers'

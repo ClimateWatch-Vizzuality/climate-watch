@@ -191,6 +191,7 @@ class ImportIndc
       slug: indicator[:column_name],
       description: indicator[:definition],
       source: @sources_index[indicator[:source]],
+      group_indicator_slug: indicator[:group_indicator],
       order: index * 10,
       multiple_versions: indicator[:multiple_version]
     }
@@ -208,20 +209,21 @@ class ImportIndc
         indicator: indicator
       ).pluck(:id).first,
       value: row[:"#{indicator.slug.downcase}"],
-      document_id: Indc::Document.where(slug: doc_slug).pluck(:id).first
+      document_id: @documents_cache[doc_slug]&.id
     }
   end
 
   # for datasets that don't have multiple files we can pass the doc_slug
   # as a param, for example for LTS
-  def value_wb_attributes(row, location, indicator, doc_slug = nil)
+  def value_wb_attributes(row, location, indicator, doc_slug = nil, group_index = 1)
     doc_slug ||= row[:document]&.parameterize&.gsub('-', '_')
     {
       location: location,
       indicator: indicator,
       sector: @sectors_index[row[:subsector]],
       value: row[:responsetext],
-      document_id: Indc::Document.where(slug: doc_slug).pluck(:id).first
+      group_index: group_index,
+      document_id: @documents_cache[doc_slug]&.id
     }
   end
 
@@ -244,7 +246,7 @@ class ImportIndc
       language: submission[:language],
       submission_date: submission[:date_of_submission],
       url: submission[:url],
-      document_id: Indc::Document.where(slug: doc_slug).pluck(:id).first
+      document_id: @documents_cache[doc_slug]&.id
     }
   end
 
@@ -327,13 +329,17 @@ class ImportIndc
   end
 
   def import_indicators
-    @metadata.
+    indicators = @metadata.
       map { |r| [[r[:column_name], r[:source]], r] }.
       uniq(&:first).
       map(&:second).
-      each_with_index do |indicator, index|
-        Indc::Indicator.create!(indicator_attributes(indicator, index))
+      map.
+      with_index do |indicator, index|
+        indicator = Indc::Indicator.new(indicator_attributes(indicator, index))
+        indicator.validate!
+        indicator
       end
+    Indc::Indicator.import!(indicators)
   end
 
   def import_indicators_categories
@@ -375,6 +381,7 @@ class ImportIndc
       map { |k, v| [k, v.map { |i| {label: i[:legend_item], slug: i[:slug]} }] }.
       to_h
 
+    labels_to_create = []
     indicators.each do |indicator_name, labels|
       indicator = Indc::Indicator.find_by(slug: indicator_name)
       next unless indicator
@@ -383,30 +390,34 @@ class ImportIndc
       nds_label_obj = labels.detect { |obj| obj[:label] == no_document_submitted }
       labels.reject! { |obj| obj[:label] == no_document_submitted }
       labels.each_with_index do |label_obj, index|
-        Indc::Label.create!(
+        label = Indc::Label.new(
           indicator: indicator,
           value: label_obj[:label],
           slug: label_obj[:slug],
           index: index + 1
         )
+        label.validate!
+        labels_to_create << label
       end
       next unless nds_label_obj.present?
 
       # fixed index for the No Document Submitted label
-      Indc::Label.create!(
+      label = Indc::Label.new(
         indicator: indicator,
         value: nds_label_obj[:label],
         slug: nds_label_obj[:slug],
         index: -2
       )
+      label.validate!
+      labels_to_create << label
     end
+    Indc::Label.import!(labels_to_create)
   end
 
   def import_values_ndc
     valid_sources = [@sources_index['CAIT'], @sources_index['NDC Explorer'],
                      @sources_index['WB'], @sources_index['Net_Zero']]
     values = []
-
     Indc::Indicator.
       where(source: valid_sources).
       each do |indicator|
@@ -490,12 +501,8 @@ class ImportIndc
   end
 
   def import_sector_values_lts
-    indicator_index = Indc::Indicator.
-      where(source: @sources_index['LTS']).
-      group_by(&:slug).
-      map { |k, v| [k, v.first] }.
-      to_h
-
+    indicator_index = indicators_hash_by_source('LTS')
+    values = []
     @lts_sectoral_data.each do |r|
       location = @locations_by_iso3[r[:countrycode]]
       unless location
@@ -511,10 +518,11 @@ class ImportIndc
 
       next unless r[:responsetext]
 
-      Indc::Value.create!(
+      values << Indc::Value.new(
         value_wb_attributes(r, location, indicator, 'lts')
       )
     end
+    Indc::Value.import!(values)
   end
 
   def import_sectors_wb
@@ -537,13 +545,9 @@ class ImportIndc
   end
 
   def import_values_wb
-    indicator_index = Indc::Indicator.
-      where(source: @sources_index['WB']).
-      group_by(&:slug).
-      map { |k, v| [k, v.first] }.
-      to_h
-
+    indicator_index = indicators_hash_by_source('WB')
     values = []
+    value_group_index = {}
     @wb_sectoral_data.each do |r|
       location = @locations_by_iso2[r[:country]]
       unless location
@@ -559,8 +563,17 @@ class ImportIndc
 
       next unless r[:responsetext]
 
+      group_indicator = indicator.group_indicator_slug || indicator.slug
+      group_key = r.slice(:country, :document, :sector, :subsector).
+        values.
+        push(group_indicator).
+        join('_')
+      value_group_index[group_key] ||= 0
+      value_group_index[group_key] += 1 if group_indicator == indicator.slug
+      group_index = value_group_index[group_key]
+
       values << Indc::Value.new(
-        value_wb_attributes(r, location, indicator)
+        value_wb_attributes(r, location, indicator, nil, group_index)
       )
     end
     Indc::Value.import!(values)
@@ -570,6 +583,7 @@ class ImportIndc
     @documents.each do |doc|
       Indc::Document.create!(document_attributes(doc))
     end
+    @documents_cache = Indc::Document.all.map { |d| [d.slug, d] }.to_h
   end
 
   def import_submissions
@@ -610,6 +624,14 @@ class ImportIndc
         indicator.destroy
       end
     end
+  end
+
+  def indicators_hash_by_source(source)
+    Indc::Indicator.
+      where(source: @sources_index[source]).
+      group_by(&:slug).
+      map { |k, v| [k, v.first] }.
+      to_h
   end
 
   def sync_indc_indicators

@@ -7,6 +7,7 @@ module Api
         attribute :label_slug, if: -> { object.label_slug }
         attribute :sector_id, if: -> { object.sector_id }
         attribute :document_slug
+        attribute :group_index
       end
     end
   end

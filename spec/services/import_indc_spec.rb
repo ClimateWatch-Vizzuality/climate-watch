@@ -2,25 +2,25 @@ require 'rails_helper'
 
 object_contents = {
   "#{CW_FILES_PREFIX}indc/NDC_metadata.csv" => <<~END,
-    global_category,overview_category,map_category,column_name,long_name,Definition,Source,multiple_version
-    Overview,UNFCCC Process,Other,domestic_approval,Domestic Approval Processes Category,,CAIT,TRUE
-    Mitigation,Target,,M_TarYr,Target year,The year by which mitigation objectives are expected to be achieved,WB,TRUE
-    Mitigation,Target,,M_TarYr_2,Second target year,Whether the NDC has a second-year target,WB,TRUE
-    Adaptation,Adaptation Target,,A_Tg_AdInclu,Adaptation Included in INDC (Yes/No),Whether or not the NDC includes adaptation,WB,TRUE
-    Adaptation,Adaptation Target,,A_Tg_TarYr,Target Year for Adaptation,The year by which adaptation objectives are expected to be achieved,WB,TRUE
-    Sectoral Information,Sectoral Adaptation Commitments,,A_Sc_ConAct,Sectorial Conditional Actions,Condition actions of the sectoral level,WB,TRUE
-    Sectoral Information,Sectoral Adaptation Commitments,,A_Sc_ConActP,Page Number for Sectorial Conditional Actions,Link to the page reference for the sectoral condition actions,WB,TRUE
-    Sectoral Information,Sectoral Adaptation Commitments,,A_Sc_ConActImp,Implementing Agency for Sectorial Conditonal Actions,The agency responsible for implementing the sectoral conditional action,WB,TRUE
-    Sectoral Information,Sectoral Adaptation Commitments,,A_Sc_ConActDon,Funders for Sectorial Conditional Actions,The funders for sectoral conditional actions,WB,TRUE
-    Sectoral Information,Sectoral Adaptation Commitments,,A_Sc_ConActCost,Estimated Cost for Sectorial Conditional Actions ,The estimated costs for sectoral conditional actions,WB,TRUE
-    Sectoral Information,,,A_Sc_ConActCostH,Estimated Cost for Sectorial Conditional Actions (Harmonized in Million USD),,WB,TRUE
-    Sectoral Information,Sectoral Adaptation Commitments,,A_Sc_CapBud,Capacity Building Needs for Sectorial Implementation,Capacity building needs for sectorial implementation,WB,TRUE
-    Overview,UNFCCC Process,UNFCCC Process,submission,Latest submission,,CAIT,FALSE
-    Overview,UNFCCC Process,,submission_date,Latest submission date,,CAIT,FALSE
-    Mitigation,,Sectoral Mitigation Measures,m_buildings,Buildings,,CAIT,TRUE
-    Mitigation,,Sectoral Mitigation Measures,m_agriculture,Agriculture,,CAIT,TRUE
-    Adaptation,,Sectoral Adaptation Measures,a_agriculture,Agriculture,,CAIT,TRUE
-    Adaptation,,Sectoral Adaptation Measures,a_coastal_zone,Coastal Zone,,CAIT,TRUE
+    global_category,overview_category,map_category,column_name,long_name,Definition,group_indicator,Source,multiple_version
+    Overview,UNFCCC Process,Other,domestic_approval,Domestic Approval Processes Category,,,CAIT,TRUE
+    Mitigation,Target,,M_TarYr,Target year,The year by which mitigation objectives are expected to be achieved,,WB,TRUE
+    Mitigation,Target,,M_TarYr_2,Second target year,Whether the NDC has a second-year target,,WB,TRUE
+    Adaptation,Adaptation Target,,A_Tg_AdInclu,Adaptation Included in INDC (Yes/No),Whether or not the NDC includes adaptation,,WB,TRUE
+    Adaptation,Adaptation Target,,A_Tg_TarYr,Target Year for Adaptation,The year by which adaptation objectives are expected to be achieved,,WB,TRUE
+    Sectoral Information,Sectoral Adaptation Commitments,,A_Sc_ConAct,Sectorial Conditional Actions,Condition actions of the sectoral level,,WB,TRUE
+    Sectoral Information,Sectoral Adaptation Commitments,,A_Sc_ConActP,Page Number for Sectorial Conditional Actions,Link to the page reference for the sectoral condition actions,,WB,TRUE
+    Sectoral Information,Sectoral Adaptation Commitments,,A_Sc_ConActImp,Implementing Agency for Sectorial Conditonal Actions,The agency responsible for implementing the sectoral conditional action,,WB,TRUE
+    Sectoral Information,Sectoral Adaptation Commitments,,A_Sc_ConActDon,Funders for Sectorial Conditional Actions,The funders for sectoral conditional actions,,WB,TRUE
+    Sectoral Information,Sectoral Adaptation Commitments,,A_Sc_ConActCost,Estimated Cost for Sectorial Conditional Actions ,The estimated costs for sectoral conditional actions,,WB,TRUE
+    Sectoral Information,,,A_Sc_ConActCostH,Estimated Cost for Sectorial Conditional Actions (Harmonized in Million USD),,,WB,TRUE
+    Sectoral Information,Sectoral Adaptation Commitments,,A_Sc_CapBud,Capacity Building Needs for Sectorial Implementation,Capacity building needs for sectorial implementation,,WB,TRUE
+    Overview,UNFCCC Process,UNFCCC Process,submission,Latest submission,,,CAIT,FALSE
+    Overview,UNFCCC Process,,submission_date,Latest submission date,,,CAIT,FALSE
+    Mitigation,,Sectoral Mitigation Measures,m_buildings,Buildings,,,CAIT,TRUE
+    Mitigation,,Sectoral Mitigation Measures,m_agriculture,Agriculture,,,CAIT,TRUE
+    Adaptation,,Sectoral Adaptation Measures,a_agriculture,Agriculture,,,CAIT,TRUE
+    Adaptation,,Sectoral Adaptation Measures,a_coastal_zone,Coastal Zone,,a_agriculture,CAIT,TRUE
   END
 
   "#{CW_FILES_PREFIX}indc/NDC_submission.csv" => <<~END,

@@ -31,8 +31,6 @@
 }
 
 .item {
-  height: 180px;
-  width: 145px;
   text-align: center;
 }
 
@@ -50,23 +48,19 @@
 
 .documentsContainer {
   margin-bottom: $gutter-padding + $gutter-padding / 2;
-  min-height: 388px;
 }
 
 .documents {
   display: flex;
-  align-items: flex-end;
   flex-wrap: wrap;
   justify-content: space-between;
-
-  @media #{$tablet-landscape} {
-    justify-content: flex-end;
-  }
 
   .item {
     display: flex;
     flex-direction: column;
     align-items: center;
+    flex: 1 1 50%;
+    margin-top: $gutter-padding;
 
     .icon {
       margin-bottom: 5px;
@@ -81,7 +75,6 @@
 .icon {
   width: 30px;
   height: 30px;
-  margin-top: $gutter-padding;
 }
 
 .loading {

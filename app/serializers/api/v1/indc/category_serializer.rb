@@ -12,7 +12,7 @@ module Api
         end
 
         def sources
-          object.sources.distinct.map(&:name)
+          object.sources.map(&:name).uniq
         end
       end
     end

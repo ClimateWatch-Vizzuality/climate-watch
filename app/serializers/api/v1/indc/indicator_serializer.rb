@@ -6,6 +6,7 @@ module Api
         attribute :source
         attribute :name
         attribute :slug
+        attribute :grouping_indicator
         attribute :description, if: -> { object.description }
         attribute :category_ids, if: -> { object.category_ids.length.positive? }
         attribute :labels
@@ -21,6 +22,10 @@ module Api
 
         def source
           object.source.name
+        end
+
+        def grouping_indicator
+          (instance_options[:group_indicator_slugs] || []).include?(object.slug)
         end
 
         def labels
@@ -48,7 +53,7 @@ module Api
                        joins(:label, :location).
                        joins('LEFT JOIN indc_documents ON indc_documents.id = indc_values.document_id').
                        select('locations.iso_code3 AS iso_code3, indc_labels.slug AS label_slug, indc_values.label_id,
-                              indc_values.sector_id, indc_documents.slug AS document_slug, indc_values.value AS value')
+                              indc_values.sector_id, indc_documents.slug AS document_slug, indc_values.value AS value, indc_values.group_index')
                    else
                      object.
                        values.
@@ -56,7 +61,7 @@ module Api
                        joins('LEFT JOIN indc_documents ON indc_documents.id = indc_values.document_id').
                        joins('LEFT JOIN indc_labels ON indc_labels.id = indc_values.label_id').
                        select('locations.iso_code3 AS iso_code3, indc_labels.slug AS label_slug, indc_values.label_id,
-                              indc_values.sector_id, indc_documents.slug AS document_slug, indc_values.value AS value')
+                              indc_values.sector_id, indc_documents.slug AS document_slug, indc_values.value AS value, indc_values.group_index')
                    end
 
           # filter out values for filtered locations
@@ -113,7 +118,15 @@ module Api
               end
             end
           end
-          indexed_data
+
+          # sorting by document ordering to have latest document values first
+          if instance_options[:document_order]
+            indexed_data.transform_values do |va|
+              va.sort_by { |v| instance_options[:document_order].index(v[:document_slug]) || 999_999 }
+            end
+          else
+            indexed_data
+          end
         end
       end
     end

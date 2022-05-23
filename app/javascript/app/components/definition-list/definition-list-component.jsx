@@ -51,9 +51,11 @@ class DefinitionList extends PureComponent {
           <div className="grid-column-item" key={def.slug}>
             <div
               key={`${def.slug}-${def.title}-${Math.random()}`}
-              className={cx(
-                compare ? styles.definitionCompare : styles.definition
-              )}
+              className={cx({
+                [styles.definition]: !compare,
+                [styles.definitionCompare]: compare,
+                [styles.definitionSeparator]: def.separator
+              })}
             >
               <dt className={styles.definitionTitle}>
                 <AbbrReplace>{def.title}</AbbrReplace>
