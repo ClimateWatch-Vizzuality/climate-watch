@@ -128,16 +128,13 @@ export const getSectoralInformationData = createSelector(
                 ],
                 []
               );
-              const countries = uniq(
-                selectedTargets.map(({ country }) => country)
-              );
 
               Object.entries(groupBy(values, 'group_index')).forEach(
                 ([groupIndex, groupIndexValues]) => {
                   const descriptions = [];
-                  countries.forEach(country => {
+                  selectedTargets.forEach(({ country, document }) => {
                     const valueObject = groupIndexValues.find(
-                      v => v.country === country
+                      v => v.country === country && v.document_slug === document
                     );
                     const value =
                       (valueObject && valueObject.value) ||
