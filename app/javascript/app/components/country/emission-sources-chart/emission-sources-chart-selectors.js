@@ -42,7 +42,14 @@ export const getEmissions = createSelector(
   [getIso, getEmissionsIndicator],
   (iso, indicator) => {
     if (!indicator || !iso) return null;
-    const colors = ['#045480', '#0877B3', '#02A0CA', '#02B4D2', '#89DDEA'];
+    const colors = [
+      '#045480',
+      '#0877B3',
+      '#02A0CA',
+      '#02B4D2',
+      '#2ec9df',
+      '#89DDEA'
+    ];
     const locations = Object.entries(indicator.locations).map(
       ([emissionsIso, values]) => ({
         iso: emissionsIso,
@@ -92,10 +99,11 @@ export const getSectorData = createSelector(
     if (!data || !data.length || !meta || isEmpty(meta)) return [];
 
     const colors = {
-      Energy: '#F36C34',
-      Agriculture: '#F6C12E',
-      'Industrial Processes': '#F281A1',
-      'Land-Use Change and Forestry': '#709EA1'
+      Energy: '#ff6c2f',
+      Agriculture: '#ffb800',
+      'Industrial Processes': '#ff6cd0',
+      'Land-Use Change and Forestry': '#13c881',
+      Waste: '#80c3f6'
     };
 
     const notAggregatedSectors = uniq(
