@@ -1,14 +1,12 @@
 /* eslint-disable no-confusing-arrow */
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useRef } from 'react';
 import Proptypes from 'prop-types';
+import { format } from 'd3-format';
+import { Switch, Chart } from 'cw-components';
 import Icon from 'components/icon';
-import cx from 'classnames';
-import { Switch } from 'cw-components';
+import Tag from 'components/tag';
 import externalLink from 'assets/icons/external-link.svg';
 import ReactTooltip from 'react-tooltip';
-import { scaleLinear } from 'd3-scale';
-import { axisTop } from 'd3-axis';
-import { select } from 'd3-selection';
 
 import layout from 'styles/layout.scss';
 
@@ -23,57 +21,18 @@ const tabs = [
   {
     name: 'Solar and Wind Costs',
     value: 'costs',
-    legend: 'Costs - Year 2020'
+    legend: 'Levelised Cost of Electricity (2020 USD/kWh)'
   }
 ];
 
-const getScale = (sectionData, width, section) => {
-  if (!sectionData || !width) return null;
-  return scaleLinear()
-    .domain([0, Math.max(...sectionData[section].map(e => e.value))])
-    .range([0, width - 10]);
-};
-
-const HEIGHT = 300;
-const PADDING_RIGHT = 30;
-const PADDING_LEFT = 10;
+const CHART_HEIGHT = 450;
 
 function CountryEmploymentAndCosts(props) {
   const { sectionData } = props;
   const [selectedTab, setSelectedTab] = useState(tabs[0]);
-  const data = sectionData && sectionData[selectedTab.value];
   const legendRef = useRef();
 
-  const width = useMemo(() => {
-    const bounding =
-      legendRef.current && legendRef.current.getBoundingClientRect();
-    return bounding && bounding.width;
-  }, [legendRef.current]);
-
-  useEffect(() => {
-    if (sectionData && width) {
-      const xAxisEmployment = axisTop()
-        .tickSize(-HEIGHT)
-        .scale(getScale(sectionData, width, 'employment'));
-      const xAxisCosts = axisTop()
-        .tickSize(-HEIGHT)
-        .scale(getScale(sectionData, width, 'costs'));
-
-      select('#employment-and-costs-legend-employment')
-        .attr('width', width + PADDING_RIGHT)
-        .attr('height', HEIGHT)
-        .append('g')
-        .attr('transform', `translate(${PADDING_LEFT},${PADDING_RIGHT})`)
-        .call(xAxisEmployment);
-
-      select('#employment-and-costs-legend-costs')
-        .attr('width', width + PADDING_RIGHT)
-        .attr('height', HEIGHT)
-        .append('g')
-        .attr('transform', `translate(${PADDING_LEFT},${PADDING_RIGHT})`)
-        .call(xAxisCosts);
-    }
-  }, [sectionData, width]);
+  const currentConfig = sectionData?.[selectedTab.value];
 
   const renderContent = () => (
     <div>
@@ -106,55 +65,43 @@ function CountryEmploymentAndCosts(props) {
           }}
         />
       </div>
-      {data && (
-        <div className={styles.chartContainer}>
-          <div className={styles.chartLegend}>
-            <div className={styles.yLabels}>
-              {data.map(d => (
-                <div key={d.name}>{d.name}</div>
+      <div className={styles.chartContainer}>
+        <div className={styles.chartTitle}>{currentConfig?.name}</div>
+        <div className={styles.chartLegend}>
+          <div className={styles.legend} ref={legendRef}>
+            <ul>
+              {(currentConfig?.config?.columns?.y || []).map(column => (
+                <Tag
+                  className={styles.legendItem}
+                  key={`${column.value}`}
+                  data={{
+                    id: column.value,
+                    url: column.url || null,
+                    title: column.label || null
+                  }}
+                  label={column.label}
+                  color={currentConfig?.config?.theme[column.value].stroke}
+                  // tooltipId="legend-tooltip"
+                  // onRemove={handleRemove}
+                  canRemove={false}
+                />
               ))}
-            </div>
-            <div className={styles.legend} ref={legendRef}>
-              <div className={styles.legendUnit}>{selectedTab.legend}</div>
-              <div className={styles.axis}>
-                <svg
-                  id="employment-and-costs-legend-employment"
-                  width="100%"
-                  height="100%"
-                  className={cx(styles.axisLegend, {
-                    [styles.hidden]: selectedTab.value !== 'employment'
-                  })}
-                />
-                <svg
-                  id="employment-and-costs-legend-costs"
-                  width="100%"
-                  height="100%"
-                  className={cx(styles.axisLegend, {
-                    [styles.hidden]: selectedTab.value !== 'costs'
-                  })}
-                />
-                <div className={styles.chart}>
-                  {data.map(d => (
-                    <div
-                      className={styles.barContainer}
-                      key={`value-${d.name}`}
-                    >
-                      <div
-                        className={styles.bar}
-                        style={{
-                          minWidth: `${d.percentage}%`,
-                          backgroundColor: d.color
-                        }}
-                      />
-                      <div>{d.value}</div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
+            </ul>
           </div>
+          {selectedTab.value === 'costs' && (
+            <Chart
+              type="line"
+              config={currentConfig?.config}
+              data={currentConfig?.data}
+              dots={false}
+              height={CHART_HEIGHT}
+              domain={currentConfig?.domain}
+              showUnit
+              getCustomYLabelFormat={d => format('.2f')(d)}
+            />
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 
