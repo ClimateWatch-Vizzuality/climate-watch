@@ -99,14 +99,21 @@ const getEmploymentConfig = countryIndicators => {
   ];
   const colors = Object.values(CHART_NAMED_EXTENDED_COLORS);
 
-  const maxEmployment = max(employment_by_technology.values.map(({ value }) => +value));
+  const maxEmployment = max(
+    employment_by_technology.values.map(({ value }) => +value)
+  );
 
   return {
-    data: sortBy(employment_by_technology.values.map(({ category, value }) => ({
-      name: category,
-      value: +value,
-      percentage: (value / maxEmployment) * 100
-    })).filter(({ value }) => value > 0), 'value').reverse(),
+    data: sortBy(
+      employment_by_technology.values
+        .map(({ category, value }) => ({
+          name: category,
+          value: +value,
+          percentage: (value / maxEmployment) * 100
+        }))
+        .filter(({ value }) => value > 0),
+      'value'
+    ).reverse(),
     config: {
       columns: {
         y: columns.map(_column => ({ label: _column, value: _column }))

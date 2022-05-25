@@ -64,107 +64,117 @@ function CountryEmploymentAndCosts(props) {
     }
   }, [selectedTab, width, currentConfig]);
 
-  const renderContent = () => (
-    <div>
-      <div className={styles.header}>
-        <div className={styles.titleContainer}>
-          <h3 className={styles.title}>
-            How does climate action increase jobs and save money?
-          </h3>
-          <a
-            title="Go to IRENA"
-            href="https://www.irena.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.link}
-          >
-            Explore more on IRENA
-            <Icon icon={externalLink} className={styles.icon} />
-          </a>
-        </div>
-        <ReactTooltip className={styles.tooltip} />
-      </div>
-      <div className={styles.switchWrapper}>
-        <Switch
-          options={tabs}
-          selectedOption={selectedTab.value}
-          onClick={setSelectedTab}
-          theme={{
-            wrapper: styles.switchWrapper,
-            checkedOption: styles.switchSelected
-          }}
-        />
-      </div>
-      <div className={styles.chartContainer}>
-        <div className={styles.chartTitle}>{currentConfig?.name}</div>
-        <div className={styles.chartLegend}>
-          <div className={styles.legend}>
-            <ul>
-              {(currentConfig?.config?.columns?.y || []).map(column => (
-                <Tag
-                  className={styles.legendItem}
-                  key={`${column.value}`}
-                  data={{
-                    id: column.value,
-                    url: column.url || null,
-                    title: column.label || null
-                  }}
-                  label={column.label}
-                  color={currentConfig?.config?.theme[column.value].stroke}
-                  canRemove={false}
-                />
-              ))}
-            </ul>
-          </div>
-          <div>
-            <div 
-              ref={chartContainer}
-              className={cx(styles.employmentChartContainer, {
-                [styles.hidden]: selectedTab.value !== tabs[0].value
-            })}
+
+  const renderContent = () => {
+    const hasData = currentConfig && currentConfig.data.length;
+
+    return (
+      <div>
+        <div className={styles.header}>
+          <div className={styles.titleContainer}>
+            <h3 className={styles.title}>
+              How does climate action increase jobs and save money?
+            </h3>
+            <a
+              title="Go to IRENA"
+              href="https://www.irena.org/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.link}
             >
-              <svg
-              id="employment-chart"
-              width="100%"
-              height="100%"
-            />
-             {selectedTab.value === tabs[0].value && (
-              <div className={styles.chart}>
-                {currentConfig?.data?.map(d => (
-                  <div
-                    className={styles.barContainer}
-                    key={`value-${d.name}`}
-                  >
-                    <div
-                      className={styles.bar}
-                      style={{
-                        minWidth: `${d.percentage}%`,
-                        backgroundColor: currentConfig.config.theme[d.name].fill,
-                      }}
-                    />
-                    <div>{format('.2s')(d.value)}</div>
-                  </div>
-                ))}
-              </div>
-            )}
+              Explore more on IRENA
+              <Icon icon={externalLink} className={styles.icon} />
+            </a>
           </div>
-          {selectedTab.value === tabs[1].value && (
-            <Chart
-              type="line"
-              config={currentConfig?.config}
-              data={currentConfig?.data}
-              dots={false}
-              height={450}
-              domain={currentConfig?.domain}
-              showUnit
-              getCustomYLabelFormat={d => format('.2f')(d)}
-            />
-          )}
-          </div>
+          <ReactTooltip className={styles.tooltip} />
         </div>
+        <div className={styles.switchWrapper}>
+          <Switch
+            options={tabs}
+            selectedOption={selectedTab.value}
+            onClick={setSelectedTab}
+            theme={{
+              wrapper: styles.switchWrapper,
+              checkedOption: styles.switchSelected
+            }}
+          />
+        </div>    
+        {!hasData && (
+          <div className={styles.noDataContainer}>
+            <span>No data available.</span>
+          </div>
+        )}
+        {Boolean(hasData) && (
+          <div className={styles.chartContainer}>
+            <div className={styles.chartTitle}>{currentConfig?.name}</div>
+            <div className={styles.chartLegend}>
+              <div className={styles.legend}>
+                <ul>
+                  {(currentConfig?.config?.columns?.y || []).map(column => (
+                    <Tag
+                      className={styles.legendItem}
+                      key={`${column.value}`}
+                      data={{
+                        id: column.value,
+                        url: column.url || null,
+                        title: column.label || null
+                      }}
+                      label={column.label}
+                      color={currentConfig?.config?.theme[column.value].stroke}
+                      canRemove={false}
+                    />
+                  ))}
+                </ul>
+              </div>
+              <div>
+                <div
+                  ref={chartContainer}
+                  className={cx(styles.employmentChartContainer, {
+                    [styles.hidden]: selectedTab.value !== tabs[0].value
+                  })}
+                >
+                  <svg id="employment-chart" width="100%" height="100%" />
+                  {selectedTab.value === tabs[0].value && (
+                    <div className={styles.chart}>
+                      {currentConfig?.data?.map(d => (
+                        <div
+                          className={styles.barContainer}
+                          key={`value-${d.name}`}
+                        >
+                          <div
+                            className={styles.bar}
+                            style={{
+                              minWidth: `${d.percentage}%`,
+                              backgroundColor:
+                                currentConfig.config.theme[d.name].fill
+                            }}
+                          />
+                          <div>{format('.2s')(d.value)}</div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+                {selectedTab.value === tabs[1].value && (
+                  <Chart
+                    type="line"
+                    config={currentConfig?.config}
+                    data={currentConfig?.data}
+                    dots={false}
+                    height={450}
+                    domain={currentConfig?.domain}
+                    showUnit
+                    getCustomYLabelFormat={d => format('.2f')(d)}
+                  />
+                )}
+              </div>
+            </div>
+          </div>
+
+        )}  
       </div>
-    </div>
-  );
+    )
+  }
 
   return (
     <div className={styles.wrapper}>
