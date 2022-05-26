@@ -55,6 +55,13 @@ function CountryEmploymentAndCosts(props) {
         .tickSize(-CHART_HEIGHT)
         .scale(scale);
 
+      // when the user changes to another country, we need to remove the current axis
+      // and render the new one. Otherwise, the new axis will be rendered on top of the
+      // old one.
+      select('#employment-chart')
+        .selectAll('*')
+        .remove();
+
       select('#employment-chart')
         .attr('width', width + PADDING_RIGHT)
         .attr('height', CHART_HEIGHT)
@@ -63,7 +70,6 @@ function CountryEmploymentAndCosts(props) {
         .call(xAxisEmployment);
     }
   }, [selectedTab, width, currentConfig]);
-
 
   const renderContent = () => {
     const hasData = currentConfig && currentConfig.data.length;
@@ -98,7 +104,7 @@ function CountryEmploymentAndCosts(props) {
               checkedOption: styles.switchSelected
             }}
           />
-        </div>    
+        </div>
         {!hasData && (
           <div className={styles.noDataContainer}>
             <span>No data available.</span>
@@ -149,7 +155,7 @@ function CountryEmploymentAndCosts(props) {
                                 currentConfig.config.theme[d.name].fill
                             }}
                           />
-                          <div>{format('.2s')(d.value)}</div>
+                          <div>{format('.4s')(d.value)}</div>
                         </div>
                       ))}
                     </div>
@@ -164,17 +170,16 @@ function CountryEmploymentAndCosts(props) {
                     height={450}
                     domain={currentConfig?.domain}
                     showUnit
-                    getCustomYLabelFormat={d => format('.2f')(d)}
+                    getCustomYLabelFormat={d => format('.4s')(d)}
                   />
                 )}
               </div>
             </div>
           </div>
-
-        )}  
+        )}
       </div>
-    )
-  }
+    );
+  };
 
   return (
     <div className={styles.wrapper}>
