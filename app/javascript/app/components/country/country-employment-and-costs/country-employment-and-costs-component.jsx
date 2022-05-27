@@ -46,7 +46,7 @@ function CountryEmploymentAndCosts(props) {
 
   useEffect(() => {
     if (currentConfig && width && selectedTab.value === tabs[0].value) {
-      const CHART_HEIGHT = 350;
+      const CHART_HEIGHT = 40 * currentConfig.data.length;
       const scale = scaleLinear()
         .domain(currentConfig.domain)
         .range([0, width - 10]);
