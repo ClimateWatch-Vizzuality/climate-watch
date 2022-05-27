@@ -9,9 +9,9 @@ import ReactDOMServer from 'react-dom/server';
 import styles from './emission-sources-chart-styles.scss';
 
 const getOrdinal = i => {
-  if (i === 0) return '1st';
-  if (i === 1) return '2nd';
-  if (i === 2) return '3rd';
+  if (i === 1) return '1st';
+  if (i === 2) return '2nd';
+  if (i === 3) return '3rd';
   return `${i}th`;
 };
 
@@ -111,8 +111,8 @@ function EmissionSourcesChart({
             >
               {iso === e.iso && (
                 <span className={styles.currentCountryText}>
-                  {countryNames[iso]} is the World{"'"}s {getOrdinal(i)} largest
-                  emitter, with a total share of {e.percentage}%{' '}
+                  {countryNames[iso]} is the World{"'"}s {getOrdinal(i + 1)}{' '}
+                  largest emitter, with a total share of {e.percentage}%{' '}
                 </span>
               )}
             </span>
@@ -127,9 +127,13 @@ function EmissionSourcesChart({
             xmlns="http://www.w3.org/2000/svg"
           >
             <polygon
-              points={`${startPoint} 0 ${width +
-                startPoint} 0 ${totalWidth} ${height} 0 ${height}`}
-              fill="#cccdcf"
+              points={`
+                ${startPoint}, 0
+                ${width + startPoint}, 0
+                ${totalWidth}, ${height}
+                0, ${height}
+              `}
+              fill="#e8ecf5"
             />
           </svg>
         )}
