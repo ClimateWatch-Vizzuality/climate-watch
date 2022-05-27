@@ -23,6 +23,7 @@ module Indc
     # just for sorting
     def name_general_first
       return "!#{name}" if name.downcase.include?('general')
+
       name
     end
   end

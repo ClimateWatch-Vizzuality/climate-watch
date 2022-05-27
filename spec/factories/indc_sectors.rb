@@ -12,5 +12,13 @@ FactoryBot.define do
   factory :indc_sector, class: 'Indc::Sector' do
     name { 'MyName' }
     sector_type { 'lts' }
+
+    trait :wb do
+      sector_type { 'wb' }
+    end
+
+    trait :adapt_now do
+      sector_type { 'adapt_now' }
+    end
   end
 end
