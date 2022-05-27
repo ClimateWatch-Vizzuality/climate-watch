@@ -19,5 +19,11 @@ module Indc
 
     validates :name, presence: true
     validates :sector_type, inclusion: {in: SECTOR_TYPES}
+
+    # just for sorting
+    def name_general_first
+      return "!#{name}" if name.downcase.include?('general')
+      name
+    end
   end
 end
