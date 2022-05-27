@@ -579,23 +579,24 @@ class ImportIndc
         value_wb_attributes(r, location, indicator, nil, group_index)
       )
     end
-    parse_adaptation_actions(nil, nil)
 
-    Indc::AdaptationAction.import!(@adaptation_actions, recursive: true)
+    import_adaptation_actions!
     Indc::Value.import!(values)
   end
 
-  def parse_adaptation_actions(row, location)
-    # after parsing all rows, invoking this method with row nil
-    if row.nil? && @current_action.present?
+  def import_adaptation_actions!
+    if @current_action.present?
       if @current_adapt_sector.present? &&
           !@current_action.adaptation_action_sectors.map(&:sector_id).include?(@current_adapt_sector.id)
         @current_action.adaptation_action_sectors.build(sector_id: @current_adapt_sector.id)
       end
       @adaptation_actions << @current_action
     end
-    return if row.nil?
 
+    Indc::AdaptationAction.import!(@adaptation_actions, recursive: true)
+  end
+
+  def parse_adaptation_actions(row, location)
     if row[:questioncode] == 'ad_sec_action'
       @adaptation_actions << @current_action if @current_action.present?
       doc_slug ||= row[:document]&.parameterize&.gsub('-', '_')
