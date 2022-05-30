@@ -1002,7 +1002,7 @@ CREATE TABLE public.indc_adaptation_actions (
     id bigint NOT NULL,
     location_id bigint NOT NULL,
     document_id bigint NOT NULL,
-    action text NOT NULL
+    title text NOT NULL
 );
 
 

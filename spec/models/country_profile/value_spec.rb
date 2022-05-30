@@ -1,3 +1,14 @@
+# == Schema Information
+#
+# Table name: country_profile_values
+#
+#  id           :bigint           not null, primary key
+#  location_id  :bigint           not null
+#  indicator_id :bigint
+#  category     :string
+#  value        :string           not null
+#  year         :integer
+#
 require 'rails_helper'
 
 RSpec.describe CountryProfile::Value, type: :model do

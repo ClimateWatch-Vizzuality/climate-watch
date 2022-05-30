@@ -10,15 +10,6 @@
 #  updated_at :datetime         not null
 #  user_id    :integer
 #
-# Class UserStory
-#
-# Attributes
-#
-# title    :string
-# body     :jsonb
-# public   :bool
-# user_id  :int
-# timestamps
 
 module MyCw
   class UserStory < ApplicationRecord

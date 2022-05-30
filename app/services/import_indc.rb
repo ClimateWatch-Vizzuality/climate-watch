@@ -599,7 +599,7 @@ class ImportIndc
       @adaptation_actions << @current_action if @current_action.present?
       doc_slug ||= row[:document]&.parameterize&.gsub('-', '_')
       @current_action = Indc::AdaptationAction.new(
-        action: row[:responsetext],
+        title: row[:responsetext],
         document_id: @documents_cache[doc_slug].id,
         location: location
       )

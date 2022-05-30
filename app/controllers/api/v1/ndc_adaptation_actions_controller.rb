@@ -6,12 +6,20 @@ module Api
       def show
         documents = ::Indc::Document.where(is_ndc: true).order(:ordering)
         sectors = group_sectors(::Indc::Sector.where(sector_type: %w[adapt_now wb]))
-        actions = ::Indc::AdaptationAction.where(location: @location)
+        actions = ::Indc::AdaptationAction.where(location: @location).includes(:location, :sectors)
 
         render json: {
           documents: documents,
           sectors: sectors,
-          actions: actions
+          actions: actions.map do |action|
+            {
+              title: action.title,
+              location_id: action.location_id,
+              location_iso: action.location.iso_code3,
+              document_id: action.document_id,
+              sector_ids: action.sector_ids
+            }
+          end
         }
       end
 
@@ -27,6 +35,7 @@ module Api
             {
               id: parent.id,
               name: parent.name,
+              sector_type: parent.sector_type,
               subsectors: subsectors.sort_by(&:name_general_first).map do |s|
                 s.as_json(only: [:id, :name])
               end

@@ -9,7 +9,7 @@ class CreateIndcAdaptationActions < ActiveRecord::Migration[5.2]
         to_table: :indc_documents,
         on_delete: :cascade
       }, null: false
-      t.text :action, null: false
+      t.text :title, null: false
     end
 
     create_table :indc_adaptation_action_sectors do |t|

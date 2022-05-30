@@ -1,3 +1,16 @@
+# == Schema Information
+#
+# Table name: country_profile_indicators
+#
+#  id              :bigint           not null, primary key
+#  slug            :string           not null
+#  name            :string
+#  short_name      :string
+#  metadata_source :string
+#  file            :string
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#
 module CountryProfile
   class Indicator < ApplicationRecord
     has_many :values, class_name: 'CountryProfile::Value'
