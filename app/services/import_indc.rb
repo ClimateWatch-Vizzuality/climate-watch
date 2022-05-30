@@ -605,6 +605,7 @@ class ImportIndc
       )
       @current_action.adaptation_action_sectors.build(sector_id: @sectors_index[row[:subsector]].id)
     end
+    return if row[:responsetext].downcase == 'not available'
 
     if row[:questioncode].downcase.start_with?('gca_sector')
       @current_adapt_sector = Indc::Sector.
