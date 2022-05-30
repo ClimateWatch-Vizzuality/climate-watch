@@ -44,6 +44,7 @@ Rails.application.routes.draw do
         get :linkages_dataset, on: :collection, controller: :ndc_sdgs,
           action: :linkages_dataset, defaults: { format: :csv }
         get :countries_documents, on: :collection, controller: :ndc_documents, action: :index
+        get :adaptation_actions, on: :collection, controller: :ndc_adaptation_actions, action: :index
       end
 
       resources :lts, param: :code, only: [:index] do
