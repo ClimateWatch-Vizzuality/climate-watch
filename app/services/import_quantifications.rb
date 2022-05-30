@@ -27,9 +27,6 @@ class ImportQuantifications
       location = Location.find_by(iso_code3: row[:iso])
       label = Quantification::Label.find_or_create_by!(name: row[:label])
 
-      # TODO: clarify the data
-      next if row[:year].blank?
-
       if location
         if row[:range] == 'Yes'
           value = Quantification::Value.find_or_initialize_by(
