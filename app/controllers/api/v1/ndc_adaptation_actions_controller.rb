@@ -1,12 +1,11 @@
 module Api
   module V1
     class NdcAdaptationActionsController < ApiController
-      before_action :fetch_location
-
-      def show
+      def index
         documents = ::Indc::Document.where(is_ndc: true).order(:ordering)
         sectors = group_sectors(::Indc::Sector.where(sector_type: %w[adapt_now wb]))
-        actions = ::Indc::AdaptationAction.where(location: @location).includes(:location, :sectors)
+        actions = ::Indc::AdaptationAction.includes(:location, :sectors)
+        actions = actions.where(locations: {iso_code3: location_list}) if location_list.present?
 
         render json: {
           documents: documents,
@@ -43,8 +42,8 @@ module Api
           end.compact
       end
 
-      def fetch_location
-        @location = Location.find_by!(iso_code3: params[:code])
+      def location_list
+        params[:location]&.split(',')
       end
     end
   end

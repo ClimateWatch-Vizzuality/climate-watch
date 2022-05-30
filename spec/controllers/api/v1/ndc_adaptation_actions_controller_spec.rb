@@ -23,22 +23,30 @@ describe Api::V1::NdcAdaptationActionsController, type: :controller do
     FactoryBot.create_list(:indc_adaptation_action, 2)
   end
 
-  describe 'GET show' do
+  describe 'GET index' do
     it 'returns a successful 200 response' do
-      get :show, params: {code: @location.iso_code3}
+      get :index
       expect(response).to be_successful
     end
 
     context 'when location does not exist' do
-      before { get :show, params: {code: 'AAAA'} }
+      before { get :index, params: {location: 'AAAA'} }
 
-      it 'returns a 404 not found' do
-        expect(response).to be_not_found
+      it 'returns list of sectors' do
+        expect(parsed_response['sectors'].length).to eq(2)
+      end
+
+      it 'returns list of documents' do
+        expect(parsed_response['documents'].length).to eq(2)
+      end
+
+      it 'returns an empty list of actions' do
+        expect(parsed_response['actions'].length).to eq(0)
       end
     end
 
     context 'when location exists' do
-      before { get :show, params: {code: @location.iso_code3} }
+      before { get :index, params: {location: @location.iso_code3} }
 
       it 'returns list of sectors' do
         expect(parsed_response['sectors'].length).to eq(2)
