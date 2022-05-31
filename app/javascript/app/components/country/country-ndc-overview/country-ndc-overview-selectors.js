@@ -5,9 +5,13 @@ import qs from 'query-string';
 
 const getIso = (state, { iso }) => iso || null;
 const getDataDocuments = state => state.countriesDocuments.data || null;
+const getCountries = state => state.countries.data || [];
 
 const getOverviewData = state =>
   state.ndcContentOverview.data && state.ndcContentOverview.data.locations;
+
+const getNdcsData = state => state.ndcs?.data?.indicators || [];
+
 const getCountryOverviewData = createSelector(
   [getOverviewData, getIso],
   (data, iso) => (data && data[iso]) || null
@@ -38,6 +42,33 @@ export const getValuesGrouped = createSelector(
   }
 );
 
+export const getCountryNdcsData = createSelector(
+  [getNdcsData, getIso],
+  (ndcsData, iso) => {
+    const dataKeys = [
+      'ghg_target',
+      'mitigation_contribution_type',
+      'adaptation',
+      'lts_target',
+      'lts_date',
+      'lts_document',
+      'nz_status',
+      'nz_year',
+      'nz_source'
+    ];
+
+    return dataKeys.reduce(
+      (acc, dataKey) => ({
+        ...acc,
+        [dataKey]: ndcsData.find(({ slug }) => slug === dataKey)?.locations?.[
+          iso
+        ]?.value
+      }),
+      {}
+    );
+  }
+);
+
 export const getCountryDocuments = createSelector(
   [getDataDocuments, getIso],
   (documents, iso) => {
@@ -61,6 +92,13 @@ export const getSelectedDocument = createSelector(
       lastDocument
     );
   }
+);
+
+export const getCountryName = createSelector(
+  [getCountries, getIso],
+  (countries, iso) =>
+    (countries.find(({ iso_code3 }) => iso === iso_code3) || {})
+      .wri_standard_name
 );
 
 export default {
