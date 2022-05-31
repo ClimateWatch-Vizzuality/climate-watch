@@ -20,12 +20,23 @@ module Indc
     validates :submission_type, presence: true
     validates :language, presence: true
     validates :submission_date, presence: true
-    validates :url,
-              presence: true,
-              format: URI.regexp(%w(http https))
+    validates :url, presence: true, format: URI.regexp(%w(http https))
 
     def submission_date=(val)
       write_attribute :submission_date, Date.strptime(val, '%m/%d/%Y')
+    end
+
+    def self.latest_per_location
+      query = <<~SQL
+        (select * from
+          (select row_number() over (partition by location_id order by submission_date desc), *
+           from indc_submissions
+          ) as temp
+         where temp.row_number = 1
+        ) as indc_submissions
+      SQL
+
+      from(query)
     end
   end
 end

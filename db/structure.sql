@@ -1756,7 +1756,8 @@ CREATE TABLE public.quantification_values (
     first_value double precision,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    second_value double precision
+    second_value double precision,
+    document_slug character varying
 );
 
 
@@ -4791,6 +4792,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220420150714'),
 ('20220420152331'),
 ('20220519084239'),
-('20220520090514');
+('20220520090514'),
+('20220527093456');
 
 
