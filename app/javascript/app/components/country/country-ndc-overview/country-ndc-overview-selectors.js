@@ -77,13 +77,30 @@ export const getCountryDocuments = createSelector(
   }
 );
 
-export const getSelectedDocument = createSelector(
+export const getNdcsDocument = createSelector(
   [getCountryDocuments, getSearch],
   (countryDocuments, search) => {
     if (isEmpty(countryDocuments)) return null;
     // Intended submission documents don't have submission date
     const ndcDocuments = countryDocuments.filter(
       d => d.is_ndc && d.submission_date
+    );
+    const lastDocument = ndcDocuments[ndcDocuments.length - 1];
+    if (!search || !search.document) return lastDocument;
+    return (
+      countryDocuments.find(document => document.slug === search.document) ||
+      lastDocument
+    );
+  }
+);
+
+export const getLtsDocument = createSelector(
+  [getCountryDocuments, getSearch],
+  (countryDocuments, search) => {
+    if (isEmpty(countryDocuments)) return null;
+    // Intended submission documents don't have submission date
+    const ndcDocuments = countryDocuments.filter(
+      d => d.slug === 'lts' && d.submission_date
     );
     const lastDocument = ndcDocuments[ndcDocuments.length - 1];
     if (!search || !search.document) return lastDocument;

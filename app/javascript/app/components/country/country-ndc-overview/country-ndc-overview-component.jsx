@@ -35,7 +35,8 @@ function CountryNdcOverview(props) {
     isNdcp,
     handleInfoClick,
     handleAnalyticsClick,
-    selectedDocument,
+    ndcsDocument,
+    ltsDocument,
     countryName
   } = props;
 
@@ -61,15 +62,15 @@ function CountryNdcOverview(props) {
   };
 
   const renderCompareButton = () => {
-    const link = `/custom-compare/mitigation?targets=${iso}-${selectedDocument &&
-      selectedDocument.slug}`;
+    const link = `/custom-compare/mitigation?targets=${iso}-${ndcsDocument &&
+      ndcsDocument.slug}${ltsDocument ? `,${iso}-lts` : ''}`;
     const href = `/contained${link}`;
     return (
       <Button
         variant="secondary"
         href={isNdcp ? href : null}
         link={isNdcp ? null : link}
-        disabled={!selectedDocument}
+        disabled={!ndcsDocument}
       >
         Compare
       </Button>
@@ -332,7 +333,7 @@ function CountryNdcOverview(props) {
     </div>
   );
 
-  const { submission_date: documentDate } = selectedDocument || {};
+  const { submission_date: documentDate } = ndcsDocument || {};
   const hasSectors = values && sectors;
   const description = hasSectors && (
     <div
@@ -346,9 +347,9 @@ function CountryNdcOverview(props) {
       }}
     />
   );
-  const summaryIntroText = !selectedDocument
+  const summaryIntroText = !ndcsDocument
     ? 'Summary'
-    : `Summary of ${selectedDocument.long_name}`;
+    : `Summary of ${ndcsDocument.long_name}`;
   const renderIntro = () => (
     <Intro
       theme={isCountryPage ? introSmallTheme : introTheme}
@@ -431,7 +432,7 @@ function CountryNdcOverview(props) {
       <CountriesDocumentsProvider location={iso} />
       <NdcContentOverviewProvider
         locations={[iso]}
-        document={selectedDocument && selectedDocument.slug}
+        document={ndcsDocument && ndcsDocument.slug}
       />
       {renderContent()}
       <ModalMetadata />
@@ -449,7 +450,8 @@ CountryNdcOverview.propTypes = {
   isNdcp: PropTypes.bool,
   isEmbed: PropTypes.bool,
   handleInfoClick: PropTypes.func.isRequired,
-  selectedDocument: PropTypes.object,
+  ndcsDocument: PropTypes.object,
+  ltsDocument: PropTypes.object,
   handleAnalyticsClick: PropTypes.func.isRequired
 };
 
