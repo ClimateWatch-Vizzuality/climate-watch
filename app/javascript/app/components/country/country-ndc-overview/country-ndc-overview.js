@@ -30,7 +30,7 @@ const mapStateToProps = (state, { location, match }) => {
     isEmbed,
     selectedDocument: getSelectedDocument(state, { location, iso }),
     values:
-      process.env.FEATURE_NDC_UPDATE === 'true'
+      process.env.FEATURE_COUNTRY_CHANGES === 'true'
         ? getCountryNdcsData(state, { iso })
         : getValuesGrouped(state, { location, iso }),
     loading: state.ndcContentOverview.loading,

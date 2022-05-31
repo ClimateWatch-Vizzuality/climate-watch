@@ -97,7 +97,7 @@ function CountryNdcOverview(props) {
     <div className={styles.cards}>
       <Card
         title={
-          process.env.FEATURE_NDC_UPDATE === 'true'
+          process.env.FEATURE_COUNTRY_CHANGES === 'true'
             ? "Country's current NDC"
             : 'Contribution Type'
         }
@@ -105,7 +105,7 @@ function CountryNdcOverview(props) {
         contentFirst
       >
         <div className={styles.cardContent}>
-          {process.env.FEATURE_NDC_UPDATE === 'true' && (
+          {process.env.FEATURE_COUNTRY_CHANGES === 'true' && (
             <React.Fragment>
               {values?.ghg_target && (
                 <CardRow
@@ -139,7 +139,7 @@ function CountryNdcOverview(props) {
             </React.Fragment>
           )}
 
-          {process.env.FEATURE_NDC_UPDATE !== 'true' && (
+          {process.env.FEATURE_COUNTRY_CHANGES !== 'true' && (
             <React.Fragment>
               {values?.mitigation_contribution_type && (
                 <CardRow
@@ -178,7 +178,7 @@ function CountryNdcOverview(props) {
       </Card>
       <Card
         title={
-          process.env.FEATURE_NDC_UPDATE === 'true'
+          process.env.FEATURE_COUNTRY_CHANGES === 'true'
             ? "Country's Long Term Strategy"
             : 'GHG Target'
         }
@@ -186,7 +186,7 @@ function CountryNdcOverview(props) {
         contentFirst
       >
         <div className={styles.cardContent}>
-          {process.env.FEATURE_NDC_UPDATE === 'true' && (
+          {process.env.FEATURE_COUNTRY_CHANGES === 'true' && (
             <React.Fragment>
               {values?.lts_target && (
                 <CardRow
@@ -219,7 +219,7 @@ function CountryNdcOverview(props) {
               )}
             </React.Fragment>
           )}
-          {process.env.FEATURE_NDC_UPDATE !== 'true' && (
+          {process.env.FEATURE_COUNTRY_CHANGES !== 'true' && (
             <React.Fragment>
               {values?.time_target_year && (
                 <CardRow
@@ -239,10 +239,11 @@ function CountryNdcOverview(props) {
               )}
             </React.Fragment>
           )}
-          {process.env.FEATURE_NDC_UPDATE === 'true' && !values?.lts_target && (
-            <div className={styles.noContent}>Not included</div>
-          )}
-          {process.env.FEATURE_NDC_UPDATE !== 'true' &&
+          {process.env.FEATURE_COUNTRY_CHANGES === 'true' &&
+            !values?.lts_target && (
+              <div className={styles.noContent}>Not included</div>
+            )}
+          {process.env.FEATURE_COUNTRY_CHANGES !== 'true' &&
             !values?.time_target_year && (
               <div className={styles.noContent}>Not included</div>
             )}
@@ -250,7 +251,7 @@ function CountryNdcOverview(props) {
       </Card>
       <Card
         title={
-          process.env.FEATURE_NDC_UPDATE === 'true'
+          process.env.FEATURE_COUNTRY_CHANGES === 'true'
             ? 'Net-Zero Target'
             : 'Non-GHG Target'
         }
@@ -258,7 +259,7 @@ function CountryNdcOverview(props) {
         contentFirst
       >
         <div className={styles.cardContent}>
-          {process.env.FEATURE_NDC_UPDATE === 'true' && (
+          {process.env.FEATURE_COUNTRY_CHANGES === 'true' && (
             <React.Fragment>
               {values?.nz_status && (
                 <CardRow
@@ -292,7 +293,7 @@ function CountryNdcOverview(props) {
             </React.Fragment>
           )}
 
-          {process.env.FEATURE_NDC_UPDATE !== 'true' && (
+          {process.env.FEATURE_COUNTRY_CHANGES !== 'true' && (
             <React.Fragment>
               {values?.non_ghg_target_year && (
                 <CardRow
@@ -304,10 +305,11 @@ function CountryNdcOverview(props) {
               )}
             </React.Fragment>
           )}
-          {process.env.FEATURE_NDC_UPDATE === 'true' && !values?.nz_status && (
-            <div className={styles.noContent}>Not included</div>
-          )}
-          {process.env.FEATURE_NDC_UPDATE !== 'true' &&
+          {process.env.FEATURE_COUNTRY_CHANGES === 'true' &&
+            !values?.nz_status && (
+              <div className={styles.noContent}>Not included</div>
+            )}
+          {process.env.FEATURE_COUNTRY_CHANGES !== 'true' &&
             !values?.non_ghg_target_year && (
               <div className={styles.noContent}>Not included</div>
             )}

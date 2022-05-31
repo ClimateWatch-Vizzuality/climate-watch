@@ -43,7 +43,7 @@ const routes = [
     anchor: true,
     component: EmissionDrivers
   },
-  process.env.FEATURE_NDC_UPDATE === 'true' && {
+  process.env.FEATURE_COUNTRY_CHANGES === 'true' && {
     hash: 'ndc-content-overview',
     label: 'NDC Content Overview',
     anchor: true,
@@ -55,13 +55,13 @@ const routes = [
     anchor: true,
     component: ClimateVulnerability
   },
-  process.env.FEATURE_NDC_UPDATE !== 'true' && {
+  process.env.FEATURE_COUNTRY_CHANGES !== 'true' && {
     hash: 'ndc-content-overview',
     label: 'NDC Content Overview',
     anchor: true,
     component: () => createElement(CountryNdcOverview, { isCountryPage: true })
   },
-  process.env.FEATURE_NDC_UPDATE !== 'true' && {
+  process.env.FEATURE_COUNTRY_CHANGES !== 'true' && {
     hash: 'lts-content-overview',
     label: 'LTS Content Overview',
     anchor: true,
