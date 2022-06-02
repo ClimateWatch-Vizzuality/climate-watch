@@ -65,48 +65,64 @@ class ImportIndc
       return
     end
     count = Indc::Value.count
-    puts "We had #{Indc::Value.count} indc values before creating subsector indicators and values"
-    locations = Location.where(id: Indc::Value.select(:location_id).distinct.pluck(:location_id)).
+    puts "We had #{count} indc values before creating subsector indicators and values"
+    locations = Location.
+      where(id: Indc::Value.select(:location_id).distinct.pluck(:location_id)).
       order(:wri_standard_name)
+    values = []
     [['sectoral_mitigation_measures', 'm'], ['sectoral_adaptation_measures', 'a']].each do |slug, prefix|
       sectoral_cat = Indc::Category.find_by(category_type_id: map_type, slug: slug)
 
       order = sectoral_cat.indicators.maximum(:order) || 0
-      Indc::Sector.where.not(parent_id: nil).joins(values: :indicator).
-        where('indc_indicators.slug ilike ?', "#{prefix.upcase}_%").distinct.each do |sector|
+      sectors = Indc::Sector.
+        joins(values: :indicator).
+        where.not(parent_id: nil).
+        where('indc_indicators.slug ilike ?', "#{prefix.upcase}_%").
+        distinct
+
+      measure_specified = Indc::Value.
+        joins(:indicator, :location, :document).
+        where(sector_id: sectors.ids).
+        where.not("value ilike 'Not Available'").
+        where('indc_indicators.slug ilike ?', "#{prefix.upcase}_%").
+        where(indc_documents: {is_ndc: true}).
+        group(:sector_id, :location_id, :document_id).
+        pluck(:sector_id, :location_id, :document_id).
+        group_by(&:first).
+        transform_values { |v| v.group_by(&:second).transform_values { |vv| vv.group_by(&:third) } }
+      ndc_submissions = Indc::Submission.
+        group(:location_id, :document_id).
+        pluck(:location_id, :document_id).
+        group_by(&:first).
+        transform_values { |v| v.group_by(&:second) }
+
+      sectors.each do |sector|
         sector_name = sector.name == sector.parent.name ? "#{sector.name} Subsector" : sector.name
         ind_slug = [prefix, sector_name.parameterize.gsub('-', '_'), 'auto'].join('_')
         next if Indc::Indicator.find_by(slug: ind_slug, source_id: source)
 
+        order += 1
         indicator = Indc::Indicator.create!(source_id: source,
                                             slug: ind_slug,
                                             name: sector_name,
-                                            description: "Created automatically",
+                                            description: 'Created automatically',
+                                            order: order,
                                             multiple_versions: true)
         indicator.categories << sectoral_cat
-        if indicator.order.nil?
-          order += 1
-          indicator.order = order
-          indicator.save
-        end
+
         label_yes = Indc::Label.create!(indicator_id: indicator.id,
                                         index: 1,
                                         value: 'Sectoral Measure Specified')
         label_no = Indc::Label.create!(indicator_id: indicator.id,
                                        index: 2,
                                        value: 'No Sectoral Measure Specified')
-        # not sure if this label should be created or not
-        label_no_doc = Indc::Label.create!(indicator_id: indicator.id,
-                                           index: -2,
-                                           value: 'No Document Submitted')
 
-        values = []
-
+        documents = Indc::Document.where(is_ndc: true)
         locations.each do |loc|
-          Indc::Document.where(slug: 'first_ndc', is_ndc: true).each do |doc|
-            if sector.values.where(location_id: loc.id, document_id: doc.id).
-                 where.not("value ilike 'Not Available'").
-                 joins(:indicator).where("indc_indicators.slug ilike ?", "#{prefix.upcase}_%").any?
+          documents.each do |doc|
+            next unless ndc_submissions.dig(loc.id, doc.id).present?
+
+            if measure_specified.dig(sector.id, loc.id, doc.id).present?
               values << Indc::Value.new(location_id: loc.id,
                                         label_id: label_yes.id,
                                         value: 'Sectoral Measure Specified',
@@ -123,10 +139,10 @@ class ImportIndc
             end
           end
         end
-
-        Indc::Value.import!(values)
       end
     end
+
+    Indc::Value.import! values
     puts "We added #{Indc::Value.count - count} new values for subsector indicators"
   end
 
