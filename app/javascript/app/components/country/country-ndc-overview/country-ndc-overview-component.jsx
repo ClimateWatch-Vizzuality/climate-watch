@@ -67,12 +67,20 @@ function CountryNdcOverview(props) {
     const href = `/contained${link}`;
     return (
       <Button
-        variant="secondary"
-        href={isNdcp ? href : null}
-        link={isNdcp ? null : link}
-        disabled={!ndcsDocument}
+        {...(process.env.FEATURE_COUNTRY_CHANGES === 'true' && {
+          variant: 'primary',
+          href: link
+        })}
+        {...(process.env.FEATURE_COUNTRY_CHANGES !== 'true' && {
+          variant: 'secondary',
+          href: isNdcp ? href : null,
+          link: isNdcp ? null : link,
+          disabled: !ndcsDocument
+        })}
       >
-        Compare
+        {process.env.FEATURE_COUNTRY_CHANGES === 'true'
+          ? 'Compare targets and see how they align'
+          : 'Compare'}
       </Button>
     );
   };
@@ -108,21 +116,21 @@ function CountryNdcOverview(props) {
         <div className={styles.cardContent}>
           {process.env.FEATURE_COUNTRY_CHANGES === 'true' && (
             <React.Fragment>
-              {values?.ghg_target && (
-                <CardRow
-                  rowData={{
-                    title: 'Target type',
-                    value: values.ghg_target
-                  }}
-                  theme={cardTheme}
-                />
-              )}
-
               {values?.mitigation_contribution_type && (
                 <CardRow
                   rowData={{
                     title: 'Mitigation contribution type',
                     value: values.mitigation_contribution_type
+                  }}
+                  theme={cardTheme}
+                />
+              )}
+
+              {values?.ghg_target && (
+                <CardRow
+                  rowData={{
+                    title: 'Target type',
+                    value: values.ghg_target
                   }}
                   theme={cardTheme}
                 />
@@ -362,11 +370,12 @@ function CountryNdcOverview(props) {
           } Climate Commitments?`
           : summaryIntroText
       }
-      subtitle={
-        documentDate &&
-        `(submitted ${moment(documentDate).format('MM/DD/YYYY')})`
-      }
-      tag="h3"
+      {...(process.env.FEATURE_COUNTRY_CHANGES !== 'true' && {
+        subtitle:
+          documentDate &&
+          `(submitted ${moment(documentDate).format('MM/DD/YYYY')})`,
+        tag: 'h3'
+      })}
     />
   );
 
@@ -403,18 +412,31 @@ function CountryNdcOverview(props) {
                 })}
               >
                 {renderIntro()}
-                <TabletPortraitOnly>{description}</TabletPortraitOnly>
-                {isCountryPage && (
-                  <div className="grid-column-item">
-                    <div className={styles.actions}>
-                      {renderInfoButton()}
-                      {renderCompareButton()}
-                      <TabletLandscape>{renderExploreButton()}</TabletLandscape>
-                    </div>
-                  </div>
+                {process.env.FEATURE_COUNTRY_CHANGES !== 'true' && (
+                  <TabletPortraitOnly>{description}</TabletPortraitOnly>
                 )}
+                {isCountryPage &&
+                  process.env.FEATURE_COUNTRY_CHANGES !== 'true' && (
+                    <div className="grid-column-item">
+                      <div className={styles.actions}>
+                        {renderInfoButton()}
+                        {renderCompareButton()}
+                        <TabletLandscape>
+                          {renderExploreButton()}
+                        </TabletLandscape>
+                      </div>
+                    </div>
+                  )}
+                {isCountryPage &&
+                  process.env.FEATURE_COUNTRY_CHANGES === 'true' && (
+                    <div className="grid-column-item">
+                      {renderCompareButton()}
+                    </div>
+                  )}
               </div>
-              <TabletLandscape>{description}</TabletLandscape>
+              {process.env.FEATURE_COUNTRY_CHANGES !== 'true' && (
+                <TabletLandscape>{description}</TabletLandscape>
+              )}
               {renderCards()}
               <TabletPortraitOnly>
                 {isCountryPage && renderExploreButton()}
@@ -428,7 +450,10 @@ function CountryNdcOverview(props) {
 
   return (
     <div className={cx(styles.wrapper, { [styles.embededWrapper]: isEmbed })}>
-      {hasSectors && !loading && renderAlertText()}
+      {hasSectors &&
+        !loading &&
+        process.env.FEATURE_COUNTRY_CHANGES !== 'true' &&
+        renderAlertText()}
       <CountriesDocumentsProvider location={iso} />
       <NdcContentOverviewProvider
         locations={[iso]}
