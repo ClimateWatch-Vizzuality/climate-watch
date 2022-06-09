@@ -505,14 +505,15 @@ class ImportIndc
 
     @sectors_index = {}
     sectors.uniq.each do |d|
-      parent = Indc::Sector.
-        where('lower(name) = ?', d[:sector].downcase).
-        where(sector_type: 'lts').
-        first_or_create!(name: d[:sector])
-      sector = Indc::Sector.
-        where('lower(name) = ?', d[:subsector].downcase).
-        where(parent: parent, sector_type: 'lts').
-        first_or_create!(name: d[:subsector])
+      parent = Indc::Sector.find_or_create_by(
+        name: d[:sector],
+        sector_type: 'lts'
+      )
+      sector = Indc::Sector.find_or_create_by(
+        name: d[:subsector],
+        parent: parent,
+        sector_type: 'lts'
+      )
 
       @sectors_index[d[:subsector]] = sector
     end
@@ -550,14 +551,15 @@ class ImportIndc
 
     @sectors_index = {}
     sectors.uniq.each do |d|
-      parent = Indc::Sector.
-        where('lower(name) = ?', d[:sector].downcase).
-        where(sector_type: 'wb').
-        first_or_create!(name: d[:sector])
-      sector = Indc::Sector.
-        where('lower(name) = ?', d[:subsector].downcase).
-        where(parent: parent, sector_type: 'wb').
-        first_or_create!(name: d[:subsector])
+      parent = Indc::Sector.find_or_create_by(
+        name: d[:sector],
+        sector_type: 'wb'
+      )
+      sector = Indc::Sector.find_or_create_by(
+        name: d[:subsector],
+        parent: parent,
+        sector_type: 'wb'
+      )
 
       @sectors_index[d[:subsector]] = sector
     end
@@ -624,15 +626,13 @@ class ImportIndc
     return if row[:responsetext].downcase == 'not available'
 
     if row[:questioncode].downcase.start_with?('gca_sector')
-      @current_adapt_sector = Indc::Sector.
-        where('lower(name) = ?', row[:responsetext].downcase).
-        where(sector_type: 'adapt_now').
-        first_or_create!(name: row[:responsetext])
+      @current_adapt_sector = Indc::Sector.find_or_create_by!(
+        name: row[:responsetext], sector_type: 'adapt_now'
+      )
     elsif row[:questioncode].downcase.start_with?('gca_subsector')
-      @current_adapt_sector = Indc::Sector.
-        where('lower(name) = ?', row[:responsetext].downcase).
-        where(sector_type: 'adapt_now', parent_id: @current_adapt_sector.id).
-        first_or_create!(name: row[:responsetext])
+      @current_adapt_sector = Indc::Sector.find_or_create_by!(
+        name: row[:responsetext], parent_id: @current_adapt_sector.id, sector_type: 'adapt_now'
+      )
     elsif @current_action.present? && @current_adapt_sector.present?
       unless @current_action.adaptation_action_sectors.map(&:sector_id).include?(@current_adapt_sector.id)
         @current_action.adaptation_action_sectors.build(sector_id: @current_adapt_sector.id)
