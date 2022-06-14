@@ -46,7 +46,7 @@ module Api
           values = if instance_options[:locations_documents]
                      object.values_for instance_options[:locations_documents]
                    # if filtering for map return only those with label + custom ones
-                   elsif instance_options[:filter] == 'map' &&
+                   elsif map_request? &&
                        %w(submission submission_date ndce_ghg lts_ghg lts_document lts_target lts_submission lts_date).exclude?(object.slug)
                      object.
                        values.
@@ -122,11 +122,17 @@ module Api
           # sorting by document ordering to have latest document values first
           if instance_options[:document_order]
             indexed_data.transform_values do |va|
-              va.sort_by { |v| instance_options[:document_order].index(v[:document_slug]) || 999_999 }
+              res = va.sort_by { |v| instance_options[:document_order].index(v[:document_slug]) || 999_999 }
+              res = res.take(1) if map_request? # only take the latest if map request
+              res
             end
           else
             indexed_data
           end
+        end
+
+        def map_request?
+          instance_options[:filter] == 'map'
         end
       end
     end
