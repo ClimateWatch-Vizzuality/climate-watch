@@ -182,7 +182,6 @@ module Api
       def index_cache_key
         return if params[:location].present?
         return if params[:locations_documents].present?
-        return if params[:document].present?
         return if params[:category].present?
         return if params[:subcategory].present?
         return if params[:indicators].present?
