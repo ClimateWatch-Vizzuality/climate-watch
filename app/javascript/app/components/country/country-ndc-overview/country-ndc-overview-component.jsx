@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import Button from 'components/button';
 import Card from 'components/card';
@@ -358,18 +358,23 @@ function CountryNdcOverview(props) {
   const summaryIntroText = !ndcsDocument
     ? 'Summary'
     : `Summary of ${ndcsDocument.long_name}`;
+
+  const introTitle = useMemo(() => {
+    if (!isCountryPage) return summaryIntroText;
+
+    if (process.env.FEATURE_COUNTRY_CHANGES !== 'true') {
+      return 'Nationally Determined Contribution (NDC) Overview';
+    }
+
+    return `What is the content of ${
+      countryName?.endsWith('s') ? `${countryName}'` : `${countryName}'s`
+    } Climate Commitments?`;
+  }, [isCountryPage, countryName]);
+
   const renderIntro = () => (
     <Intro
       theme={isCountryPage ? introSmallTheme : introTheme}
-      title={
-        isCountryPage
-          ? `What is the content of ${
-            countryName && countryName.endsWith('s')
-              ? `${countryName}'`
-              : `${countryName}'s`
-          } Climate Commitments?`
-          : summaryIntroText
-      }
+      title={introTitle}
       {...(process.env.FEATURE_COUNTRY_CHANGES !== 'true' && {
         subtitle:
           documentDate &&
