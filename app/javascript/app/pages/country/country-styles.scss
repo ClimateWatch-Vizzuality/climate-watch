@@ -11,6 +11,18 @@
 
 .header {
   position: relative;
+
+  &::after {
+    content: '';
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, rgba(17, 55, 80, 0) 26.91%, rgba(17, 55, 80, 0.305344) 42.96%, #113750 79.48%);
+    pointer-events: none;
+  }
 }
 
 .compareButton {
@@ -44,9 +56,51 @@
 }
 
 .anchorNav {
-  @include row('shrink', $wrap: false);
+  @include row('shrink', $wrap: true);
 
-  overflow: auto;
+  &::before,
+  &::after {
+    content: '';
+    display: inline-block;
+    width: 16px;
+    height: 100%;
+    position: absolute;
+  }
+
+  &::before {
+    z-index: 1;
+    left: 15px;
+    background: linear-gradient(90deg, $header-countries 0%, rgba($white, 0) 100%);
+  }
+
+  &::after {
+    right: 15px;
+    background: linear-gradient(270deg, $header-countries 0%, rgba($white, 0) 100%);
+  }
+
+  > ul {
+    overflow-x: auto;
+    width: 100%;
+    padding: 0 16px;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    > li {
+      display: inline-flex;
+
+      &:first-child {
+        padding-left: 5px;
+      }
+    }
+  }
+
+  &.-is-sticky {
+    &::after {
+      background: linear-gradient(270deg, $header-countries 0%, rgba($white, 0) 100%);
+    }
+  }
 }
 
 .introDescription {

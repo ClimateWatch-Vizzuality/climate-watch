@@ -18,39 +18,38 @@
   }
 
   &::-webkit-scrollbar {
-    display: none;
+    width: 0;
   }
-}
 
-.link {
-  margin-right: 30px;
-  padding: 15px 0;
-  text-decoration: none;
-  position: relative;
-  display: inline-block;
-  flex-shrink: 0;
+  > ul {
+    display: flex;
+    margin: 15px 0 0;
 
-  &:last-child {
-    padding-right: $gutter-padding;
+    &::-webkit-scrollbar {
+      width: 0;
+    }
 
-    @media #{$tablet-landscape} {
-      padding-right: 0;
+    > li {
+      display: inline-flex;
+      flex-shrink: 0;
+
+      &:not(:first-child) {
+        padding-left: $gutter-padding;
+      }
+
+      &:last-child {
+        padding-right: $gutter-padding;
+        @media #{$tablet-landscape} {
+          padding-right: 0;
+        }
+      }
     }
   }
 }
 
-.gradient {
-  z-index: $z-index-under-loader;
-  width: 100%;
-  height: 50px;
-  pointer-events: none;
-  position: absolute;
-  display: block;
-  right: 0;
-  bottom: 0;
-  left: 0;
-
-  @media #{$tablet-landscape} {
-    display: none;
-  }
+.link {
+  position: relative;
+  display: inline-block;
+  padding-bottom: 15px;
+  text-decoration: none;
 }
