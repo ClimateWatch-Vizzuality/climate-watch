@@ -6,6 +6,7 @@ import GHGCountryEmissions from 'components/country/country-ghg';
 import EmissionDrivers from 'components/country/country-emission-drivers';
 import NDCSDGLinkages from 'components/country/country-ndc-sdg-linkages';
 import ClimateVulnerability from 'components/country/country-climate-vulnerability';
+import NDCAdaptation from 'components/country/country-ndc-adaptation';
 import CountryNdcOverview from 'components/country/country-ndc-overview';
 import CountryLtsOverview from 'components/country/country-lts-overview';
 import LawsAndPolicies from 'components/country/laws-and-policies';
@@ -54,6 +55,12 @@ const routes = [
     label: 'Climate Vulnerability and Readiness',
     anchor: true,
     component: ClimateVulnerability
+  },
+  {
+    hash: 'ndc-adaptation',
+    label: 'NDC Adaptation plans',
+    anchor: true,
+    component: NDCAdaptation
   },
   process.env.FEATURE_COUNTRY_CHANGES !== 'true' && {
     hash: 'ndc-content-overview',

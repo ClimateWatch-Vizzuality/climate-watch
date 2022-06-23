@@ -23,7 +23,8 @@ class SDGCard extends PureComponent {
       tooltipId,
       setTooltipData,
       iso,
-      activeSector
+      activeSector,
+      disableIcon
     } = this.props;
     const cardStyle = cx(
       styles.card,
@@ -66,7 +67,7 @@ class SDGCard extends PureComponent {
         {(!indicators || square) && (
           <div className={styles.number}>{goal.number}</div>
         )}
-        {goal.id && (
+        {goal.id && !disableIcon && (
           <Icon
             icon={icons[`sdg${goal.number}`]}
             className={cx(styles.icon, styles[`icon${goal.number}`])}
@@ -86,6 +87,7 @@ SDGCard.propTypes = {
   hover: PropTypes.bool,
   indicators: PropTypes.bool,
   square: PropTypes.bool,
+  disableIcon: PropTypes.bool,
   tooltipId: PropTypes.string,
   setTooltipData: PropTypes.func,
   className: PropTypes.string,
@@ -97,6 +99,7 @@ SDGCard.propTypes = {
 
 SDGCard.defaultProps = {
   square: false,
+  disableIcon: false,
   hover: false,
   onClick: () => {},
   onMouseEnter: () => {}
