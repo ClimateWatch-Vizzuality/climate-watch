@@ -6,6 +6,8 @@ module Api
         attribute :year
         attribute :value
         attribute :label
+        attribute :document_slug
+        attribute :latest
 
         def location
           object.location.iso_code3
@@ -21,6 +23,13 @@ module Api
           elsif object.first_value.present? && object.second_value.present?
             [object.first_value, object.second_value]
           end
+        end
+
+        def latest
+          return unless instance_options[:latest_submissions].present?
+
+          instance_options[:latest_submissions][object.location]&.first&.document&.slug ==
+            object.document_slug
         end
       end
     end

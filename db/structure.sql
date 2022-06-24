@@ -5,22 +5,9 @@ SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SELECT pg_catalog.set_config('search_path', '', false);
 SET check_function_bodies = false;
+SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
-
---
--- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: -
---
-
-CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
-
-
---
--- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: -
---
-
-COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
-
 
 --
 -- Name: emissions_filter_by_year_range(jsonb, integer, integer); Type: FUNCTION; Schema: public; Owner: -
@@ -42,8 +29,6 @@ CREATE FUNCTION public.emissions_filter_by_year_range(emissions jsonb, start_yea
 
 
 SET default_tablespace = '';
-
-SET default_with_oids = false;
 
 --
 -- Name: active_storage_attachments; Type: TABLE; Schema: public; Owner: -
@@ -963,6 +948,69 @@ ALTER SEQUENCE public.historical_emissions_sectors_id_seq OWNED BY public.histor
 
 
 --
+-- Name: indc_adaptation_action_sectors; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.indc_adaptation_action_sectors (
+    id bigint NOT NULL,
+    adaptation_action_id bigint NOT NULL,
+    sector_id bigint NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: indc_adaptation_action_sectors_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.indc_adaptation_action_sectors_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: indc_adaptation_action_sectors_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.indc_adaptation_action_sectors_id_seq OWNED BY public.indc_adaptation_action_sectors.id;
+
+
+--
+-- Name: indc_adaptation_actions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.indc_adaptation_actions (
+    id bigint NOT NULL,
+    location_id bigint NOT NULL,
+    document_id bigint NOT NULL,
+    title text NOT NULL
+);
+
+
+--
+-- Name: indc_adaptation_actions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.indc_adaptation_actions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: indc_adaptation_actions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.indc_adaptation_actions_id_seq OWNED BY public.indc_adaptation_actions.id;
+
+
+--
 -- Name: indc_categories; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1177,7 +1225,8 @@ CREATE TABLE public.indc_sectors (
     parent_id bigint,
     name text NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    sector_type character varying
 );
 
 
@@ -1707,7 +1756,8 @@ CREATE TABLE public.quantification_values (
     first_value double precision,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    second_value double precision
+    second_value double precision,
+    document_slug character varying
 );
 
 
@@ -2482,6 +2532,20 @@ ALTER TABLE ONLY public.historical_emissions_sectors ALTER COLUMN id SET DEFAULT
 
 
 --
+-- Name: indc_adaptation_action_sectors id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.indc_adaptation_action_sectors ALTER COLUMN id SET DEFAULT nextval('public.indc_adaptation_action_sectors_id_seq'::regclass);
+
+
+--
+-- Name: indc_adaptation_actions id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.indc_adaptation_actions ALTER COLUMN id SET DEFAULT nextval('public.indc_adaptation_actions_id_seq'::regclass);
+
+
+--
 -- Name: indc_categories id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -3032,6 +3096,22 @@ ALTER TABLE ONLY public.historical_emissions_sector_aggregations
 
 ALTER TABLE ONLY public.historical_emissions_sectors
     ADD CONSTRAINT historical_emissions_sectors_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: indc_adaptation_action_sectors indc_adaptation_action_sectors_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.indc_adaptation_action_sectors
+    ADD CONSTRAINT indc_adaptation_action_sectors_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: indc_adaptation_actions indc_adaptation_actions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.indc_adaptation_actions
+    ADD CONSTRAINT indc_adaptation_actions_pkey PRIMARY KEY (id);
 
 
 --
@@ -3623,6 +3703,41 @@ CREATE INDEX index_historical_emissions_sectors_on_parent_id ON public.historica
 
 
 --
+-- Name: index_indc_adapt_action_sectors_on_action_id_and_sector_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_indc_adapt_action_sectors_on_action_id_and_sector_id ON public.indc_adaptation_action_sectors USING btree (adaptation_action_id, sector_id);
+
+
+--
+-- Name: index_indc_adaptation_action_sectors_on_adaptation_action_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_indc_adaptation_action_sectors_on_adaptation_action_id ON public.indc_adaptation_action_sectors USING btree (adaptation_action_id);
+
+
+--
+-- Name: index_indc_adaptation_action_sectors_on_sector_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_indc_adaptation_action_sectors_on_sector_id ON public.indc_adaptation_action_sectors USING btree (sector_id);
+
+
+--
+-- Name: index_indc_adaptation_actions_on_document_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_indc_adaptation_actions_on_document_id ON public.indc_adaptation_actions USING btree (document_id);
+
+
+--
+-- Name: index_indc_adaptation_actions_on_location_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_indc_adaptation_actions_on_location_id ON public.indc_adaptation_actions USING btree (location_id);
+
+
+--
 -- Name: index_indc_categories_on_category_type_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -4061,6 +4176,22 @@ ALTER TABLE ONLY public.historical_emissions_records
 
 
 --
+-- Name: indc_adaptation_action_sectors fk_rails_1070e8099a; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.indc_adaptation_action_sectors
+    ADD CONSTRAINT fk_rails_1070e8099a FOREIGN KEY (adaptation_action_id) REFERENCES public.indc_adaptation_actions(id) ON DELETE CASCADE;
+
+
+--
+-- Name: indc_adaptation_action_sectors fk_rails_1535708fb8; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.indc_adaptation_action_sectors
+    ADD CONSTRAINT fk_rails_1535708fb8 FOREIGN KEY (sector_id) REFERENCES public.indc_sectors(id) ON DELETE CASCADE;
+
+
+--
 -- Name: indc_sectors fk_rails_172dcdfbe0; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4189,6 +4320,14 @@ ALTER TABLE ONLY public.indc_values
 
 
 --
+-- Name: indc_adaptation_actions fk_rails_62598130fc; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.indc_adaptation_actions
+    ADD CONSTRAINT fk_rails_62598130fc FOREIGN KEY (location_id) REFERENCES public.locations(id) ON DELETE CASCADE;
+
+
+--
 -- Name: indc_values fk_rails_78b5d1bae9; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4226,6 +4365,14 @@ ALTER TABLE ONLY public.indc_indicators_categories
 
 ALTER TABLE ONLY public.worker_logs
     ADD CONSTRAINT fk_rails_81b253936f FOREIGN KEY (section_id) REFERENCES public.sections(id);
+
+
+--
+-- Name: indc_adaptation_actions fk_rails_8651836be1; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.indc_adaptation_actions
+    ADD CONSTRAINT fk_rails_8651836be1 FOREIGN KEY (document_id) REFERENCES public.indc_documents(id) ON DELETE CASCADE;
 
 
 --
@@ -4642,7 +4789,10 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210916121403'),
 ('20211109130022'),
 ('20211109130329'),
+('20220420150714'),
+('20220420152331'),
 ('20220519084239'),
-('20220520090514');
+('20220520090514'),
+('20220527093456');
 
 

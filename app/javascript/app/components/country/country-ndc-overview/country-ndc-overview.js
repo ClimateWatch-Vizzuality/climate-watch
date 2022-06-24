@@ -12,9 +12,12 @@ import { actions as fetchActions } from 'components/ndcs/ndcs-country-accordion'
 import CountryNdcOverviewComponent from './country-ndc-overview-component';
 import {
   getValuesGrouped,
-  getSelectedDocument,
+  getNdcsDocument,
+  getLtsDocument,
   getSectors,
-  getCountryDocuments
+  getCountryDocuments,
+  getCountryName,
+  getCountryNdcsData
 } from './country-ndc-overview-selectors';
 
 const mapStateToProps = (state, { location, match }) => {
@@ -26,11 +29,16 @@ const mapStateToProps = (state, { location, match }) => {
     iso,
     isNdcp,
     isEmbed,
-    selectedDocument: getSelectedDocument(state, { location, iso }),
-    values: getValuesGrouped(state, { location, iso }),
+    ndcsDocument: getNdcsDocument(state, { location, iso }),
+    ltsDocument: getLtsDocument(state, { location, iso }),
+    values:
+      process.env.FEATURE_COUNTRY_CHANGES === 'true'
+        ? getCountryNdcsData(state, { iso })
+        : getValuesGrouped(state, { location, iso }),
     loading: state.ndcContentOverview.loading,
     sectors: getSectors(state, { location, iso }),
-    fetched: !isEmpty(getCountryDocuments(state, { location, iso }))
+    fetched: !isEmpty(getCountryDocuments(state, { location, iso })),
+    countryName: getCountryName(state, { iso })
   };
 };
 

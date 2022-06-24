@@ -71,9 +71,9 @@ function CountryGhg(props) {
                   {"'"}s greenhouse gas emissions and emission targets?{' '}
                 </h3>
                 <p className={styles.description}>
-                  The default data source is CAIT. For non-annex I countries,
-                  national inventory data can be found in the UNFCCC timeline on
-                  the top of the page.
+                  The default data source is Climate Watch. For non-annex I
+                  countries, national inventory data can be found in the UNFCCC
+                  timeline on the top of the page.
                 </p>
               </div>
               <div className={styles.buttons}>

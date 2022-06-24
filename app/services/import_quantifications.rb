@@ -26,9 +26,11 @@ class ImportQuantifications
     @csv.each do |row|
       location = Location.find_by(iso_code3: row[:iso])
       label = Quantification::Label.find_or_create_by!(name: row[:label])
+
       if location
         if row[:range] == 'Yes'
           value = Quantification::Value.find_or_initialize_by(
+            document_slug: row[:document]&.parameterize&.gsub('-', '_'),
             location: location,
             label: label,
             year: row[:year],
@@ -40,6 +42,7 @@ class ImportQuantifications
           value.update!(first_value: range.first, second_value: range.second)
         else
           Quantification::Value.create!(
+            document_slug: row[:document]&.parameterize&.gsub('-', '_'),
             location: location,
             label: label,
             year: row[:year],

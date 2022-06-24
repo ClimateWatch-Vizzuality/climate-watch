@@ -78,7 +78,9 @@ function Country(props) {
           'food_intensity',
           'food_intensity_rank',
           'electricity_consumption',
-          'electricity_consumption_rank'
+          'electricity_consumption_rank',
+          'employment_by_technology',
+          'cost_by_technology'
         ]}
         locations={country && [country.iso]}
       />

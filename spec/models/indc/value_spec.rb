@@ -11,6 +11,7 @@
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
 #  document_id  :bigint
+#  group_index  :integer
 #
 require 'rails_helper'
 

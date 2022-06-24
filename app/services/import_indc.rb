@@ -65,48 +65,64 @@ class ImportIndc
       return
     end
     count = Indc::Value.count
-    puts "We had #{Indc::Value.count} indc values before creating subsector indicators and values"
-    locations = Location.where(id: Indc::Value.select(:location_id).distinct.pluck(:location_id)).
+    puts "We had #{count} indc values before creating subsector indicators and values"
+    locations = Location.
+      where(id: Indc::Value.select(:location_id).distinct.pluck(:location_id)).
       order(:wri_standard_name)
+    values = []
     [['sectoral_mitigation_measures', 'm'], ['sectoral_adaptation_measures', 'a']].each do |slug, prefix|
       sectoral_cat = Indc::Category.find_by(category_type_id: map_type, slug: slug)
 
       order = sectoral_cat.indicators.maximum(:order) || 0
-      Indc::Sector.where.not(parent_id: nil).joins(values: :indicator).
-        where('indc_indicators.slug ilike ?', "#{prefix.upcase}_%").distinct.each do |sector|
+      sectors = Indc::Sector.
+        joins(values: :indicator).
+        where.not(parent_id: nil).
+        where('indc_indicators.slug ilike ?', "#{prefix.upcase}_%").
+        distinct
+
+      measure_specified = Indc::Value.
+        joins(:indicator, :location, :document).
+        where(sector_id: sectors.ids).
+        where.not("value ilike 'Not Available'").
+        where('indc_indicators.slug ilike ?', "#{prefix.upcase}_%").
+        where(indc_documents: {is_ndc: true}).
+        group(:sector_id, :location_id, :document_id).
+        pluck(:sector_id, :location_id, :document_id).
+        group_by(&:first).
+        transform_values { |v| v.group_by(&:second).transform_values { |vv| vv.group_by(&:third) } }
+      ndc_submissions = Indc::Submission.
+        group(:location_id, :document_id).
+        pluck(:location_id, :document_id).
+        group_by(&:first).
+        transform_values { |v| v.group_by(&:second) }
+
+      sectors.each do |sector|
         sector_name = sector.name == sector.parent.name ? "#{sector.name} Subsector" : sector.name
         ind_slug = [prefix, sector_name.parameterize.gsub('-', '_'), 'auto'].join('_')
         next if Indc::Indicator.find_by(slug: ind_slug, source_id: source)
 
+        order += 1
         indicator = Indc::Indicator.create!(source_id: source,
                                             slug: ind_slug,
                                             name: sector_name,
-                                            description: "Created automatically",
+                                            description: 'Created automatically',
+                                            order: order,
                                             multiple_versions: true)
         indicator.categories << sectoral_cat
-        if indicator.order.nil?
-          order += 1
-          indicator.order = order
-          indicator.save
-        end
+
         label_yes = Indc::Label.create!(indicator_id: indicator.id,
                                         index: 1,
                                         value: 'Sectoral Measure Specified')
         label_no = Indc::Label.create!(indicator_id: indicator.id,
                                        index: 2,
                                        value: 'No Sectoral Measure Specified')
-        # not sure if this label should be created or not
-        label_no_doc = Indc::Label.create!(indicator_id: indicator.id,
-                                           index: -2,
-                                           value: 'No Document Submitted')
 
-        values = []
-
+        documents = Indc::Document.where(is_ndc: true)
         locations.each do |loc|
-          Indc::Document.where(slug: 'first_ndc', is_ndc: true).each do |doc|
-            if sector.values.where(location_id: loc.id, document_id: doc.id).
-                 where.not("value ilike 'Not Available'").
-                 joins(:indicator).where("indc_indicators.slug ilike ?", "#{prefix.upcase}_%").any?
+          documents.each do |doc|
+            next unless ndc_submissions.dig(loc.id, doc.id).present?
+
+            if measure_specified.dig(sector.id, loc.id, doc.id).present?
               values << Indc::Value.new(location_id: loc.id,
                                         label_id: label_yes.id,
                                         value: 'Sectoral Measure Specified',
@@ -123,16 +139,17 @@ class ImportIndc
             end
           end
         end
-
-        Indc::Value.import!(values)
       end
     end
+
+    Indc::Value.import! values
     puts "We added #{Indc::Value.count - count} new values for subsector indicators"
   end
 
   private
 
   def cleanup
+    Indc::AdaptationAction.delete_all
     Indc::Value.delete_all
     Indc::Category.delete_all
     Indc::CategoryType.delete_all
@@ -489,11 +506,13 @@ class ImportIndc
     @sectors_index = {}
     sectors.uniq.each do |d|
       parent = Indc::Sector.find_or_create_by(
-        name: d[:sector]
+        name: d[:sector],
+        sector_type: 'lts'
       )
       sector = Indc::Sector.find_or_create_by(
         name: d[:subsector],
-        parent: parent
+        parent: parent,
+        sector_type: 'lts'
       )
 
       @sectors_index[d[:subsector]] = sector
@@ -533,11 +552,13 @@ class ImportIndc
     @sectors_index = {}
     sectors.uniq.each do |d|
       parent = Indc::Sector.find_or_create_by(
-        name: d[:sector]
+        name: d[:sector],
+        sector_type: 'wb'
       )
       sector = Indc::Sector.find_or_create_by(
         name: d[:subsector],
-        parent: parent
+        parent: parent,
+        sector_type: 'wb'
       )
 
       @sectors_index[d[:subsector]] = sector
@@ -547,7 +568,11 @@ class ImportIndc
   def import_values_wb
     indicator_index = indicators_hash_by_source('WB')
     values = []
-    value_group_index = {}
+    @value_group_index = {}
+    @adaptation_actions = []
+    @current_action = nil
+    @current_adapt_sector = nil
+
     @wb_sectoral_data.each do |r|
       location = @locations_by_iso2[r[:country]]
       unless location
@@ -563,20 +588,69 @@ class ImportIndc
 
       next unless r[:responsetext]
 
-      group_indicator = indicator.group_indicator_slug || indicator.slug
-      group_key = r.slice(:country, :document, :sector, :subsector).
-        values.
-        push(group_indicator).
-        join('_')
-      value_group_index[group_key] ||= 0
-      value_group_index[group_key] += 1 if group_indicator == indicator.slug
-      group_index = value_group_index[group_key]
+      parse_adaptation_actions(r, location)
+      group_index = values_apply_group_index(r, indicator)
 
       values << Indc::Value.new(
         value_wb_attributes(r, location, indicator, nil, group_index)
       )
     end
+
+    import_adaptation_actions!
     Indc::Value.import!(values)
+  end
+
+  def import_adaptation_actions!
+    if @current_action.present?
+      if @current_adapt_sector.present? &&
+          !@current_action.adaptation_action_sectors.map(&:sector_id).include?(@current_adapt_sector.id)
+        @current_action.adaptation_action_sectors.build(sector_id: @current_adapt_sector.id)
+      end
+      @adaptation_actions << @current_action
+    end
+
+    Indc::AdaptationAction.import!(@adaptation_actions, recursive: true)
+  end
+
+  def parse_adaptation_actions(row, location)
+    if row[:questioncode] == 'ad_sec_action'
+      @adaptation_actions << @current_action if @current_action.present?
+      doc_slug ||= row[:document]&.parameterize&.gsub('-', '_')
+      @current_action = Indc::AdaptationAction.new(
+        title: row[:responsetext],
+        document_id: @documents_cache[doc_slug].id,
+        location: location
+      )
+      @current_action.adaptation_action_sectors.build(sector_id: @sectors_index[row[:subsector]].id)
+    end
+    return if row[:responsetext].downcase == 'not available'
+
+    if row[:questioncode].downcase.start_with?('gca_sector')
+      @current_adapt_sector = Indc::Sector.find_or_create_by!(
+        name: row[:responsetext], sector_type: 'adapt_now'
+      )
+    elsif row[:questioncode].downcase.start_with?('gca_subsector')
+      @current_adapt_sector = Indc::Sector.find_or_create_by!(
+        name: row[:responsetext], parent_id: @current_adapt_sector.id, sector_type: 'adapt_now'
+      )
+    elsif @current_action.present? && @current_adapt_sector.present?
+      unless @current_action.adaptation_action_sectors.map(&:sector_id).include?(@current_adapt_sector.id)
+        @current_action.adaptation_action_sectors.build(sector_id: @current_adapt_sector.id)
+      end
+      @current_adapt_sector = nil
+    end
+  end
+
+  def values_apply_group_index(row, indicator)
+    group_indicator = indicator.group_indicator_slug || indicator.slug
+    group_key = row.slice(:country, :document, :sector, :subsector).
+      values.
+      push(group_indicator).
+      join('_')
+    @value_group_index ||= {}
+    @value_group_index[group_key] ||= 0
+    @value_group_index[group_key] += 1 if group_indicator == indicator.slug
+    @value_group_index[group_key]
   end
 
   def import_documents
