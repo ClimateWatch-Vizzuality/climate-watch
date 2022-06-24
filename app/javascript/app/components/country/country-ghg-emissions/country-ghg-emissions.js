@@ -27,14 +27,15 @@ import {
   getChartDomain,
   getChartConfig,
   getSelectorDefaults,
-  getQuantificationsData,
   getQuantificationsTagsConfig,
   getFilterOptions,
   getFiltersSelected,
   getDownloadLink,
   getPngSelectionSubtitle,
   getDataZoomYears,
-  getDataZoomData
+  getDataZoomData,
+  getQuantificationsData,
+  getShowPreviousTargets
 } from './country-ghg-emissions-selectors';
 
 const actions = { ...ownActions, ...modalActions, ...pngModalActions };
@@ -77,7 +78,8 @@ const mapStateToProps = (state, { location, match }) => {
     selectorDefaults: getSelectorDefaults(countryGhg),
     downloadLink: getDownloadLink(countryGhg),
     dataZoomYears: getDataZoomYears(countryGhg),
-    dataZoomData: getDataZoomData(countryGhg)
+    dataZoomData: getDataZoomData(countryGhg),
+    showPreviousTargets: getShowPreviousTargets(countryGhg)
   };
 };
 
@@ -124,6 +126,13 @@ function CountryGhgEmissionsContainer(props) {
         value: max
       }
     ]);
+  };
+
+  const handleShowPreviousTargets = showPreviousTargets => {
+    updateUrlParam({
+      name: 'show_previous_targets',
+      value: showPreviousTargets
+    });
   };
 
   const [updatedData, setUpdatedData] = useState(data);
@@ -235,6 +244,7 @@ function CountryGhgEmissionsContainer(props) {
     pngDownloadId,
     handleSourceChange,
     handleCalculationChange,
+    handleShowPreviousTargets,
     handleInfoClick,
     handleAnalyticsClick,
     handlePngDownloadModal,

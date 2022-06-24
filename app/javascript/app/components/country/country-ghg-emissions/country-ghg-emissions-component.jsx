@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import Dropdown from 'components/dropdown';
@@ -37,6 +37,8 @@ const CountryGhgEmissions = props => {
     calculations,
     handleSourceChange,
     handleCalculationChange,
+    handleShowPreviousTargets,
+    showPreviousTargets,
     calculationSelected,
     sourceSelected,
     iso,
@@ -49,8 +51,6 @@ const CountryGhgEmissions = props => {
     pngSelectionSubtitle,
     pngDownloadId
   } = props;
-
-  const [previousTargetsChecked, setPreviousTargetsChecked] = useState(false);
 
   const renderFilterDropdowns = () => [
     <Dropdown
@@ -182,9 +182,9 @@ const CountryGhgEmissions = props => {
       <CheckInput
         id="toggle-targets"
         className={styles.checkbox}
-        checked={previousTargetsChecked}
+        checked={showPreviousTargets}
         label="Show previous targets"
-        onChange={() => setPreviousTargetsChecked(!previousTargetsChecked)}
+        onChange={() => handleShowPreviousTargets(!showPreviousTargets)}
         toggleFirst
       />
     </div>
@@ -252,6 +252,8 @@ CountryGhgEmissions.propTypes = {
   handleYearHover: PropTypes.func,
   handlePngDownloadModal: PropTypes.func,
   handleSourceChange: PropTypes.func.isRequired,
+  handleShowPreviousTargets: PropTypes.func.isRequired,
+  showPreviousTargets: PropTypes.bool,
   handleCalculationChange: PropTypes.func.isRequired,
   pngSelectionSubtitle: PropTypes.string,
   downloadLink: PropTypes.string,
