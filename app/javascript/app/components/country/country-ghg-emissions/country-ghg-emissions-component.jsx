@@ -1,8 +1,9 @@
-import React, { PureComponent } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import Dropdown from 'components/dropdown';
 import ButtonGroup from 'components/button-group';
+import CheckInput from 'components/check-input';
 import Tag from 'components/tag';
 import { CALCULATION_OPTIONS } from 'app/data/constants';
 import Chart from 'components/charts/chart';
@@ -15,79 +16,97 @@ import DataZoom from 'components/data-zoom';
 import quantificationTagTheme from 'styles/themes/tag/quantification-tag.scss';
 import styles from './country-ghg-emissions-styles.scss';
 
-class CountryGhgEmissions extends PureComponent {
-  renderFilterDropdowns() {
-    const {
-      sources,
-      calculations,
-      handleSourceChange,
-      handleCalculationChange,
-      calculationSelected,
-      sourceSelected
-    } = this.props;
-    return [
-      <Dropdown
-        key="filter1"
-        label="Data Source"
-        options={sources}
-        onValueChange={handleSourceChange}
-        value={sourceSelected}
-        hideResetButton
-      />,
-      <Dropdown
-        key="filter2"
-        label="Metric"
-        options={calculations}
-        onValueChange={handleCalculationChange}
-        value={calculationSelected}
-        hideResetButton
-      />
+const FEATURE_COUNTRY_CHANGES = process.env.FEATURE_COUNTRY_CHANGES === 'true';
+
+const CountryGhgEmissions = props => {
+  const {
+    data,
+    domain,
+    quantifications,
+    loading,
+    config,
+    handleYearHover,
+    filtersOptions,
+    filtersSelected,
+    dataZoomData,
+    dataZoomPosition,
+    setDataZoomPosition,
+    setYears,
+    dataZoomYears,
+    sources,
+    calculations,
+    handleSourceChange,
+    handleCalculationChange,
+    calculationSelected,
+    sourceSelected,
+    iso,
+    handleInfoClick,
+    handlePngDownloadModal,
+    isEmbed,
+    downloadLink,
+    quantificationsTagsConfig,
+    countryName,
+    pngSelectionSubtitle,
+    pngDownloadId
+  } = props;
+
+  const [previousTargetsChecked, setPreviousTargetsChecked] = useState(false);
+
+  const renderFilterDropdowns = () => [
+    <Dropdown
+      key="filter1"
+      label="Data Source"
+      options={sources}
+      onValueChange={handleSourceChange}
+      value={sourceSelected}
+      hideResetButton
+    />,
+    <Dropdown
+      key="filter2"
+      label="Metric"
+      options={calculations}
+      onValueChange={handleCalculationChange}
+      value={calculationSelected}
+      hideResetButton
+    />
+  ];
+
+  const renderActionButtons = () => {
+    const notEmbedButtonGroupConfig = [
+      {
+        type: 'info',
+        onClick: handleInfoClick,
+        dataTour: 'countries-06'
+      },
+      {
+        type: 'share',
+        shareUrl: `/embed/countries/${iso}/ghg-emissions`,
+        analyticsGraphName: 'Country/Ghg-emissions',
+        positionRight: true,
+        dataTour: 'countries-05'
+      },
+      {
+        type: 'downloadCombo',
+        dataTour: 'countries-04',
+        options: [
+          {
+            label: 'Save as image (PNG)',
+            action: handlePngDownloadModal
+          },
+          {
+            label: 'Go to data explorer',
+            link: downloadLink,
+            target: '_self'
+          }
+        ]
+      },
+      {
+        type: 'addToUser'
+      }
     ];
-  }
-
-  renderActionButtons() {
-    const {
-      iso,
-      handleInfoClick,
-      handlePngDownloadModal,
-      isEmbed,
-      downloadLink
-    } = this.props;
-
     const buttonGroupConfig = isEmbed
       ? [{ type: 'info', onClick: handleInfoClick }]
-      : [
-        {
-          type: 'info',
-          onClick: handleInfoClick,
-          dataTour: 'countries-06'
-        },
-        {
-          type: 'share',
-          shareUrl: `/embed/countries/${iso}/ghg-emissions`,
-          analyticsGraphName: 'Country/Ghg-emissions',
-          positionRight: true,
-          dataTour: 'countries-05'
-        },
-        {
-          type: 'downloadCombo',
-          dataTour: 'countries-04',
-          options: [
-            {
-              label: 'Save as image (PNG)',
-              action: handlePngDownloadModal
-            },
-            {
-              label: 'Go to data explorer',
-              link: downloadLink,
-              target: '_self'
-            }
-          ]
-        },
-        {
-          type: 'addToUser'
-        }
-      ];
+      : notEmbedButtonGroupConfig;
 
     const buttons = [
       <ButtonGroup
@@ -97,27 +116,9 @@ class CountryGhgEmissions extends PureComponent {
       />
     ];
     return buttons;
-  }
+  };
 
-  renderChart() {
-    const {
-      calculationSelected,
-      data,
-      domain,
-      quantifications,
-      loading,
-      config,
-      handleYearHover,
-      filtersOptions,
-      filtersSelected,
-      sourceSelected,
-      dataZoomData,
-      dataZoomPosition,
-      setDataZoomPosition,
-      setYears,
-      dataZoomYears
-    } = this.props;
-
+  const renderChart = () => {
     const points = !isPageContained ? quantifications : [];
     const useLineChart =
       calculationSelected.value === CALCULATION_OPTIONS.PER_CAPITA.value ||
@@ -156,74 +157,79 @@ class CountryGhgEmissions extends PureComponent {
         }
       />
     );
-  }
+  };
 
-  renderQuantificationsTags() {
-    const { loading, quantificationsTagsConfig } = this.props;
-    return (
-      <ul>
-        {!loading &&
-          !isPageContained &&
-          quantificationsTagsConfig.map(q => (
-            <Tag
-              theme={quantificationTagTheme}
-              key={q.label}
-              canRemove={false}
-              label={q.label}
-              color={q.color}
-              data={q}
-              className={styles.quantificationsTags}
-            />
-          ))}
-      </ul>
-    );
-  }
+  const renderQuantificationsTags = () => (
+    <ul>
+      {!loading &&
+        !isPageContained &&
+        quantificationsTagsConfig.map(q => (
+          <Tag
+            theme={quantificationTagTheme}
+            key={q.label}
+            canRemove={false}
+            label={q.label}
+            color={q.color}
+            data={q}
+            className={styles.quantificationsTags}
+          />
+        ))}
+    </ul>
+  );
 
-  render() {
-    const {
-      isEmbed,
-      countryName,
-      pngSelectionSubtitle,
-      pngDownloadId
-    } = this.props;
-    return (
-      <div className={styles.container}>
-        <EmissionsMetaProvider />
-        <WbCountryDataProvider />
-        <TabletLandscape>
-          <div
-            className={cx(styles.graphControls, {
-              [styles.graphControlsEmbed]: isEmbed
-            })}
-          >
-            {this.renderFilterDropdowns()}
-            {this.renderActionButtons()}
-          </div>
-          {this.renderChart()}
-          {this.renderQuantificationsTags()}
-        </TabletLandscape>
-        <TabletPortraitOnly>
-          <div className={styles.graphControlsSection}>
-            {this.renderFilterDropdowns()}
-          </div>
-          {this.renderChart()}
-          {this.renderQuantificationsTags()}
-          <div className={styles.graphControlsSection}>
-            {this.renderActionButtons()}
-          </div>
-        </TabletPortraitOnly>
-        <ModalPngDownload
-          id={pngDownloadId}
-          title={`GHG Emissions and Emissions Targets in ${countryName}`}
-          selectionSubtitle={pngSelectionSubtitle}
+  const renderTargetsToggle = () => (
+    <div className={styles.targetsToggle}>
+      <CheckInput
+        id="toggle-targets"
+        className={styles.checkbox}
+        checked={previousTargetsChecked}
+        label="Show previous targets"
+        onChange={() => setPreviousTargetsChecked(!previousTargetsChecked)}
+        toggleFirst
+      />
+    </div>
+  );
+
+  return (
+    <div className={styles.container}>
+      <EmissionsMetaProvider />
+      <WbCountryDataProvider />
+      <TabletLandscape>
+        <div
+          className={cx(styles.graphControls, {
+            [styles.graphControlsEmbed]: isEmbed
+          })}
         >
-          {this.renderChart()}
-          {this.renderQuantificationsTags()}
-        </ModalPngDownload>
-      </div>
-    );
-  }
-}
+          {renderFilterDropdowns()}
+          {renderActionButtons()}
+          {FEATURE_COUNTRY_CHANGES && renderTargetsToggle()}
+        </div>
+        {renderChart()}
+        {renderQuantificationsTags()}
+      </TabletLandscape>
+      <TabletPortraitOnly>
+        <div className={styles.graphControlsSection}>
+          {renderFilterDropdowns()}
+        </div>
+        {renderChart()}
+        {renderQuantificationsTags()}
+        <div className={styles.graphControlsSection}>
+          {renderActionButtons()}
+          {FEATURE_COUNTRY_CHANGES && renderTargetsToggle()}
+        </div>
+      </TabletPortraitOnly>
+      <ModalPngDownload
+        id={pngDownloadId}
+        title={`GHG Emissions and Emissions Targets in ${countryName}`}
+        selectionSubtitle={pngSelectionSubtitle}
+      >
+        {renderChart()}
+        {renderQuantificationsTags()}
+        {FEATURE_COUNTRY_CHANGES && renderTargetsToggle()}
+      </ModalPngDownload>
+    </div>
+  );
+};
 
 CountryGhgEmissions.propTypes = {
   isEmbed: PropTypes.bool,
