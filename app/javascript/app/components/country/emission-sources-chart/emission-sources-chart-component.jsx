@@ -1,4 +1,10 @@
-import React, { useRef, useMemo } from 'react';
+import React, {
+  useRef,
+  useState,
+  useMemo,
+  useEffect,
+  useCallback
+} from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import NDCSProvider from 'providers/ndcs-provider';
@@ -23,6 +29,12 @@ function EmissionSourcesChart({
   otherParties,
   countryNames
 }) {
+  const [startPoint, setStartPoint] = useState(0);
+  const [totalWidth, setTotalWidth] = useState(0);
+  const currentCountryEmissionsRef = useRef();
+  const chartRef = useRef();
+  const height = 30;
+
   const getTooltip = (chart, emission, i) => {
     const renderTooltip = content =>
       ReactDOMServer.renderToString(
@@ -62,19 +74,28 @@ function EmissionSourcesChart({
     );
   };
 
-  const height = 30;
-  const chartRef = useRef();
-  const currentCountryEmissionsRef = useRef();
+  const getTotalWidth = useCallback(() => {
+    if (chartRef?.current) {
+      setTotalWidth(chartRef.current.getBoundingClientRect().width);
+    }
+  }, [chartRef && chartRef.current]);
 
-  const totalWidth = useMemo(
-    () =>
-      chartRef &&
-      chartRef.current &&
-      chartRef.current.getBoundingClientRect().width,
-    [chartRef && chartRef.current]
-  );
+  const getStartPoint = useCallback(() => {
+    if (currentCountryEmissionsRef && currentCountryEmissionsRef.current) {
+      const offset = currentCountryEmissionsRef.current.parentElement.getBoundingClientRect()
+        .left;
+      setStartPoint(
+        currentCountryEmissionsRef.current.getBoundingClientRect().left - offset
+      );
+    }
+  }, [currentCountryEmissionsRef && currentCountryEmissionsRef.current]);
 
-  const startPoint = useMemo(() => {
+  const recalculateChart = useCallback(() => {
+    getStartPoint();
+    getTotalWidth();
+  }, []);
+
+  const initialStartPoint = useMemo(() => {
     if (currentCountryEmissionsRef && currentCountryEmissionsRef.current) {
       const offset = currentCountryEmissionsRef.current.parentElement.getBoundingClientRect()
         .left;
@@ -86,6 +107,12 @@ function EmissionSourcesChart({
     return null;
   }, [currentCountryEmissionsRef && currentCountryEmissionsRef.current]);
 
+  const initialTotalWidth = useMemo(() => {
+    if (chartRef?.current) {
+      setTotalWidth(chartRef.current.getBoundingClientRect().width);
+    }
+  }, [chartRef && chartRef.current]);
+
   const width = useMemo(() => {
     if (totalWidth && emissions) {
       const isoEmissions = emissions.find(e => e.iso === iso);
@@ -94,6 +121,22 @@ function EmissionSourcesChart({
     }
     return null;
   }, [totalWidth, emissions]);
+
+  useEffect(() => {
+    if (initialStartPoint) setStartPoint(initialStartPoint);
+  }, [initialStartPoint]);
+
+  useEffect(() => {
+    if (initialTotalWidth) setTotalWidth(initialTotalWidth);
+  }, [initialTotalWidth]);
+
+  useEffect(() => {
+    window.addEventListener('resize', recalculateChart);
+
+    return () => {
+      window.removeEventListener('resize', recalculateChart);
+    };
+  }, []);
 
   return (
     <div className={styles.emissionSources} ref={chartRef}>
