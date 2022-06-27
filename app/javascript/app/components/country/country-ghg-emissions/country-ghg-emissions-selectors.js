@@ -69,6 +69,11 @@ export const getDataZoomYears = createSelector(getSearch, search => ({
   max: search && search.end_year
 }));
 
+export const getShowPreviousTargets = createSelector(
+  getSearch,
+  search => search && search.show_previous_targets === 'true'
+);
+
 export const getCountryName = createSelector(
   [getCountry],
   (country = {}) => country.wri_standard_name || ''
@@ -214,27 +219,32 @@ export const filterData = createSelector(
 );
 
 export const getQuantificationsData = createSelector(
-  getQuantifications,
-  quantifications => {
+  [getShowPreviousTargets, getQuantifications],
+  (showPreviousTargets, quantifications) => {
     if (!quantifications) return [];
     const qGrouped = groupBy(quantifications, 'year');
-    const qParsed = [];
+    let qParsed = [];
+
     // Grouping the same year and value to concat the labels
     Object.keys(qGrouped).forEach(function (year) {
       const values = groupBy(qGrouped[year], 'value');
-      Object.keys(values).forEach(function (value) {
+      Object.keys(values).forEach(value => {
         let valuesParsed = {};
-        values[value].forEach(function (v, index) {
+
+        values[value].forEach((v, index) => {
           if (index === 0) {
             const isRange = isArray(v.value);
             const yValue = isRange
               ? v.value.map(y => y * DATA_SCALE).sort()
               : v.value * DATA_SCALE;
             valuesParsed = {
+              ...valuesParsed,
               x: v.year,
               y: v.value !== null && v.value !== undefined ? yValue : null,
               label: v.label,
-              isRange
+              isRange,
+              latest: v.latest,
+              document_slug: v.document_slug
             };
           } else {
             valuesParsed.label += `, ${v.label}`;
@@ -243,14 +253,19 @@ export const getQuantificationsData = createSelector(
         qParsed.push(valuesParsed);
       });
     });
-    const netZeroPoint = {
-      x: 2050,
-      y: 0,
-      label: QUANTIFICATIONS_CONFIG.net_zero.label,
-      isRange: false
-    };
 
     if (FEATURE_COUNTRY_CHANGES) {
+      if (!showPreviousTargets) {
+        qParsed = qParsed.filter(q => q.latest || q.document_slug === 'lts');
+      }
+
+      const netZeroPoint = {
+        x: 2050,
+        y: 0,
+        label: QUANTIFICATIONS_CONFIG.net_zero.label,
+        isRange: false
+      };
+
       qParsed.push(netZeroPoint);
     }
 

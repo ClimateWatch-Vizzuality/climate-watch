@@ -22,26 +22,19 @@ const fetchCountryGhgEmissionsData = createThunkAction(
         if (response.ok) return response.json();
         throw Error(response.statusText);
       }),
-      fetch(
-        `/api/v1/quantifications?location=${filters.location}`
-      ).then(response => {
-        if (response.ok) return response.json();
-        throw Error(response.statusText);
-      })
+      fetch(`/api/v1/quantifications?location=${filters.location}`).then(
+        response => {
+          if (response.ok) return response.json();
+          throw Error(response.statusText);
+        }
+      )
     ];
 
     Promise.all(promises)
       .then(data => {
         let quantifications;
         if (data[1].length) {
-          quantifications = sortBy(
-            data[1].map(quantification => ({
-              value: quantification.value,
-              label: quantification.label,
-              year: quantification.year
-            })),
-            'year'
-          );
+          quantifications = sortBy(data[1], 'year');
         }
         dispatch(
           fetchCountryGhgEmissionsDataReady({ data: data[0], quantifications })
