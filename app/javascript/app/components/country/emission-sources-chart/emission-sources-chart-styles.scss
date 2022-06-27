@@ -29,6 +29,10 @@
       text-align: center;
       left: 50%;
       transform: translate(-50%, -50%);
+
+      &.fitRight {
+        transform: translate(-100%, -50%);
+      }
     }
   }
 }

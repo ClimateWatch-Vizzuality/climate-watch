@@ -78,40 +78,38 @@ function EmissionSourcesChart({
     if (chartRef?.current) {
       setTotalWidth(chartRef.current.getBoundingClientRect().width);
     }
-  }, [chartRef && chartRef.current]);
+  }, [chartRef && chartRef.current, iso]);
+
+  const calculateStartPoint = currentCountryRef => {
+    const offset = currentCountryRef.current.parentElement.getBoundingClientRect()
+      .left;
+    return (
+      currentCountryEmissionsRef.current.getBoundingClientRect().left - offset
+    );
+  };
 
   const getStartPoint = useCallback(() => {
     if (currentCountryEmissionsRef && currentCountryEmissionsRef.current) {
-      const offset = currentCountryEmissionsRef.current.parentElement.getBoundingClientRect()
-        .left;
-      setStartPoint(
-        currentCountryEmissionsRef.current.getBoundingClientRect().left - offset
-      );
+      setStartPoint(calculateStartPoint(currentCountryEmissionsRef));
     }
-  }, [currentCountryEmissionsRef && currentCountryEmissionsRef.current]);
+  }, [currentCountryEmissionsRef && currentCountryEmissionsRef.current, iso]);
 
   const recalculateChart = useCallback(() => {
     getStartPoint();
     getTotalWidth();
   }, []);
 
-  const initialStartPoint = useMemo(() => {
+  useEffect(() => {
     if (currentCountryEmissionsRef && currentCountryEmissionsRef.current) {
-      const offset = currentCountryEmissionsRef.current.parentElement.getBoundingClientRect()
-        .left;
-      return (
-        currentCountryEmissionsRef.current.getBoundingClientRect().left - offset
-      );
+      setStartPoint(calculateStartPoint(currentCountryEmissionsRef));
     }
+  }, [currentCountryEmissionsRef && currentCountryEmissionsRef.current, iso]);
 
-    return null;
-  }, [currentCountryEmissionsRef && currentCountryEmissionsRef.current]);
-
-  const initialTotalWidth = useMemo(() => {
+  useEffect(() => {
     if (chartRef?.current) {
       setTotalWidth(chartRef.current.getBoundingClientRect().width);
     }
-  }, [chartRef && chartRef.current]);
+  }, [chartRef && chartRef.current, iso]);
 
   const width = useMemo(() => {
     if (totalWidth && emissions) {
@@ -120,15 +118,7 @@ function EmissionSourcesChart({
       return isoPercentage && (totalWidth * isoPercentage) / 100;
     }
     return null;
-  }, [totalWidth, emissions]);
-
-  useEffect(() => {
-    if (initialStartPoint) setStartPoint(initialStartPoint);
-  }, [initialStartPoint]);
-
-  useEffect(() => {
-    if (initialTotalWidth) setTotalWidth(initialTotalWidth);
-  }, [initialTotalWidth]);
+  }, [totalWidth, emissions, iso]);
 
   useEffect(() => {
     window.addEventListener('resize', recalculateChart);
@@ -144,16 +134,26 @@ function EmissionSourcesChart({
         {emissions &&
           emissions.map((e, i) => (
             <span
+              key={`country-span-${e.iso}`}
               className={cx(styles.emissionCountry, {
                 [styles.currentCountry]: iso === e.iso
               })}
-              style={{ width: `${e.percentage}%`, backgroundColor: e.color }}
+              style={{
+                width: `${e.percentage}%`,
+                backgroundColor: e.color
+              }}
               data-tip={getTooltip('emissions', e, i)}
               data-for="emissions-chart-tooltip"
-              {...(iso === e.iso && { ref: currentCountryEmissionsRef })}
+              {...(iso === e.iso && {
+                ref: currentCountryEmissionsRef
+              })}
             >
               {iso === e.iso && (
-                <span className={styles.currentCountryText}>
+                <span
+                  className={cx(styles.currentCountryText, {
+                    [styles.fitRight]: i > 120
+                  })}
+                >
                   {countryNames[iso]} is the World{"'"}s {getOrdinal(i + 1)}{' '}
                   largest emitter, with a total share of {e.percentage}%{' '}
                 </span>
@@ -169,13 +169,10 @@ function EmissionSourcesChart({
             height={height}
             xmlns="http://www.w3.org/2000/svg"
           >
-            <polygon
-              points={`
-                ${startPoint}, 0
-                ${width + startPoint}, 0
-                ${totalWidth}, ${height}
-                0, ${height}
-              `}
+            <path
+              d={`M${startPoint} 0 Q ${startPoint} ${height} 0 ${height} L 0 ${height} ${totalWidth} ${height} M${totalWidth} ${height} Q ${startPoint +
+                width} ${height} ${startPoint + width} 0 L ${startPoint +
+                width} 0 ${startPoint} 0 Z`}
               fill="#e8ecf5"
             />
           </svg>
