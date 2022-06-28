@@ -91,6 +91,11 @@
     display: flex;
   }
 
+  .sectorTitleContainer {
+    display: flex;
+    flex-direction: column;
+  }
+
   .infoContainer {
     margin: 2px 5px 0;
   }

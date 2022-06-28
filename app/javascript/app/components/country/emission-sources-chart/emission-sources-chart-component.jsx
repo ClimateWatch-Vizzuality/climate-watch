@@ -204,13 +204,15 @@ function EmissionSourcesChart({
                       <Icon icon={infoIcon} className={styles.infoIcon} />
                     </div>
                     <ReactTooltip id="negative-emissions-tooltip" />
-                    <div
-                      className={styles.sectorTitle}
-                      style={{ color: e.color }}
-                    >
-                      {e.sector}
+                    <div className={styles.sectorTitleContainer}>
+                      <div
+                        className={styles.sectorTitle}
+                        style={{ color: e.color }}
+                      >
+                        {e.sector}
+                      </div>
+                      <div>{Math.round(e.emission * 100) / 100} MtCO2e</div>
                     </div>
-                    <div>{Math.round(e.emission * 100) / 100} MtCO2e</div>
                   </div>
                 </span>
               )}
@@ -262,15 +264,12 @@ function EmissionSourcesChart({
             xmlns="http://www.w3.org/2000/svg"
           >
             <path
-              d={`M${startPoint} 0 Q ${startPoint} ${height} 0 ${height}
-                  L 0 ${height} ${
-            hasNegativeEmissions ? positiveWidth : totalWidth
-          } ${height}
-                  M${
-          hasNegativeEmissions ? positiveWidth : totalWidth
-          } ${height} Q ${startPoint + width} ${height} ${startPoint +
-                width} 0
-                  L ${startPoint + width} 0 ${startPoint} 0 Z`}
+              d={`M${startPoint} 0 Q ${startPoint} ${height} 0 ${height} L 0 ${height} ${
+                hasNegativeEmissions ? positiveWidth : totalWidth
+              } ${height} M${
+                hasNegativeEmissions ? positiveWidth : totalWidth
+              } ${height} Q ${startPoint + width} ${height} ${startPoint +
+                width} 0 L ${startPoint + width} 0 ${startPoint} 0 Z`}
             />
           </svg>
         )}
