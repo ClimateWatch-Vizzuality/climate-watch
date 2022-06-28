@@ -11,7 +11,9 @@ import NDCSProvider from 'providers/ndcs-provider';
 import EmissionsProvider from 'providers/emissions-provider';
 import ReactTooltip from 'react-tooltip';
 import { INDICATOR_SLUGS } from 'data/constants';
+import infoIcon from 'assets/icons/info.svg';
 import ReactDOMServer from 'react-dom/server';
+import Icon from 'components/icon';
 import styles from './emission-sources-chart-styles.scss';
 
 const getOrdinal = i => {
@@ -186,12 +188,32 @@ function EmissionSourcesChart({
               data-tip={getTooltip('sectors', e, i)}
               data-for="emissions-chart-tooltip"
             >
-              <span className={styles.countrySectorText}>
-                <div className={styles.sectorTitle} style={{ color: e.color }}>
-                  {e.sector}
-                </div>
-                <div>{Math.round(e.emission * 100) / 100} MtCO2e</div>
-              </span>
+              {Math.abs(e.percentage) > 10 && (
+                <span
+                  className={cx(
+                    styles.countrySectorText,
+                    styles.negativeEmissionsSectorText
+                  )}
+                >
+                  <div className={styles.sectorContent}>
+                    <div
+                      data-tip="This sector captures more carbon than it produces, and is therefore a carbon sink with negative emissions"
+                      data-for="negative-emissions-tooltip"
+                      className={styles.infoContainer}
+                    >
+                      <Icon icon={infoIcon} className={styles.infoIcon} />
+                    </div>
+                    <ReactTooltip id="negative-emissions-tooltip" />
+                    <div
+                      className={styles.sectorTitle}
+                      style={{ color: e.color }}
+                    >
+                      {e.sector}
+                    </div>
+                    <div>{Math.round(e.emission * 100) / 100} MtCO2e</div>
+                  </div>
+                </span>
+              )}
             </span>
           ))}
       </div>

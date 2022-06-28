@@ -84,6 +84,18 @@
   }
 }
 
+.negativeEmissionsSectorText {
+  margin-top: -10px;
+
+  .sectorContent {
+    display: flex;
+  }
+
+  .infoContainer {
+    margin: 2px 5px 0;
+  }
+}
+
 .linkingSVG {
   width: 100%;
   fill: $gray2;
