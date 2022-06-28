@@ -73,8 +73,11 @@ export const getOtherParties = createSelector([getEmissions], emissions => {
     (acc, curr, i) => (i > 5 ? acc + curr.percentage : acc),
     0
   );
+
+  const COUNTRIES_WITH_COLOR = 5;
+
   return {
-    number: emissions.length + 1 - 5, // 5 countries with color
+    number: emissions.length + 1 - COUNTRIES_WITH_COLOR,
     percentage: Math.round(otherCountriesPercentageSum * 100) / 100
   };
 });
@@ -117,14 +120,14 @@ export const getSectorData = createSelector(
         )
         .filter(Boolean)
     );
-    let totalValue = 0;
+    let totalPositiveValue = 0;
     const emissionData = data
       .filter(d => notAggregatedSectors.includes(d.sector))
       .map(d => {
         const lastEmission = d.emissions[d.emissions.length - 1];
         const emission = lastEmission && lastEmission.value;
-        if (emission) {
-          totalValue += emission;
+        if (emission && emission > 0) {
+          totalPositiveValue += emission;
         }
         return {
           sector: d.sector,
@@ -136,7 +139,7 @@ export const getSectorData = createSelector(
       .reverse()
       .map(d => ({
         ...d,
-        percentage: d.emission && (100 * d.emission) / totalValue
+        percentage: d.emission && (100 * d.emission) / totalPositiveValue
       }));
   }
 );

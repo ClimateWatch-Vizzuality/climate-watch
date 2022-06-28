@@ -66,7 +66,7 @@ function EmissionSourcesChart({
           {"'"}s {emission.sector}
         </div>
         <div>
-          {`${Math.round(emission.emission * 100) / 100} MtCO2e - ${Math.round(
+          {`${Math.round(emission.emission * 100) / 100} MtCO2e  ${Math.round(
             emission.percentage * 100
           ) / 100}%`}
         </div>
@@ -106,9 +106,7 @@ function EmissionSourcesChart({
   }, [currentCountryEmissionsRef && currentCountryEmissionsRef.current, iso]);
 
   useEffect(() => {
-    if (chartRef?.current) {
-      setTotalWidth(chartRef.current.getBoundingClientRect().width);
-    }
+    getTotalWidth();
   }, [chartRef && chartRef.current, iso]);
 
   const width = useMemo(() => {
@@ -127,6 +125,64 @@ function EmissionSourcesChart({
       window.removeEventListener('resize', recalculateChart);
     };
   }, []);
+
+  const renderCountrySectors = () => {
+    if (!sectorData) return null;
+
+    const negativeEmissions =
+      sectorData.length > 0 && sectorData.filter(s => s.emission < 0);
+    const hasNegativeEmissions = negativeEmissions.length > 0;
+
+    return (
+      <div className={styles.countrySectors}>
+        {sectorData
+          .filter(s => s.emission > 0)
+          .map((e, i) => (
+            <span
+              className={styles.countrySector}
+              style={{ width: `${e.percentage}%`, backgroundColor: e.color }}
+              data-tip={getTooltip('sectors', e, i)}
+              data-for="emissions-chart-tooltip"
+            >
+              {(e.percentage > 10 || i < 2) && (
+                <span className={styles.countrySectorText}>
+                  <div
+                    className={styles.sectorTitle}
+                    style={{ color: e.color }}
+                  >
+                    {e.sector}
+                  </div>
+                  <div>{Math.round(e.emission * 100) / 100} MtCO2e</div>
+                  <div>{Math.round(e.percentage * 100) / 100}%</div>
+                </span>
+              )}
+            </span>
+          ))}
+        {hasNegativeEmissions && (
+          <span className={styles.negativeEmissionsSeparator} />
+        )}
+        {hasNegativeEmissions &&
+          negativeEmissions.map((e, i) => (
+            <span
+              className={cx(styles.countrySector, styles.negativeSector)}
+              style={{
+                background: `repeating-linear-gradient(45deg, ${e.color}, white 2px, white 12px)`,
+                width: `${Math.abs(e.percentage)}%`
+              }}
+              data-tip={getTooltip('sectors', e, i)}
+              data-for="emissions-chart-tooltip"
+            >
+              <span className={styles.countrySectorText}>
+                <div className={styles.sectorTitle} style={{ color: e.color }}>
+                  {e.sector}
+                </div>
+                <div>{Math.round(e.emission * 100) / 100} MtCO2e</div>
+              </span>
+            </span>
+          ))}
+      </div>
+    );
+  };
 
   return (
     <div className={styles.emissionSources} ref={chartRef}>
@@ -170,37 +226,15 @@ function EmissionSourcesChart({
             xmlns="http://www.w3.org/2000/svg"
           >
             <path
-              d={`M${startPoint} 0 Q ${startPoint} ${height} 0 ${height} L 0 ${height} ${totalWidth} ${height} M${totalWidth} ${height} Q ${startPoint +
-                width} ${height} ${startPoint + width} 0 L ${startPoint +
-                width} 0 ${startPoint} 0 Z`}
-              fill="#e8ecf5"
+              d={`M${startPoint} 0 Q ${startPoint} ${height} 0 ${height}
+                  L 0 ${height} ${totalWidth} ${height}
+                  M${totalWidth} ${height} Q ${startPoint +
+                width} ${height} ${startPoint + width} 0
+                  L ${startPoint + width} 0 ${startPoint} 0 Z`}
             />
           </svg>
         )}
-      <div className={styles.countrySectors}>
-        {sectorData &&
-          sectorData.map((e, i) => (
-            <span
-              className={styles.countrySector}
-              style={{ width: `${e.percentage}%`, backgroundColor: e.color }}
-              data-tip={getTooltip('sectors', e, i)}
-              data-for="emissions-chart-tooltip"
-            >
-              {(e.percentage > 10 || i < 2) && (
-                <span className={styles.countrySectorText}>
-                  <div
-                    className={styles.sectorTitle}
-                    style={{ color: e.color }}
-                  >
-                    {e.sector}
-                  </div>
-                  <div>{Math.round(e.emission * 100) / 100} MtCO2e</div>
-                  <div>{Math.round(e.percentage * 100) / 100}%</div>
-                </span>
-              )}
-            </span>
-          ))}
-      </div>
+      {renderCountrySectors()}
       <NDCSProvider
         overrideFilter
         additionalIndicatorSlugs={[INDICATOR_SLUGS.emissions]}
