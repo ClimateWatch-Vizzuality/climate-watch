@@ -218,6 +218,7 @@ function SubnationalActions({
                         .filter(b => b !== 'Not Joined')
                         .map(badge => (
                           <Tag
+                            key={badge}
                             color={citiesChartConfig.theme[badge].fill}
                             theme={tagTheme}
                             label={badge}

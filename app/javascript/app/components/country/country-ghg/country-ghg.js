@@ -51,7 +51,7 @@ function CountryGhgContainer(props) {
 }
 
 CountryGhgContainer.propTypes = {
-  setModalMetadata: PropTypes.func.isRequired.isRequired,
+  setModalMetadata: PropTypes.func.isRequired,
   indicators: PropTypes.object
 };
 
