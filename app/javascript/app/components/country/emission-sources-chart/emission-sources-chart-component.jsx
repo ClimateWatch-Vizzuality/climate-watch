@@ -31,9 +31,21 @@ function EmissionSourcesChart({
 }) {
   const [startPoint, setStartPoint] = useState(0);
   const [totalWidth, setTotalWidth] = useState(0);
+  const [positiveWidth, setPositiveWidth] = useState(null);
   const currentCountryEmissionsRef = useRef();
   const chartRef = useRef();
+  const separatorRef = useRef();
   const height = 30;
+
+  const negativeEmissions = useMemo(
+    () =>
+      sectorData &&
+      sectorData.length > 0 &&
+      sectorData.filter(s => s.emission < 0),
+    [sectorData]
+  );
+  const hasNegativeEmissions =
+    negativeEmissions && negativeEmissions.length > 0;
 
   const getTooltip = (chart, emission, i) => {
     const renderTooltip = content =>
@@ -80,17 +92,20 @@ function EmissionSourcesChart({
     }
   }, [chartRef && chartRef.current, iso]);
 
-  const calculateStartPoint = currentCountryRef => {
-    const offset = currentCountryRef.current.parentElement.getBoundingClientRect()
-      .left;
-    return (
-      currentCountryEmissionsRef.current.getBoundingClientRect().left - offset
-    );
+  const calculateLeftPoint = reference => {
+    const offset = reference.current.parentElement.getBoundingClientRect().left;
+    return reference.current.getBoundingClientRect().left - offset;
   };
+
+  useEffect(() => {
+    if (negativeEmissions && separatorRef?.current) {
+      setPositiveWidth(calculateLeftPoint(separatorRef));
+    }
+  }, [negativeEmissions, separatorRef && separatorRef.current, iso]);
 
   const getStartPoint = useCallback(() => {
     if (currentCountryEmissionsRef && currentCountryEmissionsRef.current) {
-      setStartPoint(calculateStartPoint(currentCountryEmissionsRef));
+      setStartPoint(calculateLeftPoint(currentCountryEmissionsRef));
     }
   }, [currentCountryEmissionsRef && currentCountryEmissionsRef.current, iso]);
 
@@ -101,7 +116,7 @@ function EmissionSourcesChart({
 
   useEffect(() => {
     if (currentCountryEmissionsRef && currentCountryEmissionsRef.current) {
-      setStartPoint(calculateStartPoint(currentCountryEmissionsRef));
+      setStartPoint(calculateLeftPoint(currentCountryEmissionsRef));
     }
   }, [currentCountryEmissionsRef && currentCountryEmissionsRef.current, iso]);
 
@@ -129,10 +144,6 @@ function EmissionSourcesChart({
   const renderCountrySectors = () => {
     if (!sectorData) return null;
 
-    const negativeEmissions =
-      sectorData.length > 0 && sectorData.filter(s => s.emission < 0);
-    const hasNegativeEmissions = negativeEmissions.length > 0;
-
     return (
       <div className={styles.countrySectors}>
         {sectorData
@@ -159,7 +170,10 @@ function EmissionSourcesChart({
             </span>
           ))}
         {hasNegativeEmissions && (
-          <span className={styles.negativeEmissionsSeparator} />
+          <span
+            className={styles.negativeEmissionsSeparator}
+            ref={separatorRef}
+          />
         )}
         {hasNegativeEmissions &&
           negativeEmissions.map((e, i) => (
@@ -227,9 +241,13 @@ function EmissionSourcesChart({
           >
             <path
               d={`M${startPoint} 0 Q ${startPoint} ${height} 0 ${height}
-                  L 0 ${height} ${totalWidth} ${height}
-                  M${totalWidth} ${height} Q ${startPoint +
-                width} ${height} ${startPoint + width} 0
+                  L 0 ${height} ${
+            hasNegativeEmissions ? positiveWidth : totalWidth
+          } ${height}
+                  M${
+          hasNegativeEmissions ? positiveWidth : totalWidth
+          } ${height} Q ${startPoint + width} ${height} ${startPoint +
+                width} 0
                   L ${startPoint + width} 0 ${startPoint} 0 Z`}
             />
           </svg>
