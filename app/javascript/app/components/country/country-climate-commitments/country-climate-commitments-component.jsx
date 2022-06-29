@@ -57,7 +57,7 @@ function CountryClimateCommitments({
           </div>
           <div className={styles.documents}>
             {countriesDocumentsValues.map(([key, value]) => (
-              <div className={styles.item}>
+              <div key={`document-${key}`} className={styles.item}>
                 {countryDocumentsIcons[+value] && (
                   <React.Fragment>
                     <Icon
