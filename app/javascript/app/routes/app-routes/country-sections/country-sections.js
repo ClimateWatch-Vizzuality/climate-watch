@@ -56,7 +56,7 @@ const routes = [
     anchor: true,
     component: ClimateVulnerability
   },
-  {
+  process.env.FEATURE_COUNTRY_CHANGES === 'true' && {
     hash: 'ndc-adaptation',
     label: 'NDC Adaptation plans',
     anchor: true,
