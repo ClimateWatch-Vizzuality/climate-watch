@@ -107,7 +107,7 @@ function CountryNdcOverview(props) {
       <Card
         title={
           process.env.FEATURE_COUNTRY_CHANGES === 'true'
-            ? "Country's current NDC"
+            ? 'Latest NDC'
             : 'Contribution Type'
         }
         theme={cardTheme}
@@ -116,6 +116,15 @@ function CountryNdcOverview(props) {
         <div className={styles.cardContent}>
           {process.env.FEATURE_COUNTRY_CHANGES === 'true' && (
             <React.Fragment>
+              {values?.ghg_target && (
+                <CardRow
+                  rowData={{
+                    title: 'GHG target',
+                    value: values.ghg_target
+                  }}
+                  theme={cardTheme}
+                />
+              )}
               {values?.mitigation_contribution_type && (
                 <CardRow
                   rowData={{
@@ -125,21 +134,10 @@ function CountryNdcOverview(props) {
                   theme={cardTheme}
                 />
               )}
-
-              {values?.ghg_target && (
-                <CardRow
-                  rowData={{
-                    title: 'Target type',
-                    value: values.ghg_target
-                  }}
-                  theme={cardTheme}
-                />
-              )}
-
               {values?.adaptation && (
                 <CardRow
                   rowData={{
-                    title: 'Target values',
+                    title: 'Adaptation included',
                     value: values.adaptation
                   }}
                   theme={cardTheme}
@@ -147,7 +145,6 @@ function CountryNdcOverview(props) {
               )}
             </React.Fragment>
           )}
-
           {process.env.FEATURE_COUNTRY_CHANGES !== 'true' && (
             <React.Fragment>
               {values?.mitigation_contribution_type && (
@@ -188,7 +185,7 @@ function CountryNdcOverview(props) {
       <Card
         title={
           process.env.FEATURE_COUNTRY_CHANGES === 'true'
-            ? "Country's Long Term Strategy"
+            ? 'Long Term Strategy'
             : 'GHG Target'
         }
         theme={cardTheme}
@@ -200,7 +197,7 @@ function CountryNdcOverview(props) {
               {values?.lts_target && (
                 <CardRow
                   rowData={{
-                    title: 'LTS target',
+                    title: 'Quantified Long-term Emissions Goal',
                     value: values.lts_target
                   }}
                   theme={cardTheme}
@@ -210,7 +207,7 @@ function CountryNdcOverview(props) {
               {values?.lts_date && (
                 <CardRow
                   rowData={{
-                    title: 'LTS date',
+                    title: 'Submission Date',
                     value: values.lts_date
                   }}
                   theme={cardTheme}
@@ -220,7 +217,7 @@ function CountryNdcOverview(props) {
               {values?.lts_document && (
                 <CardRow
                   rowData={{
-                    title: 'LTS document',
+                    title: 'Long-term Strategy Document',
                     value: values.lts_document
                   }}
                   theme={cardTheme}
@@ -273,7 +270,7 @@ function CountryNdcOverview(props) {
               {values?.nz_status && (
                 <CardRow
                   rowData={{
-                    title: 'Net Zero status',
+                    title: 'Net-zero Target Status',
                     value: values.nz_status
                   }}
                   theme={cardTheme}
@@ -283,7 +280,7 @@ function CountryNdcOverview(props) {
               {values?.nz_year && (
                 <CardRow
                   rowData={{
-                    title: 'Net Zero date',
+                    title: 'Net-zero Target Year',
                     value: values.nz_year
                   }}
                   theme={cardTheme}
@@ -293,7 +290,7 @@ function CountryNdcOverview(props) {
               {values?.nz_source && (
                 <CardRow
                   rowData={{
-                    title: 'Net Zero source',
+                    title: 'Net-zero Target Source',
                     value: values.nz_source
                   }}
                   theme={cardTheme}

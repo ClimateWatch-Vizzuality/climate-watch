@@ -20,14 +20,14 @@ const FEATURE_SHOW_COUNTRY_LAWS_AND_POLICIES =
 // eslint-disable-next-line import/no-mutable-exports
 const routes = [
   FEATURE_COUNTRY_CHANGES && {
-    hash: 'climate-commitments',
-    label: 'Climate commitments',
+    hash: 'commitments-overview',
+    label: 'Commitments Overview',
     anchor: true,
     component: ClimateCommitments
   },
   FEATURE_COUNTRY_CHANGES && {
     hash: 'climate-enhancements',
-    label: 'Climate enhancements',
+    label: 'Climate Enhancements',
     anchor: true,
     component: ClimateEnhancements
   },
@@ -39,13 +39,13 @@ const routes = [
   },
   FEATURE_COUNTRY_CHANGES && {
     hash: 'emission-drivers',
-    label: 'Emission drivers',
+    label: 'Emission Drivers',
     anchor: true,
     component: EmissionDrivers
   },
   process.env.FEATURE_COUNTRY_CHANGES === 'true' && {
-    hash: 'ndc-content-overview',
-    label: 'NDC Content Overview',
+    hash: 'climate-commitmentss',
+    label: 'Climate Commitments',
     anchor: true,
     component: () => createElement(CountryNdcOverview, { isCountryPage: true })
   },
@@ -81,7 +81,7 @@ const routes = [
   },
   FEATURE_COUNTRY_CHANGES && {
     hash: 'employment-and-costs',
-    label: 'Employment and costs',
+    label: 'Employment and Costs',
     anchor: true,
     component: EmploymentAndCosts
   },
