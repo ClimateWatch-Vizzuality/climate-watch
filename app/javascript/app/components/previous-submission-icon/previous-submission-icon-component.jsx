@@ -38,6 +38,7 @@ const icons = {
     [SUBMISSION_ICON_VALUE.intends]: missingIcon,
     // Adaptation
     'Adaptation Included': enhancementIcon,
+    'Adaptation Not Included': noEnhancementIcon,
     Mentioned: enhancementIcon,
     'Not Specified': unclearIcon
   }
