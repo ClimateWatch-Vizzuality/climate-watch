@@ -5,6 +5,7 @@ import cx from 'classnames';
 import { PieChart, Chart } from 'cw-components';
 import range from 'lodash/range';
 import camelCase from 'lodash/camelCase';
+import { format } from 'd3-format';
 
 import styles from './card-graph-styles.scss';
 
@@ -47,9 +48,7 @@ class CardGraph extends PureComponent {
     const percentage = (rank * 100) / maximumCountries;
     return (
       <div className={styles.lineChartContainer}>
-        <div className={styles.rankValue}>
-          {(Math.round(value * 100) / 100).toLocaleString()}
-        </div>
+        <div className={styles.rankValue}>{format(',.2f')(value)}</div>
         <div className={styles.rankMeter}>
           <div className={styles.rankAbsoluteValue}>
             <span className={styles.countriesNumber}>Rank </span>
