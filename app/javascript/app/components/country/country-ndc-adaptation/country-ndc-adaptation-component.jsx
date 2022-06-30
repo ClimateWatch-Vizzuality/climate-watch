@@ -31,15 +31,28 @@ class CountryNDCAdaptation extends PureComponent {
   }
 
   getTooltip() {
-    const { tooltipData, targets } = this.props;
+    const { tooltipData, targets, targetsData } = this.props;
     if (!tooltipData) return null;
-
     const targetsContent = targets && targets[tooltipData.goal_number];
+    const actions =
+      tooltipData &&
+      tooltipData.goal_number &&
+      targetsData[tooltipData.goal_number] &&
+      targetsData[tooltipData.goal_number].targets[tooltipData.number] &&
+      targetsData[tooltipData.goal_number].targets[tooltipData.number].actions;
     return tooltipData && targetsContent ? (
       <div className={styles.tooltip}>
         <p className={styles.tooltipTitle}>
           <b>{tooltipData.number}: </b>
           {tooltipData.title}
+        </p>
+        <p className={styles.actionTitleContainer}>
+          {actions &&
+            actions.map(a => (
+              <div key={a.id} className={styles.actionTitle}>
+                {a.title}
+              </div>
+            ))}
         </p>
       </div>
     ) : null;
