@@ -70,7 +70,7 @@ export const getTargets = createSelector([getSectors], sectors =>
   )
 );
 
-const formatTargetsByCOuntry = (
+const formatTargetsByCountry = (
   goals,
   targets,
   _actions,
@@ -140,7 +140,7 @@ export const getTargetsByCountry = createSelector(
       (acc, next) => ({
         ...acc,
         [next.number]: {
-          targets: formatTargetsByCOuntry(
+          targets: formatTargetsByCountry(
             goals,
             targets,
             _actions,

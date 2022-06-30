@@ -134,7 +134,7 @@ class CountryNDCAdaptation extends PureComponent {
 
     const buttonGroup = (
       <ButtonGroup
-        key="action1"
+        key="ndc-adaptation-btn-group"
         className={styles.buttonContainer}
         buttonsConfig={[{ type: 'info', onClick: handleInfoClick }]}
       />
