@@ -41,7 +41,7 @@ function CountryEmissionDrivers(props) {
                 <Card
                   title={card.title}
                   contentFirst
-                  info={infoButton(card.slug)}
+                  info={infoButton(card.metadata)}
                   theme={{
                     card: styles[`squareCard${i + 1}`],
                     data: styles.cardData
@@ -60,7 +60,7 @@ function CountryEmissionDrivers(props) {
               <Card
                 title={sectionData.electricity.title}
                 contentFirst
-                info={infoButton('electricity')}
+                info={infoButton(sectionData.electricity.metadata)}
                 theme={{ card: styles.chartCard, data: styles.chartCardData }}
               >
                 {' '}
