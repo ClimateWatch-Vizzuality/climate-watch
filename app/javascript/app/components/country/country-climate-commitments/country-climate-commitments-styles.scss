@@ -38,7 +38,10 @@
   @include row(12);
 
   @media #{$tablet-landscape} {
-    @include columns((8,4));
+    @include columns((9,3));
+
+    justify-content: space-between;
+    align-items: flex-start;
   }
 }
 
@@ -54,6 +57,7 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+  height: auto;
 
   .item {
     display: flex;

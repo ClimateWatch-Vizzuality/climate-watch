@@ -28,6 +28,7 @@ const CITY_BADGES = {
   Joined: { color: CHART_NAMED_EXTENDED_COLORS.color1 },
   Plan: { color: CHART_NAMED_EXTENDED_COLORS.color3 },
   Target: { color: CHART_NAMED_EXTENDED_COLORS.color4 },
+  Inventory: { color: CHART_NAMED_EXTENDED_COLORS.color5 },
   'Not Joined': { color: CHART_NAMED_GRAY_COLORS.grayColor1 }
 };
 
@@ -203,7 +204,8 @@ function SubnationalActions({
                     unit={false}
                     ghgChart={false}
                     tooltipConfig={tooltipConfig}
-                    formatValue={v => format('.4s')(v)}
+                    formatValue={v => format('.2s')(v).replace('G', 'B')}
+                    yTickFormatter={v => format('.2s')(v).replace('G', 'B')}
                   />
 
                   <h3 className={styles.chartTitle}>

@@ -17,6 +17,7 @@ namespace :db do
     'socioeconomics:import',
     'stories:import',
     'key_visualizations:import',
+    'country_profile:import',
     'zip_files:import'
   ]
 
