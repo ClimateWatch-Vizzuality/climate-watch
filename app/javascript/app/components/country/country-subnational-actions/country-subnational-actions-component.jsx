@@ -204,7 +204,8 @@ function SubnationalActions({
                     unit={false}
                     ghgChart={false}
                     tooltipConfig={tooltipConfig}
-                    formatValue={v => format('.4s')(v)}
+                    formatValue={v => format('.2s')(v).replace('G', 'B')}
+                    yTickFormatter={v => format('.2s')(v).replace('G', 'B')}
                   />
 
                   <h3 className={styles.chartTitle}>

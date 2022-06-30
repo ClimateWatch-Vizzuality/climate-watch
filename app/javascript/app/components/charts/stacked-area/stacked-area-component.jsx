@@ -254,6 +254,7 @@ class ChartStackedArea extends PureComponent {
       lastData,
       padding,
       unit,
+      yTickFormatter,
       tooltipConfig
     } = this.props;
     if (!dataWithTotal.length) return null;
@@ -297,6 +298,7 @@ class ChartStackedArea extends PureComponent {
               <CustomYAxisTick
                 customstrokeWidth="0"
                 unit={unit === false ? '' : unit}
+                tickFormatter={yTickFormatter}
               />
             }
             ticks={tickValues.ticks}
@@ -359,6 +361,7 @@ ChartStackedArea.propTypes = {
   points: PropTypes.array,
   domain: PropTypes.object,
   dataMaxMin: PropTypes.object,
+  yTickFormatter: PropTypes.func,
   lastData: PropTypes.object,
   unit: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   height: PropTypes.oneOfType([
