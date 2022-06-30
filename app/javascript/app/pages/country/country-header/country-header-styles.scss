@@ -3,6 +3,8 @@
 
 .headerContainer {
   @include row(12);
+  position: relative;
+  z-index: 1;
 
   @media #{$tablet-landscape} {
     @include row(6);

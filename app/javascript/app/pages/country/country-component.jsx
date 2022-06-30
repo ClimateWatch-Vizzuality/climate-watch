@@ -1,6 +1,6 @@
-/* eslint-disable no-confusing-arrow */
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 import Sticky from 'react-stickynode';
 import Waypoint from 'react-waypoint';
 import { SEO_PAGES } from 'data/seo';
@@ -19,6 +19,11 @@ import styles from './country-styles.scss';
 function Country(props) {
   const { route, country, anchorLinks, setActiveSection } = props;
   const countryName = (country && country.name) || '';
+  const [isSticky, setSticky] = useState(false);
+
+  const onStickyChange = useCallback(({ status }) => {
+    setSticky(status === Sticky.STATUS_FIXED);
+  }, []);
 
   return (
     <div>
@@ -84,12 +89,18 @@ function Country(props) {
         ]}
         locations={country && [country.iso]}
       />
-      <Header route={route}>
+      <Header route={route} className={styles.header}>
         <CountryHeader />
-        <Sticky activeClass="sticky -country" top="#navBarMobile">
+        <Sticky
+          activeClass="sticky -country"
+          top="#navBarMobile"
+          onStateChange={onStickyChange}
+        >
           <AnchorNav
             links={anchorLinks}
-            className={styles.anchorNav}
+            className={classnames(styles.anchorNav, {
+              [styles['-is-sticky']]: isSticky
+            })}
             theme={anchorNavRegularTheme}
             dataTour="countries-02"
           />
