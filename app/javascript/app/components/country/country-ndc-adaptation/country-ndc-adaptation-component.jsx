@@ -140,6 +140,10 @@ class CountryNDCAdaptation extends PureComponent {
       />
     );
 
+    const countryString = countryName?.endsWith('s')
+      ? `${countryName}'`
+      : `${countryName}'s`;
+
     return (
       <div className={styles.wrapper}>
         <div className={layout.content}>
@@ -147,9 +151,7 @@ class CountryNDCAdaptation extends PureComponent {
             <h3 className={styles.title}>
               <AbbrReplace>
                 {`What adaptation plans are covered in ${
-                  countryName && countryName.endsWith('s')
-                    ? `${countryName}'`
-                    : `${countryName}'s`
+                  countryName ? countryString : ''
                 } NDCs?`}
               </AbbrReplace>
             </h3>
