@@ -63,8 +63,21 @@
   margin-right: 1rem;
 }
 
-.chartTitle {
+.titleContainer {
+  display: flex;
   margin-bottom: 2rem;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.chartTitleContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.chartTitle {
   font-size: $font-size-large;
   text-align: center;
 }
@@ -90,20 +103,12 @@
   margin-left: 5px;
 }
 
-.titleContainer {
-  display: flex;
-  position: relative;
-  align-items: center;
-  justify-content: space-between;
-}
-
 .title {
   font-size: $font-size-large;
   font-weight: $font-weight;
   color: $theme-color;
   display: flex;
   align-items: center;
-  margin-bottom: 20px;
 }
 
 .hidden {
@@ -121,8 +126,56 @@
   align-items: center;
   justify-content: center;
   margin: 25px 0;
-  
+
   > span {
     color: $theme-color;
   }
+}
+
+.tooltip {
+  display: flex;
+  padding: 15px;
+  min-width: 300px;
+  opacity: 1 !important;
+  border-radius: 4px;
+  box-shadow: 0 5px 15px 0 rgba(17, 55, 80, 0.15);
+}
+
+.tooltipContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+
+  &:not(:first-child) {
+    margin-top: 10px;
+  }
+}
+
+.tooltipName {
+  display: flex;
+  align-items: center;
+  padding-left: 15px;
+  position: relative;
+
+  &::before {
+    content: '';
+    display: inline-block;
+    position: absolute;
+    left: 0;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: currentColor;
+  }
+}
+
+.tooltipValue {
+  color: $gray2;
+  padding-left: 10px;
+}
+
+.buttonContainer {
+  margin-left: 15px;
+  min-width: 45px;
 }
