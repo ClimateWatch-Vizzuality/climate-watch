@@ -127,7 +127,16 @@ const getEmploymentConfig = countryIndicators => {
           }
         }),
         {}
-      )
+      ),
+      tooltip: {
+        payload: Object.values(columns).reduce(
+          (acc, next) => ({
+            ...acc,
+            [next]: { label: next }
+          }),
+          {}
+        )
+      }
     },
     domain: [
       min(employment_by_technology.values.map(({ value }) => +value)),
