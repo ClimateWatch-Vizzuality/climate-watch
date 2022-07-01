@@ -58,7 +58,7 @@ const routes = [
   },
   process.env.FEATURE_COUNTRY_CHANGES === 'true' && {
     hash: 'ndc-adaptation',
-    label: 'NDC Adaptation plans',
+    label: 'NDC Adaptation Plans',
     anchor: true,
     component: NDCAdaptation
   },

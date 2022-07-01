@@ -1,12 +1,11 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
-import Icon from 'components/icon';
 import Dot from './dot';
 
-import styles from './sdg-card-styles.scss';
+import styles from './adaptation-card-styles.scss';
 
-class SDGCard extends PureComponent {
+class AdaptationCard extends PureComponent {
   render() {
     const {
       selected,
@@ -15,7 +14,6 @@ class SDGCard extends PureComponent {
       indicators,
       square,
       className,
-      icons,
       hover,
       onClick,
       onMouseEnter,
@@ -23,7 +21,7 @@ class SDGCard extends PureComponent {
       tooltipId,
       setTooltipData,
       iso,
-      activeSector
+      activeCommitment
     } = this.props;
     const cardStyle = cx(
       styles.card,
@@ -36,16 +34,13 @@ class SDGCard extends PureComponent {
       },
       className
     );
-
     const title = square ? goal.title : `${goal.number}. ${goal.cw_title}`;
     return (
       <div
         className={cardStyle}
-        onClick={onClick}
         role="menuitem"
         tabIndex={0}
         onMouseEnter={onMouseEnter}
-        data-tour-action={goal.number === 1 && 'ndcs-sdg-03'}
       >
         <h4 className={styles.title}>{title}</h4>
         <div className={styles.dots}>
@@ -58,7 +53,8 @@ class SDGCard extends PureComponent {
                 tooltipId={tooltipId}
                 setTooltipData={setTooltipData}
                 iso={iso}
-                activeSector={activeSector}
+                onClick={() => onClick(target.number)}
+                activeCommitment={activeCommitment}
                 goal={goal}
               />
             ))}
@@ -66,19 +62,12 @@ class SDGCard extends PureComponent {
         {(!indicators || square) && (
           <div className={styles.number}>{goal.number}</div>
         )}
-        {goal.id && (
-          <Icon
-            icon={icons[`sdg${goal.number}`]}
-            className={cx(styles.icon, styles[`icon${goal.number}`])}
-          />
-        )}
       </div>
     );
   }
 }
 
-SDGCard.propTypes = {
-  icons: PropTypes.object.isRequired,
+AdaptationCard.propTypes = {
   goal: PropTypes.object.isRequired,
   targets: PropTypes.array,
   targetData: PropTypes.object,
@@ -90,16 +79,16 @@ SDGCard.propTypes = {
   setTooltipData: PropTypes.func,
   className: PropTypes.string,
   iso: PropTypes.string,
-  activeSector: PropTypes.object,
+  activeCommitment: PropTypes.object,
   onClick: PropTypes.func,
   onMouseEnter: PropTypes.func
 };
 
-SDGCard.defaultProps = {
+AdaptationCard.defaultProps = {
   square: false,
   hover: false,
   onClick: () => {},
   onMouseEnter: () => {}
 };
 
-export default SDGCard;
+export default AdaptationCard;

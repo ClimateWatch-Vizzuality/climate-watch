@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { getLocationParamUpdated, isEmbededComponent } from 'utils/navigation';
 import qs from 'query-string';
+
 import { handleAnalytics } from 'utils/analytics';
 import { actions as modalMetadataActions } from 'components/modal-metadata';
-
 import ownActions from './country-ndc-adaptation-actions';
 import reducers, { initialState } from './country-ndc-adaptation-reducers';
 
@@ -65,16 +65,6 @@ const CountrySDGLinkagesContainer = props => {
     });
   };
 
-  // todo: check what clicking on the dot does
-  const handleOnDotClick = (targetNumber, targetData) => {
-    const { iso } = props;
-    if (iso && targetNumber) {
-      const { document_type, language } = targetData;
-      const path = `/ndcs/country/${iso}/full?query=${targetNumber}&searchBy=target&document=${document_type}-${language}`;
-      history.push(path);
-    }
-  };
-
   const handleCommitmentChange = option => {
     const { setFilter } = props;
     updateUrlParam({ name: 'commitment', value: option ? option.value : '' });
@@ -100,8 +90,7 @@ const CountrySDGLinkagesContainer = props => {
     handleCommitmentChange,
     handleDatabaseChange,
     handleInfoClick,
-    handleAnalyticsClick,
-    handleOnDotClick
+    handleAnalyticsClick
   });
 };
 
