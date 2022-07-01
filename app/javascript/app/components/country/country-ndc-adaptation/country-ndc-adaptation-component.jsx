@@ -6,7 +6,6 @@ import isEmpty from 'lodash/isEmpty';
 import Loading from 'components/loading';
 import AbbrReplace from 'components/abbr-replace';
 import NdcsAdaptationProvider from 'providers/ndcs-adaptation-provider';
-import SDGCard from 'components/sdg-card';
 import ReactTooltip from 'react-tooltip';
 import NoContent from 'components/no-content';
 import ButtonGroup from 'components/button-group';
@@ -17,6 +16,7 @@ import Button from 'components/button';
 import { TabletLandscape, TabletPortraitOnly } from 'components/responsive';
 import layout from 'styles/layout.scss';
 import cardTheme from 'styles/themes/sdg-card/sdg-card';
+import AdaptationCard from './adaptation-card';
 import styles from './country-ndc-adaptation-styles.scss';
 import { DATABASES_OPTIONS } from './country-ndc-adaptation-constants';
 
@@ -65,9 +65,9 @@ class CountryNDCAdaptation extends PureComponent {
       targetsData,
       loading,
       setTooltipData,
-      handleOnDotClick,
       iso,
-      isEmbed
+      isEmbed,
+      activeCommitment
     } = this.props;
     const hasGoals = goals && goals.length > 0;
     if (loading) return <Loading light className={styles.loader} />;
@@ -86,7 +86,7 @@ class CountryNDCAdaptation extends PureComponent {
       <Fragment>
         <div className={cx(styles.sdgs, { [styles.sdgsEmbed]: isEmbed })}>
           {goals.map(goal => (
-            <SDGCard
+            <AdaptationCard
               key={goal.title}
               goal={goal}
               iso={iso}
@@ -94,14 +94,17 @@ class CountryNDCAdaptation extends PureComponent {
               targetData={targetsData[goal.number]}
               tooltipId="ndc-adaptation"
               setTooltipData={setTooltipData}
-              disableIcon
               indicators
               className={cardTheme.card}
-              handleOnDotClick={handleOnDotClick}
+              activeCommitment={activeCommitment}
             />
           ))}
         </div>
-        <ReactTooltip id="ndc-adaptation" scrollHide={false}>
+        <ReactTooltip
+          className={styles.tooltipContainer}
+          id="ndc-adaptation"
+          scrollHide={false}
+        >
           {this.getTooltip()}
         </ReactTooltip>
       </Fragment>
@@ -224,7 +227,6 @@ CountryNDCAdaptation.propTypes = {
   activeCommitment: Proptypes.object.isRequired,
   countryName: Proptypes.string,
   handleInfoClick: Proptypes.func.isRequired,
-  handleOnDotClick: Proptypes.func.isRequired,
   handleAnalyticsClick: Proptypes.func.isRequired
 };
 

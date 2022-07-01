@@ -37,7 +37,8 @@ export const getActiveCommitment = createSelector(
 
     return {
       label: activeCommitment.long_name,
-      value: activeCommitment.id
+      value: activeCommitment.id,
+      slug: activeCommitment.slug
     };
   }
 );
@@ -70,13 +71,7 @@ export const getTargets = createSelector([getSectors], sectors =>
   )
 );
 
-const formatTargetsByCountry = (
-  goals,
-  targets,
-  _actions,
-  goalNumber,
-  _commitment
-) => {
+const formatTargetsByCountry = (targets, _actions, goalNumber, _commitment) => {
   const goalsWithTargets = Object.values(targets);
   const targetWithActions = goalsWithTargets
     .map(_targets => _targets)
@@ -141,7 +136,6 @@ export const getTargetsByCountry = createSelector(
         ...acc,
         [next.number]: {
           targets: formatTargetsByCountry(
-            goals,
             targets,
             _actions,
             next.number,
@@ -159,6 +153,7 @@ export const getCommitmentOptions = createSelector(
   commitments =>
     Object.keys(sortBy(commitments, 'ordering')).map(_commitment => ({
       label: upperFirst(commitments[_commitment].long_name),
-      value: commitments[_commitment].id
+      value: commitments[_commitment].id,
+      slug: commitments[_commitment].slug
     }))
 );
