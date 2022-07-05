@@ -2,15 +2,13 @@ import { createElement } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { actions } from 'components/modal-metadata';
-import { handleInfoMetadataClick } from '../country-utils';
 import Component from './country-emission-drivers-component';
 
 import {
   getSectionData,
   getQueryIsos,
   getCountryName,
-  getMaximumCountries,
-  getCountryIndicators
+  getMaximumCountries
 } from './country-emission-drivers-selectors';
 
 const mapStateToProps = (state, { match, location }) => {
@@ -26,7 +24,6 @@ const mapStateToProps = (state, { match, location }) => {
 
   return {
     sectionData: getSectionData(climateVulnerability),
-    indicators: getCountryIndicators(climateVulnerability),
     countries: getQueryIsos(search),
     maximumCountries: getMaximumCountries(climateVulnerability),
     countryName: getCountryName(climateVulnerability),
@@ -35,15 +32,15 @@ const mapStateToProps = (state, { match, location }) => {
 };
 
 const EmissionDrivers = props => {
-  const { setModalMetadata, indicators } = props;
+  const { setModalMetadata } = props;
 
-  const handleInfoClick = slug =>
-    handleInfoMetadataClick(
-      slug,
-      'Emission drivers',
-      indicators,
-      setModalMetadata
-    );
+  const handleInfoClick = slug => {
+    setModalMetadata({
+      category: 'Emission drivers',
+      slugs: slug,
+      open: true
+    });
+  };
 
   return createElement(Component, {
     ...props,

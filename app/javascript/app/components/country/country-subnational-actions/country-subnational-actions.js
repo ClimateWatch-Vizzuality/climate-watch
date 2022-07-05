@@ -19,10 +19,11 @@ const mapStateToProps = (state, { match }) => {
 
 const SubnationalActions = props => {
   const { setModalMetadata } = props;
+
   const handleInfoClick = slug => {
     setModalMetadata({
-      category: 'Country',
-      slug,
+      category: 'Subnational Climate Actions',
+      slugs: slug,
       open: true
     });
   };
