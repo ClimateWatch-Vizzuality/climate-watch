@@ -137,13 +137,13 @@ function SubnationalActions({
               countryName && countryName.endsWith('s')
                 ? `${countryName}'`
                 : `${countryName}'s`
-            } subnational climate actions?`}
+            } domestic climate actions?`}
           </h3>
           <div className={styles.descriptionContainer}>
-            Addressing climate change requires actions across all of society.
-            Explore how national and sub-national actions, including regions,
-            cities, companies, investors, and other organizations commit to act
-            on climate change.
+            <p>
+              Explore how national and sub-national actors, including regions, cities,
+              companies, investors, and other organizations, commit to act on climate change.
+            </p>
           </div>
           <div className={styles.cardsContainer}>
             <Card

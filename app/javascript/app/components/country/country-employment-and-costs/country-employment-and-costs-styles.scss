@@ -7,6 +7,14 @@
   min-height: 300px;
 }
 
+.descriptionContainer {
+  color: $theme-color;
+  line-height: $line-height-medium;
+
+  @include columns(12);
+  @include xy-gutters($gutter-position: ('bottom'));
+}
+
 .chartContainer {
   margin-top: 5rem;
 
@@ -65,7 +73,7 @@
 
 .titleContainer {
   display: flex;
-  margin-bottom: 2rem;
+  margin-bottom: 20px;
   justify-content: space-between;
   align-items: center;
 }

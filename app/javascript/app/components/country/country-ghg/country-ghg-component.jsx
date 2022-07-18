@@ -68,7 +68,7 @@ function CountryGhg(props) {
               <div>
                 <h3 className={styles.title}>
                   What are {countryName}
-                  {"'"}s greenhouse gas emissions and emission targets?{' '}
+                  {"'"}s greenhouse gas emissions and emissions targets?{' '}
                 </h3>
                 <p className={styles.description}>
                   The default data source is Climate Watch. For non-annex I

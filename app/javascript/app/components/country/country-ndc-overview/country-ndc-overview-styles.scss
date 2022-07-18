@@ -22,7 +22,6 @@
 
 .header {
   margin-top: 20px;
-  margin-bottom: 20px;
 }
 
 .actions {
@@ -50,7 +49,7 @@
   line-height: $line-height-medium;
   column-count: 1;
   column-gap: $gutter-padding;
-  margin-bottom: 60px;
+  @include xy-gutters($gutter-position: ('bottom'));
 }
 
 .subtitles {

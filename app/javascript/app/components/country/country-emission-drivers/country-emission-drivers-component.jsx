@@ -2,6 +2,7 @@
 import React from 'react';
 import Proptypes from 'prop-types';
 
+import AbbrReplace from 'components/abbr-replace';
 import Card from 'components/card';
 import CardGraph from 'components/card-graph';
 import ReactTooltip from 'react-tooltip';
@@ -33,8 +34,15 @@ function CountryEmissionDrivers(props) {
       <div className={styles.header}>
         <div className={styles.titleContainer}>
           <h3 className={styles.title}>
-            What are important sectoral trends in {countryName}?
+            What are important sectoral emissions drivers in {countryName}?
           </h3>
+          <div className={styles.descriptionContainer}>
+            <AbbrReplace>
+              <p>The following indicators show representative emissions drivers from the energy,
+              agriculture and LUCF sectors and their respective ranking compared to other countries.
+              </p>
+            </AbbrReplace>
+          </div>
           <div className={styles.cards}>
             {sectionData &&
               Object.values(sectionData.cards).map((card, i) => (

@@ -1,7 +1,7 @@
 @import '~styles/layout.scss';
 
 .gridContainer {
-  background-color: $gray3;
+  border-bottom: 1px solid $gray2;
 }
 
 .grid {
@@ -22,6 +22,14 @@
   display: flex;
   align-items: center;
   margin-bottom: 15px;
+}
+
+.descriptionContainer {
+  color: $theme-color;
+  line-height: $line-height-medium;
+
+  @include columns(12);
+  @include xy-gutters($gutter-position: ('bottom'));
 }
 
 .item {

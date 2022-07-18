@@ -72,6 +72,14 @@
   margin-bottom: 20px;
 }
 
+.descriptionContainer {
+  color: $theme-color;
+  line-height: $line-height-medium;
+
+  @include columns(12);
+  @include xy-gutters($gutter-position: ('bottom'));
+}
+
 .paddedBottom {
   padding-bottom: 100px;
   min-height: 600px;

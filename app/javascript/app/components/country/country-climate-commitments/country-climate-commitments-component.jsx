@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import CountriesDocumentsProvider from 'providers/countries-documents-provider';
+import AbbrReplace from 'components/abbr-replace';
 import Icon from 'components/icon';
 import Loading from 'components/loading';
 import Button from 'components/button';
@@ -50,6 +51,17 @@ function CountryClimateCommitments({
               : 'What climate commitments have been submitted?'}
           </h3>
           {renderButton()}
+        </div>
+        <div className={styles.descriptionContainer}>
+          <AbbrReplace>
+            <p>
+            The Paris Agreement aims to limit global temperature rise to well below 2°C and to pursue efforts to further limit it to 1.5°C.
+            Under the Paris Agreement, Parties are requested to submit new or updated NDCs every five years, starting in 2020.
+            Countries are also invited to communicate “mid-century long-term low GHG emissions development strategies”
+            (long-term strategies, or LTS). Aside from commitments made through NDCs and LTS,
+            some Parties also have net zero emission targets.
+            </p>
+          </AbbrReplace>
         </div>
         <div className={styles.ambitionContainer}>
           <div className={styles.arcOfAmbition}>

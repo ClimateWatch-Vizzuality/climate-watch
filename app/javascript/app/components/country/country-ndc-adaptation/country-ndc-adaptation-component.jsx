@@ -128,11 +128,11 @@ class CountryNDCAdaptation extends PureComponent {
     const description = (
       <div className={styles.descriptionContainer}>
         <AbbrReplace>
-          The colored dots represent adaptation actions prioritized by country
-          in its NDC, mapped against critical systems that need an acceleration
-          of adaptation efforts to address the impacts of climate change. These
-          critical systems were identified in the Global Commission on
-          Adaptation&apos;s flagship reported titled Adapt Now.
+          The colored symbols represent adaptation actions prioritized by this country in its NDCs;
+          grey symbols represent areas where there are currently no adaptation actions.
+          These dots are mapped against critical systems that need an acceleration of adaptation efforts
+          to address the impacts of climate change. These critical systems were identified in
+          the Global Commission on Adaptation&apos;s flagship report &quot;Adapt Now&quot;.
         </AbbrReplace>
       </div>
     );

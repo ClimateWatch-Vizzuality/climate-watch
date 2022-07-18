@@ -20,6 +20,14 @@
   margin-bottom: 15px;
 }
 
+.descriptionContainer {
+  color: $theme-color;
+  line-height: $line-height-medium;
+
+  @include columns(12);
+  @include xy-gutters($gutter-position: ('bottom'));
+}
+
 .documentsTitle {
   display: flex;
   justify-content: space-between;
