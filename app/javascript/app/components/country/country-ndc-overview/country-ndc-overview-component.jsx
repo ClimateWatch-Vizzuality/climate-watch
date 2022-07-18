@@ -44,13 +44,13 @@ function CountryNdcOverview(props) {
     const buttonGroupConfig = isEmbed
       ? [{ type: 'info', onClick: handleInfoClick }]
       : [
-        { type: 'info', onClick: handleInfoClick },
-        {
-          type: 'share',
-          shareUrl: `/embed/countries/${iso}/ndc-content-overview`,
-          positionRight: true
-        }
-      ];
+          { type: 'info', onClick: handleInfoClick },
+          {
+            type: 'share',
+            shareUrl: `/embed/countries/${iso}/ndc-content-overview`,
+            positionRight: true
+          }
+        ];
 
     return (
       <ButtonGroup
@@ -440,8 +440,10 @@ function CountryNdcOverview(props) {
                 <div className={styles.descriptionContainer}>
                   <AbbrReplace>
                     <p>
-                    Below summarizes country&apos;s key climate commitments, including the latest NDC, LTS and Net-Zero target.
-                    Explore more indicators about the country&apos;s climate commitments in each respective module.
+                      Below summarizes country&apos;s key climate commitments,
+                      including the latest NDC, LTS and Net-Zero target. Explore
+                      more indicators about the country&apos;s climate
+                      commitments in each respective module.
                     </p>
                   </AbbrReplace>
                 </div>

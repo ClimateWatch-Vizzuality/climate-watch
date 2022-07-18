@@ -11,14 +11,17 @@ function CountryClimateEnhancements({ previousComparisonValues, countryName }) {
     previousComparisonValues && (
       <div className={styles.previousComparisonContainer}>
         <h3 className={styles.title}>
-          Has {countryName} enhanced its NDC compared to the previous submission?
+          Has {countryName} enhanced its NDC compared to the previous
+          submission?
         </h3>
         <div className={styles.descriptionContainer}>
           <AbbrReplace>
             <p>
-              The Paris Agreement calls on countries to deliver new Nationally Determined Contributions (NDCs) every five years
-              that are informed by the latest advances in technology, science and shifting economic trends.
-              The following indicators describe whether the country enhanced its level of ambition in seven key indicators.
+              The Paris Agreement calls on countries to deliver new Nationally
+              Determined Contributions (NDCs) every five years that are informed
+              by the latest advances in technology, science and shifting
+              economic trends. The following indicators describe whether the
+              country enhanced its level of ambition in seven key indicators.
             </p>
           </AbbrReplace>
         </div>

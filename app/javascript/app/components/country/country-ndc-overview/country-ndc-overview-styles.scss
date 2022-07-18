@@ -49,6 +49,7 @@
   line-height: $line-height-medium;
   column-count: 1;
   column-gap: $gutter-padding;
+
   @include xy-gutters($gutter-position: ('bottom'));
 }
 

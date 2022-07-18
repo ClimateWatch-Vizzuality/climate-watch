@@ -143,11 +143,12 @@ function CountryEmploymentAndCosts(props) {
             </a>
           </div>
           <div className={styles.descriptionContainer}>
-              <p>
-                The increasing uptake of renewable sources of energy into countries' energy mix is generating 
-                green jobs and driving down the cost of electricity, making them competitive or even cheaper 
-                than non-renewable sources in certain geographies.
-              </p>
+            <p>
+              The increasing uptake of renewable sources of energy into
+              countries' energy mix is generating green jobs and driving down
+              the cost of electricity, making them competitive or even cheaper
+              than non-renewable sources in certain geographies.
+            </p>
           </div>
           <ReactTooltip className={styles.tooltip} />
         </div>

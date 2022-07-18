@@ -1,7 +1,10 @@
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import Component from './country-climate-enhancements-component';
-import { getPreviousComparisonCountryValues, getCountryName } from './country-climate-enhancements-selectors';
+import {
+  getPreviousComparisonCountryValues,
+  getCountryName
+} from './country-climate-enhancements-selectors';
 
 const mapStateToProps = (state, { match }) => {
   const stateWithIso = {

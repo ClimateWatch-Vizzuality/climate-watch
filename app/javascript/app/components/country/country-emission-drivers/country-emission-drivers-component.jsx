@@ -38,8 +38,10 @@ function CountryEmissionDrivers(props) {
           </h3>
           <div className={styles.descriptionContainer}>
             <AbbrReplace>
-              <p>The following indicators show representative emissions drivers from the energy,
-              agriculture and LUCF sectors and their respective ranking compared to other countries.
+              <p>
+                The following indicators show representative emissions drivers
+                from the energy, agriculture and LUCF sectors and their
+                respective ranking compared to other countries.
               </p>
             </AbbrReplace>
           </div>
