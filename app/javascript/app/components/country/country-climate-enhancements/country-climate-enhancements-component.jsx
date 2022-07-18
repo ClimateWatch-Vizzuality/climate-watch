@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
+import ReactTooltip from 'react-tooltip';
 import NDCSPreviousComparisonProvider from 'providers/ndcs-previous-comparison-provider';
 import AbbrReplace from 'components/abbr-replace';
 import Loading from 'components/loading';
@@ -7,6 +8,12 @@ import PreviousSubmissionIcon from 'components/previous-submission-icon';
 import styles from './country-climate-enhancements-styles.scss';
 
 function CountryClimateEnhancements({ previousComparisonValues, countryName }) {
+  const [tooltipContent, setTooltipContent] = useState(null);
+
+  const handleTooltip = useCallback(evt => {
+    setTooltipContent(evt.target.dataset['tooltip-content']);
+  }, []);
+
   const renderPreviousComparisonPart = () =>
     previousComparisonValues && (
       <div className={styles.previousComparisonContainer}>
@@ -27,14 +34,18 @@ function CountryClimateEnhancements({ previousComparisonValues, countryName }) {
         </div>
         <div className={styles.previousComparison}>
           {previousComparisonValues.map(([key, value]) => (
-            <div className={styles.item}>
+            <div
+              key={key}
+              className={styles.item}
+              data-tooltip-content={value}
+              onMouseMove={handleTooltip}
+            >
               <PreviousSubmissionIcon
                 value={value}
                 tooltipId="definition-icon"
                 className={styles.icon}
               />
               <div className={styles.valueKey}>{key}</div>
-              <div className={styles.valueDescription}>{value}</div>
             </div>
           ))}
         </div>
@@ -52,6 +63,7 @@ function CountryClimateEnhancements({ previousComparisonValues, countryName }) {
           )}
         </div>
       </div>
+      <ReactTooltip id="definition-icon">{tooltipContent}</ReactTooltip>
       <NDCSPreviousComparisonProvider />
     </div>
   );

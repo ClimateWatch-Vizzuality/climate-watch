@@ -33,12 +33,24 @@
 }
 
 .item {
-  margin: $gutter-padding 0 0;
   text-align: center;
 }
 
 .previousComparison {
   @include columns(4);
+  @include xy-gutters(80px, $gutter-position: ('top'), $gutter-type: margin);
+
+  > div {
+    padding-bottom: 30px;
+  }
+
+  @media #{$tablet-landscape} {
+    @include columns(1.71); // 12 / 7 indicators
+
+    > div {
+      padding-bottom: 0;
+    }
+  }
 }
 
 .icon {
@@ -48,12 +60,6 @@
 
 .valueKey {
   margin: 10px 0 0;
-}
-
-.valueDescription {
-  margin-top: 10px;
-  font-size: $font-size-sm;
-  color: $gray1;
 }
 
 .loading {
