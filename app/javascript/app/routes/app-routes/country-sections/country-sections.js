@@ -28,7 +28,7 @@ const routes = [
   },
   FEATURE_COUNTRY_CHANGES && {
     hash: 'climate-enhancements',
-    label: 'Climate Enhancements',
+    label: 'NDC Enhancements',
     anchor: true,
     component: ClimateEnhancements
   },
@@ -40,7 +40,7 @@ const routes = [
   },
   FEATURE_COUNTRY_CHANGES && {
     hash: 'emission-drivers',
-    label: 'Emission Drivers',
+    label: 'Emissions Drivers',
     anchor: true,
     component: EmissionDrivers
   },
