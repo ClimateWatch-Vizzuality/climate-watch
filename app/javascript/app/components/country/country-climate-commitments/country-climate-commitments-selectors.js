@@ -78,7 +78,7 @@ const getNetZeroAnd2020StatusValues = createSelector(
       SUBMISSION_ICON_VALUE.no;
 
     return [
-      ['Net Zero Target', statusNetZeroValue],
+      ['Net-Zero Target', statusNetZeroValue],
       ['New or Updated NDC', status2020value]
     ];
   }
@@ -89,13 +89,23 @@ export const getCountriesDocumentsValues = createSelector(
   (countriesDocuments, iso, netZeroAnd2020Values) => {
     if (!countriesDocuments || !iso || !countriesDocuments[iso]) return null;
     const DOCUMENT_COLUMNS_SLUGS = {
-      NDC: 'first_ndc',
+      'First NDC': 'first_ndc',
       'Long-term Strategy': 'lts'
     };
     const documentColumns = getDocumentsColumns(
       countriesDocuments[iso],
       DOCUMENT_COLUMNS_SLUGS
     );
-    return Object.entries(documentColumns).concat(netZeroAnd2020Values || []);
+
+    const sortedKeys = [
+      'First NDC',
+      'New or Updated NDC',
+      'Long-term Strategy',
+      'Net-Zero Target'
+    ];
+
+    return Object.entries(documentColumns)
+      .concat(netZeroAnd2020Values || [])
+      .sort((a, b) => sortedKeys.indexOf(a[0]) - sortedKeys.indexOf(b[0]));
   }
 );
