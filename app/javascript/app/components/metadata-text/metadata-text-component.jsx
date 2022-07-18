@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import Disclaimer from 'components/disclaimer';
-import { toStartCase } from 'utils/utils';
+import { toTitleCase } from 'utils/utils';
 import isArray from 'lodash/isArray';
 import ReactMarkdown from 'react-markdown/with-html';
 
@@ -33,7 +33,7 @@ const MetadataProp = ({ title, data }) =>
       className={cx(styles.markdown, {
         [styles.empty]: data === 'Not specified'
       })}
-      source={`**${toStartCase(title)}**: ${data}`}
+      source={`**${toTitleCase(title)}**: ${data}`}
       escapeHtml={false}
     />
   ));

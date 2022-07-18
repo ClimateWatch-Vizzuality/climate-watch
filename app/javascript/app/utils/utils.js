@@ -19,6 +19,28 @@ export const toStartCase = string => {
   const parsedString = startCase(string);
   return replaceAcronyms(parsedString);
 };
+
+const PREPOSITIONS = [
+  'of',
+  'in',
+  'to',
+  'for',
+  'by',
+  'with',
+  'on',
+  'at',
+  'from'
+];
+
+export const toTitleCase = string =>
+  string
+    .split(' ')
+    /* eslint-disable no-confusing-arrow */
+    .map(word =>
+      PREPOSITIONS.includes(word) ? word.toLowerCase() : capitalize(word)
+    )
+    .join(' ');
+
 const replaceLowDash = string => replaceAll(string, { _: ' ' });
 const replaceAcronyms = string => {
   const replacements = {
@@ -102,7 +124,7 @@ export const sanitize = data => {
 };
 
 export const sanitizeUrl = url =>
-  (url.startsWith('http') ? url : `http://${url}`);
+  url.startsWith('http') ? url : `http://${url}`;
 
 // Detects if user browser is Edge or Explorer 11
 export const isMicrosoftBrowser = () => {
@@ -224,7 +246,7 @@ export function precentageTwoPlacesRound(percentage) {
 
 export function orderByColumns(columnOrder) {
   const indexOf = col =>
-    (columnOrder.indexOf(col) > -1 ? columnOrder.indexOf(col) : Infinity);
+    columnOrder.indexOf(col) > -1 ? columnOrder.indexOf(col) : Infinity;
   return (a, b) => indexOf(a) - indexOf(b);
 }
 
