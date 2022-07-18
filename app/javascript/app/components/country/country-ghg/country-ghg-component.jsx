@@ -40,7 +40,7 @@ function CountryGhg(props) {
   }, 10);
 
   const renderExploreButton = () => {
-    const link = `/ghg-emissions?breakBy=regions-${CALCULATION_OPTIONS.ABSOLUTE_VALUE.value}&regions=${iso}`;
+    const link = `/ghg-emissions?breakBy=sector&chartType=area&regions=${iso}`;
     const href = `/contained${link}&isNdcp=true`;
     return (
       <Button
