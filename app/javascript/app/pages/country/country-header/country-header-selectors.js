@@ -86,13 +86,13 @@ export const getDescriptionText = createSelector(
     const percentage = isoData && isoData.value;
     return ReactDOMServer.renderToString(
       <div className={styles.introDescription}>
-        In {lastYear}, {countryName} emmited
+        In {lastYear}, {countryName} emitted
         <span className={styles.bold}>
           {' '}
           {emissionValue && Math.round(emissionValue * 100) / 100} million
           tonnes
         </span>{' '}
-        of CO2 equivalent representing{' '}
+        of CO<sub>2</sub> equivalent representing{' '}
         <span className={styles.bold}>{percentage} of global emissions</span>
       </div>
     );
