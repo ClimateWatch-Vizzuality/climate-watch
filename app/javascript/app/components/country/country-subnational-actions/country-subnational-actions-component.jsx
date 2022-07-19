@@ -26,9 +26,9 @@ import styles from './country-subnational-actions-styles.scss';
 
 const CITY_BADGES = {
   Joined: { color: CHART_NAMED_EXTENDED_COLORS.color1 },
-  Plan: { color: CHART_NAMED_EXTENDED_COLORS.color3 },
-  Target: { color: CHART_NAMED_EXTENDED_COLORS.color4 },
   Inventory: { color: CHART_NAMED_EXTENDED_COLORS.color5 },
+  Target: { color: CHART_NAMED_EXTENDED_COLORS.color4 },
+  Plan: { color: CHART_NAMED_EXTENDED_COLORS.color3 },
   'Not Joined': { color: CHART_NAMED_GRAY_COLORS.grayColor1 }
 };
 
@@ -279,8 +279,8 @@ function SubnationalActions({
               ) : (
                 <React.Fragment>
                   <div className={styles.statContainer}>
-                    <Indicator {...indicators.company_target} />
                     <Indicator {...indicators.company_commited} />
+                    <Indicator {...indicators.company_target} />
                   </div>
                   <Chart
                     type="area"
