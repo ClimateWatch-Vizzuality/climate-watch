@@ -40,7 +40,7 @@ const icons = {
     'Adaptation Included': enhancementIcon,
     'Adaptation Not Included': noEnhancementIcon,
     Mentioned: enhancementIcon,
-    'Not Specified': unclearIcon
+    'Not Specified': noEnhancementIcon
   }
 };
 
