@@ -44,13 +44,13 @@ function CountryNdcOverview(props) {
     const buttonGroupConfig = isEmbed
       ? [{ type: 'info', onClick: handleInfoClick }]
       : [
-          { type: 'info', onClick: handleInfoClick },
-          {
-            type: 'share',
-            shareUrl: `/embed/countries/${iso}/ndc-content-overview`,
-            positionRight: true
-          }
-        ];
+        { type: 'info', onClick: handleInfoClick },
+        {
+          type: 'share',
+          shareUrl: `/embed/countries/${iso}/ndc-content-overview`,
+          positionRight: true
+        }
+      ];
 
     return (
       <ButtonGroup
@@ -79,7 +79,7 @@ function CountryNdcOverview(props) {
         })}
       >
         {process.env.FEATURE_COUNTRY_CHANGES === 'true'
-          ? 'Compare targets and see how they align'
+          ? 'Compare Near-Term with Longer-Term Targets'
           : 'Compare'}
       </Button>
     );
