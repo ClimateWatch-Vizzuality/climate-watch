@@ -141,6 +141,15 @@ function CountryCommitmentsOverview(props) {
                   theme={cardTheme}
                 />
               )}
+              {values?.ndce_source && (
+                <CardRow
+                  rowData={{
+                    title: 'Latest NDC Document Source',
+                    value: values.ndce_source
+                  }}
+                  theme={cardTheme}
+                />
+              )}
             </React.Fragment>
           )}
           {process.env.FEATURE_COUNTRY_CHANGES !== 'true' && (

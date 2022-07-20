@@ -49,6 +49,7 @@ export const getCountryNdcsData = createSelector(
       'ghg_target',
       'mitigation_contribution_type',
       'adaptation',
+      'ndce_source',
       'lts_target',
       'lts_date',
       'lts_document',
