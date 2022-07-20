@@ -135,7 +135,7 @@ const formatTargetsByCountry = (
 };
 
 export const getTargetsByCountry = createSelector(
-  [getRawSectors, getTargets, getActions, getSelectedCommitment],
+  [getSectors, getTargets, getActions, getSelectedCommitment],
   (sectors, targets, _actions, _commitment) =>
     sectors.reduce(
       (acc, next) => ({
