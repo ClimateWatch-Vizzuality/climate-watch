@@ -76,16 +76,6 @@ const getCostsConfig = countryIndicators => {
         {}
       )
     },
-    domain: {
-      x: [
-        min(cost_by_technology.values.map(({ year }) => year)),
-        max(cost_by_technology.values.map(({ year }) => year))
-      ],
-      y: [
-        min(cost_by_technology.values.map(({ value }) => +value)),
-        max(cost_by_technology.values.map(({ value }) => +value))
-      ]
-    },
     name: cost_by_technology.name,
     metadata_source: cost_by_technology.metadata_source
   };
