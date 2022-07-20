@@ -24,7 +24,6 @@ import CountriesDocumentsProvider from 'providers/countries-documents-provider';
 import styles from './country-ndc-overview-styles.scss';
 
 function CountryNdcOverview(props) {
-  // TODO: At some point we might want to split the country page component into a different one
   const {
     sectors,
     values,
@@ -41,16 +40,17 @@ function CountryNdcOverview(props) {
   } = props;
 
   const renderInfoButton = () => {
+    const notEmbeddedButtonConfig = [
+      { type: 'info', onClick: handleInfoClick },
+      {
+        type: 'share',
+        shareUrl: `/embed/countries/${iso}/ndc-content-overview`,
+        positionRight: true
+      }
+    ];
     const buttonGroupConfig = isEmbed
       ? [{ type: 'info', onClick: handleInfoClick }]
-      : [
-        { type: 'info', onClick: handleInfoClick },
-        {
-          type: 'share',
-          shareUrl: `/embed/countries/${iso}/ndc-content-overview`,
-          positionRight: true
-        }
-      ];
+      : notEmbeddedButtonConfig;
 
     return (
       <ButtonGroup
@@ -67,20 +67,14 @@ function CountryNdcOverview(props) {
     const href = `/contained${link}`;
     return (
       <Button
-        {...(process.env.FEATURE_COUNTRY_CHANGES === 'true' && {
-          variant: 'primary',
-          href: link
-        })}
-        {...(process.env.FEATURE_COUNTRY_CHANGES !== 'true' && {
+        {...{
           variant: 'secondary',
           href: isNdcp ? href : null,
           link: isNdcp ? null : link,
           disabled: !ndcsDocument
-        })}
+        }}
       >
-        {process.env.FEATURE_COUNTRY_CHANGES === 'true'
-          ? 'Compare targets and see how they align'
-          : 'Compare'}
+        Compare
       </Button>
     );
   };
@@ -104,221 +98,83 @@ function CountryNdcOverview(props) {
 
   const renderCards = () => (
     <div className={styles.cards}>
-      <Card
-        title={
-          process.env.FEATURE_COUNTRY_CHANGES === 'true'
-            ? 'Latest NDC'
-            : 'Contribution Type'
-        }
-        theme={cardTheme}
-        contentFirst
-      >
+      <Card title={'Contribution Type'} theme={cardTheme} contentFirst>
         <div className={styles.cardContent}>
-          {process.env.FEATURE_COUNTRY_CHANGES === 'true' && (
-            <React.Fragment>
-              {values?.ghg_target && (
-                <CardRow
-                  rowData={{
-                    title: 'GHG target',
-                    value: values.ghg_target
-                  }}
-                  theme={cardTheme}
-                />
-              )}
-              {values?.mitigation_contribution_type && (
-                <CardRow
-                  rowData={{
-                    title: 'Mitigation contribution type',
-                    value: values.mitigation_contribution_type
-                  }}
-                  theme={cardTheme}
-                />
-              )}
-              {values?.adaptation && (
-                <CardRow
-                  rowData={{
-                    title: 'Adaptation included',
-                    value: values.adaptation
-                  }}
-                  theme={cardTheme}
-                />
-              )}
-            </React.Fragment>
-          )}
-          {process.env.FEATURE_COUNTRY_CHANGES !== 'true' && (
-            <React.Fragment>
-              {values?.mitigation_contribution_type && (
-                <CardRow
-                  rowData={{
-                    title: 'Mitigation contribution type',
-                    value: values.mitigation_contribution_type[0].value
-                  }}
-                  theme={cardTheme}
-                />
-              )}
-              {values?.ghg_target_type && (
-                <CardRow
-                  rowData={{
-                    title: 'Target type',
-                    value:
-                      values.ghg_target_type && values.ghg_target_type[0].value
-                  }}
-                  theme={cardTheme}
-                />
-              )}
-              {values?.adaptation && (
-                <CardRow
-                  rowData={{
-                    title: 'Adaptation included',
-                    value: values.adaptation && values.adaptation[0].value
-                  }}
-                  theme={cardTheme}
-                />
-              )}
-            </React.Fragment>
-          )}
+          <React.Fragment>
+            {values?.mitigation_contribution_type && (
+              <CardRow
+                rowData={{
+                  title: 'Mitigation contribution type',
+                  value: values.mitigation_contribution_type[0].value
+                }}
+                theme={cardTheme}
+              />
+            )}
+            {values?.ghg_target_type && (
+              <CardRow
+                rowData={{
+                  title: 'Target type',
+                  value:
+                    values.ghg_target_type && values.ghg_target_type[0].value
+                }}
+                theme={cardTheme}
+              />
+            )}
+            {values?.adaptation && (
+              <CardRow
+                rowData={{
+                  title: 'Adaptation included',
+                  value: values.adaptation && values.adaptation[0].value
+                }}
+                theme={cardTheme}
+              />
+            )}
+          </React.Fragment>
           {!values?.mitigation_contribution_type && (
             <div className={styles.noContent}>Not included</div>
           )}
         </div>
       </Card>
-      <Card
-        title={
-          process.env.FEATURE_COUNTRY_CHANGES === 'true'
-            ? 'Long Term Strategy'
-            : 'GHG Target'
-        }
-        theme={cardTheme}
-        contentFirst
-      >
+      <Card title={'GHG Target'} theme={cardTheme} contentFirst>
         <div className={styles.cardContent}>
-          {process.env.FEATURE_COUNTRY_CHANGES === 'true' && (
-            <React.Fragment>
-              {values?.lts_target && (
-                <CardRow
-                  rowData={{
-                    title: 'Quantified Long-term Emissions Goal',
-                    value: values.lts_target
-                  }}
-                  theme={cardTheme}
-                />
-              )}
-
-              {values?.lts_date && (
-                <CardRow
-                  rowData={{
-                    title: 'Submission Date',
-                    value: values.lts_date
-                  }}
-                  theme={cardTheme}
-                />
-              )}
-
-              {values?.lts_document && (
-                <CardRow
-                  rowData={{
-                    title: 'Long-term Strategy Document',
-                    value: values.lts_document
-                  }}
-                  theme={cardTheme}
-                />
-              )}
-            </React.Fragment>
-          )}
-          {process.env.FEATURE_COUNTRY_CHANGES !== 'true' && (
-            <React.Fragment>
-              {values?.time_target_year && (
-                <CardRow
-                  rowData={{
-                    title: 'Target year',
-                    value: values.time_target_year[0].value
-                  }}
-                />
-              )}
-              {values?.coverage_sectors && (
-                <CardRow
-                  rowData={{
-                    title: 'Sectors covered',
-                    value: values.coverage_sectors[0].value
-                  }}
-                />
-              )}
-            </React.Fragment>
-          )}
-          {process.env.FEATURE_COUNTRY_CHANGES === 'true' &&
-            !values?.lts_target && (
-              <div className={styles.noContent}>Not included</div>
+          <React.Fragment>
+            {values?.time_target_year && (
+              <CardRow
+                rowData={{
+                  title: 'Target year',
+                  value: values.time_target_year[0].value
+                }}
+              />
             )}
-          {process.env.FEATURE_COUNTRY_CHANGES !== 'true' &&
-            !values?.time_target_year && (
-              <div className={styles.noContent}>Not included</div>
+            {values?.coverage_sectors && (
+              <CardRow
+                rowData={{
+                  title: 'Sectors covered',
+                  value: values.coverage_sectors[0].value
+                }}
+              />
             )}
+          </React.Fragment>
+          {!values?.time_target_year && (
+            <div className={styles.noContent}>Not included</div>
+          )}
         </div>
       </Card>
-      <Card
-        title={
-          process.env.FEATURE_COUNTRY_CHANGES === 'true'
-            ? 'Net-Zero Target'
-            : 'Non-GHG Target'
-        }
-        theme={cardTheme}
-        contentFirst
-      >
+      <Card title={'Non-GHG Target'} theme={cardTheme} contentFirst>
         <div className={styles.cardContent}>
-          {process.env.FEATURE_COUNTRY_CHANGES === 'true' && (
-            <React.Fragment>
-              {values?.nz_status && (
-                <CardRow
-                  rowData={{
-                    title: 'Net-zero Target Status',
-                    value: values.nz_status
-                  }}
-                  theme={cardTheme}
-                />
-              )}
-
-              {values?.nz_year && (
-                <CardRow
-                  rowData={{
-                    title: 'Net-zero Target Year',
-                    value: values.nz_year
-                  }}
-                  theme={cardTheme}
-                />
-              )}
-
-              {values?.nz_source && (
-                <CardRow
-                  rowData={{
-                    title: 'Net-zero Target Source',
-                    value: values.nz_source
-                  }}
-                  theme={cardTheme}
-                />
-              )}
-            </React.Fragment>
-          )}
-
-          {process.env.FEATURE_COUNTRY_CHANGES !== 'true' && (
-            <React.Fragment>
-              {values?.non_ghg_target_year && (
-                <CardRow
-                  rowData={{
-                    title: '',
-                    value: values.non_ghg_target[0].value
-                  }}
-                />
-              )}
-            </React.Fragment>
-          )}
-          {process.env.FEATURE_COUNTRY_CHANGES === 'true' &&
-            !values?.nz_status && (
-              <div className={styles.noContent}>Not included</div>
+          <React.Fragment>
+            {values?.non_ghg_target_year && (
+              <CardRow
+                rowData={{
+                  title: '',
+                  value: values.non_ghg_target[0].value
+                }}
+              />
             )}
-          {process.env.FEATURE_COUNTRY_CHANGES !== 'true' &&
-            !values?.non_ghg_target_year && (
-              <div className={styles.noContent}>Not included</div>
-            )}
+          </React.Fragment>
+          {!values?.non_ghg_target_year && (
+            <div className={styles.noContent}>Not included</div>
+          )}
         </div>
       </Card>
     </div>
@@ -359,25 +215,19 @@ function CountryNdcOverview(props) {
   const introTitle = useMemo(() => {
     if (!isCountryPage) return summaryIntroText;
 
-    if (process.env.FEATURE_COUNTRY_CHANGES !== 'true') {
-      return 'Nationally Determined Contribution (NDC) Overview';
-    }
-
-    return `What is the content of ${
-      countryName?.endsWith('s') ? `${countryName}'` : `${countryName}'s`
-    } Climate Commitments?`;
+    return 'Nationally Determined Contribution (NDC) Overview';
   }, [isCountryPage, countryName]);
 
   const renderIntro = () => (
     <Intro
       theme={isCountryPage ? introSmallTheme : introTheme}
       title={introTitle}
-      {...(process.env.FEATURE_COUNTRY_CHANGES !== 'true' && {
+      {...{
         subtitle:
           documentDate &&
           `(submitted ${moment(documentDate).format('MM/DD/YYYY')})`,
         tag: 'h3'
-      })}
+      }}
     />
   );
 
@@ -414,31 +264,18 @@ function CountryNdcOverview(props) {
                 })}
               >
                 {renderIntro()}
-                {process.env.FEATURE_COUNTRY_CHANGES !== 'true' && (
-                  <TabletPortraitOnly>{description}</TabletPortraitOnly>
-                )}
-                {isCountryPage &&
-                  process.env.FEATURE_COUNTRY_CHANGES !== 'true' && (
-                    <div className="grid-column-item">
-                      <div className={styles.actions}>
-                        {renderInfoButton()}
-                        {renderCompareButton()}
-                        <TabletLandscape>
-                          {renderExploreButton()}
-                        </TabletLandscape>
-                      </div>
-                    </div>
-                  )}
-                {isCountryPage &&
-                  process.env.FEATURE_COUNTRY_CHANGES === 'true' && (
-                    <div className="grid-column-item">
+                <TabletPortraitOnly>{description}</TabletPortraitOnly>
+                {isCountryPage && (
+                  <div className="grid-column-item">
+                    <div className={styles.actions}>
+                      {renderInfoButton()}
                       {renderCompareButton()}
+                      <TabletLandscape>{renderExploreButton()}</TabletLandscape>
                     </div>
-                  )}
+                  </div>
+                )}
               </div>
-              {process.env.FEATURE_COUNTRY_CHANGES !== 'true' && (
-                <TabletLandscape>{description}</TabletLandscape>
-              )}
+              <TabletLandscape>{description}</TabletLandscape>
               {renderCards()}
               <TabletPortraitOnly>
                 {isCountryPage && renderExploreButton()}
@@ -452,10 +289,7 @@ function CountryNdcOverview(props) {
 
   return (
     <div className={cx(styles.wrapper, { [styles.embededWrapper]: isEmbed })}>
-      {hasSectors &&
-        !loading &&
-        process.env.FEATURE_COUNTRY_CHANGES !== 'true' &&
-        renderAlertText()}
+      {hasSectors && !loading && renderAlertText()}
       <CountriesDocumentsProvider location={iso} />
       <NdcContentOverviewProvider
         locations={[iso]}

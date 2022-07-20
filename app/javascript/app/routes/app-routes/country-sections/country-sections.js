@@ -7,6 +7,7 @@ import EmissionDrivers from 'components/country/country-emission-drivers';
 import NDCSDGLinkages from 'components/country/country-ndc-sdg-linkages';
 import ClimateVulnerability from 'components/country/country-climate-vulnerability';
 import NDCAdaptation from 'components/country/country-ndc-adaptation';
+import CountryCommitmentsOverview from 'components/country/country-commitments-overview';
 import CountryNdcOverview from 'components/country/country-ndc-overview';
 import CountryLtsOverview from 'components/country/country-lts-overview';
 import LawsAndPolicies from 'components/country/laws-and-policies';
@@ -44,11 +45,12 @@ const routes = [
     anchor: true,
     component: EmissionDrivers
   },
-  process.env.FEATURE_COUNTRY_CHANGES === 'true' && {
-    hash: 'climate-commitmentss',
+  FEATURE_COUNTRY_CHANGES && {
+    hash: 'climate-commitments',
     label: 'Climate Commitments',
     anchor: true,
-    component: () => createElement(CountryNdcOverview, { isCountryPage: true })
+    component: () =>
+      createElement(CountryCommitmentsOverview, { isCountryPage: true })
   },
   {
     hash: 'climate-vulnerability',
