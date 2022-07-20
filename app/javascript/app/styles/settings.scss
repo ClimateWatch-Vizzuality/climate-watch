@@ -120,6 +120,20 @@ $chart-color-26: #0e9560;
 $chart-color-27: #032265;
 $chart-color-28: #727477;
 
+$continous-color-1: #113750;
+$continous-color-2: #14445a;
+$continous-color-3: #175467;
+$continous-color-4: #1b6877;
+$continous-color-5: #1e7984;
+$continous-color-6: #228d94;
+
+$continous-faded-color-1: rgba($continous-color-1, 0.6);
+$continous-faded-color-2: rgba($continous-color-2, 0.6);
+$continous-faded-color-3: rgba($continous-color-3, 0.6);
+$continous-faded-color-4: rgba($continous-color-4, 0.6);
+$continous-faded-color-5: rgba($continous-color-5, 0.6);
+$continous-faded-color-6: rgba($continous-color-6, 0.6);
+
 $teal-blue: #045f61;
 $purple: #74356a;
 $light-blue: #035388;
@@ -216,6 +230,24 @@ $google: #d8483b;
     color25: $chart-color-9;
     color25: $chart-color-7;
     color25: $chart-gray-color-1;
+  }
+
+  continousRamp: {
+    color1: $continous-color-1;
+    color2: $continous-color-2;
+    color3: $continous-color-3;
+    color4: $continous-color-4;
+    color5: $continous-color-5;
+    color6: $continous-color-6;
+  }
+
+  continousFadedRamp: {
+    color1: $continous-faded-color-1;
+    color2: $continous-faded-color-2;
+    color3: $continous-faded-color-3;
+    color4: $continous-faded-color-4;
+    color5: $continous-faded-color-5;
+    color6: $continous-faded-color-6;
   }
 };
 

@@ -27,3 +27,6 @@ export const CHART_NAMED_EXTENDED_COLORS = getColorsFromSettings(
 export const CHART_NAMED_EXTRA_COLORS = getColorsFromSettings(
   'chartColorsExtra'
 );
+
+export const CONTINOUS_RAMP = getColorsFromSettings('continousRamp');
+export const CONTINOUS_FADED_RAMP = getColorsFromSettings('continousRamp');

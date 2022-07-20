@@ -4,6 +4,7 @@ import { INDICATOR_SLUGS } from 'data/constants';
 import sortBy from 'lodash/sortBy';
 import uniq from 'lodash/uniq';
 import isEmpty from 'lodash/isEmpty';
+import { CONTINOUS_RAMP } from 'styles/constants';
 
 // This depends on the country-ghg-emissions-actions fetch
 const getMeta = state =>
@@ -42,14 +43,6 @@ export const getEmissions = createSelector(
   [getIso, getEmissionsIndicator],
   (iso, indicator) => {
     if (!indicator || !iso) return null;
-    const colors = [
-      '#045480',
-      '#0877B3',
-      '#02A0CA',
-      '#02B4D2',
-      '#2ec9df',
-      '#89DDEA'
-    ];
     const locations = Object.entries(indicator.locations).map(
       ([emissionsIso, values]) => ({
         iso: emissionsIso,
@@ -61,7 +54,7 @@ export const getEmissions = createSelector(
       .reverse()
       .map((location, i) => ({
         ...location,
-        color: colors[i] || '#cccdcf' // gray2 as others
+        color: Object.values(CONTINOUS_RAMP)[i] || '#cccdcf' // gray2 as others
       }));
   }
 );
