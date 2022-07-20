@@ -46,7 +46,7 @@ const getCostsConfig = countryIndicators => {
         yLeft: {
           format: 'number',
           name: 'x',
-          unit: 'USD/Kwh'
+          unit: 'USD/kWh'
         }
       },
       columns: {

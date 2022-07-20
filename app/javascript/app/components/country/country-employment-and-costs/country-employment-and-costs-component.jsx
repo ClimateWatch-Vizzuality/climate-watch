@@ -245,7 +245,7 @@ function CountryEmploymentAndCosts(props) {
                     height={450}
                     domain={currentConfig?.domain}
                     showUnit
-                    getCustomYLabelFormat={d => format('.4s')(d)}
+                    getCustomYLabelFormat={d => format('.3f')(d)}
                   />
                 )}
               </div>
