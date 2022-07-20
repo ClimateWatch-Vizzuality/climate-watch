@@ -23,7 +23,7 @@ import { DATABASES_OPTIONS } from './country-ndc-adaptation-constants';
 class CountryNDCAdaptation extends PureComponent {
   componentDidUpdate(prevProps) {
     if (
-      !isEqual(prevProps.goals, this.props.goals) ||
+      !isEqual(prevProps.sectors, this.props.sectors) ||
       !isEqual(prevProps.targetsMeta, this.props.targetsMeta)
     ) {
       ReactTooltip.rebuild();
@@ -33,13 +33,13 @@ class CountryNDCAdaptation extends PureComponent {
   getTooltip() {
     const { tooltipData, targets, targetsData } = this.props;
     if (!tooltipData) return null;
-    const targetsContent = targets && targets[tooltipData.goal_number];
+    const targetsContent = targets && targets[tooltipData.sectorNumber];
     const actions =
       tooltipData &&
-      tooltipData.goal_number &&
-      targetsData[tooltipData.goal_number] &&
-      targetsData[tooltipData.goal_number].targets[tooltipData.number] &&
-      targetsData[tooltipData.goal_number].targets[tooltipData.number].actions;
+      tooltipData.sectorNumber &&
+      targetsData[tooltipData.sectorNumber] &&
+      targetsData[tooltipData.sectorNumber].targets[tooltipData.number] &&
+      targetsData[tooltipData.sectorNumber].targets[tooltipData.number].actions;
     return tooltipData && targetsContent ? (
       <div className={styles.tooltip}>
         <p className={styles.tooltipTitle}>
@@ -60,7 +60,7 @@ class CountryNDCAdaptation extends PureComponent {
 
   renderCards() {
     const {
-      goals,
+      sectors,
       targets,
       targetsData,
       loading,
@@ -69,9 +69,8 @@ class CountryNDCAdaptation extends PureComponent {
       isEmbed,
       activeCommitment
     } = this.props;
-    const hasGoals = goals && goals.length > 0;
     if (loading) return <Loading light className={styles.loader} />;
-    if (isEmpty(goals) || isEmpty(targetsData)) {
+    if (isEmpty(sectors) || isEmpty(targetsData)) {
       return (
         <NoContent
           className={styles.noContent}
@@ -80,18 +79,19 @@ class CountryNDCAdaptation extends PureComponent {
       );
     }
 
-    if (!hasGoals) return null;
+    const hasSectors = sectors && sectors.length > 0;
+    if (!hasSectors) return null;
 
     return (
       <Fragment>
-        <div className={cx(styles.sdgs, { [styles.sdgsEmbed]: isEmbed })}>
-          {goals.map(goal => (
+        <div className={cx(styles.sectors, { [styles.sectorsEmbed]: isEmbed })}>
+          {sectors.map(sector => (
             <AdaptationCard
-              key={goal.title}
-              goal={goal}
+              key={sector.title}
+              sector={sector}
               iso={iso}
-              targets={targets[goal.number]}
-              targetData={targetsData[goal.number]}
+              targets={targets[sector.number]}
+              targetData={targetsData[sector.number]}
               tooltipId="ndc-adaptation"
               setTooltipData={setTooltipData}
               indicators
@@ -211,7 +211,7 @@ class CountryNDCAdaptation extends PureComponent {
 }
 
 CountryNDCAdaptation.propTypes = {
-  goals: Proptypes.array,
+  sectors: Proptypes.array,
   targets: Proptypes.object,
   targetsData: Proptypes.object,
   commitmentOptions: Proptypes.array.isRequired,

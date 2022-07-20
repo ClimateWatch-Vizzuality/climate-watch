@@ -9,21 +9,21 @@ class Dot extends PureComponent {
   render() {
     const {
       target,
-      goal,
+      sector,
       hasActions,
       tooltipId,
       setTooltipData,
       onClick,
       path
     } = this.props;
-
+    const { colour } = sector;
     const dotProps = {
       onMouseEnter: () => setTooltipData(target),
       onClick,
       'data-for': tooltipId,
       'data-tip': true,
       className: cx(styles.dot, { [styles.clickable]: hasActions }),
-      style: { backgroundColor: hasActions ? goal.colour : '' },
+      style: { backgroundColor: hasActions ? colour : '' },
       ...(path && { to: path })
     };
     const reactClass = path ? Link : 'span';
@@ -32,7 +32,7 @@ class Dot extends PureComponent {
 }
 
 Dot.propTypes = {
-  goal: PropTypes.object.isRequired,
+  sector: PropTypes.object.isRequired,
   target: PropTypes.object,
   hasActions: PropTypes.bool,
   tooltipId: PropTypes.string,
