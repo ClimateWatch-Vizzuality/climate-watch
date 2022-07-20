@@ -1,13 +1,12 @@
 @import '~styles/layout.scss';
 
 .gridContainer {
+  padding: ($gutter-padding + $gutter-padding / 2) 0;
   border-bottom: 1px solid $gray2;
 }
 
 .grid {
   @include row(12);
-
-  padding-top: $gutter-padding + $gutter-padding / 2;
 }
 
 .title {

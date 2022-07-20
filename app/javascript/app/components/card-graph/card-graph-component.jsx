@@ -195,28 +195,9 @@ class CardGraph extends PureComponent {
     const { type } = this.props;
     const { noData } = this.state;
 
-    // if (noData) {
-    //   return (
-    //     <div className={styles.noDataContainer}>
-    //       <span>No data available.</span>
-    //     </div>
-    //   );
-    // }
-
     if (type === 'RANK') return this.renderRank();
     if (type === 'LINE_CHART') return this.renderLineChart();
     if (type === 'PIE_CHART') return this.renderPieChart();
-
-    // switch (type) {
-    //   case 'RANK':
-    //     return this.renderRank();
-    //   case 'LINE_CHART':
-    //     return this.renderLineChart();
-    //   case 'PIE_CHART':
-    //     return this.renderPieChart();
-    //   default:
-    //     return null;
-    // }
 
     if (noData) {
       return (

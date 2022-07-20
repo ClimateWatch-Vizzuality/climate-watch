@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import CountryGHGEmissions from 'components/country/country-ghg-emissions';
 import CountryGHGMap from 'components/country/country-ghg-map';
 import EmissionsMetaProvider from 'providers/ghg-emissions-meta-provider';
@@ -60,8 +60,8 @@ function CountryGhg(props) {
     search.calculation &&
     search.calculation !== CALCULATION_OPTIONS.ABSOLUTE_VALUE.value;
   return (
-    <div>
-      <div>
+    <Fragment>
+      <div className={styles.wrapper}>
         {FEATURE_COUNTRY_CHANGES && (
           <React.Fragment>
             <div className={styles.titleRow}>
@@ -121,7 +121,7 @@ function CountryGhg(props) {
         <Disclaimer className={cx(styles.disclaimer, layout.content)} />
       )}
       <ModalMetadata />
-    </div>
+    </Fragment>
   );
 }
 
