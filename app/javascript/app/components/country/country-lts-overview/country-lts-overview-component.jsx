@@ -61,22 +61,23 @@ const CountryLtsOverview = props => {
     isEmbed,
     isNdcp,
     cardData,
-    isCountryPage,
+    isCountryPage, // Remove isCountryPage (it will be always false) when FEATURE_COUNTRY_CHANGES is removed
     handleInfoClick,
     handleAnalyticsClick
   } = props;
 
   const renderInfoButton = () => {
+    const notEmbeddedButtonConfig = [
+      { type: 'info', onClick: handleInfoClick },
+      {
+        type: 'share',
+        shareUrl: `/embed/countries/${iso}/lts-content-overview`,
+        positionRight: true
+      }
+    ];
     const buttonGroupConfig = isEmbed
       ? [{ type: 'info', onClick: handleInfoClick }]
-      : [
-        { type: 'info', onClick: handleInfoClick },
-        {
-          type: 'share',
-          shareUrl: `/embed/countries/${iso}/lts-content-overview`,
-          positionRight: true
-        }
-      ];
+      : notEmbeddedButtonConfig;
 
     return (
       <ButtonGroup

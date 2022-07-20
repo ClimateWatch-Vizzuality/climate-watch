@@ -63,12 +63,12 @@ export default [
     exact: true
   },
   {
-    path: '/embed/countries/:iso/ndc-content-overview',
+    path: '/embed/countries/:iso/ndc-content-overview', // Remove when FEATURE_COUNTRY_CHANGES is removed
     exact: true,
     component: () => createElement(CountryNdcOverview)
   },
   {
-    path: '/embed/countries/:iso/lts-content-overview',
+    path: '/embed/countries/:iso/lts-content-overview', // Remove when FEATURE_COUNTRY_CHANGES is removed
     exact: true,
     component: () => createElement(CountryLtsOverview, { isCountryPage: true })
   },
