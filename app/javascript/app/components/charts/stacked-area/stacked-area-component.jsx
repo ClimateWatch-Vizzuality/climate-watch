@@ -36,7 +36,8 @@ class ChartStackedArea extends PureComponent {
     this.state = {
       activePoint: null,
       activeCoordinateX: 0,
-      showLastPoint: true
+      showLastPoint: true,
+      reversedTooltipX: null
     };
   }
 
@@ -59,10 +60,25 @@ class ChartStackedArea extends PureComponent {
   handleMouseMove = e => {
     const activeCoordinateX = e && e.activeCoordinate && e.activeCoordinate.x;
     const chartX = (e && e.chartX) || 0;
-    const tooltipVisibility = activeCoordinateX >= chartX - 30;
+    const lastDataX = this.props.lastData.x;
+    const tooltipVisibility = activeCoordinateX >= chartX - 10;
+    const isReversedTooltip = e.activeLabel && e.activeLabel >= lastDataX;
+
     if (this.state.tooltipVisibility !== tooltipVisibility) {
       this.setState({ tooltipVisibility }, () => this.props.onMouseMove(e));
     }
+    if (
+      (isReversedTooltip && !this.state.reversedTooltipX) ||
+      (!isReversedTooltip && this.state.reversedTooltipX)
+    ) {
+      const TOOLTIP_WIDTH = 300;
+      this.setState({
+        reversedTooltipX: isReversedTooltip
+          ? activeCoordinateX - TOOLTIP_WIDTH
+          : null
+      });
+    }
+
     const year = e && e.activeLabel;
     if (year) {
       this.debouncedMouseMove(year);
@@ -240,7 +256,7 @@ class ChartStackedArea extends PureComponent {
   }
 
   render() {
-    const { tooltipVisibility, showLastPoint } = this.state;
+    const { tooltipVisibility, showLastPoint, reversedTooltipX } = this.state;
     const {
       config,
       dataWithTotal,
@@ -310,6 +326,7 @@ class ChartStackedArea extends PureComponent {
           {tooltipVisibility && (
             <Tooltip
               viewBox={{ x: 0, y: 0, width: 100, height: 100 }}
+              position={reversedTooltipX && { x: reversedTooltipX, y: 100 }}
               isAnimationActive={false}
               cursor={{ stroke: '#113750', strokeWidth: 2 }}
               content={content => (
