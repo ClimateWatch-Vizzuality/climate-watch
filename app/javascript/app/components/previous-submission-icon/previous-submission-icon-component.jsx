@@ -65,7 +65,7 @@ const PreviousSubmissionIcon = ({
 };
 
 PreviousSubmissionIcon.propTypes = {
-  submissionIconValue: PropTypes.string.isRequired,
+  submissionIconValue: PropTypes.string,
   value: PropTypes.string.isRequired,
   white: PropTypes.bool,
   tooltipId: PropTypes.string,
