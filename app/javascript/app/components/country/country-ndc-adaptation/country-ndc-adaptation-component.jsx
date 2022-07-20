@@ -28,6 +28,15 @@ class CountryNDCAdaptation extends PureComponent {
     ) {
       ReactTooltip.rebuild();
     }
+
+    if (
+      !isEqual(prevProps.documentOptions, this.props.documentOptions) &&
+      !this.props.activeDocument
+    ) {
+      this.props.setFilter({
+        document: this.props.documentOptions?.[0]?.value || null
+      });
+    }
   }
 
   getTooltip() {
@@ -67,7 +76,7 @@ class CountryNDCAdaptation extends PureComponent {
       setTooltipData,
       iso,
       isEmbed,
-      activeCommitment
+      activeDocument
     } = this.props;
     if (loading) return <Loading light className={styles.loader} />;
     if (isEmpty(sectors) || isEmpty(targetsData)) {
@@ -96,7 +105,7 @@ class CountryNDCAdaptation extends PureComponent {
               setTooltipData={setTooltipData}
               indicators
               className={cardTheme.card}
-              activeCommitment={activeCommitment}
+              activeCommitment={activeDocument}
             />
           ))}
         </div>
@@ -113,16 +122,16 @@ class CountryNDCAdaptation extends PureComponent {
 
   render() {
     const {
-      commitmentOptions,
       isEmbed,
-      handleCommitmentChange,
+      handleDocumentChange,
       handleDatabaseChange,
       handleInfoClick,
       handleAnalyticsClick,
       countryName,
       iso,
       activeDatabase,
-      activeCommitment
+      activeDocument,
+      documentOptions
     } = this.props;
 
     const description = (
@@ -182,9 +191,9 @@ class CountryNDCAdaptation extends PureComponent {
               <Dropdown
                 label="Filter by Climate Commitment"
                 placeholder="Choose a commitment"
-                options={commitmentOptions}
-                onValueChange={handleCommitmentChange}
-                value={activeCommitment}
+                options={documentOptions}
+                onValueChange={handleDocumentChange}
+                value={activeDocument}
                 noAutoSort
               />
               <Dropdown
@@ -216,8 +225,8 @@ CountryNDCAdaptation.propTypes = {
   sectors: Proptypes.array,
   targets: Proptypes.object,
   targetsData: Proptypes.object,
-  commitmentOptions: Proptypes.array.isRequired,
-  handleCommitmentChange: Proptypes.func.isRequired,
+  documentOptions: Proptypes.array.isRequired,
+  handleDocumentChange: Proptypes.func.isRequired,
   handleDatabaseChange: Proptypes.func.isRequired,
   isEmbed: Proptypes.bool,
   loading: Proptypes.bool,
@@ -226,10 +235,11 @@ CountryNDCAdaptation.propTypes = {
   targetsMeta: Proptypes.object,
   iso: Proptypes.string.isRequired,
   activeDatabase: Proptypes.object.isRequired,
-  activeCommitment: Proptypes.object.isRequired,
+  activeDocument: Proptypes.object.isRequired,
   countryName: Proptypes.string,
   handleInfoClick: Proptypes.func.isRequired,
-  handleAnalyticsClick: Proptypes.func.isRequired
+  handleAnalyticsClick: Proptypes.func.isRequired,
+  setFilter: Proptypes.func.isRequired
 };
 
 CountryNDCAdaptation.defaultProps = {

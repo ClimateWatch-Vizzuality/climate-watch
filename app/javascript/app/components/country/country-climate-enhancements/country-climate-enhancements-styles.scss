@@ -6,6 +6,7 @@
 
 .grid {
   @include row(12);
+
   padding: ($gutter-padding + $gutter-padding / 2) 0;
 }
 

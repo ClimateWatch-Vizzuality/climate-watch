@@ -29,6 +29,6 @@ export const SECTORS_COLORS = {
 };
 
 export const DATABASES_OPTIONS = [
-  { label: 'World Bank Conventional Sectors', value: 'wb' },
+  { label: 'Climate Watch sectors', value: 'wb' },
   { label: 'Adapt Now Sectors', value: 'adapt_now' }
 ];
