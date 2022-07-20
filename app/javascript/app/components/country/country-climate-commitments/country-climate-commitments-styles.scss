@@ -34,6 +34,12 @@
   text-align: center;
 }
 
+.valueDescription {
+  margin-top: 10px;
+  font-size: $font-size-sm;
+  color: $gray1;
+}
+
 .ambitionContainer {
   @include row(12);
 

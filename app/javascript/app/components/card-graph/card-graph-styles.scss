@@ -15,10 +15,11 @@
   flex: 1;
 
   .rankValue {
-    font-size: $font-size-m;
     display: flex;
     flex-direction: column;
     align-items: flex-end;
+    color: $theme-color-light;
+    font-size: $font-size-large;
 
     @media #{$tablet-landscape} {
       font-size: $font-size-large;
