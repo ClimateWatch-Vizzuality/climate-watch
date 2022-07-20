@@ -21,6 +21,13 @@ import styles from './country-ndc-adaptation-styles.scss';
 import { DATABASES_OPTIONS } from './country-ndc-adaptation-constants';
 
 class CountryNDCAdaptation extends PureComponent {
+  constructor(props) {
+    super(props);
+    this.state = {
+      showTooltip: false
+    };
+  }
+
   componentDidUpdate(prevProps) {
     if (
       !isEqual(prevProps.sectors, this.props.sectors) ||
@@ -40,31 +47,34 @@ class CountryNDCAdaptation extends PureComponent {
   }
 
   getTooltip() {
-    const { tooltipData, targets, targetsData } = this.props;
-    if (!tooltipData) return null;
-    const targetsContent = targets && targets[tooltipData.sectorNumber];
+    const { tooltipData, targetsData } = this.props;
     const actions =
-      tooltipData &&
-      tooltipData.sectorNumber &&
-      targetsData[tooltipData.sectorNumber] &&
-      targetsData[tooltipData.sectorNumber].targets[tooltipData.number] &&
-      targetsData[tooltipData.sectorNumber].targets[tooltipData.number].actions;
-    return tooltipData && targetsContent ? (
+      targetsData[tooltipData?.goal_number]?.targets?.[tooltipData?.number]
+        ?.actions;
+
+    if (!tooltipData || !actions?.length) {
+      this.setState({ showTooltip: false });
+
+      return null;
+    }
+
+    this.setState({ showTooltip: true });
+
+    return (
       <div className={styles.tooltip}>
         <p className={styles.tooltipTitle}>
           <b>{tooltipData.number}: </b>
           {tooltipData.title}
         </p>
         <p className={styles.actionTitleContainer}>
-          {actions &&
-            actions.map(a => (
-              <div key={a.id} className={styles.actionTitle}>
-                {a.title}
-              </div>
-            ))}
+          {actions.map(({ id, title }) => (
+            <div key={id} className={styles.actionTitle}>
+              {title}
+            </div>
+          ))}
         </p>
       </div>
-    ) : null;
+    );
   }
 
   renderCards() {
@@ -113,6 +123,7 @@ class CountryNDCAdaptation extends PureComponent {
           className={styles.tooltipContainer}
           id="ndc-adaptation"
           scrollHide={false}
+          disable={!this.state.showTooltip}
         >
           {this.getTooltip()}
         </ReactTooltip>
