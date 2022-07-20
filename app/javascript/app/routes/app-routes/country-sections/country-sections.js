@@ -8,7 +8,7 @@ import NDCSDGLinkages from 'components/country/country-ndc-sdg-linkages';
 import ClimateVulnerability from 'components/country/country-climate-vulnerability';
 import NDCAdaptation from 'components/country/country-ndc-adaptation';
 import CountryCommitmentsOverview from 'components/country/country-commitments-overview';
-import CountryNdcOverview from 'components/country/country-ndc-overview';
+import CountryNdcOverview from 'components/country/legacy-country-ndc-overview';
 import CountryLtsOverview from 'components/country/country-lts-overview';
 import LawsAndPolicies from 'components/country/laws-and-policies';
 import SubnationalActions from 'components/country/country-subnational-actions';
@@ -49,8 +49,7 @@ const routes = [
     hash: 'climate-commitments',
     label: 'Climate Commitments',
     anchor: true,
-    component: () =>
-      createElement(CountryCommitmentsOverview, { isCountryPage: true })
+    component: () => createElement(CountryCommitmentsOverview)
   },
   {
     hash: 'climate-vulnerability',
@@ -68,7 +67,7 @@ const routes = [
     hash: 'ndc-content-overview',
     label: 'NDC Content Overview',
     anchor: true,
-    component: () => createElement(CountryNdcOverview, { isCountryPage: true })
+    component: () => createElement(CountryNdcOverview)
   },
   process.env.FEATURE_COUNTRY_CHANGES !== 'true' && {
     hash: 'lts-content-overview',

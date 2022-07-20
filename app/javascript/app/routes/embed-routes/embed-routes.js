@@ -5,7 +5,7 @@ import NDCSEnhancementsMap from 'components/ndcs/ndcs-enhancements-map';
 import GhgEmissionsGraph from 'components/ghg-emissions';
 import CompareGhgChart from 'components/compare/compare-ghg-chart';
 import CountryGhg from 'components/country/country-ghg';
-import CountryNdcOverview from 'components/country/country-ndc-overview';
+import CountryNdcOverview from 'components/country/legacy-country-ndc-overview';
 import CountryLtsOverview from 'components/country/country-lts-overview';
 import NDCSDGLinkages from 'components/country/country-ndc-sdg-linkages';
 import NdcSdgLinkagesContent from 'components/ndc-sdg/ndc-sdg-linkages-content';
@@ -65,7 +65,7 @@ export default [
   {
     path: '/embed/countries/:iso/ndc-content-overview',
     exact: true,
-    component: () => createElement(CountryNdcOverview, { isCountryPage: true })
+    component: () => createElement(CountryNdcOverview)
   },
   {
     path: '/embed/countries/:iso/lts-content-overview',

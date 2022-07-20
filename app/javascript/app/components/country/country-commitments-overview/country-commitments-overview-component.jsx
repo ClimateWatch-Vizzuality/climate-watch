@@ -14,7 +14,6 @@ import ButtonGroup from 'components/button-group';
 import AbbrReplace, { replaceStringAbbr } from 'components/abbr-replace';
 import { TabletLandscape, TabletPortraitOnly } from 'components/responsive';
 import introSmallTheme from 'styles/themes/intro/intro-simple-small.scss';
-import introTheme from 'styles/themes/intro/intro-simple.scss';
 import layout from 'styles/layout.scss';
 import cardTheme from 'styles/themes/card/card-overflow-content.scss';
 import alertIcon from 'assets/icons/alert.svg';
@@ -28,7 +27,6 @@ function CountryCommitmentsOverview(props) {
     sectors,
     values,
     loading,
-    isCountryPage,
     iso,
     isEmbed,
     isNdcp,
@@ -330,8 +328,7 @@ function CountryCommitmentsOverview(props) {
         <Icon icon={alertIcon} className={styles.alertIcon} />
         <span className={styles.alertText}>
           <AbbrReplace>
-            The information shown below only reflects the{' '}
-            {!isCountryPage ? 'selected' : 'last'} NDC submission.
+            The information shown below only reflects the last NDC submission.
           </AbbrReplace>
         </span>
       </div>
@@ -352,13 +349,8 @@ function CountryCommitmentsOverview(props) {
       }}
     />
   );
-  const summaryIntroText = !ndcsDocument
-    ? 'Summary'
-    : `Summary of ${ndcsDocument.long_name}`;
 
   const introTitle = useMemo(() => {
-    if (!isCountryPage) return summaryIntroText;
-
     if (process.env.FEATURE_COUNTRY_CHANGES !== 'true') {
       return 'Nationally Determined Contribution (NDC) Overview';
     }
@@ -366,11 +358,11 @@ function CountryCommitmentsOverview(props) {
     return `What is the content of ${
       countryName?.endsWith('s') ? `${countryName}'` : `${countryName}'s`
     } Climate Commitments?`;
-  }, [isCountryPage, countryName]);
+  }, [countryName]);
 
   const renderIntro = () => (
     <Intro
-      theme={isCountryPage ? introSmallTheme : introTheme}
+      theme={introSmallTheme}
       title={introTitle}
       {...(process.env.FEATURE_COUNTRY_CHANGES !== 'true' && {
         subtitle:
@@ -383,7 +375,7 @@ function CountryCommitmentsOverview(props) {
 
   const renderContent = () => {
     if (!hasSectors && !loading) {
-      return isCountryPage ? (
+      return (
         <div className={layout.content}>
           <div className="grid-column-item">
             <div className={cx(styles.header)}>
@@ -395,11 +387,6 @@ function CountryCommitmentsOverview(props) {
             </div>
           </div>
         </div>
-      ) : (
-        <NoContent
-          message="No overview content data"
-          className={styles.noContentWrapper}
-        />
       );
     }
     return (
@@ -408,41 +395,31 @@ function CountryCommitmentsOverview(props) {
         {hasSectors && (
           <div className={layout.content}>
             <div className="grid-column-item">
-              <div
-                className={cx(styles.header, {
-                  [styles.col2]: isCountryPage
-                })}
-              >
+              <div className={cx(styles.header, styles.col2)}>
                 {renderIntro()}
                 {process.env.FEATURE_COUNTRY_CHANGES !== 'true' && (
                   <TabletPortraitOnly>{description}</TabletPortraitOnly>
                 )}
-                {isCountryPage &&
-                  process.env.FEATURE_COUNTRY_CHANGES !== 'true' && (
-                    <div className="grid-column-item">
-                      <div className={styles.actions}>
-                        {renderInfoButton()}
-                        {renderCompareButton()}
-                        <TabletLandscape>
-                          {renderExploreButton()}
-                        </TabletLandscape>
-                      </div>
-                    </div>
-                  )}
-                {isCountryPage &&
-                  process.env.FEATURE_COUNTRY_CHANGES === 'true' && (
-                    <div className="grid-column-item">
+                {process.env.FEATURE_COUNTRY_CHANGES !== 'true' && (
+                  <div className="grid-column-item">
+                    <div className={styles.actions}>
+                      {renderInfoButton()}
                       {renderCompareButton()}
+                      <TabletLandscape>{renderExploreButton()}</TabletLandscape>
                     </div>
-                  )}
+                  </div>
+                )}
+                {process.env.FEATURE_COUNTRY_CHANGES === 'true' && (
+                  <div className="grid-column-item">
+                    {renderCompareButton()}
+                  </div>
+                )}
               </div>
               {process.env.FEATURE_COUNTRY_CHANGES !== 'true' && (
                 <TabletLandscape>{description}</TabletLandscape>
               )}
               {renderCards()}
-              <TabletPortraitOnly>
-                {isCountryPage && renderExploreButton()}
-              </TabletPortraitOnly>
+              <TabletPortraitOnly>{renderExploreButton()}</TabletPortraitOnly>
             </div>
           </div>
         )}
@@ -473,7 +450,6 @@ CountryCommitmentsOverview.propTypes = {
   sectors: PropTypes.array,
   values: PropTypes.object,
   loading: PropTypes.bool,
-  isCountryPage: PropTypes.bool,
   isNdcp: PropTypes.bool,
   isEmbed: PropTypes.bool,
   handleInfoClick: PropTypes.func.isRequired,
