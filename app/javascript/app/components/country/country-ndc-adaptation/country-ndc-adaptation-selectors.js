@@ -73,7 +73,7 @@ export const getTargets = createSelector([getRawSectors], sectors => {
   );
 });
 
-const formatTargetsByCountry = (targets, _actions, goalNumber, _document) => {
+const formatTargetsByCountry = (targets, _actions, sectorNumber, _document) => {
   const goalsWithTargets = Object.values(targets);
   const targetWithActions = goalsWithTargets
     .map(_targets => _targets)
@@ -131,7 +131,7 @@ const formatTargetsByCountry = (targets, _actions, goalNumber, _document) => {
 };
 
 export const getTargetsByCountry = createSelector(
-  [getGoals, getTargets, getActions, getSelectedDocument],
+  [getSectors, getTargets, getActions, getSelectedDocument],
   (goals, targets, _actions, _document) =>
     goals.reduce(
       (acc, next) => ({

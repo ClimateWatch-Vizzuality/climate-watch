@@ -12,7 +12,7 @@ import reducers, { initialState } from './country-ndc-adaptation-reducers';
 import CountryNDCSAdaptationComponent from './country-ndc-adaptation-component';
 import {
   getDocuments,
-  getGoals,
+  getSectors,
   getTargets,
   getTargetsByCountry,
   getActiveDatabase,
