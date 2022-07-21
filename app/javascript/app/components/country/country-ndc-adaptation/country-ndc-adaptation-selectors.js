@@ -6,10 +6,10 @@ import _camelCase from 'lodash/camelCase';
 
 import {
   DATABASES_OPTIONS,
-  GOALS_COLORS
+  SECTORS_COLORS
 } from './country-ndc-adaptation-constants';
 
-const getSectors = (state, search) =>
+const getRawSectors = (state, search) =>
   (state.ndcsAdaptations.data?.sectors || []).filter(
     ({ sector_type: sectorType }) =>
       sectorType === (search?.database || DATABASES_OPTIONS[0].value)
@@ -47,33 +47,39 @@ export const getActiveDatabase = search =>
   DATABASES_OPTIONS.find(({ value }) => value === search?.database) ||
   DATABASES_OPTIONS[0];
 
-export const getGoals = createSelector([getSectors], sectors =>
+export const getSectors = createSelector([getRawSectors], sectors =>
   sectors.map(({ id, name }, index) => ({
     id,
     cw_title: name,
     number: index + 1,
-    colour: GOALS_COLORS[_camelCase(name)]
+    colour: SECTORS_COLORS[_camelCase(name)]
   }))
 );
 
-export const getTargets = createSelector([getSectors], sectors =>
-  sectors.reduce(
+export const getTargets = createSelector([getRawSectors], sectors => {
+  if (!sectors) return null;
+  return sectors.reduce(
     (acc, next, index) => ({
       ...acc,
       [index + 1]: next.subsectors.map(({ id, name }, subsectorIndex) => ({
         id,
         number: `${index + 1}.${subsectorIndex + 1}`,
-        goal_number: index + 1,
+        sectorNumber: index + 1,
         title: name
       }))
     }),
     {}
-  )
-);
+  );
+});
 
-const formatTargetsByCountry = (targets, _actions, goalNumber, _commitment) => {
-  const goalsWithTargets = Object.values(targets);
-  const targetWithActions = goalsWithTargets
+const formatTargetsByCountry = (
+  targets,
+  _actions,
+  sectorNumber,
+  _commitment
+) => {
+  const sectorsWithTargets = Object.values(targets);
+  const targetWithActions = sectorsWithTargets
     .map(_targets => _targets)
     .reduce(
       (acc, next) => [...acc, ...next.map(_n => ({ ..._n, actions: [] }))],
@@ -98,7 +104,7 @@ const formatTargetsByCountry = (targets, _actions, goalNumber, _commitment) => {
 
               if (
                 targetIndex !== -1 &&
-                currentTarget.goal_number === goalNumber
+                currentTarget.sectorNumber === sectorNumber
               ) {
                 targetWithActions[targetIndex] = {
                   ...targetWithActions[targetIndex],
@@ -114,7 +120,7 @@ const formatTargetsByCountry = (targets, _actions, goalNumber, _commitment) => {
   return Object.values(
     groupBy(
       targetWithActions.filter(({ actions: _acts }) => _acts.length),
-      'goal_number'
+      'sectorNumber'
     )
   ).reduce((_acc, _next) => {
     const reduced = _next.reduce(
@@ -129,9 +135,9 @@ const formatTargetsByCountry = (targets, _actions, goalNumber, _commitment) => {
 };
 
 export const getTargetsByCountry = createSelector(
-  [getGoals, getTargets, getActions, getSelectedCommitment],
-  (goals, targets, _actions, _commitment) =>
-    goals.reduce(
+  [getSectors, getTargets, getActions, getSelectedCommitment],
+  (sectors, targets, _actions, _commitment) =>
+    sectors.reduce(
       (acc, next) => ({
         ...acc,
         [next.number]: {

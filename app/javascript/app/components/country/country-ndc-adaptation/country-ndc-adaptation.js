@@ -12,7 +12,7 @@ import reducers, { initialState } from './country-ndc-adaptation-reducers';
 import CountryNDCSAdaptationComponent from './country-ndc-adaptation-component';
 import {
   getCommitmentOptions,
-  getGoals,
+  getSectors,
   getTargets,
   getTargetsByCountry,
   getActiveDatabase,
@@ -35,7 +35,7 @@ const mapStateToProps = (state, { match, location }) => {
 
   return {
     tooltipData: state.countryNDCSAdaptation.tooltipData,
-    goals: getGoals(state, search),
+    sectors: getSectors(state, search),
     targets: getTargets(state, search),
     targetsData: getTargetsByCountry(state),
     activeCommitment: getActiveCommitment(state),

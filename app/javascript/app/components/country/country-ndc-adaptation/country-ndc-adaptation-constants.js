@@ -1,4 +1,4 @@
-export const GOALS_COLORS = {
+export const SECTORS_COLORS = {
   agriculture: '#3f7e44',
   coastalZone: '#0a97d9',
   crossCuttingArea: '',
