@@ -18,9 +18,9 @@ import Icon from 'components/icon';
 import Tag from 'components/tag';
 import externalLink from 'assets/icons/external-link.svg';
 import ReactTooltip from 'react-tooltip';
-
 import ButtonGroup from 'components/button-group';
 import layout from 'styles/layout.scss';
+import Tooltip from './country-employment-tooltip';
 
 import styles from './country-employment-and-costs-styles.scss';
 
@@ -92,32 +92,7 @@ function CountryEmploymentAndCosts(props) {
 
   const getTooltip = useCallback(
     (datum, _config) =>
-      ReactDOMServer.renderToString(
-        <ul>
-          {_config.data.map(({ name, value }) => (
-            <li className={styles.tooltipContainer}>
-              <div
-                className={styles.tooltipName}
-                style={{
-                  color: _config.config.theme[name].fill,
-                  ...(datum.name === name && {
-                    fontWeight: 600,
-                    textDecoration: 'underline'
-                  })
-                }}
-              >
-                {name}
-              </div>
-              <div
-                className={styles.tooltipValue}
-                style={{ ...(datum.name === name && { fontWeight: 600 }) }}
-              >
-                {format('.4s')(value)}
-              </div>
-            </li>
-          ))}
-        </ul>
-      ),
+      ReactDOMServer.renderToString(<Tooltip datum={datum} config={_config} />),
     []
   );
 
@@ -223,7 +198,8 @@ function CountryEmploymentAndCosts(props) {
                         id="employment-chart-bar"
                         html
                         className={styles.tooltip}
-                        backgroundColor="#fff"
+                        effect="solid"
+                        type="light"
                       />
                     </Fragment>
                   )}

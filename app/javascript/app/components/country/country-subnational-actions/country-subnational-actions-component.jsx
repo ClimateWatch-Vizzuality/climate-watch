@@ -17,7 +17,8 @@ import externalLink from 'assets/icons/external-link.svg';
 
 import {
   CHART_NAMED_EXTENDED_COLORS,
-  CHART_NAMED_GRAY_COLORS
+  CHART_NAMED_GRAY_COLORS,
+  CONTINOUS_RAMP
 } from 'app/styles/constants';
 
 import Indicator from './indicator';
@@ -33,11 +34,11 @@ const CITY_BADGES = {
 };
 
 const TARGETS = {
-  Committed: { color: '#04537d' },
-  '2°C': { color: '#0677B3' },
-  'Well-below 2°C': { color: '#599BC9' },
-  '1.5°C/Well-below 2°C': { color: '#84B6D7' },
-  '1.5°C': { color: '#ADCEE4' }
+  Committed: { color: CONTINOUS_RAMP.color1 },
+  '2°C': { color: CONTINOUS_RAMP.color2 },
+  'Well-below 2°C': { color: CONTINOUS_RAMP.color3 },
+  '1.5°C/Well-below 2°C': { color: CONTINOUS_RAMP.color4 },
+  '1.5°C': { color: CONTINOUS_RAMP.color5 }
 };
 
 function SubnationalActions({
@@ -49,6 +50,7 @@ function SubnationalActions({
 }) {
   const showByMillion = value => Number((value || 0) / 1000000).toFixed(2);
 
+  // DATA TODO: Move to selector
   const citiesBadgeValues = (indicators.city_badge_type?.values || []).map(
     x => ({
       ...x,
@@ -116,6 +118,8 @@ function SubnationalActions({
     indicators.company_target_qualification &&
     isEmpty(indicators.company_target_qualification.values);
 
+  // END OF DATA
+
   const renderNoData = () => (
     <div className={styles.noData}>No data available.</div>
   );
@@ -150,7 +154,7 @@ function SubnationalActions({
               title={
                 <div className={styles.cardHeader}>
                   <div className={styles.titleContainer}>
-                    <span>Cities</span>
+                    <span className={styles.cardTitle}>Cities</span>
                     <InfoButton
                       className={styles.infoBtn}
                       infoOpen={false}
@@ -243,7 +247,7 @@ function SubnationalActions({
               title={
                 <div className={styles.cardHeader}>
                   <div className={styles.titleContainer}>
-                    <span>Companies</span>
+                    <span className={styles.cardTitle}>Companies</span>
                     <InfoButton
                       className={styles.infoBtn}
                       infoOpen={false}
