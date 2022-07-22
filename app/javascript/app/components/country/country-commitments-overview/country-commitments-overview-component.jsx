@@ -406,18 +406,6 @@ function CountryCommitmentsOverview(props) {
             <div className="grid-column-item">
               <div className={cx(styles.header, styles.col2)}>
                 {renderIntro()}
-                {process.env.FEATURE_COUNTRY_CHANGES === 'true' && (
-                  <div className={styles.descriptionContainer}>
-                    <AbbrReplace>
-                      <p>
-                        Below summarizes country&apos;s key climate commitments,
-                        including the latest NDC, LTS and Net-Zero target.
-                        Explore more indicators about the country&apos;s climate
-                        commitments in each respective module.
-                      </p>
-                    </AbbrReplace>
-                  </div>
-                )}
                 {process.env.FEATURE_COUNTRY_CHANGES !== 'true' && (
                   <TabletPortraitOnly>{description}</TabletPortraitOnly>
                 )}
@@ -433,6 +421,21 @@ function CountryCommitmentsOverview(props) {
                 {process.env.FEATURE_COUNTRY_CHANGES === 'true' && (
                   <div className="grid-column-item">
                     {renderCompareButton()}
+                  </div>
+                )}
+                {process.env.FEATURE_COUNTRY_CHANGES === 'true' && (
+                  <div className="grid-column-item">
+                    <div className={styles.descriptionContainer}>
+                      <AbbrReplace>
+                        <p>
+                          Below summarizes country&apos;s key climate
+                          commitments, including the latest NDC, LTS and
+                          Net-Zero target. Explore more indicators about the
+                          country&apos;s climate commitments in each respective
+                          module.
+                        </p>
+                      </AbbrReplace>
+                    </div>
                   </div>
                 )}
               </div>

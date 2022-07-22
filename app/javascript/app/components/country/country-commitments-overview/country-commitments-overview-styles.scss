@@ -46,6 +46,9 @@
 }
 
 .descriptionContainer {
+  @include columns(12);
+  @include xy-gutters(0);
+
   color: $theme-color;
   line-height: $line-height-medium;
   column-count: 1;
