@@ -3,7 +3,7 @@ import qs from 'query-string';
 export const initialState = {
   tooltipData: null,
   filters: {
-    commitment: +qs.parse(window.location.search)?.commitment || null
+    document: +qs.parse(window.location.search)?.document || null
   }
 };
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import CountryGHGEmissions from 'components/country/country-ghg-emissions';
 import CountryGHGMap from 'components/country/country-ghg-map';
 import EmissionsMetaProvider from 'providers/ghg-emissions-meta-provider';
@@ -40,7 +40,7 @@ function CountryGhg(props) {
   }, 10);
 
   const renderExploreButton = () => {
-    const link = `/ghg-emissions?breakBy=regions-${CALCULATION_OPTIONS.ABSOLUTE_VALUE.value}&regions=${iso}`;
+    const link = `/ghg-emissions?breakBy=sector&chartType=area&regions=${iso}`;
     const href = `/contained${link}&isNdcp=true`;
     return (
       <Button
@@ -60,15 +60,15 @@ function CountryGhg(props) {
     search.calculation &&
     search.calculation !== CALCULATION_OPTIONS.ABSOLUTE_VALUE.value;
   return (
-    <div>
-      <div>
+    <Fragment>
+      <div className={styles.wrapper}>
         {FEATURE_COUNTRY_CHANGES && (
           <React.Fragment>
             <div className={styles.titleRow}>
               <div>
                 <h3 className={styles.title}>
                   What are {countryName}
-                  {"'"}s greenhouse gas emissions and emission targets?{' '}
+                  {"'"}s greenhouse gas emissions and emissions targets?{' '}
                 </h3>
                 <p className={styles.description}>
                   The default data source is Climate Watch. For non-annex I
@@ -121,7 +121,7 @@ function CountryGhg(props) {
         <Disclaimer className={cx(styles.disclaimer, layout.content)} />
       )}
       <ModalMetadata />
-    </div>
+    </Fragment>
   );
 }
 

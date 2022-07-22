@@ -1,10 +1,9 @@
 @import '~styles/layout.scss';
 
 .wrapper {
-  border-top: solid 1px $gray2;
-  padding-top: 40px;
-  padding-bottom: 40px;
   min-height: 865px;
+  padding: ($gutter-padding + $gutter-padding / 2) 0;
+  border-bottom: solid 1px $gray2;
 }
 
 .header {
@@ -70,6 +69,14 @@
   display: flex;
   align-items: center;
   margin-bottom: 20px;
+}
+
+.descriptionContainer {
+  color: $theme-color;
+  line-height: $line-height-medium;
+
+  @include columns(12);
+  @include xy-gutters($gutter-position: ('bottom'));
 }
 
 .paddedBottom {

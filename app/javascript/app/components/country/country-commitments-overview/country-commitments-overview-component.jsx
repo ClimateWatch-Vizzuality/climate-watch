@@ -364,9 +364,9 @@ function CountryCommitmentsOverview(props) {
       return 'Nationally Determined Contribution (NDC) Overview';
     }
 
-    return `What is the content of ${
+    return `What are the top-line targets from ${
       countryName?.endsWith('s') ? `${countryName}'` : `${countryName}'s`
-    } Climate Commitments?`;
+    } climate commitments?`;
   }, [countryName]);
 
   const renderIntro = () => (
@@ -406,6 +406,18 @@ function CountryCommitmentsOverview(props) {
             <div className="grid-column-item">
               <div className={cx(styles.header, styles.col2)}>
                 {renderIntro()}
+                {process.env.FEATURE_COUNTRY_CHANGES === 'true' && (
+                  <div className={styles.descriptionContainer}>
+                    <AbbrReplace>
+                      <p>
+                        Below summarizes country&apos;s key climate commitments,
+                        including the latest NDC, LTS and Net-Zero target.
+                        Explore more indicators about the country&apos;s climate
+                        commitments in each respective module.
+                      </p>
+                    </AbbrReplace>
+                  </div>
+                )}
                 {process.env.FEATURE_COUNTRY_CHANGES !== 'true' && (
                   <TabletPortraitOnly>{description}</TabletPortraitOnly>
                 )}

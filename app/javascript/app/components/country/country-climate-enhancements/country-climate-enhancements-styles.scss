@@ -1,14 +1,13 @@
 @import '~styles/layout.scss';
 
 .gridContainer {
-  background-color: $gray3;
+  border-bottom: 1px solid $gray2;
 }
 
 .grid {
   @include row(12);
 
-  padding-top: $gutter-padding + $gutter-padding / 2;
-  padding-bottom: $gutter-padding * 2;
+  padding: ($gutter-padding + $gutter-padding / 2) 0;
 }
 
 .container {
@@ -24,13 +23,33 @@
   margin-bottom: 15px;
 }
 
+.descriptionContainer {
+  color: $theme-color;
+  line-height: $line-height-medium;
+
+  @include columns(12);
+  @include xy-gutters($gutter-position: ('bottom'));
+}
+
 .item {
-  margin: $gutter-padding 0 0;
   text-align: center;
 }
 
 .previousComparison {
   @include columns(4);
+  @include xy-gutters(80px, $gutter-position: ('top'), $gutter-type: margin);
+
+  > div {
+    padding-bottom: 30px;
+  }
+
+  @media #{$tablet-landscape} {
+    @include columns(1.71); // 12 / 7 indicators
+
+    > div {
+      padding-bottom: 0;
+    }
+  }
 }
 
 .icon {
@@ -40,12 +59,6 @@
 
 .valueKey {
   margin: 10px 0 0;
-}
-
-.valueDescription {
-  margin-top: 10px;
-  font-size: $font-size-sm;
-  color: $gray1;
 }
 
 .loading {

@@ -11,6 +11,7 @@ const mapStateToProps = (state, { match }) => {
     iso: match && match.params.iso,
     ...state
   };
+
   return {
     countriesDocumentsValues: getCountriesDocumentsValues(stateWithIso),
     countryName: getCountryName(stateWithIso)

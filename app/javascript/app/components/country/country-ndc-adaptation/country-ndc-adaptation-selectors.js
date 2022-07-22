@@ -1,5 +1,4 @@
 import { createSelector } from 'reselect';
-import upperFirst from 'lodash/upperFirst';
 import groupBy from 'lodash/groupBy';
 import sortBy from 'lodash/sortBy';
 import _camelCase from 'lodash/camelCase';
@@ -15,31 +14,33 @@ const getRawSectors = (state, search) =>
       sectorType === (search?.database || DATABASES_OPTIONS[0].value)
   );
 const getActions = state => state.ndcsAdaptations.data?.actions || [];
-const getClimateCommitments = state =>
-  state.ndcsAdaptations.data?.documents || [];
 
-const getSelectedCommitment = state =>
-  state.countryNDCSAdaptation.filters.commitment;
+const getIso = (state, props) => props?.iso || null;
+const getCountryDocuments = state => state.countriesDocuments.data || [];
 
-export const getActiveCommitment = createSelector(
-  [getClimateCommitments, getSelectedCommitment],
-  (_commitments, _selectedCommitment) => {
-    let activeCommitment =
-      _commitments.find(({ ordering }) => ordering === 1) || {};
+const getSelectedDocument = state =>
+  state.countryNDCSAdaptation.filters.document;
 
-    if (_selectedCommitment) {
-      const foundCommitment = _commitments.find(
-        ({ id }) => id === _selectedCommitment
-      );
+export const getDocuments = createSelector(
+  [getCountryDocuments, getIso],
+  (_documents, _iso) =>
+    sortBy(
+      (_documents[_iso] || []).filter(({ is_ndc }) => is_ndc),
+      'ordering'
+    )
+      .map(({ long_name, id, slug }) => ({
+        label: long_name,
+        value: id,
+        slug
+      }))
+      .reverse()
+);
 
-      if (foundCommitment) activeCommitment = foundCommitment;
-    }
-
-    return {
-      label: activeCommitment.long_name,
-      value: activeCommitment.id,
-      slug: activeCommitment.slug
-    };
+export const getActiveDocument = createSelector(
+  [getDocuments, getSelectedDocument],
+  (_documents = [], _selectedDocument) => {
+    if (!_selectedDocument) return null;
+    return _documents.find(({ value }) => value === _selectedDocument);
   }
 );
 
@@ -72,14 +73,9 @@ export const getTargets = createSelector([getRawSectors], sectors => {
   );
 });
 
-const formatTargetsByCountry = (
-  targets,
-  _actions,
-  sectorNumber,
-  _commitment
-) => {
-  const sectorsWithTargets = Object.values(targets);
-  const targetWithActions = sectorsWithTargets
+const formatTargetsByCountry = (targets, _actions, sectorNumber, _document) => {
+  const goalsWithTargets = Object.values(targets);
+  const targetWithActions = goalsWithTargets
     .map(_targets => _targets)
     .reduce(
       (acc, next) => [...acc, ...next.map(_n => ({ ..._n, actions: [] }))],
@@ -89,7 +85,7 @@ const formatTargetsByCountry = (
   const targetIds = targetWithActions.map(({ id }) => id);
 
   _actions
-    .filter(({ document_id: documentId }) => _commitment === documentId)
+    .filter(({ document_id: documentId }) => _document === documentId)
     .forEach(_action => {
       if (_action.sector_ids?.length) {
         _action.sector_ids.forEach(_subsectorId => {
@@ -135,9 +131,9 @@ const formatTargetsByCountry = (
 };
 
 export const getTargetsByCountry = createSelector(
-  [getSectors, getTargets, getActions, getSelectedCommitment],
-  (sectors, targets, _actions, _commitment) =>
-    sectors.reduce(
+  [getSectors, getTargets, getActions, getSelectedDocument],
+  (goals, targets, _actions, _document) =>
+    goals.reduce(
       (acc, next) => ({
         ...acc,
         [next.number]: {
@@ -145,21 +141,11 @@ export const getTargetsByCountry = createSelector(
             targets,
             _actions,
             next.number,
-            _commitment
+            _document
           ),
           title: next.cw_title
         }
       }),
       {}
     )
-);
-
-export const getCommitmentOptions = createSelector(
-  [getClimateCommitments],
-  commitments =>
-    Object.keys(sortBy(commitments, 'ordering')).map(_commitment => ({
-      label: upperFirst(commitments[_commitment].long_name),
-      value: commitments[_commitment].id,
-      slug: commitments[_commitment].slug
-    }))
 );

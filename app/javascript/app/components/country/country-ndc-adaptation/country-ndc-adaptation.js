@@ -11,12 +11,12 @@ import reducers, { initialState } from './country-ndc-adaptation-reducers';
 
 import CountryNDCSAdaptationComponent from './country-ndc-adaptation-component';
 import {
-  getCommitmentOptions,
+  getDocuments,
   getSectors,
   getTargets,
   getTargetsByCountry,
   getActiveDatabase,
-  getActiveCommitment
+  getActiveDocument
 } from './country-ndc-adaptation-selectors';
 
 const actions = {
@@ -38,7 +38,7 @@ const mapStateToProps = (state, { match, location }) => {
     sectors: getSectors(state, search),
     targets: getTargets(state, search),
     targetsData: getTargetsByCountry(state),
-    activeCommitment: getActiveCommitment(state),
+    activeDocument: getActiveDocument(state, { iso }),
     loading:
       (!state.ndcsAdaptations.error && state.ndcsAdaptations.loading) ||
       state.ndcsAdaptations.loading,
@@ -46,7 +46,7 @@ const mapStateToProps = (state, { match, location }) => {
     isEmbed,
     iso,
     activeDatabase: getActiveDatabase(search),
-    commitmentOptions: getCommitmentOptions(state)
+    documentOptions: getDocuments(state, { iso })
   };
 };
 
@@ -65,12 +65,12 @@ const CountrySDGLinkagesContainer = props => {
     });
   };
 
-  const handleCommitmentChange = option => {
+  const handleDocumentChange = option => {
     const { setFilter } = props;
-    updateUrlParam({ name: 'commitment', value: option ? option.value : '' });
-    setFilter({ commitment: option.value });
+    updateUrlParam({ name: 'document', value: option ? option.value : '' });
+    setFilter({ document: option.value });
     if (option) {
-      handleAnalytics('Country', 'Change commitment', option.label);
+      handleAnalytics('Country', 'Change document', option.label);
     }
   };
 
@@ -87,7 +87,7 @@ const CountrySDGLinkagesContainer = props => {
 
   return createElement(CountryNDCSAdaptationComponent, {
     ...props,
-    handleCommitmentChange,
+    handleDocumentChange,
     handleDatabaseChange,
     handleInfoClick,
     handleAnalyticsClick

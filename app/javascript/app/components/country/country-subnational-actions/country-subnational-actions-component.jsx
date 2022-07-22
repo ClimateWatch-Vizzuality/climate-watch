@@ -27,9 +27,9 @@ import styles from './country-subnational-actions-styles.scss';
 
 const CITY_BADGES = {
   Joined: { color: CHART_NAMED_EXTENDED_COLORS.color1 },
-  Plan: { color: CHART_NAMED_EXTENDED_COLORS.color3 },
-  Target: { color: CHART_NAMED_EXTENDED_COLORS.color4 },
   Inventory: { color: CHART_NAMED_EXTENDED_COLORS.color5 },
+  Target: { color: CHART_NAMED_EXTENDED_COLORS.color4 },
+  Plan: { color: CHART_NAMED_EXTENDED_COLORS.color3 },
   'Not Joined': { color: CHART_NAMED_GRAY_COLORS.grayColor1 }
 };
 
@@ -141,13 +141,14 @@ function SubnationalActions({
               countryName && countryName.endsWith('s')
                 ? `${countryName}'`
                 : `${countryName}'s`
-            } subnational climate actions?`}
+            } domestic climate actions?`}
           </h3>
           <div className={styles.descriptionContainer}>
-            Addressing climate change requires actions across all of society.
-            Explore how national and sub-national actions, including regions,
-            cities, companies, investors, and other organizations commit to act
-            on climate change.
+            <p>
+              Explore how national and sub-national actors, including regions,
+              cities, companies, investors, and other organizations, commit to
+              act on climate change.
+            </p>
           </div>
           <div className={styles.cardsContainer}>
             <Card
@@ -282,8 +283,8 @@ function SubnationalActions({
               ) : (
                 <React.Fragment>
                   <div className={styles.statContainer}>
-                    <Indicator {...indicators.company_target} />
                     <Indicator {...indicators.company_commited} />
+                    <Indicator {...indicators.company_target} />
                   </div>
                   <Chart
                     type="area"

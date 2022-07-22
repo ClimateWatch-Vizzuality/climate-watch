@@ -104,7 +104,7 @@ function CountryEmploymentAndCosts(props) {
         <div className={styles.header}>
           <div className={styles.titleContainer}>
             <h3 className={styles.title}>
-              How does climate action increase jobs and save money?
+              How do renewables generate jobs and reduce energy costs over time?
             </h3>
             <a
               title="Go to IRENA"
@@ -116,6 +116,14 @@ function CountryEmploymentAndCosts(props) {
               Explore more on IRENA
               <Icon icon={externalLink} className={styles.icon} />
             </a>
+          </div>
+          <div className={styles.descriptionContainer}>
+            <p>
+              The increasing uptake of renewable sources of energy into
+              countries' energy mix is generating green jobs and driving down
+              the cost of electricity, making them competitive or even cheaper
+              than non-renewable sources in certain geographies.
+            </p>
           </div>
           <ReactTooltip className={styles.tooltip} />
         </div>
@@ -213,7 +221,7 @@ function CountryEmploymentAndCosts(props) {
                     height={450}
                     domain={currentConfig?.domain}
                     showUnit
-                    getCustomYLabelFormat={d => format('.4s')(d)}
+                    getCustomYLabelFormat={d => format('.3f')(d)}
                   />
                 )}
               </div>

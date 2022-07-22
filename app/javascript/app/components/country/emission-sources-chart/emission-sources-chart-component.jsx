@@ -80,9 +80,11 @@ function EmissionSourcesChart({
           {"'"}s {emission.sector}
         </div>
         <div>
-          {`${Math.round(emission.emission * 100) / 100} MtCO2e  ${Math.round(
-            emission.percentage * 100
-          ) / 100}%`}
+          {`${Math.round(emission.emission * 100) / 100} MtCO`}
+          <sub>2</sub>e
+          <br />{' '}
+          {`${Math.round(emission.percentage * 100) / 100}%
+            `}
         </div>
       </div>
     );
@@ -165,7 +167,9 @@ function EmissionSourcesChart({
                   >
                     {e.sector}
                   </div>
-                  <div>{Math.round(e.emission * 100) / 100} MtCO2e</div>
+                  <div>
+                    {Math.round(e.emission * 100) / 100} MtCO<sub>2</sub>e
+                  </div>
                   <div>{Math.round(e.percentage * 100) / 100}%</div>
                 </span>
               )}
@@ -185,8 +189,6 @@ function EmissionSourcesChart({
                 background: `repeating-linear-gradient(45deg, ${e.color}, white 2px, white 12px)`,
                 width: `${Math.abs(e.percentage)}%`
               }}
-              data-tip={getTooltip('sectors', e, i)}
-              data-for="emissions-chart-tooltip"
             >
               {Math.abs(e.percentage) > 10 && (
                 <span
@@ -201,17 +203,27 @@ function EmissionSourcesChart({
                       data-for="negative-emissions-tooltip"
                       className={styles.infoContainer}
                     >
-                      <Icon icon={infoIcon} className={styles.infoIcon} />
+                      <Icon
+                        icon={infoIcon}
+                        className={styles.infoIcon}
+                        tooltipId="negative-emissions-tooltip"
+                      />
                     </div>
                     <ReactTooltip id="negative-emissions-tooltip" />
-                    <div className={styles.sectorTitleContainer}>
+                    <div
+                      className={styles.sectorTitleContainer}
+                      data-tip={getTooltip('sectors', e, i)}
+                      data-for="emissions-chart-tooltip"
+                    >
                       <div
                         className={styles.sectorTitle}
                         style={{ color: e.color }}
                       >
                         {e.sector}
                       </div>
-                      <div>{Math.round(e.emission * 100) / 100} MtCO2e</div>
+                      <div>
+                        {Math.round(e.emission * 100) / 100} MtCO<sub>2</sub>e
+                      </div>
                     </div>
                   </div>
                 </span>

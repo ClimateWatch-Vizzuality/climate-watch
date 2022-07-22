@@ -108,34 +108,35 @@ class CardGraph extends PureComponent {
       </text>
     );
     const { data, config } = sectionData.data;
+
+    if (!data) return null;
+
     return (
-      data && (
-        <div className={styles.pieChart}>
-          <PieChart
-            data={data}
-            width={350}
-            config={config}
-            customTooltip={<div style={{ display: 'none' }} />}
-            customInnerHoverLabel={CustomInnerHoverLabel}
-            theme={{ pieChart: styles.pieChart }}
-          />
-          <div className={styles.pieLegend}>
-            {data.map(d => {
-              const theme = config.theme[camelCase(d.name)];
-              return (
-                <div className={styles.legendItem}>
-                  <span
-                    className={styles.dot}
-                    style={{ backgroundColor: theme.stroke }}
-                  />
-                  <span className={styles.percentage}>{d.value} %</span>
-                  <span className={styles.label}>{theme.label}</span>
-                </div>
-              );
-            })}
-          </div>
+      <div className={styles.pieChart}>
+        <PieChart
+          data={data}
+          width={350}
+          config={config}
+          customTooltip={<div style={{ display: 'none' }} />}
+          customInnerHoverLabel={CustomInnerHoverLabel}
+          theme={{ pieChart: styles.pieChart }}
+        />
+        <div className={styles.pieLegend}>
+          {data.map(d => {
+            const theme = config.theme[camelCase(d.name)];
+            return (
+              <div className={styles.legendItem}>
+                <span
+                  className={styles.dot}
+                  style={{ backgroundColor: theme.stroke }}
+                />
+                <span className={styles.percentage}>{d.value} %</span>
+                <span className={styles.label}>{theme.label}</span>
+              </div>
+            );
+          })}
         </div>
-      )
+      </div>
     );
   }
 
@@ -194,6 +195,10 @@ class CardGraph extends PureComponent {
     const { type } = this.props;
     const { noData } = this.state;
 
+    if (type === 'RANK') return this.renderRank();
+    if (type === 'LINE_CHART') return this.renderLineChart();
+    if (type === 'PIE_CHART') return this.renderPieChart();
+
     if (noData) {
       return (
         <div className={styles.noDataContainer}>
@@ -202,16 +207,7 @@ class CardGraph extends PureComponent {
       );
     }
 
-    switch (type) {
-      case 'RANK':
-        return this.renderRank();
-      case 'LINE_CHART':
-        return this.renderLineChart();
-      case 'PIE_CHART':
-        return this.renderPieChart();
-      default:
-        return null;
-    }
+    return null;
   }
 }
 
