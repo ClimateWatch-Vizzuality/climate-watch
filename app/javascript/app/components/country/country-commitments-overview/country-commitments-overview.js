@@ -9,15 +9,16 @@ import { isPageNdcp, isEmbededComponent } from 'utils/navigation';
 import { actions } from 'components/modal-metadata';
 import { actions as fetchActions } from 'components/ndcs/ndcs-country-accordion';
 
-import CountryNdcOverviewComponent from './country-ndc-overview-component';
+import CountryCommitmentsOverviewComponent from './country-commitments-overview-component';
 import {
   getValuesGrouped,
   getNdcsDocument,
   getLtsDocument,
   getSectors,
   getCountryDocuments,
-  getCountryName
-} from './country-ndc-overview-selectors';
+  getCountryName,
+  getCountryNdcsData
+} from './country-commitments-overview-selectors';
 
 const mapStateToProps = (state, { location, match }) => {
   const { iso } = match.params;
@@ -30,7 +31,10 @@ const mapStateToProps = (state, { location, match }) => {
     isEmbed,
     ndcsDocument: getNdcsDocument(state, { location, iso }),
     ltsDocument: getLtsDocument(state, { location, iso }),
-    values: getValuesGrouped(state, { location, iso }),
+    values:
+      process.env.FEATURE_COUNTRY_CHANGES === 'true'
+        ? getCountryNdcsData(state, { iso })
+        : getValuesGrouped(state, { location, iso }),
     loading: state.ndcContentOverview.loading,
     sectors: getSectors(state, { location, iso }),
     fetched: !isEmpty(getCountryDocuments(state, { location, iso })),
@@ -38,7 +42,7 @@ const mapStateToProps = (state, { location, match }) => {
   };
 };
 
-function CountryNdcOverviewContainer(props) {
+function CountryCommitmentsOverviewContainer(props) {
   const {
     iso,
     fetchNdcsCountryAccordion,
@@ -71,19 +75,19 @@ function CountryNdcOverviewContainer(props) {
     });
   };
 
-  return createElement(CountryNdcOverviewComponent, {
+  return createElement(CountryCommitmentsOverviewComponent, {
     ...props,
     handleInfoClick,
     handleAnalyticsClick
   });
 }
 
-CountryNdcOverviewContainer.propTypes = {
+CountryCommitmentsOverviewContainer.propTypes = {
   setModalMetadata: Proptypes.func.isRequired
 };
 
 export default withRouter(
   connect(mapStateToProps, { ...actions, ...fetchActions })(
-    CountryNdcOverviewContainer
+    CountryCommitmentsOverviewContainer
   )
 );
