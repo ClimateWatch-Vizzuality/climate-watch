@@ -18,6 +18,26 @@
   margin-bottom: 20px;
 }
 
+.cardTitle {
+  color: $theme-color;
+  font-size: $font-size;
+  font-weight: $font-weight;
+}
+
+.chartTitle {
+  margin-top: 10px;
+  font-size: $font-size;
+  font-weight: $font-weight;
+  color: $theme-color;
+}
+
+.sourceLink {
+  font-size: $font-size;
+  font-weight: $font-weight;
+  color: $theme-color-medium;
+  text-decoration: underline;
+}
+
 .loading {
   min-height: 462px;
 }
@@ -30,11 +50,6 @@
   }
 
   color: $theme-color;
-}
-
-.cardTitle {
-  font-size: $font-size-large;
-  font-weight: $font-weight;
 }
 
 .cardData {
@@ -59,16 +74,6 @@
 
 .representing {
   color: $light-blue;
-}
-
-.sourceLink {
-  color: inherit;
-  text-decoration: underline;
-  font-size: $font-size-m;
-}
-
-.chartTitle {
-  margin-top: 10px;
 }
 
 .stagesContainer {
@@ -105,6 +110,10 @@
       transform: translate(-50%, -50%) rotate(-45deg);
     }
   }
+}
+
+.infoBtn {
+  padding: 2px 0 0 10px;
 }
 
 .targetsWrapper {

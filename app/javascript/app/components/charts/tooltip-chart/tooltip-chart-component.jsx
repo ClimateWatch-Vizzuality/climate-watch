@@ -21,7 +21,6 @@ const TooltipChartComponent = ({
   const formatValue =
     customFormatFunction ||
     (value => `${format(customD3Format)(value)}${valueUnit}`);
-
   const getTotal = (keys, data) => {
     if (!keys || !data) return '';
     let total = 0;
@@ -95,7 +94,7 @@ const TooltipChartComponent = ({
             </div>
           ) : null
         )}
-      {content && !content.payload && <div>No data fool</div>}
+      {content && !content.payload && <div>No data</div>}
     </div>
   );
 };

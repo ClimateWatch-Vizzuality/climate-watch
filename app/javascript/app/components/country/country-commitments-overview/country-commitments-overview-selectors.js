@@ -10,6 +10,8 @@ const getCountries = state => state.countries.data || [];
 const getOverviewData = state =>
   state.ndcContentOverview.data && state.ndcContentOverview.data.locations;
 
+const getNdcsData = state => state.ndcs?.data?.indicators || [];
+
 const getCountryOverviewData = createSelector(
   [getOverviewData, getIso],
   (data, iso) => (data && data[iso]) || null
@@ -37,6 +39,34 @@ export const getValuesGrouped = createSelector(
       if (!groupedValues[key].length) groupedValues[key] = null;
     });
     return groupedValues;
+  }
+);
+
+export const getCountryNdcsData = createSelector(
+  [getNdcsData, getIso],
+  (ndcsData, iso) => {
+    const dataKeys = [
+      'ghg_target',
+      'mitigation_contribution_type',
+      'adaptation',
+      'ndce_source',
+      'lts_target',
+      'lts_date',
+      'lts_document',
+      'nz_status',
+      'nz_year',
+      'nz_source'
+    ];
+
+    return dataKeys.reduce(
+      (acc, dataKey) => ({
+        ...acc,
+        [dataKey]: ndcsData.find(({ slug }) => slug === dataKey)?.locations?.[
+          iso
+        ]?.value
+      }),
+      {}
+    );
   }
 );
 

@@ -85,7 +85,7 @@
 }
 
 .chartTitle {
-  font-size: $font-size-large;
+  font-size: $font-size;
   text-align: center;
 }
 
@@ -141,11 +141,10 @@
 
 .tooltip {
   display: flex;
-  padding: 15px;
-  min-width: 300px;
+  background-color: $white;
+  flex-direction: column;
+  min-width: 200px !important;
   opacity: 1 !important;
-  border-radius: 4px;
-  box-shadow: 0 5px 15px 0 rgba(17, 55, 80, 0.15);
 }
 
 .tooltipContainer {

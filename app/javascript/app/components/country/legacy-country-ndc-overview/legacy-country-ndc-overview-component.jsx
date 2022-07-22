@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
+import Button from 'components/button';
 import Card from 'components/card';
 import CardRow from 'components/card/card-row';
 import Intro from 'components/intro';
@@ -9,8 +10,10 @@ import moment from 'moment-timezone';
 import ModalMetadata from 'components/modal-metadata';
 import Loading from 'components/loading';
 import NoContent from 'components/no-content';
+import ButtonGroup from 'components/button-group';
 import AbbrReplace, { replaceStringAbbr } from 'components/abbr-replace';
 import { TabletLandscape, TabletPortraitOnly } from 'components/responsive';
+import introSmallTheme from 'styles/themes/intro/intro-simple-small.scss';
 import introTheme from 'styles/themes/intro/intro-simple.scss';
 import layout from 'styles/layout.scss';
 import cardTheme from 'styles/themes/card/card-overflow-content.scss';
@@ -18,10 +21,81 @@ import alertIcon from 'assets/icons/alert.svg';
 import NdcContentOverviewProvider from 'providers/ndc-content-overview-provider';
 import CountriesDocumentsProvider from 'providers/countries-documents-provider';
 
-import styles from './country-ndc-overview-styles.scss';
+import styles from './legacy-country-ndc-overview-styles.scss';
+
+const isCountryPage = true;
 
 function CountryNdcOverview(props) {
-  const { sectors, values, loading, iso, isEmbed, ndcsDocument } = props;
+  const {
+    sectors,
+    values,
+    loading,
+    iso,
+    isEmbed,
+    isNdcp,
+    handleInfoClick,
+    handleAnalyticsClick,
+    ndcsDocument,
+    ltsDocument,
+    countryName
+  } = props;
+
+  const renderInfoButton = () => {
+    const notEmbeddedButtonConfig = [
+      { type: 'info', onClick: handleInfoClick },
+      {
+        type: 'share',
+        shareUrl: `/embed/countries/${iso}/ndc-content-overview`,
+        positionRight: true
+      }
+    ];
+    const buttonGroupConfig = isEmbed
+      ? [{ type: 'info', onClick: handleInfoClick }]
+      : notEmbeddedButtonConfig;
+
+    return (
+      <ButtonGroup
+        key="action1"
+        className={styles.exploreBtn}
+        buttonsConfig={buttonGroupConfig}
+      />
+    );
+  };
+
+  const renderCompareButton = () => {
+    const link = `/custom-compare/mitigation?targets=${iso}-${ndcsDocument &&
+      ndcsDocument.slug}${ltsDocument ? `,${iso}-lts` : ''}`;
+    const href = `/contained${link}`;
+    return (
+      <Button
+        {...{
+          variant: 'secondary',
+          href: isNdcp ? href : null,
+          link: isNdcp ? null : link,
+          disabled: !ndcsDocument
+        }}
+      >
+        Compare
+      </Button>
+    );
+  };
+
+  const renderExploreButton = () => {
+    const href = `/contained/ndcs/country/${iso}`;
+    const link = `/ndcs/country/${iso}`;
+
+    return (
+      <Button
+        className={styles.exploreBtn}
+        variant="primary"
+        href={isNdcp ? href : null}
+        link={isNdcp ? null : link}
+        onClick={handleAnalyticsClick}
+      >
+        Explore NDC content
+      </Button>
+    );
+  };
 
   const renderCards = () => (
     <div className={styles.cards}>
@@ -113,8 +187,8 @@ function CountryNdcOverview(props) {
         <Icon icon={alertIcon} className={styles.alertIcon} />
         <span className={styles.alertText}>
           <AbbrReplace>
-            The information shown below only reflects the selected NDC
-            submission.
+            The information shown below only reflects the{' '}
+            {!isCountryPage ? 'selected' : 'last'} NDC submission.
           </AbbrReplace>
         </span>
       </div>
@@ -135,13 +209,19 @@ function CountryNdcOverview(props) {
       }}
     />
   );
-  const introTitle = !ndcsDocument
+  const summaryIntroText = !ndcsDocument
     ? 'Summary'
     : `Summary of ${ndcsDocument.long_name}`;
 
+  const introTitle = useMemo(() => {
+    if (!isCountryPage) return summaryIntroText;
+
+    return 'Nationally Determined Contribution (NDC) Overview';
+  }, [isCountryPage, countryName]);
+
   const renderIntro = () => (
     <Intro
-      theme={introTheme}
+      theme={isCountryPage ? introSmallTheme : introTheme}
       title={introTitle}
       {...{
         subtitle:
@@ -154,7 +234,19 @@ function CountryNdcOverview(props) {
 
   const renderContent = () => {
     if (!hasSectors && !loading) {
-      return (
+      return isCountryPage ? (
+        <div className={layout.content}>
+          <div className="grid-column-item">
+            <div className={cx(styles.header)}>
+              {renderIntro()}
+              <NoContent
+                message="This country hasn't submitted any Nationally Determined Contribution"
+                className={styles.noContentWrapper}
+              />
+            </div>
+          </div>
+        </div>
+      ) : (
         <NoContent
           message="No overview content data"
           className={styles.noContentWrapper}
@@ -167,12 +259,28 @@ function CountryNdcOverview(props) {
         {hasSectors && (
           <div className={layout.content}>
             <div className="grid-column-item">
-              <div className={styles.header}>
+              <div
+                className={cx(styles.header, {
+                  [styles.col2]: isCountryPage
+                })}
+              >
                 {renderIntro()}
                 <TabletPortraitOnly>{description}</TabletPortraitOnly>
+                {isCountryPage && (
+                  <div className="grid-column-item">
+                    <div className={styles.actions}>
+                      {renderInfoButton()}
+                      {renderCompareButton()}
+                      <TabletLandscape>{renderExploreButton()}</TabletLandscape>
+                    </div>
+                  </div>
+                )}
               </div>
               <TabletLandscape>{description}</TabletLandscape>
               {renderCards()}
+              <TabletPortraitOnly>
+                {isCountryPage && renderExploreButton()}
+              </TabletPortraitOnly>
             </div>
           </div>
         )}
@@ -196,11 +304,16 @@ function CountryNdcOverview(props) {
 
 CountryNdcOverview.propTypes = {
   iso: PropTypes.string,
+  countryName: PropTypes.string,
   sectors: PropTypes.array,
   values: PropTypes.object,
   loading: PropTypes.bool,
+  isNdcp: PropTypes.bool,
+  isEmbed: PropTypes.bool,
+  handleInfoClick: PropTypes.func.isRequired,
   ndcsDocument: PropTypes.object,
-  isEmbed: PropTypes.bool
+  ltsDocument: PropTypes.object,
+  handleAnalyticsClick: PropTypes.func.isRequired
 };
 
 export default CountryNdcOverview;

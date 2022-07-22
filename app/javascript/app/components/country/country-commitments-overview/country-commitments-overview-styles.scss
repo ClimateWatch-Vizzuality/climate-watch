@@ -1,9 +1,9 @@
 @import '~styles/layout.scss';
 
 .wrapper {
-  min-height: 250px;
-  padding: ($gutter-padding + $gutter-padding / 2) 0;
   border-bottom: solid 1px $gray2;
+  border-top: solid 1px $gray2;
+  min-height: 250px;
 }
 
 .embededWrapper {
@@ -14,8 +14,15 @@
   padding-bottom: 2em;
 }
 
+.col2 {
+  @media #{$tablet-landscape} {
+    @include columns((6, 6));
+  }
+}
+
 .header {
   margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 .actions {
@@ -43,12 +50,41 @@
   line-height: $line-height-medium;
   column-count: 1;
   column-gap: $gutter-padding;
-
-  @include xy-gutters($gutter-position: ('bottom'));
+  margin-bottom: 60px;
 }
 
 .subtitles {
   @include columns((9, 3));
+}
+
+.legacyCards {
+  @include columns();
+
+  > div {
+    @include xy-gutters($gutter-position: ('top', 'bottom'));
+  }
+
+  @media #{$tablet-landscape} {
+    @include columns((9, 3));
+  }
+}
+
+.legacyCardsRowContainer {
+  @include columns('shrink', $wrap: false);
+
+  > div {
+    width: 270px;
+  }
+
+  overflow: auto;
+
+  @media #{$tablet-landscape} {
+    @include columns((4, 4, 4));
+
+    > div {
+      width: 100%;
+    }
+  }
 }
 
 .cards {

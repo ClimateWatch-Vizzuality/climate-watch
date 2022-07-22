@@ -9,7 +9,7 @@ import { isPageNdcp, isEmbededComponent } from 'utils/navigation';
 import { actions } from 'components/modal-metadata';
 import { actions as fetchActions } from 'components/ndcs/ndcs-country-accordion';
 
-import CountryNdcOverviewComponent from './country-ndc-overview-component';
+import CountryNdcOverviewComponent from './legacy-country-ndc-overview-component';
 import {
   getValuesGrouped,
   getNdcsDocument,
@@ -17,7 +17,7 @@ import {
   getSectors,
   getCountryDocuments,
   getCountryName
-} from './country-ndc-overview-selectors';
+} from './legacy-country-ndc-overview-selectors';
 
 const mapStateToProps = (state, { location, match }) => {
   const { iso } = match.params;
