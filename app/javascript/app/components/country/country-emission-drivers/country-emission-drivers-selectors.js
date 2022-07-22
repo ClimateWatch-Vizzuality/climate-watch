@@ -90,7 +90,7 @@ export const getElectricityChart = createSelector(
         }
       },
       theme: {
-        yElectricity: { stroke: '#3498db', fill: '#3498db' }
+        yElectricity: { stroke: '#228D94', fill: '#228D94' }
       },
       tooltip: {
         yElectricity: { label: 'Electricity' }
