@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import { themr } from 'react-css-themr';
@@ -10,6 +10,8 @@ import qs from 'query-string';
 import styles from './anchor-nav-styles.scss';
 
 const AnchorNav = props => {
+  const navListRef = useRef(null);
+
   const {
     links,
     useRoutes,
@@ -21,10 +23,26 @@ const AnchorNav = props => {
     dataTour,
     dataTours
   } = props;
+
+  useEffect(() => {
+    if (navListRef.current && activeSection !== '') {
+      const link = navListRef.current.getElementsByClassName(
+        theme.linkActive
+      )?.[0];
+
+      if (link) {
+        navListRef.current.scrollTo({
+          left: link.offsetLeft - link.getBoundingClientRect().width / 2,
+          behavior: 'smooth'
+        });
+      }
+    }
+  }, [navListRef, activeSection]);
+
   return (
     <div className={cx(styles.anchorContainer)}>
       <nav className={cx(className, theme.anchorNav)} data-tour={dataTour}>
-        <ul>
+        <ul ref={navListRef}>
           {links &&
             links.map((link, index) => {
               const linkProps = {
