@@ -87,7 +87,7 @@ function Country(props) {
           'employment_by_technology',
           'cost_by_technology'
         ]}
-        locations={country && [country.iso]}
+        locations={['WORLD', ...(country.iso && [country.iso])]}
       />
       <Header route={route} className={styles.header}>
         <CountryHeader />
