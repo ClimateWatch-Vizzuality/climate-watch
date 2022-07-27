@@ -613,15 +613,14 @@ class ImportIndc
   end
 
   def parse_adaptation_actions(row, location)
+    if %w[A_Sc_Pol A_Sc_Tar A_Sc_UncAct A_Sc_ConAct].include?(row[:questioncode])
+      @adaptation_actions << parse_new_adaptation_action(row, location)
+      return
+    end
+
     if row[:questioncode] == 'ad_sec_action'
       @adaptation_actions << @current_action if @current_action.present?
-      doc_slug ||= row[:document]&.parameterize&.gsub('-', '_')
-      @current_action = Indc::AdaptationAction.new(
-        title: row[:responsetext],
-        document_id: @documents_cache[doc_slug].id,
-        location: location
-      )
-      @current_action.adaptation_action_sectors.build(sector_id: @sectors_index[row[:subsector]].id)
+      @current_action = parse_new_adaptation_action(row, location)
     end
     return if row[:responsetext].downcase == 'not available'
 
@@ -639,6 +638,17 @@ class ImportIndc
       end
       @current_adapt_sector = nil
     end
+  end
+
+  def parse_new_adaptation_action(row, location)
+    doc_slug ||= row[:document]&.parameterize&.gsub('-', '_')
+    action = Indc::AdaptationAction.new(
+      title: row[:responsetext],
+      document_id: @documents_cache[doc_slug].id,
+      location: location
+    )
+    action.adaptation_action_sectors.build(sector_id: @sectors_index[row[:subsector]].id)
+    action
   end
 
   def values_apply_group_index(row, indicator)

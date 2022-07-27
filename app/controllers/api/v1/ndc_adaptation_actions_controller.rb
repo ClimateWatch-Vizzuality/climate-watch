@@ -35,7 +35,7 @@ module Api
               id: parent.id,
               name: parent.name,
               sector_type: parent.sector_type,
-              subsectors: subsectors.sort_by(&:name_general_first).map do |s|
+              subsectors: subsectors.sort_by(&:name_general_first_other_last).map do |s|
                 s.as_json(only: [:id, :name])
               end
             }
