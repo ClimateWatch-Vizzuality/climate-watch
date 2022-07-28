@@ -16,6 +16,9 @@ const FUEL_DATA = ['Fossil fuel - low', 'Fossil fuel - high'];
 const getCountryIndicators = state =>
   state.countryProfileIndicators.data || null;
 
+export const getLoading = state =>
+  state.countryProfileIndicators.loading || null;
+
 const getCostsConfig = countryIndicators => {
   const { cost_by_technology } = countryIndicators;
 
@@ -104,13 +107,11 @@ const getEmploymentConfig = countryIndicators => {
 
   return {
     data: sortBy(
-      employment_by_technology.values
-        .map(({ category, value }) => ({
-          name: category,
-          value: +value,
-          percentage: (value / maxEmployment) * 100
-        }))
-        .filter(({ value }) => value > 0),
+      employment_by_technology.values.map(({ category, value }) => ({
+        name: category,
+        value: +value,
+        percentage: (value / maxEmployment) * 100
+      })),
       'value'
     ).reverse(),
     config: {

@@ -77,7 +77,7 @@ function CountryCommitmentsOverview(props) {
         })}
       >
         {process.env.FEATURE_COUNTRY_CHANGES === 'true'
-          ? 'Compare targets and see how they align'
+          ? 'Compare Near-Term with Longer-Term Targets'
           : 'Compare'}
       </Button>
     );

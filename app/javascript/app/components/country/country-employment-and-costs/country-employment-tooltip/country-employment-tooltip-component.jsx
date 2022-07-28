@@ -1,7 +1,6 @@
 /* eslint-disable no-confusing-arrow */
 import React from 'react';
 import cx from 'classnames';
-import { format } from 'd3-format';
 import Proptypes from 'prop-types';
 
 import tooltipStyles from 'styles/themes/chart-tooltip/chart-tooltip.scss';
@@ -19,7 +18,7 @@ const CountryEmploymentTooltip = ({ datum, config }) => (
     {config.data &&
       config.data.length > 0 &&
       config.data.map(({ name, value }) =>
-        value ? (
+        value || value === 0 ? (
           <div key={`tooltip-${name}`} className={tooltipStyles.label}>
             <div className={tooltipStyles.legend}>
               <span
@@ -37,7 +36,7 @@ const CountryEmploymentTooltip = ({ datum, config }) => (
               </p>
             </div>
             <p className={tooltipStyles.labelValue}>
-              {value !== undefined ? format('.4s')(value) : 'n/a'}
+              {value !== undefined ? value.toLocaleString() : 'n/a'}
             </p>
           </div>
         ) : null

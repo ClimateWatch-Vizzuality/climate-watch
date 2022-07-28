@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/heading-has-content */
 import React, {
   useState,
   useRef,
@@ -16,6 +17,7 @@ import { axisTop } from 'd3-axis';
 import { select } from 'd3-selection';
 import Icon from 'components/icon';
 import Tag from 'components/tag';
+import Loading from 'components/loading';
 import externalLink from 'assets/icons/external-link.svg';
 import ReactTooltip from 'react-tooltip';
 import ButtonGroup from 'components/button-group';
@@ -41,14 +43,14 @@ const PADDING_RIGHT = 30;
 const PADDING_LEFT = 10;
 
 function CountryEmploymentAndCosts(props) {
-  const { sectionData, setModalMetadata } = props;
+  const { sectionData, setModalMetadata, loading } = props;
   const [selectedTab, setSelectedTab] = useState(tabs[0]);
   const chartContainer = useRef();
 
   const currentConfig = sectionData?.[selectedTab.value];
 
   const handleInfoClick = useCallback(() => {
-    props.setModalMetadata({
+    setModalMetadata({
       category: 'Country',
       slugs: selectedTab.value === tabs[0].value ? 'irena_1' : 'irena_2',
       open: true
@@ -138,9 +140,14 @@ function CountryEmploymentAndCosts(props) {
             }}
           />
         </div>
-        {!hasData && (
+        {!hasData && !loading && (
           <div className={styles.noDataContainer}>
-            <span>No data available.</span>
+            <span>No data available</span>
+          </div>
+        )}
+        {loading && (
+          <div className={styles.noDataContainer}>
+            <Loading light />
           </div>
         )}
         {Boolean(hasData) && (
@@ -198,7 +205,7 @@ function CountryEmploymentAndCosts(props) {
                               data-for="employment-chart-bar"
                               data-tip={getTooltip(d, currentConfig)}
                             />
-                            <div>{format('.4s')(d.value)}</div>
+                            <div>{d.value.toLocaleString()}</div>
                           </div>
                         ))}
                       </div>
@@ -240,7 +247,9 @@ function CountryEmploymentAndCosts(props) {
 }
 
 CountryEmploymentAndCosts.propTypes = {
-  sectionData: Proptypes.array
+  sectionData: Proptypes.array,
+  loading: Proptypes.bool,
+  setModalMetadata: Proptypes.func.isRequired
 };
 
 export default CountryEmploymentAndCosts;
