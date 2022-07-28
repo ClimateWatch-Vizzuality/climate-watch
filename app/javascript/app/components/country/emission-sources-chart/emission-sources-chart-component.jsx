@@ -199,7 +199,7 @@ function EmissionSourcesChart({
                 >
                   <div className={styles.sectorContent}>
                     <div
-                      data-tip="This sector captures more carbon than it produces, and is therefore a carbon sink with negative emissions"
+                      data-tip="This sector captures more carbon than it produces and is therefore a carbon sink with negative emissions"
                       data-for="negative-emissions-tooltip"
                       className={styles.infoContainer}
                     >

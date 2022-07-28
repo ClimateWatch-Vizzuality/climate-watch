@@ -70,11 +70,11 @@ const About = ({ location }) => (
             National and sectoral profile pages that offer a snapshot of climate
             progress, risks and vulnerabilities
           </a>
-          ; and
+          ; and
         </li>
         <li>
-          The ability to download data and create, save and share customized
-          data visualizations through My Climate Watch.
+          The ability to download data and create, save and share customized
+          data visualizations through My Climate Watch.
         </li>
       </ul>
       <p>

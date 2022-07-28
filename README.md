@@ -156,12 +156,12 @@ That includes not only Component and Container, but also styles, reducers and ac
 
 ```
 ├── my-module/
-│   ├── components/
-│   ├── my-module-actions.js
-│   ├── my-module-component.jsx
-│   ├── my-module-reducers.js
-│   ├── my-module-styles.scss
-│   └── my-module.js
+│   ├── components/
+│   ├── my-module-actions.js
+│   ├── my-module-component.jsx
+│   ├── my-module-reducers.js
+│   ├── my-module-styles.scss
+│   └── my-module.js
 ```
 
 ### Module entry point
@@ -331,7 +331,7 @@ To release using a [fork of zeit release](https://github.com/vizzuality/release)
 and merge the changes that you want in master locally before running the command)
 
 ```bash
-npx release 'major' | 'minor' | 'patch'
+npx release 'major' | 'minor' | 'patch'
 ```
 
 and push to master!

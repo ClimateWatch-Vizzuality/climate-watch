@@ -122,9 +122,9 @@ export const getDescription = ({ page, countryName = '' }) => {
     [SEO_PAGES.ndcsExplore]:
       'Explore the data to track which countries have signaled they will update or enhance their national climate commitments (NDCs) by 2020.',
     [SEO_PAGES.ltsExplore]:
-      'Explore which countries have submitted long-term strategies (LTS) and click on a country to see more in-depth analysis of each long-term strategy.',
+      'Explore which countries have submitted long-term strategies (LTS) and click on a country to see more in-depth analysis of each long-term strategy.',
     [SEO_PAGES.netZero]:
-      'Explore which countries have submitted Net-zero document and click on a country to see more in-depth analysis of each Net Zero document.',
+      'Explore which countries have submitted Net-zero document and click on a country to see more in-depth analysis of each Net Zero document.',
     [SEO_PAGES.ndcCountry]: `Explore the Commitments (NDCs) made by ${countryName} to act on climate change, as part of the Paris Agreement`,
     [SEO_PAGES.ndcSearch]:
       'Search keywords across all national climate commitments, Nationally Determined Contribution (NDC), under the Paris Agreement.',

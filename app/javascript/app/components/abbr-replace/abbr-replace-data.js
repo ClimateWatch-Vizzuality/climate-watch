@@ -15,12 +15,12 @@ export const CONFLICTS = {
 export const ABBREVIATIONS = {
   AILAC:
     'Asociación Independiente de Latinoamérica y el Caribe (Independent Association of Latin America and the Caribbean)',
-  AR2: "IPCC's Second Assessment Report in 1995",
-  AR4: "IPCC's Fourth Assessment Report in 2007",
+  AR2: "IPCC's Second Assessment Report in 1995",
+  AR4: "IPCC's Fourth Assessment Report in 2007",
   BAU: 'Business As Usual',
   BRICS: 'Brazil, Russia, India, China and South Africa',
   BR: 'Biennial Report',
-  BUR: 'Biennial Update Report ',
+  BUR: 'Biennial Update Report',
   CAIT: 'Climate Analysis Indicators Tool',
   CCS: 'Carbon Capture and Sequestration',
   CH4: 'Methane',
@@ -28,7 +28,7 @@ export const ABBREVIATIONS = {
   COP: 'Conference of Parties',
   DIE:
     'Deutsches Institut für Entwicklungspolitik (German Development Institute)',
-  EIA: 'Energy Information Administration (of the U.S. Dept. of Energy)',
+  EIA: 'Energy Information Administration (of the U.S. Dept. of Energy)',
   EPA: 'United States Environmental Protection Agency',
   EU: 'European Union',
   FAO: 'Food and Agriculture Organization of the United Nations',
@@ -60,7 +60,7 @@ export const ABBREVIATIONS = {
   SDG: 'Sustainable Development Goals',
   SF6: 'Sulfur Hexafluoride',
   SIDS: 'Small Island Developing States',
-  UNFCCC: 'United Nations Framework Convention on Climate Change',
+  UNFCCC: 'United Nations Framework Convention on Climate Change',
   UN: 'United Nations',
   WRI: 'World Resources Institute'
 };

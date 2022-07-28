@@ -138,8 +138,8 @@ const AboutPermissions = ({ location }) => (
       <h4>GHG Emissions:</h4>
       <ul>
         <li>
-          Climate Watch data: Climate Watch. 2022. GHG Emissions. Washington, DC: World
-          Resources Institute. Available at:{' '}
+          Climate Watch data: Climate Watch. 2022. GHG Emissions. Washington,
+          DC: World Resources Institute. Available at:{' '}
           <a href="https://www.climatewatchdata.org/ghg-emissions">
             https://www.climatewatchdata.org/ghg-emissions
           </a>
@@ -156,16 +156,16 @@ const AboutPermissions = ({ location }) => (
             <li>
               CAIT data are derived from several sources. Any use of the
               Land-Use Change and Forestry or Agriculture indicator should be
-              cited as FAO 2022, FAOSTAT Emissions Database. Any use of 
+              cited as FAO 2022, FAOSTAT Emissions Database. Any use of
               emissions from fuel combustion data should be cited as GHG
               Emissions from Fuel Combustion, OECD/IEA, 2021
             </li>
           </ul>
         </li>
-
         <li>
-          PIK data: Gütschow, J.; Günther, A.; Pflüger, M. (2021): The PRIMAP-hist national historical emissions time
-          series v2.3.1 (1850-2019). zenodo. doi:10.5281/zenodo.5494497.
+          PIK data: Gütschow, J.; Günther, A.; Pflüger, M. (2021): The
+          PRIMAP-hist national historical emissions time series v2.3.1
+          (1850-2019). zenodo. doi:10.5281/zenodo.5494497.
           <ul>
             <li>
               When using this dataset or one of its updates, please also cite
@@ -176,29 +176,32 @@ const AboutPermissions = ({ location }) => (
             </li>
           </ul>
         </li>
-
         <li>
           UNFCCC data: UNFCCC. 2022. Greenhouse Gas Inventory Data.{' '}
-          <a href="http://di.unfccc.int/">
-            http://di.unfccc.int/
-          </a>
-          .
+          <a href="http://di.unfccc.int/">http://di.unfccc.int/</a>.
         </li>
-Global Carbon Project. (2021). Supplemental data of Global Carbon Budget 2021 (Version 1.0) [Data set]. Global Carbon Project. https://doi.org/10.18160/gcp-2021 
-
+        Global Carbon Project. (2021). Supplemental data of Global Carbon Budget
+        2021 (Version 1.0) [Data set]. Global Carbon Project.
+        https://doi.org/10.18160/gcp-2021
         <li>
-          GCP data: Global Carbon Project. (2021). Supplemental data of Global Carbon Budget 2021 (Version 1.0) [Data set]. Global Carbon Project.{' '}
+          GCP data: Global Carbon Project. (2021). Supplemental data of Global
+          Carbon Budget 2021 (Version 1.0) [Data set]. Global Carbon Project.{' '}
           <a href="https://doi.org/10.18160/gcp-2021">
             https://doi.org/10.18160/gcp-2021
           </a>
           .
           <ul>
             <li>
-             The use of data is conditional on citing the original data sources. Full details on how to cite the data are given at the top of each page in the accompanying database. The Global Carbon Project facilitates access to data to encourage its use and promote a good understanding of the carbon cycle. Respecting original data sources is key to help secure the support of data providers to enhance, maintain and update valuable data.
+              The use of data is conditional on citing the original data
+              sources. Full details on how to cite the data are given at the top
+              of each page in the accompanying database. The Global Carbon
+              Project facilitates access to data to encourage its use and
+              promote a good understanding of the carbon cycle. Respecting
+              original data sources is key to help secure the support of data
+              providers to enhance, maintain and update valuable data.
             </li>
           </ul>
         </li>
-
       </ul>
       <h4>NDC-SDG Linkages Methodology:</h4>
       <ul>
@@ -236,7 +239,7 @@ Global Carbon Project. (2021). Supplemental data of Global Carbon Budget 2021 (V
         Most of the photographs featured on this site have either been licensed
         under nontransferable terms or have been acquired from photo-sharing
         sites such as Flickr that have their own policies for public use. Unless
-        indicated otherwise, the Creative Commons CC BY 4.0 license described
+        indicated otherwise, the Creative Commons CC BY 4.0 license described
         above does not apply to photographs and images used on this site.
       </p>
     </AbbrReplace>
