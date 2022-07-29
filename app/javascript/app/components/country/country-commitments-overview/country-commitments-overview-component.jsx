@@ -430,7 +430,7 @@ function CountryCommitmentsOverview(props) {
                         <p>
                           Below summarizes country&apos;s key climate
                           commitments, including the latest NDC, LTS and
-                          Net-Zero target. Explore more indicators about the
+                          net-zero target. Explore more indicators about the
                           country&apos;s climate commitments in each respective
                           module.
                         </p>
