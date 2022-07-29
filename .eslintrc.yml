@@ -12,7 +12,7 @@ globals:
   require: true
   config: true
   __DEV__: true
-parser: babel-eslint
+parser: "@babel/eslint-parser"
 parserOptions:
   ecmaVersion: 7
   ecmaFeatures:
@@ -37,13 +37,15 @@ rules:
   react/prefer-stateless-function: 0
   jsx-a11y/href-no-hash: 0
   jsx-a11y/alt-text: 0
+  jsx-a11y/anchor-has-content: 0
+  jsx-a11y/heading-has-content: 0
   react/jsx-filename-extension: 0
   camelcase: 0
   prefer-arrow-callback: 0
   func-names: 0
-  react/jsx-indent: 1
+  react/jsx-indent: 0
   no-mixed-operators: 1
-  no-confusing-arrow: ["error", { "allowParens": false }]
+  no-confusing-arrow: 0
 settings:
   import/resolver:
     node:
