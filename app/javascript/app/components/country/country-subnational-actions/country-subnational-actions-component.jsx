@@ -146,7 +146,7 @@ function SubnationalActions({
           <div className={styles.descriptionContainer}>
             <p>
               Explore how national and sub-national actors, including regions,
-              cities, companies, investors, and other organizations, commit to
+              cities, companies, investors and other organizations, commit to
               act on climate change.
             </p>
           </div>
