@@ -18,13 +18,13 @@ import layout from 'styles/layout.scss';
 import cardTheme from 'styles/themes/card/card-overflow-content.scss';
 import alertIcon from 'assets/icons/alert.svg';
 import NdcContentOverviewProvider from 'providers/ndc-content-overview-provider';
+import NdcsProvider from 'providers/ndcs-provider';
 import CountriesDocumentsProvider from 'providers/countries-documents-provider';
 
 import styles from './country-commitments-overview-styles.scss';
 
 function CountryCommitmentsOverview(props) {
   const {
-    sectors,
     values,
     loading,
     iso,
@@ -100,236 +100,240 @@ function CountryCommitmentsOverview(props) {
     );
   };
 
-  const renderCards = () => (
-    <div className={styles.cards}>
-      <Card
-        title={
-          process.env.FEATURE_COUNTRY_CHANGES === 'true'
-            ? 'Latest NDC'
-            : 'Contribution Type'
-        }
-        theme={cardTheme}
-        contentFirst
-      >
-        <div className={styles.cardContent}>
-          {process.env.FEATURE_COUNTRY_CHANGES === 'true' && (
-            <React.Fragment>
-              {values?.ghg_target && (
-                <CardRow
-                  rowData={{
-                    title: 'GHG Target',
-                    value: values.ghg_target
-                  }}
-                  theme={cardTheme}
-                />
-              )}
-              {values?.mitigation_contribution_type && (
-                <CardRow
-                  rowData={{
-                    title: 'Mitigation Contribution Type',
-                    value: values.mitigation_contribution_type
-                  }}
-                  theme={cardTheme}
-                />
-              )}
-              {values?.adaptation && (
-                <CardRow
-                  rowData={{
-                    title: 'Adaptation Included',
-                    value: values.adaptation
-                  }}
-                  theme={cardTheme}
-                />
-              )}
-              {values?.ndce_source && (
-                <CardRow
-                  rowData={{
-                    title: 'Latest NDC Document',
-                    value: values.ndce_source
-                  }}
-                  theme={cardTheme}
-                />
-              )}
-            </React.Fragment>
-          )}
-          {process.env.FEATURE_COUNTRY_CHANGES !== 'true' && (
-            <React.Fragment>
-              {values?.mitigation_contribution_type && (
-                <CardRow
-                  rowData={{
-                    title: 'Mitigation Contribution Type',
-                    value: values.mitigation_contribution_type[0].value
-                  }}
-                  theme={cardTheme}
-                />
-              )}
-              {values?.ghg_target_type && (
-                <CardRow
-                  rowData={{
-                    title: 'Target Type',
-                    value:
-                      values.ghg_target_type && values.ghg_target_type[0].value
-                  }}
-                  theme={cardTheme}
-                />
-              )}
-              {values?.adaptation && (
-                <CardRow
-                  rowData={{
-                    title: 'Adaptation Included',
-                    value: values.adaptation && values.adaptation[0].value
-                  }}
-                  theme={cardTheme}
-                />
-              )}
-            </React.Fragment>
-          )}
-          {!values?.mitigation_contribution_type && (
-            <div className={styles.noContent}>Not included</div>
-          )}
-        </div>
-      </Card>
-      <Card
-        title={
-          process.env.FEATURE_COUNTRY_CHANGES === 'true'
-            ? 'Long Term Strategy'
-            : 'GHG Target'
-        }
-        theme={cardTheme}
-        contentFirst
-      >
-        <div className={styles.cardContent}>
-          {process.env.FEATURE_COUNTRY_CHANGES === 'true' && (
-            <React.Fragment>
-              {values?.lts_target && (
-                <CardRow
-                  rowData={{
-                    title: 'Quantified Long-Term Emissions Goal',
-                    value: values.lts_target
-                  }}
-                  theme={cardTheme}
-                />
-              )}
-
-              {values?.lts_date && (
-                <CardRow
-                  rowData={{
-                    title: 'Submission Date',
-                    value: values.lts_date
-                  }}
-                  theme={cardTheme}
-                />
-              )}
-
-              {values?.lts_document && (
-                <CardRow
-                  rowData={{
-                    title: 'Long-Term Strategy Document',
-                    value: values.lts_document
-                  }}
-                  theme={cardTheme}
-                />
-              )}
-            </React.Fragment>
-          )}
-          {process.env.FEATURE_COUNTRY_CHANGES !== 'true' && (
-            <React.Fragment>
-              {values?.time_target_year && (
-                <CardRow
-                  rowData={{
-                    title: 'Target Year',
-                    value: values.time_target_year[0].value
-                  }}
-                />
-              )}
-              {values?.coverage_sectors && (
-                <CardRow
-                  rowData={{
-                    title: 'Sectors Covered',
-                    value: values.coverage_sectors[0].value
-                  }}
-                />
-              )}
-            </React.Fragment>
-          )}
-          {process.env.FEATURE_COUNTRY_CHANGES === 'true' &&
-            !values?.lts_target && (
+  const renderCards = () =>
+    loading ? (
+      <Loading light className={styles.loader} />
+    ) : (
+      <div className={styles.cards}>
+        <Card
+          title={
+            process.env.FEATURE_COUNTRY_CHANGES === 'true'
+              ? 'Latest NDC'
+              : 'Contribution Type'
+          }
+          theme={cardTheme}
+          contentFirst
+        >
+          <div className={styles.cardContent}>
+            {process.env.FEATURE_COUNTRY_CHANGES === 'true' && (
+              <React.Fragment>
+                {values?.ghg_target && (
+                  <CardRow
+                    rowData={{
+                      title: 'GHG Target',
+                      value: values.ghg_target
+                    }}
+                    theme={cardTheme}
+                  />
+                )}
+                {values?.mitigation_contribution_type && (
+                  <CardRow
+                    rowData={{
+                      title: 'Mitigation Contribution Type',
+                      value: values.mitigation_contribution_type
+                    }}
+                    theme={cardTheme}
+                  />
+                )}
+                {values?.adaptation && (
+                  <CardRow
+                    rowData={{
+                      title: 'Adaptation included',
+                      value: values.adaptation
+                    }}
+                    theme={cardTheme}
+                  />
+                )}
+                {values?.ndce_source && (
+                  <CardRow
+                    rowData={{
+                      title: 'Latest NDC Document',
+                      value: values.ndce_source
+                    }}
+                    theme={cardTheme}
+                  />
+                )}
+              </React.Fragment>
+            )}
+            {process.env.FEATURE_COUNTRY_CHANGES !== 'true' && (
+              <React.Fragment>
+                {values?.mitigation_contribution_type && (
+                  <CardRow
+                    rowData={{
+                      title: 'Mitigation contribution type',
+                      value: values.mitigation_contribution_type[0].value
+                    }}
+                    theme={cardTheme}
+                  />
+                )}
+                {values?.ghg_target_type && (
+                  <CardRow
+                    rowData={{
+                      title: 'Target Type',
+                      value:
+                        values.ghg_target_type &&
+                        values.ghg_target_type[0].value
+                    }}
+                    theme={cardTheme}
+                  />
+                )}
+                {values?.adaptation && (
+                  <CardRow
+                    rowData={{
+                      title: 'Adaptation Included',
+                      value: values.adaptation && values.adaptation[0].value
+                    }}
+                    theme={cardTheme}
+                  />
+                )}
+              </React.Fragment>
+            )}
+            {!values?.mitigation_contribution_type && (
               <div className={styles.noContent}>Not included</div>
             )}
-          {process.env.FEATURE_COUNTRY_CHANGES !== 'true' &&
-            !values?.time_target_year && (
-              <div className={styles.noContent}>Not included</div>
-            )}
-        </div>
-      </Card>
-      <Card
-        title={
-          process.env.FEATURE_COUNTRY_CHANGES === 'true'
-            ? 'Net-Zero Target'
-            : 'Non-GHG Target'
-        }
-        theme={cardTheme}
-        contentFirst
-      >
-        <div className={styles.cardContent}>
-          {process.env.FEATURE_COUNTRY_CHANGES === 'true' && (
-            <React.Fragment>
-              {values?.nz_status && (
-                <CardRow
-                  rowData={{
-                    title: 'Net-Zero Target Status',
-                    value: values.nz_status
-                  }}
-                  theme={cardTheme}
-                />
-              )}
+          </div>
+        </Card>
+        <Card
+          title={
+            process.env.FEATURE_COUNTRY_CHANGES === 'true'
+              ? 'Long Term Strategy'
+              : 'GHG Target'
+          }
+          theme={cardTheme}
+          contentFirst
+        >
+          <div className={styles.cardContent}>
+            {process.env.FEATURE_COUNTRY_CHANGES === 'true' && (
+              <React.Fragment>
+                {values?.lts_target && (
+                  <CardRow
+                    rowData={{
+                      title: 'Quantified Long-Term Emissions Goal',
+                      value: values.lts_target
+                    }}
+                    theme={cardTheme}
+                  />
+                )}
 
-              {values?.nz_year && (
-                <CardRow
-                  rowData={{
-                    title: 'Net-Zero Target Year',
-                    value: values.nz_year
-                  }}
-                  theme={cardTheme}
-                />
-              )}
+                {values?.lts_date && (
+                  <CardRow
+                    rowData={{
+                      title: 'Submission Date',
+                      value: values.lts_date
+                    }}
+                    theme={cardTheme}
+                  />
+                )}
 
-              {values?.nz_source && (
-                <CardRow
-                  rowData={{
-                    title: 'Net-Zero Target Source',
-                    value: values.nz_source
-                  }}
-                  theme={cardTheme}
-                />
+                {values?.lts_document && (
+                  <CardRow
+                    rowData={{
+                      title: 'Long-Term Strategy Document',
+                      value: values.lts_document
+                    }}
+                    theme={cardTheme}
+                  />
+                )}
+              </React.Fragment>
+            )}
+            {process.env.FEATURE_COUNTRY_CHANGES !== 'true' && (
+              <React.Fragment>
+                {values?.time_target_year && (
+                  <CardRow
+                    rowData={{
+                      title: 'Target Year',
+                      value: values.time_target_year[0].value
+                    }}
+                  />
+                )}
+                {values?.coverage_sectors && (
+                  <CardRow
+                    rowData={{
+                      title: 'Sectors Covered',
+                      value: values.coverage_sectors[0].value
+                    }}
+                  />
+                )}
+              </React.Fragment>
+            )}
+            {process.env.FEATURE_COUNTRY_CHANGES === 'true' &&
+              !values?.lts_target && (
+                <div className={styles.noContent}>Not included</div>
               )}
-            </React.Fragment>
-          )}
+            {process.env.FEATURE_COUNTRY_CHANGES !== 'true' &&
+              !values?.time_target_year && (
+                <div className={styles.noContent}>Not included</div>
+              )}
+          </div>
+        </Card>
+        <Card
+          title={
+            process.env.FEATURE_COUNTRY_CHANGES === 'true'
+              ? 'Net-Zero Target'
+              : 'Non-GHG Target'
+          }
+          theme={cardTheme}
+          contentFirst
+        >
+          <div className={styles.cardContent}>
+            {process.env.FEATURE_COUNTRY_CHANGES === 'true' && (
+              <React.Fragment>
+                {values?.nz_status && (
+                  <CardRow
+                    rowData={{
+                      title: 'Net-Zero Target Status',
+                      value: values.nz_status
+                    }}
+                    theme={cardTheme}
+                  />
+                )}
 
-          {process.env.FEATURE_COUNTRY_CHANGES !== 'true' && (
-            <React.Fragment>
-              {values?.non_ghg_target_year && (
-                <CardRow
-                  rowData={{
-                    title: '',
-                    value: values.non_ghg_target[0].value
-                  }}
-                />
+                {values?.nz_year && (
+                  <CardRow
+                    rowData={{
+                      title: 'Net-Zero Target Year',
+                      value: values.nz_year
+                    }}
+                    theme={cardTheme}
+                  />
+                )}
+
+                {values?.nz_source && (
+                  <CardRow
+                    rowData={{
+                      title: 'Net-Zero Target Source',
+                      value: values.nz_source
+                    }}
+                    theme={cardTheme}
+                  />
+                )}
+              </React.Fragment>
+            )}
+
+            {process.env.FEATURE_COUNTRY_CHANGES !== 'true' && (
+              <React.Fragment>
+                {values?.non_ghg_target_year && (
+                  <CardRow
+                    rowData={{
+                      title: '',
+                      value: values.non_ghg_target[0].value
+                    }}
+                  />
+                )}
+              </React.Fragment>
+            )}
+            {process.env.FEATURE_COUNTRY_CHANGES === 'true' &&
+              !values?.nz_status && (
+                <div className={styles.noContent}>Not included</div>
               )}
-            </React.Fragment>
-          )}
-          {process.env.FEATURE_COUNTRY_CHANGES === 'true' &&
-            !values?.nz_status && (
-              <div className={styles.noContent}>Not included</div>
-            )}
-          {process.env.FEATURE_COUNTRY_CHANGES !== 'true' &&
-            !values?.non_ghg_target_year && (
-              <div className={styles.noContent}>Not included</div>
-            )}
-        </div>
-      </Card>
-    </div>
-  );
+            {process.env.FEATURE_COUNTRY_CHANGES !== 'true' &&
+              !values?.non_ghg_target_year && (
+                <div className={styles.noContent}>Not included</div>
+              )}
+          </div>
+        </Card>
+      </div>
+    );
 
   const renderAlertText = () => (
     <div className={styles.alertContainer}>
@@ -345,8 +349,7 @@ function CountryCommitmentsOverview(props) {
   );
 
   const { submission_date: documentDate } = ndcsDocument || {};
-  const hasSectors = values && sectors;
-  const description = hasSectors && (
+  const description = values && (
     <div
       className={cx(styles.descriptionContainer, layout.parsedHTML)}
       // eslint-disable-next-line react/no-danger
@@ -363,10 +366,16 @@ function CountryCommitmentsOverview(props) {
     if (process.env.FEATURE_COUNTRY_CHANGES !== 'true') {
       return 'Nationally Determined Contribution (NDC) Overview';
     }
+    const getCountryName = () => {
+      if (!countryName) {
+        return 'the';
+      }
+      return countryName?.endsWith('s')
+        ? `${countryName}'`
+        : `${countryName}'s`;
+    };
 
-    return `What are the top-line targets from ${
-      countryName?.endsWith('s') ? `${countryName}'` : `${countryName}'s`
-    } climate commitments?`;
+    return `What are the top-line targets from ${getCountryName()} climate commitments?`;
   }, [countryName]);
 
   const renderIntro = () => (
@@ -383,7 +392,7 @@ function CountryCommitmentsOverview(props) {
   );
 
   const renderContent = () => {
-    if (!hasSectors && !loading) {
+    if (!values && !loading) {
       return (
         <div className={layout.content}>
           <div className="grid-column-item">
@@ -400,67 +409,78 @@ function CountryCommitmentsOverview(props) {
     }
     return (
       <div className="layout-container">
-        {loading && <Loading light className={styles.loader} />}
-        {hasSectors && (
-          <div className={layout.content}>
-            <div className="grid-column-item">
-              <div className={cx(styles.header, styles.col2)}>
-                {renderIntro()}
-                {process.env.FEATURE_COUNTRY_CHANGES !== 'true' && (
-                  <TabletPortraitOnly>{description}</TabletPortraitOnly>
-                )}
-                {process.env.FEATURE_COUNTRY_CHANGES !== 'true' && (
-                  <div className="grid-column-item">
-                    <div className={styles.actions}>
-                      {renderInfoButton()}
-                      {renderCompareButton()}
-                      <TabletLandscape>{renderExploreButton()}</TabletLandscape>
-                    </div>
-                  </div>
-                )}
-                {process.env.FEATURE_COUNTRY_CHANGES === 'true' && (
-                  <div className="grid-column-item">
-                    {renderCompareButton()}
-                  </div>
-                )}
-                {process.env.FEATURE_COUNTRY_CHANGES === 'true' && (
-                  <div className="grid-column-item">
-                    <div className={styles.descriptionContainer}>
-                      <AbbrReplace>
-                        <p>
-                          Below summarizes country&apos;s key climate
-                          commitments, including the latest NDC, LTS and
-                          net-zero target. Explore more indicators about the
-                          country&apos;s climate commitments in each respective
-                          module.
-                        </p>
-                      </AbbrReplace>
-                    </div>
-                  </div>
-                )}
-              </div>
+        <div className={layout.content}>
+          <div className="grid-column-item">
+            <div className={cx(styles.header, styles.col2)}>
+              {renderIntro()}
               {process.env.FEATURE_COUNTRY_CHANGES !== 'true' && (
-                <TabletLandscape>{description}</TabletLandscape>
+                <TabletPortraitOnly>{description}</TabletPortraitOnly>
               )}
-              {renderCards()}
-              <TabletPortraitOnly>{renderExploreButton()}</TabletPortraitOnly>
+              {process.env.FEATURE_COUNTRY_CHANGES !== 'true' && (
+                <div className="grid-column-item">
+                  <div className={styles.actions}>
+                    {renderInfoButton()}
+                    {renderCompareButton()}
+                    <TabletLandscape>{renderExploreButton()}</TabletLandscape>
+                  </div>
+                </div>
+              )}
+              {process.env.FEATURE_COUNTRY_CHANGES === 'true' && (
+                <div className="grid-column-item">{renderCompareButton()}</div>
+              )}
+              {process.env.FEATURE_COUNTRY_CHANGES === 'true' && (
+                <div className="grid-column-item">
+                  <div className={styles.descriptionContainer}>
+                    <AbbrReplace>
+                      <p>
+                        Below summarizes country&apos;s key climate commitments,
+                        including the latest NDC, LTS and net-zero target.
+                        Explore more indicators about the country&apos;s climate
+                        commitments in each respective module.
+                      </p>
+                    </AbbrReplace>
+                  </div>
+                </div>
+              )}
             </div>
+            {process.env.FEATURE_COUNTRY_CHANGES !== 'true' && (
+              <TabletLandscape>{description}</TabletLandscape>
+            )}
+            {renderCards()}
+            <TabletPortraitOnly>{renderExploreButton()}</TabletPortraitOnly>
           </div>
-        )}
+        </div>
       </div>
     );
   };
 
   return (
     <div className={cx(styles.wrapper, { [styles.embededWrapper]: isEmbed })}>
-      {hasSectors &&
+      {values &&
         !loading &&
         process.env.FEATURE_COUNTRY_CHANGES !== 'true' &&
         renderAlertText()}
       <CountriesDocumentsProvider location={iso} />
-      <NdcContentOverviewProvider
-        locations={[iso]}
-        document={ndcsDocument && ndcsDocument.slug}
+      {ndcsDocument && ndcsDocument.slug && (
+        <NdcContentOverviewProvider
+          locations={[iso]}
+          document={ndcsDocument && ndcsDocument.slug}
+        />
+      )}
+      <NdcsProvider
+        overrideFilter
+        indicatorSlugs={[
+          'ghg_target',
+          'mitigation_contribution_type',
+          'adaptation',
+          'ndce_source',
+          'lts_target',
+          'lts_date',
+          'lts_document',
+          'nz_status',
+          'nz_year',
+          'nz_source'
+        ]}
       />
       {renderContent()}
       <ModalMetadata />
@@ -471,7 +491,6 @@ function CountryCommitmentsOverview(props) {
 CountryCommitmentsOverview.propTypes = {
   iso: PropTypes.string,
   countryName: PropTypes.string,
-  sectors: PropTypes.array,
   values: PropTypes.object,
   loading: PropTypes.bool,
   isNdcp: PropTypes.bool,

@@ -18,7 +18,8 @@ import styles from './country-climate-commitments-styles.scss';
 function CountryClimateCommitments({
   countriesDocumentsValues,
   iso,
-  countryName
+  countryName,
+  loading
 }) {
   const countryDocumentsIcons = {
     [SUBMISSION_ICON_VALUE.yes]: submittedIcon,
@@ -109,10 +110,12 @@ function CountryClimateCommitments({
     <div className={styles.gridContainer}>
       <div className={styles.grid}>
         <div className={styles.container}>
-          {countriesDocumentsValues ? (
-            <React.Fragment>{renderDocumentsPart()}</React.Fragment>
-          ) : (
+          {loading ? (
             <Loading light className={styles.loading} />
+          ) : (
+            countriesDocumentsValues && (
+              <React.Fragment>{renderDocumentsPart()}</React.Fragment>
+            )
           )}
         </div>
       </div>
@@ -128,6 +131,7 @@ function CountryClimateCommitments({
 CountryClimateCommitments.propTypes = {
   countriesDocumentsValues: PropTypes.array,
   iso: PropTypes.string,
+  loading: PropTypes.bool,
   countryName: PropTypes.string
 };
 

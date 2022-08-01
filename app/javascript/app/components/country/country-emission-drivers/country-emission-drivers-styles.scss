@@ -11,15 +11,16 @@
 }
 
 .cards {
-  display: grid;
-  grid-template-columns: 1fr;
+  @media #{$mobile-only} {
+    display: block;
+  }
 
   @media #{$tablet-portrait} {
-    grid-template-columns: 0.6fr 0.6fr 1.3fr;
-    grid-template-rows: 0.75fr 0.75fr;
+    display: block;
   }
 
   @media #{$tablet-landscape} {
+    display: grid;
     grid-template-areas:
       "card1 card2 chart"
       "card3 card4 chart";
@@ -90,4 +91,8 @@
 
 .tooltip {
   min-width: 300px;
+}
+
+.loader {
+  min-height: 600px;
 }

@@ -14,10 +14,10 @@ import {
   getValuesGrouped,
   getNdcsDocument,
   getLtsDocument,
-  getSectors,
   getCountryDocuments,
   getCountryName,
-  getCountryNdcsData
+  getCountryNdcsData,
+  getLoading
 } from './country-commitments-overview-selectors';
 
 const mapStateToProps = (state, { location, match }) => {
@@ -35,8 +35,7 @@ const mapStateToProps = (state, { location, match }) => {
       process.env.FEATURE_COUNTRY_CHANGES === 'true'
         ? getCountryNdcsData(state, { iso })
         : getValuesGrouped(state, { location, iso }),
-    loading: state.ndcContentOverview.loading,
-    sectors: getSectors(state, { location, iso }),
+    loading: getLoading(state, { location, iso }),
     fetched: !isEmpty(getCountryDocuments(state, { location, iso })),
     countryName: getCountryName(state, { iso })
   };

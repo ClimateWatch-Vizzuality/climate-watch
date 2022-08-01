@@ -5,15 +5,13 @@ import { SUBMISSION_ICON_VALUE } from 'data/country-documents';
 import { ENHANCEMENT_LABEL_SLUGS, INDICATOR_SLUGS } from 'data/constants';
 
 const getCountries = state => (state.countries && state.countries.data) || null;
-
-const getPreviousComparisonIndicators = state =>
-  state.ndcsPreviousComparison && state.ndcsPreviousComparison.data;
-
 const getCountriesDocuments = state => state.countriesDocuments.data || null;
-
 const getIso = state => state.iso || null;
 const getNDCS = state =>
   (state.ndcs && state.ndcs.data && state.ndcs.data.indicators) || null;
+
+export const getLoading = state =>
+  state.countriesDocuments.loading || state.ndcs.loading;
 
 const getCountry = createSelector([getCountries, getIso], (countries, iso) => {
   if (!countries || !iso) return null;
@@ -23,17 +21,6 @@ const getCountry = createSelector([getCountries, getIso], (countries, iso) => {
 export const getCountryName = createSelector(
   [getCountry],
   country => (country && country.wri_standard_name) || null
-);
-
-export const getPreviousComparisonCountryValues = createSelector(
-  [getPreviousComparisonIndicators, getIso],
-  (previousComparisonIndicators, iso) => {
-    if (!previousComparisonIndicators) return null;
-    return previousComparisonIndicators.map(indicator => [
-      indicator.name,
-      indicator.locations[iso].value
-    ]);
-  }
 );
 
 const getNetZeroAnd2020StatusValues = createSelector(
