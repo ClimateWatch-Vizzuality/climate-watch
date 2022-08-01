@@ -18,8 +18,8 @@ const getNdcContentOverview = createThunkAction(
         apiWithCache
           .get(`/api/v1/ndcs/${location}/content_overview${documentParam}`)
           .then(response => {
-            if (response.ok) {
-              return response.json();
+            if (response.data) {
+              return response.data;
             }
             throw Error(response.statusText);
           })

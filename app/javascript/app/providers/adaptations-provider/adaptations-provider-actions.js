@@ -17,7 +17,7 @@ const fetchAdaptations = createThunkAction(
       apiWithCache
         .get('/api/v1/adaptations')
         .then(response => {
-          if (response.ok) return response.json();
+          if (response.data) return response.data;
           throw Error(response.statusText);
         })
         .then(data => {

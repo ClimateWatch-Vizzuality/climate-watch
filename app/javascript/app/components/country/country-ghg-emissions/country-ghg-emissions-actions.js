@@ -22,13 +22,13 @@ const fetchCountryGhgEmissionsData = createThunkAction(
       apiWithCache
         .get(`/api/v1/emissions?${qs.stringify(filters)}`)
         .then(response => {
-          if (response.ok) return response.json();
+          if (response.data) return response.data;
           throw Error(response.statusText);
         }),
       apiWithCache
         .get(`/api/v1/quantifications?location=${filters.location}`)
         .then(response => {
-          if (response.ok) return response.json();
+          if (response.data) return response.data;
           throw Error(response.statusText);
         })
     ];
@@ -45,6 +45,7 @@ const fetchCountryGhgEmissionsData = createThunkAction(
       })
       .catch(error => {
         console.warn(error);
+        console.info('eee', error);
         dispatch(fetchCountryGhgEmissionsFail());
       });
   }
