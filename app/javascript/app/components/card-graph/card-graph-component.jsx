@@ -97,7 +97,7 @@ class CardGraph extends PureComponent {
           Average Annual
         </tspan>
         <tspan x={x} textAnchor="middle" dy="20">
-          Hazard Ocurrence
+          Hazard Occurrence
         </tspan>
         <tspan x={x} textAnchor="middle" dy="20">
           of

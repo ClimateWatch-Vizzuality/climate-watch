@@ -117,7 +117,7 @@ function CountryCommitmentsOverview(props) {
               {values?.ghg_target && (
                 <CardRow
                   rowData={{
-                    title: 'GHG target',
+                    title: 'GHG Target',
                     value: values.ghg_target
                   }}
                   theme={cardTheme}
@@ -126,7 +126,7 @@ function CountryCommitmentsOverview(props) {
               {values?.mitigation_contribution_type && (
                 <CardRow
                   rowData={{
-                    title: 'Mitigation contribution type',
+                    title: 'Mitigation Contribution Type',
                     value: values.mitigation_contribution_type
                   }}
                   theme={cardTheme}
@@ -135,7 +135,7 @@ function CountryCommitmentsOverview(props) {
               {values?.adaptation && (
                 <CardRow
                   rowData={{
-                    title: 'Adaptation included',
+                    title: 'Adaptation Included',
                     value: values.adaptation
                   }}
                   theme={cardTheme}
@@ -144,7 +144,7 @@ function CountryCommitmentsOverview(props) {
               {values?.ndce_source && (
                 <CardRow
                   rowData={{
-                    title: 'Latest NDC Document Source',
+                    title: 'Latest NDC Document',
                     value: values.ndce_source
                   }}
                   theme={cardTheme}
@@ -157,7 +157,7 @@ function CountryCommitmentsOverview(props) {
               {values?.mitigation_contribution_type && (
                 <CardRow
                   rowData={{
-                    title: 'Mitigation contribution type',
+                    title: 'Mitigation Contribution Type',
                     value: values.mitigation_contribution_type[0].value
                   }}
                   theme={cardTheme}
@@ -166,7 +166,7 @@ function CountryCommitmentsOverview(props) {
               {values?.ghg_target_type && (
                 <CardRow
                   rowData={{
-                    title: 'Target type',
+                    title: 'Target Type',
                     value:
                       values.ghg_target_type && values.ghg_target_type[0].value
                   }}
@@ -176,7 +176,7 @@ function CountryCommitmentsOverview(props) {
               {values?.adaptation && (
                 <CardRow
                   rowData={{
-                    title: 'Adaptation included',
+                    title: 'Adaptation Included',
                     value: values.adaptation && values.adaptation[0].value
                   }}
                   theme={cardTheme}
@@ -204,7 +204,7 @@ function CountryCommitmentsOverview(props) {
               {values?.lts_target && (
                 <CardRow
                   rowData={{
-                    title: 'Quantified Long-term Emissions Goal',
+                    title: 'Quantified Long-Term Emissions Goal',
                     value: values.lts_target
                   }}
                   theme={cardTheme}
@@ -224,7 +224,7 @@ function CountryCommitmentsOverview(props) {
               {values?.lts_document && (
                 <CardRow
                   rowData={{
-                    title: 'Long-term Strategy Document',
+                    title: 'Long-Term Strategy Document',
                     value: values.lts_document
                   }}
                   theme={cardTheme}
@@ -237,7 +237,7 @@ function CountryCommitmentsOverview(props) {
               {values?.time_target_year && (
                 <CardRow
                   rowData={{
-                    title: 'Target year',
+                    title: 'Target Year',
                     value: values.time_target_year[0].value
                   }}
                 />
@@ -245,7 +245,7 @@ function CountryCommitmentsOverview(props) {
               {values?.coverage_sectors && (
                 <CardRow
                   rowData={{
-                    title: 'Sectors covered',
+                    title: 'Sectors Covered',
                     value: values.coverage_sectors[0].value
                   }}
                 />
@@ -277,7 +277,7 @@ function CountryCommitmentsOverview(props) {
               {values?.nz_status && (
                 <CardRow
                   rowData={{
-                    title: 'Net-zero Target Status',
+                    title: 'Net-Zero Target Status',
                     value: values.nz_status
                   }}
                   theme={cardTheme}
@@ -287,7 +287,7 @@ function CountryCommitmentsOverview(props) {
               {values?.nz_year && (
                 <CardRow
                   rowData={{
-                    title: 'Net-zero Target Year',
+                    title: 'Net-Zero Target Year',
                     value: values.nz_year
                   }}
                   theme={cardTheme}
@@ -297,7 +297,7 @@ function CountryCommitmentsOverview(props) {
               {values?.nz_source && (
                 <CardRow
                   rowData={{
-                    title: 'Net-zero Target Source',
+                    title: 'Net-Zero Target Source',
                     value: values.nz_source
                   }}
                   theme={cardTheme}
@@ -430,7 +430,7 @@ function CountryCommitmentsOverview(props) {
                         <p>
                           Below summarizes country&apos;s key climate
                           commitments, including the latest NDC, LTS and
-                          Net-Zero target. Explore more indicators about the
+                          net-zero target. Explore more indicators about the
                           country&apos;s climate commitments in each respective
                           module.
                         </p>
