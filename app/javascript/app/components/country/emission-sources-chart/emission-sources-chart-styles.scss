@@ -84,16 +84,22 @@
   }
 }
 
+.negativeSector {
+  width: 100%;
+}
+
 .negativeEmissionsSectorText {
   margin-top: -10px;
 
   .sectorContent {
     display: flex;
+    justify-content: center;
   }
 
   .sectorTitleContainer {
     display: flex;
     flex-direction: column;
+    align-items: center;
   }
 
   .infoContainer {

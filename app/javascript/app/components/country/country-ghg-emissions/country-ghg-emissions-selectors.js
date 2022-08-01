@@ -10,10 +10,9 @@ import flatten from 'lodash/flatten';
 import sumBy from 'lodash/sumBy';
 import { getGhgEmissionDefaults, calculatedRatio } from 'utils/ghg-emissions';
 import { generateLinkToDataExplorer } from 'utils/data-explorer';
-import { CONTINOUS_FADED_RAMP } from 'styles/constants';
+import { SECTOR_COLORS_BY_LABEL } from 'styles/constants';
 import {
   getYColumnValue,
-  getThemeConfig,
   getTooltipConfig,
   sortEmissionsByValue,
   setXAxisDomain,
@@ -385,10 +384,13 @@ export const getChartConfig = createSelector(
     }));
 
     const yColumnsChecked = uniqBy(yColumns, 'value');
-    const theme = getThemeConfig(
-      yColumnsChecked,
-      Object.values(CONTINOUS_FADED_RAMP).slice(0, yColumnsChecked.length)
-    );
+
+    const theme = yColumnsChecked.reduce((acc, column) => {
+      const color = SECTOR_COLORS_BY_LABEL[column.label];
+      acc[column.value] = { stroke: color, fill: color };
+      return acc;
+    }, {});
+
     colorThemeCache = { ...theme, ...colorThemeCache };
     const tooltip = getTooltipConfig(yColumnsChecked);
     let unit = DEFAULT_AXES_CONFIG.yLeft.unit;

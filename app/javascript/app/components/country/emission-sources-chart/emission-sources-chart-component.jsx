@@ -145,6 +145,63 @@ function EmissionSourcesChart({
     };
   }, []);
 
+  const renderNegativeEmissions = () =>
+    negativeEmissions.map((e, i) => (
+      <span
+        className={styles.negativeSectorContainer}
+        style={{
+          width: `${Math.abs(e.percentage)}%`
+        }}
+      >
+        <span
+          className={cx(styles.countrySector, styles.negativeSector)}
+          style={{
+            background: `repeating-linear-gradient(45deg, ${e.color}, white 2px, white 12px)`
+          }}
+          data-tip={getTooltip('sectors', e, i)}
+          data-for="emissions-chart-tooltip"
+        />
+        <ReactTooltip id="negative-emissions-tooltip" />
+        <span
+          style={{
+            width: `${Math.abs(e.percentage)}%`
+          }}
+          data-tip="This sector captures more carbon than it produces and is therefore a carbon sink with negative emissions"
+          data-for="negative-emissions-tooltip"
+        >
+          <span
+            className={cx(
+              styles.countrySectorText,
+              styles.negativeEmissionsSectorText
+            )}
+          >
+            <div className={styles.sectorContent}>
+              <div className={styles.infoContainer}>
+                <Icon
+                  icon={infoIcon}
+                  className={styles.infoIcon}
+                  tooltipId="negative-emissions-tooltip"
+                />
+              </div>
+              {Math.abs(e.percentage) > 10 && (
+                <div className={styles.sectorTitleContainer}>
+                  <div
+                    className={styles.sectorTitle}
+                    style={{ color: e.color }}
+                  >
+                    {e.sector}
+                  </div>
+                  <div>
+                    {Math.round(e.emission * 100) / 100} MtCO<sub>2</sub>e
+                  </div>
+                </div>
+              )}
+            </div>
+          </span>
+        </span>
+      </span>
+    ));
+
   const renderCountrySectors = () => {
     if (!sectorData) return null;
 
@@ -181,55 +238,7 @@ function EmissionSourcesChart({
             ref={separatorRef}
           />
         )}
-        {hasNegativeEmissions &&
-          negativeEmissions.map((e, i) => (
-            <span
-              className={cx(styles.countrySector, styles.negativeSector)}
-              style={{
-                background: `repeating-linear-gradient(45deg, ${e.color}, white 2px, white 12px)`,
-                width: `${Math.abs(e.percentage)}%`
-              }}
-            >
-              {Math.abs(e.percentage) > 10 && (
-                <span
-                  className={cx(
-                    styles.countrySectorText,
-                    styles.negativeEmissionsSectorText
-                  )}
-                >
-                  <div className={styles.sectorContent}>
-                    <div
-                      data-tip="This sector captures more carbon than it produces and is therefore a carbon sink with negative emissions"
-                      data-for="negative-emissions-tooltip"
-                      className={styles.infoContainer}
-                    >
-                      <Icon
-                        icon={infoIcon}
-                        className={styles.infoIcon}
-                        tooltipId="negative-emissions-tooltip"
-                      />
-                    </div>
-                    <ReactTooltip id="negative-emissions-tooltip" />
-                    <div
-                      className={styles.sectorTitleContainer}
-                      data-tip={getTooltip('sectors', e, i)}
-                      data-for="emissions-chart-tooltip"
-                    >
-                      <div
-                        className={styles.sectorTitle}
-                        style={{ color: e.color }}
-                      >
-                        {e.sector}
-                      </div>
-                      <div>
-                        {Math.round(e.emission * 100) / 100} MtCO<sub>2</sub>e
-                      </div>
-                    </div>
-                  </div>
-                </span>
-              )}
-            </span>
-          ))}
+        {hasNegativeEmissions && renderNegativeEmissions()}
       </div>
     );
   };
