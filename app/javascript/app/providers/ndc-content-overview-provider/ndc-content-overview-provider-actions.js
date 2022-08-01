@@ -1,5 +1,6 @@
 import { createAction } from 'redux-actions';
 import { createThunkAction } from 'utils/redux';
+import { apiWithCache } from 'services/api';
 
 const getNdcContentOverviewInit = createAction('getNdcContentOverviewInit');
 const getNdcContentOverviewFail = createAction('getNdcContentOverviewFail');
@@ -14,14 +15,14 @@ const getNdcContentOverview = createThunkAction(
     locations.forEach(location => {
       const documentParam = document ? `?document=${document}` : '';
       promises.push(
-        fetch(`/api/v1/ndcs/${location}/content_overview${documentParam}`).then(
-          response => {
+        apiWithCache
+          .get(`/api/v1/ndcs/${location}/content_overview${documentParam}`)
+          .then(response => {
             if (response.ok) {
               return response.json();
             }
             throw Error(response.statusText);
-          }
-        )
+          })
       );
       locationsWithPromise.push(location);
     });
