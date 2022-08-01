@@ -10,11 +10,23 @@ const getCountries = state => state.countries.data || [];
 const getOverviewData = state =>
   state.ndcContentOverview.data && state.ndcContentOverview.data.locations;
 
-const getNdcsData = state => state.ndcs?.data?.indicators || [];
+const getNdcsData = state => state.ndcs?.data?.indicators || null;
 
 const getCountryOverviewData = createSelector(
   [getOverviewData, getIso],
   (data, iso) => (data && data[iso]) || null
+);
+
+const getReducersLoading = state =>
+  state.countries.loading ||
+  state.countriesDocuments.loading ||
+  state.ndcContentOverview.loading;
+
+// TODO: Improve solution. Currently the ndcs nedpoint is called several times so we only know if data is loaded checking some specific indicator
+export const getLoading = createSelector(
+  [getReducersLoading, getNdcsData],
+  (loading, ndcsData) =>
+    loading || !ndcsData || !ndcsData.some(i => i.slug === 'ghg_target')
 );
 
 const getSearch = (state, { location }) => {
@@ -45,6 +57,7 @@ export const getValuesGrouped = createSelector(
 export const getCountryNdcsData = createSelector(
   [getNdcsData, getIso],
   (ndcsData, iso) => {
+    if (!ndcsData) return null;
     const dataKeys = [
       'ghg_target',
       'mitigation_contribution_type',

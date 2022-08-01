@@ -268,6 +268,7 @@ function EmissionSourcesChart({
           ))}
       </div>
       {totalWidth &&
+        height &&
         (startPoint || startPoint === 0) &&
         (width || width === 0) && (
           <svg
@@ -288,7 +289,7 @@ function EmissionSourcesChart({
       {renderCountrySectors()}
       <NDCSProvider
         overrideFilter
-        additionalIndicatorSlugs={[INDICATOR_SLUGS.emissions]}
+        indicatorSlugs={[INDICATOR_SLUGS.emissions]}
       />
       <EmissionsProvider filters={emissionProviderFilters} />
       <ReactTooltip id="emissions-chart-tooltip" html />

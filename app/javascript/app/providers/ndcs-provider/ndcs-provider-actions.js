@@ -33,13 +33,11 @@ const fetchNDCS = createThunkAction('fetchNDCS', props => (dispatch, state) => {
   }
 
   const promises = [];
-  if (ndcs && !ndcs.loading) {
-    promises.push(
-      apiWithCache.get(
-        `/api/v1/ndcs${params.length ? `?${params.join('&')}` : ''}`
-      )
-    );
-  }
+  promises.push(
+    apiWithCache.get(
+      `/api/v1/ndcs${params.length ? `?${params.join('&')}` : ''}`
+    )
+  );
 
   // Used for indicators like ndce_ghg (emissions) that are needed but not included on category filtered calls
   // and as it is not filtered by category also serves the whole list of categories

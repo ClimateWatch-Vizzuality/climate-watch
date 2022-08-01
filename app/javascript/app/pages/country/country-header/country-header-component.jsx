@@ -106,7 +106,7 @@ function CountryHeader(props) {
         <EmissionsProvider filters={emissionProviderFilters} />
         <NDCSProvider
           overrideFilter
-          additionalIndicatorSlugs={[INDICATOR_SLUGS.emissions]}
+          indicatorSlugs={[INDICATOR_SLUGS.emissions]}
         />
       </div>
     );
