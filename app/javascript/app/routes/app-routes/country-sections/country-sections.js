@@ -20,85 +20,113 @@ const FEATURE_SHOW_COUNTRY_LAWS_AND_POLICIES =
   process.env.FEATURE_SHOW_COUNTRY_LAWS_AND_POLICIES === 'true';
 
 // eslint-disable-next-line import/no-mutable-exports
-const routes = [
-  FEATURE_COUNTRY_CHANGES && {
-    hash: 'commitments-overview',
-    label: 'Commitments Overview',
-    anchor: true,
-    component: ClimateCommitments
-  },
-  FEATURE_COUNTRY_CHANGES && {
-    hash: 'climate-enhancements',
-    label: 'NDC Enhancements',
-    anchor: true,
-    component: ClimateEnhancements
-  },
-  {
-    hash: 'ghg-emissions',
-    label: 'GHG Emissions',
-    anchor: true,
-    component: GHGCountryEmissions
-  },
-  FEATURE_COUNTRY_CHANGES && {
-    hash: 'emission-drivers',
-    label: 'Emissions Drivers',
-    anchor: true,
-    component: EmissionDrivers
-  },
-  FEATURE_COUNTRY_CHANGES && {
-    hash: 'climate-commitments',
-    label: 'Climate Commitments',
-    anchor: true,
-    component: () => createElement(CountryCommitmentsOverview)
-  },
-  {
-    hash: 'climate-vulnerability',
-    label: 'Climate Vulnerability and Readiness',
-    anchor: true,
-    component: ClimateVulnerability
-  },
-  process.env.FEATURE_COUNTRY_CHANGES === 'true' && {
-    hash: 'ndc-adaptation',
-    label: 'NDC Adaptation Plans',
-    anchor: true,
-    component: NDCAdaptation
-  },
-  process.env.FEATURE_COUNTRY_CHANGES !== 'true' && {
-    hash: 'ndc-content-overview',
-    label: 'NDC Content Overview',
-    anchor: true,
-    component: () => createElement(CountryNdcOverview)
-  },
-  process.env.FEATURE_COUNTRY_CHANGES !== 'true' && {
-    hash: 'lts-content-overview',
-    label: 'LTS Content Overview',
-    anchor: true,
-    component: () => createElement(CountryLtsOverview, { isCountryPage: true })
-  },
-  FEATURE_COUNTRY_CHANGES && {
-    hash: 'subnational-actions',
-    label: 'Subnational Actions',
-    anchor: true,
-    component: SubnationalActions
-  },
-  FEATURE_SHOW_COUNTRY_LAWS_AND_POLICIES && {
-    hash: 'laws-and-policies',
-    label: 'Targets in Laws and Policies',
-    anchor: true,
-    component: LawsAndPolicies
-  },
-  FEATURE_COUNTRY_CHANGES && {
-    hash: 'employment-and-costs',
-    label: 'Employment and Costs',
-    anchor: true,
-    component: EmploymentAndCosts
-  },
-  {
-    hash: 'ndc-sdg-linkages',
-    label: 'NDC-SDG Linkages',
-    anchor: true,
-    component: NDCSDGLinkages
-  }
-].filter(Boolean);
+const routes = FEATURE_COUNTRY_CHANGES
+  ? [
+    {
+      hash: 'commitments-overview',
+      label: 'Commitments Overview',
+      anchor: true,
+      component: ClimateCommitments
+    },
+    {
+      hash: 'climate-enhancements',
+      label: 'NDC Enhancements',
+      anchor: true,
+      component: ClimateEnhancements
+    },
+    {
+      hash: 'ghg-emissions',
+      label: 'GHG Emissions',
+      anchor: true,
+      component: GHGCountryEmissions
+    },
+    {
+      hash: 'emission-drivers',
+      label: 'Emissions Drivers',
+      anchor: true,
+      component: EmissionDrivers
+    },
+    {
+      hash: 'climate-commitments',
+      label: 'Climate Commitments',
+      anchor: true,
+      component: () => createElement(CountryCommitmentsOverview)
+    },
+    {
+      hash: 'ndc-adaptation',
+      label: 'NDC Adaptation Plans',
+      anchor: true,
+      component: NDCAdaptation
+    },
+    {
+      hash: 'climate-vulnerability',
+      label: 'Climate Vulnerability and Readiness',
+      anchor: true,
+      component: ClimateVulnerability
+    },
+    {
+      hash: 'subnational-actions',
+      label: 'Subnational Actions',
+      anchor: true,
+      component: SubnationalActions
+    },
+    FEATURE_SHOW_COUNTRY_LAWS_AND_POLICIES && {
+      hash: 'laws-and-policies',
+      label: 'Targets in Laws and Policies',
+      anchor: true,
+      component: LawsAndPolicies
+    },
+    {
+      hash: 'employment-and-costs',
+      label: 'Employment and Costs',
+      anchor: true,
+      component: EmploymentAndCosts
+    },
+    {
+      hash: 'ndc-sdg-linkages',
+      label: 'NDC-SDG Linkages',
+      anchor: true,
+      component: NDCSDGLinkages
+    }
+  ].filter(Boolean)
+  : [
+    {
+      hash: 'ghg-emissions',
+      label: 'GHG Emissions',
+      anchor: true,
+      component: GHGCountryEmissions
+    },
+    {
+      hash: 'climate-vulnerability',
+      label: 'Climate Vulnerability and Readiness',
+      anchor: true,
+      component: ClimateVulnerability
+    },
+    {
+      hash: 'ndc-content-overview',
+      label: 'NDC Content Overview',
+      anchor: true,
+      component: () => createElement(CountryNdcOverview)
+    },
+    {
+      hash: 'lts-content-overview',
+      label: 'LTS Content Overview',
+      anchor: true,
+      component: () =>
+        createElement(CountryLtsOverview, { isCountryPage: true })
+    },
+    FEATURE_SHOW_COUNTRY_LAWS_AND_POLICIES && {
+      hash: 'laws-and-policies',
+      label: 'Targets in Laws and Policies',
+      anchor: true,
+      component: LawsAndPolicies
+    },
+    {
+      hash: 'ndc-sdg-linkages',
+      label: 'NDC-SDG Linkages',
+      anchor: true,
+      component: NDCSDGLinkages
+    }
+  ].filter(Boolean);
 
 export default routes;
