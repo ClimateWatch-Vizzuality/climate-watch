@@ -8,7 +8,8 @@ import {
   getSectionData,
   getQueryIsos,
   getCountryName,
-  getMaximumCountries
+  getMaximumCountries,
+  getLoading
 } from './country-emission-drivers-selectors';
 
 const mapStateToProps = (state, { match, location }) => {
@@ -27,6 +28,7 @@ const mapStateToProps = (state, { match, location }) => {
     countries: getQueryIsos(search),
     maximumCountries: getMaximumCountries(climateVulnerability),
     countryName: getCountryName(climateVulnerability),
+    loading: getLoading(climateVulnerability),
     iso
   };
 };

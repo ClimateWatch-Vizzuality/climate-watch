@@ -14,6 +14,10 @@ const getCountries = state => state.countriesData || null;
 export const getMaximumCountries = createSelector([getCountries], countries =>
   countries ? countries.length : null
 );
+export const getLoading = state =>
+  state.countriesData.loading ||
+  state.countryProfileIndicators.loading ||
+  !state.iso;
 
 const getCountry = createSelector([getCountries, getIso], (countries, iso) => {
   if (!countries || !iso) return null;

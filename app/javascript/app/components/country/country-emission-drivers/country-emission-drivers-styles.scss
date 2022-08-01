@@ -21,7 +21,6 @@
 
   @media #{$tablet-landscape} {
     display: grid;
-
     grid-template-areas:
       "card1 card2 chart"
       "card3 card4 chart";
