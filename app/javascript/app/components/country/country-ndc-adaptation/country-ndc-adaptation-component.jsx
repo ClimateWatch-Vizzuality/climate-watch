@@ -49,7 +49,7 @@ class CountryNDCAdaptation extends PureComponent {
   getTooltip() {
     const { tooltipData, targetsData } = this.props;
     const actions =
-      targetsData[tooltipData?.goal_number]?.targets?.[tooltipData?.number]
+      targetsData[tooltipData?.sectorNumber]?.targets?.[tooltipData?.number]
         ?.actions;
 
     if (!tooltipData || !actions?.length) {
