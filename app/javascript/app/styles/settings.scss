@@ -127,13 +127,6 @@ $continous-color-4: #56a8ad;
 $continous-color-5: #93c8cb;
 $continous-color-6: #accfd1;
 
-$continous-faded-color-1: rgba($continous-color-1, 0.6);
-$continous-faded-color-2: rgba($continous-color-2, 0.6);
-$continous-faded-color-3: rgba($continous-color-3, 0.6);
-$continous-faded-color-4: rgba($continous-color-4, 0.6);
-$continous-faded-color-5: rgba($continous-color-5, 0.6);
-$continous-faded-color-6: rgba($continous-color-6, 0.6);
-
 $teal-blue: #045f61;
 $purple: #74356a;
 $light-blue: #035388;
@@ -143,6 +136,12 @@ $shadow-gray: #e8ecf5;
 $twitter: #5b8ec8;
 $facebook: #3b5999;
 $google: #d8483b;
+
+$sector-colors-energy: #ff6c2f;
+$sector-colors-agriculture: #ffb800;
+$sector-colors-industrial-processes: #ff6cd0;
+$sector-colors-land-use-change-and-forestry: #13c881;
+$sector-colors-waste: #80c3f6;
 
 // Exports
 /* stylelint-disable */
@@ -241,13 +240,12 @@ $google: #d8483b;
     color6: $continous-color-6;
   }
 
-  continousFadedRamp: {
-    color1: $continous-faded-color-1;
-    color2: $continous-faded-color-2;
-    color3: $continous-faded-color-3;
-    color4: $continous-faded-color-4;
-    color5: $continous-faded-color-5;
-    color6: $continous-faded-color-6;
+  sectorColors: {
+    energy: $sector-colors-energy;
+    agriculture: $sector-colors-agriculture;
+    industrial: $sector-colors-industrial-processes;
+    landUse: $sector-colors-land-use-change-and-forestry;
+    waste: $sector-colors-waste;
   }
 };
 
