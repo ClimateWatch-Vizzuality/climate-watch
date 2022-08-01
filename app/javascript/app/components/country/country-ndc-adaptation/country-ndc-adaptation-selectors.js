@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect';
 import groupBy from 'lodash/groupBy';
+import uniqBy from 'lodash/uniqBy';
 import sortBy from 'lodash/sortBy';
 import _camelCase from 'lodash/camelCase';
 
@@ -24,16 +25,17 @@ const getSelectedDocument = state =>
 export const getDocuments = createSelector(
   [getCountryDocuments, getIso],
   (_documents, _iso) =>
-    sortBy(
-      (_documents[_iso] || []).filter(({ is_ndc }) => is_ndc),
-      'ordering'
-    )
-      .map(({ long_name, id, slug }) => ({
+    uniqBy(
+      sortBy(
+        (_documents[_iso] || []).filter(({ is_ndc }) => is_ndc),
+        'ordering'
+      ).map(({ long_name, id, slug }) => ({
         label: long_name,
         value: id,
         slug
-      }))
-      .reverse()
+      })),
+      'slug'
+    ).reverse()
 );
 
 export const getActiveDocument = createSelector(
