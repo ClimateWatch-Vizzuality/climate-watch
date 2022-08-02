@@ -63,7 +63,7 @@ function CountryClimateCommitments({
               also invited to communicate “mid-century long-term low GHG
               emissions development strategies” (long-term strategies, or LTS).
               Aside from commitments made through NDCs and LTS, some Parties
-              also have net zero emission targets.
+              also have net-zero emissions targets.
             </p>
           </AbbrReplace>
         </div>

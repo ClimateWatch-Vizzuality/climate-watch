@@ -154,7 +154,7 @@ class CountryNDCAdaptation extends PureComponent {
           critical systems that need an acceleration of adaptation efforts to
           address the impacts of climate change. These critical systems were
           identified in the Global Commission on Adaptation&apos;s flagship
-          report &quot;Adapt Now&quot;.
+          report &quot;Adapt Now.&quot;
         </AbbrReplace>
       </div>
     );

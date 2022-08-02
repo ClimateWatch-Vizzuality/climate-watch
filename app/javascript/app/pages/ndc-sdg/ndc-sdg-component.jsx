@@ -36,7 +36,7 @@ class NdcSdg extends PureComponent {
               <Intro
                 title="NDC-SDG Linkages"
                 description={`Identify potential alignment between the targets, actions, policy measures and needs in countries'
-                  Nationally Determined Contributions (NDCs) and the targets of the Sustainable Development Goals (SDGs).`}
+                  Nationally Determined Contributions (NDCs) and the targets of the Sustainable Development Goals (SDGs). The analysis covers NDCs submitted prior to May 2021.`}
               />
               <AutocompleteSearch />
             </div>
