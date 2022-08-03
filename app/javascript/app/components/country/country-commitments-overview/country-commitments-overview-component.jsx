@@ -138,7 +138,7 @@ function CountryCommitmentsOverview(props) {
                 {values?.adaptation && (
                   <CardRow
                     rowData={{
-                      title: 'Adaptation included',
+                      title: 'Adaptation Included',
                       value: values.adaptation
                     }}
                     theme={cardTheme}
