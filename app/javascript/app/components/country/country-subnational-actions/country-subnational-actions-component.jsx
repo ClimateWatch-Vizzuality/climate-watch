@@ -9,6 +9,7 @@ import { format } from 'd3-format';
 import PropTypes from 'prop-types';
 import { Tag } from 'cw-components';
 import InfoButton from 'components/button/info-button';
+import NoContent from 'components/no-content';
 import Card from 'components/card';
 import Chart from 'components/charts/chart';
 import Loading from 'components/loading';
@@ -120,9 +121,7 @@ function SubnationalActions({
 
   // END OF DATA
 
-  const renderNoData = () => (
-    <div className={styles.noData}>No data available.</div>
-  );
+  const renderNoData = () => <NoContent message="No data available" />;
 
   const countryName = useMemo(() => {
     if (!iso) return null;

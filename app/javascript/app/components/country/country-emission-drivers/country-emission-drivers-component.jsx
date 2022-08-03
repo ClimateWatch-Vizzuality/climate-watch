@@ -1,6 +1,7 @@
 /* eslint-disable no-confusing-arrow */
 import React from 'react';
 import Proptypes from 'prop-types';
+import NoContent from 'components/no-content';
 
 import AbbrReplace from 'components/abbr-replace';
 import Loading from 'components/loading';
@@ -64,13 +65,19 @@ function CountryEmissionDrivers(props) {
                       data: styles.cardData
                     }}
                   >
-                    <CardGraph
-                      sectionData={card}
-                      maximumCountries={maximumCountries}
-                      noInfo
-                      type={card.type}
-                      iso={iso}
-                    />
+                    {card.data &&
+                    card.data.values &&
+                    card.data.values.lenght > 0 ? (
+                        <CardGraph
+                          sectionData={card}
+                          maximumCountries={maximumCountries}
+                          noInfo
+                          type={card.type}
+                          iso={iso}
+                        />
+                      ) : (
+                        <NoContent message="No data available" />
+                      )}
                   </Card>
                 ))}
               {sectionData && (
@@ -84,13 +91,17 @@ function CountryEmissionDrivers(props) {
                   }}
                 >
                   {' '}
-                  <CardGraph
-                    sectionData={sectionData.electricity.data}
-                    noInfo
-                    maximumCountries={maximumCountries}
-                    type="LINE_CHART"
-                    iso={iso}
-                  />
+                  {sectionData.electricity.data ? (
+                    <CardGraph
+                      sectionData={sectionData.electricity.data}
+                      noInfo
+                      maximumCountries={maximumCountries}
+                      type="LINE_CHART"
+                      iso={iso}
+                    />
+                  ) : (
+                    <NoContent message="No data available" />
+                  )}
                 </Card>
               )}
             </React.Fragment>
