@@ -19,7 +19,7 @@ export const SECTORS_COLORS = {
   industries: '#19486a',
   foodAndNutritionSecurity: '#c5192d',
   humanHealth: '#ffb5e7',
-  other: '#cccdcf',
+  other: '#757584',
   disasterRiskManagement: '#83a2e5',
   natureBasedSolutions: '#13c881',
   locallyLedAdaptation: '#0063a6',
