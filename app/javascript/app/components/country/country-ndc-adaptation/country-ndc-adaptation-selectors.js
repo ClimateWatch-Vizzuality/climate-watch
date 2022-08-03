@@ -9,18 +9,34 @@ import {
   SECTORS_COLORS
 } from './country-ndc-adaptation-constants';
 
-const getRawSectors = (state, search) =>
-  (state.ndcsAdaptations.data?.sectors || []).filter(
-    ({ sector_type: sectorType }) =>
-      sectorType === (search?.database || DATABASES_OPTIONS[0].value)
-  );
+const getDatabase = ({ search }) => search?.database || null;
+const getAdaptationSectors = state =>
+  state.ndcsAdaptations.data?.sectors || null;
 const getActions = state => state.ndcsAdaptations.data?.actions || [];
-
-const getIso = (state, props) => props?.iso || null;
 const getCountryDocuments = state => state.countriesDocuments.data || [];
+const getIso = ({ iso }) => iso || null;
 
-const getSelectedDocument = state =>
+const getSelectedDocumentId = state =>
   state.countryNDCSAdaptation.filters.document;
+
+export const getActiveDatabase = createSelector(
+  [getDatabase],
+  database =>
+    DATABASES_OPTIONS.find(({ value }) => value === database) ||
+    DATABASES_OPTIONS[0]
+);
+
+const getDatabaseSectors = createSelector(
+  [getDatabase, getAdaptationSectors],
+  (database, sectors) => {
+    if (!sectors) return null;
+    return sectors.filter(sector =>
+      database
+        ? sector.sector_type === database
+        : sector.sector_type === DATABASES_OPTIONS[0].value
+    );
+  }
+);
 
 export const getDocuments = createSelector(
   [getCountryDocuments, getIso],
@@ -39,27 +55,24 @@ export const getDocuments = createSelector(
 );
 
 export const getActiveDocument = createSelector(
-  [getDocuments, getSelectedDocument],
-  (_documents = [], _selectedDocument) => {
-    if (!_selectedDocument) return null;
-    return _documents.find(({ value }) => value === _selectedDocument);
+  [getDocuments, getSelectedDocumentId],
+  (_documents = [], selectedDocument) => {
+    if (!selectedDocument) return null;
+    return _documents.find(({ value }) => value === selectedDocument);
   }
 );
 
-export const getActiveDatabase = search =>
-  DATABASES_OPTIONS.find(({ value }) => value === search?.database) ||
-  DATABASES_OPTIONS[0];
-
-export const getSectors = createSelector([getRawSectors], sectors =>
-  sectors.map(({ id, name }, index) => ({
+export const getSectors = createSelector([getDatabaseSectors], sectors => {
+  if (!sectors) return null;
+  return sectors.map(({ id, name }, index) => ({
     id,
     cw_title: name,
     number: index + 1,
     colour: SECTORS_COLORS[_camelCase(name)]
-  }))
-);
+  }));
+});
 
-export const getTargets = createSelector([getRawSectors], sectors => {
+export const getTargets = createSelector([getDatabaseSectors], sectors => {
   if (!sectors) return null;
   return sectors.reduce(
     (acc, next, index) => ({
@@ -68,6 +81,8 @@ export const getTargets = createSelector([getRawSectors], sectors => {
         id,
         number: `${index + 1}.${subsectorIndex + 1}`,
         sectorNumber: index + 1,
+        subSectorId: id,
+        sectorId: next.id,
         title: name
       }))
     }),
@@ -75,79 +90,64 @@ export const getTargets = createSelector([getRawSectors], sectors => {
   );
 });
 
-const formatTargetsByCountry = (targets, _actions, sectorNumber, _document) => {
-  const goalsWithTargets = Object.values(targets);
-  const targetWithActions = goalsWithTargets
-    .map(_targets => _targets)
-    .reduce(
-      (acc, next) => [...acc, ...next.map(_n => ({ ..._n, actions: [] }))],
-      []
-    );
+const formatSectorTargets = (targets, actions, sectorId, documentId) => {
+  // First populate targets with an empty actions array
+  const targetsWithActions = Object.values(targets).reduce(
+    (acc, target) => [...acc, ...target.map(_n => ({ ..._n, actions: [] }))],
+    []
+  );
 
-  const targetIds = targetWithActions.map(({ id }) => id);
-
-  _actions
-    .filter(({ document_id: documentId }) => _document === documentId)
-    .forEach(_action => {
-      if (_action.sector_ids?.length) {
-        _action.sector_ids.forEach(_subsectorId => {
-          if (targetIds.includes(_subsectorId)) {
-            const currentTarget = targetWithActions.find(
-              ({ id }) => _subsectorId === id
-            );
-            if (currentTarget) {
-              const targetIndex = targetWithActions.findIndex(
-                ({ id }) => _subsectorId === id
-              );
-
-              if (
-                targetIndex !== -1 &&
-                currentTarget.sectorNumber === sectorNumber
-              ) {
-                targetWithActions[targetIndex] = {
-                  ...targetWithActions[targetIndex],
-                  actions: [...targetWithActions[targetIndex].actions, _action]
-                };
-              }
-            }
+  // Add action to targetsWithActions actions if matches with the document and sub-sector ids
+  actions
+    .filter(
+      action => documentId === action.document_id && action.sector_ids?.length
+    )
+    .forEach(action => {
+      // Sector ids are actually subsector ids
+      action.sector_ids.forEach(subSectorId => {
+        const currentTarget = targetsWithActions.find(
+          target => subSectorId === target.subSectorId
+        );
+        if (currentTarget) {
+          const targetIndex = targetsWithActions.indexOf(currentTarget);
+          if (currentTarget.sectorId === sectorId) {
+            targetsWithActions[targetIndex] = {
+              ...targetsWithActions[targetIndex],
+              actions: [...targetsWithActions[targetIndex].actions, action]
+            };
           }
-        });
-      }
+        }
+      });
     });
 
-  return Object.values(
+  const targetsWithActionsBySectorNumber = Object.values(
     groupBy(
-      targetWithActions.filter(({ actions: _acts }) => _acts.length),
+      targetsWithActions.filter(t => t.actions.length),
       'sectorNumber'
     )
-  ).reduce((_acc, _next) => {
-    const reduced = _next.reduce(
-      (_a, _n) => ({ ..._a, [_n.number]: { ..._n } }),
-      {}
-    );
+  );
+  return targetsWithActionsBySectorNumber.reduce((acc, next) => {
+    const reduced = next.reduce((a, n) => ({ ...a, [n.number]: { ...n } }), {});
     return {
-      ..._acc,
+      ...acc,
       ...reduced
     };
   }, {});
 };
 
-export const getTargetsByCountry = createSelector(
-  [getSectors, getTargets, getActions, getSelectedDocument],
-  (goals, targets, _actions, _document) =>
-    goals.reduce(
-      (acc, next) => ({
+export const getSectorTargets = createSelector(
+  [getSectors, getTargets, getActions, getSelectedDocumentId],
+  (sectors, targets, actions, documentId) => {
+    if (!sectors) return null;
+    return sectors.reduce(
+      (acc, sector) => ({
         ...acc,
-        [next.number]: {
-          targets: formatTargetsByCountry(
-            targets,
-            _actions,
-            next.number,
-            _document
-          ),
-          title: next.cw_title
+        [sector.number]: {
+          targets: formatSectorTargets(targets, actions, sector.id, documentId),
+          title: sector.cw_title
         }
       }),
       {}
-    )
+    );
+  }
 );

@@ -14,7 +14,7 @@ import {
   getDocuments,
   getSectors,
   getTargets,
-  getTargetsByCountry,
+  getSectorTargets,
   getActiveDatabase,
   getActiveDocument
 } from './country-ndc-adaptation-selectors';
@@ -32,21 +32,21 @@ const mapStateToProps = (state, { match, location }) => {
   ).wri_standard_name;
   const search = qs.parse(location.search);
   const isEmbed = isEmbededComponent(location);
-
+  const countryAdaptationState = { ...state, search, iso };
   return {
     tooltipData: state.countryNDCSAdaptation.tooltipData,
-    sectors: getSectors(state, search),
-    targets: getTargets(state, search),
-    targetsData: getTargetsByCountry(state),
-    activeDocument: getActiveDocument(state, { iso }),
+    sectors: getSectors(countryAdaptationState),
+    targets: getTargets(countryAdaptationState),
+    targetsData: getSectorTargets(countryAdaptationState),
+    activeDocument: getActiveDocument(countryAdaptationState),
     loading:
       (!state.ndcsAdaptations.error && state.ndcsAdaptations.loading) ||
       state.ndcsAdaptations.loading,
     countryName,
     isEmbed,
     iso,
-    activeDatabase: getActiveDatabase(search),
-    documentOptions: getDocuments(state, { iso })
+    activeDatabase: getActiveDatabase(countryAdaptationState),
+    documentOptions: getDocuments(countryAdaptationState)
   };
 };
 
