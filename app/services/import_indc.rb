@@ -234,10 +234,11 @@ class ImportIndc
   # as a param, for example for LTS
   def value_wb_attributes(row, location, indicator, doc_slug = nil, group_index = 1)
     doc_slug ||= row[:document]&.parameterize&.gsub('-', '_')
+    sector_key = [row[:sector], row[:subsector]].join('_')
     {
       location: location,
       indicator: indicator,
-      sector: @sectors_index[row[:subsector]],
+      sector: @sectors_index[sector_key],
       value: row[:responsetext],
       group_index: group_index,
       document_id: @documents_cache[doc_slug]&.id
@@ -515,7 +516,8 @@ class ImportIndc
         sector_type: 'lts'
       )
 
-      @sectors_index[d[:subsector]] = sector
+      key = [d[:sector], d[:subsector]].join('_')
+      @sectors_index[key] = sector
     end
   end
 
@@ -561,7 +563,8 @@ class ImportIndc
         sector_type: 'wb'
       )
 
-      @sectors_index[d[:subsector]] = sector
+      key = [d[:sector], d[:subsector]].join('_')
+      @sectors_index[key] = sector
     end
   end
 
@@ -647,7 +650,8 @@ class ImportIndc
       document_id: @documents_cache[doc_slug].id,
       location: location
     )
-    action.adaptation_action_sectors.build(sector_id: @sectors_index[row[:subsector]].id)
+    sector_key = [row[:sector], row[:subsector]].join('_')
+    action.adaptation_action_sectors.build(sector_id: @sectors_index[sector_key].id)
     action
   end
 

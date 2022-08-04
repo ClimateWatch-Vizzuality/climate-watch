@@ -3,7 +3,11 @@ module Api
     class NdcAdaptationActionsController < ApiController
       def index
         documents = ::Indc::Document.where(is_ndc: true).order(:ordering)
-        sectors = group_sectors(::Indc::Sector.where(sector_type: %w[adapt_now wb]))
+        sectors = group_sectors(
+          ::Indc::Sector.where(
+            id: sector_ids_with_actions, sector_type: %w[adapt_now wb]
+          )
+        )
         actions = ::Indc::AdaptationAction.includes(:location, :sectors)
         actions = actions.where(locations: {iso_code3: location_list}) if location_list.present?
 
@@ -24,6 +28,7 @@ module Api
 
       private
 
+      # rubocop:disable Style/MultilineBlockChain
       def group_sectors(sectors)
         sectors.
           includes(:parent).
@@ -39,7 +44,12 @@ module Api
                 s.as_json(only: [:id, :name])
               end
             }
-          end.compact
+          end.compact.sort_by { |s| s[:name].downcase }
+      end
+      # rubocop:enable Style/MultilineBlockChain
+
+      def sector_ids_with_actions
+        ::Indc::AdaptationActionSector.select(:sector_id).distinct.pluck(:sector_id)
       end
 
       def location_list
