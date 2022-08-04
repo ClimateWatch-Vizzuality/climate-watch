@@ -66,8 +66,9 @@ function CountryEmissionDrivers(props) {
                     }}
                   >
                     {card.data &&
-                    card.data.values &&
-                    card.data.values.lenght > 0 ? (
+                    card.data[0] &&
+                    card.data[0].values &&
+                    card.data[0].values.length > 0 ? (
                         <CardGraph
                           sectionData={card}
                           maximumCountries={maximumCountries}
@@ -91,17 +92,19 @@ function CountryEmissionDrivers(props) {
                   }}
                 >
                   {' '}
-                  {sectionData.electricity.data ? (
-                    <CardGraph
-                      sectionData={sectionData.electricity.data}
-                      noInfo
-                      maximumCountries={maximumCountries}
-                      type="LINE_CHART"
-                      iso={iso}
-                    />
-                  ) : (
-                    <NoContent message="No data available" />
-                  )}
+                  {sectionData.electricity.data &&
+                  sectionData.electricity.data[0] &&
+                  sectionData.electricity.data[0].data.length > 0 ? (
+                      <CardGraph
+                        sectionData={sectionData.electricity.data}
+                        noInfo
+                        maximumCountries={maximumCountries}
+                        type="LINE_CHART"
+                        iso={iso}
+                      />
+                    ) : (
+                      <NoContent message="No data available" />
+                    )}
                 </Card>
               )}
             </React.Fragment>

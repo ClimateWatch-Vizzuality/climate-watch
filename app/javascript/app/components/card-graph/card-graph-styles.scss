@@ -82,6 +82,10 @@
 
 .lineChart {
   width: 450px;
+
+  :global .cw__tooltip-chart-styles_tooltip {
+    max-width: 250px;
+  }
 }
 
 .pieChart {
