@@ -52,7 +52,7 @@ class CountryNDCAdaptation extends PureComponent {
       targetsData[tooltipData?.sectorNumber]?.targets?.[tooltipData?.number]
         ?.actions;
 
-    if (!tooltipData || !actions?.length) {
+    if (!tooltipData) {
       this.setState({ showTooltip: false });
 
       return null;
@@ -66,13 +66,16 @@ class CountryNDCAdaptation extends PureComponent {
           <b>{tooltipData.number}: </b>
           {tooltipData.title}
         </p>
-        <p className={styles.actionTitleContainer}>
-          {actions.map(({ id, title }) => (
-            <div key={id} className={styles.actionTitle}>
-              {title}
-            </div>
-          ))}
-        </p>
+
+        {actions?.length > 0 && (
+          <p className={styles.actionTitleContainer}>
+            {actions.map(({ id, title }) => (
+              <div key={id} className={styles.actionTitle}>
+                {title}
+              </div>
+            ))}
+          </p>
+        )}
       </div>
     );
   }
