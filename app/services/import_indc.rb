@@ -620,11 +620,6 @@ class ImportIndc
       @adaptation_actions << parse_new_adaptation_action(row, location)
       return
     end
-
-    if row[:questioncode] == 'ad_sec_action'
-      @adaptation_actions << @current_action if @current_action.present?
-      @current_action = parse_new_adaptation_action(row, location)
-    end
     return if row[:responsetext].downcase == 'not available'
 
     if row[:questioncode].downcase.start_with?('gca_sector')
@@ -641,6 +636,11 @@ class ImportIndc
       end
       @current_adapt_sector = nil
     end
+
+    return unless row[:questioncode] == 'ad_sec_action'
+
+    @adaptation_actions << @current_action if @current_action.present?
+    @current_action = parse_new_adaptation_action(row, location)
   end
 
   def parse_new_adaptation_action(row, location)
