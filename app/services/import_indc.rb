@@ -21,6 +21,14 @@ class ImportIndc
   PLEDGES_DATA_FILEPATH = "#{CW_FILES_PREFIX}indc/pledges_data.csv".freeze
   COMPARISON_FILEPATH = "#{CW_FILES_PREFIX}indc/comparison_matrix.csv".freeze
 
+  ACTION_INDICATOR = 'ad_sec_action'
+  OTHER_ACTION_INDICATORS = %w[
+    A_Sc_Pol
+    A_Sc_Tar
+    A_Sc_UncAct
+    A_Sc_ConAct
+  ].freeze
+
   def call
     ActiveRecord::Base.transaction do
       cleanup
@@ -572,7 +580,7 @@ class ImportIndc
     indicator_index = indicators_hash_by_source('WB')
     values = []
     @value_group_index = {}
-    @adaptation_actions = []
+    @actions_index = {}
     @current_action = nil
     @current_adapt_sector = nil
 
@@ -604,22 +612,15 @@ class ImportIndc
   end
 
   def import_adaptation_actions!
-    if @current_action.present?
-      if @current_adapt_sector.present? &&
-          !@current_action.adaptation_action_sectors.map(&:sector_id).include?(@current_adapt_sector.id)
-        @current_action.adaptation_action_sectors.build(sector_id: @current_adapt_sector.id)
-      end
-      @adaptation_actions << @current_action
+    if @current_action.present? && @current_adapt_sector.present?
+      add_sector_to_action(@current_action, @current_adapt_sector.id)
     end
 
-    Indc::AdaptationAction.import!(@adaptation_actions, recursive: true)
+    Indc::AdaptationAction.import!(@actions_index.values, recursive: true)
   end
 
   def parse_adaptation_actions(row, location)
-    if %w[A_Sc_Pol A_Sc_Tar A_Sc_UncAct A_Sc_ConAct].include?(row[:questioncode])
-      @adaptation_actions << parse_new_adaptation_action(row, location)
-      return
-    end
+    return parse_new_adaptation_action(row, location) if OTHER_ACTION_INDICATORS.include?(row[:questioncode])
     return if row[:responsetext].downcase == 'not available'
 
     if row[:questioncode].downcase.start_with?('gca_sector')
@@ -630,29 +631,42 @@ class ImportIndc
       @current_adapt_sector = Indc::Sector.find_or_create_by!(
         name: row[:responsetext], parent_id: @current_adapt_sector.id, sector_type: 'adapt_now'
       )
-    elsif @current_action.present? && @current_adapt_sector.present?
-      unless @current_action.adaptation_action_sectors.map(&:sector_id).include?(@current_adapt_sector.id)
-        @current_action.adaptation_action_sectors.build(sector_id: @current_adapt_sector.id)
-      end
+    end
+
+    if @current_action.present? && @current_adapt_sector.present? &&
+        !row[:questioncode].downcase.start_with?('gca_sector')
+      add_sector_to_action(@current_action, @current_adapt_sector.id)
       @current_adapt_sector = nil
     end
 
-    return unless row[:questioncode] == 'ad_sec_action'
+    return unless row[:questioncode] == ACTION_INDICATOR
 
-    @adaptation_actions << @current_action if @current_action.present?
     @current_action = parse_new_adaptation_action(row, location)
   end
 
   def parse_new_adaptation_action(row, location)
     doc_slug ||= row[:document]&.parameterize&.gsub('-', '_')
-    action = Indc::AdaptationAction.new(
+    action_key = [
+      doc_slug,
+      location.id,
+      row[:responsetext]
+    ].join('_')
+    @actions_index[action_key] ||= Indc::AdaptationAction.new(
       title: row[:responsetext],
       document_id: @documents_cache[doc_slug].id,
       location: location
     )
+    action = @actions_index[action_key]
     sector_key = [row[:sector], row[:subsector]].join('_')
-    action.adaptation_action_sectors.build(sector_id: @sectors_index[sector_key].id)
+    sector_id = @sectors_index[sector_key].id
+    add_sector_to_action(action, sector_id)
     action
+  end
+
+  def add_sector_to_action(action, sector_id)
+    return if action.adaptation_action_sectors.map(&:sector_id).include?(sector_id)
+
+    action.adaptation_action_sectors.build(sector_id: sector_id)
   end
 
   def values_apply_group_index(row, indicator)

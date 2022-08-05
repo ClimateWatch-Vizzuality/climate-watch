@@ -21,6 +21,12 @@ object_contents = {
     Mitigation,,Sectoral Mitigation Measures,m_agriculture,Agriculture,,,CAIT,TRUE
     Adaptation,,Sectoral Adaptation Measures,a_agriculture,Agriculture,,,CAIT,TRUE
     Adaptation,,Sectoral Adaptation Measures,a_coastal_zone,Coastal Zone,,a_agriculture,CAIT,TRUE
+    Sectoral Information,Adaptation Commitments,,ad_sec_action,Action and priority,Adaptation action/priority,,WB,TRUE
+    Sectoral Information,Adaptation Commitments,,ad_sec_tar,Targets,Measurable targets or indicators,ad_sec_action,WB,TRUE
+    Sectoral Information,Adaptation Commitments,,GCA_Sector,Adapt Now sector,GCA_Sector,ad_sec_action,WB,TRUE
+    Sectoral Information,Adaptation Commitments,,GCA_subsector,Adapt Now subsector,GCA_subsector,ad_sec_action,WB,TRUE
+    Sectoral Information,Adaptation Commitments,,GCA_Sector_2,Adapt Now sector (2),GCA_Sector_2,ad_sec_action,WB,TRUE
+    Sectoral Information,Adaptation Commitments,,GCA_subsector_2,Adapt Now subsector (2),GCA_Subsector_2,ad_sec_action,WB,TRUE
   END
 
   "#{CW_FILES_PREFIX}indc/NDC_submission.csv" => <<~END,
@@ -60,11 +66,24 @@ object_contents = {
   END
 
   "#{CW_FILES_PREFIX}indc/NDC_WB_data_sectoral_all.csv" => <<~END,
-    CountryCode,Document, Sector,SubSector,QuestionCode,ResponseText
+    Country,Document,Sector,SubSector,QuestionCode,ResponseText
     AF,indc,Water,Water Infrastructure,A_Sc_CapBud,Ecological engineering and spatial planning for water resources
     AF,indc,Water,Water Infrastructure,A_Sc_ConAct,"Development of water resources through rehabilitation and reconstruction of small-, medium-, and large-scale infrastructure"
+    AF,first_ndc,Agriculture,Climate smart agriculture,ad_sec_action,Action 1
+    AF,first_ndc,Agriculture,Climate smart agriculture,ad_sec_tar,Not Available
+    AF,first_ndc,Agriculture,Climate smart agriculture,GCA_Sector,Adapt sector
+    AF,first_ndc,Agriculture,Climate smart agriculture,GCA_subsector,Adapt subsector
+    AF,first_ndc,Agriculture,Climate smart agriculture,GCA_Sector_2,Adapt sector 2
+    AF,first_ndc,Agriculture,Climate smart agriculture,GCA_subsector_2,Adapt subsector 2
+    AF,first_ndc,Coastal Zone,Coastal management,ad_sec_action,Action 2
+    AF,first_ndc,Coastal Zone,Coastal management,ad_sec_tar,Not Available
+    AF,first_ndc,Coastal Zone,Coastal management,GCA_Sector,Adapt sector 2
+    AF,first_ndc,Coastal Zone,Coastal management,GCA_subsector,Adapt subsector 2
+    AF,first_ndc,Water,Water Infrastructure,ad_sec_action,Action 2
+    AF,first_ndc,Water,Water Infrastructure,ad_sec_tar,Not Available
+    AF,first_ndc,Water,Water Infrastructure,GCA_Sector,Adapt sector 2
+    AF,first_ndc,Water,Water Infrastructure,GCA_subsector,Adapt subsector 2
   END
-
 }
 
 describe ImportIndc do
@@ -109,22 +128,46 @@ describe ImportIndc do
   end
 
   it 'Creates new INDC category records' do
-    expect { subject }.to change { Indc::Category.count }.by(12)
+    expect { subject }.to change { Indc::Category.count }.by(13)
   end
 
   it 'Creates new INDC indicator records' do
-    expect { subject }.to change { Indc::Indicator.count }.by(13)
+    expect { subject }.to change { Indc::Indicator.count }.by(22)
   end
 
   it 'Creates new INDC sector records' do
-    expect { subject }.to change { Indc::Sector.count }.by(2)
+    expect { subject }.to change { Indc::Sector.where(sector_type: 'wb').count }.by(6)
   end
 
   it 'Creates new INDC value records' do
-    expect { subject }.to change { Indc::Value.count }.by(4)
+    expect { subject }.to change { Indc::Value.count }.by(20)
   end
 
   it 'Creates new INDC submission records' do
     expect { subject }.to change { Indc::Submission.count }.by(1)
+  end
+
+  it 'Creates new adaptation actions' do
+    subject
+    # 2 ad_sec_actions + 1 A_Sc_ConAct
+    expect(Indc::AdaptationAction.count).to eq(3)
+    expect(Indc::Sector.where(sector_type: 'adapt_now').count).to eq(4)
+
+    wb_sector1 = Indc::Sector.find_by(sector_type: 'wb', name: 'Climate smart agriculture')
+    wb_sector2 = Indc::Sector.find_by(sector_type: 'wb', name: 'Coastal management')
+    wb_sector3 = Indc::Sector.find_by(sector_type: 'wb', name: 'Water Infrastructure')
+    adapt_sector1 = Indc::Sector.find_by(sector_type: 'adapt_now', name: 'Adapt subsector')
+    adapt_sector2 = Indc::Sector.find_by(sector_type: 'adapt_now', name: 'Adapt subsector 2')
+
+    action1 = Indc::AdaptationAction.find_by(title: 'Action 1')
+    action2 = Indc::AdaptationAction.find_by(title: 'Action 2')
+
+    expect(wb_sector1.parent.name).to eq('Agriculture')
+    expect(wb_sector2.parent.name).to eq('Coastal Zone')
+    expect(adapt_sector1.parent.name).to eq('Adapt sector')
+    expect(adapt_sector2.parent.name).to eq('Adapt sector 2')
+
+    expect(action1.sectors.map(&:name)).to include(wb_sector1.name, adapt_sector1.name, adapt_sector2.name)
+    expect(action2.sectors.map(&:name)).to include(wb_sector2.name, wb_sector3.name, adapt_sector2.name)
   end
 end
