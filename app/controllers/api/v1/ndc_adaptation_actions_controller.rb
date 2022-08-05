@@ -44,7 +44,7 @@ module Api
                 s.as_json(only: [:id, :name])
               end
             }
-          end.compact.sort_by { |s| s[:name].downcase }
+          end.compact.sort_by { |s| [s[:sector_type], s[:name].downcase] }
       end
       # rubocop:enable Style/MultilineBlockChain
 
