@@ -51,6 +51,12 @@
 
 .tooltipContainer {
   min-width: 300px;
+  pointer-events: auto !important;
+
+  &:hover {
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
 }
 
 .tooltip {
@@ -65,6 +71,11 @@
 .tooltipTitle {
   margin-bottom: 10px;
   cursor: pointer;
+}
+
+.actionTitleContainer {
+  max-height: 500px;
+  overflow: auto;
 }
 
 .actionTitleContainer,

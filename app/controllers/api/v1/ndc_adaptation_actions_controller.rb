@@ -28,14 +28,13 @@ module Api
 
       private
 
-      # rubocop:disable Style/MultilineBlockChain
       def group_sectors(sectors)
         sectors.
           includes(:parent).
+          reject { |s| s.parent.nil? }.
+          sort_by { |s| [s.parent.sector_type, s.parent.name_general_first_other_last] }.
           group_by(&:parent).
           map do |parent, subsectors|
-            next unless parent.present?
-
             {
               id: parent.id,
               name: parent.name,
@@ -44,9 +43,8 @@ module Api
                 s.as_json(only: [:id, :name])
               end
             }
-          end.compact.sort_by { |s| [s[:sector_type], s[:name].downcase] }
+          end
       end
-      # rubocop:enable Style/MultilineBlockChain
 
       def sector_ids_with_actions
         ::Indc::AdaptationActionSector.select(:sector_id).distinct.pluck(:sector_id)
