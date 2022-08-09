@@ -125,6 +125,7 @@ class CountryNDCAdaptation extends PureComponent {
         <ReactTooltip
           className={styles.tooltipContainer}
           id="ndc-adaptation"
+          delayHide={150}
           scrollHide={false}
           disable={!this.state.showTooltip}
         >
