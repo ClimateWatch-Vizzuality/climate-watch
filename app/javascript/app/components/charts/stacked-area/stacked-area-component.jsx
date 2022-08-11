@@ -100,7 +100,9 @@ class ChartStackedArea extends PureComponent {
           return QUANTIFICATION_COLORS.NOT_QUANTIFIABLE;
         case point.label.includes('BAU'):
           return QUANTIFICATION_COLORS.BAU;
-        case point.label.includes(QUANTIFICATIONS_CONFIG.net_zero.label):
+        case point.label
+          .toLowerCase()
+          .includes(QUANTIFICATIONS_CONFIG.net_zero.label.toLowerCase()):
           return QUANTIFICATION_COLORS.NET_ZERO;
         default:
           return QUANTIFICATION_COLORS.QUANTIFIED;

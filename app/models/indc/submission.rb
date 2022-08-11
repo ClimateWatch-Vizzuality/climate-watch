@@ -26,11 +26,13 @@ module Indc
       write_attribute :submission_date, Date.strptime(val, '%m/%d/%Y')
     end
 
-    def self.latest_per_location
+    def self.latest_ndc_per_location
       query = <<~SQL
         (select * from
           (select row_number() over (partition by location_id order by submission_date desc), *
-           from indc_submissions
+           from indc_submissions s
+           inner join indc_documents d on d.id = s.document_id
+           where d.is_ndc = true
           ) as temp
          where temp.row_number = 1
         ) as indc_submissions

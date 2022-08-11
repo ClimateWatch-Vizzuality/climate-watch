@@ -253,15 +253,6 @@ export const getQuantificationsData = createSelector(
       if (!showPreviousTargets) {
         qParsed = qParsed.filter(q => q.latest || q.document_slug === 'lts');
       }
-
-      const netZeroPoint = {
-        x: 2050,
-        y: 0,
-        label: QUANTIFICATIONS_CONFIG.net_zero.label,
-        isRange: false
-      };
-
-      qParsed.push(netZeroPoint);
     }
 
     // Sort desc to avoid z-index problem in the graph
