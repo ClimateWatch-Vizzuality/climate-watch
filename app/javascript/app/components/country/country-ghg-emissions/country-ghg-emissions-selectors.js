@@ -239,10 +239,11 @@ export const getQuantificationsData = createSelector(
               label: v.label,
               isRange,
               latest: v.latest,
-              document_slug: v.document_slug
+              document_slugs: [v.document_slug]
             };
           } else {
             valuesParsed.label += `, ${v.label}`;
+            valuesParsed.document_slugs.push(v.document_slug);
           }
         });
         qParsed.push(valuesParsed);
