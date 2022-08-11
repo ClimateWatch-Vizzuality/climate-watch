@@ -32,7 +32,7 @@ module Indc
           (select row_number() over (partition by location_id order by submission_date desc), *
            from indc_submissions s
            inner join indc_documents d on d.id = s.document_id
-           where d.is_ndc = true
+           where d.slug != 'lts'
           ) as temp
          where temp.row_number = 1
         ) as indc_submissions
