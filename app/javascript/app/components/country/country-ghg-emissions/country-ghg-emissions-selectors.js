@@ -251,7 +251,7 @@ export const getQuantificationsData = createSelector(
 
     if (FEATURE_COUNTRY_CHANGES) {
       if (!showPreviousTargets) {
-        qParsed = qParsed.filter(q => q.latest || q.document_slug === 'lts');
+        qParsed = qParsed.filter(q => q.latest);
       }
     }
 

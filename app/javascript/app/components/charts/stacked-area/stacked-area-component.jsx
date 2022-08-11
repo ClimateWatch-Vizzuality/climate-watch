@@ -25,7 +25,7 @@ import {
 import TooltipChart from 'components/charts/tooltip-chart';
 import { formatSIwithDecimals } from 'utils/d3-custom-format';
 
-import { QUANTIFICATION_COLORS, QUANTIFICATIONS_CONFIG } from 'data/constants';
+import { QUANTIFICATION_COLORS } from 'data/constants';
 import DividerLine from './divider-line';
 
 const NUMBER_PRECISION = '2';
@@ -100,9 +100,7 @@ class ChartStackedArea extends PureComponent {
           return QUANTIFICATION_COLORS.NOT_QUANTIFIABLE;
         case point.label.includes('BAU'):
           return QUANTIFICATION_COLORS.BAU;
-        case point.label
-          .toLowerCase()
-          .includes(QUANTIFICATIONS_CONFIG.net_zero.label.toLowerCase()):
+        case point.document_slug === 'net_zero_target':
           return QUANTIFICATION_COLORS.NET_ZERO;
         default:
           return QUANTIFICATION_COLORS.QUANTIFIED;
