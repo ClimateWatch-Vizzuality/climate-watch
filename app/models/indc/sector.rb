@@ -22,8 +22,9 @@ module Indc
     validates :sector_type, inclusion: {in: SECTOR_TYPES}
 
     # just for sorting
-    def name_general_first
+    def name_general_first_other_last
       return "!#{name}" if name.downcase.include?('general')
+      return 'ZZZ' if name.downcase.strip == 'other'
 
       name
     end

@@ -9,6 +9,7 @@ import { format } from 'd3-format';
 import PropTypes from 'prop-types';
 import { Tag } from 'cw-components';
 import InfoButton from 'components/button/info-button';
+import NoContent from 'components/no-content';
 import Card from 'components/card';
 import Chart from 'components/charts/chart';
 import Loading from 'components/loading';
@@ -17,7 +18,8 @@ import externalLink from 'assets/icons/external-link.svg';
 
 import {
   CHART_NAMED_EXTENDED_COLORS,
-  CHART_NAMED_GRAY_COLORS
+  CHART_NAMED_GRAY_COLORS,
+  CONTINOUS_RAMP
 } from 'app/styles/constants';
 
 import Indicator from './indicator';
@@ -26,17 +28,18 @@ import styles from './country-subnational-actions-styles.scss';
 
 const CITY_BADGES = {
   Joined: { color: CHART_NAMED_EXTENDED_COLORS.color1 },
-  Plan: { color: CHART_NAMED_EXTENDED_COLORS.color3 },
+  Inventory: { color: CHART_NAMED_EXTENDED_COLORS.color5 },
   Target: { color: CHART_NAMED_EXTENDED_COLORS.color4 },
+  Plan: { color: CHART_NAMED_EXTENDED_COLORS.color3 },
   'Not Joined': { color: CHART_NAMED_GRAY_COLORS.grayColor1 }
 };
 
 const TARGETS = {
-  Committed: { color: '#04537d' },
-  '2°C': { color: '#0677B3' },
-  'Well-below 2°C': { color: '#599BC9' },
-  '1.5°C/Well-below 2°C': { color: '#84B6D7' },
-  '1.5°C': { color: '#ADCEE4' }
+  Committed: { color: CONTINOUS_RAMP.color1 },
+  '2°C': { color: CONTINOUS_RAMP.color2 },
+  'Well-below 2°C': { color: CONTINOUS_RAMP.color3 },
+  '1.5°C/Well-below 2°C': { color: CONTINOUS_RAMP.color4 },
+  '1.5°C': { color: CONTINOUS_RAMP.color5 }
 };
 
 function SubnationalActions({
@@ -48,6 +51,7 @@ function SubnationalActions({
 }) {
   const showByMillion = value => Number((value || 0) / 1000000).toFixed(2);
 
+  // DATA TODO: Move to selector
   const citiesBadgeValues = (indicators.city_badge_type?.values || []).map(
     x => ({
       ...x,
@@ -115,9 +119,9 @@ function SubnationalActions({
     indicators.company_target_qualification &&
     isEmpty(indicators.company_target_qualification.values);
 
-  const renderNoData = () => (
-    <div className={styles.noData}>No data available.</div>
-  );
+  // END OF DATA
+
+  const renderNoData = () => <NoContent message="No data available" />;
 
   const countryName = useMemo(() => {
     if (!iso) return null;
@@ -136,20 +140,21 @@ function SubnationalActions({
               countryName && countryName.endsWith('s')
                 ? `${countryName}'`
                 : `${countryName}'s`
-            } subnational climate actions?`}
+            } domestic climate actions?`}
           </h3>
           <div className={styles.descriptionContainer}>
-            Addressing climate change requires actions across all of society.
-            Explore how national and sub-national actions, including regions,
-            cities, companies, investors, and other organizations commit to act
-            on climate change.
+            <p>
+              Explore how national and sub-national actors, including regions,
+              cities, companies, investors and other organizations, commit to
+              act on climate change.
+            </p>
           </div>
           <div className={styles.cardsContainer}>
             <Card
               title={
                 <div className={styles.cardHeader}>
                   <div className={styles.titleContainer}>
-                    <span>Cities</span>
+                    <span className={styles.cardTitle}>Cities</span>
                     <InfoButton
                       className={styles.infoBtn}
                       infoOpen={false}
@@ -203,7 +208,8 @@ function SubnationalActions({
                     unit={false}
                     ghgChart={false}
                     tooltipConfig={tooltipConfig}
-                    formatValue={v => format('.4s')(v)}
+                    formatValue={v => format('.2s')(v).replace('G', 'B')}
+                    yTickFormatter={v => format('.2s')(v).replace('G', 'B')}
                   />
 
                   <h3 className={styles.chartTitle}>
@@ -218,6 +224,7 @@ function SubnationalActions({
                         .filter(b => b !== 'Not Joined')
                         .map(badge => (
                           <Tag
+                            key={badge}
                             color={citiesChartConfig.theme[badge].fill}
                             theme={tagTheme}
                             label={badge}
@@ -240,7 +247,7 @@ function SubnationalActions({
               title={
                 <div className={styles.cardHeader}>
                   <div className={styles.titleContainer}>
-                    <span>Companies</span>
+                    <span className={styles.cardTitle}>Companies</span>
                     <InfoButton
                       className={styles.infoBtn}
                       infoOpen={false}
@@ -275,8 +282,8 @@ function SubnationalActions({
               ) : (
                 <React.Fragment>
                   <div className={styles.statContainer}>
-                    <Indicator {...indicators.company_target} />
                     <Indicator {...indicators.company_commited} />
+                    <Indicator {...indicators.company_target} />
                   </div>
                   <Chart
                     type="area"

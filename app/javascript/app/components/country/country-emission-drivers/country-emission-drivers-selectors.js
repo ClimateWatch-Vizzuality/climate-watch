@@ -14,6 +14,10 @@ const getCountries = state => state.countriesData || null;
 export const getMaximumCountries = createSelector([getCountries], countries =>
   countries ? countries.length : null
 );
+export const getLoading = state =>
+  state.countriesData.loading ||
+  state.countryProfileIndicators.loading ||
+  !state.iso;
 
 const getCountry = createSelector([getCountries, getIso], (countries, iso) => {
   if (!countries || !iso) return null;
@@ -90,7 +94,7 @@ export const getElectricityChart = createSelector(
         }
       },
       theme: {
-        yElectricity: { stroke: '#3498db', fill: '#3498db' }
+        yElectricity: { stroke: '#228D94', fill: '#228D94' }
       },
       tooltip: {
         yElectricity: { label: 'Electricity' }
@@ -134,7 +138,8 @@ export const getSectionData = createSelector(
           slug: 'share_re',
           type: 'RANK',
           title: countryIndicators.share_re.name,
-          data: [countryIndicators.share_re, countryIndicators.share_re_rank]
+          data: [countryIndicators.share_re, countryIndicators.share_re_rank],
+          metadata: countryIndicators.share_re.metadata_source
         },
         share_coal: {
           slug: 'share_coal',
@@ -143,7 +148,8 @@ export const getSectionData = createSelector(
           data: [
             countryIndicators.share_coal,
             countryIndicators.share_coal_rank
-          ]
+          ],
+          metadata: countryIndicators.share_coal.metadata_source
         },
         food_intensity: {
           slug: 'food_intensity',
@@ -154,7 +160,8 @@ export const getSectionData = createSelector(
           data: [
             countryIndicators.food_intensity,
             countryIndicators.food_intensity_rank
-          ]
+          ],
+          metadata: countryIndicators.food_intensity.metadata_source
         },
         tree_cover_loss: {
           slug: 'tree_cover_loss',
@@ -165,14 +172,19 @@ export const getSectionData = createSelector(
           data: [
             countryIndicators.tree_cover_loss,
             countryIndicators.tree_cover_loss_rank
-          ]
+          ],
+          metadata: countryIndicators.tree_cover_loss.metadata_source
         }
       },
       electricity: {
         type: 'CHART',
         title: countryIndicators.electricity_consumption.name,
         slug: 'electricity_consumption',
-        data: [electricityChart, countryIndicators.electricity_consumption_rank]
+        data: [
+          electricityChart,
+          countryIndicators.electricity_consumption_rank
+        ],
+        metadata: countryIndicators.electricity_consumption.metadata_source
       }
     };
   }

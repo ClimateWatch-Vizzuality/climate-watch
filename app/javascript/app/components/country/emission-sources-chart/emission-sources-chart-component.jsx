@@ -1,11 +1,19 @@
-import React, { useRef, useMemo } from 'react';
+import React, {
+  useRef,
+  useState,
+  useMemo,
+  useEffect,
+  useCallback
+} from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import NDCSProvider from 'providers/ndcs-provider';
 import EmissionsProvider from 'providers/emissions-provider';
 import ReactTooltip from 'react-tooltip';
 import { INDICATOR_SLUGS } from 'data/constants';
+import infoIcon from 'assets/icons/info.svg';
 import ReactDOMServer from 'react-dom/server';
+import Icon from 'components/icon';
 import styles from './emission-sources-chart-styles.scss';
 
 const getOrdinal = i => {
@@ -23,6 +31,24 @@ function EmissionSourcesChart({
   otherParties,
   countryNames
 }) {
+  const [startPoint, setStartPoint] = useState(0);
+  const [totalWidth, setTotalWidth] = useState(0);
+  const [positiveWidth, setPositiveWidth] = useState(null);
+  const currentCountryEmissionsRef = useRef();
+  const chartRef = useRef();
+  const separatorRef = useRef();
+  const height = 30;
+
+  const negativeEmissions = useMemo(
+    () =>
+      sectorData &&
+      sectorData.length > 0 &&
+      sectorData.filter(s => s.emission < 0),
+    [sectorData]
+  );
+  const hasNegativeEmissions =
+    negativeEmissions && negativeEmissions.length > 0;
+
   const getTooltip = (chart, emission, i) => {
     const renderTooltip = content =>
       ReactDOMServer.renderToString(
@@ -54,37 +80,53 @@ function EmissionSourcesChart({
           {"'"}s {emission.sector}
         </div>
         <div>
-          {`${Math.round(emission.emission * 100) / 100} MtCO2e - ${Math.round(
-            emission.percentage * 100
-          ) / 100}%`}
+          {`${Math.round(emission.emission * 100) / 100} MtCO`}
+          <sub>2</sub>e
+          <br />{' '}
+          {`${Math.round(emission.percentage * 100) / 100}%
+            `}
         </div>
       </div>
     );
   };
 
-  const height = 30;
-  const chartRef = useRef();
-  const currentCountryEmissionsRef = useRef();
-
-  const totalWidth = useMemo(
-    () =>
-      chartRef &&
-      chartRef.current &&
-      chartRef.current.getBoundingClientRect().width,
-    [chartRef && chartRef.current]
-  );
-
-  const startPoint = useMemo(() => {
-    if (currentCountryEmissionsRef && currentCountryEmissionsRef.current) {
-      const offset = currentCountryEmissionsRef.current.parentElement.getBoundingClientRect()
-        .left;
-      return (
-        currentCountryEmissionsRef.current.getBoundingClientRect().left - offset
-      );
+  const getTotalWidth = useCallback(() => {
+    if (chartRef?.current) {
+      setTotalWidth(chartRef.current.getBoundingClientRect().width);
     }
+  }, [chartRef && chartRef.current, iso]);
 
-    return null;
-  }, [currentCountryEmissionsRef && currentCountryEmissionsRef.current]);
+  const calculateLeftPoint = reference => {
+    const offset = reference.current.parentElement.getBoundingClientRect().left;
+    return reference.current.getBoundingClientRect().left - offset;
+  };
+
+  useEffect(() => {
+    if (negativeEmissions && separatorRef?.current) {
+      setPositiveWidth(calculateLeftPoint(separatorRef));
+    }
+  }, [negativeEmissions, separatorRef && separatorRef.current, iso]);
+
+  const getStartPoint = useCallback(() => {
+    if (currentCountryEmissionsRef && currentCountryEmissionsRef.current) {
+      setStartPoint(calculateLeftPoint(currentCountryEmissionsRef));
+    }
+  }, [currentCountryEmissionsRef && currentCountryEmissionsRef.current, iso]);
+
+  const recalculateChart = useCallback(() => {
+    getStartPoint();
+    getTotalWidth();
+  }, []);
+
+  useEffect(() => {
+    if (currentCountryEmissionsRef && currentCountryEmissionsRef.current) {
+      setStartPoint(calculateLeftPoint(currentCountryEmissionsRef));
+    }
+  }, [currentCountryEmissionsRef && currentCountryEmissionsRef.current, iso]);
+
+  useEffect(() => {
+    getTotalWidth();
+  }, [chartRef && chartRef.current, iso]);
 
   const width = useMemo(() => {
     if (totalWidth && emissions) {
@@ -93,53 +135,81 @@ function EmissionSourcesChart({
       return isoPercentage && (totalWidth * isoPercentage) / 100;
     }
     return null;
-  }, [totalWidth, emissions]);
+  }, [totalWidth, emissions, iso]);
 
-  return (
-    <div className={styles.emissionSources} ref={chartRef}>
-      <div className={styles.worldSharePosition}>
-        {emissions &&
-          emissions.map((e, i) => (
-            <span
-              className={cx(styles.emissionCountry, {
-                [styles.currentCountry]: iso === e.iso
-              })}
-              style={{ width: `${e.percentage}%`, backgroundColor: e.color }}
-              data-tip={getTooltip('emissions', e, i)}
-              data-for="emissions-chart-tooltip"
-              {...(iso === e.iso && { ref: currentCountryEmissionsRef })}
-            >
-              {iso === e.iso && (
-                <span className={styles.currentCountryText}>
-                  {countryNames[iso]} is the World{"'"}s {getOrdinal(i + 1)}{' '}
-                  largest emitter, with a total share of {e.percentage}%{' '}
-                </span>
-              )}
-            </span>
-          ))}
-      </div>
-      {totalWidth &&
-        (startPoint || startPoint === 0) &&
-        (width || width === 0) && (
-          <svg
-            className={styles.linkingSVG}
-            height={height}
-            xmlns="http://www.w3.org/2000/svg"
+  useEffect(() => {
+    window.addEventListener('resize', recalculateChart);
+
+    return () => {
+      window.removeEventListener('resize', recalculateChart);
+    };
+  }, []);
+
+  const renderNegativeEmissions = () =>
+    negativeEmissions.map((e, i) => (
+      <span
+        className={styles.negativeSectorContainer}
+        style={{
+          width: `${Math.abs(e.percentage)}%`
+        }}
+      >
+        <span
+          className={cx(styles.countrySector, styles.negativeSector)}
+          style={{
+            background: `repeating-linear-gradient(45deg, ${e.color}, white 2px, white 12px)`
+          }}
+          data-tip={getTooltip('sectors', e, i)}
+          data-for="emissions-chart-tooltip"
+        />
+        <ReactTooltip id="negative-emissions-tooltip" />
+        <span
+          style={{
+            width: `${Math.abs(e.percentage)}%`
+          }}
+          data-tip="This sector captures more carbon than it produces and is therefore a carbon sink with negative emissions"
+          data-for="negative-emissions-tooltip"
+        >
+          <span
+            className={cx(
+              styles.countrySectorText,
+              styles.negativeEmissionsSectorText
+            )}
           >
-            <polygon
-              points={`
-                ${startPoint}, 0
-                ${width + startPoint}, 0
-                ${totalWidth}, ${height}
-                0, ${height}
-              `}
-              fill="#e8ecf5"
-            />
-          </svg>
-        )}
+            <div className={styles.sectorContent}>
+              <div className={styles.infoContainer}>
+                <Icon
+                  icon={infoIcon}
+                  className={styles.infoIcon}
+                  tooltipId="negative-emissions-tooltip"
+                />
+              </div>
+              {Math.abs(e.percentage) > 10 && (
+                <div className={styles.sectorTitleContainer}>
+                  <div
+                    className={styles.sectorTitle}
+                    style={{ color: e.color }}
+                  >
+                    {e.sector}
+                  </div>
+                  <div>
+                    {Math.round(e.emission * 100) / 100} MtCO<sub>2</sub>e
+                  </div>
+                </div>
+              )}
+            </div>
+          </span>
+        </span>
+      </span>
+    ));
+
+  const renderCountrySectors = () => {
+    if (!sectorData) return null;
+
+    return (
       <div className={styles.countrySectors}>
-        {sectorData &&
-          sectorData.map((e, i) => (
+        {sectorData
+          .filter(s => s.emission > 0)
+          .map((e, i) => (
             <span
               className={styles.countrySector}
               style={{ width: `${e.percentage}%`, backgroundColor: e.color }}
@@ -154,16 +224,81 @@ function EmissionSourcesChart({
                   >
                     {e.sector}
                   </div>
-                  <div>{Math.round(e.emission * 100) / 100} MtCO2e</div>
+                  <div>
+                    {Math.round(e.emission * 100) / 100} MtCO<sub>2</sub>e
+                  </div>
                   <div>{Math.round(e.percentage * 100) / 100}%</div>
                 </span>
               )}
             </span>
           ))}
+        {hasNegativeEmissions && (
+          <span
+            className={styles.negativeEmissionsSeparator}
+            ref={separatorRef}
+          />
+        )}
+        {hasNegativeEmissions && renderNegativeEmissions()}
       </div>
+    );
+  };
+
+  return (
+    <div className={styles.emissionSources} ref={chartRef}>
+      <div className={styles.worldSharePosition}>
+        {emissions &&
+          emissions.map((e, i) => (
+            <span
+              key={`country-span-${e.iso}`}
+              className={cx(styles.emissionCountry, {
+                [styles.currentCountry]: iso === e.iso
+              })}
+              style={{
+                width: `${e.percentage}%`,
+                backgroundColor: e.color
+              }}
+              data-tip={getTooltip('emissions', e, i)}
+              data-for="emissions-chart-tooltip"
+              {...(iso === e.iso && {
+                ref: currentCountryEmissionsRef
+              })}
+            >
+              {iso === e.iso && (
+                <span
+                  className={cx(styles.currentCountryText, {
+                    [styles.fitRight]: i > 120
+                  })}
+                >
+                  {countryNames[iso]} is the World{"'"}s {getOrdinal(i + 1)}{' '}
+                  largest emitter, with a total share of {e.percentage}%{' '}
+                </span>
+              )}
+            </span>
+          ))}
+      </div>
+      {totalWidth &&
+        height &&
+        (startPoint || startPoint === 0) &&
+        (width || width === 0) && (
+          <svg
+            className={styles.linkingSVG}
+            height={height}
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d={`M${startPoint} 0 Q ${startPoint} ${height} 0 ${height} L 0 ${height} ${
+                hasNegativeEmissions ? positiveWidth : totalWidth
+              } ${height} M${
+                hasNegativeEmissions ? positiveWidth : totalWidth
+              } ${height} Q ${startPoint + width} ${height} ${startPoint +
+                width} 0 L ${startPoint + width} 0 ${startPoint} 0 Z`}
+            />
+          </svg>
+        )}
+      {renderCountrySectors()}
       <NDCSProvider
         overrideFilter
-        additionalIndicatorSlugs={[INDICATOR_SLUGS.emissions]}
+        indicatorSlugs={[INDICATOR_SLUGS.emissions]}
       />
       <EmissionsProvider filters={emissionProviderFilters} />
       <ReactTooltip id="emissions-chart-tooltip" html />

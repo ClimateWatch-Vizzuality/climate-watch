@@ -100,14 +100,14 @@ const getCategoriesOptions = createSelector(
   }
 );
 
-const getBreakByOptions = createSelector(getSearch, (query) => {
-  return query && [TRADE_EXPORT, TRADE_IMPORT].includes(query[CATEGORY_KEY])
+const getBreakByOptions = createSelector(getSearch, query =>
+  query && [TRADE_EXPORT, TRADE_IMPORT].includes(query[CATEGORY_KEY])
     ? [{ label: 'Absolute', value: TOTAL_FILTER }]
     : [
       { label: 'Absolute', value: TOTAL_FILTER },
       { label: 'Per capita', value: PER_CAPITA_FILTER }
-    ];
-});
+    ]
+);
 
 const getDataOptions = createSelector(
   [getSelectedCountry, getSearch],
@@ -140,7 +140,9 @@ const getSelectedCategory = createSelector(
   (query, defaults, categories) => {
     if (!defaults || !categories) return null;
     if (!query || !query[CATEGORY_KEY]) return defaults[CATEGORY_KEY];
-    return categories.find(c => c.value === query[CATEGORY_KEY]) || categories[0];
+    return (
+      categories.find(c => c.value === query[CATEGORY_KEY]) || categories[0]
+    );
   }
 );
 
@@ -160,7 +162,10 @@ const getSelectedBreakBy = createSelector(
   (query, defaults, breakByOptions) => {
     if (!defaults || !breakByOptions) return null;
     if (!query || !query[BREAK_BY_KEY]) return defaults[BREAK_BY_KEY];
-    return breakByOptions.find(o => o.value === query[BREAK_BY_KEY]) || breakByOptions[0];
+    return (
+      breakByOptions.find(o => o.value === query[BREAK_BY_KEY]) ||
+      breakByOptions[0]
+    );
   }
 );
 

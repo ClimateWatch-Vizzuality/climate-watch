@@ -120,6 +120,13 @@ $chart-color-26: #0e9560;
 $chart-color-27: #032265;
 $chart-color-28: #727477;
 
+$continous-color-1: #113750;
+$continous-color-2: #195e6f;
+$continous-color-3: #228d94;
+$continous-color-4: #56a8ad;
+$continous-color-5: #93c8cb;
+$continous-color-6: #accfd1;
+
 $teal-blue: #045f61;
 $purple: #74356a;
 $light-blue: #035388;
@@ -129,6 +136,12 @@ $shadow-gray: #e8ecf5;
 $twitter: #5b8ec8;
 $facebook: #3b5999;
 $google: #d8483b;
+
+$sector-colors-energy: #ff6c2f;
+$sector-colors-agriculture: #ffb800;
+$sector-colors-industrial-processes: #ff6cd0;
+$sector-colors-land-use-change-and-forestry: #13c881;
+$sector-colors-waste: #80c3f6;
 
 // Exports
 /* stylelint-disable */
@@ -216,6 +229,23 @@ $google: #d8483b;
     color25: $chart-color-9;
     color25: $chart-color-7;
     color25: $chart-gray-color-1;
+  }
+
+  continousRamp: {
+    color1: $continous-color-1;
+    color2: $continous-color-2;
+    color3: $continous-color-3;
+    color4: $continous-color-4;
+    color5: $continous-color-5;
+    color6: $continous-color-6;
+  }
+
+  sectorColors: {
+    energy: $sector-colors-energy;
+    agriculture: $sector-colors-agriculture;
+    industrial: $sector-colors-industrial-processes;
+    landUse: $sector-colors-land-use-change-and-forestry;
+    waste: $sector-colors-waste;
   }
 };
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import { themr } from 'react-css-themr';
@@ -10,6 +10,8 @@ import qs from 'query-string';
 import styles from './anchor-nav-styles.scss';
 
 const AnchorNav = props => {
+  const navListRef = useRef(null);
+
   const {
     links,
     useRoutes,
@@ -21,10 +23,26 @@ const AnchorNav = props => {
     dataTour,
     dataTours
   } = props;
+
+  useEffect(() => {
+    if (navListRef.current && activeSection !== '') {
+      const link = navListRef.current.getElementsByClassName(
+        theme.linkActive
+      )?.[0];
+
+      if (link) {
+        navListRef.current.scrollTo({
+          left: link.offsetLeft - link.getBoundingClientRect().width / 2,
+          behavior: 'smooth'
+        });
+      }
+    }
+  }, [navListRef, activeSection]);
+
   return (
-    <div>
-      <div className={cx(styles.anchorContainer)}>
-        <nav className={cx(className, theme.anchorNav)} data-tour={dataTour}>
+    <div className={cx(styles.anchorContainer)}>
+      <nav className={cx(className, theme.anchorNav)} data-tour={dataTour}>
+        <ul ref={navListRef}>
           {links &&
             links.map((link, index) => {
               const linkProps = {
@@ -44,21 +62,27 @@ const AnchorNav = props => {
                   ];
                   const linkSearchQuery = link.activeQuery.value;
                   return (
-                    activeSearchQuery === linkSearchQuery ||
-                    (index === 0 && !activeSearchQuery)
+                    <li>
+                      {activeSearchQuery === linkSearchQuery ||
+                        (index === 0 && !activeSearchQuery)}
+                    </li>
                   );
                 };
               }
               if (useRoutes) {
                 linkProps.exact = true;
                 return (
-                  <span
-                    data-tour={dataTours && dataTours[link.label.toLowerCase()]}
-                  >
-                    <NavLink {...linkProps} replace>
-                      <AbbrReplace>{link.label}</AbbrReplace>
-                    </NavLink>
-                  </span>
+                  <li>
+                    <span
+                      data-tour={
+                        dataTours && dataTours[link.label.toLowerCase()]
+                      }
+                    >
+                      <NavLink {...linkProps} replace>
+                        <AbbrReplace>{link.label}</AbbrReplace>
+                      </NavLink>
+                    </span>
+                  </li>
                 );
               }
               linkProps.isActive = (match, location) =>
@@ -67,21 +91,23 @@ const AnchorNav = props => {
                   (`#${link.hash}` === location.hash ||
                     (!location.hash && index === 0)));
               return (
-                <NavHashLink
-                  {...linkProps}
-                  smooth
-                  scroll={el => {
-                    el.scrollIntoView(true);
-                    if (offset) window.scrollBy(0, offset[index]);
-                  }}
-                  replace
-                >
-                  <AbbrReplace>{link.label}</AbbrReplace>
-                </NavHashLink>
+                <li>
+                  <NavHashLink
+                    {...linkProps}
+                    smooth
+                    scroll={el => {
+                      el.scrollIntoView(true);
+                      if (offset) window.scrollBy(0, offset[index]);
+                    }}
+                    replace
+                  >
+                    <AbbrReplace>{link.label}</AbbrReplace>
+                  </NavHashLink>
+                </li>
               );
             })}
-        </nav>
-      </div>
+        </ul>
+      </nav>
     </div>
   );
 };

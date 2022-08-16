@@ -26,9 +26,11 @@ module Api
         end
 
         def latest
-          return unless instance_options[:latest_submissions].present?
+          return if object.document_slug.nil?
+          return true if %w(net_zero_target lts).include? object.document_slug
+          return unless instance_options[:latest_ndc_submissions].present?
 
-          instance_options[:latest_submissions][object.location]&.first&.document&.slug ==
+          instance_options[:latest_ndc_submissions][object.location]&.first&.document&.slug ==
             object.document_slug
         end
       end

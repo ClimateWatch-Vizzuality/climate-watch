@@ -86,16 +86,6 @@ function CountryHeader(props) {
               country.name.toLowerCase()
             ) && renderExternalLink}
           </div>
-          <div className={styles.compareButton}>
-            {!isPageContained && (
-              <Button
-                variant="primary"
-                link={`/countries/compare?locations=${country.iso}`}
-              >
-                Compare
-              </Button>
-            )}
-          </div>
           <CountryTimeline />
         </div>
         <div className={styles.nationalContext}>
@@ -106,7 +96,7 @@ function CountryHeader(props) {
         <EmissionsProvider filters={emissionProviderFilters} />
         <NDCSProvider
           overrideFilter
-          additionalIndicatorSlugs={[INDICATOR_SLUGS.emissions]}
+          indicatorSlugs={[INDICATOR_SLUGS.emissions]}
         />
       </div>
     );

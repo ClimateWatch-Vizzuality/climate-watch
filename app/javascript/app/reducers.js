@@ -3,6 +3,7 @@ import { combineReducers } from 'redux';
 import { handleActions } from 'app/utils/redux';
 
 // Providers
+import * as NdcsAdaptationsProvider from 'providers/ndcs-adaptation-provider';
 import * as NDCSProvider from 'providers/ndcs-provider';
 import * as NDCSExploreProvider from 'providers/ndcs-explore-provider';
 import * as NDCSPreviousComparison from 'providers/ndcs-previous-comparison-provider';
@@ -68,6 +69,7 @@ const providersReducers = {
   timeline: handleActions(timelineProvider),
   ndcsDocumentsMeta: handleActions(ndcsDocumentsMetaProvider),
   ndcContentOverview: handleActions(ndcContentOverviewProvider),
+  ndcsAdaptations: handleActions(NdcsAdaptationsProvider),
   ltsContentOverview: handleActions(ltsContentOverviewProvider),
   espModels: handleActions(espModelsProvider),
   espScenarios: handleActions(espScenariosProvider),
@@ -124,6 +126,7 @@ import * as espGraphComponent from 'components/emission-pathways/emission-pathwa
 import * as countryGhgEmissionsMapComponent from 'components/country/country-ghg-map';
 import * as countryGhgEmissionsComponent from 'components/country/country-ghg-emissions';
 import * as countrySDGLinkagesComponent from 'components/country/country-ndc-sdg-linkages';
+import * as CountryNDCSAdaptationComponent from 'components/country/country-ndc-adaptation';
 import * as myInsights from 'components/my-climate-watch/my-insights';
 import * as myVisualisations from 'components/my-climate-watch/my-visualisations';
 import * as myVisualisationsCreator from 'components/my-climate-watch/viz-creator';
@@ -149,6 +152,7 @@ const componentsReducers = {
   countryGhgEmissionsMap: handleActions(countryGhgEmissionsMapComponent),
   countryGhgEmissions: handleActions(countryGhgEmissionsComponent),
   countrySDGLinkages: handleActions(countrySDGLinkagesComponent),
+  countryNDCSAdaptation: handleActions(CountryNDCSAdaptationComponent),
   insights: handleActions(myInsights),
   visualisations: handleActions(myVisualisations),
   vizCreator: handleActions(myVisualisationsCreator),

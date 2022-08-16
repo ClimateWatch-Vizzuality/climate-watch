@@ -55,7 +55,7 @@ class ImportWriMetadata
   end
 
   def import_properties
-    properties = @metadata.first.to_h.except(:dataset).keys
+    properties = @metadata.first.to_h.except(:dataset).keys.compact
     properties.each do |a|
       @properties_index[a] = WriMetadata::Property.create!(
         slug: a,
@@ -67,7 +67,7 @@ class ImportWriMetadata
   def import_values
     @metadata.each do |row|
       source = @sources_index[row[:dataset]]
-      row.to_h.except(:dataset).each do |property, value|
+      row.to_h.except(:dataset).compact.each do |property, value|
         WriMetadata::Value.create!(
           source: source,
           property: @properties_index[property],

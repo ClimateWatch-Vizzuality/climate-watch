@@ -5,6 +5,7 @@ import cx from 'classnames';
 import { PieChart, Chart } from 'cw-components';
 import range from 'lodash/range';
 import camelCase from 'lodash/camelCase';
+import { format } from 'd3-format';
 
 import styles from './card-graph-styles.scss';
 
@@ -47,9 +48,7 @@ class CardGraph extends PureComponent {
     const percentage = (rank * 100) / maximumCountries;
     return (
       <div className={styles.lineChartContainer}>
-        <div className={styles.rankValue}>
-          {(Math.round(value * 100) / 100).toLocaleString()}
-        </div>
+        <div className={styles.rankValue}>{format(',.2f')(value)}</div>
         <div className={styles.rankMeter}>
           <div className={styles.rankAbsoluteValue}>
             <span className={styles.countriesNumber}>Rank </span>
@@ -98,7 +97,7 @@ class CardGraph extends PureComponent {
           Average Annual
         </tspan>
         <tspan x={x} textAnchor="middle" dy="20">
-          Hazard Ocurrence
+          Hazard Occurrence
         </tspan>
         <tspan x={x} textAnchor="middle" dy="20">
           of
@@ -109,34 +108,35 @@ class CardGraph extends PureComponent {
       </text>
     );
     const { data, config } = sectionData.data;
+
+    if (!data) return null;
+
     return (
-      data && (
-        <div className={styles.pieChart}>
-          <PieChart
-            data={data}
-            width={350}
-            config={config}
-            customTooltip={<div style={{ display: 'none' }} />}
-            customInnerHoverLabel={CustomInnerHoverLabel}
-            theme={{ pieChart: styles.pieChart }}
-          />
-          <div className={styles.pieLegend}>
-            {data.map(d => {
-              const theme = config.theme[camelCase(d.name)];
-              return (
-                <div className={styles.legendItem}>
-                  <span
-                    className={styles.dot}
-                    style={{ backgroundColor: theme.stroke }}
-                  />
-                  <span className={styles.percentage}>{d.value} %</span>
-                  <span className={styles.label}>{theme.label}</span>
-                </div>
-              );
-            })}
-          </div>
+      <div className={styles.pieChart}>
+        <PieChart
+          data={data}
+          width={350}
+          config={config}
+          customTooltip={<div style={{ display: 'none' }} />}
+          customInnerHoverLabel={CustomInnerHoverLabel}
+          theme={{ pieChart: styles.pieChart }}
+        />
+        <div className={styles.pieLegend}>
+          {data.map(d => {
+            const theme = config.theme[camelCase(d.name)];
+            return (
+              <div className={styles.legendItem}>
+                <span
+                  className={styles.dot}
+                  style={{ backgroundColor: theme.stroke }}
+                />
+                <span className={styles.percentage}>{d.value} %</span>
+                <span className={styles.label}>{theme.label}</span>
+              </div>
+            );
+          })}
         </div>
-      )
+      </div>
     );
   }
 
@@ -195,6 +195,10 @@ class CardGraph extends PureComponent {
     const { type } = this.props;
     const { noData } = this.state;
 
+    if (type === 'RANK') return this.renderRank();
+    if (type === 'LINE_CHART') return this.renderLineChart();
+    if (type === 'PIE_CHART') return this.renderPieChart();
+
     if (noData) {
       return (
         <div className={styles.noDataContainer}>
@@ -203,16 +207,7 @@ class CardGraph extends PureComponent {
       );
     }
 
-    switch (type) {
-      case 'RANK':
-        return this.renderRank();
-      case 'LINE_CHART':
-        return this.renderLineChart();
-      case 'PIE_CHART':
-        return this.renderPieChart();
-      default:
-        return null;
-    }
+    return null;
   }
 }
 

@@ -1,10 +1,9 @@
 @import '~styles/layout.scss';
 
 .wrapper {
-  border-top: solid 1px $gray2;
-  padding-top: 40px;
-  padding-bottom: 40px;
   min-height: 865px;
+  padding: ($gutter-padding + $gutter-padding / 2) 0;
+  border-bottom: solid 1px $gray2;
 }
 
 .header {
@@ -12,15 +11,16 @@
 }
 
 .cards {
-  display: grid;
-  grid-template-columns: 1fr;
+  @media #{$mobile-only} {
+    display: block;
+  }
 
   @media #{$tablet-portrait} {
-    grid-template-columns: 0.6fr 0.6fr 1.3fr;
-    grid-template-rows: 0.75fr 0.75fr;
+    display: block;
   }
 
   @media #{$tablet-landscape} {
+    display: grid;
     grid-template-areas:
       "card1 card2 chart"
       "card3 card4 chart";
@@ -72,6 +72,14 @@
   margin-bottom: 20px;
 }
 
+.descriptionContainer {
+  color: $theme-color;
+  line-height: $line-height-medium;
+
+  @include columns(12);
+  @include xy-gutters($gutter-position: ('bottom'));
+}
+
 .paddedBottom {
   padding-bottom: 100px;
   min-height: 600px;
@@ -83,4 +91,8 @@
 
 .tooltip {
   min-width: 300px;
+}
+
+.loader {
+  min-height: 600px;
 }

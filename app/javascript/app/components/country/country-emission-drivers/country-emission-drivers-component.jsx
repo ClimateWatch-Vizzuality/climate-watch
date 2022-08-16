@@ -1,7 +1,10 @@
 /* eslint-disable no-confusing-arrow */
 import React from 'react';
 import Proptypes from 'prop-types';
+import NoContent from 'components/no-content';
 
+import AbbrReplace from 'components/abbr-replace';
+import Loading from 'components/loading';
 import Card from 'components/card';
 import CardGraph from 'components/card-graph';
 import ReactTooltip from 'react-tooltip';
@@ -17,7 +20,8 @@ function CountryEmissionDrivers(props) {
     countryName,
     maximumCountries,
     iso,
-    handleInfoClick
+    handleInfoClick,
+    loading
   } = props;
 
   const infoButton = slug => (
@@ -33,48 +37,79 @@ function CountryEmissionDrivers(props) {
       <div className={styles.header}>
         <div className={styles.titleContainer}>
           <h3 className={styles.title}>
-            What are important sectoral trends in {countryName}?
+            What are important sectoral emissions drivers in {countryName}?
           </h3>
-          <div className={styles.cards}>
-            {sectionData &&
-              Object.values(sectionData.cards).map((card, i) => (
-                <Card
-                  title={card.title}
-                  contentFirst
-                  info={infoButton(card.slug)}
-                  theme={{
-                    card: styles[`squareCard${i + 1}`],
-                    data: styles.cardData
-                  }}
-                >
-                  <CardGraph
-                    sectionData={card}
-                    maximumCountries={maximumCountries}
-                    noInfo
-                    type={card.type}
-                    iso={iso}
-                  />
-                </Card>
-              ))}
-            {sectionData && (
-              <Card
-                title={sectionData.electricity.title}
-                contentFirst
-                info={infoButton('electricity')}
-                theme={{ card: styles.chartCard, data: styles.chartCardData }}
-              >
-                {' '}
-                <CardGraph
-                  sectionData={sectionData.electricity.data}
-                  noInfo
-                  maximumCountries={maximumCountries}
-                  type="LINE_CHART"
-                  iso={iso}
-                />
-              </Card>
-            )}
+          <div className={styles.descriptionContainer}>
+            <AbbrReplace>
+              <p>
+                The following indicators show representative emissions drivers
+                from the energy, agriculture and LUCF sectors and their
+                respective ranking compared to other countries.
+              </p>
+            </AbbrReplace>
           </div>
         </div>
+        {loading ? (
+          <Loading light className={styles.loader} />
+        ) : (
+          <div className={styles.cards}>
+            <React.Fragment>
+              {sectionData &&
+                Object.values(sectionData.cards).map((card, i) => (
+                  <Card
+                    title={card.title}
+                    contentFirst
+                    info={infoButton(card.metadata)}
+                    theme={{
+                      card: styles[`squareCard${i + 1}`],
+                      data: styles.cardData
+                    }}
+                  >
+                    {card.data &&
+                    card.data[0] &&
+                    card.data[0].values &&
+                    card.data[0].values.length > 0 ? (
+                        <CardGraph
+                          sectionData={card}
+                          maximumCountries={maximumCountries}
+                          noInfo
+                          type={card.type}
+                          iso={iso}
+                        />
+                      ) : (
+                        <NoContent message="No data available" />
+                      )}
+                  </Card>
+                ))}
+              {sectionData && (
+                <Card
+                  title={sectionData.electricity.title}
+                  contentFirst
+                  info={infoButton(sectionData.electricity.metadata)}
+                  theme={{
+                    card: styles.chartCard,
+                    data: styles.chartCardData
+                  }}
+                >
+                  {' '}
+                  {sectionData.electricity.data &&
+                  sectionData.electricity.data[0] &&
+                  sectionData.electricity.data[0].data.length > 0 ? (
+                      <CardGraph
+                        sectionData={sectionData.electricity.data}
+                        noInfo
+                        maximumCountries={maximumCountries}
+                        type="LINE_CHART"
+                        iso={iso}
+                      />
+                    ) : (
+                      <NoContent message="No data available" />
+                    )}
+                </Card>
+              )}
+            </React.Fragment>
+          </div>
+        )}
         <ReactTooltip className={styles.tooltip} />
       </div>
     </div>
@@ -92,7 +127,8 @@ CountryEmissionDrivers.propTypes = {
   handleInfoClick: Proptypes.func.isRequired,
   countryName: Proptypes.string,
   iso: Proptypes.string,
-  maximumCountries: Proptypes.number
+  maximumCountries: Proptypes.number,
+  loading: Proptypes.bool
 };
 
 export default CountryEmissionDrivers;

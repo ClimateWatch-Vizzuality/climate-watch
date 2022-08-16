@@ -5,12 +5,11 @@
 }
 
 .value {
-  font-size: $font-size-xxl-large;
-  font-weight: $font-weight-light;
-  color: $light-blue;
+  color: $theme-color-light;
+  font-size: $font-size-large;
 }
 
 .label {
+  color: $gray1;
   margin-top: 10px;
-  font-size: $font-size-m;
 }

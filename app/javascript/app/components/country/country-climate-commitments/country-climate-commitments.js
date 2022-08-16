@@ -3,7 +3,8 @@ import { withRouter } from 'react-router';
 import Component from './country-climate-commitments-component';
 import {
   getCountriesDocumentsValues,
-  getCountryName
+  getCountryName,
+  getLoading
 } from './country-climate-commitments-selectors';
 
 const mapStateToProps = (state, { match }) => {
@@ -11,9 +12,11 @@ const mapStateToProps = (state, { match }) => {
     iso: match && match.params.iso,
     ...state
   };
+
   return {
     countriesDocumentsValues: getCountriesDocumentsValues(stateWithIso),
-    countryName: getCountryName(stateWithIso)
+    countryName: getCountryName(stateWithIso),
+    loading: getLoading(stateWithIso)
   };
 };
 

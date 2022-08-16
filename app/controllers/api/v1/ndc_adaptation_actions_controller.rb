@@ -3,7 +3,11 @@ module Api
     class NdcAdaptationActionsController < ApiController
       def index
         documents = ::Indc::Document.where(is_ndc: true).order(:ordering)
-        sectors = group_sectors(::Indc::Sector.where(sector_type: %w[adapt_now wb]))
+        sectors = group_sectors(
+          ::Indc::Sector.where(
+            id: sector_ids_with_actions, sector_type: %w[adapt_now wb]
+          )
+        )
         actions = ::Indc::AdaptationAction.includes(:location, :sectors)
         actions = actions.where(locations: {iso_code3: location_list}) if location_list.present?
 
@@ -27,19 +31,23 @@ module Api
       def group_sectors(sectors)
         sectors.
           includes(:parent).
+          reject { |s| s.parent.nil? }.
+          sort_by { |s| [s.parent.sector_type, s.parent.name_general_first_other_last] }.
           group_by(&:parent).
           map do |parent, subsectors|
-            next unless parent.present?
-
             {
               id: parent.id,
               name: parent.name,
               sector_type: parent.sector_type,
-              subsectors: subsectors.sort_by(&:name_general_first).map do |s|
+              subsectors: subsectors.sort_by(&:name_general_first_other_last).map do |s|
                 s.as_json(only: [:id, :name])
               end
             }
-          end.compact
+          end
+      end
+
+      def sector_ids_with_actions
+        ::Indc::AdaptationActionSector.select(:sector_id).distinct.pluck(:sector_id)
       end
 
       def location_list

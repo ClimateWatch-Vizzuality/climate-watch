@@ -5,58 +5,58 @@ export const sectionsData = [
     content: [
       {
         type: 'text',
-        title: 'What is Climate Watch?',
+        title: 'What is Climate Watch?',
         answer:
           "Climate Watch offers open data, visualizations and analysis to help policymakers, researchers and other stakeholders gather insights on countries' climate progress."
       },
       {
         type: 'html',
-        title: 'Who is this tool for? ',
+        title: 'Who is this tool for? ',
         answer:
-          'Government ministries, development organizations, civil society organizations and researchers can use Climate Watch to find and download data about global emissions, climate commitments, sustainable development and other topics. Visit our <Link to="/" innertext="homepage" /> to see what we can offer you. '
+          'Government ministries, development organizations, civil society organizations and researchers can use Climate Watch to find and download data about global emissions, climate commitments, sustainable development and other topics. Visit our <Link to="/" innertext="homepage" /> to see what we can offer you. '
       },
       {
         type: 'html',
         title: 'Can I download the data?',
         answer:
-          '<span>Yes, all the data published on Climate Watch are free and open. This means you can download data and use it for your own analysis with proper attribution (see question 4). Use the Data Explorer at the top right corner of the homepage to explore the datasets and download one or more of them. Visit our <Link to="/about/permissions" innertext="Permissions and Licensing" />  page for more information about using the data.<span>'
+          '<span>Yes, all the data published on Climate Watch are free and open. This means you can download data and use it for your own analysis with proper attribution (see question 4). Use the Data Explorer at the top right corner of the homepage to explore the datasets and download one or more of them. Visit our <Link to="/about/permissions" innertext="Permissions and Licensing" />  page for more information about using the data.<span>'
       },
       {
         type: 'html',
         title: 'How do I cite Climate Watch data as a source?',
         answer:
-          '<span>Use the info button next to each dataset and figure on Climate Watch to see its citation information.  A general citation for Climate Watch is as follows: Climate Watch. 2022. Washington, D.C.: World Resources Institute. Available online at: <link to="/" innerText="www.climatewatchdata.org"></link>. See our <Link to="/about/permissions" innertext="Permissions and Licensing" />  page for more information about citation.  '
+          '<span>Use the info button next to each dataset and figure on Climate Watch to see its citation information.  A general citation for Climate Watch is as follows: Climate Watch. 2022. Washington, D.C.: World Resources Institute. Available online at: <link to="/" innerText="www.climatewatchdata.org"></link>. See our <Link to="/about/permissions" innertext="Permissions and Licensing" />  page for more information about citation.  '
       },
       {
         type: 'html',
         title: 'What makes Climate Watch data credible?',
         answer:
-          'Climate Watch is based on data sources that are: <ul><li>Officially reported by national governments under the United Nations Framework Convention on Climate Change or gathered by reputable institutions (e.g., World Bank, United Nations Development Programme) and research organizations (e.g., Potsdam Institute for Climate Impact Research, World Resources Institute).</li><li>Well-documented in terms of a methodology that takes into account rigorous quality checks and data validation</li><li>Available for the majority of the countries and updated on a regular basis</li><li>Publicly available </li></ul>'
+          'Climate Watch is based on data sources that are: <ul><li>Officially reported by national governments under the United Nations Framework Convention on Climate Change or gathered by reputable institutions (e.g., World Bank, United Nations Development Programme) and research organizations (e.g., Potsdam Institute for Climate Impact Research, World Resources Institute).</li><li>Well-documented in terms of a methodology that takes into account rigorous quality checks and data validation</li><li>Available for the majority of the countries and updated on a regular basis</li><li>Publicly available </li></ul>'
       },
       {
         type: 'html',
         title: 'Who is behind Climate Watch?',
         answer:
-          'Visit our <Link to="/about/partners" innertext="Partners" /> page to see all the organizations involved in developing and managing Climate Watch. The platform is managed on a daily basis by the World Resources Institute and is part of the <a href="https://resourcewatch.org/" rel="noopener noreferrer" target="_blank">Resource Watch</a> family of data platforms. The name “Climate Watch” refers only to the platform and not to any particular organization.'
+          'Visit our <Link to="/about/partners" innertext="Partners" /> page to see all the organizations involved in developing and managing Climate Watch. The platform is managed on a daily basis by the World Resources Institute and is part of the <a href="https://resourcewatch.org/" rel="noopener noreferrer" target="_blank">Resource Watch</a> family of data platforms. The name “Climate Watch” refers only to the platform and not to any particular organization.'
       },
       {
         type: 'text',
-        title: 'How significant are uncertainties in the data? ',
+        title: 'How significant are uncertainties in the data? ',
         answer:
-          'The level of uncertainly depends on the data source. Each page includes links to data sources and methodology documentation that has additional details. You can view this information by clicking on the (i) buttons on any page and dataset. '
+          'The level of uncertainly depends on the data source. Each page includes links to data sources and methodology documentation that has additional details. You can view this information by clicking on the (i) buttons on any page and dataset. '
       },
       {
         type: 'html',
         title: 'How frequently is the data updated?',
         answer:
-          '<Link to="/countries" innertext="Country profiles" /> are updated at least once per year. Links to UNFCCC submissions are updated more frequently as new documents are submitted. <Link to="/ghg-emissions" innertext="Historical GHG emissions" /> are updated as available. It takes at least 1-2 years for organizations to compile, process and report GHG data; thus, the last year of complete GHG data will often be 2-3 years behind the current calendar year.<p><Link to="/ndcs-content" innertext="NDC content" /> is updated as new NDCs are submitted to the UNFCCC.</p><p> <Link to="/ndcs-sdg" innertext="NDC-SDG linkages" /> are updated as new NDCs are submitted to the UNFCCC.</p>'
+          '<Link to="/countries" innertext="Country profiles" /> are updated at least once per year. Links to UNFCCC submissions are updated more frequently as new documents are submitted. <Link to="/ghg-emissions" innertext="Historical GHG emissions" /> are updated as available. It takes at least 1-2 years for organizations to compile, process and report GHG data; thus, the last year of complete GHG data will often be 2-3 years behind the current calendar year.<p><Link to="/ndcs-content" innertext="NDC content" /> is updated as new NDCs are submitted to the UNFCCC.</p><p> <Link to="/ndcs-sdg" innertext="NDC-SDG linkages" /> are updated as new NDCs are submitted to the UNFCCC.</p>'
       },
       {
         type: 'html',
         title:
           'What should I do if I believe a dataset on Climate Watch is inaccurate or that better data exists?',
         answer:
-          'Much of the data on Climate Watch are obtained from other sources and we aim to make them all transparent. Make sure you have read and understood the sources and methodologies when using Climate Watch data. If you have additional questions, please contact us at <a href="mailto:climatewatch@wri.org"> climatewatch@wri.org</a>.'
+          'Much of the data on Climate Watch are obtained from other sources and we aim to make them all transparent. Make sure you have read and understood the sources and methodologies when using Climate Watch data. If you have additional questions, please contact us at <a href="mailto:climatewatch@wri.org"> climatewatch@wri.org</a>.'
       },
       {
         type: 'table',
@@ -286,9 +286,9 @@ export const sectionsData = [
       {
         type: 'html',
         title:
-          'How significant are uncertainties in the emissions data, particularly in the land-use change and forestry sector? ',
+          'How significant are uncertainties in the emissions data, particularly in the land-use change and forestry sector? ',
         answer:
-          'According to the Working Group III Contribution to the IPCC Fifth Assessment Report, global CO<sub>2</sub> emissions from fossil fuel combustion are known within 8% uncertainty (90% confidence interval). CO<sub>2</sub> emissions from FOLU (forestry and other land use) have very large uncertainties associated with them in the order of ± 50%. Uncertainty for global emissions of CH<sub>4</sub>, N<sub>2</sub>O and the F-gases has been estimated as 20%, 60% and 20% respectively. For the PIK dataset, regional deforestation emissions are downscaled to the country level using estimates of the deforested area obtained from potential vegetation and calculations for the needed agricultural land. Accordingly levels of uncertainty are quite high for earlier years of data (closer to 1850).  '
+          'According to the Working Group III Contribution to the IPCC Fifth Assessment Report, global CO<sub>2</sub> emissions from fossil fuel combustion are known within 8% uncertainty (90% confidence interval). CO<sub>2</sub> emissions from FOLU (forestry and other land use) have very large uncertainties associated with them in the order of ± 50%. Uncertainty for global emissions of CH<sub>4</sub>, N<sub>2</sub>O and the F-gases has been estimated as 20%, 60% and 20% respectively. For the PIK dataset, regional deforestation emissions are downscaled to the country level using estimates of the deforested area obtained from potential vegetation and calculations for the needed agricultural land. Accordingly levels of uncertainty are quite high for earlier years of data (closer to 1850).  '
       }
     ]
   },
@@ -298,39 +298,40 @@ export const sectionsData = [
     content: [
       {
         type: 'text',
-        title: 'What are NDCs? ',
+        title: 'What are NDCs? ',
         answer:
-          'In the lead up to the Paris climate conference in December 2015, Parties were invited by the UNFCCC to communicate their national plans to address climate change, known as Intended Nationally Determined Contributions, or INDCs. A country’s INDC is converted to a Nationally Determined Contribution (NDC) when it formally joins the Paris Agreement by submitting an instrument of ratification, acceptance, approval or accession.'
+          'In the lead up to the Paris climate conference in December 2015, Parties were invited by the UNFCCC to communicate their national plans to address climate change, known as Intended Nationally Determined Contributions, or INDCs. A country’s INDC is converted to a Nationally Determined Contribution (NDC) when it formally joins the Paris Agreement by submitting an instrument of ratification, acceptance, approval or accession.'
       },
       {
         type: 'text',
         title: 'How are NDCs assessed? ',
         answer:
-          'The NDC Content module of Climate Watch presents contributions submitted by Parties in different forms, including visualizations, structured indicators, and original text. The module does not evaluate the ambition of contributions. The data presented are submitted by countries and are intended to make these documents more transparent, accessible, comparable and easier to understand.  '
+          'The NDC Content module of Climate Watch presents contributions submitted by Parties in different forms, including visualizations, structured indicators, and original text. The module does not evaluate the ambition of contributions. The data presented are submitted by countries and are intended to make these documents more transparent, accessible, comparable and easier to understand.  '
       },
       {
         type: 'html',
         title:
           'Can you explain some of the terms used, like target, policy, action and plan?',
         answer:
-          '<ul><li>Targets are an intention to achieve a specific result, for example, to reduce GHG emissions to a specific level (a GHG target) or increase energy efficiency or renewable energy to a specific level (a non-GHG target), typically by a certain date.</li><li>Actions are an intention to implement specific means of achieving GHG reductions, usually in forms of concrete projects.</li><li>Policies are domestic planning documents such as policies, regulations or guidlines. </li><li>Plans and strategies are broader than specific policies or actions, such as a general intention to ‘improve efficiency’, ‘develop renewable energy’, etc. The terms come from the World Bank\'s <a href="http://spappssecext.worldbank.org/sites/indc/Pages/INDCHome.aspx" rel="noopener noreferrer" target="_blank" >NDC platform</a> and WRI\'s <a href="https://www.wri.org/research/designing-and-preparing-intended-nationally-determined-contributions-indcs" rel="noopener noreferrer" target="_blank" >publication</a> (Figure 4.1). </li></ul>'
+          '<ul><li>Targets are an intention to achieve a specific result, for example, to reduce GHG emissions to a specific level (a GHG target) or increase energy efficiency or renewable energy to a specific level (a non-GHG target), typically by a certain date.</li><li>Actions are an intention to implement specific means of achieving GHG reductions, usually in forms of concrete projects.</li><li>Policies are domestic planning documents such as policies, regulations or guidlines. </li><li>Plans and strategies are broader than specific policies or actions, such as a general intention to ‘improve efficiency’, ‘develop renewable energy’, etc. The terms come from the World Bank\'s <a href="http://spappssecext.worldbank.org/sites/indc/Pages/INDCHome.aspx" rel="noopener noreferrer" target="_blank" >NDC platform</a> and WRI\'s <a href="https://www.wri.org/research/designing-and-preparing-intended-nationally-determined-contributions-indcs" rel="noopener noreferrer" target="_blank" >publication</a> (Figure 4.1). </li></ul>'
       },
       {
         type: 'html',
-        title: 'What is the methodology behind the data? ',
-        answer: `<p>The structured indicators used for presenting NDC information are adapted from several data sources, including the <a href="http://cait.wri.org/indc/" rel="noopener noreferrer" target="_blank">CAIT Paris Contributions Map</a>, <a href="http://spappssecext.worldbank.org/sites/indc/Pages/INDCHome.aspx" rel="noopener noreferrer" target="_blank">World Bank’s NDC Platform</a>, and  <a href="https://klimalog.die-gdi.de/ndc/#NDCExplorer/worldMap?NDC??income???catIncome" rel="noopener noreferrer" target="_blank">DIE’s NDC Explorer</a>. Please refer to respective resources for detailed documentation. The terms and phrases used in this tool follow, to the extent possible, WRI’s publication <a href="https://www.wri.org/publication/designing-and-preparing-indcs" rel="noopener noreferrer" target="_blank">“Designing and Preparing INDCs.”</a></p><p>Some of the key indicators are explained <a href="https://wri-sites.s3.us-east-1.amazonaws.com/climatewatch.org/www.climatewatch.org/climate-watch/wri_metadata/NDC_methodology.pdf" rel="noopener noreferrer" target="_blank">in this document</a>.</p>`
+        title: 'What is the methodology behind the data? ',
+        // eslint-disable-next-line quotes
+        answer: `<p>The structured indicators used for presenting NDC information are adapted from several data sources, including the <a href="http://cait.wri.org/indc/" rel="noopener noreferrer" target="_blank">CAIT Paris Contributions Map</a>, <a href="http://spappssecext.worldbank.org/sites/indc/Pages/INDCHome.aspx" rel="noopener noreferrer" target="_blank">World Bank's NDC Platform</a>, and  <a href="https://klimalog.die-gdi.de/ndc/#NDCExplorer/worldMap?NDC??income???catIncome" rel="noopener noreferrer" target="_blank">DIE's NDC Explorer</a>. Please refer to respective resources for detailed documentation. The terms and phrases used in this tool follow, to the extent possible, WRI’s publication <a href="https://www.wri.org/publication/designing-and-preparing-indcs" rel="noopener noreferrer" target="_blank">"Designing and Preparing INDCs."</a></p><p>Some of the key indicators are explained <a href="https://wri-sites.s3.us-east-1.amazonaws.com/climatewatch.org/www.climatewatch.org/climate-watch/wri_metadata/NDC_methodology.pdf" rel="noopener noreferrer" target="_blank">in this document</a>.</p>`
       },
       {
         type: 'text',
-        title: 'How does the module handle non-English NDCs? ',
+        title: 'How does the module handle non-English NDCs? ',
         answer:
-          'NDCs can be submitted using any of the 6 official UN languages: Arabic, Chinese, English, French, Spanish, and Portuguese. For non-English submissions that are accompanied by an English translation, the English version is used as the basis for analysis. For those that don’t provide translations, Google Translate is used, and the translated version is presented, along with the original full text. '
+          'NDCs can be submitted using any of the 6 official UN languages: Arabic, Chinese, English, French, Spanish, and Portuguese. For non-English submissions that are accompanied by an English translation, the English version is used as the basis for analysis. For those that don’t provide translations, Google Translate is used, and the translated version is presented, along with the original full text. '
       },
       {
         type: 'text',
-        title: 'How does the NDC keyword search work with translation? ',
+        title: 'How does the NDC keyword search work with translation? ',
         answer:
-          'Searching for a word in English will produce results only among I/NDCs that are in English; similarly searching for a word in French would produce results among I/NDCs in French. '
+          'Searching for a word in English will produce results only among I/NDCs that are in English; similarly searching for a word in French would produce results among I/NDCs in French. '
       }
     ]
   },
@@ -346,20 +347,20 @@ export const sectionsData = [
       },
       {
         type: 'html',
-        title: 'Why are long-term strategies needed? ',
+        title: 'Why are long-term strategies needed? ',
         answer:
           'Ambitious long-term strategies are vital since current national commitments are only sufficient enough to limit warming to 2.7-3.7&#8451 (4.9-6.7&#8457). Not only do long-term strategies present an opportunity to bring national action in line with needed ambition, but they also encourage countries to avoid costly investments in high-emissions technologies.'
       },
       {
         type: 'html',
-        title: 'What are the key elements of long-term strategies? ',
+        title: 'What are the key elements of long-term strategies? ',
         answer:
-          '<p>The scope and depth of long-term strategies will be determined by countries. Accordingly, there is no one-size-fits-all format or structure for a long-term strategy. However, some key elements of a long-term strategy could include:</p><ul><li>A long-term vision; </li><li>Sustainable development considerations; </li><li>Mitigation elements (including a long-term quantified outcome for GHG emissions reductions and results of mitigation models and scenarios); </li><li>Adaptation elements;  </li><li>Sectoral strategies (including policies and actions, milestones to be achieved over time, information on managing the transition to the long-term goals, among others); </li><li>Implementation approaches; </li><li>Monitoring plans and revisions processes. </li></ul>'
+          '<p>The scope and depth of long-term strategies will be determined by countries. Accordingly, there is no one-size-fits-all format or structure for a long-term strategy. However, some key elements of a long-term strategy could include:</p><ul><li>A long-term vision; </li><li>Sustainable development considerations; </li><li>Mitigation elements (including a long-term quantified outcome for GHG emissions reductions and results of mitigation models and scenarios); </li><li>Adaptation elements;  </li><li>Sectoral strategies (including policies and actions, milestones to be achieved over time, information on managing the transition to the long-term goals, among others); </li><li>Implementation approaches; </li><li>Monitoring plans and revisions processes. </li></ul>'
       },
       {
         type: 'html',
         title:
-          'What methodology is used to collect and sort data on long-term strategies?  ',
+          'What methodology is used to collect and sort data on long-term strategies?  ',
         answer:
           // eslint-disable-next-line quotes
           `<p>The structured indicators used for presenting LTS information are adapted from several previous WRI papers, including <a href="https://www.wri.org/publication/early-insights-long-term-climate-strategies" rel="noopener noreferrer" target="_blank">Early Insights on Long-term Climate Strategies</a> and <a href="https://www.wri.org/publication/designing-G20-long-term-strategies" rel="noopener noreferrer" target="_blank">Long-term Low Greenhouse Gas Emission Development Strategies: Approaches and Methodologies for Their Design</a>.</p><p>All data collected in this database come strictly from the LTS submissions only. No evaluation of ambition has been undertaken. Rather the database is provided to facilitate transparency and understanding of countries' long-term strategies.</p>`
@@ -367,7 +368,7 @@ export const sectionsData = [
       {
         type: 'html',
         title:
-          'Is there a way to compare several long-term strategies together? ',
+          'Is there a way to compare several long-term strategies together? ',
         answer:
           'Yes - Climate Watch has developed a Compare All Targets Module that enables users to view and compare multiple long-term strategies at once. It also allows users to compare other commitments, including NDC targets, laws, and policies. Explore a summary of which countries have adopted each type of document and compare all of them side-by-side <a href="https://www.climatewatchdata.org/compare-all-targets" rel="noopener noreferrer" target="_blank">here</a>. '
       }
@@ -385,23 +386,23 @@ export const sectionsData = [
       },
       {
         type: 'html',
-        title: 'Why is the target year for a net-zero target important? ',
+        title: 'Why is the target year for a net-zero target important? ',
         answer:
           'According to IPCC scenarios, if warming is to be limited to below 1.5&#8451, any country that still has net-positive CO<sub>2</sub> emissions in 2044 or net-positive GHG emissions in 2066 will need to be matched by negative emissions in other countries. Accordingly, countries should aim to achieve their net-zero target as early as feasible, taking into consideration the current national inventory of emissions and removals, pathways and options for emissions and removals, and equity.'
       },
       {
         type: 'html',
         title:
-          'How does the target status or legal status of a net-zero target affect the target? ',
+          'How does the target status or legal status of a net-zero target affect the target? ',
         answer:
-          'Net-zero targets have taken a number of different forms, in different policy instruments, and differ widely regarding the binding nature of the commitment. The strength of the policy setting for the net-zero target will likely affect the extent to which it compels a country to take near-term action towards achieving the target. '
+          'Net-zero targets have taken a number of different forms, in different policy instruments, and differ widely regarding the binding nature of the commitment. The strength of the policy setting for the net-zero target will likely affect the extent to which it compels a country to take near-term action towards achieving the target. '
       },
       {
         type: 'html',
         title:
-          'Why is it important to track whether a net-zero target permits use of international GHG mitigation? ',
+          'Why is it important to track whether a net-zero target permits use of international GHG mitigation? ',
         answer:
-          'To ensure the highest level of ambition, countries should prioritize reducing domestic GHG emissions and enhancing domestic GHG removals rather than relying on purchases of GHG mitigation as a primary means of meeting a net-zero target. However, if international transfers of GHG mitigation are deemed necessary to meet the target, countries should consider limiting the portion of the net-zero target that may be met through international GHG mitigation. A limit will maintain clear signals for domestic mitigation and investment and avoid locking in long-lived carbon-intensive infrastructure. '
+          'To ensure the highest level of ambition, countries should prioritize reducing domestic GHG emissions and enhancing domestic GHG removals rather than relying on purchases of GHG mitigation as a primary means of meeting a net-zero target. However, if international transfers of GHG mitigation are deemed necessary to meet the target, countries should consider limiting the portion of the net-zero target that may be met through international GHG mitigation. A limit will maintain clear signals for domestic mitigation and investment and avoid locking in long-lived carbon-intensive infrastructure. '
       },
       {
         type: 'html',
@@ -420,28 +421,28 @@ export const sectionsData = [
         type: 'html',
         title: 'How are the NDC-SDG linkages determined?',
         answer:
-          'WRI\'s working paper <a href="https://www.wri.org/publication/examining-alignment-between-intended-nationally-determined-contributions-and-sustainable" rel="noopener noreferrer" target="_blank" >"Examining the Alignment between the Intended Nationally Determined Contributions and the Sustainable Development Goals"</a> outlines the methodology and a more detailed technical note is forthcoming. Linkages are determined through textual analysis of the Nationally Determined Contributions (NDCs) and the Sustainable Development Goals (SDGs) to identify alignments of targets, actions, policy measures and needs. Analysis was only conducted at the target level, meaning the texts of submitted NDCs were compared against the text of the 169 SDG targets. The language in the 17 SDGs is broader than in the targets, so analysis was not conducted at that level. What appears as goal level analysis (on the landing page of the NDC-SDG module) is an aggregation of the analysis at the target level. It is important to note that this analysis only looks at countries’ NDCs and so does not necessarily reflect a country’s actions in the real world. Lastly, the analysis is inherently subjective, so other analysis may result in different conclusions. If this is the case, please let us know at <a href="mailto:climatewatch@wri.org">climatewatch@wri.org</a>. Our aim is to be entirely transparent in our analysis, identifying the exact text in the NDC for each point of alignment identified so that users can confirm for themselves.'
+          'WRI\'s working paper <a href="https://www.wri.org/publication/examining-alignment-between-intended-nationally-determined-contributions-and-sustainable" rel="noopener noreferrer" target="_blank" >"Examining the Alignment between the Intended Nationally Determined Contributions and the Sustainable Development Goals"</a> outlines the methodology and a more detailed technical note is forthcoming. Linkages are determined through textual analysis of the Nationally Determined Contributions (NDCs) and the Sustainable Development Goals (SDGs) to identify alignments of targets, actions, policy measures and needs. Analysis was only conducted at the target level, meaning the texts of submitted NDCs were compared against the text of the 169 SDG targets. The language in the 17 SDGs is broader than in the targets, so analysis was not conducted at that level. What appears as goal level analysis (on the landing page of the NDC-SDG module) is an aggregation of the analysis at the target level. It is important to note that this analysis only looks at countries’ NDCs and so does not necessarily reflect a country’s actions in the real world. Lastly, the analysis is inherently subjective, so other analysis may result in different conclusions. If this is the case, please let us know at <a href="mailto:climatewatch@wri.org">climatewatch@wri.org</a>. Our aim is to be entirely transparent in our analysis, identifying the exact text in the NDC for each point of alignment identified so that users can confirm for themselves.'
       },
       {
         type: 'text',
         title:
-          'How are NDCs submitted in other languages dealt with when analyzing the linkages? ',
+          'How are NDCs submitted in other languages dealt with when analyzing the linkages? ',
         answer:
-          'The NDCs of 22 countries included in the NDC-SDG linkages analysis don’t have an official or unofficial translations; for those, analysts at the World Resources Institute relied on Google translation services and native speaker verification. '
+          'The NDCs of 22 countries included in the NDC-SDG linkages analysis don’t have an official or unofficial translations; for those, analysts at the World Resources Institute relied on Google translation services and native speaker verification. '
       },
       {
         type: 'text',
-        title: 'How frequently is the data updated? ',
+        title: 'How frequently is the data updated? ',
         answer:
           'NDC-SDG linkages data are updated as new NDCs are submitted or revised.'
       },
       {
         type: 'html',
         title:
-          "Why is no text highlighted when I choose an SDG target from some countries' NDCs? ",
+          "Why is no text highlighted when I choose an SDG target from some countries' NDCs? ",
         answer:
           '<p>The NDC-SDG highlighted text feature only works with the English version of the latest I/NDC submitted countries.</p><p>On each country page, clicking on one of the dots in the NDC-SDG linkage summary at the bottom of the page will direct the users to the country’s latest NDC submission and highlight where the linkage between the NDC’s text and that SDG target was identified. However, if this latest submission is not in English, no highlights will appear. The users will have to refer to the English version of that same submission to be able to use the NDC-SDG highlighted text feature.</p><p>On the NDC-SDG Linkages Map, clicking on a country will direct you to the country’s latest NDC submission. However, if this latest submission is not in English, no highlights will appear. The users will have to refer to the English version of that same submission to be able to use the NDC-SDG highlighted text feature.</p>'
-      },
+      }
     ]
   },
   {
@@ -450,7 +451,7 @@ export const sectionsData = [
     content: [
       {
         type: 'text',
-        title: 'What is the Pathways tool?',
+        title: 'What is the Pathways tool?',
         answer:
           'Pathways allows you to explore economic and emissions scenarios from a database of models from the IPCC, private sector and country-specific providers.'
       },
@@ -476,9 +477,9 @@ export const sectionsData = [
       {
         type: 'text',
         title:
-          'What do the models say about whether we’re on track to keep global warming below 2°C? ',
+          'What do the models say about whether we’re on track to keep global warming below 2°C? ',
         answer:
-          'The answer to this question varies by scenario. Almost all Business as Usual or Reference Case scenarios show that we are not on track to keep global warming under 1.5-2°C. However, more ambitious scenarios show that it is possible to keep the global warming under 1.5-2°C. Many rely on carbon removal approaches, such as  carbon capture and storage with bioenergy (BECCS), coupled with greater mitigation ambitions, such as increased renewable energy generation.'
+          'The answer to this question varies by scenario. Almost all Business as Usual or Reference Case scenarios show that we are not on track to keep global warming under 1.5-2°C. However, more ambitious scenarios show that it is possible to keep the global warming under 1.5-2°C. Many rely on carbon removal approaches, such as  carbon capture and storage with bioenergy (BECCS), coupled with greater mitigation ambitions, such as increased renewable energy generation.'
       },
       {
         type: 'text',
@@ -489,9 +490,9 @@ export const sectionsData = [
       },
       {
         type: 'html',
-        title: 'I am a modeler. How can I submit information for my model? ',
+        title: 'I am a modeler. How can I submit information for my model? ',
         answer:
-          'We are always looking to grow our database by adding new models. To upload your model and scenarios to Pathways, send us an email at <a href="climatewatch@wri.org">ClimateWatch@WRI.org</a> and we will send you with further information about model management and the data upload process. '
+          'We are always looking to grow our database by adding new models. To upload your model and scenarios to Pathways, send us an email at <a href="climatewatch@wri.org">ClimateWatch@WRI.org</a> and we will send you with further information about model management and the data upload process. '
       }
     ]
   },
@@ -501,7 +502,7 @@ export const sectionsData = [
     content: [
       {
         type: 'text',
-        title: 'Is there a country profile for every country? ',
+        title: 'Is there a country profile for every country? ',
         answer:
           'There are country profiles for all parties to the United Nations Framework Convention on Climate Change (UNFCCC).'
       },
@@ -510,14 +511,14 @@ export const sectionsData = [
         title:
           'What was the process for choosing the metrics for the “Climate Vulnerability and Readiness” section?',
         answer:
-          'The indicators were selected because they have data that are geographically comprehensive, updated regularly and tells a compelling story that links poverty, vulnerability and climate impacts. These indicators show that the poor are most vulnerable to climate risks such as sea level rise, increases in temperature and more erratic rainfall. This section also includes indicators that show the extent to which a country is ready to adapt to climate change to reduce its vulnerability to climate impacts.'
+          'The indicators were selected because they have data that are geographically comprehensive, updated regularly and tells a compelling story that links poverty, vulnerability and climate impacts. These indicators show that the poor are most vulnerable to climate risks such as sea level rise, increases in temperature and more erratic rainfall. This section also includes indicators that show the extent to which a country is ready to adapt to climate change to reduce its vulnerability to climate impacts.'
       },
       {
         type: 'html',
         title:
-          'How can the data be used in the "Climate Vulnerability and Readiness" section? ',
+          'How can the data be used in the "Climate Vulnerability and Readiness" section? ',
         answer:
-          '<p>Policymakers and donors can use this data to get a snapshot overview of a country’s need to reduce its vulnerability to climate impacts and in comparison with other countries.</p><p>Civil society and media can use information on poverty, risks, vulnerabilities and readiness for communications and advocacy on adaptation and reducing a country’s vulnerability to climate impacts. </p><p>For researchers and adaptation planners, this information acts as a gateway to more detailed information and data sets on adaptation through platforms such as the <a href="http://sdwebx.worldbank.org/climateportal/" rel="noopener noreferrer" target="_blank">Climate Change Knowledge Portal</a> and <a href="https://www.predata.com/" rel="noopener noreferrer" target="_blank">PREPdata.</a></p>'
+          '<p>Policymakers and donors can use this data to get a snapshot overview of a country’s need to reduce its vulnerability to climate impacts and in comparison with other countries.</p><p>Civil society and media can use information on poverty, risks, vulnerabilities and readiness for communications and advocacy on adaptation and reducing a country’s vulnerability to climate impacts. </p><p>For researchers and adaptation planners, this information acts as a gateway to more detailed information and data sets on adaptation through platforms such as the <a href="http://sdwebx.worldbank.org/climateportal/" rel="noopener noreferrer" target="_blank">Climate Change Knowledge Portal</a> and <a href="https://www.predata.com/" rel="noopener noreferrer" target="_blank">PREPdata.</a></p>'
       },
       {
         type: 'table',

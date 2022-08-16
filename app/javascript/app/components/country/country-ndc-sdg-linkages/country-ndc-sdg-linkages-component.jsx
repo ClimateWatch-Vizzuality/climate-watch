@@ -146,7 +146,7 @@ class CountrySDGLinkages extends PureComponent {
           information communicated in the NDC, not the domestic policy context.
           It is therefore only an entry point for considering the degree of
           potential alignment between the country’s climate and sustainable
-          development objectives.
+          development objectives. The analysis covers NDCs submitted prior to May 2021.
         </AbbrReplace>
       </div>
     );

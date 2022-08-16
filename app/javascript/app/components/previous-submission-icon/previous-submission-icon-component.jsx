@@ -38,8 +38,9 @@ const icons = {
     [SUBMISSION_ICON_VALUE.intends]: missingIcon,
     // Adaptation
     'Adaptation Included': enhancementIcon,
+    'Adaptation Not Included': noEnhancementIcon,
     Mentioned: enhancementIcon,
-    'Not Specified': unclearIcon
+    'Not Specified': noEnhancementIcon
   }
 };
 
@@ -64,7 +65,7 @@ const PreviousSubmissionIcon = ({
 };
 
 PreviousSubmissionIcon.propTypes = {
-  submissionIconValue: PropTypes.string.isRequired,
+  submissionIconValue: PropTypes.string,
   value: PropTypes.string.isRequired,
   white: PropTypes.bool,
   tooltipId: PropTypes.string,

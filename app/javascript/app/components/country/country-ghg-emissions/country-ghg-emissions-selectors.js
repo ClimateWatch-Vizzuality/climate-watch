@@ -10,13 +10,11 @@ import flatten from 'lodash/flatten';
 import sumBy from 'lodash/sumBy';
 import { getGhgEmissionDefaults, calculatedRatio } from 'utils/ghg-emissions';
 import { generateLinkToDataExplorer } from 'utils/data-explorer';
-
+import { SECTOR_COLORS_BY_LABEL } from 'styles/constants';
 import {
   getYColumnValue,
-  getThemeConfig,
   getTooltipConfig,
   sortEmissionsByValue,
-  getColorPalette,
   setXAxisDomain,
   setYAxisDomain
 } from 'utils/graphs';
@@ -28,9 +26,6 @@ import {
 } from 'data/constants';
 
 const FEATURE_COUNTRY_CHANGES = process.env.FEATURE_COUNTRY_CHANGES === 'true';
-
-// constants needed for data parsing
-const BASE_COLORS = ['#25597C', '#DFE9ED'];
 
 const options = Object.keys(CALCULATION_OPTIONS).map(
   calculationKey => CALCULATION_OPTIONS[calculationKey]
@@ -68,6 +63,11 @@ export const getDataZoomYears = createSelector(getSearch, search => ({
   min: search && search.start_year,
   max: search && search.end_year
 }));
+
+export const getShowPreviousTargets = createSelector(
+  getSearch,
+  search => search && search.show_previous_targets === 'true'
+);
 
 export const getCountryName = createSelector(
   [getCountry],
@@ -214,44 +214,46 @@ export const filterData = createSelector(
 );
 
 export const getQuantificationsData = createSelector(
-  getQuantifications,
-  quantifications => {
+  [getShowPreviousTargets, getQuantifications],
+  (showPreviousTargets, quantifications) => {
     if (!quantifications) return [];
     const qGrouped = groupBy(quantifications, 'year');
-    const qParsed = [];
+    let qParsed = [];
+
     // Grouping the same year and value to concat the labels
     Object.keys(qGrouped).forEach(function (year) {
       const values = groupBy(qGrouped[year], 'value');
-      Object.keys(values).forEach(function (value) {
+      Object.keys(values).forEach(value => {
         let valuesParsed = {};
-        values[value].forEach(function (v, index) {
+
+        values[value].forEach((v, index) => {
           if (index === 0) {
             const isRange = isArray(v.value);
             const yValue = isRange
               ? v.value.map(y => y * DATA_SCALE).sort()
               : v.value * DATA_SCALE;
             valuesParsed = {
+              ...valuesParsed,
               x: v.year,
               y: v.value !== null && v.value !== undefined ? yValue : null,
               label: v.label,
-              isRange
+              isRange,
+              latest: v.latest,
+              document_slugs: [v.document_slug]
             };
           } else {
             valuesParsed.label += `, ${v.label}`;
+            valuesParsed.document_slugs.push(v.document_slug);
           }
         });
         qParsed.push(valuesParsed);
       });
     });
-    const netZeroPoint = {
-      x: 2050,
-      y: 0,
-      label: QUANTIFICATIONS_CONFIG.net_zero.label,
-      isRange: false
-    };
 
     if (FEATURE_COUNTRY_CHANGES) {
-      qParsed.push(netZeroPoint);
+      if (!showPreviousTargets) {
+        qParsed = qParsed.filter(q => q.latest);
+      }
     }
 
     // Sort desc to avoid z-index problem in the graph
@@ -372,11 +374,15 @@ export const getChartConfig = createSelector(
       label: d.sector,
       value: getYColumnValue(d.sector)
     }));
+
     const yColumnsChecked = uniqBy(yColumns, 'value');
-    const theme = getThemeConfig(
-      yColumnsChecked,
-      getColorPalette(BASE_COLORS, yColumnsChecked.length)
-    );
+
+    const theme = yColumnsChecked.reduce((acc, column) => {
+      const color = SECTOR_COLORS_BY_LABEL[column.label];
+      acc[column.value] = { stroke: color, fill: color };
+      return acc;
+    }, {});
+
     colorThemeCache = { ...theme, ...colorThemeCache };
     const tooltip = getTooltipConfig(yColumnsChecked);
     let unit = DEFAULT_AXES_CONFIG.yLeft.unit;

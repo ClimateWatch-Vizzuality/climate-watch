@@ -2,6 +2,7 @@ import { createAction } from 'redux-actions';
 import { createThunkAction } from 'utils/redux';
 import qs from 'query-string';
 import sortBy from 'lodash/sortBy';
+import { apiWithCache } from 'services/api';
 
 const fetchCountryGhgEmissionsInit = createAction(
   'fetchCountryGhgEmissionsInit'
@@ -18,30 +19,25 @@ const fetchCountryGhgEmissionsData = createThunkAction(
   filters => dispatch => {
     dispatch(fetchCountryGhgEmissionsInit());
     const promises = [
-      fetch(`/api/v1/emissions?${qs.stringify(filters)}`).then(response => {
-        if (response.ok) return response.json();
-        throw Error(response.statusText);
-      }),
-      fetch(
-        `/api/v1/quantifications?location=${filters.location}`
-      ).then(response => {
-        if (response.ok) return response.json();
-        throw Error(response.statusText);
-      })
+      apiWithCache
+        .get(`/api/v1/emissions?${qs.stringify(filters)}`)
+        .then(response => {
+          if (response.data) return response.data;
+          throw Error(response.statusText);
+        }),
+      apiWithCache
+        .get(`/api/v1/quantifications?location=${filters.location}`)
+        .then(response => {
+          if (response.data) return response.data;
+          throw Error(response.statusText);
+        })
     ];
 
     Promise.all(promises)
       .then(data => {
         let quantifications;
         if (data[1].length) {
-          quantifications = sortBy(
-            data[1].map(quantification => ({
-              value: quantification.value,
-              label: quantification.label,
-              year: quantification.year
-            })),
-            'year'
-          );
+          quantifications = sortBy(data[1], 'year');
         }
         dispatch(
           fetchCountryGhgEmissionsDataReady({ data: data[0], quantifications })
@@ -49,6 +45,7 @@ const fetchCountryGhgEmissionsData = createThunkAction(
       })
       .catch(error => {
         console.warn(error);
+        console.info('eee', error);
         dispatch(fetchCountryGhgEmissionsFail());
       });
   }

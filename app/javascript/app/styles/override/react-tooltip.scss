@@ -25,4 +25,8 @@
       border-right-color: $theme-color !important;
     }
   }
+
+  .__react_component_tooltip.type-light {
+    opacity: 1 !important;
+  }
 }

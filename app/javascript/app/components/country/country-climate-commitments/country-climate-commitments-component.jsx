@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import CountriesDocumentsProvider from 'providers/countries-documents-provider';
+import AbbrReplace from 'components/abbr-replace';
 import Icon from 'components/icon';
 import Loading from 'components/loading';
 import Button from 'components/button';
@@ -17,7 +18,8 @@ import styles from './country-climate-commitments-styles.scss';
 function CountryClimateCommitments({
   countriesDocumentsValues,
   iso,
-  countryName
+  countryName,
+  loading
 }) {
   const countryDocumentsIcons = {
     [SUBMISSION_ICON_VALUE.yes]: submittedIcon,
@@ -51,13 +53,27 @@ function CountryClimateCommitments({
           </h3>
           {renderButton()}
         </div>
+        <div className={styles.descriptionContainer}>
+          <AbbrReplace>
+            <p>
+              The Paris Agreement aims to limit global temperature rise to well
+              below 2°C, while pursuing efforts to further limit it to 1.5°C.
+              Under the Paris Agreement, Parties are requested to submit new or
+              updated NDCs every five years, starting in 2020. Countries are
+              also invited to communicate “mid-century long-term low GHG
+              emissions development strategies” (long-term strategies, or LTS).
+              Aside from commitments made through NDCs and LTS, some Parties
+              also have net-zero emissions targets.
+            </p>
+          </AbbrReplace>
+        </div>
         <div className={styles.ambitionContainer}>
           <div className={styles.arcOfAmbition}>
             <img src={arcOfAmbition} title="Arc of ambition" />
           </div>
           <div className={styles.documents}>
             {countriesDocumentsValues.map(([key, value]) => (
-              <div className={styles.item}>
+              <div key={`document-${key}`} className={styles.item}>
                 {countryDocumentsIcons[+value] && (
                   <React.Fragment>
                     <Icon
@@ -86,7 +102,7 @@ function CountryClimateCommitments({
         handleAnalytics('Home', 'Click from a home page link', 'NDC Overview')
       }
     >
-      Explore more commitments
+      Explore More Commitments
     </Button>
   );
 
@@ -94,10 +110,12 @@ function CountryClimateCommitments({
     <div className={styles.gridContainer}>
       <div className={styles.grid}>
         <div className={styles.container}>
-          {countriesDocumentsValues ? (
-            <React.Fragment>{renderDocumentsPart()}</React.Fragment>
-          ) : (
+          {loading ? (
             <Loading light className={styles.loading} />
+          ) : (
+            countriesDocumentsValues && (
+              <React.Fragment>{renderDocumentsPart()}</React.Fragment>
+            )
           )}
         </div>
       </div>
@@ -113,6 +131,7 @@ function CountryClimateCommitments({
 CountryClimateCommitments.propTypes = {
   countriesDocumentsValues: PropTypes.array,
   iso: PropTypes.string,
+  loading: PropTypes.bool,
   countryName: PropTypes.string
 };
 

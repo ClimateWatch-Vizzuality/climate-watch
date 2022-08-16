@@ -5,15 +5,13 @@ import { SUBMISSION_ICON_VALUE } from 'data/country-documents';
 import { ENHANCEMENT_LABEL_SLUGS, INDICATOR_SLUGS } from 'data/constants';
 
 const getCountries = state => (state.countries && state.countries.data) || null;
-
-const getPreviousComparisonIndicators = state =>
-  state.ndcsPreviousComparison && state.ndcsPreviousComparison.data;
-
 const getCountriesDocuments = state => state.countriesDocuments.data || null;
-
 const getIso = state => state.iso || null;
 const getNDCS = state =>
   (state.ndcs && state.ndcs.data && state.ndcs.data.indicators) || null;
+
+export const getLoading = state =>
+  state.countriesDocuments.loading || state.ndcs.loading;
 
 const getCountry = createSelector([getCountries, getIso], (countries, iso) => {
   if (!countries || !iso) return null;
@@ -23,17 +21,6 @@ const getCountry = createSelector([getCountries, getIso], (countries, iso) => {
 export const getCountryName = createSelector(
   [getCountry],
   country => (country && country.wri_standard_name) || null
-);
-
-export const getPreviousComparisonCountryValues = createSelector(
-  [getPreviousComparisonIndicators, getIso],
-  (previousComparisonIndicators, iso) => {
-    if (!previousComparisonIndicators) return null;
-    return previousComparisonIndicators.map(indicator => [
-      indicator.name,
-      indicator.locations[iso].value
-    ]);
-  }
 );
 
 const getNetZeroAnd2020StatusValues = createSelector(
@@ -78,7 +65,7 @@ const getNetZeroAnd2020StatusValues = createSelector(
       SUBMISSION_ICON_VALUE.no;
 
     return [
-      ['Net Zero Target', statusNetZeroValue],
+      ['Net-Zero Target', statusNetZeroValue],
       ['New or Updated NDC', status2020value]
     ];
   }
@@ -89,13 +76,23 @@ export const getCountriesDocumentsValues = createSelector(
   (countriesDocuments, iso, netZeroAnd2020Values) => {
     if (!countriesDocuments || !iso || !countriesDocuments[iso]) return null;
     const DOCUMENT_COLUMNS_SLUGS = {
-      NDC: 'first_ndc',
+      'First NDC': 'first_ndc',
       'Long-term Strategy': 'lts'
     };
     const documentColumns = getDocumentsColumns(
       countriesDocuments[iso],
       DOCUMENT_COLUMNS_SLUGS
     );
-    return Object.entries(documentColumns).concat(netZeroAnd2020Values || []);
+
+    const sortedKeys = [
+      'First NDC',
+      'New or Updated NDC',
+      'Long-term Strategy',
+      'Net-Zero Target'
+    ];
+
+    return Object.entries(documentColumns)
+      .concat(netZeroAnd2020Values || [])
+      .sort((a, b) => sortedKeys.indexOf(a[0]) - sortedKeys.indexOf(b[0]));
   }
 );

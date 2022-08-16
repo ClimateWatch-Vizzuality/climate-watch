@@ -4,6 +4,7 @@ Table of Contents:
 
 - [Domain description](#domain-description)
 - [Local Setup](#local-setup)
+- [Deploy](#deploy)
 - [Environment variables](#environment-variables)
 - [Modules](#modules)
 - [API](#api)
@@ -122,6 +123,10 @@ The router version used in the project is `v.4.1.1`.
 - routes are defined as a data-structure instead of using `jsx` inside the `routes.js` file.
 - Instead of connecting the routes to the reducer via middleware we decided to use `withRouter` [HOC](https://medium.com/@franleplant/react-higher-order-components-in-depth-cf9032ee6c3e) instead, which means whenever you need access to the router information you will have to wrap your component with `withRouter`.
 
+## Deploy
+
+The app is deployed with [capistrano](https://capistranorb.com/). There are two scripts on package json to deploy to staging and production. Staging will deploy from develop branch and production from master. The Environment variables will be set afterwards on the server direcly.
+
 ## Environment variables
 These are some of the environment variables that we need:
 CW_API: Base Climate Watch API
@@ -151,12 +156,12 @@ That includes not only Component and Container, but also styles, reducers and ac
 
 ```
 ├── my-module/
-│   ├── components/
-│   ├── my-module-actions.js
-│   ├── my-module-component.jsx
-│   ├── my-module-reducers.js
-│   ├── my-module-styles.scss
-│   └── my-module.js
+│   ├── components/
+│   ├── my-module-actions.js
+│   ├── my-module-component.jsx
+│   ├── my-module-reducers.js
+│   ├── my-module-styles.scss
+│   └── my-module.js
 ```
 
 ### Module entry point
@@ -326,7 +331,7 @@ To release using a [fork of zeit release](https://github.com/vizzuality/release)
 and merge the changes that you want in master locally before running the command)
 
 ```bash
-npx release 'major' | 'minor' | 'patch'
+npx release 'major' | 'minor' | 'patch'
 ```
 
 and push to master!

@@ -27,3 +27,15 @@ export const CHART_NAMED_EXTENDED_COLORS = getColorsFromSettings(
 export const CHART_NAMED_EXTRA_COLORS = getColorsFromSettings(
   'chartColorsExtra'
 );
+
+export const CONTINOUS_RAMP = getColorsFromSettings('continousRamp');
+
+export const SECTOR_COLORS = getColorsFromSettings('sectorColors');
+
+export const SECTOR_COLORS_BY_LABEL = {
+  Energy: SECTOR_COLORS.energy,
+  Agriculture: SECTOR_COLORS.agriculture,
+  'Industrial Processes': SECTOR_COLORS.industrial,
+  'Land-Use Change and Forestry': SECTOR_COLORS.landUse,
+  Waste: SECTOR_COLORS.waste
+};

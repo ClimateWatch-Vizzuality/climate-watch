@@ -29,6 +29,10 @@
       text-align: center;
       left: 50%;
       transform: translate(-50%, -50%);
+
+      &.fitRight {
+        transform: translate(-100%, -50%);
+      }
     }
   }
 }
@@ -62,6 +66,52 @@
   }
 }
 
+.negativeEmissionsSeparator {
+  position: relative;
+  height: 75px;
+  display: inline-block;
+  width: 20px;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 2px;
+    margin-top: -5px;
+    height: 85px;
+    background-color: $black;
+  }
+}
+
+.negativeSector {
+  width: 100%;
+}
+
+.negativeEmissionsSectorText {
+  margin-top: -10px;
+
+  .sectorContent {
+    display: flex;
+    justify-content: center;
+  }
+
+  .sectorTitleContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .infoContainer {
+    margin: 2px 5px 0;
+  }
+
+  .infoIcon {
+    cursor: pointer;
+  }
+}
+
 .linkingSVG {
   width: 100%;
+  fill: $gray2;
 }

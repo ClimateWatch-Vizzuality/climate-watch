@@ -17,6 +17,8 @@ import cardTheme from 'styles/themes/card/card-overflow-content.scss';
 
 import styles from './laws-and-policies-styles.scss';
 
+const FEATURE_COUNTRY_CHANGES = process.env.FEATURE_COUNTRY_CHANGES === 'true';
+
 class LawsAndPolicies extends PureComponent {
   handleSourceChange = sector => {
     const { updateUrlParam } = this.props;
@@ -99,7 +101,11 @@ class LawsAndPolicies extends PureComponent {
         <div className={styles.descriptionContainer}>
           <div className="grid-column-item">
             <h3 className={styles.title}>
-              <AbbrReplace>Targets in Laws and Policies</AbbrReplace>
+              <AbbrReplace>
+                {FEATURE_COUNTRY_CHANGES
+                  ? `How do ${countryName}’s NDC compares to its laws and policies?`
+                  : 'Targets in Laws and Policies'}
+              </AbbrReplace>
             </h3>
             <div>
               <AbbrReplace>

@@ -12,9 +12,10 @@ class DotContainer extends PureComponent {
         ) === -1 || !target.sectors.includes(activeSector.value)
         : activeSector && !target.sectors.includes(activeSector.value);
     const hasSectors = !!(
-      targetData &&
-      targetData.targets[target.number] &&
-      targetData.targets[target.number].sectors
+      (targetData &&
+        targetData.targets[target.number] &&
+        targetData.targets[target.number].sectors) ||
+      targetData?.targets[target?.number]?.actions?.length
     );
     let path = null;
     if (hasSectors) {

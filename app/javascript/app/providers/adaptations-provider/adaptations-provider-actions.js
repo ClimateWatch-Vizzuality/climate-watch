@@ -1,6 +1,7 @@
 import { createAction } from 'redux-actions';
 import { createThunkAction } from 'utils/redux';
 import isEmpty from 'lodash/isEmpty';
+import { apiWithCache } from 'services/api';
 
 const fetchAdaptationsInit = createAction('fetchAdaptationsInit');
 const fetchAdaptationsReady = createAction('fetchAdaptationsReady');
@@ -12,9 +13,11 @@ const fetchAdaptations = createThunkAction(
     const { adaptations } = state();
     if (isEmpty(adaptations.data) && !adaptations.loading) {
       dispatch(fetchAdaptationsInit());
-      fetch('/api/v1/adaptations')
+
+      apiWithCache
+        .get('/api/v1/adaptations')
         .then(response => {
-          if (response.ok) return response.json();
+          if (response.data) return response.data;
           throw Error(response.statusText);
         })
         .then(data => {

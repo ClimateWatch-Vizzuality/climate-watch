@@ -15,7 +15,7 @@ export default (pathname, setOpen) => {
         selector: '[data-tour="countries-01"]',
         content: () => (
           <div>
-            <h2 className={styles.title}>UNFCCC DOCUMENTS TIMELINE​</h2>
+            <h2 className={styles.title}>UNFCCC DOCUMENTS TIMELINE </h2>
             <p className={styles.description}>
               Access all the official documents that the country submitted to
               the UNFCCC directly from here.
@@ -77,7 +77,7 @@ export default (pathname, setOpen) => {
             <h2 className={styles.title}>INFO BUTTON</h2>
             <p className={styles.description}>
               Access the full information on the datasets used in this graphic,
-              including sources and citations.​{' '}
+              including sources and citations.{' '}
               <a
                 href="/about/faq/general_questions"
                 target="_blank"
@@ -99,7 +99,7 @@ export default (pathname, setOpen) => {
         selector: '[data-tour="ndc-explore-01"]',
         content: () => (
           <div>
-            <h2 className={styles.title}>KEYWORD SEARCH​</h2>
+            <h2 className={styles.title}>KEYWORD SEARCH</h2>
             <p className={styles.description}>
               Type any keyword or phrase you want to find in NDCs and get
               instant access to the documents and a map with all the countries
@@ -162,7 +162,7 @@ export default (pathname, setOpen) => {
         selector: '[data-tour="ndc-explore-06"]',
         content: () => (
           <div>
-            <h2 className={styles.title}>MORE INFO, DOWNLOAD & SHARE​</h2>
+            <h2 className={styles.title}>MORE INFO, DOWNLOAD & SHARE </h2>
             <p className={styles.description}>
               Click on these icons to download the raw data shown in the map,
               share the content in multiple formats, or to explore the sources
@@ -226,7 +226,7 @@ export default (pathname, setOpen) => {
         selector: '[data-tour="lts-explore-05"]',
         content: () => (
           <div>
-            <h2 className={styles.title}>MORE INFO, DOWNLOAD & SHARE​</h2>
+            <h2 className={styles.title}>MORE INFO, DOWNLOAD & SHARE </h2>
             <p className={styles.description}>
               Click on these icons to download the raw data shown in the map,
               share the content in multiple formats, or to explore the sources
@@ -289,7 +289,7 @@ export default (pathname, setOpen) => {
         selector: '[data-tour="net-zero-05"]',
         content: () => (
           <div>
-            <h2 className={styles.title}>MORE INFO, DOWNLOAD & SHARE​</h2>
+            <h2 className={styles.title}>MORE INFO, DOWNLOAD & SHARE </h2>
             <p className={styles.description}>
               Click on these icons to download the raw data shown in the map,
               share the content in multiple formats, or to explore the sources
@@ -342,7 +342,7 @@ export default (pathname, setOpen) => {
         selector: '[data-tour="ndc-enhancement-tracker-04"]',
         content: () => (
           <div>
-            <h2 className={styles.title}>MORE INFO, DOWNLOAD & SHARE​</h2>
+            <h2 className={styles.title}>MORE INFO, DOWNLOAD & SHARE </h2>
             <p className={styles.description}>
               Click on these icons to download the raw data shown in the map,
               share the content in multiple formats, or to explore the sources
@@ -397,7 +397,7 @@ export default (pathname, setOpen) => {
         selector: '[data-tour="ndcs-sdg-04"]',
         content: () => (
           <div>
-            <h2 className={styles.title}>MORE INFO, DOWNLOAD & SHARE​</h2>
+            <h2 className={styles.title}>MORE INFO, DOWNLOAD & SHARE </h2>
             <p className={styles.description}>
               Click on these icons to download the raw data shown in the map,
               share the content in multiple formats, or to explore the sources
@@ -412,7 +412,7 @@ export default (pathname, setOpen) => {
         selector: '[data-tour="ndcs-country-01"]',
         content: () => (
           <div>
-            <h2 className={styles.title}>CLIMATE COMMITMENT CHOSEN​</h2>
+            <h2 className={styles.title}>CLIMATE COMMITMENT CHOSEN</h2>
             <p className={styles.description}>
               Click on the dropdown arrow to change between different versions
               of the country{"'"}s NDCs and explore our analysis.
@@ -424,7 +424,7 @@ export default (pathname, setOpen) => {
         selector: '[data-tour="ndcs-country-02"]',
         content: () => (
           <div>
-            <h2 className={styles.title}>FULL HTML TEXT​</h2>
+            <h2 className={styles.title}>FULL HTML TEXT</h2>
             <p className={styles.description}>
               Access the full NDC document transcribed into HTML for better
               analysis and searchability functionality.
@@ -436,7 +436,7 @@ export default (pathname, setOpen) => {
         selector: '[data-tour="ndcs-country-03"]',
         content: () => (
           <div>
-            <h2 className={styles.title}>DOWNLOAD ORIGINAL DOCUMENT​</h2>
+            <h2 className={styles.title}>DOWNLOAD ORIGINAL DOCUMENT </h2>
             <p className={styles.description}>
               Download the original PDF document of this climate commitment.
             </p>
@@ -447,7 +447,7 @@ export default (pathname, setOpen) => {
         selector: '[data-tour="ndcs-country-04"]',
         content: () => (
           <div>
-            <h2 className={styles.title}>HIGH LEVEL OVERVIEW​​</h2>
+            <h2 className={styles.title}>HIGH LEVEL OVERVIEW </h2>
             <p className={styles.description}>
               Access a summary of the country{"'"}s climate commitment broken
               down into top level indicators.
@@ -459,7 +459,7 @@ export default (pathname, setOpen) => {
         selector: '[data-tour="ndcs-country-05"]',
         content: () => (
           <div>
-            <h2 className={styles.title}>IN DEPTH ANALYSIS​​​</h2>
+            <h2 className={styles.title}>IN DEPTH ANALYSIS </h2>
             <p className={styles.description}>
               Explore our analysis of the NDCs covering more than 160
               indicators, divided into these four categories: Overview,
@@ -552,7 +552,7 @@ export default (pathname, setOpen) => {
             <h2 className={styles.title}>INFO BUTTON</h2>
             <p className={styles.description}>
               Access the full information on the datasets used in this graphic,
-              including sources and citations.​{' '}
+              including sources and citations.{' '}
               <a
                 href="/about/faq/general_questions"
                 target="_blank"
@@ -611,7 +611,7 @@ export default (pathname, setOpen) => {
         selector: '[data-tour="custom-compare-04"]',
         content: () => (
           <div>
-            <h2 className={styles.title}>INDICATORS​</h2>
+            <h2 className={styles.title}>INDICATORS </h2>
             <p className={styles.description}>
               Click on the drop down menus to explore among our more than 160
               indicators.
@@ -685,7 +685,7 @@ export default (pathname, setOpen) => {
         selector: '[data-tour="ghg-06"]',
         content: () => (
           <div>
-            <h2 className={styles.title}>MORE INFO, DOWNLOAD & SHARE​</h2>
+            <h2 className={styles.title}>MORE INFO, DOWNLOAD & SHARE </h2>
             <p className={styles.description}>
               Click on these icons to download the raw data shown in the map,
               share the content in multiple formats, or to explore the sources
@@ -813,7 +813,7 @@ export default (pathname, setOpen) => {
         selector: '[data-tour="home-01"]',
         content: () => (
           <div>
-            <h2 className={styles.title}>NOTIFICATION BELL​</h2>
+            <h2 className={styles.title}>NOTIFICATION BELL</h2>
             <p className={styles.description}>
               Find out our latest updates on datasets and NDCs by clicking here.
             </p>
@@ -836,7 +836,7 @@ export default (pathname, setOpen) => {
         selector: '[data-tour="home-03"]',
         content: () => (
           <div>
-            <h2 className={styles.title}>HISTORIC GHG EMISSIONS​</h2>
+            <h2 className={styles.title}>HISTORIC GHG EMISSIONS</h2>
             <p className={styles.description}>
               Access the most comprehensive database on countries{"'"} historic
               GHG emissions and filter down the data through our multiple
@@ -849,7 +849,7 @@ export default (pathname, setOpen) => {
         selector: '[data-tour="home-04"]',
         content: () => (
           <div>
-            <h2 className={styles.title}>COUNTRY PROFILES​</h2>
+            <h2 className={styles.title}>COUNTRY PROFILES </h2>
             <p className={styles.description}>
               Access an overview assessment on countries{"'"} climate situation
               through our curated list of key indicators.

@@ -4,6 +4,7 @@ import { INDICATOR_SLUGS } from 'data/constants';
 import sortBy from 'lodash/sortBy';
 import uniq from 'lodash/uniq';
 import isEmpty from 'lodash/isEmpty';
+import { CONTINOUS_RAMP, SECTOR_COLORS_BY_LABEL } from 'styles/constants';
 
 // This depends on the country-ghg-emissions-actions fetch
 const getMeta = state =>
@@ -42,14 +43,6 @@ export const getEmissions = createSelector(
   [getIso, getEmissionsIndicator],
   (iso, indicator) => {
     if (!indicator || !iso) return null;
-    const colors = [
-      '#045480',
-      '#0877B3',
-      '#02A0CA',
-      '#02B4D2',
-      '#2ec9df',
-      '#89DDEA'
-    ];
     const locations = Object.entries(indicator.locations).map(
       ([emissionsIso, values]) => ({
         iso: emissionsIso,
@@ -61,7 +54,7 @@ export const getEmissions = createSelector(
       .reverse()
       .map((location, i) => ({
         ...location,
-        color: colors[i] || '#cccdcf' // gray2 as others
+        color: Object.values(CONTINOUS_RAMP)[i] || '#cccdcf' // gray2 as others
       }));
   }
 );
@@ -73,8 +66,11 @@ export const getOtherParties = createSelector([getEmissions], emissions => {
     (acc, curr, i) => (i > 5 ? acc + curr.percentage : acc),
     0
   );
+
+  const COUNTRIES_WITH_COLOR = 5;
+
   return {
-    number: emissions.length + 1 - 5, // 5 countries with color
+    number: emissions.length + 1 - COUNTRIES_WITH_COLOR,
     percentage: Math.round(otherCountriesPercentageSum * 100) / 100
   };
 });
@@ -98,14 +94,6 @@ export const getSectorData = createSelector(
   (data, meta) => {
     if (!data || !data.length || !meta || isEmpty(meta)) return [];
 
-    const colors = {
-      Energy: '#ff6c2f',
-      Agriculture: '#ffb800',
-      'Industrial Processes': '#ff6cd0',
-      'Land-Use Change and Forestry': '#13c881',
-      Waste: '#80c3f6'
-    };
-
     const notAggregatedSectors = uniq(
       meta.sector
         .map(
@@ -117,26 +105,27 @@ export const getSectorData = createSelector(
         )
         .filter(Boolean)
     );
-    let totalValue = 0;
+    let totalPositiveValue = 0;
     const emissionData = data
       .filter(d => notAggregatedSectors.includes(d.sector))
       .map(d => {
         const lastEmission = d.emissions[d.emissions.length - 1];
         const emission = lastEmission && lastEmission.value;
-        if (emission) {
-          totalValue += emission;
+        if (emission && emission > 0) {
+          totalPositiveValue += emission;
         }
+
         return {
           sector: d.sector,
           emission: lastEmission && lastEmission.value,
-          color: colors[d.sector] || '#cccdcf' // gray2 as others
+          color: SECTOR_COLORS_BY_LABEL[d.sector] || '#cccdcf' // gray2 as others
         };
       });
     return sortBy(emissionData, 'emission')
       .reverse()
       .map(d => ({
         ...d,
-        percentage: d.emission && (100 * d.emission) / totalValue
+        percentage: d.emission && (100 * d.emission) / totalPositiveValue
       }));
   }
 );

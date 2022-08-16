@@ -7,9 +7,7 @@
           {
             "mode": "remove",
             "removeImport": true,
-            "ignoreFilenames": [
-              "node_modules"
-            ]
+            "ignoreFilenames": ["node_modules"]
           }
         ]
       ]
@@ -34,8 +32,7 @@
           ]
         },
         "useBuiltIns": "entry",
-        "corejs": "^3",
-        "forceAllTransforms": true
+        "corejs": "^3"
       }
     ],
     "@babel/preset-react"

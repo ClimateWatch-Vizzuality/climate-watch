@@ -16,8 +16,7 @@ import {
   getLtsDocument,
   getSectors,
   getCountryDocuments,
-  getCountryName,
-  getCountryNdcsData
+  getCountryName
 } from './country-ndc-overview-selectors';
 
 const mapStateToProps = (state, { location, match }) => {
@@ -31,10 +30,7 @@ const mapStateToProps = (state, { location, match }) => {
     isEmbed,
     ndcsDocument: getNdcsDocument(state, { location, iso }),
     ltsDocument: getLtsDocument(state, { location, iso }),
-    values:
-      process.env.FEATURE_COUNTRY_CHANGES === 'true'
-        ? getCountryNdcsData(state, { iso })
-        : getValuesGrouped(state, { location, iso }),
+    values: getValuesGrouped(state, { location, iso }),
     loading: state.ndcContentOverview.loading,
     sectors: getSectors(state, { location, iso }),
     fetched: !isEmpty(getCountryDocuments(state, { location, iso })),

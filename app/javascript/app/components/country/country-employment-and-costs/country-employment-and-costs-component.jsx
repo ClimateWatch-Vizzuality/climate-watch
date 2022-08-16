@@ -1,4 +1,13 @@
-import React, { useState, useRef, useMemo, useEffect } from 'react';
+/* eslint-disable jsx-a11y/heading-has-content */
+import React, {
+  useState,
+  useRef,
+  useMemo,
+  useEffect,
+  useCallback,
+  Fragment
+} from 'react';
+import ReactDOMServer from 'react-dom/server';
 import Proptypes from 'prop-types';
 import { format } from 'd3-format';
 import cx from 'classnames';
@@ -8,10 +17,12 @@ import { axisTop } from 'd3-axis';
 import { select } from 'd3-selection';
 import Icon from 'components/icon';
 import Tag from 'components/tag';
+import Loading from 'components/loading';
 import externalLink from 'assets/icons/external-link.svg';
 import ReactTooltip from 'react-tooltip';
-
+import ButtonGroup from 'components/button-group';
 import layout from 'styles/layout.scss';
+import Tooltip from './country-employment-tooltip';
 
 import styles from './country-employment-and-costs-styles.scss';
 
@@ -32,11 +43,19 @@ const PADDING_RIGHT = 30;
 const PADDING_LEFT = 10;
 
 function CountryEmploymentAndCosts(props) {
-  const { sectionData } = props;
+  const { sectionData, setModalMetadata, loading } = props;
   const [selectedTab, setSelectedTab] = useState(tabs[0]);
   const chartContainer = useRef();
 
   const currentConfig = sectionData?.[selectedTab.value];
+
+  const handleInfoClick = useCallback(() => {
+    setModalMetadata({
+      category: 'Country',
+      slugs: selectedTab.value === tabs[0].value ? 'irena_1' : 'irena_2',
+      open: true
+    });
+  }, [setModalMetadata, selectedTab]);
 
   const width = useMemo(() => {
     const bounding =
@@ -67,9 +86,17 @@ function CountryEmploymentAndCosts(props) {
         .attr('height', CHART_HEIGHT)
         .append('g')
         .attr('transform', `translate(${PADDING_LEFT},${PADDING_RIGHT})`)
-        .call(xAxisEmployment);
+        .call(xAxisEmployment)
+        .call(g => g.select('.domain').remove())
+        .call(g => g.selectAll('.tick line').attr('stroke', '#ccc'));
     }
   }, [selectedTab, width, currentConfig]);
+
+  const getTooltip = useCallback(
+    (datum, _config) =>
+      ReactDOMServer.renderToString(<Tooltip datum={datum} config={_config} />),
+    []
+  );
 
   const renderContent = () => {
     const hasData = currentConfig && currentConfig.data.length;
@@ -79,7 +106,7 @@ function CountryEmploymentAndCosts(props) {
         <div className={styles.header}>
           <div className={styles.titleContainer}>
             <h3 className={styles.title}>
-              How does climate action increase jobs and save money?
+              How do renewables generate jobs and reduce energy costs over time?
             </h3>
             <a
               title="Go to IRENA"
@@ -91,6 +118,14 @@ function CountryEmploymentAndCosts(props) {
               Explore more on IRENA
               <Icon icon={externalLink} className={styles.icon} />
             </a>
+          </div>
+          <div className={styles.descriptionContainer}>
+            <p>
+              The increasing uptake of renewable sources of energy into
+              countries' energy mix is generating green jobs and driving down
+              the cost of electricity, making them competitive or even cheaper
+              than non-renewable sources in certain geographies.
+            </p>
           </div>
           <ReactTooltip className={styles.tooltip} />
         </div>
@@ -105,14 +140,26 @@ function CountryEmploymentAndCosts(props) {
             }}
           />
         </div>
-        {!hasData && (
+        {!hasData && !loading && (
           <div className={styles.noDataContainer}>
-            <span>No data available.</span>
+            <span>No data available</span>
+          </div>
+        )}
+        {loading && (
+          <div className={styles.noDataContainer}>
+            <Loading light />
           </div>
         )}
         {Boolean(hasData) && (
           <div className={styles.chartContainer}>
-            <div className={styles.chartTitle}>{currentConfig?.name}</div>
+            <div className={styles.chartTitleContainer}>
+              <div className={styles.chartTitle}>{currentConfig?.name}</div>
+              <ButtonGroup
+                key="employment-costs-btn-group"
+                className={styles.buttonContainer}
+                buttonsConfig={[{ type: 'info', onClick: handleInfoClick }]}
+              />
+            </div>
             <div className={styles.chartLegend}>
               <div className={styles.legend}>
                 <ul>
@@ -141,24 +188,35 @@ function CountryEmploymentAndCosts(props) {
                 >
                   <svg id="employment-chart" width="100%" height="100%" />
                   {selectedTab.value === tabs[0].value && (
-                    <div className={styles.chart}>
-                      {currentConfig?.data?.map(d => (
-                        <div
-                          className={styles.barContainer}
-                          key={`value-${d.name}`}
-                        >
+                    <Fragment>
+                      <div className={styles.chart}>
+                        {currentConfig?.data?.map(d => (
                           <div
-                            className={styles.bar}
-                            style={{
-                              minWidth: `${d.percentage}%`,
-                              backgroundColor:
-                                currentConfig.config.theme[d.name].fill
-                            }}
-                          />
-                          <div>{format('.4s')(d.value)}</div>
-                        </div>
-                      ))}
-                    </div>
+                            className={styles.barContainer}
+                            key={`value-${d.name}`}
+                          >
+                            <div
+                              className={styles.bar}
+                              style={{
+                                minWidth: `${d.percentage}%`,
+                                backgroundColor:
+                                  currentConfig.config.theme[d.name].fill
+                              }}
+                              data-for="employment-chart-bar"
+                              data-tip={getTooltip(d, currentConfig)}
+                            />
+                            <div>{d.value.toLocaleString()}</div>
+                          </div>
+                        ))}
+                      </div>
+                      <ReactTooltip
+                        id="employment-chart-bar"
+                        html
+                        className={styles.tooltip}
+                        effect="solid"
+                        type="light"
+                      />
+                    </Fragment>
                   )}
                 </div>
                 {selectedTab.value === tabs[1].value && (
@@ -170,7 +228,7 @@ function CountryEmploymentAndCosts(props) {
                     height={450}
                     domain={currentConfig?.domain}
                     showUnit
-                    getCustomYLabelFormat={d => format('.4s')(d)}
+                    getCustomYLabelFormat={d => format('.3f')(d)}
                   />
                 )}
               </div>
@@ -189,7 +247,9 @@ function CountryEmploymentAndCosts(props) {
 }
 
 CountryEmploymentAndCosts.propTypes = {
-  sectionData: Proptypes.array
+  sectionData: Proptypes.array,
+  loading: Proptypes.bool,
+  setModalMetadata: Proptypes.func.isRequired
 };
 
 export default CountryEmploymentAndCosts;

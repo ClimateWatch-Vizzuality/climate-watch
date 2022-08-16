@@ -5,11 +5,19 @@ import { CHART_NAMED_EXTENDED_COLORS } from 'app/styles/constants';
 const COSTS_COLORS = {
   'Solar Photovoltaic': '#ff6c2f',
   'Onshore wind': '#2ec9df',
-  'Offshore wind': '#13c881'
+  'Offshore wind': '#13c881',
+  'Fossil fuel - low': '#cccdcf',
+  'Fossil fuel - high': '#000',
+  default: '#999c9f'
 };
+
+const FUEL_DATA = ['Fossil fuel - low', 'Fossil fuel - high'];
 
 const getCountryIndicators = state =>
   state.countryProfileIndicators.data || null;
+
+export const getLoading = state =>
+  state.countryProfileIndicators.loading || null;
 
 const getCostsConfig = countryIndicators => {
   const { cost_by_technology } = countryIndicators;
@@ -46,7 +54,7 @@ const getCostsConfig = countryIndicators => {
         yLeft: {
           format: 'number',
           name: 'x',
-          unit: 'USD/Kwh'
+          unit: 'USD/kWh'
         }
       },
       columns: {
@@ -62,8 +70,12 @@ const getCostsConfig = countryIndicators => {
         (acc, next) => ({
           ...acc,
           [next]: {
-            stroke: COSTS_COLORS[next] || '#999c9f',
-            fill: COSTS_COLORS[next] || '#999c9f'
+            stroke: COSTS_COLORS[next] || COSTS_COLORS.default,
+            fill: COSTS_COLORS[next] || COSTS_COLORS.default,
+            ...(FUEL_DATA.includes(next) && {
+              strokeDasharray: 8,
+              strokeLinecap: 'round'
+            })
           }
         }),
         {}
@@ -75,16 +87,6 @@ const getCostsConfig = countryIndicators => {
         }),
         {}
       )
-    },
-    domain: {
-      x: [
-        min(cost_by_technology.values.map(({ year }) => year)),
-        max(cost_by_technology.values.map(({ year }) => year))
-      ],
-      y: [
-        min(cost_by_technology.values.map(({ value }) => +value)),
-        max(cost_by_technology.values.map(({ value }) => +value))
-      ]
     },
     name: cost_by_technology.name,
     metadata_source: cost_by_technology.metadata_source
@@ -105,13 +107,11 @@ const getEmploymentConfig = countryIndicators => {
 
   return {
     data: sortBy(
-      employment_by_technology.values
-        .map(({ category, value }) => ({
-          name: category,
-          value: +value,
-          percentage: (value / maxEmployment) * 100
-        }))
-        .filter(({ value }) => value > 0),
+      employment_by_technology.values.map(({ category, value }) => ({
+        name: category,
+        value: +value,
+        percentage: (value / maxEmployment) * 100
+      })),
       'value'
     ).reverse(),
     config: {
@@ -127,7 +127,16 @@ const getEmploymentConfig = countryIndicators => {
           }
         }),
         {}
-      )
+      ),
+      tooltip: {
+        payload: Object.values(columns).reduce(
+          (acc, next) => ({
+            ...acc,
+            [next]: { label: next }
+          }),
+          {}
+        )
+      }
     },
     domain: [
       min(employment_by_technology.values.map(({ value }) => +value)),

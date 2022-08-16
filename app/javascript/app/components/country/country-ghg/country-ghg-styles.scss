@@ -1,9 +1,13 @@
 @import '~styles/layout.scss';
 
+.wrapper {
+  padding: ($gutter-padding + $gutter-padding / 2) 0;
+  border-bottom: 1px solid $gray2;
+}
+
 .content {
   @include row(12);
 
-  padding-top: 30px;
   padding-bottom: 30px;
 
   @media #{$tablet-landscape} {

@@ -20,6 +20,14 @@
   margin-bottom: 15px;
 }
 
+.descriptionContainer {
+  color: $theme-color;
+  line-height: $line-height-medium;
+
+  @include columns(12);
+  @include xy-gutters($gutter-position: ('bottom'));
+}
+
 .documentsTitle {
   display: flex;
   justify-content: space-between;
@@ -34,11 +42,20 @@
   text-align: center;
 }
 
+.valueDescription {
+  margin-top: 10px;
+  font-size: $font-size-sm;
+  color: $gray1;
+}
+
 .ambitionContainer {
   @include row(12);
 
   @media #{$tablet-landscape} {
-    @include columns((8,4));
+    @include columns((9,3));
+
+    justify-content: space-between;
+    align-items: flex-start;
   }
 }
 
@@ -54,6 +71,7 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+  height: auto;
 
   .item {
     display: flex;

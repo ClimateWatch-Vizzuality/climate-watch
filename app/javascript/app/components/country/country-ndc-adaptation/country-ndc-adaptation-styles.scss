@@ -1,0 +1,126 @@
+@import '~styles/layout.scss';
+
+.wrapper {
+  padding: ($gutter-padding + $gutter-padding / 2) 0;
+  border-bottom: solid 1px $gray2;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  > a {
+    width: auto;
+  }
+}
+
+.sectors {
+  margin-top: 20px;
+  border-left: solid 1px $gray2;
+
+  @include columns(12, $gutters: false);
+  @include xy-gutters($gutter-position: ('bottom'));
+
+  @media #{$tablet-portrait} {
+    @include columns(6, $gutters: false);
+  }
+
+  @media #{$tablet-landscape} {
+    @include columns(4, $gutters: false);
+    @include xy-gutters($gutter-position: ('bottom'), $gutters: 0);
+  }
+}
+
+.sectorsEmbed {
+  margin-bottom: 1px;
+}
+
+.descriptionContainer {
+  margin-top: 20px;
+  color: $theme-color;
+  line-height: $line-height-medium;
+}
+
+.title {
+  display: block;
+  font-size: $font-size-large;
+  font-weight: $font-weight;
+  color: $theme-color;
+}
+
+.tooltipContainer {
+  min-width: 300px;
+  pointer-events: auto !important;
+
+  &:hover {
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+}
+
+.tooltip {
+  font-size: $font-size-s;
+  color: $white;
+  display: flex;
+  flex-direction: column;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.tooltipTitle {
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.actionTitleContainer {
+  max-height: 400px;
+  overflow: auto;
+}
+
+.actionTitleContainer,
+.actionTitle {
+  margin-bottom: 10px;
+}
+
+.sectorSelector {
+  padding-top: 15px;
+}
+
+.sectorIncluded {
+  text-decoration: underline;
+}
+
+.info {
+  flex-basis: 100%;
+}
+
+.loader {
+  min-height: 400px;
+}
+
+.noContent {
+  min-height: 400px;
+}
+
+.sectorFilters {
+  @include columns(6, $gutters: false);
+
+  margin-top: 20px;
+}
+
+.buttonContainer {
+  min-width: 45px;
+}
+
+.sectorFilter {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+
+  > * {
+    &:not(:first-child) {
+      margin-left: 15px;
+    }
+  }
+}
