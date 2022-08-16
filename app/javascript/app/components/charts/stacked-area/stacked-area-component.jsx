@@ -25,7 +25,7 @@ import {
 import TooltipChart from 'components/charts/tooltip-chart';
 import { formatSIwithDecimals } from 'utils/d3-custom-format';
 
-import { QUANTIFICATION_COLORS, QUANTIFICATIONS_CONFIG } from 'data/constants';
+import { QUANTIFICATION_COLORS } from 'data/constants';
 import DividerLine from './divider-line';
 
 const NUMBER_PRECISION = '2';
@@ -62,7 +62,7 @@ class ChartStackedArea extends PureComponent {
     const chartX = (e && e.chartX) || 0;
     const lastDataX = this.props.lastData.x;
     const tooltipVisibility = activeCoordinateX >= chartX - 10;
-    const isReversedTooltip = e.activeLabel && e.activeLabel >= lastDataX;
+    const isReversedTooltip = e && e.activeLabel && e.activeLabel >= lastDataX;
 
     if (this.state.tooltipVisibility !== tooltipVisibility) {
       this.setState({ tooltipVisibility }, () => this.props.onMouseMove(e));
@@ -100,7 +100,7 @@ class ChartStackedArea extends PureComponent {
           return QUANTIFICATION_COLORS.NOT_QUANTIFIABLE;
         case point.label.includes('BAU'):
           return QUANTIFICATION_COLORS.BAU;
-        case point.label.includes(QUANTIFICATIONS_CONFIG.net_zero.label):
+        case point.document_slugs.includes('net_zero_target'):
           return QUANTIFICATION_COLORS.NET_ZERO;
         default:
           return QUANTIFICATION_COLORS.QUANTIFIED;

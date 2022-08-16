@@ -239,10 +239,11 @@ export const getQuantificationsData = createSelector(
               label: v.label,
               isRange,
               latest: v.latest,
-              document_slug: v.document_slug
+              document_slugs: [v.document_slug]
             };
           } else {
             valuesParsed.label += `, ${v.label}`;
+            valuesParsed.document_slugs.push(v.document_slug);
           }
         });
         qParsed.push(valuesParsed);
@@ -251,17 +252,8 @@ export const getQuantificationsData = createSelector(
 
     if (FEATURE_COUNTRY_CHANGES) {
       if (!showPreviousTargets) {
-        qParsed = qParsed.filter(q => q.latest || q.document_slug === 'lts');
+        qParsed = qParsed.filter(q => q.latest);
       }
-
-      const netZeroPoint = {
-        x: 2050,
-        y: 0,
-        label: QUANTIFICATIONS_CONFIG.net_zero.label,
-        isRange: false
-      };
-
-      qParsed.push(netZeroPoint);
     }
 
     // Sort desc to avoid z-index problem in the graph
