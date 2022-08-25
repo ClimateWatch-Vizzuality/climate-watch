@@ -286,7 +286,7 @@ class ImportIndc
   end
 
   def import_category_types
-    @category_types_index = @metadata.first.keys.
+    @category_types_index = @metadata.first.keys.compact.
       select { |key| key.match(/_category$/) }.
       map { |c| c.to_s.gsub(/_category$/, '') }.
       each_with_object({}) do |category_type, memo|
@@ -377,7 +377,7 @@ class ImportIndc
           source: @sources_index[r[:source]]
         )
 
-      categories = r.keys.
+      categories = r.keys.compact.
         select { |key| key.match(/_category$/) }.
         map { |c| c.to_s.gsub(/_category$/, '') }.
         map do |category_type|
