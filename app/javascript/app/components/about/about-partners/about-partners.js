@@ -124,7 +124,7 @@ const partnershipWith = {
         alt: 'WRI',
         src: wriImage
       },
-      description: 'WRI manages Climate Watch in collaboration with partners.'
+      description: 'manages Climate Watch in collaboration with partners.'
     }
   ]
 };
