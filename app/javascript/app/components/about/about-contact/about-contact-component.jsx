@@ -29,7 +29,7 @@ const AboutContact = ({ location }) => {
         title="contact-form"
         id="contact-form"
         className={styles.contactIframe}
-        src="//go.pardot.com/l/120942/2017-09-11/3khdjq"
+        src="//connect.wri.org/l/120942/2017-09-11/3khdjq"
         frameBorder="0"
       />
     </div>
