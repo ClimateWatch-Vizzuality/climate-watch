@@ -23,14 +23,14 @@ const About = ({ location }) => (
         let users analyze and compare the Nationally Determined Contributions
         (NDCs) under the Paris Agreement, access historical emissions data,
         discover how countries can leverage their climate goals to achieve their
-        sustainable development objectives, and use models to map new pathways
+        sustainable development objectives and use models to map new pathways
         to a lower carbon, prosperous future.
       </p>
       <p>
         This free platform enables users to create and share custom data
         visualizations and comparisons of national climate commitments. It
         contributes to the goals of the Paris Agreement by using open data to
-        increase transparency and accountability, and provide actionable
+        increase transparency and accountability and providing actionable
         analysis on how countries can enhance their efforts to combat climate
         change.
       </p>
@@ -74,7 +74,7 @@ const About = ({ location }) => (
         </li>
         <li>
           The ability to download data and create, save and share customized
-          data visualizations through My Climate Watch.
+          data visualizations.
         </li>
       </ul>
       <p>
