@@ -14,7 +14,7 @@ export const sectionsData = [
         title: 'Who is this tool for? ',
         answer:
           'Government ministries, development organizations, civil society organizations and researchers can use Climate Watch to find and download data about global emissions, climate commitments, sustainable development and other topics. Visit our <Link to="/" innertext="homepage" /> to see what we can offer you. '
-      },
+      }, 
       {
         type: 'html',
         title: 'Can I download the data?',
