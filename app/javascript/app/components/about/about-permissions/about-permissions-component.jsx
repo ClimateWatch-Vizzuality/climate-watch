@@ -26,7 +26,7 @@ const AboutPermissions = ({ location }) => (
         </a>{' '}
         license, which permits unrestricted reuse of Climate Watch content when
         proper attribution is provided (see below). This means you are able to
-        download, share and adapt the data, maps, graphics, charts, and other
+        download, share and adapt the data, maps, graphics, charts and other
         representations of the data for non-commercial or commercial uses.
       </p>
       <p>
@@ -42,7 +42,7 @@ const AboutPermissions = ({ location }) => (
         Partnership or any other partner organizations endorse your use of the
         data.
       </p>
-      <h3>Citation of the Climate Watch platform and data:</h3>
+      <h3>Citation of Climate Watch platform and data:</h3>
       <p>
         Climate Watch. 2022. Washington, DC: World Resources Institute.
         Available online at:{' '}
