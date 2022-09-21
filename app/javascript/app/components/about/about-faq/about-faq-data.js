@@ -14,7 +14,7 @@ export const sectionsData = [
         title: 'Who is this tool for? ',
         answer:
           'Government ministries, development organizations, civil society organizations and researchers can use Climate Watch to find and download data about global emissions, climate commitments, sustainable development and other topics. Visit our <Link to="/" innertext="homepage" /> to see what we can offer you. '
-      },
+      }, 
       {
         type: 'html',
         title: 'Can I download the data?',
@@ -31,13 +31,13 @@ export const sectionsData = [
         type: 'html',
         title: 'What makes Climate Watch data credible?',
         answer:
-          'Climate Watch is based on data sources that are: <ul><li>Officially reported by national governments under the United Nations Framework Convention on Climate Change or gathered by reputable institutions (e.g., World Bank, United Nations Development Programme) and research organizations (e.g., Potsdam Institute for Climate Impact Research, World Resources Institute).</li><li>Well-documented in terms of a methodology that takes into account rigorous quality checks and data validation</li><li>Available for the majority of the countries and updated on a regular basis</li><li>Publicly available </li></ul>'
+          'Climate Watch is based on data sources that are: <ul><li>Officially reported by national governments under the United Nations Framework Convention on Climate Change or gathered by reputable institutions (e.g., World Bank, United Nations Development Programme) and research organizations (e.g., Potsdam Institute for Climate Impact Research, World Resources Institute).</li><li>Well-documented with a methodology that includes rigorous quality checks and data validation</li><li>Available for the majority of countries and updated on a regular basis</li><li>Publicly available </li></ul>'
       },
       {
         type: 'html',
         title: 'Who is behind Climate Watch?',
         answer:
-          'Visit our <Link to="/about/partners" innertext="Partners" /> page to see all the organizations involved in developing and managing Climate Watch. The platform is managed on a daily basis by the World Resources Institute and is part of the <a href="https://resourcewatch.org/" rel="noopener noreferrer" target="_blank">Resource Watch</a> family of data platforms. The name “Climate Watch” refers only to the platform and not to any particular organization.'
+          'Visit our <Link to="/about/partners" innertext="Partners" /> page to see all the organizations involved in developing and managing Climate Watch. The platform is managed on a daily basis by World Resources Institute and is part of the <a href="https://resourcewatch.org/" rel="noopener noreferrer" target="_blank">Resource Watch</a> family of data platforms. The name “Climate Watch” refers only to the platform and not to any particular organization.'
       },
       {
         type: 'text',
@@ -49,7 +49,7 @@ export const sectionsData = [
         type: 'html',
         title: 'How frequently is the data updated?',
         answer:
-          '<Link to="/countries" innertext="Country profiles" /> are updated at least once per year. Links to UNFCCC submissions are updated more frequently as new documents are submitted. <Link to="/ghg-emissions" innertext="Historical GHG emissions" /> are updated as available. It takes at least 1-2 years for organizations to compile, process and report GHG data; thus, the last year of complete GHG data will often be 2-3 years behind the current calendar year.<p><Link to="/ndcs-content" innertext="NDC content" /> is updated as new NDCs are submitted to the UNFCCC.</p><p> <Link to="/ndcs-sdg" innertext="NDC-SDG linkages" /> are updated as new NDCs are submitted to the UNFCCC.</p>'
+          '<Link to="/countries" innertext="Country profiles" /> are updated at least once per year. Links to UNFCCC submissions are updated more frequently as new documents are submitted. <Link to="/ghg-emissions" innertext="Historical GHG emissions" /> are updated as available. It takes at least 1-2 years for organizations to compile, process and report GHG data; thus, the last year of complete GHG data will often be 2-3 years behind the current calendar year.<p><Link to="/ndcs-content" innertext="NDC content" /> is updated as new NDCs are submitted to the UNFCCC.</p><p> <Link to="/ndcs-sdg" innertext="NDC-SDG linkages" /> are not regularly updated, but are up to date covering NDCs submitted prior to May 2021.</p>'
       },
       {
         type: 'html',
@@ -283,13 +283,62 @@ export const sectionsData = [
           }
         ]
       },
+        {
+        type: 'html',
+        title:
+          'What are the definitions of the different emissions sectors from the Climate Watch data? ',
+        answer:
+          'You can find the definitions of all Climate Watch data sectors in our <a href="https://wri-sites.s3.us-east-1.amazonaws.com/climatewatch.org/www.climatewatch.org/climate-watch/wri_metadata/CW_GHG_Method_Note.pdf">Climate Watch Methodology</a>.'
+      },
       {
         type: 'html',
         title:
           'How significant are uncertainties in the emissions data, particularly in the land-use change and forestry sector? ',
         answer:
-          'According to the Working Group III Contribution to the IPCC Fifth Assessment Report, global CO<sub>2</sub> emissions from fossil fuel combustion are known within 8% uncertainty (90% confidence interval). CO<sub>2</sub> emissions from FOLU (forestry and other land use) have very large uncertainties associated with them in the order of ± 50%. Uncertainty for global emissions of CH<sub>4</sub>, N<sub>2</sub>O and the F-gases has been estimated as 20%, 60% and 20% respectively. For the PIK dataset, regional deforestation emissions are downscaled to the country level using estimates of the deforested area obtained from potential vegetation and calculations for the needed agricultural land. Accordingly levels of uncertainty are quite high for earlier years of data (closer to 1850).  '
-      }
+          'According to the Working Group III Contribution to the IPCC Sixth Assessment Report, estimated uncertainly for global CO<sub>2</sub> emissions from fossil fuels is relatively low, about 8%. For non-CO<sub>2</sub> GHG emissions, CH<sub>4</sub> and F-gases have relatively ‘intermediate’ uncertainties of around 30%, while N<sub>2</sub>O has a higher uncertainty of around 60%. CO22 emissions from land-use change and forestry have very large uncertainties of 70%. In total, when combining these uncertainties, estimates of global total GHG emissions have an uncertainty of around 10%.<br>You can find out more about the uncertainties in the Climate Watch data in our <a href="https://wri-sites.s3.us-east-1.amazonaws.com/climatewatch.org/www.climatewatch.org/climate-watch/wri_metadata/CW_GHG_Method_Note.pdf">Methodology</a> document.'
+      },
+     {
+        type: 'html',
+        title:
+          'Why do some countries have sectors with negative emissions?',
+        answer:
+          '<p>The Land-use Change & Forestry (LUCF) sector can be a carbon sink or a source of emissions. Trees and other vegetation take up carbon dioxide from the atmosphere, but they also release emissions when they are cut down, burned or converted to other land uses. Depending on the balance between emissions and carbon sequestration in this sector within a country’s territory, the resulting net emissions could be positive or negative.</p><p>This WRI <a href="https://www.wri.org/insights/forests-absorb-twice-much-carbon-they-emit-each-year">article</a> has more detail on how trees contribute to carbon sequestration.</p>'
+      },
+      {
+        type: 'html',
+        title:
+          'Why is the value from total World GHG emissions different from the aggregation of all individual countries GHG emissions?',
+        answer:
+          'It is important to note that the sum of all countries’ emissions data available in Climate Watch dataset will not be the same as the World total. This is due to two reasons: <ul><li>International bunker fuel related emissions are not included in the country-level totals following the IPCC methodology, which account for around 1.3 GtCO<sub>2</sub>e;</li><li>In addition, Climate Watch dataset only covers 190+ countries (all of which are parties to the UNFCCC), leaving out other territories that could also be releasing anthropogenic emissions data.</li></ul>'
+      },
+      {
+        type: 'html',
+        title:
+          'Is Climate Watch’s GHG emissions data production or consumption based?',
+        answer:
+          '<p>Climate Watch provides production-based emissions data.</p><p>The Paris Agreement requires participating countries to submit emission inventories that are based on activities within their territory. All the inventories on Climate Watch are based on this production-based accounting.</p><p>Consumption-based accounting tracks emissions based on where the end products are used or consumed, as opposed to where they are produced. This information can help to identify which actions on a product level could be most efficient to reduce emissions globally. For example, countries that import a lot of emission-intensive products could decide to help exporting countries to improve their carbon intensity of manufacturing.</p><p>There are other data sources that publish consumption-based numbers, including <a href="https://ourworldindata.org/consumption-based-co2">Our World in Data</a>.</p>'
+      },
+      {
+        type: 'html',
+        title:
+          'Why are emissions estimates fluctuating significantly from year to year for some countries?',
+        answer:
+          '<p>The jumps in emissions data are often related to the forestry sector emissions. These jumps result from the reporting methodology of its underlying data source, FAOSTAT, which uses the Forest Resource Assessment published every 5 years. FAOSTAT is interpolating this data over those 5-year periods and if there were significant differences in emissions between these periods, it may result in a jump on our graphics.</p><p>To find out more about the Forest Resource Assessment, you can access this <a href="https://www.wri.org/insights/insider-global-forest-watch-and-forest-resources-assessment-explained-5-graphics">blogpost</a>.</p>'
+      },
+    {
+        type: 'html',
+        title:
+          'WWhy are UNFCCC emissions estimates scattered for certain Non-Annex I countries?',
+        answer:
+          '<p>The reporting requirements for GHG inventories are different for Annex I and Non-Annex I Parties of the UNFCCC. Unlike Annex-I countries who report their GHG inventories annually through National Inventory Reports and in common reporting format (CRF) tables, Non-Annex I countries report their emissions data through National Communications and Biennial Update Reports which are submitted in different points and in varied forms.</p><p>Furthermore, Climate Watch only publishes data collected and made available through UNFCCC’s GHG data interface, which displays data ‘as received’ from Parties. Climate Watch does not attempt data collection on our own. Some Non-Annex I Parties submitted their GHG inventory data using the format of the 2006 IPCC Guidelines for reporting GHG emissions/removals and are not included in UNFCCC’s data interface. Thus, those emissions inventories are not available through Climate Watch.</p><p>For the most up to date list of latest reports, please visit UNFCCC page <a href="https://unfccc.int/process-and-meetings/transparency-and-reporting/greenhouse-gas-data/notes-on-ghg-data">here</a>. Direct access to the latest NCs and BURs documents can be found in the UNFCCC timeline  at the top of each Climate Watch Country Profile page.</p>'
+      },
+    {
+        type: 'html',
+        title:
+          'Why are Climate Watch emissions estimates different from those reported by countries in their national inventories?',
+        answer:
+          '<p>Due to the differences in data sources and methodologies used, Climate Watch estimated country GHG emissions are inevitably different from official inventories reported by countries.</p><p>Parties to the UNFCCC are required to “develop, update periodically, publish and make available to the Conference of the Parties (COP), their national inventories of anthropogenic emissions by sources and removals by sinks of all greenhouse gases not controlled by the Montreal Protocol.” Due to differences in capacity and resources available for Annex I Parties to the Convention and Non-Annex I Parties, not all countries have a full time-series GHG data available. With the different reporting requirements and guidelines, not all inventories reported by parties to the UNFCCC are comparable to each other.</p><p>Climate Watch Country GHG Emissions dataset is provided to offer a comprehensive and comparable dataset across countries, and as a complement to the official inventories that are available.</p>'
+      },
     ]
   },
   {
@@ -300,7 +349,7 @@ export const sectionsData = [
         type: 'text',
         title: 'What are NDCs? ',
         answer:
-          'In the lead up to the Paris climate conference in December 2015, Parties were invited by the UNFCCC to communicate their national plans to address climate change, known as Intended Nationally Determined Contributions, or INDCs. A country’s INDC is converted to a Nationally Determined Contribution (NDC) when it formally joins the Paris Agreement by submitting an instrument of ratification, acceptance, approval or accession.'
+          'In the lead up to the Paris Climate Conference in December 2015, Parties were invited by the UNFCCC to communicate their national plans to address climate change, known as Intended Nationally Determined Contributions, or INDCs. A country’s INDC is converted to a Nationally Determined Contribution (NDC) when it formally joins the Paris Agreement by submitting an instrument of ratification, acceptance, approval or accession.'
       },
       {
         type: 'text',
@@ -319,7 +368,7 @@ export const sectionsData = [
         type: 'html',
         title: 'What is the methodology behind the data? ',
         // eslint-disable-next-line quotes
-        answer: `<p>The structured indicators used for presenting NDC information are adapted from several data sources, including the <a href="http://cait.wri.org/indc/" rel="noopener noreferrer" target="_blank">CAIT Paris Contributions Map</a>, <a href="http://spappssecext.worldbank.org/sites/indc/Pages/INDCHome.aspx" rel="noopener noreferrer" target="_blank">World Bank's NDC Platform</a>, and  <a href="https://klimalog.die-gdi.de/ndc/#NDCExplorer/worldMap?NDC??income???catIncome" rel="noopener noreferrer" target="_blank">DIE's NDC Explorer</a>. Please refer to respective resources for detailed documentation. The terms and phrases used in this tool follow, to the extent possible, WRI’s publication <a href="https://www.wri.org/publication/designing-and-preparing-indcs" rel="noopener noreferrer" target="_blank">"Designing and Preparing INDCs."</a></p><p>Some of the key indicators are explained <a href="https://wri-sites.s3.us-east-1.amazonaws.com/climatewatch.org/www.climatewatch.org/climate-watch/wri_metadata/NDC_methodology.pdf" rel="noopener noreferrer" target="_blank">in this document</a>.</p>`
+        answer: `<p>Some of the key indicators of the NDC analysis are explained <a href="https://wri-sites.s3.us-east-1.amazonaws.com/climatewatch.org/www.climatewatch.org/climate-watch/wri_metadata/NDC_methodology.pdf" rel="noopener noreferrer" target="_blank">in this document</a>.</p><p>The structured indicators used for presenting NDC information are adapted from several data sources, including the <a href="http://spappssecext.worldbank.org/sites/indc/Pages/INDCHome.aspx" rel="noopener noreferrer" target="_blank">World Bank's NDC Platform</a> and  <a href="https://klimalog.die-gdi.de/ndc/#NDCExplorer/worldMap?NDC??income???catIncome" rel="noopener noreferrer" target="_blank">DIE's NDC Explorer</a>. Please refer to respective resources for detailed documentation. The terms and phrases used in this tool follow, to the extent possible, those outlined in WRI’s publication <a href="https://www.wri.org/publication/designing-and-preparing-indcs" rel="noopener noreferrer" target="_blank">"Designing and Preparing INDCs."</a></p>`
       },
       {
         type: 'text',
@@ -332,7 +381,13 @@ export const sectionsData = [
         title: 'How does the NDC keyword search work with translation? ',
         answer:
           'Searching for a word in English will produce results only among I/NDCs that are in English; similarly searching for a word in French would produce results among I/NDCs in French. '
-      }
+      },
+    {
+        type: 'text',
+        title: 'How do we determine enhanced ambition/overall comparison with previous NDC? ',
+        answer:
+          'You can find all the indicators from the “Overall comparison with previous NDC” in this <a href="https://wri-sites.s3.us-east-1.amazonaws.com/climatewatch.org/www.climatewatch.org/climate-watch/wri_metadata/NDC_methodology.pdf" rel="noopener noreferrer" target="_blank">link</a>.'
+      },
     ]
   },
   {
@@ -382,7 +437,7 @@ export const sectionsData = [
         type: 'html',
         title: 'What is a net-zero target? ',
         answer:
-          '<p>At a country level, reaching or committing to reach net-zero emissions by a certain year means that GHG emissions released to the atmosphere from sources within the country’s territory in the target year do not exceed GHGs removed from the atmosphere by sinks within the country’s territory in the target year.</p><p>At the global level, the term net-zero emissions means achieving a balance between anthropogenic emissions and removals of GHGs in a given time period (typically a year).</p>'
+          '<p>At a country level, reaching or committing to reach net-zero emissions by a certain year means that GHG emissions released to the atmosphere from sources within the country’s territory in the target year do not exceed GHGs removed from the atmosphere by sinks within the country’s territory in the target year.</p><p>At the global level, the term net-zero emissions means achieving a balance between anthropogenic emissions and removals of GHGs in a given time period (typically a year).</p><p>See <a href="https://wri-sites.s3.us-east-1.amazonaws.com/climatewatch.org/www.climatewatch.org/climate-watch/wri_metadata/Net-Zero_Tracker_Methodology.pdf" rel="noopener noreferrer" target="_blank">this document</a> for more information about the methodology for the Net-Zero Tracker. </p>'
       },
       {
         type: 'html',
@@ -459,14 +514,14 @@ export const sectionsData = [
         type: 'html',
         title: 'How can I use the Pathways tool?',
         answer:
-          'Pathways can be used to better understand the different development paths a country can take to reach its emission and sustainable development targets. The tool lets the user explore indicators and assumptions that make up each development pathway. It can be used to inform policy decisions to follow a certain pathway and work toward targets.<p> To watch a demo of the tool, please watch <a href="https://register.gotowebinar.com/register/7938728331287880705" rel="noopener noreferrer" target="_blank">this webinar</a>.</p>'
+          'Pathways can be used to better understand the different development paths a country can take to reach its emission and sustainable development targets. The tool lets the user explore indicators and assumptions that make up each development pathway. It can be used to inform policy decisions to follow a certain pathway and work toward targets.'
       },
       {
         type: 'text',
         title:
           'What is your criteria for selecting models and scenarios? Will more be added?',
         answer:
-          'The models included on Pathways are published in peer-reviewed publications or are part of a government report, or have been widely used by governments. We welcome additional modeling teams and institutions to add their models and contact us about uploading their data.'
+          'The models included on Pathways are published in peer-reviewed publications, are part of a government report or have been widely used by governments. We welcome additional modeling teams and institutions to add their models and contact us about uploading their data.'
       },
       {
         type: 'html',
@@ -504,21 +559,21 @@ export const sectionsData = [
         type: 'text',
         title: 'Is there a country profile for every country? ',
         answer:
-          'There are country profiles for all parties to the United Nations Framework Convention on Climate Change (UNFCCC).'
+          'There are country profiles for all parties to the United Nations Framework Convention on Climate Change (UNFCCC) – 196 countries plus the European Union, which submitted their NDC together.'
       },
       {
         type: 'text',
         title:
           'What was the process for choosing the metrics for the “Climate Vulnerability and Readiness” section?',
         answer:
-          'The indicators were selected because they have data that are geographically comprehensive, updated regularly and tells a compelling story that links poverty, vulnerability and climate impacts. These indicators show that the poor are most vulnerable to climate risks such as sea level rise, increases in temperature and more erratic rainfall. This section also includes indicators that show the extent to which a country is ready to adapt to climate change to reduce its vulnerability to climate impacts.'
+          'The indicators were selected because they have data that are geographically comprehensive, updated regularly and tell a compelling story that links poverty, vulnerability and climate impacts. These indicators show that the poor are most vulnerable to climate risks such as sea level rise, increases in temperature and more erratic rainfall. This section also includes indicators that show the extent to which a country is ready to adapt to climate change to reduce its vulnerability to climate impacts.'
       },
       {
         type: 'html',
         title:
           'How can the data be used in the "Climate Vulnerability and Readiness" section? ',
         answer:
-          '<p>Policymakers and donors can use this data to get a snapshot overview of a country’s need to reduce its vulnerability to climate impacts and in comparison with other countries.</p><p>Civil society and media can use information on poverty, risks, vulnerabilities and readiness for communications and advocacy on adaptation and reducing a country’s vulnerability to climate impacts. </p><p>For researchers and adaptation planners, this information acts as a gateway to more detailed information and data sets on adaptation through platforms such as the <a href="http://sdwebx.worldbank.org/climateportal/" rel="noopener noreferrer" target="_blank">Climate Change Knowledge Portal</a> and <a href="https://www.predata.com/" rel="noopener noreferrer" target="_blank">PREPdata.</a></p>'
+          '<p>Policymakers and donors can use this data to get a snapshot overview of a country’s need to reduce its vulnerability to climate impacts and to compare this need with other countries.</p><p>Civil society and media can use information on poverty, risks, vulnerabilities and readiness for communications and advocacy on adaptation and reducing a country’s vulnerability to climate impacts. </p><p>For researchers and adaptation planners, this information acts as a gateway to more detailed information and data sets on adaptation through platforms such as the <a href="http://sdwebx.worldbank.org/climateportal/" rel="noopener noreferrer" target="_blank">Climate Change Knowledge Portal</a> and <a href="https://www.predata.com/" rel="noopener noreferrer" target="_blank">PREPdata.</a></p>'
       },
       {
         type: 'table',
@@ -605,22 +660,4 @@ export const sectionsData = [
       }
     ]
   },
-  {
-    label: 'My Climate Watch',
-    slug: 'my_climate_watch',
-    content: [
-      {
-        type: 'text',
-        title: 'How can I use MyClimateWatch?',
-        answer:
-          'My Climate Watch is a feature that allows you to explore data on emission and economic scenarios from the Pathways module in depth and create and easily share custom visualizations such as timeseries charts, stacked bar charts and pie charts. '
-      },
-      {
-        type: 'html',
-        title: 'How do I log into MyClimateWatch?',
-        answer:
-          'Log into <link to="/my-climate-watch" innertext="MyClimateWatch"> using your Google, Twitter or Facebook account. Registration and log-in via email are forthcoming.'
-      }
-    ]
-  }
 ];
