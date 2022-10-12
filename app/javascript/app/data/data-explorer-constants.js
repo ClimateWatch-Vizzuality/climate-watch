@@ -159,7 +159,8 @@ export const DATA_EXPLORER_METHODOLOGY_SOURCE = {
     'ndc_wb',
     'ndc_die',
     'ndc_adaptation',
-    'ndc_unicef'
+    'ndc_unicef',
+    'ndc_finance'
   ],
   'lts-content': ['lts'],
   'net-zero-content': ['net_zero'],
