@@ -22,7 +22,7 @@ const fetchNDCS = createThunkAction('fetchNDCS', props => (dispatch, state) => {
   if (ndcsExplore && !ndcsExplore.loading) {
     promises.push(
       apiWithCache.get(
-        `/api/v1/ndcs?filter=map&source[]=CAIT&source[]=WB&source[]=NDC%20Explorer'${
+        `/api/v1/ndcs?filter=map&source[]=CAIT&source[]=WB&source[]=NDC%20Explorer&source[]=UNICEF${
           params.length ? `&${params.join('&')}` : ''
         }`
       )
@@ -33,7 +33,7 @@ const fetchNDCS = createThunkAction('fetchNDCS', props => (dispatch, state) => {
   // and as it is not filtered by category also serves the whole list of categories
   promises.push(
     apiWithCache.get(
-      '/api/v1/ndcs?indicators=ndce_ghg, submission, submission_date&filter=map&source[]=CAIT&source[]=WB&source[]=NDC%20Explorer'
+      '/api/v1/ndcs?indicators=ndce_ghg, submission, submission_date&filter=map&source[]=CAIT&source[]=WB&source[]=NDC%20Explorer&source[]=UNICEF'
     )
   );
 
