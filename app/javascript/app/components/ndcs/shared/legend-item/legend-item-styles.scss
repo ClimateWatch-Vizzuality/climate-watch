@@ -10,8 +10,14 @@ $progress-bar-width: 180px;
   }
 
   .legendName {
+    display: flex;
+    align-items: center;
     max-width: $progress-bar-width;
     margin-bottom: 2px;
+  }
+
+  .infoContainer {
+    margin: 0 0 -3px 5px;
   }
 
   .legendDot {

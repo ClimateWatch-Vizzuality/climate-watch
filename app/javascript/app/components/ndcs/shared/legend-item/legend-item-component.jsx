@@ -1,6 +1,9 @@
 import React from 'react';
+import ReactTooltip from 'react-tooltip';
 import Progress from 'components/progress';
 import AbbrReplace from 'components/abbr-replace';
+import infoIcon from 'assets/icons/info.svg';
+import Icon from 'components/icon';
 import PropTypes from 'prop-types';
 import styles from './legend-item-styles.scss';
 
@@ -12,7 +15,8 @@ const LegendItem = ({
   itemsName,
   hoverIndex,
   selectActiveDonutIndex,
-  disableAbbr
+  disableAbbr,
+  infoText
 }) => (
   <div
     className={styles.legendItem}
@@ -21,6 +25,16 @@ const LegendItem = ({
     <div className={styles.legendName}>
       <span className={styles.legendDot} style={{ backgroundColor: color }} />
       <span>{disableAbbr ? name : <AbbrReplace>{name}</AbbrReplace>}</span>
+      {infoText && (
+        <div
+          className={styles.infoContainer}
+          data-for="legend-info-tooltip"
+          data-tip={infoText}
+        >
+          <Icon icon={infoIcon} />
+          <ReactTooltip id="legend-info-tooltip" effect="solid" />
+        </div>
+      )}
     </div>
     <div className={styles.progressContainer}>
       <Progress value={value} className={styles.progressBar} color={color} />
@@ -39,7 +53,8 @@ LegendItem.propTypes = {
   hoverIndex: PropTypes.number.isRequired,
   color: PropTypes.string,
   selectActiveDonutIndex: PropTypes.func.isRequired,
-  disableAbbr: PropTypes.bool
+  disableAbbr: PropTypes.bool,
+  infoText: PropTypes.string
 };
 
 LegendItem.defaultProps = {

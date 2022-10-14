@@ -352,7 +352,15 @@ export const getEmissionsCardData = createSelector(
       getIndicatorEmissionsData(emissionsIndicator, selectedIndicator, legend),
       'value'
     );
-
+    // Info tooltip only available for this indicator
+    const tooltip = selectedIndicator.value === 'child_sensitive_NDC' && {
+      'Category A':
+        'The NDC is Category A because it meets 4 of 4 criteria for child sensitivity',
+      'Category B':
+        'The NDC is Category B because it meets 3 of 4 criteria for child sensitivity',
+      'Category C':
+        'The NDC is Category C because it meets 0-2 of 4 criteria for child sensitivity'
+    };
     const config = {
       animation: true,
       innerRadius: 50,
@@ -370,7 +378,8 @@ export const getEmissionsCardData = createSelector(
 
     return {
       config,
-      data
+      data,
+      tooltip
     };
   }
 );

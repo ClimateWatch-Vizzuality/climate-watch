@@ -102,6 +102,11 @@ const renderLegend = (legendData, emissionsCardData, isPNG) => (
               emissionsCardData.data &&
               getHoverIndex(emissionsCardData, l)
             }
+            infoText={
+              emissionsCardData &&
+              emissionsCardData.tooltip &&
+              emissionsCardData.tooltip[l.name]
+            }
             name={l.name}
             number={l.partiesNumber}
             value={l.value}
