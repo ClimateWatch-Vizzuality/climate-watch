@@ -27,6 +27,17 @@ import { getSubmitted2020Isos } from 'utils/indicatorCalculations';
 
 const NOT_APPLICABLE_LABEL = 'Not Applicable';
 
+const getColorException = (indicator, label) => {
+  if (indicator.value !== 'child_sensitive_NDC') return null;
+  // Child sensitive NDC indicator label colors
+  return {
+    'Category A': '#53AF5C',
+    'Category B': '#8EC593',
+    'Category C': '#C8DAC9',
+    'No new or updated NDC submitted': '#757584'
+  }[label.name];
+};
+
 const getSearch = state => state.search || null;
 const getCountries = state => state.countries || null;
 const getSectors = state => state.sectors || null;
@@ -256,8 +267,10 @@ export const getPathsWithStyles = createSelector(
           }
         };
         if (countryData && countryData.label_id) {
-          const legendIndex = legendBuckets[countryData.label_id].index;
-          const color = getColorByIndex(legendBuckets, legendIndex);
+          const label = legendBuckets[countryData.label_id];
+          const color =
+            getColorException(indicator, label) ||
+            getColorByIndex(legendBuckets, label.index);
           style.default.fill = color;
           style.hover.fill = color;
         }
@@ -312,7 +325,9 @@ export const getLegend = createSelector(
         ...label,
         value: percentage(partiesNumber, maximumCountries),
         partiesNumber,
-        color: getColorByIndex(indicator.legendBuckets, label.index)
+        color:
+          getColorException(indicator, label) ||
+          getColorByIndex(indicator.legendBuckets, label.index)
       });
     });
     return legendItems.sort(sortByIndexAndNotInfo);
@@ -361,6 +376,7 @@ export const getEmissionsCardData = createSelector(
       'Category C':
         'The NDC is Category C because it meets 0-2 of 4 criteria for child sensitivity'
     };
+
     const config = {
       animation: true,
       innerRadius: 50,
