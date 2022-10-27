@@ -140,7 +140,7 @@ module Api
       end
 
       def index_json
-        # params[:source] -> one of ["CAIT", "LTS", "WB", "NDC Explorer", "Pledges"]
+        # params[:source] -> one of ["CAIT", "LTS", "WB", "NDC Explorer", "Pledges", "UNICEF"]
         if params[:source].present?
           source = ::Indc::Source.where(name: params[:source])
         end

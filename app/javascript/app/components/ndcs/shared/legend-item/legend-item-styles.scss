@@ -10,8 +10,14 @@ $progress-bar-width: 180px;
   }
 
   .legendName {
+    display: flex;
+    align-items: center;
     max-width: $progress-bar-width;
     margin-bottom: 2px;
+  }
+
+  .infoContainer {
+    margin: 0 0 -3px 5px;
   }
 
   .legendDot {
@@ -19,6 +25,7 @@ $progress-bar-width: 180px;
     display: inline-block;
     margin-right: 5px;
     width: 10px;
+    min-width: 10px;
     border-radius: 50%;
   }
 

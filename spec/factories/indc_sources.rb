@@ -9,6 +9,8 @@
 #
 FactoryBot.define do
   factory :indc_source, class: 'Indc::Source' do
-    sequence(:name) { |n| 'My Name ' + ('AA'..'ZZ').to_a[n] }
+    name { 'CAIT' }
+
+    initialize_with { Indc::Source.find_or_create_by(name: name) }
   end
 end

@@ -13,6 +13,7 @@ export const CONFLICTS = {
 // E.g. UNFCCC should go before UN.
 
 export const ABBREVIATIONS = {
+  ACE: 'Action for Climate Empowerment',
   AILAC:
     'Asociación Independiente de Latinoamérica y el Caribe (Independent Association of Latin America and the Caribbean)',
   AR2: "IPCC's Second Assessment Report in 1995",

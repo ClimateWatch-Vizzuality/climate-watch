@@ -23,7 +23,9 @@ const fetchNDCS = createThunkAction('fetchNDCS', props => (dispatch, state) => {
     params.push(`indicators=${indicatorSlugs.join(',')}`);
   }
   if (!overrideFilter) {
-    params.push('filter=map&source[]=CAIT&source[]=WB&source[]=NDC%20Explorer');
+    params.push(
+      'filter=map&source[]=CAIT&source[]=WB&source[]=NDC%20Explorer&source[]=UNICEF'
+    );
   }
   if (subcategory) {
     params.push(`subcategory=${subcategory}`);
@@ -54,7 +56,7 @@ const fetchNDCS = createThunkAction('fetchNDCS', props => (dispatch, state) => {
         `/api/v1/ndcs?indicators=${additionalIndicatorSlugs.join(',')}${
           overrideFilter
             ? ''
-            : '&filter=map&source[]=CAIT&source[]=WB&source[]=NDC%20Explorer'
+            : '&filter=map&source[]=CAIT&source[]=WB&source[]=NDC%20Explorer&source[]=UNICEF'
         }`
       )
     );
