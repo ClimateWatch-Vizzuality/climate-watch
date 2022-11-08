@@ -1,8 +1,10 @@
+/* eslint-disable max-len */
 import { withProps } from 'recompose';
 import { withRouter } from 'react-router';
 
 import ndcImage from 'assets/partners/ndcp.png';
 import wriImage from 'assets/partners/wri.png';
+import unicefImage from 'assets/partners/unicef.png';
 import worldBankImage from 'assets/partners/the-world-bank.png';
 import vizzualityImage from 'assets/partners/vizzuality.png';
 import ccImage from 'assets/partners/unfccc.jpg';
@@ -125,6 +127,15 @@ const partnershipWith = {
         src: wriImage
       },
       description: 'manages Climate Watch in collaboration with partners.'
+    },
+    {
+      link: 'https://www.unicef.org/',
+      img: {
+        alt: 'UNICEF',
+        src: unicefImage
+      },
+      description:
+        'contributed to Climate Watch by providing NDC-related data based on the NDC Explorer.'
     }
   ]
 };
