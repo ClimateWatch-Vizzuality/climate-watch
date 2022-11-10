@@ -123,7 +123,7 @@ const renderLegend = (legendData, emissionsCardData, isPNG) => (
   </div>
 );
 
-const REGION_GROUPS = [
+const LOCATION_GROUPS = [
   {
     groupId: 'regions',
     title: 'Regions'
@@ -149,14 +149,15 @@ function NDCSExploreMap(props) {
     documents,
     categories,
     indicators,
-    regions,
-    handleRegionChange,
+    locations,
+    handleLocationsChange,
     handleDocumentChange,
     handleCategoryChange,
     handleIndicatorChange,
     selectedDocument,
     selectedCategory,
     selectedIndicator,
+    selectedLocations,
     tooltipValues,
     selectActiveDonutIndex,
     donutActiveIndex,
@@ -166,7 +167,6 @@ function NDCSExploreMap(props) {
     checked,
     pngDownloadId
   } = props;
-
   const tooltipParentRef = useRef(null);
   const pieChartRef = useRef(null);
   const [stickyStatus, setStickyStatus] = useState(Sticky.STATUS_ORIGINAL);
@@ -274,10 +274,10 @@ function NDCSExploreMap(props) {
                       />
                       <GhgMultiselectDropdown
                         label={'Location'}
-                        groups={REGION_GROUPS}
-                        options={regions || []}
-                        values={[{ label: 'spain', value: 'ESP' }]}
-                        onSelectionChange={handleRegionChange}
+                        groups={LOCATION_GROUPS}
+                        options={locations || []}
+                        values={selectedLocations}
+                        onSelectionChange={handleLocationsChange}
                       />
                     </div>
                     {isTablet &&
@@ -387,12 +387,13 @@ NDCSExploreMap.propTypes = {
   documents: PropTypes.array,
   categories: PropTypes.array,
   indicators: PropTypes.array,
-  regions: PropTypes.array,
+  locations: PropTypes.array,
   selectedDocument: PropTypes.object,
   selectedCategory: PropTypes.object,
   selectedIndicator: PropTypes.object,
+  selectedLocations: PropTypes.array,
   handleDocumentChange: PropTypes.func,
-  handleRegionChange: PropTypes.func,
+  handleLocationsChange: PropTypes.func,
   handleCategoryChange: PropTypes.func,
   handleIndicatorChange: PropTypes.func,
   tooltipValues: PropTypes.object,

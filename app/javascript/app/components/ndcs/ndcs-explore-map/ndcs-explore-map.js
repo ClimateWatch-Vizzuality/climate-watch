@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
 import qs from 'query-string';
+import castArray from 'lodash/castArray';
 import { handleAnalytics } from 'utils/analytics';
 import { isCountryIncluded } from 'app/utils';
 import { getLocationParamUpdated } from 'utils/navigation';
@@ -30,7 +31,8 @@ import {
   getTooltipCountryValues,
   getDonutActiveIndex,
   getPngSelectionSubtitle,
-  getRegions
+  getLocations,
+  getSelectedLocations
 } from './ndcs-explore-map-selectors';
 
 const actions = { ...modalActions, ...exploreMapActions, ...pngModalActions };
@@ -57,6 +59,7 @@ const mapStateToProps = (state, { location }) => {
     selectedDocument: getSelectedDocument(ndcsExploreWithSelection),
     selectedCategory: getSelectedCategory(ndcsExploreWithSelection),
     selectedIndicator: getMapIndicator(ndcsExploreWithSelection),
+    selectedLocations: getSelectedLocations(ndcsExploreWithSelection),
     documents: getDocuments(ndcsExploreWithSelection),
     categories: getCategories(ndcsExploreWithSelection),
     indicators: getCategoryIndicators(ndcsExploreWithSelection),
@@ -70,7 +73,7 @@ const mapStateToProps = (state, { location }) => {
     donutActiveIndex: getDonutActiveIndex(ndcsExploreWithSelection),
     checked: getIsShowEUCountriesChecked(ndcsExploreWithSelection),
     pngSelectionSubtitle: getPngSelectionSubtitle(ndcsExploreWithSelection),
-    regions: getRegions(ndcsExploreWithSelection)
+    locations: getLocations(ndcsExploreWithSelection)
   };
 };
 const pngDownloadId = 'ndcs-explore-map';
@@ -145,6 +148,21 @@ class NDCSExploreMapContainer extends PureComponent {
 
   handleSearchChange = query => {
     this.updateUrlParams([{ name: 'search', value: query }]);
+  };
+
+  handleLocationsChange = filters => {
+    const filtersArray = castArray(filters);
+    const values = filtersArray.map(v => v.value);
+    const value =
+      values.length > 1 && values.includes('WORLD')
+        ? values.filter(v => v !== 'WORLD').join(',')
+        : values.join(',');
+    this.updateUrlParams([
+      {
+        name: 'regions',
+        value
+      }
+    ]);
   };
 
   handleDropdownChange = (type, selection) => {
@@ -230,6 +248,7 @@ class NDCSExploreMapContainer extends PureComponent {
       handleIndicatorChange: selection =>
         this.handleDropdownChange('indicator', selection),
       handleOnChangeChecked: this.handleOnChangeChecked,
+      handleLocationsChange: this.handleLocationsChange,
       handlePngDownloadModal: this.handlePngDownloadModal,
       checked,
       indicator,

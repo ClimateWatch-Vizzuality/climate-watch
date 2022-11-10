@@ -9,6 +9,7 @@ import sortBy from 'lodash/sortBy';
 import intersection from 'lodash/intersection';
 import { generateLinkToDataExplorer } from 'utils/data-explorer';
 import getIPPaths from 'app/data/world-50m-paths';
+import { sortLabelByAlpha } from 'utils/graphs';
 import { COUNTRY_STYLES } from 'components/ndcs/shared/constants';
 import { getIsShowEUCountriesChecked } from 'components/ndcs/shared/explore-map/explore-map-selectors';
 import {
@@ -21,7 +22,8 @@ import {
   DEFAULT_NDC_EXPLORE_CATEGORY_SLUG,
   CATEGORY_SOURCES,
   NOT_COVERED_LABEL,
-  INDICATOR_SLUGS
+  INDICATOR_SLUGS,
+  TOP_EMITTERS_OPTION
 } from 'data/constants';
 import { getSubmitted2020Isos } from 'utils/indicatorCalculations';
 
@@ -39,9 +41,83 @@ const getColorException = (indicator, label) => {
 };
 
 const getSearch = state => state.search || null;
-const getCountries = state => state.countries || null;
 const getSectors = state => state.sectors || null;
 const getDocumentData = state => state.documents && state.documents.data;
+const getCountries = state => state.countries || null;
+const getRegions = state =>
+  (state && state.regions && state.regions.data) || null;
+
+export const getLocations = createSelector(
+  [getRegions, getCountries],
+  (regions, countries) => {
+    if (!regions) return null;
+
+    const countryOptions = countries.map(country => ({
+      iso: country.iso_code3,
+      label: country.wri_standard_name
+    }));
+    const SOURCE = 'CAIT';
+
+    const regionOptions = [TOP_EMITTERS_OPTION];
+    const updatedRegions = regions;
+    updatedRegions.forEach(region => {
+      const regionMembers =
+        region.members && region.members.map(m => m.iso_code3);
+      const regionCountries =
+        region.members &&
+        region.members
+          .filter(m => !m.ghg_sources || m.ghg_sources.includes(SOURCE))
+          .map(country => ({
+            label: country.wri_standard_name,
+            iso: country.iso_code3
+          }));
+      regionOptions.push({
+        label: region.wri_standard_name,
+        value: region.iso_code3,
+        iso: region.iso_code3,
+        expandsTo: regionMembers,
+        regionCountries,
+        groupId: 'regions'
+      });
+    });
+
+    const updatedCountryOptions = [];
+    const regionISOs = regionOptions.map(r => r.iso);
+
+    countryOptions.forEach(d => {
+      if (!regionISOs.includes(d.iso)) {
+        updatedCountryOptions.push({
+          ...d,
+          value: d.iso,
+          groupId: 'countries'
+        });
+      }
+    });
+    // eslint-disable-next-line no-confusing-arrow
+    const sortedRegions = sortLabelByAlpha(regionOptions).sort(x =>
+      x.value === 'TOP' ? -1 : 0
+    );
+
+    return sortedRegions.concat(sortLabelByAlpha(updatedCountryOptions));
+  }
+);
+
+export const getSelectedLocations = createSelector(
+  [getLocations, getSearch],
+  (locations, search) => {
+    if (!locations || !locations.length) return null;
+    const { regions: selected } = search || {};
+    const defaultLocation = locations.find(d => d.value === 'WORLD');
+    if (selected) {
+      return (
+        locations.filter(location => selected.includes(location.value)) || [
+          defaultLocation
+        ]
+      );
+    }
+    return defaultLocation ? [defaultLocation] : [];
+  }
+);
 
 const getCategoriesData = createSelector(
   state => state.categories,
@@ -445,6 +521,3 @@ export const getPngSelectionSubtitle = createSelector(
     return `${documentText}Category: ${category.label}; Indicator: ${indicator.label}.`;
   }
 );
-
-export const getRegions = state =>
-  (state && state.regions && state.regions.data) || null;

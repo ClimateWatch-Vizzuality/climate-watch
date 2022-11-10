@@ -9,6 +9,8 @@ import AutocompleteSearch from 'components/autocomplete-search';
 import ModalMetadata from 'components/modal-metadata';
 import ModalShare from 'components/modal-share';
 import { isPageContained } from 'utils/navigation';
+import RegionsProvider from 'providers/regions-provider/regions-provider';
+import CountriesProvider from 'providers/countries-provider/countries-provider';
 
 import layout from 'styles/layout.scss';
 import styles from './ndcs-explore-styles.scss';
@@ -57,6 +59,8 @@ const NDCSExplore = ({ route }) => (
     </div>
     <ModalMetadata />
     <ModalShare analyticsName="NDC Explore" />
+    <CountriesProvider />
+    <RegionsProvider />
   </div>
 );
 
