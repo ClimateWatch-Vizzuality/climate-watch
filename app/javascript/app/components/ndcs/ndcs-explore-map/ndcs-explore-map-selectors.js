@@ -445,3 +445,6 @@ export const getPngSelectionSubtitle = createSelector(
     return `${documentText}Category: ${category.label}; Indicator: ${indicator.label}.`;
   }
 );
+
+export const getRegions = state =>
+  (state && state.regions && state.regions.data) || null;

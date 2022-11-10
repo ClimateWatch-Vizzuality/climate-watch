@@ -29,7 +29,8 @@ import {
   getSelectedCategory,
   getTooltipCountryValues,
   getDonutActiveIndex,
-  getPngSelectionSubtitle
+  getPngSelectionSubtitle,
+  getRegions
 } from './ndcs-explore-map-selectors';
 
 const actions = { ...modalActions, ...exploreMapActions, ...pngModalActions };
@@ -68,7 +69,8 @@ const mapStateToProps = (state, { location }) => {
     downloadLink: getLinkToDataExplorer(ndcsExploreWithSelection),
     donutActiveIndex: getDonutActiveIndex(ndcsExploreWithSelection),
     checked: getIsShowEUCountriesChecked(ndcsExploreWithSelection),
-    pngSelectionSubtitle: getPngSelectionSubtitle(ndcsExploreWithSelection)
+    pngSelectionSubtitle: getPngSelectionSubtitle(ndcsExploreWithSelection),
+    regions: getRegions(ndcsExploreWithSelection)
   };
 };
 const pngDownloadId = 'ndcs-explore-map';
