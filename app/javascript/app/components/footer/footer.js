@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import googleImage from 'assets/partners/google.png';
 import ndcImage from 'assets/partners/ndcp.png';
 import wriImage from 'assets/partners/wri.png';
+import unicefImage from 'assets/partners/unicef.png';
 import worldBankImage from 'assets/partners/the-world-bank.png';
 import ccImage from 'assets/partners/unfccc.jpg';
 import gizImage from 'assets/partners/giz.png';
@@ -60,6 +61,15 @@ const basePartners = [
     img: {
       alt: 'WRI',
       src: wriImage,
+      customClass: 'narrower'
+    }
+  },
+  {
+    link: 'https://www.unicef.org/',
+    orderingString: 'zzz',
+    img: {
+      alt: 'UNICEF',
+      src: unicefImage,
       customClass: 'narrower'
     }
   }
@@ -176,7 +186,9 @@ class FooterContainer extends PureComponent {
   render() {
     const { isContained } = this.props;
     let partners = getLogos(this.props.location.pathname);
-    if (isContained) { partners = partners.filter(p => p.orderingString !== 'ndc'); }
+    if (isContained) {
+      partners = partners.filter(p => p.orderingString !== 'ndc');
+    }
 
     const includePartners = !location.pathname.includes('/about');
     return createElement(Component, {
