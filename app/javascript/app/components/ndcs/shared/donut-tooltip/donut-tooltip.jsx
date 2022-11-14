@@ -9,7 +9,8 @@ const DonutTooltip = props => {
     reference,
     chartReference,
     content: { payload, coordinate },
-    itemName
+    itemName,
+    isRegional
   } = props;
   if (!payload || !payload[0]) return null;
 
@@ -21,7 +22,7 @@ const DonutTooltip = props => {
 
   const DEFAULT_OFFSET = 210; // If the parent reference is not loaded
   const top = chartTop
-    ? chartTop - referenceTop + coordinate.y
+    ? chartTop - referenceTop + coordinate.y // eslint-disable-line no-mixed-operators
     : DEFAULT_OFFSET + coordinate.y;
 
   // Avoid covering the label on the center
@@ -44,7 +45,9 @@ const DonutTooltip = props => {
   return ReactDOM.createPortal(
     <div className={styles.tooltip} style={{ left, top }}>
       {countriesContent}
-      {` represent ${percentage}% of global GHG emissions`}
+      {` represent ${percentage}% of ${
+        isRegional ? 'regional' : 'global'
+      } GHG emissions`}
     </div>,
     reference
   );
@@ -54,7 +57,8 @@ DonutTooltip.propTypes = {
   content: PropTypes.object,
   reference: PropTypes.object,
   chartReference: PropTypes.object,
-  itemName: PropTypes.string
+  itemName: PropTypes.string,
+  isRegional: PropTypes.bool
 };
 
 DonutTooltip.defaultProps = {

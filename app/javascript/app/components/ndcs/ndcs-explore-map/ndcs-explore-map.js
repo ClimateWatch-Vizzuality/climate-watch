@@ -18,7 +18,7 @@ import Component from './ndcs-explore-map-component';
 import {
   getMapIndicator,
   getPathsWithStyles,
-  getISOCountries,
+  getSelectedCountriesISO,
   getLinkToDataExplorer,
   getEmissionsCardData,
   getLegend,
@@ -64,7 +64,7 @@ const mapStateToProps = (state, { location }) => {
     categories: getCategories(ndcsExploreWithSelection),
     indicators: getCategoryIndicators(ndcsExploreWithSelection),
     paths: getPathsWithStyles(ndcsExploreWithSelection),
-    isoCountries: getISOCountries(ndcsExploreWithSelection),
+    isoCountries: getSelectedCountriesISO(ndcsExploreWithSelection),
     emissionsCardData: getEmissionsCardData(ndcsExploreWithSelection),
     tooltipCountryValues: getTooltipCountryValues(ndcsExploreWithSelection),
     legendData: getLegend(ndcsExploreWithSelection),
@@ -153,10 +153,11 @@ class NDCSExploreMapContainer extends PureComponent {
   handleLocationsChange = filters => {
     const filtersArray = castArray(filters);
     const values = filtersArray.map(v => v.value);
-    const value =
-      values.length > 1 && values.includes('WORLD')
-        ? values.filter(v => v !== 'WORLD').join(',')
-        : values.join(',');
+    const resetToWorld = values[values.length - 1] === 'WORLD';
+
+    const value = resetToWorld
+      ? []
+      : values.filter(v => v !== 'WORLD').join(',');
     this.updateUrlParams([
       {
         name: 'regions',

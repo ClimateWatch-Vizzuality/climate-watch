@@ -170,26 +170,33 @@ function NDCSExploreMap(props) {
   const tooltipParentRef = useRef(null);
   const pieChartRef = useRef(null);
   const [stickyStatus, setStickyStatus] = useState(Sticky.STATUS_ORIGINAL);
-  const renderDonutChart = () => (
-    <div className={styles.donutContainer} ref={pieChartRef}>
-      <PieChart
-        customActiveIndex={donutActiveIndex}
-        onHover={(_, index) => selectActiveDonutIndex(index)}
-        data={emissionsCardData.data}
-        width={200}
-        config={emissionsCardData.config}
-        customTooltip={
-          <CustomTooltip
-            reference={tooltipParentRef.current}
-            chartReference={pieChartRef.current}
-            data={emissionsCardData.data}
-          />
-        }
-        customInnerHoverLabel={CustomInnerHoverLabel}
-        theme={{ pieChart: styles.pieChart }}
-      />
-    </div>
-  );
+  const renderDonutChart = () => {
+    const isRegional =
+      selectedLocations !== 1 && selectedLocations[0].value !== 'WORLD';
+    return (
+      <div className={styles.donutContainer} ref={pieChartRef}>
+        <PieChart
+          customActiveIndex={donutActiveIndex}
+          onHover={(_, index) => selectActiveDonutIndex(index)}
+          data={emissionsCardData.data}
+          width={200}
+          config={emissionsCardData.config}
+          customTooltip={
+            <CustomTooltip
+              reference={tooltipParentRef.current}
+              chartReference={pieChartRef.current}
+              data={emissionsCardData.data}
+              isRegional={isRegional}
+            />
+          }
+          customInnerHoverLabel={p => (
+            <CustomInnerHoverLabel {...p} isRegional={isRegional} />
+          )}
+          theme={{ pieChart: styles.pieChart }}
+        />
+      </div>
+    );
+  };
 
   // eslint-disable-next-line react/prop-types
   const renderMap = ({ isTablet, png }) => {
@@ -276,7 +283,7 @@ function NDCSExploreMap(props) {
                         label={'Location'}
                         groups={LOCATION_GROUPS}
                         options={locations || []}
-                        values={selectedLocations}
+                        values={selectedLocations || []}
                         onSelectionChange={handleLocationsChange}
                       />
                     </div>
