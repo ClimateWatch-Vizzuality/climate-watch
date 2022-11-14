@@ -2,6 +2,9 @@
 /* eslint-disable react/no-danger */
 import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
+import Sticky from 'react-stickynode';
+import cx from 'classnames';
+
 import { TabletLandscape } from 'components/responsive';
 import Map from 'components/map';
 import AbbrReplace from 'components/abbr-replace';
@@ -18,14 +21,16 @@ import HandIconInfo from 'components/ndcs/shared/hand-icon-info';
 import CustomInnerHoverLabel from 'components/ndcs/shared/donut-custom-label';
 import LegendItem from 'components/ndcs/shared/legend-item';
 import ShareButton from 'components/button/share-button';
-import Sticky from 'react-stickynode';
-import cx from 'classnames';
+import SEOTags from 'components/seo-tags';
+import GhgMultiselectDropdown from 'components/ghg-multiselect-dropdown';
 import ModalShare from 'components/modal-share';
+
 import NDCSExploreProvider from 'providers/ndcs-explore-provider';
 import NDCSPreviousComparisonProvider from 'providers/ndcs-previous-comparison-provider';
 import DocumentsProvider from 'providers/documents-provider';
+
 import { SEO_PAGES } from 'data/seo';
-import SEOTags from 'components/seo-tags';
+
 import newMapTheme from 'styles/themes/map/map-new-zoom-controls.scss';
 import layout from 'styles/layout.scss';
 import blueCheckboxTheme from 'styles/themes/checkbox/blue-checkbox.scss';
@@ -69,7 +74,7 @@ const renderButtonGroup = (
           }
         ]}
       />
-      <ShareButton />
+      <ShareButton className={styles.shareButton} />
     </span>
     <ModalShare analyticsName="NDC Explore" />
   </div>
@@ -118,6 +123,17 @@ const renderLegend = (legendData, emissionsCardData, isPNG) => (
   </div>
 );
 
+const LOCATION_GROUPS = [
+  {
+    groupId: 'regions',
+    title: 'Regions'
+  },
+  {
+    groupId: 'countries',
+    title: 'Countries'
+  }
+];
+
 function NDCSExploreMap(props) {
   const {
     loading,
@@ -133,12 +149,15 @@ function NDCSExploreMap(props) {
     documents,
     categories,
     indicators,
+    locations,
+    handleLocationsChange,
     handleDocumentChange,
     handleCategoryChange,
     handleIndicatorChange,
     selectedDocument,
     selectedCategory,
     selectedIndicator,
+    selectedLocations,
     tooltipValues,
     selectActiveDonutIndex,
     donutActiveIndex,
@@ -148,30 +167,36 @@ function NDCSExploreMap(props) {
     checked,
     pngDownloadId
   } = props;
-
   const tooltipParentRef = useRef(null);
   const pieChartRef = useRef(null);
   const [stickyStatus, setStickyStatus] = useState(Sticky.STATUS_ORIGINAL);
-  const renderDonutChart = () => (
-    <div className={styles.donutContainer} ref={pieChartRef}>
-      <PieChart
-        customActiveIndex={donutActiveIndex}
-        onHover={(_, index) => selectActiveDonutIndex(index)}
-        data={emissionsCardData.data}
-        width={200}
-        config={emissionsCardData.config}
-        customTooltip={
-          <CustomTooltip
-            reference={tooltipParentRef.current}
-            chartReference={pieChartRef.current}
-            data={emissionsCardData.data}
-          />
-        }
-        customInnerHoverLabel={CustomInnerHoverLabel}
-        theme={{ pieChart: styles.pieChart }}
-      />
-    </div>
-  );
+  const renderDonutChart = () => {
+    const isRegional =
+      selectedLocations !== 1 && selectedLocations[0].value !== 'WORLD';
+    return (
+      <div className={styles.donutContainer} ref={pieChartRef}>
+        <PieChart
+          customActiveIndex={donutActiveIndex}
+          onHover={(_, index) => selectActiveDonutIndex(index)}
+          data={emissionsCardData.data}
+          width={200}
+          config={emissionsCardData.config}
+          customTooltip={
+            <CustomTooltip
+              reference={tooltipParentRef.current}
+              chartReference={pieChartRef.current}
+              data={emissionsCardData.data}
+              isRegional={isRegional}
+            />
+          }
+          customInnerHoverLabel={p => (
+            <CustomInnerHoverLabel {...p} isRegional={isRegional} />
+          )}
+          theme={{ pieChart: styles.pieChart }}
+        />
+      </div>
+    );
+  };
 
   // eslint-disable-next-line react/prop-types
   const renderMap = ({ isTablet, png }) => {
@@ -211,13 +236,9 @@ function NDCSExploreMap(props) {
                 <div className="grid-column-item">
                   <div className={styles.filtersLayout}>
                     <div
-                      className={cx(
-                        styles.filtersGroup,
-                        styles.withDocumentDropdown,
-                        {
-                          [styles.sticky]: stickyStatus === Sticky.STATUS_FIXED
-                        }
-                      )}
+                      className={cx(styles.filtersGroup, {
+                        [styles.sticky]: stickyStatus === Sticky.STATUS_FIXED
+                      })}
                       data-tour="ndc-explore-02"
                     >
                       <Dropdown
@@ -257,6 +278,13 @@ function NDCSExploreMap(props) {
                         values={selectedIndicator ? [selectedIndicator] : []}
                         disabled={loading}
                         onChange={handleIndicatorChange}
+                      />
+                      <GhgMultiselectDropdown
+                        label={'Location'}
+                        groups={LOCATION_GROUPS}
+                        options={locations || []}
+                        values={selectedLocations || []}
+                        onSelectionChange={handleLocationsChange}
                       />
                     </div>
                     {isTablet &&
@@ -366,10 +394,13 @@ NDCSExploreMap.propTypes = {
   documents: PropTypes.array,
   categories: PropTypes.array,
   indicators: PropTypes.array,
+  locations: PropTypes.array,
   selectedDocument: PropTypes.object,
   selectedCategory: PropTypes.object,
   selectedIndicator: PropTypes.object,
+  selectedLocations: PropTypes.array,
   handleDocumentChange: PropTypes.func,
+  handleLocationsChange: PropTypes.func,
   handleCategoryChange: PropTypes.func,
   handleIndicatorChange: PropTypes.func,
   tooltipValues: PropTypes.object,

@@ -10,7 +10,6 @@ import { setColumnWidth } from 'utils/table';
 import Component from './ndcs-explore-table-component';
 
 import {
-  getISOCountries,
   replaceAbbreviations,
   getDefaultColumns,
   getTitleLinks
@@ -33,7 +32,6 @@ const mapStateToProps = (state, { location }) => {
   return {
     loading,
     query: ndcsNDCSWithSelection.query,
-    isoCountries: getISOCountries(ndcsNDCSWithSelection),
     tableData: replaceAbbreviations(ndcsNDCSWithSelection),
     columns: getDefaultColumns(ndcsNDCSWithSelection),
     titleLinks: getTitleLinks(ndcsNDCSWithSelection)

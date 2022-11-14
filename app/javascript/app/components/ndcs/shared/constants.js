@@ -23,3 +23,8 @@ export const COUNTRY_STYLES = {
     outline: 'none'
   }
 };
+
+export const NO_DOCUMENT_SUBMITTED_COUNTRIES = [
+  { label: 'Greenland', iso: 'GRL' },
+  { label: 'West Sahara', iso: 'ESH' }
+];

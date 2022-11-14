@@ -3,11 +3,13 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
 import qs from 'query-string';
+import castArray from 'lodash/castArray';
 import { handleAnalytics } from 'utils/analytics';
 import { isCountryIncluded } from 'app/utils';
 import { getLocationParamUpdated } from 'utils/navigation';
 import { IGNORED_COUNTRIES_ISOS } from 'data/ignored-countries';
 import { getHoverIndex } from 'components/ndcs/shared/utils';
+import { NO_DOCUMENT_SUBMITTED_COUNTRIES } from 'components/ndcs/shared/constants';
 import { actions as modalActions } from 'components/modal-metadata';
 import { actions as pngModalActions } from 'components/modal-png-download';
 import exploreMapActions from 'components/ndcs/shared/explore-map/explore-map-actions';
@@ -17,7 +19,7 @@ import Component from './ndcs-explore-map-component';
 import {
   getMapIndicator,
   getPathsWithStyles,
-  getISOCountries,
+  getSelectedCountriesISO,
   getLinkToDataExplorer,
   getEmissionsCardData,
   getLegend,
@@ -29,7 +31,9 @@ import {
   getSelectedCategory,
   getTooltipCountryValues,
   getDonutActiveIndex,
-  getPngSelectionSubtitle
+  getPngSelectionSubtitle,
+  getLocations,
+  getSelectedLocations
 } from './ndcs-explore-map-selectors';
 
 const actions = { ...modalActions, ...exploreMapActions, ...pngModalActions };
@@ -56,11 +60,12 @@ const mapStateToProps = (state, { location }) => {
     selectedDocument: getSelectedDocument(ndcsExploreWithSelection),
     selectedCategory: getSelectedCategory(ndcsExploreWithSelection),
     selectedIndicator: getMapIndicator(ndcsExploreWithSelection),
+    selectedLocations: getSelectedLocations(ndcsExploreWithSelection),
     documents: getDocuments(ndcsExploreWithSelection),
     categories: getCategories(ndcsExploreWithSelection),
     indicators: getCategoryIndicators(ndcsExploreWithSelection),
     paths: getPathsWithStyles(ndcsExploreWithSelection),
-    isoCountries: getISOCountries(ndcsExploreWithSelection),
+    isoCountries: getSelectedCountriesISO(ndcsExploreWithSelection),
     emissionsCardData: getEmissionsCardData(ndcsExploreWithSelection),
     tooltipCountryValues: getTooltipCountryValues(ndcsExploreWithSelection),
     legendData: getLegend(ndcsExploreWithSelection),
@@ -68,7 +73,8 @@ const mapStateToProps = (state, { location }) => {
     downloadLink: getLinkToDataExplorer(ndcsExploreWithSelection),
     donutActiveIndex: getDonutActiveIndex(ndcsExploreWithSelection),
     checked: getIsShowEUCountriesChecked(ndcsExploreWithSelection),
-    pngSelectionSubtitle: getPngSelectionSubtitle(ndcsExploreWithSelection)
+    pngSelectionSubtitle: getPngSelectionSubtitle(ndcsExploreWithSelection),
+    locations: getLocations(ndcsExploreWithSelection)
   };
 };
 const pngDownloadId = 'ndcs-explore-map';
@@ -91,7 +97,14 @@ class NDCSExploreMapContainer extends PureComponent {
     const { id: iso, name } = countryData || {};
     const countryIso =
       iso || (geography && geography.properties && geography.properties.id);
-    if (countryIso && isCountryIncluded(isoCountries, countryIso)) {
+
+    if (
+      countryIso &&
+      !NO_DOCUMENT_SUBMITTED_COUNTRIES.some(
+        country => country.iso === countryIso
+      ) &&
+      isCountryIncluded(isoCountries, countryIso)
+    ) {
       history.push(`/ndcs/country/${countryIso}`);
       handleAnalytics(
         'NDCS Explore Map',
@@ -143,6 +156,21 @@ class NDCSExploreMapContainer extends PureComponent {
 
   handleSearchChange = query => {
     this.updateUrlParams([{ name: 'search', value: query }]);
+  };
+
+  handleLocationsChange = filters => {
+    const filtersArray = castArray(filters);
+    const values = filtersArray.map(v => v.value);
+    const resetToWorld = values[values.length - 1] === 'WORLD';
+    const value = resetToWorld
+      ? []
+      : values.filter(v => v !== 'WORLD').join(',');
+    this.updateUrlParams([
+      {
+        name: 'regions',
+        value
+      }
+    ]);
   };
 
   handleDropdownChange = (type, selection) => {
@@ -228,6 +256,7 @@ class NDCSExploreMapContainer extends PureComponent {
       handleIndicatorChange: selection =>
         this.handleDropdownChange('indicator', selection),
       handleOnChangeChecked: this.handleOnChangeChecked,
+      handleLocationsChange: this.handleLocationsChange,
       handlePngDownloadModal: this.handlePngDownloadModal,
       checked,
       indicator,
