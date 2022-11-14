@@ -7,7 +7,6 @@ import uniqBy from 'lodash/uniqBy';
 import isEmpty from 'lodash/isEmpty';
 import sortBy from 'lodash/sortBy';
 import intersection from 'lodash/intersection';
-import { arrayToSentence } from 'utils/utils';
 import { generateLinkToDataExplorer } from 'utils/data-explorer';
 import getIPPaths from 'app/data/world-50m-paths';
 import { sortLabelByAlpha } from 'utils/graphs';
@@ -51,9 +50,8 @@ const getRegions = state =>
 export const getLocations = createSelector(
   [getRegions, getCountries],
   (regions, countries) => {
-    if (!regions || !countries || !regions.length || !countries.length) {
-      return null;
-    }
+    if (!regions) return null;
+
     const countryOptions = countries.map(country => ({
       iso: country.iso_code3,
       label: country.wri_standard_name
@@ -64,7 +62,7 @@ export const getLocations = createSelector(
     const updatedRegions = regions;
     updatedRegions.forEach(region => {
       const regionMembers =
-        region.members && region.members.map(m => m.iso_code3 || m.iso);
+        region.members && region.members.map(m => m.iso_code3);
       const regionCountries =
         region.members &&
         region.members
@@ -82,6 +80,7 @@ export const getLocations = createSelector(
         groupId: 'regions'
       });
     });
+
     const updatedCountryOptions = [];
     const regionISOs = regionOptions.map(r => r.iso);
 
@@ -106,7 +105,7 @@ export const getLocations = createSelector(
 export const getSelectedLocations = createSelector(
   [getLocations, getSearch],
   (locations, search) => {
-    if (!locations || !locations.length || !locations.length > 2) return null;
+    if (!locations || !locations.length) return null;
     const { regions: selected } = search || {};
     const defaultLocation = locations.find(d => d.value === 'WORLD');
     if (selected) {
@@ -116,7 +115,7 @@ export const getSelectedLocations = createSelector(
         ]
       );
     }
-    return [defaultLocation];
+    return defaultLocation ? [defaultLocation] : [];
   }
 );
 
@@ -199,75 +198,13 @@ export const getCategories = createSelector(
   }
 );
 
-const getSelectedCountries = createSelector(
-  [getSelectedLocations, getRegions, getCountries],
-  (locations, regions, countries) => {
-    if (!locations || !locations.length || !regions || !regions.length) {
-      return countries;
-    }
-    const PARTIES_MISSING_IN_WORLD_SECTION = [
-      regions.find(r => r.iso_code3 === 'EUU'),
-      { label: 'Greenland', iso: 'GRL' },
-      { label: 'West Sahara', iso: 'ESH' }
-    ];
-    const selectedRegionsCountries = locations.reduce((acc, location) => {
-      let members = acc;
-      regions.some(region => {
-        if (region.iso_code3 === location.iso) {
-          members = [...acc, ...region.members];
-          return true;
-        }
-        return false;
-      });
-      if (location.iso === 'TOP') {
-        members = [...members, ...location.regionCountries];
-      }
-      if (location.iso === 'WORLD') {
-        members = [
-          ...members,
-          ...location.regionCountries,
-          ...PARTIES_MISSING_IN_WORLD_SECTION
-        ];
-      }
-      return members;
-    }, []);
-    const selectedRegionsCountriesISOS = selectedRegionsCountries.map(
-      c => c.iso_code3
-    );
-    const notIncludedSelectedCountries = locations.reduce((acc, location) => {
-      const updatedAcc = acc;
-      countries.some(country => {
-        if (
-          country.iso_code3 === location.iso &&
-          !selectedRegionsCountriesISOS.includes(country.iso_code3)
-        ) {
-          updatedAcc.push(country);
-          return true;
-        }
-        return false;
-      });
-      return updatedAcc;
-    }, []);
-
-    return selectedRegionsCountries.length ||
-      notIncludedSelectedCountries.length
-      ? [...selectedRegionsCountries, ...notIncludedSelectedCountries].filter(
-        Boolean
-      )
-      : countries;
-  }
-);
-
-export const getSelectedCountriesISO = createSelector(
-  [getSelectedCountries],
-  selectedCountries => {
-    if (!selectedCountries) return null;
-    return selectedCountries.map(c => c.iso_code3 || c.iso);
-  }
-);
 export const getMaximumCountries = createSelector(
-  getSelectedCountriesISO,
+  getCountries,
   countries => countries.length
+);
+
+export const getISOCountries = createSelector([getCountries], countries =>
+  countries.map(country => country.iso_code3)
 );
 
 export const getIndicatorsParsed = createSelector(
@@ -370,20 +307,8 @@ export const getMapIndicator = createSelector(
 );
 
 export const getPathsWithStyles = createSelector(
-  [
-    getMapIndicator,
-    getZoom,
-    getIsShowEUCountriesChecked,
-    getIPPaths,
-    getSelectedCountriesISO
-  ],
-  (
-    indicator,
-    zoom,
-    showEUCountriesChecked,
-    worldPaths,
-    selectedCountriesISO
-  ) => {
+  [getMapIndicator, getZoom, getIsShowEUCountriesChecked, getIPPaths],
+  (indicator, zoom, showEUCountriesChecked, worldPaths) => {
     if (!indicator || !worldPaths) return [];
     const paths = [];
     const selectedWorldPaths = showEUCountriesChecked
@@ -417,12 +342,7 @@ export const getPathsWithStyles = createSelector(
             fillOpacity: 1
           }
         };
-
-        if (!selectedCountriesISO.includes(iso)) {
-          const color = '#e8ecf5';
-          style.default.fill = color;
-          style.hover.fill = color;
-        } else if (countryData && countryData.label_id) {
+        if (countryData && countryData.label_id) {
           const label = legendBuckets[countryData.label_id];
           const color =
             getColorException(indicator, label) ||
@@ -463,8 +383,8 @@ const percentage = (value, total) => (value * 100) / total;
 // Chart data methods
 
 export const getLegend = createSelector(
-  [getMapIndicator, getMaximumCountries, getSelectedCountriesISO],
-  (indicator, maximumCountries, selectedCountriesISO) => {
+  [getMapIndicator, getMaximumCountries],
+  (indicator, maximumCountries) => {
     if (!indicator || !indicator.legendBuckets || !maximumCountries) {
       return null;
     }
@@ -473,14 +393,8 @@ export const getLegend = createSelector(
       id
     }));
     const legendItems = [];
-    const selectedLocationValues = Object.entries(indicator.locations)
-      .map(([iso, value]) =>
-        selectedCountriesISO.includes(iso) ? value : undefined
-      )
-      .filter(Boolean);
-
     bucketsWithId.forEach(label => {
-      const partiesNumber = selectedLocationValues.filter(
+      const partiesNumber = Object.values(indicator.locations).filter(
         l => l.label_id === parseInt(label.id, 10)
       ).length;
       legendItems.push({
@@ -579,45 +493,9 @@ const getCountriesAndParties = submissions => {
   return { partiesNumber, countriesNumber };
 };
 
-export const getLocationsNames = createSelector(
-  [getSelectedLocations, getRegions, getCountries],
-  (locations, regions, countries) => {
-    if (!locations || !locations.length || (!regions && !countries)) return [];
-    const selectedRegionsNames = locations.reduce((acc, location) => {
-      let names = acc;
-      regions.some(region => {
-        if (region.iso_code3 === location.iso) {
-          names = [...acc, region.wri_standard_name];
-          return true;
-        }
-        if (location.iso === 'TOP') {
-          names = [...acc, location.label];
-          return true;
-        }
-
-        return false;
-      });
-      return names;
-    }, []);
-
-    const selectedCountriesNames = locations.reduce((acc, location) => {
-      const updatedAcc = acc;
-      countries.some(country => {
-        if (country.iso_code3 === location.iso) {
-          updatedAcc.push(country.wri_standard_name);
-          return true;
-        }
-        return false;
-      });
-      return updatedAcc;
-    }, []);
-    return [...selectedRegionsNames, ...selectedCountriesNames];
-  }
-);
-
 export const getSummaryCardData = createSelector(
-  [getIndicatorsData, getLocationsNames, getSelectedCountriesISO],
-  (indicators, locationNames, selectedCountriesISO) => {
+  [getIndicatorsData],
+  indicators => {
     if (!indicators) return null;
     const submittedIndicator = indicators.find(
       ind => ind.slug === INDICATOR_SLUGS.enhancements
@@ -625,16 +503,11 @@ export const getSummaryCardData = createSelector(
     const submittedIsos = getSubmitted2020Isos(submittedIndicator);
     if (!submittedIsos || !submittedIsos.length) return null;
     const submittedCountriesAndParties = getCountriesAndParties(submittedIsos);
-    const isDefaultSelected =
-      locationNames.length === 1 && locationNames[0] === 'World';
+
     return [
       {
-        value: isDefaultSelected
-          ? submittedCountriesAndParties.partiesNumber
-          : selectedCountriesISO.length,
-        description: isDefaultSelected
-          ? ` Parties (representing ${submittedCountriesAndParties.countriesNumber} countries) have submitted their new or updated NDCs. `
-          : ` Parties (representing ${arrayToSentence(locationNames)})`
+        value: submittedCountriesAndParties.partiesNumber,
+        description: ` Parties (representing ${submittedCountriesAndParties.countriesNumber} countries) have submitted their new or updated NDCs. `
       }
     ];
   }
