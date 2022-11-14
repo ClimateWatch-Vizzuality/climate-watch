@@ -14,10 +14,22 @@ export const sortByIndexAndNotInfo = (a, b) => {
 export const getIndicatorEmissionsData = (
   emissionsIndicator,
   selectedIndicator,
-  legend
+  legend,
+  selectedCountriesISO
 ) => {
   if (!emissionsIndicator) return null;
-  const emissionPercentages = emissionsIndicator.locations;
+  // If we have selected countries we calculate the proportional regional values instead of global
+  const emissionPercentages = selectedCountriesISO
+    ? Object.entries(emissionsIndicator.locations).reduce(
+      (acc, [iso, value]) => {
+        if (selectedCountriesISO.includes(iso)) {
+          acc[iso] = value;
+        }
+        return acc;
+      },
+      {}
+    )
+    : emissionsIndicator.locations;
   let summedPercentage = 0;
   const data = legend.map(legendItem => {
     let legendItemValue = 0;
@@ -39,7 +51,7 @@ export const getIndicatorEmissionsData = (
     };
   });
 
-  if (summedPercentage < 100) {
+  if (!selectedCountriesISO && summedPercentage < 100) {
     data.push({
       name: NOT_COVERED_LABEL,
       value: 100 - summedPercentage

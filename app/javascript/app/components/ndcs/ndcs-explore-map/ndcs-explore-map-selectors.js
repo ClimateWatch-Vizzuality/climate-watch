@@ -517,8 +517,8 @@ export const getTooltipCountryValues = createSelector(
 );
 
 export const getEmissionsCardData = createSelector(
-  [getLegend, getMapIndicator, getIndicatorsData],
-  (legend, selectedIndicator, indicators) => {
+  [getLegend, getMapIndicator, getIndicatorsData, getSelectedCountriesISO],
+  (legend, selectedIndicator, indicators, selectedCountriesISO) => {
     if (!legend || !selectedIndicator || !indicators) {
       return null;
     }
@@ -526,7 +526,12 @@ export const getEmissionsCardData = createSelector(
     const emissionsIndicator = indicators.find(i => i.slug === 'ndce_ghg');
     if (!emissionsIndicator) return null;
     const data = sortBy(
-      getIndicatorEmissionsData(emissionsIndicator, selectedIndicator, legend),
+      getIndicatorEmissionsData(
+        emissionsIndicator,
+        selectedIndicator,
+        legend,
+        selectedCountriesISO
+      ),
       'value'
     );
     // Info tooltip only available for this indicator
