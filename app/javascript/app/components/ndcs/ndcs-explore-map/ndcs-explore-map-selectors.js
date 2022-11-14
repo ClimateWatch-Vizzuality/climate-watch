@@ -11,7 +11,10 @@ import { arrayToSentence } from 'utils/utils';
 import { generateLinkToDataExplorer } from 'utils/data-explorer';
 import getIPPaths from 'app/data/world-50m-paths';
 import { sortLabelByAlpha } from 'utils/graphs';
-import { COUNTRY_STYLES } from 'components/ndcs/shared/constants';
+import {
+  COUNTRY_STYLES,
+  NO_DOCUMENT_SUBMITTED_COUNTRIES
+} from 'components/ndcs/shared/constants';
 import { getIsShowEUCountriesChecked } from 'components/ndcs/shared/explore-map/explore-map-selectors';
 import {
   sortByIndexAndNotInfo,
@@ -110,10 +113,11 @@ export const getSelectedLocations = createSelector(
     const { regions: selected } = search || {};
     const defaultLocation = locations.find(d => d.value === 'WORLD');
     if (selected) {
+      const selectedISOS = selected.split(',');
       return (
-        locations.filter(location => selected.includes(location.value)) || [
-          defaultLocation
-        ]
+        locations.filter(location =>
+          selectedISOS.some(iso => iso === location.value)
+        ) || [defaultLocation]
       );
     }
     return [defaultLocation];
@@ -207,8 +211,7 @@ const getSelectedCountries = createSelector(
     }
     const PARTIES_MISSING_IN_WORLD_SECTION = [
       regions.find(r => r.iso_code3 === 'EUU'),
-      { label: 'Greenland', iso: 'GRL' },
-      { label: 'West Sahara', iso: 'ESH' }
+      ...NO_DOCUMENT_SUBMITTED_COUNTRIES
     ];
     const selectedRegionsCountries = locations.reduce((acc, location) => {
       let members = acc;
@@ -604,7 +607,6 @@ export const getLocationsNames = createSelector(
       });
       return names;
     }, []);
-
     const selectedCountriesNames = locations.reduce((acc, location) => {
       const updatedAcc = acc;
       countries.some(country => {
@@ -616,7 +618,7 @@ export const getLocationsNames = createSelector(
       });
       return updatedAcc;
     }, []);
-    return [...selectedRegionsNames, ...selectedCountriesNames];
+    return uniq([...selectedRegionsNames, ...selectedCountriesNames]);
   }
 );
 

@@ -9,6 +9,7 @@ import { isCountryIncluded } from 'app/utils';
 import { getLocationParamUpdated } from 'utils/navigation';
 import { IGNORED_COUNTRIES_ISOS } from 'data/ignored-countries';
 import { getHoverIndex } from 'components/ndcs/shared/utils';
+import { NO_DOCUMENT_SUBMITTED_COUNTRIES } from 'components/ndcs/shared/constants';
 import { actions as modalActions } from 'components/modal-metadata';
 import { actions as pngModalActions } from 'components/modal-png-download';
 import exploreMapActions from 'components/ndcs/shared/explore-map/explore-map-actions';
@@ -96,7 +97,14 @@ class NDCSExploreMapContainer extends PureComponent {
     const { id: iso, name } = countryData || {};
     const countryIso =
       iso || (geography && geography.properties && geography.properties.id);
-    if (countryIso && isCountryIncluded(isoCountries, countryIso)) {
+
+    if (
+      countryIso &&
+      !NO_DOCUMENT_SUBMITTED_COUNTRIES.some(
+        country => country.iso === countryIso
+      ) &&
+      isCountryIncluded(isoCountries, countryIso)
+    ) {
       history.push(`/ndcs/country/${countryIso}`);
       handleAnalytics(
         'NDCS Explore Map',
@@ -154,7 +162,6 @@ class NDCSExploreMapContainer extends PureComponent {
     const filtersArray = castArray(filters);
     const values = filtersArray.map(v => v.value);
     const resetToWorld = values[values.length - 1] === 'WORLD';
-
     const value = resetToWorld
       ? []
       : values.filter(v => v !== 'WORLD').join(',');
