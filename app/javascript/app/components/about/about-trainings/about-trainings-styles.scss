@@ -1,0 +1,32 @@
+@import '~styles/layout.scss';
+@import '~styles/settings.scss';
+
+.aboutTrainings {
+  padding-top: 50px;
+  line-height: $line-height-medium;
+  font-size: $font-size-m;
+  color: $theme-color;
+
+  .bold,
+  .name,
+  .recordingIntro {
+    font-weight: $font-weight-bold;
+  }
+
+  p,
+  .video {
+    margin-bottom: 40px;
+  }
+
+  ul {
+    margin-bottom: 40px;
+    list-style: initial;
+    margin-left: 35px;
+  }
+
+  a {
+    color: $theme-color;
+    border-bottom: solid 1px $theme-secondary;
+    word-wrap: break-word;
+  }
+}
