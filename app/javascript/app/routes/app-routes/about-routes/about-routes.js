@@ -4,6 +4,7 @@ import { Redirect } from 'react-router-dom';
 import AboutContact from 'components/about/about-contact';
 import AboutDescription from 'components/about/about-description';
 import AboutPartners from 'components/about/about-partners';
+import AboutTrainings from 'components/about/about-trainings';
 import AboutPermissions from 'components/about/about-permissions';
 import AboutFaq from 'components/about/about-faq';
 
@@ -35,6 +36,13 @@ export default [
     exact: true,
     anchor: true,
     label: 'Permissions & Licensing'
+  },
+  {
+    path: '/about/trainings',
+    component: AboutTrainings,
+    exact: true,
+    anchor: true,
+    label: 'Trainings'
   },
   {
     path: '/about/faq/general_questions',
