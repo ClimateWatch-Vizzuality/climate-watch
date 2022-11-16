@@ -98,11 +98,11 @@ class NetZeroMapContainer extends PureComponent {
   }
 
   handleOnChangeChecked = query => {
-    this.updateUrlParam({ name: 'showEUCountries', value: query });
+    this.updateUrlParams([{ name: 'showEUCountries', value: query }]);
   };
 
   handleSearchChange = query => {
-    this.updateUrlParam({ name: 'search', value: query });
+    this.updateUrlParams([{ name: 'search', value: query }]);
   };
 
   handleCountryClick = (geography, countryData) => {
@@ -160,22 +160,25 @@ class NetZeroMapContainer extends PureComponent {
   };
 
   handleSearchChange = query => {
-    this.updateUrlParam({ name: 'search', value: query });
+    this.updateUrlParams([{ name: 'search', value: query }]);
   };
 
   handleCategoryChange = category => {
-    this.updateUrlParam(
+    this.updateUrlParams([
       {
         name: 'category',
         value: category.value
       },
-      true
-    );
+      {
+        name: 'indicator',
+        value: undefined
+      }
+    ]);
     handleAnalytics('Net-Zero Map', 'Change category', category.label);
   };
 
   handleIndicatorChange = indicator => {
-    this.updateUrlParam({ name: 'indicator', value: indicator.value });
+    this.updateUrlParams([{ name: 'indicator', value: indicator.value }]);
     handleAnalytics('Net-Zero Map', 'Change indicator', indicator.label);
   };
 
@@ -186,10 +189,12 @@ class NetZeroMapContainer extends PureComponent {
       values.length > 1 && values.includes('WORLD')
         ? values.filter(v => v !== 'WORLD').join(',')
         : values.join(',');
-    this.updateUrlParam({
-      name: 'regions',
-      value
-    });
+    this.updateUrlParams([
+      {
+        name: 'regions',
+        value
+      }
+    ]);
   };
 
   handleInfoClick = () => {
@@ -201,9 +206,9 @@ class NetZeroMapContainer extends PureComponent {
     });
   };
 
-  updateUrlParam(param, clear) {
+  updateUrlParams(param) {
     const { history, location } = this.props;
-    history.replace(getLocationParamUpdated(location, param, clear));
+    history.replace(getLocationParamUpdated(location, param));
   }
 
   handlePngDownloadModal = () => {
