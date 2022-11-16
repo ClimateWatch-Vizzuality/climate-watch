@@ -2,7 +2,10 @@ import { createSelector } from 'reselect';
 import { deburrUpper, filterQuery } from 'app/utils';
 import sortBy from 'lodash/sortBy';
 import isEmpty from 'lodash/isEmpty';
-import { getMapIndicator } from 'components/ndcs/net-zero-map/net-zero-map-selectors';
+import {
+  getMapIndicator,
+  getSelectedCountriesISO
+} from 'components/ndcs/net-zero-map/net-zero-map-selectors';
 import { replaceStringAbbr } from 'components/abbr-replace';
 
 const getCountries = state => state.countries || null;
@@ -10,12 +13,8 @@ const getCategories = state => state.categories || null;
 const getIndicatorsData = state => state.indicators || null;
 export const getQuery = state => deburrUpper(state.query) || '';
 
-export const getISOCountries = createSelector([getCountries], countries =>
-  countries.map(country => country.iso_code3)
-);
-
 export const getIndicatorsParsed = createSelector(
-  [getCategories, getIndicatorsData, getISOCountries],
+  [getCategories, getIndicatorsData],
   (categories, indicators) => {
     if (!categories || !indicators || !indicators.length) return null;
     const parsedIndicators = sortBy(
@@ -32,8 +31,8 @@ export const getIndicatorsParsed = createSelector(
 );
 
 export const tableGetSelectedData = createSelector(
-  [getIndicatorsParsed, getCountries],
-  (indicators, countries) => {
+  [getIndicatorsParsed, getCountries, getSelectedCountriesISO],
+  (indicators, countries, selectedCountriesISO) => {
     if (!indicators || !indicators.length || !indicators[0].locations) {
       return [];
     }
@@ -41,23 +40,23 @@ export const tableGetSelectedData = createSelector(
     const refIndicator =
       indicators.find(i => i.value === 'nz_submission') || indicators[0];
 
-    return Object.keys(refIndicator.locations).map(iso => {
-      if (refIndicator.locations[iso].value === 'No Document Submitted') {
-        return false;
-      }
-      const countryData =
-        countries.find(country => country.iso_code3 === iso) || {};
-      const row = {
-        country: countryData.wri_standard_name || iso,
-        iso
-      };
-      indicators.forEach(ind => {
-        if (ind.locations[iso]) {
-          row[ind.label] = ind.locations[iso].value;
-        }
-      });
-      return row;
-    });
+    return Object.keys(refIndicator.locations)
+      .map(iso => {
+        if (!selectedCountriesISO.includes(iso)) return null;
+        const countryData =
+          countries.find(country => country.iso_code3 === iso) || {};
+        const row = {
+          country: countryData.wri_standard_name || iso,
+          iso
+        };
+        indicators.forEach(ind => {
+          if (ind.locations[iso]) {
+            row[ind.label] = ind.locations[iso].value;
+          }
+        });
+        return row;
+      })
+      .filter(Boolean);
   }
 );
 

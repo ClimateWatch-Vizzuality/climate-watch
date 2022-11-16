@@ -172,7 +172,9 @@ function NDCSExploreMap(props) {
   const [stickyStatus, setStickyStatus] = useState(Sticky.STATUS_ORIGINAL);
   const renderDonutChart = () => {
     const isRegional =
-      selectedLocations !== 1 && selectedLocations[0].value !== 'WORLD';
+      selectedLocations &&
+      selectedLocations.length &&
+      selectedLocations[0].value !== 'WORLD';
     return (
       <div className={styles.donutContainer} ref={pieChartRef}>
         <PieChart

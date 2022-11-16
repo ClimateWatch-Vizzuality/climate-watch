@@ -10,7 +10,6 @@ import { setColumnWidth } from 'utils/table';
 import Component from './lts-explore-table-component';
 
 import {
-  getISOCountries,
   replaceAbbreviations,
   getDefaultColumns,
   getTitleLinks,
@@ -36,7 +35,6 @@ const mapStateToProps = (state, { location }) => {
   return {
     loading,
     query: LTSWithSelection.query,
-    isoCountries: getISOCountries(LTSWithSelection),
     tableData: replaceAbbreviations(LTSWithSelection),
     columns: getDefaultColumns(LTSWithSelection),
     titleLinks: getTitleLinks(LTSWithSelection),
