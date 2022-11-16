@@ -23,7 +23,7 @@ const CustomInnerHoverLabel = ({ x, y, value, isRegional }) => (
 CustomInnerHoverLabel.propTypes = {
   x: PropTypes.number,
   y: PropTypes.number,
-  value: PropTypes.string,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   isRegional: PropTypes.bool
 };
 
