@@ -156,36 +156,34 @@ function LTSExploreMap(props) {
   const tooltipParentRef = useRef(null);
   const pieChartRef = useRef(null);
   const [stickyStatus, setStickyStatus] = useState(Sticky.STATUS_ORIGINAL);
-  const renderDonutChart = () => {
-    const isRegional =
-      selectedLocations &&
-      selectedLocations.length &&
-      selectedLocations[0].value !== 'WORLD';
-    return (
-      <div className={styles.donutContainer} ref={pieChartRef}>
-        <PieChart
-          customActiveIndex={donutActiveIndex}
-          onHover={(_, index) => selectActiveDonutIndex(index)}
-          data={emissionsCardData.data}
-          width={200}
-          config={emissionsCardData.config}
-          customTooltip={
-            <CustomTooltip
-              reference={tooltipParentRef.current}
-              chartReference={pieChartRef.current}
-              data={emissionsCardData.data}
-              itemName={'Parties'}
-              isRegional={isRegional}
-            />
-          }
-          customInnerHoverLabel={p => (
-            <CustomInnerHoverLabel {...p} isRegional={isRegional} />
-          )}
-          theme={{ pieChart: styles.pieChart }}
-        />
-      </div>
-    );
-  };
+  const isRegional =
+    selectedLocations &&
+    selectedLocations.length &&
+    selectedLocations[0].value !== 'WORLD';
+  const renderDonutChart = () => (
+    <div className={styles.donutContainer} ref={pieChartRef}>
+      <PieChart
+        customActiveIndex={donutActiveIndex}
+        onHover={(_, index) => selectActiveDonutIndex(index)}
+        data={emissionsCardData.data}
+        width={200}
+        config={emissionsCardData.config}
+        customTooltip={
+          <CustomTooltip
+            reference={tooltipParentRef.current}
+            chartReference={pieChartRef.current}
+            data={emissionsCardData.data}
+            itemName={'Parties'}
+            isRegional={isRegional}
+          />
+        }
+        customInnerHoverLabel={p => (
+          <CustomInnerHoverLabel {...p} isRegional={isRegional} />
+        )}
+        theme={{ pieChart: styles.pieChart }}
+      />
+    </div>
+  );
 
   // eslint-disable-next-line react/prop-types
   const renderMap = ({ isTablet, png }) => {
@@ -286,7 +284,7 @@ function LTSExploreMap(props) {
                     >
                       {!loading && (
                         <React.Fragment>
-                          {FEATURE_SHOW_LTS_SUMMARY &&
+                          {(isRegional || FEATURE_SHOW_LTS_SUMMARY) &&
                             summaryCardData &&
                             renderSummary(summaryCardData)}
                           {emissionsCardData &&
