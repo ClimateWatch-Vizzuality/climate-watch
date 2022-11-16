@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
 import qs from 'query-string';
+import castArray from 'lodash/castArray';
 import { handleAnalytics } from 'utils/analytics';
 import { isCountryIncluded } from 'app/utils';
 import { getLocationParamUpdated } from 'utils/navigation';
@@ -28,7 +29,9 @@ import {
   getSelectedCategory,
   getTooltipCountryValues,
   getDonutActiveIndex,
-  getPngSelectionSubtitle
+  getPngSelectionSubtitle,
+  getLocations,
+  getSelectedLocations
 } from './net-zero-map-selectors';
 
 const actions = {
@@ -71,7 +74,9 @@ const mapStateToProps = (state, { location }) => {
     selectedCategory: getSelectedCategory(netZeroWithSelection),
     checked: getIsShowEUCountriesChecked(netZeroWithSelection),
     donutActiveIndex: getDonutActiveIndex(netZeroWithSelection),
-    pngSelectionSubtitle: getPngSelectionSubtitle(netZeroWithSelection)
+    pngSelectionSubtitle: getPngSelectionSubtitle(netZeroWithSelection),
+    selectedLocations: getSelectedLocations(netZeroWithSelection),
+    locations: getLocations(netZeroWithSelection)
   };
 };
 
@@ -174,6 +179,19 @@ class NetZeroMapContainer extends PureComponent {
     handleAnalytics('Net-Zero Map', 'Change indicator', indicator.label);
   };
 
+  handleLocationsChange = filters => {
+    const filtersArray = castArray(filters);
+    const values = filtersArray.map(v => v.value);
+    const value =
+      values.length > 1 && values.includes('WORLD')
+        ? values.filter(v => v !== 'WORLD').join(',')
+        : values.join(',');
+    this.updateUrlParam({
+      name: 'regions',
+      value
+    });
+  };
+
   handleInfoClick = () => {
     this.props.setModalMetadata({
       customTitle: 'Net Zero Tracker',
@@ -210,6 +228,7 @@ class NetZeroMapContainer extends PureComponent {
       handleIndicatorChange: this.handleIndicatorChange,
       handleOnChangeChecked: this.handleOnChangeChecked,
       handlePngDownloadModal: this.handlePngDownloadModal,
+      handleLocationsChange: this.handleLocationsChange,
       checked: this.props.checked,
       indicator: this.props.indicator,
       countryData: this.state.country,

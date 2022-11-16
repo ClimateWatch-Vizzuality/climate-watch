@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable react/no-danger */
 import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
@@ -16,6 +17,7 @@ import CustomInnerHoverLabel from 'components/ndcs/shared/donut-custom-label';
 import LegendItem from 'components/ndcs/shared/legend-item';
 import ShareButton from 'components/button/share-button';
 import ExploreMapTooltip from 'components/ndcs/shared/explore-map-tooltip';
+import GhgMultiselectDropdown from 'components/ghg-multiselect-dropdown';
 import ModalShare from 'components/modal-share';
 import Sticky from 'react-stickynode';
 import cx from 'classnames';
@@ -66,7 +68,7 @@ const renderButtonGroup = (
           }
         ]}
       />
-      <ShareButton />
+      <ShareButton className={styles.shareButton} />
     </span>
     <ModalShare analyticsName="LTS Explore" />
   </div>
@@ -107,6 +109,17 @@ const renderLegend = (legendData, emissionsCardData) => (
   </div>
 );
 
+const LOCATION_GROUPS = [
+  {
+    groupId: 'regions',
+    title: 'Regions'
+  },
+  {
+    groupId: 'countries',
+    title: 'Countries'
+  }
+];
+
 function NetZeroMap(props) {
   const {
     loading,
@@ -121,6 +134,9 @@ function NetZeroMap(props) {
     handleCountryEnter,
     categories,
     indicators,
+    locations,
+    handleLocationsChange,
+    selectedLocations,
     selectedIndicator,
     handleCategoryChange,
     selectedCategory,
@@ -137,27 +153,36 @@ function NetZeroMap(props) {
   const tooltipParentRef = useRef(null);
   const pieChartRef = useRef(null);
   const [stickyStatus, setStickyStatus] = useState(Sticky.STATUS_ORIGINAL);
-  const renderDonutChart = () => (
-    <div className={styles.donutContainer} ref={pieChartRef}>
-      <PieChart
-        customActiveIndex={donutActiveIndex}
-        onHover={(_, index) => selectActiveDonutIndex(index)}
-        data={emissionsCardData.data}
-        width={200}
-        config={emissionsCardData.config}
-        customTooltip={
-          <CustomTooltip
-            reference={tooltipParentRef.current}
-            chartReference={pieChartRef.current}
-            data={emissionsCardData.data}
-            itemName={'Parties'}
-          />
-        }
-        customInnerHoverLabel={CustomInnerHoverLabel}
-        theme={{ pieChart: styles.pieChart }}
-      />
-    </div>
-  );
+  const renderDonutChart = () => {
+    const isRegional =
+      selectedLocations &&
+      selectedLocations.length &&
+      selectedLocations[0].value !== 'WORLD';
+    return (
+      <div className={styles.donutContainer} ref={pieChartRef}>
+        <PieChart
+          customActiveIndex={donutActiveIndex}
+          onHover={(_, index) => selectActiveDonutIndex(index)}
+          data={emissionsCardData.data}
+          width={200}
+          config={emissionsCardData.config}
+          customTooltip={
+            <CustomTooltip
+              reference={tooltipParentRef.current}
+              chartReference={pieChartRef.current}
+              data={emissionsCardData.data}
+              itemName={'Parties'}
+              isRegional={isRegional}
+            />
+          }
+          customInnerHoverLabel={p => (
+            <CustomInnerHoverLabel {...p} isRegional={isRegional} />
+          )}
+          theme={{ pieChart: styles.pieChart }}
+        />
+      </div>
+    );
+  };
 
   // eslint-disable-next-line react/prop-types
   const renderMap = ({ isTablet, png }) => {
@@ -226,6 +251,13 @@ function NetZeroMap(props) {
                           selectedIndicator &&
                           selectedIndicator.label.length > 14
                         }
+                      />
+                      <GhgMultiselectDropdown
+                        label={'Location'}
+                        groups={LOCATION_GROUPS}
+                        options={locations || []}
+                        values={selectedLocations || []}
+                        onSelectionChange={handleLocationsChange}
                       />
                     </div>
                     {isTablet &&
@@ -323,6 +355,9 @@ NetZeroMap.propTypes = {
   handleCountryClick: PropTypes.func.isRequired,
   handleCountryEnter: PropTypes.func.isRequired,
   handleInfoClick: PropTypes.func.isRequired,
+  locations: PropTypes.array,
+  selectedLocations: PropTypes.array,
+  handleLocationsChange: PropTypes.func,
   categories: PropTypes.array,
   indicators: PropTypes.array,
   selectedIndicator: PropTypes.object,

@@ -5,6 +5,8 @@ import Header from 'components/header';
 import Intro from 'components/intro';
 import { SEO_PAGES } from 'data/seo';
 import SEOTags from 'components/seo-tags';
+import RegionsProvider from 'providers/regions-provider/regions-provider';
+import CountriesProvider from 'providers/countries-provider/countries-provider';
 
 import layout from 'styles/layout.scss';
 import styles from './lts-explore-styles.scss';
@@ -34,6 +36,8 @@ const LTSExplore = ({ route }) => (
           </div>
         ))}
     </div>
+    <CountriesProvider />
+    <RegionsProvider />
   </div>
 );
 

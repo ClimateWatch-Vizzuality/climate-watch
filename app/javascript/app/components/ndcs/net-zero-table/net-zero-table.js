@@ -9,7 +9,6 @@ import { getLocationParamUpdated } from 'utils/navigation';
 import Component from './net-zero-table-component';
 
 import {
-  getISOCountries,
   replaceAbbreviations,
   getDefaultColumns,
   getTitleLinks
@@ -34,7 +33,6 @@ const mapStateToProps = (state, { location }) => {
   return {
     loading,
     query: NetZeroWithSelection.query,
-    isoCountries: getISOCountries(NetZeroWithSelection),
     tableData: replaceAbbreviations(NetZeroWithSelection),
     columns: getDefaultColumns(NetZeroWithSelection),
     titleLinks: getTitleLinks(NetZeroWithSelection)
