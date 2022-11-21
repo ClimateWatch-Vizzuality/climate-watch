@@ -449,10 +449,7 @@ export const getFilterOptions = createSelector(
     const filterKeys = DATA_EXPLORER_FILTERS[section];
     const filtersMeta = sectionMeta;
     if (!filtersMeta) return null;
-    if (
-      section === SECTION_NAMES.historicalEmissions &&
-      filterKeys.includes('regions')
-    ) {
+    if (filterKeys.includes('regions')) {
       filtersMeta.regions = addGroupId(regions, 'regions').concat(
         addGroupId(countries, 'countries')
       );
