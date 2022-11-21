@@ -13,7 +13,12 @@ import Loading from 'components/loading';
 import Dropdown from 'components/dropdown';
 import ModalMetadata from 'components/modal-metadata';
 import ModalPngDownload from 'components/modal-png-download';
-import { PieChart, MultiLevelDropdown, CheckInput } from 'cw-components';
+import {
+  PieChart,
+  MultiLevelDropdown,
+  CheckInput,
+  Switch
+} from 'cw-components';
 import CustomTooltip from 'components/ndcs/shared/donut-tooltip';
 import ExploreMapTooltip from 'components/ndcs/shared/explore-map-tooltip';
 import { getHoverIndex } from 'components/ndcs/shared/utils';
@@ -134,6 +139,10 @@ const LOCATION_GROUPS = [
   }
 ];
 
+const SWITCH_OPTIONS = ['GHG Emissions', 'Vulnerability'].map(name => ({
+  name,
+  value: name
+}));
 function NDCSExploreMap(props) {
   const {
     loading,
@@ -170,13 +179,34 @@ function NDCSExploreMap(props) {
   const tooltipParentRef = useRef(null);
   const pieChartRef = useRef(null);
   const [stickyStatus, setStickyStatus] = useState(Sticky.STATUS_ORIGINAL);
+  const [selectedOption, setSelectedOption] = useState(SWITCH_OPTIONS[0].value);
+
+  const renderVulnerabilityChart = () => 'Hi there';
+  const renderSecondChartsCard = () => (
+    <div className={styles.secondCard}>
+      <Switch
+        options={SWITCH_OPTIONS}
+        selectedOption={selectedOption}
+        onClick={e => setSelectedOption(e.value)}
+        theme={{
+          wrapper: styles.switch,
+          option: styles.switchOption,
+          checkedOption: styles.switchSelected
+        }}
+      />
+      {selectedOption === SWITCH_OPTIONS[0].value
+        ? renderDonutChart()
+        : renderVulnerabilityChart()}
+    </div>
+  );
+
   const renderDonutChart = () => {
     const isRegional =
       selectedLocations &&
       selectedLocations.length &&
       selectedLocations[0].value !== 'WORLD';
     return (
-      <div className={styles.donutContainer} ref={pieChartRef}>
+      <div ref={pieChartRef}>
         <PieChart
           customActiveIndex={donutActiveIndex}
           onHover={(_, index) => selectActiveDonutIndex(index)}
@@ -314,8 +344,7 @@ function NDCSExploreMap(props) {
                       {!loading && (
                         <React.Fragment>
                           {summaryCardData && renderSummary(summaryCardData)}
-                          {emissionsCardData &&
-                            renderDonutChart(emissionsCardData)}
+                          {emissionsCardData && renderSecondChartsCard()}
                           {legendData &&
                             renderLegend(legendData, emissionsCardData)}
                         </React.Fragment>
