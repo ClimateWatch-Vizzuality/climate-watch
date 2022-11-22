@@ -12,7 +12,8 @@ module Api
       def show
         metadata = ::WriMetadata::Source.
           includes(values: :property).
-          find_by!(name: params[:slug])
+          where(name: slug_params).
+          first!
 
         render json: metadata,
                serializer: Api::V1::WriMetadata::SourceSerializer
@@ -24,6 +25,16 @@ module Api
           all
         render json: acronyms,
                each_serializer: Api::V1::WriMetadata::AcronymSerializer
+      end
+
+      private
+
+      def slug_params
+        if params[:slug] == 'historical_emissions_cait'
+          return %w[historical_emissions_cait historical_emissions_climate_watch]
+        end
+
+        params[:slug]
       end
     end
   end

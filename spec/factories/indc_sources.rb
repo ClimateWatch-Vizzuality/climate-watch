@@ -9,7 +9,7 @@
 #
 FactoryBot.define do
   factory :indc_source, class: 'Indc::Source' do
-    name { 'CAIT' }
+    name { 'Climate Watch' }
 
     initialize_with { Indc::Source.find_or_create_by(name: name) }
   end

@@ -210,7 +210,7 @@ function GhgEmissionsContainer(props) {
     let { label: source } = selected.sourcesSelected || {};
     if (source) {
       if (source.startsWith('UNFCCC')) source = 'UNFCCC';
-      const slugs = `historical_emissions_${source}`;
+      const slugs = `historical_emissions_${source.replace(' ', '_')}`;
       setModalMetadata({
         category: 'Historical Emissions',
         slugs,
