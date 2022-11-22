@@ -35,5 +35,28 @@ RSpec.describe Api::V1::Data::NdcContent::Filter do
       )
       expect(filter.call.length).to eq(2)
     end
+
+    it 'filters by country' do
+      filter = Api::V1::Data::NdcContent::Filter.new(
+        countries: [uk.iso_code3]
+      )
+      expect(filter.call.length).to eq(1)
+    end
+
+    it 'filters by region location' do
+      filter = Api::V1::Data::NdcContent::Filter.new(
+        locations: [eu.iso_code3]
+      )
+      expect(filter.call.length).to eq(3)
+    end
+
+    it 'filters by country location' do
+      filter = Api::V1::Data::NdcContent::Filter.new(
+        countries: [spain.iso_code3],
+        locations: [uk.iso_code3]
+      )
+      # location overrides countries
+      expect(filter.call.length).to eq(1)
+    end
   end
 end
