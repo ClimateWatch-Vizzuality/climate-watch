@@ -24,7 +24,7 @@ const fetchNdcsCountryAccordion = createThunkAction(
         }?location=${locations}&category=${category}${
           lts
             ? '&source=LTS'
-            : '&source[]=CAIT&source[]=WB&source[]=NDC%20Explorer&source[]=UNICEF'
+            : '&source[]=CAIT&source[]=Climate%20Watch&source[]=WB&source[]=NDC%20Explorer&source[]=UNICEF'
         }${documentParam}${!compare ? '&filter=overview' : ''}`
       )
         .then(response => {
