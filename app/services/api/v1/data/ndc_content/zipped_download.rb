@@ -8,7 +8,7 @@ module Api
           def initialize(filter, filename: 'ndc_content')
             @filter = filter
             @metadata_filter = Api::V1::Data::Metadata::Filter.new(
-              source_names: %w(ndc_cait ndc_wb ndc_die)
+              source_names: %w(ndc_cw ndc_wb ndc_die)
             )
             @filename = filename
             @metadata_filename = 'sources.csv'
