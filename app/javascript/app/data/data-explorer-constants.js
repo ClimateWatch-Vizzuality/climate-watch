@@ -74,7 +74,7 @@ export const FIRST_TABLE_HEADERS = {
 
 export const FILTER_DEFAULTS = {
   'historical-emissions': {
-    'data-sources': 'CAIT',
+    'data-sources': 'Climate Watch',
     regions: ALL_SELECTED,
     gases: 'All GHG',
     sectors: 'Total including LUCF'
@@ -149,6 +149,7 @@ export const DATA_EXPLORER_METHODOLOGY_SOURCE = {
   'historical-emissions': {
     PIK: ['historical_emissions_pik'],
     CAIT: ['historical_emissions_cait'],
+    'Climate Watch': ['historical_emissions_climate_watch'],
     'UNFCCC Annex I': ['historical_emissions_unfccc'],
     'UNFCCC Non-Annex I': ['historical_emissions_unfccc'],
     GCP: ['historical_emissions_gcp']

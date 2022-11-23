@@ -80,11 +80,13 @@ export const getEmissionProviderFilters = createSelector(
   (meta, iso) => {
     if (!meta || !iso || isEmpty(meta)) return null;
     const allGhgGas = meta.gas.find(g => g.label === 'All GHG');
-    const CaitSource = meta.data_source.find(g => g.name === 'CAIT');
+    const source = meta.data_source.find(
+      g => g.name === 'CAIT' || g.name === 'Climate Watch'
+    );
     return {
       gas: allGhgGas && allGhgGas.value,
       location: iso,
-      source: CaitSource && CaitSource.value
+      source: source && source.value
     };
   }
 );

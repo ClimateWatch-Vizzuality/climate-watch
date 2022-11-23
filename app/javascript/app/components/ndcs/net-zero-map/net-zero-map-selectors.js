@@ -45,7 +45,7 @@ export const getLocations = createSelector(
       iso: country.iso_code3,
       label: country.wri_standard_name
     }));
-    const SOURCE = 'CAIT';
+    const SOURCES = ['CAIT', 'Climate Watch'];
 
     const regionOptions = [TOP_EMITTERS_OPTION];
     const updatedRegions = regions;
@@ -55,7 +55,9 @@ export const getLocations = createSelector(
       const regionCountries =
         region.members &&
         region.members
-          .filter(m => !m.ghg_sources || m.ghg_sources.includes(SOURCE))
+          .filter(
+            m => !m.ghg_sources || SOURCES.some(s => m.ghg_sources.includes(s))
+          )
           .map(country => ({
             label: country.wri_standard_name,
             iso: country.iso_code3

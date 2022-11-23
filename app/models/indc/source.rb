@@ -10,6 +10,7 @@
 module Indc
   class Source < ApplicationRecord
     VALID_SOURCES = [
+      'Climate Watch',
       'CAIT',
       'LSE',
       'LTS',
