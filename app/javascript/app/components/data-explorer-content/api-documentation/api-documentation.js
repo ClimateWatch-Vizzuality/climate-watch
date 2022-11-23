@@ -21,6 +21,12 @@ const countriesParam = {
   parameter: 'countries[]',
   description: 'country ISO code (ISO Code for European Union (27) is EUU)'
 };
+const locationsParam = {
+  name: 'locations',
+  parameter: 'locations[]',
+  description:
+    'country or region ISO code (ISO Code for European Union (27) is EUU), overrides countries param'
+};
 const sortColumnParam = {
   name: 'sort_col',
   parameter: 'sort_col',
@@ -166,6 +172,7 @@ const API_CALLS = {
             'view sector id at https://www.climatewatchdata.org/api/v1/data/ndc_sdg/sectors'
         },
         countriesParam,
+        locationsParam,
         sortColumnParam,
         sortDirectionParam
       ],
@@ -185,6 +192,7 @@ const API_CALLS = {
       description: 'Retrieves time series data for NDC content',
       queryParams: [
         countriesParam,
+        locationsParam,
         {
           name: 'data_sources',
           parameter: 'source_ids[]',
@@ -228,6 +236,7 @@ const API_CALLS = {
       description: 'Retrieves time series data for LTS content',
       queryParams: [
         countriesParam,
+        locationsParam,
         {
           name: 'data_sources',
           parameter: 'source_ids[]',
@@ -271,6 +280,7 @@ const API_CALLS = {
       description: 'Retrieves data for Net Zero content',
       queryParams: [
         countriesParam,
+        locationsParam,
         {
           name: 'indicators',
           parameter: 'indicator_ids[]',
