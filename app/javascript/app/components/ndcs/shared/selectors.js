@@ -94,7 +94,9 @@ export const selectedCountriesFunction = (locations, regions, countries) => {
 export const categoryIndicatorsFunction = (indicatorsParsed, category) => {
   if (!indicatorsParsed || !category) return null;
   const categoryIndicators = indicatorsParsed.filter(
-    indicator => indicator.categoryIds.indexOf(parseInt(category.id, 10)) > -1
+    indicator =>
+      indicator.categoryIds &&
+      indicator.categoryIds.indexOf(parseInt(category.id, 10)) > -1
   );
   return categoryIndicators;
 };
@@ -193,4 +195,67 @@ export const locationsNamesFunction = (locations, regions, countries) => {
     return updatedAcc;
   }, []);
   return uniq([...selectedRegionsNames, ...selectedCountriesNames]);
+};
+
+const median = numbers => {
+  if (numbers.length === 0) return null;
+  const sorted = Array.from(numbers).sort((a, b) => a - b);
+  const middle = Math.floor(sorted.length / 2);
+
+  if (sorted.length % 2 === 0) {
+    return (sorted[middle - 1] + sorted[middle]) / 2;
+  }
+
+  return sorted[middle];
+};
+
+export const getVulnerabilityDataFunction = (
+  legend,
+  selectedIndicator,
+  indicators,
+  selectedCountriesISO
+) => {
+  if (!legend || !selectedIndicator || !indicators) {
+    return null;
+  }
+
+  const vulnerabilityIndicator = indicators.find(
+    i => i.slug === 'vulnerability'
+  );
+  const isosByLabelId = Object.entries(selectedIndicator.locations).reduce(
+    (acc, [iso, value]) => {
+      if (selectedCountriesISO.includes(iso)) {
+        acc[value.label_id] = [...(acc[value.label_id] || []), iso];
+      }
+      return acc;
+    },
+    {}
+  );
+
+  if (!vulnerabilityIndicator) return null;
+  const legendWithData = legend.map(l => {
+    const labelIsos = isosByLabelId[l.id] || [];
+    const isosValues = labelIsos
+      .map(iso => {
+        const vulnerabilityValue = vulnerabilityIndicator.values.find(
+          v => v.location === iso
+        );
+        if (vulnerabilityValue && vulnerabilityValue.value) {
+          return parseFloat(vulnerabilityValue.value);
+        }
+        return null;
+      })
+      .filter(v => v !== null);
+    const valuesMedian = median(isosValues);
+    const medianCategory =
+      // eslint-disable-next-line no-nested-ternary
+      valuesMedian < 0.4 ? 'Low' : valuesMedian > 0.5 ? 'High' : 'Medium';
+    return {
+      ...l,
+      median: Math.round(valuesMedian * 1000) / 1000,
+      medianCategory
+    };
+  });
+
+  return legendWithData;
 };
