@@ -28,3 +28,8 @@ export const NO_DOCUMENT_SUBMITTED_COUNTRIES = [
   { label: 'Greenland', iso: 'GRL' },
   { label: 'West Sahara', iso: 'ESH' }
 ];
+
+export const SWITCH_OPTIONS = ['GHG Emissions', 'Vulnerability'].map(name => ({
+  name,
+  value: name
+}));

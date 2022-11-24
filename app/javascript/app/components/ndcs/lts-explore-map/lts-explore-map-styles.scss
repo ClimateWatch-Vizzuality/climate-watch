@@ -110,7 +110,8 @@
 }
 
 .summaryCardContainer {
-  height: 180px;
+  height: 130px;
+  overflow: scroll;
   background-color: $white;
   box-shadow: $box-shadow-light;
   display: flex;
