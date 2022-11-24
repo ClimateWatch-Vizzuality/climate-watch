@@ -14,7 +14,7 @@ export const sectionsData = [
         title: 'Who is this tool for? ',
         answer:
           'Government ministries, development organizations, civil society organizations and researchers can use Climate Watch to find and download data about global emissions, climate commitments, sustainable development and other topics. Visit our <Link to="/" innertext="homepage" /> to see what we can offer you. '
-      }, 
+      },
       {
         type: 'html',
         title: 'Can I download the data?',
@@ -201,8 +201,8 @@ export const sectionsData = [
         tableData: [
           {
             '': 'Summary',
-            CAIT:
-              'The CAIT dataset is the most comprehensive included on Climate Watch and includes all sectors and gases. In order to emphasize comparability of data across countries, it does not use countries’ official inventories reported to the UNFCCC. It has a 3 year lag.',
+            'Climate Watch':
+              'The Climate Watch dataset is the most comprehensive included on Climate Watch and includes all sectors and gases. In order to emphasize comparability of data across countries, it does not use countries’ official inventories reported to the UNFCCC. It has a 3 year lag.',
             'PIK PRIMAP-hist':
               'The PIK PRIMAP-hist dataset included on Climate Watch combines UNFCCC reported data where available and fills gaps with other sources. It does not include land use change and forestry (LUCF) but covers all other sectors and has a 3 year lag. Additional data to what is shown on Climate Watch is available from <a href="https://www.pik-potsdam.de/paris-reality-check/primap-hist/">PIK</a>.',
             UNFCCC:
@@ -212,7 +212,7 @@ export const sectionsData = [
           },
           {
             '': 'Original data sources used',
-            CAIT:
+            'Climate Watch':
               'International Energy Agency (IEA), U.S. Environmental Protection Agency, U.N. Food and Agriculture Organization, Global Carbon Project. See more detailed information about sources <a href="https://wri-sites.s3.us-east-1.amazonaws.com/climatewatch.org/www.climatewatch.org/climate-watch/wri_metadata/CW_GHG_Method_Note.pdf">here</a>.',
             'PIK PRIMAP-hist':
               'Uses countries’ official inventories reported to the UNFCCC as a basis, and fills in with data from other sources, including CDIAC, Emissions Database for Global Atmospheric Research (EDGAR), and FAO, among others. See all sources <a href="https://doi.org/10.5194/essd-8-571-2016">here</a>.',
@@ -223,7 +223,7 @@ export const sectionsData = [
           },
           {
             '': 'Temporal coverage',
-            CAIT: '1990-2019',
+            'Climate Watch': '1990-2019',
             'PIK PRIMAP-hist': '1850-2019',
             UNFCCC:
               '1990-2019 for Annex I countries; Varied coverage for non-Annex I countries',
@@ -231,7 +231,7 @@ export const sectionsData = [
           },
           {
             '': 'Geographic coverage',
-            CAIT: 'UNFCCC member states',
+            'Climate Watch': 'UNFCCC member states',
             'PIK PRIMAP-hist':
               'UNFCCC member states and non-UNFCCC territories',
             UNFCCC:
@@ -241,7 +241,7 @@ export const sectionsData = [
           },
           {
             '': 'Sector coverage (sector definitions may vary across sources)',
-            CAIT:
+            'Climate Watch':
               'Main IPCC sectors, including energy sub-sectors. Includes:<ul><li>agriculture</li><li>bunker fuels</li><li>energy<ul><li>electricity/heat</li><li>fugitive emissions</li><li>manufacturing/ construction</li><li>other fuel combustion</li><li>transportation</li></ul></li><li>industrial processes</li><li>land-use change and forestry</li><li>waste</li>',
             'PIK PRIMAP-hist':
               'Main IPCC sectors excluding LUCF. Includes: <ul><li>agriculture</li><li>energy</li><li>industrial processes and product use</li><li>other</li><li>waste</li></ul>Excludes: <ul><li>land use change and forestry</li><li>bunker fuels</li></ul> Additional sub-sectors are included in the original source and not reflected on Climate Watch.',
@@ -252,28 +252,28 @@ export const sectionsData = [
           },
           {
             '': 'Gas coverage ',
-            CAIT: 'Kyoto GHGs (CH4, CO2, N2O, F-gases)',
+            'Climate Watch': 'Kyoto GHGs (CH4, CO2, N2O, F-gases)',
             'PIK PRIMAP-hist': 'Kyoto GHGs (CH4, CO2, N2O, F-gases)',
             UNFCCC: 'Kyoto GHGs (CH4, CO2, N2O, F-gases)',
             GCP: 'CO2 only'
           },
           {
             '': 'Timeliness',
-            CAIT: '3 year lag',
+            'Climate Watch': '3 year lag',
             'PIK PRIMAP-hist': '3 year lag',
             UNFCCC: '2-3 year lag',
             GCP: '1-2 year lag'
           },
           {
             '': 'Use of country reported data to the UNFCC',
-            CAIT: 'Does not use UNFCCC reported data',
+            'Climate Watch': 'Does not use UNFCCC reported data',
             'PIK PRIMAP-hist': 'Uses UNFCCC reported data and fills gaps',
             UNFCCC: 'Only uses UNFCCC reported data',
             GCP: 'Uses UNFCCC reported data and fills gaps'
           },
           {
             '': 'Comparable methodology across countries',
-            CAIT:
+            'Climate Watch':
               'Consistent methodology used across all countries to maximize comparability',
             'PIK PRIMAP-hist':
               'Uses national inventories where available and fills in the gaps. Therefore, comparability varies depending on country groups (Annex 1 / non-Annex 1) and years.',
@@ -283,7 +283,7 @@ export const sectionsData = [
           }
         ]
       },
-        {
+      {
         type: 'html',
         title:
           'What are the definitions of the different emissions sectors from the Climate Watch data? ',
@@ -297,10 +297,9 @@ export const sectionsData = [
         answer:
           'According to the Working Group III Contribution to the IPCC Sixth Assessment Report, estimated uncertainly for global CO<sub>2</sub> emissions from fossil fuels is relatively low, about 8%. For non-CO<sub>2</sub> GHG emissions, CH<sub>4</sub> and F-gases have relatively ‘intermediate’ uncertainties of around 30%, while N<sub>2</sub>O has a higher uncertainty of around 60%. CO22 emissions from land-use change and forestry have very large uncertainties of 70%. In total, when combining these uncertainties, estimates of global total GHG emissions have an uncertainty of around 10%.<br>You can find out more about the uncertainties in the Climate Watch data in our <a href="https://wri-sites.s3.us-east-1.amazonaws.com/climatewatch.org/www.climatewatch.org/climate-watch/wri_metadata/CW_GHG_Method_Note.pdf">Methodology</a> document.'
       },
-     {
+      {
         type: 'html',
-        title:
-          'Why do some countries have sectors with negative emissions?',
+        title: 'Why do some countries have sectors with negative emissions?',
         answer:
           '<p>The Land-use Change & Forestry (LUCF) sector can be a carbon sink or a source of emissions. Trees and other vegetation take up carbon dioxide from the atmosphere, but they also release emissions when they are cut down, burned or converted to other land uses. Depending on the balance between emissions and carbon sequestration in this sector within a country’s territory, the resulting net emissions could be positive or negative.</p><p>This WRI <a href="https://www.wri.org/insights/forests-absorb-twice-much-carbon-they-emit-each-year">article</a> has more detail on how trees contribute to carbon sequestration.</p>'
       },
@@ -325,20 +324,20 @@ export const sectionsData = [
         answer:
           '<p>The jumps in emissions data are often related to the forestry sector emissions. These jumps result from the reporting methodology of its underlying data source, FAOSTAT, which uses the Forest Resource Assessment published every 5 years. FAOSTAT is interpolating this data over those 5-year periods and if there were significant differences in emissions between these periods, it may result in a jump on our graphics.</p><p>To find out more about the Forest Resource Assessment, you can access this <a href="https://www.wri.org/insights/insider-global-forest-watch-and-forest-resources-assessment-explained-5-graphics">blogpost</a>.</p>'
       },
-    {
+      {
         type: 'html',
         title:
           'WWhy are UNFCCC emissions estimates scattered for certain Non-Annex I countries?',
         answer:
           '<p>The reporting requirements for GHG inventories are different for Annex I and Non-Annex I Parties of the UNFCCC. Unlike Annex-I countries who report their GHG inventories annually through National Inventory Reports and in common reporting format (CRF) tables, Non-Annex I countries report their emissions data through National Communications and Biennial Update Reports which are submitted in different points and in varied forms.</p><p>Furthermore, Climate Watch only publishes data collected and made available through UNFCCC’s GHG data interface, which displays data ‘as received’ from Parties. Climate Watch does not attempt data collection on our own. Some Non-Annex I Parties submitted their GHG inventory data using the format of the 2006 IPCC Guidelines for reporting GHG emissions/removals and are not included in UNFCCC’s data interface. Thus, those emissions inventories are not available through Climate Watch.</p><p>For the most up to date list of latest reports, please visit UNFCCC page <a href="https://unfccc.int/process-and-meetings/transparency-and-reporting/greenhouse-gas-data/notes-on-ghg-data">here</a>. Direct access to the latest NCs and BURs documents can be found in the UNFCCC timeline  at the top of each Climate Watch Country Profile page.</p>'
       },
-    {
+      {
         type: 'html',
         title:
           'Why are Climate Watch emissions estimates different from those reported by countries in their national inventories?',
         answer:
           '<p>Due to the differences in data sources and methodologies used, Climate Watch estimated country GHG emissions are inevitably different from official inventories reported by countries.</p><p>Parties to the UNFCCC are required to “develop, update periodically, publish and make available to the Conference of the Parties (COP), their national inventories of anthropogenic emissions by sources and removals by sinks of all greenhouse gases not controlled by the Montreal Protocol.” Due to differences in capacity and resources available for Annex I Parties to the Convention and Non-Annex I Parties, not all countries have a full time-series GHG data available. With the different reporting requirements and guidelines, not all inventories reported by parties to the UNFCCC are comparable to each other.</p><p>Climate Watch Country GHG Emissions dataset is provided to offer a comprehensive and comparable dataset across countries, and as a complement to the official inventories that are available.</p>'
-      },
+      }
     ]
   },
   {
@@ -382,12 +381,13 @@ export const sectionsData = [
         answer:
           'Searching for a word in English will produce results only among I/NDCs that are in English; similarly searching for a word in French would produce results among I/NDCs in French. '
       },
-    {
+      {
         type: 'text',
-        title: 'How do we determine enhanced ambition/overall comparison with previous NDC? ',
+        title:
+          'How do we determine enhanced ambition/overall comparison with previous NDC? ',
         answer:
           'You can find all the indicators from the “Overall comparison with previous NDC” in this <a href="https://wri-sites.s3.us-east-1.amazonaws.com/climatewatch.org/www.climatewatch.org/climate-watch/wri_metadata/NDC_methodology.pdf" rel="noopener noreferrer" target="_blank">link</a>.'
-      },
+      }
     ]
   },
   {
@@ -659,5 +659,5 @@ export const sectionsData = [
         ]
       }
     ]
-  },
+  }
 ];

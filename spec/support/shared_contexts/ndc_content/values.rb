@@ -10,7 +10,7 @@ RSpec.shared_context 'NDC values' do
       indicator: ghg_target_type,
       sector: aviation,
       label: baseline_scenario_target,
-      location: spain,
+      location: uk,
       value: 'Baseline scenario target'
     )
   }

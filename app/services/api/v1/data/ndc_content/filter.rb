@@ -48,18 +48,36 @@ module Api
               instance_variable_set(:"@#{param_name}", value)
             end
             @countries = params[:countries]
+            initialize_locations(params)
+          end
+
+          # location filter overrides countries
+          def initialize_locations(params)
+            return unless params[:locations]
+
+            @countries = Location.
+              left_joins(:members).
+              where(iso_code3: params[:locations]).
+              pluck(Arel.sql('coalesce(members_locations.iso_code3, locations.iso_code3)')).
+              uniq
           end
 
           def apply_filters
-            apply_location_filter
+            apply_country_filter
             @query = @query.where(source_id: @source_ids) if @source_ids
             @query = @query.where(indicator_id: @indicator_ids) if @indicator_ids
             apply_sector_filter
             apply_category_filter
           end
 
-          def apply_location_filter
+          def apply_country_filter
             return unless @countries
+
+            @query = @query.where(iso_code3: @countries)
+          end
+
+          def apply_location_filter
+            return unless @locations
 
             @query = @query.where(iso_code3: @countries)
           end
