@@ -333,7 +333,7 @@ export const GROUPED_OR_MULTI_SELECT_FIELDS = {
   'ndc-content': [
     {
       key: 'regions',
-      label: 'Location',
+      label: 'Countries and Regions',
       groups: [
         { groupId: 'regions', title: 'Regions' },
         { groupId: 'countries', title: 'Countries' }
@@ -343,7 +343,7 @@ export const GROUPED_OR_MULTI_SELECT_FIELDS = {
   'lts-content': [
     {
       key: 'regions',
-      label: 'Location',
+      label: 'Countries and Regions',
       groups: [
         { groupId: 'regions', title: 'Regions' },
         { groupId: 'countries', title: 'Countries' }
@@ -353,7 +353,7 @@ export const GROUPED_OR_MULTI_SELECT_FIELDS = {
   'net-zero-content': [
     {
       key: 'regions',
-      label: 'Location',
+      label: 'Countries and Regions',
       groups: [
         { groupId: 'regions', title: 'Regions' },
         { groupId: 'countries', title: 'Countries' }
