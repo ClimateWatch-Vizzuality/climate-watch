@@ -33,7 +33,8 @@ import {
   categoryIndicatorsFunction,
   pathsWithStylesFunction,
   getColorException,
-  locationsNamesFunction
+  locationsNamesFunction,
+  getVulnerabilityDataFunction
 } from '../shared/selectors';
 
 const NOT_APPLICABLE_LABEL = 'Not Applicable';
@@ -424,6 +425,11 @@ export const getEmissionsCardData = createSelector(
       tooltip
     };
   }
+);
+
+export const getVulnerabilityData = createSelector(
+  [getLegend, getMapIndicator, getIndicatorsData, getSelectedCountriesISO],
+  getVulnerabilityDataFunction
 );
 
 const getCountriesAndParties = submissions => {

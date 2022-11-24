@@ -33,7 +33,14 @@ const fetchNDCS = createThunkAction('fetchNDCS', props => (dispatch, state) => {
   // and as it is not filtered by category also serves the whole list of categories
   promises.push(
     apiWithCache.get(
-      '/api/v1/ndcs?indicators=ndce_ghg, submission, submission_date&filter=map&source[]=CAIT&source[]=WB&source[]=NDC%20Explorer&source[]=UNICEF'
+      '/api/v1/ndcs?indicators=ndce_ghg,submission,submission_date'
+    )
+  );
+
+  // Used for vulnerability indicator that is needed but not included on ndcs indicators
+  promises.push(
+    apiWithCache.get(
+      '/api/v1/country_profile/indicators?indicator=vulnerability'
     )
   );
 
@@ -50,7 +57,11 @@ const fetchNDCS = createThunkAction('fetchNDCS', props => (dispatch, state) => {
             ...response[1].data.categories
           },
           indicators: uniqBy(
-            response[0].data.indicators.concat(response[1].data.indicators),
+            response[0].data.indicators
+              .concat(response[1].data.indicators)
+              .concat(
+                (response[2] && response[2].data && response[2].data.data) || []
+              ),
             'id'
           ),
           sectors: {

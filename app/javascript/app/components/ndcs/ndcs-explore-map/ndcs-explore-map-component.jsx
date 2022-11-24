@@ -4,7 +4,6 @@ import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import Sticky from 'react-stickynode';
 import cx from 'classnames';
-
 import { TabletLandscape } from 'components/responsive';
 import Map from 'components/map';
 import AbbrReplace from 'components/abbr-replace';
@@ -25,6 +24,7 @@ import { getHoverIndex } from 'components/ndcs/shared/utils';
 import HandIconInfo from 'components/ndcs/shared/hand-icon-info';
 import CustomInnerHoverLabel from 'components/ndcs/shared/donut-custom-label';
 import LegendItem from 'components/ndcs/shared/legend-item';
+import VulnerabilityChart from 'components/ndcs/shared/vulnerability-chart';
 import ShareButton from 'components/button/share-button';
 import SEOTags from 'components/seo-tags';
 import GhgMultiselectDropdown from 'components/ghg-multiselect-dropdown';
@@ -39,6 +39,9 @@ import { SEO_PAGES } from 'data/seo';
 import newMapTheme from 'styles/themes/map/map-new-zoom-controls.scss';
 import layout from 'styles/layout.scss';
 import blueCheckboxTheme from 'styles/themes/checkbox/blue-checkbox.scss';
+
+import { SWITCH_OPTIONS } from 'components/ndcs/shared/constants';
+
 import styles from './ndcs-explore-map-styles.scss';
 
 const renderButtonGroup = (
@@ -139,10 +142,6 @@ const LOCATION_GROUPS = [
   }
 ];
 
-const SWITCH_OPTIONS = ['GHG Emissions', 'Vulnerability'].map(name => ({
-  name,
-  value: name
-}));
 function NDCSExploreMap(props) {
   const {
     loading,
@@ -150,6 +149,7 @@ function NDCSExploreMap(props) {
     downloadLink,
     countryData,
     emissionsCardData,
+    vulnerabilityData,
     summaryCardData,
     legendData,
     handleInfoClick,
@@ -174,29 +174,30 @@ function NDCSExploreMap(props) {
     handlePngDownloadModal,
     pngSelectionSubtitle,
     checked,
-    pngDownloadId
+    pngDownloadId,
+    secondCardSelectedTab,
+    setSecondCardSelectedTab
   } = props;
   const tooltipParentRef = useRef(null);
   const pieChartRef = useRef(null);
   const [stickyStatus, setStickyStatus] = useState(Sticky.STATUS_ORIGINAL);
-  const [selectedOption, setSelectedOption] = useState(SWITCH_OPTIONS[0].value);
-
-  const renderVulnerabilityChart = () => 'Hi there';
   const renderSecondChartsCard = () => (
     <div className={styles.secondCard}>
       <Switch
         options={SWITCH_OPTIONS}
-        selectedOption={selectedOption}
-        onClick={e => setSelectedOption(e.value)}
+        selectedOption={secondCardSelectedTab}
+        onClick={e => setSecondCardSelectedTab(e.value)}
         theme={{
           wrapper: styles.switch,
           option: styles.switchOption,
           checkedOption: styles.switchSelected
         }}
       />
-      {selectedOption === SWITCH_OPTIONS[0].value
-        ? renderDonutChart()
-        : renderVulnerabilityChart()}
+      {secondCardSelectedTab === SWITCH_OPTIONS[0].value ? (
+        renderDonutChart()
+      ) : (
+        <VulnerabilityChart data={vulnerabilityData} />
+      )}
     </div>
   );
 
@@ -417,6 +418,7 @@ NDCSExploreMap.propTypes = {
   downloadLink: PropTypes.string,
   countryData: PropTypes.object,
   emissionsCardData: PropTypes.object,
+  vulnerabilityData: PropTypes.object,
   summaryCardData: PropTypes.array,
   legendData: PropTypes.array,
   handleCountryClick: PropTypes.func.isRequired,
@@ -441,7 +443,9 @@ NDCSExploreMap.propTypes = {
   pngSelectionSubtitle: PropTypes.string,
   pngDownloadId: PropTypes.string.isRequired,
   checked: PropTypes.bool,
-  donutActiveIndex: PropTypes.number
+  donutActiveIndex: PropTypes.number,
+  secondCardSelectedTab: PropTypes.string,
+  setSecondCardSelectedTab: PropTypes.string
 };
 
 export default NDCSExploreMap;
