@@ -42,7 +42,7 @@ export default [
     component: AboutTrainings,
     exact: true,
     anchor: true,
-    label: 'Trainings'
+    label: 'Trainings & Tutorials'
   },
   {
     path: '/about/faq/general_questions',
