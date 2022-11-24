@@ -22,7 +22,7 @@ const fetchNDCS = createThunkAction('fetchNDCS', props => (dispatch, state) => {
   if (ndcsExplore && !ndcsExplore.loading) {
     promises.push(
       apiWithCache.get(
-        `/api/v1/ndcs?filter=map&source[]=CAIT&source[]=WB&source[]=NDC%20Explorer&source[]=UNICEF${
+        `/api/v1/ndcs?filter=map&source[]=CAIT&source[]=Climate%20Watch&source[]=WB&source[]=NDC%20Explorer&source[]=UNICEF${
           params.length ? `&${params.join('&')}` : ''
         }`
       )
