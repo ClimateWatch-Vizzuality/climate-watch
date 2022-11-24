@@ -29,6 +29,16 @@ const AboutTrainings = () => (
         </a>{' '}
         to find out when the next training will take place.
       </p>
+      <p>
+        For any questions about our trainings, please contact{' '}
+        <a
+          href="mailto:leandro.vigna@wri.org"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          leandro.vigna@wri.org
+        </a>
+      </p>
       <p className={styles.recordingIntro}>
         You can watch a recording of one of our trainings here:
       </p>
@@ -94,16 +104,6 @@ const AboutTrainings = () => (
           Research Associate, NDC Partnership
         </li>
       </ul>
-      <p>
-        For any questions about our trainings, please contact{' '}
-        <a
-          href="mailto:leandro.vigna@wri.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          leandro.vigna@wri.org
-        </a>
-      </p>
     </AbbrReplace>
   </div>
 );

@@ -23,7 +23,7 @@ export default [
   },
   {
     path: '/about/trainings',
-    label: 'Trainings',
+    label: 'Trainings & Tutorials',
     activeId
   },
   {
