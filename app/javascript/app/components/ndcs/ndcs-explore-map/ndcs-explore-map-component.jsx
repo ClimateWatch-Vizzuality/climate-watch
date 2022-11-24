@@ -4,7 +4,6 @@ import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import Sticky from 'react-stickynode';
 import cx from 'classnames';
-
 import { TabletLandscape } from 'components/responsive';
 import Map from 'components/map';
 import AbbrReplace from 'components/abbr-replace';
@@ -13,13 +12,19 @@ import Loading from 'components/loading';
 import Dropdown from 'components/dropdown';
 import ModalMetadata from 'components/modal-metadata';
 import ModalPngDownload from 'components/modal-png-download';
-import { PieChart, MultiLevelDropdown, CheckInput } from 'cw-components';
+import {
+  PieChart,
+  MultiLevelDropdown,
+  CheckInput,
+  Switch
+} from 'cw-components';
 import CustomTooltip from 'components/ndcs/shared/donut-tooltip';
 import ExploreMapTooltip from 'components/ndcs/shared/explore-map-tooltip';
 import { getHoverIndex } from 'components/ndcs/shared/utils';
 import HandIconInfo from 'components/ndcs/shared/hand-icon-info';
 import CustomInnerHoverLabel from 'components/ndcs/shared/donut-custom-label';
 import LegendItem from 'components/ndcs/shared/legend-item';
+import VulnerabilityChart from 'components/ndcs/shared/vulnerability-chart';
 import ShareButton from 'components/button/share-button';
 import SEOTags from 'components/seo-tags';
 import GhgMultiselectDropdown from 'components/ghg-multiselect-dropdown';
@@ -34,6 +39,9 @@ import { SEO_PAGES } from 'data/seo';
 import newMapTheme from 'styles/themes/map/map-new-zoom-controls.scss';
 import layout from 'styles/layout.scss';
 import blueCheckboxTheme from 'styles/themes/checkbox/blue-checkbox.scss';
+
+import { SWITCH_OPTIONS } from 'components/ndcs/shared/constants';
+
 import styles from './ndcs-explore-map-styles.scss';
 
 const renderButtonGroup = (
@@ -141,6 +149,7 @@ function NDCSExploreMap(props) {
     downloadLink,
     countryData,
     emissionsCardData,
+    vulnerabilityData,
     summaryCardData,
     legendData,
     handleInfoClick,
@@ -165,18 +174,40 @@ function NDCSExploreMap(props) {
     handlePngDownloadModal,
     pngSelectionSubtitle,
     checked,
-    pngDownloadId
+    pngDownloadId,
+    secondCardSelectedTab,
+    setSecondCardSelectedTab
   } = props;
   const tooltipParentRef = useRef(null);
   const pieChartRef = useRef(null);
   const [stickyStatus, setStickyStatus] = useState(Sticky.STATUS_ORIGINAL);
+  const renderSecondChartsCard = () => (
+    <div className={styles.secondCard}>
+      <Switch
+        options={SWITCH_OPTIONS}
+        selectedOption={secondCardSelectedTab}
+        onClick={e => setSecondCardSelectedTab(e.value)}
+        theme={{
+          wrapper: styles.switch,
+          option: styles.switchOption,
+          checkedOption: styles.switchSelected
+        }}
+      />
+      {secondCardSelectedTab === SWITCH_OPTIONS[0].value ? (
+        renderDonutChart()
+      ) : (
+        <VulnerabilityChart data={vulnerabilityData} />
+      )}
+    </div>
+  );
+
   const renderDonutChart = () => {
     const isRegional =
       selectedLocations &&
       selectedLocations.length &&
       selectedLocations[0].value !== 'WORLD';
     return (
-      <div className={styles.donutContainer} ref={pieChartRef}>
+      <div ref={pieChartRef}>
         <PieChart
           customActiveIndex={donutActiveIndex}
           onHover={(_, index) => selectActiveDonutIndex(index)}
@@ -314,8 +345,7 @@ function NDCSExploreMap(props) {
                       {!loading && (
                         <React.Fragment>
                           {summaryCardData && renderSummary(summaryCardData)}
-                          {emissionsCardData &&
-                            renderDonutChart(emissionsCardData)}
+                          {emissionsCardData && renderSecondChartsCard()}
                           {legendData &&
                             renderLegend(legendData, emissionsCardData)}
                         </React.Fragment>
@@ -388,6 +418,7 @@ NDCSExploreMap.propTypes = {
   downloadLink: PropTypes.string,
   countryData: PropTypes.object,
   emissionsCardData: PropTypes.object,
+  vulnerabilityData: PropTypes.object,
   summaryCardData: PropTypes.array,
   legendData: PropTypes.array,
   handleCountryClick: PropTypes.func.isRequired,
@@ -412,7 +443,9 @@ NDCSExploreMap.propTypes = {
   pngSelectionSubtitle: PropTypes.string,
   pngDownloadId: PropTypes.string.isRequired,
   checked: PropTypes.bool,
-  donutActiveIndex: PropTypes.number
+  donutActiveIndex: PropTypes.number,
+  secondCardSelectedTab: PropTypes.string,
+  setSecondCardSelectedTab: PropTypes.string
 };
 
 export default NDCSExploreMap;

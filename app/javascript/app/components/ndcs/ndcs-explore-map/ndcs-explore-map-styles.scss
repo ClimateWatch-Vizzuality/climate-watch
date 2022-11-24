@@ -97,12 +97,29 @@
   }
 }
 
-.donutContainer {
-  height: 180px;
+.secondCard {
   padding: 15px 25px;
+  display: flex;
+  flex-direction: column;
   font-size: $font-size-sm;
   background-color: $white;
   box-shadow: $box-shadow-light;
+}
+
+.infoIcon {
+  vertical-align: text-bottom;
+}
+
+.switch {
+  max-height: 40px;
+  margin-bottom: 20px;
+}
+
+.switchOption,
+.switchSelected {
+  padding: 8px 15px;
+  width: 50%;
+  text-align: center;
 }
 
 .pieChart {
@@ -110,7 +127,7 @@
 }
 
 .summaryCardContainer {
-  height: 180px;
+  overflow: scroll;
   background-color: $white;
   box-shadow: $box-shadow-light;
   display: flex;
