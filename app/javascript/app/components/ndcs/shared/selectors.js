@@ -19,7 +19,7 @@ export const getColorException = (indicator, label) => {
 
 export const selectedLocationsFunction = (locations, search) => {
   if (!locations || !locations.length || !locations.length > 2) return null;
-  const { regions: selected } = search || {};
+  const { locations: selected } = search || {};
   const defaultLocation = locations.find(d => d.value === 'WORLD');
   if (selected) {
     const selectedISOS = selected.split(',');

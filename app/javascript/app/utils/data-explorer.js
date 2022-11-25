@@ -24,12 +24,23 @@ const REPLACEMENTS = {
   targets: 'target_ids[]',
   models: 'model_ids[]',
   scenarios: 'scenario_ids[]',
-  locations: 'location_ids[]',
   sort_col: 'sort_col',
-  sort_dir: 'sort_dir'
+  sort_dir: 'sort_dir',
+  locations: 'locations[]'
 };
 
-export const parseQuery = query => query && replaceAll(query, REPLACEMENTS);
+const HISTORICAL_EMISSIONS_REPLACEMENTS = {
+  locations: 'location_ids[]'
+};
+
+export const parseQuery = (query, section) =>
+  query &&
+  replaceAll(query, {
+    ...REPLACEMENTS,
+    ...(section === 'historical-emissions'
+      ? HISTORICAL_EMISSIONS_REPLACEMENTS
+      : {})
+  });
 
 export const openDownloadModal = (
   downloadUrl,

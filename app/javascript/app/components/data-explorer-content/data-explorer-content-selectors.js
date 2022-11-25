@@ -77,6 +77,12 @@ const getSectionMeta = createSelector(
     }
     const sectionMeta = { ...meta[section], ...noModelFiltersMeta };
 
+    if (
+      DATA_EXPLORER_FILTERS[section].includes('locations') &&
+      !sectionMeta.locations
+    ) {
+      return { ...sectionMeta, locations: [...regions, ...countries] };
+    }
     if (DATA_EXPLORER_FILTERS[section].includes('regions')) {
       return { ...sectionMeta, regions, countries };
     } else if (DATA_EXPLORER_FILTERS[section].includes('countries')) {
@@ -198,7 +204,6 @@ function filterQueryIds(sectionMeta, search, section, isLinkQuery) {
     sectionMeta,
     isLinkQuery
   );
-
   return filterIds;
 }
 
@@ -454,6 +459,11 @@ export const getFilterOptions = createSelector(
         addGroupId(countries, 'countries')
       );
     }
+    if (filterKeys.includes('locations')) {
+      filtersMeta.locations = addGroupId(regions, 'regions').concat(
+        addGroupId(countries, 'countries')
+      );
+    }
     if (filterKeys.includes('countries')) filtersMeta.countries = countries;
     if (filterKeys.includes('data-sources')) {
       filtersMeta['data-sources'] = sourceVersions;
@@ -463,12 +473,12 @@ export const getFilterOptions = createSelector(
     filterKeys.forEach(f => {
       const options = getOptions(section, f, filtersMeta, query, category);
       if (options) {
-        if (f === 'regions') options.unshift(TOP_EMITTERS_OPTION);
+        if (['regions', 'locations'].includes(f)) { options.unshift(TOP_EMITTERS_OPTION); }
         const optionsArray = options.map(option => {
           const updatedOption = { ...option };
           updatedOption.label = getLabel(option, f);
           updatedOption.value = getValue(option);
-          if (f === 'regions') {
+          if (['regions', 'locations'].includes(f)) {
             updatedOption.iso = option.iso_code3;
             const regionMembers =
               option.members && option.members.map(m => m.iso_code3);

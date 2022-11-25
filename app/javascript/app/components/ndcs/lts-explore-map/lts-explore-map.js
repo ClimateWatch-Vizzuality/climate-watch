@@ -168,7 +168,7 @@ class LTSExploreMapContainer extends PureComponent {
         : values.join(',');
     this.updateUrlParams([
       {
-        name: 'regions',
+        name: 'locations',
         value
       }
     ]);
