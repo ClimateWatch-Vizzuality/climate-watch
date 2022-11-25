@@ -45,10 +45,12 @@ export const fetchDataExplorer = createThunkAction(
       const updatedQuery = qs.parse(query) || {};
       updatedQuery.page = page || 1;
       updatedQuery.per_page = DATA_EXPLORER_PER_PAGE;
-      const parsedQuery = parseQuery(qs.stringify(updatedQuery));
+
+      const parsedQuery = parseQuery(qs.stringify(updatedQuery), section);
       fetch(
-        `${devESPURL(section)}/api/v1/data/${DATA_EXPLORER_SECTIONS[section]
-          .label}?${parsedQuery}`
+        `${devESPURL(section)}/api/v1/data/${
+          DATA_EXPLORER_SECTIONS[section].label
+        }?${parsedQuery}`
       )
         .then(response =>
           response.json().then(json => {
@@ -118,8 +120,9 @@ export const fetchMetadata = createThunkAction(
         !dataExplorer.metadata[section])
     ) {
       fetch(
-        `${devESPURL(section)}/api/v1/data/${DATA_EXPLORER_SECTIONS[section]
-          .label}/meta`
+        `${devESPURL(section)}/api/v1/data/${
+          DATA_EXPLORER_SECTIONS[section].label
+        }/meta`
       )
         .then(response => {
           if (response.ok) {

@@ -191,7 +191,7 @@ class NetZeroMapContainer extends PureComponent {
         : values.join(',');
     this.updateUrlParams([
       {
-        name: 'regions',
+        name: 'locations',
         value
       }
     ]);

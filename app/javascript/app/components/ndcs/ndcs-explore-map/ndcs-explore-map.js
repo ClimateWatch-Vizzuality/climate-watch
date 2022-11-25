@@ -182,7 +182,7 @@ function NDCSExploreMapContainer(props) {
       : values.filter(v => v !== 'WORLD').join(',');
     updateUrlParams([
       {
-        name: 'regions',
+        name: 'locations',
         value
       }
     ]);
