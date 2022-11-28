@@ -58,7 +58,7 @@ export const getIndicatorEmissionsData = (
     });
   }
 
-  return data;
+  return data.filter(d => d.value !== 0);
 };
 
 export const getLabels = ({
