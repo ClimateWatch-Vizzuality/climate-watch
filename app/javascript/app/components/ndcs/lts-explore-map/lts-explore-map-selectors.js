@@ -377,10 +377,7 @@ export const getEmissionsCardData = createSelector(
     );
 
     // Remove extra No document submitted. TODO: Fix in data
-    data = sortBy(
-      data.filter(d => d.name !== 'noDocumentSubmitted'),
-      'value'
-    );
+    data = data.filter(d => d.name !== 'noDocumentSubmitted');
     const config = {
       animation: true,
       innerRadius: 50,

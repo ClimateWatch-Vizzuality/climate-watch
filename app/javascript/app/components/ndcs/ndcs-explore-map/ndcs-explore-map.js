@@ -91,11 +91,15 @@ function NDCSExploreMapContainer(props) {
     query,
     indicator,
     summaryData,
+    selectActiveDonutIndex,
     checked
   } = props;
   const [country, setCountry] = useState(null);
   const [tooltipValues, setTooltipValues] = useState({});
   const [secondCardSelectedTab, setSecondCardSelectedTab] = useState(null);
+  useEffect(() => {
+    selectActiveDonutIndex(0);
+  }, [selectActiveDonutIndex]);
   useEffect(() => {
     if (selectedCategory && selectedCategory.value === 'adaptation') {
       setSecondCardSelectedTab(SWITCH_OPTIONS[1].value);
@@ -134,12 +138,7 @@ function NDCSExploreMapContainer(props) {
   };
 
   const handleCountryEnter = geography => {
-    const {
-      tooltipCountryValues,
-      legendData,
-      selectActiveDonutIndex,
-      emissionsCardData
-    } = props;
+    const { tooltipCountryValues, legendData, emissionsCardData } = props;
     const iso = geography.properties && geography.properties.id;
 
     if (IGNORED_COUNTRIES_ISOS.includes(iso)) {

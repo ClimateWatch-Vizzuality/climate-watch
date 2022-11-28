@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 /* eslint-disable react/no-danger */
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { TabletLandscape } from 'components/responsive';
 import Map from 'components/map';
@@ -150,6 +150,9 @@ function NetZeroMap(props) {
     selectActiveDonutIndex,
     pngDownloadId
   } = props;
+  useEffect(() => {
+    selectActiveDonutIndex(0);
+  }, [selectActiveDonutIndex]);
   const tooltipParentRef = useRef(null);
   const pieChartRef = useRef(null);
   const [stickyStatus, setStickyStatus] = useState(Sticky.STATUS_ORIGINAL);
