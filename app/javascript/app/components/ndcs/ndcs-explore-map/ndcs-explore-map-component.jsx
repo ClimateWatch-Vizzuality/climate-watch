@@ -178,6 +178,7 @@ function NDCSExploreMap(props) {
     secondCardSelectedTab,
     setSecondCardSelectedTab
   } = props;
+
   const tooltipParentRef = useRef(null);
   const pieChartRef = useRef(null);
   const [stickyStatus, setStickyStatus] = useState(Sticky.STATUS_ORIGINAL);

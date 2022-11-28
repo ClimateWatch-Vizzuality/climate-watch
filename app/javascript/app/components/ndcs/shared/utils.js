@@ -1,4 +1,5 @@
 import camelCase from 'lodash/camelCase';
+import sortBy from 'lodash/sortBy';
 import { NOT_COVERED_LABEL } from 'data/constants';
 
 const NOT_APPLICABLE_LABEL = 'Not Applicable';
@@ -58,7 +59,10 @@ export const getIndicatorEmissionsData = (
     });
   }
 
-  return data.filter(d => d.value !== 0);
+  return sortBy(
+    data.filter(d => d.value !== 0),
+    'value'
+  ).reverse();
 };
 
 export const getLabels = ({

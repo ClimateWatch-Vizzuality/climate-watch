@@ -387,14 +387,11 @@ export const getEmissionsCardData = createSelector(
 
     const emissionsIndicator = indicators.find(i => i.slug === 'ndce_ghg');
     if (!emissionsIndicator) return null;
-    const data = sortBy(
-      getIndicatorEmissionsData(
-        emissionsIndicator,
-        selectedIndicator,
-        legend,
-        selectedCountriesISO
-      ),
-      'value'
+    const data = getIndicatorEmissionsData(
+      emissionsIndicator,
+      selectedIndicator,
+      legend,
+      selectedCountriesISO
     );
     // Info tooltip only available for this indicator
     const tooltip = selectedIndicator.value === 'child_sensitive_NDC' && {

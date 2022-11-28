@@ -353,7 +353,10 @@ export const getIndicatorEmissionsData = (
     }
   }
 
-  return data;
+  return sortBy(
+    data.filter(d => d.value !== 0),
+    'value'
+  ).reverse();
 };
 
 export const getEmissionsCardData = createSelector(
