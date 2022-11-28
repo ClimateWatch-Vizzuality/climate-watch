@@ -432,11 +432,18 @@ export const getSummaryCardData = createSelector(
 );
 
 export const getPngSelectionSubtitle = createSelector(
-  [getSelectedIndicator, getSelectedCategory, getIsShowEUCountriesChecked],
-  (indicator, category, euChecked) => {
+  [
+    getSelectedIndicator,
+    getSelectedCategory,
+    getIsShowEUCountriesChecked,
+    getLocationsNames
+  ],
+  (indicator, category, euChecked, locationNames) => {
     if (!indicator || !category) return null;
     return `Category: ${category.label}; Indicator: ${
       indicator.label
-    }; EU members are ${euChecked ? '' : 'not'} visualized on the map.`;
+    }; Countries and Regions: ${arrayToSentence(
+      locationNames
+    )}; EU members are ${euChecked ? '' : 'not'} visualized on the map.`;
   }
 );

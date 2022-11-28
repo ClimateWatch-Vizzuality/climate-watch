@@ -463,9 +463,11 @@ export const getSummaryCardData = createSelector(
 );
 
 export const getPngSelectionSubtitle = createSelector(
-  [getSelectedIndicator, getSelectedCategory],
-  (indicator, category) => {
+  [getSelectedIndicator, getSelectedCategory, getLocationsNames],
+  (indicator, category, locationNames) => {
     if (!indicator || !category) return null;
-    return `Category: ${category.label}; Indicator: ${indicator.label}.`;
+    return `Category: ${category.label}; Indicator: ${
+      indicator.label
+    }; Countries and Regions: ${arrayToSentence(locationNames)}.`;
   }
 );
