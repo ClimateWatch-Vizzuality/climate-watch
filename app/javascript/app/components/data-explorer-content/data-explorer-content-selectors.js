@@ -149,9 +149,14 @@ const findSelectedValueObject = (meta, selectedId) =>
       String(option.id) === selectedId
   );
 const addTopEmittersMembers = (isosArray, regions, key) => {
-  if (key === FILTER_NAMES.regions && isosArray.includes('TOP')) {
+  if (
+    (key === FILTER_NAMES.regions || key === FILTER_NAMES.locations) &&
+    isosArray.includes('TOP')
+  ) {
     const topRegion = regions.find(r => r.iso === 'TOP');
-    if (topRegion) return isosArray.concat(topRegion.members);
+    if (topRegion) {
+      return isosArray.concat(topRegion.members || topRegion.expandsTo);
+    }
   }
   return isosArray;
 };
@@ -173,9 +178,10 @@ function extractFilterIds(parsedFilters, metadata, isLinkQuery = false) {
     const parsedKey = correctedKey.replace('-', '_');
     const selectedIds = addTopEmittersMembers(
       parsedFilters[key].split(','),
-      metadata.regions,
+      metadata.regions || metadata.locations,
       key
     );
+
     const filters = [];
     if (metadataWithSubcategories[parsedKey]) {
       selectedIds.forEach(selectedId => {
@@ -473,7 +479,9 @@ export const getFilterOptions = createSelector(
     filterKeys.forEach(f => {
       const options = getOptions(section, f, filtersMeta, query, category);
       if (options) {
-        if (['regions', 'locations'].includes(f)) { options.unshift(TOP_EMITTERS_OPTION); }
+        if (['regions', 'locations'].includes(f)) {
+          options.unshift(TOP_EMITTERS_OPTION);
+        }
         const optionsArray = options.map(option => {
           const updatedOption = { ...option };
           updatedOption.label = getLabel(option, f);
