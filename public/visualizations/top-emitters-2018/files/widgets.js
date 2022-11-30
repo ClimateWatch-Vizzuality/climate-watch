@@ -1,4 +1,4 @@
-!(function() {
+!(function () {
   let t;
   Function &&
     Function.prototype &&
@@ -17,7 +17,7 @@
             const l = (n[s] = { exports: {} });
             t[s][0].call(
               l.exports,
-              function(e) {
+              function (e) {
                 const n = t[s][1][e];
                 return r(n || e);
               },
@@ -39,11 +39,11 @@
           r(i[s]);
         }
         return r;
-      })(
+      }(
         {
           1: [
-            function(e, n, i) {
-              (function() {
+            function (e, n, i) {
+              (function () {
                 function e(t) {
                   return (
                     typeof t === 'function' ||
@@ -58,7 +58,7 @@
                 }
                 function o() {}
                 function s() {
-                  return function() {
+                  return function () {
                     process.nextTick(l);
                   };
                 }
@@ -68,7 +68,7 @@
                     n = document.createTextNode('');
                   return (
                     e.observe(n, { characterData: !0 }),
-                    function() {
+                    function () {
                       n.data = t = ++t % 2;
                     }
                   );
@@ -77,13 +77,13 @@
                   const t = new MessageChannel();
                   return (
                     (t.port1.onmessage = l),
-                    function() {
+                    function () {
                       t.port2.postMessage(0);
                     }
                   );
                 }
                 function u() {
-                  return function() {
+                  return function () {
                     setTimeout(l, 1);
                   };
                 }
@@ -121,15 +121,15 @@
                   }
                 }
                 function g(t, e, n) {
-                  H(function(t) {
+                  H(function (t) {
                     let i = !1,
                       r = m(
                         n,
                         e,
-                        function(n) {
+                        function (n) {
                           i || ((i = !0), e !== n ? w(t, n) : _(t, n));
                         },
-                        function(e) {
+                        function (e) {
                           i || ((i = !0), E(t, e));
                         },
                         `Settle: ${t._label || ' unknown promise'}`
@@ -141,14 +141,14 @@
                   e._state === z
                     ? _(t, e._result)
                     : t._state === B
-                    ? E(t, e._result)
-                    : A(
+                      ? E(t, e._result)
+                      : A(
                         e,
                         void 0,
-                        function(e) {
+                        function (e) {
                           w(t, e);
                         },
-                        function(e) {
+                        function (e) {
                           E(t, e);
                         }
                       );
@@ -160,10 +160,10 @@
                     n === G
                       ? E(t, G.error)
                       : void 0 === n
-                      ? _(t, e)
-                      : i(n)
-                      ? g(t, e, n)
-                      : _(t, e);
+                        ? _(t, e)
+                        : i(n)
+                          ? g(t, e, n)
+                          : _(t, e);
                   }
                 }
                 function w(t, n) {
@@ -175,8 +175,8 @@
                 function _(t, e) {
                   t._state === F &&
                     ((t._result = e),
-                    (t._state = z),
-                    t._subscribers.length === 0 || H(T, t));
+                      (t._state = z),
+                      t._subscribers.length === 0 || H(T, t));
                 }
                 function E(t, e) {
                   t._state === F && ((t._state = B), (t._result = e), H(b, t));
@@ -185,10 +185,10 @@
                   let r = t._subscribers,
                     o = r.length;
                   (t._onerror = null),
-                    (r[o] = e),
-                    (r[o + z] = n),
-                    (r[o + B] = i),
-                    o === 0 && t._state && H(T, t);
+                  (r[o] = e),
+                  (r[o + z] = n),
+                  (r[o + B] = i),
+                  o === 0 && t._state && H(T, t);
                 }
                 function T(t) {
                   let e = t._subscribers,
@@ -219,10 +219,10 @@
                   if (u) {
                     if (
                       ((o = I(n, r)),
-                      o === V
-                        ? ((c = !0), (s = o.error), (o = null))
-                        : (a = !0),
-                      e === o)
+                        o === V
+                          ? ((c = !0), (s = o.error), (o = null))
+                          : (a = !0),
+                        e === o)
                     ) {
                       return void E(e, f());
                     }
@@ -231,18 +231,18 @@
                     (u && a
                       ? w(e, o)
                       : c
-                      ? E(e, s)
-                      : t === z
-                      ? _(e, o)
-                      : t === B && E(e, o));
+                        ? E(e, s)
+                        : t === z
+                          ? _(e, o)
+                          : t === B && E(e, o));
                 }
                 function D(t, e) {
                   try {
                     e(
-                      function(e) {
+                      function (e) {
                         w(t, e);
                       },
-                      function(e) {
+                      function (e) {
                         E(t, e);
                       }
                     );
@@ -252,20 +252,20 @@
                 }
                 function N(t, e, n, i) {
                   (this._instanceConstructor = t),
-                    (this.promise = new t(d, i)),
-                    (this._abortOnReject = n),
-                    this._validateInput(e)
-                      ? ((this._input = e),
-                        (this.length = e.length),
-                        (this._remaining = e.length),
-                        this._init(),
-                        this.length === 0
-                          ? _(this.promise, this._result)
-                          : ((this.length = this.length || 0),
-                            this._enumerate(),
-                            this._remaining === 0 &&
+                  (this.promise = new t(d, i)),
+                  (this._abortOnReject = n),
+                  this._validateInput(e)
+                    ? ((this._input = e),
+                      (this.length = e.length),
+                      (this._remaining = e.length),
+                      this._init(),
+                      this.length === 0
+                        ? _(this.promise, this._result)
+                        : ((this.length = this.length || 0),
+                          this._enumerate(),
+                          this._remaining === 0 &&
                               _(this.promise, this._result)))
-                      : E(this.promise, this._validationError());
+                    : E(this.promise, this._validationError());
                 }
                 function C() {
                   throw new TypeError(
@@ -279,29 +279,29 @@
                 }
                 function R(t) {
                   (this._id = X++),
-                    (this._state = void 0),
-                    (this._result = void 0),
-                    (this._subscribers = []),
-                    d !== t &&
+                  (this._state = void 0),
+                  (this._result = void 0),
+                  (this._subscribers = []),
+                  d !== t &&
                       (i(t) || C(), this instanceof R || P(), D(this, t));
                 }
                 let L;
                 L = Array.isArray
                   ? Array.isArray
-                  : function(t) {
-                      return (
-                        Object.prototype.toString.call(t) === '[object Array]'
-                      );
-                    };
+                  : function (t) {
+                    return (
+                      Object.prototype.toString.call(t) === '[object Array]'
+                    );
+                  };
                 var k,
                   M = L,
                   O =
                     (Date.now ||
-                      function() {
+                      function () {
                         return new Date().getTime();
                       },
-                    Object.create ||
-                      function(t) {
+                      Object.create ||
+                      function (t) {
                         if (arguments.length > 1) {
                           throw new Error('Second argument not supported');
                         }
@@ -310,8 +310,8 @@
                         }
                         return (o.prototype = t), new o();
                       },
-                    0),
-                  H = function(t, e) {
+                      0),
+                  H = function (t, e) {
                     (q[O] = t), (q[O + 1] = e), (O += 2), O === 2 && k();
                   },
                   W = typeof window !== 'undefined' ? window : {},
@@ -326,26 +326,26 @@
                   {}.toString.call(process) === '[object process]'
                     ? s()
                     : U
-                    ? a()
-                    : j
-                    ? c()
-                    : u();
+                      ? a()
+                      : j
+                        ? c()
+                        : u();
                 var F = void 0,
                   z = 1,
                   B = 2,
                   G = new x(),
                   V = new x();
-                (N.prototype._validateInput = function(t) {
+                (N.prototype._validateInput = function (t) {
                   return M(t);
                 }),
-                  (N.prototype._validationError = function() {
-                    return new Error('Array Methods must be provided an Array');
-                  }),
-                  (N.prototype._init = function() {
-                    this._result = new Array(this.length);
-                  });
+                (N.prototype._validationError = function () {
+                  return new Error('Array Methods must be provided an Array');
+                }),
+                (N.prototype._init = function () {
+                  this._result = new Array(this.length);
+                });
                 const $ = N;
-                (N.prototype._enumerate = function() {
+                (N.prototype._enumerate = function () {
                   for (
                     let t = this.length,
                       e = this.promise,
@@ -357,45 +357,45 @@
                     this._eachEntry(n[i], i);
                   }
                 }),
-                  (N.prototype._eachEntry = function(t, e) {
-                    const n = this._instanceConstructor;
-                    r(t)
-                      ? t.constructor === n && t._state !== F
-                        ? ((t._onerror = null),
-                          this._settledAt(t._state, e, t._result))
-                        : this._willSettleAt(n.resolve(t), e)
-                      : (this._remaining--,
-                        (this._result[e] = this._makeResult(z, e, t)));
-                  }),
-                  (N.prototype._settledAt = function(t, e, n) {
-                    const i = this.promise;
-                    i._state === F &&
+                (N.prototype._eachEntry = function (t, e) {
+                  const n = this._instanceConstructor;
+                  r(t)
+                    ? t.constructor === n && t._state !== F
+                      ? ((t._onerror = null),
+                        this._settledAt(t._state, e, t._result))
+                      : this._willSettleAt(n.resolve(t), e)
+                    : (this._remaining--,
+                      (this._result[e] = this._makeResult(z, e, t)));
+                }),
+                (N.prototype._settledAt = function (t, e, n) {
+                  const i = this.promise;
+                  i._state === F &&
                       (this._remaining--,
-                      this._abortOnReject && t === B
-                        ? E(i, n)
-                        : (this._result[e] = this._makeResult(t, e, n))),
-                      this._remaining === 0 && _(i, this._result);
-                  }),
-                  (N.prototype._makeResult = function(t, e, n) {
-                    return n;
-                  }),
-                  (N.prototype._willSettleAt = function(t, e) {
-                    const n = this;
-                    A(
-                      t,
-                      void 0,
-                      function(t) {
-                        n._settledAt(z, e, t);
-                      },
-                      function(t) {
-                        n._settledAt(B, e, t);
-                      }
-                    );
-                  });
-                var J = function(t, e) {
+                        this._abortOnReject && t === B
+                          ? E(i, n)
+                          : (this._result[e] = this._makeResult(t, e, n))),
+                  this._remaining === 0 && _(i, this._result);
+                }),
+                (N.prototype._makeResult = function (t, e, n) {
+                  return n;
+                }),
+                (N.prototype._willSettleAt = function (t, e) {
+                  const n = this;
+                  A(
+                    t,
+                    void 0,
+                    function (t) {
+                      n._settledAt(z, e, t);
+                    },
+                    function (t) {
+                      n._settledAt(B, e, t);
+                    }
+                  );
+                });
+                var J = function (t, e) {
                     return new $(this, t, !0, e).promise;
                   },
-                  K = function(t, e) {
+                  K = function (t, e) {
                     function n(t) {
                       w(o, t);
                     }
@@ -419,7 +419,7 @@
                     }
                     return o;
                   },
-                  Y = function(t, e) {
+                  Y = function (t, e) {
                     const n = this;
                     if (t && typeof t === 'object' && t.constructor === n) {
                       return t;
@@ -427,7 +427,7 @@
                     const i = new n(d, e);
                     return w(i, t), i;
                   },
-                  Q = function(t, e) {
+                  Q = function (t, e) {
                     let n = this,
                       i = new n(d, e);
                     return E(i, t), i;
@@ -435,68 +435,68 @@
                   X = 0,
                   Z = R;
                 (R.all = J),
-                  (R.race = K),
-                  (R.resolve = Y),
-                  (R.reject = Q),
-                  (R.prototype = {
-                    constructor: R,
-                    then(t, e) {
-                      let n = this,
-                        i = n._state;
-                      if ((i === z && !t) || (i === B && !e)) return this;
-                      let r = new this.constructor(d),
-                        o = n._result;
-                      if (i) {
-                        const s = arguments[i - 1];
-                        H(function() {
-                          S(i, r, s, o);
-                        });
-                      } else A(n, r, t, e);
-                      return r;
-                    },
-                    catch(t) {
-                      return this.then(null, t);
-                    }
-                  });
-                let tt = function() {
+                (R.race = K),
+                (R.resolve = Y),
+                (R.reject = Q),
+                (R.prototype = {
+                  constructor: R,
+                  then(t, e) {
+                    let n = this,
+                      i = n._state;
+                    if ((i === z && !t) || (i === B && !e)) return this;
+                    let r = new this.constructor(d),
+                      o = n._result;
+                    if (i) {
+                      const s = arguments[i - 1];
+                      H(function () {
+                        S(i, r, s, o);
+                      });
+                    } else A(n, r, t, e);
+                    return r;
+                  },
+                  catch(t) {
+                    return this.then(null, t);
+                  }
+                });
+                let tt = function () {
                     let t;
                     t =
                       typeof global !== 'undefined'
                         ? global
                         : typeof window !== 'undefined' && window.document
-                        ? window
-                        : self;
+                          ? window
+                          : self;
                     const e =
                       'Promise' in t &&
                       'resolve' in t.Promise &&
                       'reject' in t.Promise &&
                       'all' in t.Promise &&
                       'race' in t.Promise &&
-                      (function() {
+                      (function () {
                         let e;
                         return (
-                          new t.Promise(function(t) {
+                          new t.Promise(function (t) {
                             e = t;
                           }),
                           i(e)
                         );
-                      })();
+                      }());
                     e || (t.Promise = Z);
                   },
                   et = { Promise: Z, polyfill: tt };
                 typeof t === 'function' && t.amd
-                  ? t(function() {
-                      return et;
-                    })
+                  ? t(function () {
+                    return et;
+                  })
                   : typeof n !== 'undefined' && n.exports
-                  ? (n.exports = et)
-                  : typeof this !== 'undefined' && (this.ES6Promise = et);
+                    ? (n.exports = et)
+                    : typeof this !== 'undefined' && (this.ES6Promise = et);
               }.call(this));
             },
             {}
           ],
           2: [
-            function(t, e, n) {
+            function (t, e, n) {
               function i(t, e) {
                 let n;
                 return (
@@ -507,8 +507,8 @@
                     e.mozRequestAnimationFrame ||
                     e.msRequestAnimationFrame ||
                     e.oRequestAnimationFrame ||
-                    function() {
-                      e.setTimeout(function() {
+                    function () {
+                      e.setTimeout(function () {
                         t(+new Date());
                       }, 1e3 / 60);
                     })(t)
@@ -535,7 +535,7 @@
             { 15: 15 }
           ],
           3: [
-            function(t, e, n) {
+            function (t, e, n) {
               function i() {
                 return a.builtUrl(u);
               }
@@ -543,7 +543,8 @@
                 return t === 'dark' ? 'dark' : 'light';
               }
               function o(t, e, n) {
-                let i, o;
+                let i,
+                  o;
                 return (
                   (n = r(n)),
                   (i = s.isRtlLang(e) ? 'rtl' : 'ltr'),
@@ -564,7 +565,7 @@
             { 22: 22, 40: 40, 80: 80 }
           ],
           4: [
-            function(t, e, n) {
+            function (t, e, n) {
               function i(t) {
                 return { success: !0, resp: t };
               }
@@ -573,12 +574,14 @@
             {}
           ],
           5: [
-            function(t, e, n) {
+            function (t, e, n) {
               function i() {
                 return l + d++;
               }
               function r(t, e, n, r) {
-                let l, d, h;
+                let l,
+                  d,
+                  h;
                 return (
                   (r = r || i()),
                   (l = s.fullPath(['callbacks', r])),
@@ -588,17 +591,18 @@
                     callback: l,
                     suppress_response_codes: !0
                   })),
-                  s.set(['callbacks', r], function(t) {
-                    let e, i;
+                  s.set(['callbacks', r], function (t) {
+                    let e,
+                      i;
                     (e = n(t || !1)),
-                      (t = e.resp),
-                      (i = e.success),
-                      i ? h.resolve(t) : h.reject(t),
-                      (d.onload = d.onreadystatechange = null),
-                      d.parentNode && d.parentNode.removeChild(d),
-                      s.unset(['callbacks', r]);
+                    (t = e.resp),
+                    (i = e.success),
+                    i ? h.resolve(t) : h.reject(t),
+                    (d.onload = d.onreadystatechange = null),
+                    d.parentNode && d.parentNode.removeChild(d),
+                    s.unset(['callbacks', r]);
                   }),
-                  (d.onerror = function() {
+                  (d.onerror = function () {
                     h.reject(new Error(`failed to fetch ${d.src}`));
                   }),
                   (d.src = u.url(t, e)),
@@ -619,9 +623,10 @@
             { 12: 12, 19: 19, 68: 68, 71: 71, 77: 77 }
           ],
           6: [
-            function(t, e, n) {
+            function (t, e, n) {
               function i(t) {
-                let e, n;
+                let e,
+                  n;
                 return (
                   (e = t.headers && t.headers.status),
                   (n = t && !t.error && e === 200),
@@ -638,7 +643,7 @@
             { 65: 65 }
           ],
           7: [
-            function(t, e, n) {
+            function (t, e, n) {
               function i(t) {
                 return new RegExp(`\\b${t}\\b`, 'g');
               }
@@ -678,7 +683,7 @@
             {}
           ],
           8: [
-            function(t, e, n) {
+            function (t, e, n) {
               function i(t) {
                 const e = t.getAttribute('data-twitter-event-id');
                 return e || (t.setAttribute('data-twitter-event-id', ++m), m);
@@ -700,7 +705,7 @@
                   r(e[`.${s[a]}`], i, t);
                 }
                 r(e[i.tagName], i, t),
-                  t.cease ||
+                t.cease ||
                     (i !== this &&
                       o.call(this, t, e, i.parentElement || i.parentNode));
               }
@@ -713,23 +718,23 @@
               function a(t, e, n, i) {
                 t.id &&
                   ((g[t.id] = g[t.id] || []),
-                  g[t.id].push({ el: t, listener: e, type: n, rootId: i }));
+                    g[t.id].push({ el: t, listener: e, type: n, rootId: i }));
               }
               function c(t) {
                 const e = g[t];
                 e &&
-                  (e.forEach(function(t) {
+                  (e.forEach(function (t) {
                     t.el.removeEventListener(t.type, t.listener, !1),
-                      delete p[t.rootId];
+                    delete p[t.rootId];
                   }),
-                  delete g[t]);
+                    delete g[t]);
               }
               function u(t, e, n, r) {
                 const o = i(t);
                 (p[o] = p[o] || {}),
-                  p[o][e] || ((p[o][e] = {}), s(t, e, p[o], o)),
-                  (p[o][e][n] = p[o][e][n] || []),
-                  p[o][e][n].push(r);
+                p[o][e] || ((p[o][e] = {}), s(t, e, p[o], o)),
+                (p[o][e][n] = p[o][e][n] || []),
+                p[o][e][n].push(r);
               }
               function l(t, e, n) {
                 let r = i(e),
@@ -764,19 +769,19 @@
             {}
           ],
           9: [
-            function(t, e, n) {
+            function (t, e, n) {
               function i(t) {
                 const e = t.charAt(0);
                 return e === '.'
-                  ? function(e) {
-                      const n = e.className ? e.className.split(/\s+/) : [];
-                      return o.contains(n, t.slice(1));
-                    }
+                  ? function (e) {
+                    const n = e.className ? e.className.split(/\s+/) : [];
+                    return o.contains(n, t.slice(1));
+                  }
                   : e === '#'
-                  ? function(e) {
+                    ? function (e) {
                       return e.id === t.slice(1);
                     }
-                  : function(e) {
+                    : function (e) {
                       return e.tagName === t.toUpperCase();
                     };
               }
@@ -791,8 +796,8 @@
                         ? e
                         : void 0
                       : s(e)
-                      ? e
-                      : r(s, e.parentNode, n)
+                        ? e
+                        : r(s, e.parentNode, n)
                   );
                 }
               }
@@ -802,7 +807,7 @@
             { 77: 77 }
           ],
           10: [
-            function(t, e, n) {
+            function (t, e, n) {
               function i(t) {
                 return (t = t || o), t.getSelection && t.getSelection();
               }
@@ -816,7 +821,7 @@
             { 15: 15 }
           ],
           11: [
-            function(t, e, n) {
+            function (t, e, n) {
               function i(t) {
                 return t && t.nodeType === 1
                   ? t.offsetWidth || i(t.parentNode)
@@ -827,34 +832,34 @@
             {}
           ],
           12: [
-            function(t, e, n) {
+            function (t, e, n) {
               e.exports = document;
             },
             {}
           ],
           13: [
-            function(t, e, n) {
+            function (t, e, n) {
               e.exports = location;
             },
             {}
           ],
           14: [
-            function(t, e, n) {
+            function (t, e, n) {
               e.exports = navigator;
             },
             {}
           ],
           15: [
-            function(t, e, n) {
+            function (t, e, n) {
               e.exports = window;
             },
             {}
           ],
           16: [
-            function(t, e, n) {
+            function (t, e, n) {
               function i(t, e, n) {
                 (e.ready = t.then.bind(t)),
-                  n &&
+                n &&
                     Array.isArray(e[n]) &&
                     (e[n].forEach(t.then.bind(t)), delete e[n]);
               }
@@ -863,18 +868,18 @@
             {}
           ],
           17: [
-            function(t, e, n) {
+            function (t, e, n) {
               function i(t) {
                 return a.isType('string', t)
                   ? t.split('.')
                   : a.isType('array', t)
-                  ? t
-                  : [];
+                    ? t
+                    : [];
               }
               function r(t, e) {
                 let n = i(e),
                   r = n.slice(0, -1);
-                return r.reduce(function(t, e, n) {
+                return r.reduce(function (t, e, n) {
                   if (((t[e] = t[e] || {}), !a.isObject(t[e]))) {
                     throw new Error(
                       `${r
@@ -887,16 +892,16 @@
               }
               function o(t, e) {
                 (e = e || s),
-                  (e[t] = e[t] || {}),
-                  Object.defineProperty(this, 'base', { value: e[t] }),
-                  Object.defineProperty(this, 'name', { value: t });
+                (e[t] = e[t] || {}),
+                Object.defineProperty(this, 'base', { value: e[t] }),
+                Object.defineProperty(this, 'name', { value: t });
               }
               var s = t(15),
                 a = t(77);
               a.aug(o.prototype, {
                 get(t) {
                   const e = i(t);
-                  return e.reduce(function(t, e) {
+                  return e.reduce(function (t, e) {
                     return a.isObject(t) ? t[e] : void 0;
                   }, this.base);
                 },
@@ -919,8 +924,8 @@
                     n = a.toRealArray(arguments).slice(1);
                   if (
                     ((e = typeof e !== 'undefined' ? e : {}),
-                    n.unshift(e),
-                    !n.every(a.isObject))
+                      n.unshift(e),
+                      !n.every(a.isObject))
                   ) {
                     throw new Error('Cannot augment non-object.');
                   }
@@ -939,12 +944,12 @@
                   return e.unshift(this.name), e.join('.');
                 }
               }),
-                (e.exports = o);
+              (e.exports = o);
             },
             { 15: 15, 77: 77 }
           ],
           18: [
-            function(t, e, n) {
+            function (t, e, n) {
               function i(t) {
                 let e,
                   n,
@@ -969,21 +974,21 @@
             { 12: 12 }
           ],
           19: [
-            function(t, e, n) {
+            function (t, e, n) {
               const i = t(17);
               e.exports = new i('__twttr');
             },
             { 17: 17 }
           ],
           20: [
-            function(t, e, n) {
+            function (t, e, n) {
               const i = t(17);
               e.exports = new i('twttr');
             },
             { 17: 17 }
           ],
           21: [
-            function(t, e, n) {
+            function (t, e, n) {
               e.exports = [
                 'hi',
                 'zh-cn',
@@ -1022,7 +1027,7 @@
             {}
           ],
           22: [
-            function(t, e, n) {
+            function (t, e, n) {
               function i(t) {
                 return (t = String(t).toLowerCase()), r.contains(o, t);
               }
@@ -1033,7 +1038,7 @@
             { 77: 77 }
           ],
           23: [
-            function(t, e, n) {
+            function (t, e, n) {
               function i(t) {
                 let e = ~s.host.indexOf('poptip.com')
                     ? 'https://poptip.com'
@@ -1042,20 +1047,21 @@
                 return [t, n].join(t.indexOf('?') == -1 ? '?' : '&');
               }
               function r(t) {
-                let e, n;
+                let e,
+                  n;
                 t.altKey ||
                   t.metaKey ||
                   t.shiftKey ||
-                  ((e = c.closest(function(t) {
+                  ((e = c.closest(function (t) {
                     return t.tagName === 'A' || t.tagName === 'AREA';
                   }, t.target)),
-                  e &&
+                    e &&
                     l.isIntentURL(e.href) &&
                     ((n = i(e.href)),
-                    (n = n.replace(/^http[:]/, 'https:')),
-                    (n = n.replace(/^\/\//, 'https://')),
-                    u.open(n, e),
-                    a.preventDefault(t)));
+                      (n = n.replace(/^http[:]/, 'https:')),
+                      (n = n.replace(/^\/\//, 'https://')),
+                      u.open(n, e),
+                      a.preventDefault(t)));
               }
               function o(t) {
                 t.addEventListener('click', r, !1);
@@ -1070,11 +1076,11 @@
             { 13: 13, 49: 49, 73: 73, 8: 8, 9: 9 }
           ],
           24: [
-            function(t, e, n) {
+            function (t, e, n) {
               function i(t) {
                 const e = [];
                 return (
-                  h.forIn(t, function(t, n) {
+                  h.forIn(t, function (t, n) {
                     e.push(`${t}=${n}`);
                   }),
                   e.join(',')
@@ -1092,17 +1098,18 @@
                   : { coordinate: n(e) - n(t), size: t };
               }
               function s(t, e, n) {
-                let r, s;
+                let r,
+                  s;
                 (e = a.parse(e)),
-                  (n = n || {}),
-                  (r = o(e.width, n.width || p)),
-                  (e.left = r.coordinate),
-                  (e.width = r.size),
-                  (s = o(e.height, n.height || m)),
-                  (e.top = s.coordinate),
-                  (e.height = s.size),
-                  (this.win = t),
-                  (this.features = i(e));
+                (n = n || {}),
+                (r = o(e.width, n.width || p)),
+                (e.left = r.coordinate),
+                (e.width = r.size),
+                (s = o(e.height, n.height || m)),
+                (e.top = s.coordinate),
+                (e.height = s.size),
+                (this.win = t),
+                (this.features = i(e));
               }
               var a,
                 c = t(15),
@@ -1122,23 +1129,23 @@
                 scrollbars: '1',
                 resizable: '1'
               })),
-                (s.prototype.open = function(t) {
-                  return l.isTwitterURL(t)
-                    ? ((this.name = r()),
-                      (this.popup = this.win.open(t, this.name, this.features)),
-                      this)
-                    : void 0;
-                }),
-                (s.open = function(t, e) {
-                  const n = new s(c, e);
-                  return n.open(t);
-                }),
-                (e.exports = s);
+              (s.prototype.open = function (t) {
+                return l.isTwitterURL(t)
+                  ? ((this.name = r()),
+                    (this.popup = this.win.open(t, this.name, this.features)),
+                    this)
+                  : void 0;
+              }),
+              (s.open = function (t, e) {
+                const n = new s(c, e);
+                return n.open(t);
+              }),
+              (e.exports = s);
             },
             { 15: 15, 66: 66, 73: 73, 75: 75, 77: 77 }
           ],
           25: [
-            function(t, e, n) {
+            function (t, e, n) {
               function i(t) {
                 u[t] = +new Date();
               }
@@ -1154,8 +1161,8 @@
                   s = void 0 === r ? l : r;
                 100 * Math.random() > s ||
                   ((n = c.aug(n || {}, { duration_ms: i })),
-                  (o = { page: e, component: 'performance', action: t }),
-                  a.clientEvent(o, n, !0));
+                    (o = { page: e, component: 'performance', action: t }),
+                    a.clientEvent(o, n, !0));
               }
               var a = t(35),
                 c = t(77),
@@ -1166,12 +1173,12 @@
             { 35: 35, 77: 77 }
           ],
           26: [
-            function(t, e, n) {
+            function (t, e, n) {
               function i(t) {
                 if (!t) throw new Error('JsonRpcClient requires a dispatcher');
                 (this.idIterator = 0),
-                  (this.dispatcher = t),
-                  (this.idPrefix = String(+new Date()) + a++);
+                (this.dispatcher = t),
+                (this.idPrefix = String(+new Date()) + a++);
               }
               function r(t) {
                 const e = { jsonrpc: s, method: t };
@@ -1184,27 +1191,27 @@
               var o = t(69),
                 s = '2.0',
                 a = 0;
-              (i.prototype._generateId = function() {
+              (i.prototype._generateId = function () {
                 return this.idPrefix + this.idIterator++;
               }),
-                (i.prototype.notify = function() {
-                  this.dispatcher.send(r(...arguments));
-                }),
-                (i.prototype.request = function() {
-                  const t = r(...arguments);
-                  return (
-                    (t.id = this._generateId()),
-                    this.dispatcher.send(t).then(function(t) {
-                      return 'result' in t ? t.result : o.reject(t.error);
-                    })
-                  );
-                }),
-                (e.exports = i);
+              (i.prototype.notify = function () {
+                this.dispatcher.send(r(...arguments));
+              }),
+              (i.prototype.request = function () {
+                const t = r(...arguments);
+                return (
+                  (t.id = this._generateId()),
+                  this.dispatcher.send(t).then(function (t) {
+                    return 'result' in t ? t.result : o.reject(t.error);
+                  })
+                );
+              }),
+              (e.exports = i);
             },
             { 69: 69 }
           ],
           27: [
-            function(t, e, n) {
+            function (t, e, n) {
               e.exports = {
                 PARSE_ERROR: { code: -32700, message: 'Parse error' },
                 INVALID_REQUEST: { code: -32600, message: 'Invalid Request' },
@@ -1216,7 +1223,7 @@
             {}
           ],
           28: [
-            function(t, e, n) {
+            function (t, e, n) {
               function i(t) {
                 this.registry = t || {};
               }
@@ -1224,7 +1231,9 @@
                 return h.isType('string', t) ? JSON.parse(t) : t;
               }
               function o(t) {
-                let e, n, i;
+                let e,
+                  n,
+                  i;
                 return h.isObject(t)
                   ? ((e = t.jsonrpc === m),
                     (n = h.isType('string', t.method)),
@@ -1233,7 +1242,9 @@
                   : !1;
               }
               function s(t) {
-                let e, n, i;
+                let e,
+                  n,
+                  i;
                 return (
                   (e = h.isType('string', t)),
                   (n = h.isType('number', t)),
@@ -1251,9 +1262,9 @@
                 return { jsonrpc: m, id: s(t) ? t : null, error: e };
               }
               function l(t) {
-                return f.all(t).then(function(t) {
+                return f.all(t).then(function (t) {
                   return (
-                    (t = t.filter(function(t) {
+                    (t = t.filter(function (t) {
                       return void 0 !== t;
                     })),
                     t.length ? t : void 0
@@ -1265,11 +1276,13 @@
                 f = t(69),
                 p = t(70),
                 m = '2.0';
-              (i.prototype._invoke = function(t, e) {
-                let n, i, r;
+              (i.prototype._invoke = function (t, e) {
+                let n,
+                  i,
+                  r;
                 (n = this.registry[t.method]),
-                  (i = t.params || []),
-                  (i = h.isType('array', i) ? i : [i]);
+                (i = t.params || []),
+                (i = h.isType('array', i) ? i : [i]);
                 try {
                   r = n.apply(e.source || null, i);
                 } catch (o) {
@@ -1277,56 +1290,56 @@
                 }
                 return p.isPromise(r) ? r : f.resolve(r);
               }),
-                (i.prototype._processRequest = function(t, e) {
-                  function n(e) {
-                    return c(t.id, e);
-                  }
-                  function i() {
-                    return u(t.id, d.INTERNAL_ERROR);
-                  }
-                  let r;
-                  return o(t)
-                    ? ((r =
+              (i.prototype._processRequest = function (t, e) {
+                function n(e) {
+                  return c(t.id, e);
+                }
+                function i() {
+                  return u(t.id, d.INTERNAL_ERROR);
+                }
+                let r;
+                return o(t)
+                  ? ((r =
                         'params' in t && !a(t.params)
                           ? f.resolve(u(t.id, d.INVALID_PARAMS))
                           : this.registry[t.method]
-                          ? this._invoke(t, { source: e }).then(n, i)
-                          : f.resolve(u(t.id, d.METHOD_NOT_FOUND))),
-                      t.id != null ? r : f.resolve())
-                    : f.resolve(u(t.id, d.INVALID_REQUEST));
-                }),
-                (i.prototype.attachReceiver = function(t) {
-                  return t.attachTo(this), this;
-                }),
-                (i.prototype.bind = function(t, e) {
-                  return (this.registry[t] = e), this;
-                }),
-                (i.prototype.receive = function(t, e) {
-                  let n,
-                    i,
-                    o,
-                    s = this;
-                  try {
-                    t = r(t);
-                  } catch (a) {
-                    return f.resolve(u(null, d.PARSE_ERROR));
-                  }
-                  return (
-                    (e = e || null),
-                    (n = h.isType('array', t)),
-                    (i = n ? t : [t]),
-                    (o = i.map(function(t) {
-                      return s._processRequest(t, e);
-                    })),
-                    n ? l(o) : o[0]
-                  );
-                }),
-                (e.exports = i);
+                            ? this._invoke(t, { source: e }).then(n, i)
+                            : f.resolve(u(t.id, d.METHOD_NOT_FOUND))),
+                    t.id != null ? r : f.resolve())
+                  : f.resolve(u(t.id, d.INVALID_REQUEST));
+              }),
+              (i.prototype.attachReceiver = function (t) {
+                return t.attachTo(this), this;
+              }),
+              (i.prototype.bind = function (t, e) {
+                return (this.registry[t] = e), this;
+              }),
+              (i.prototype.receive = function (t, e) {
+                let n,
+                  i,
+                  o,
+                  s = this;
+                try {
+                  t = r(t);
+                } catch (a) {
+                  return f.resolve(u(null, d.PARSE_ERROR));
+                }
+                return (
+                  (e = e || null),
+                  (n = h.isType('array', t)),
+                  (i = n ? t : [t]),
+                  (o = i.map(function (t) {
+                    return s._processRequest(t, e);
+                  })),
+                  n ? l(o) : o[0]
+                );
+              }),
+              (e.exports = i);
             },
             { 27: 27, 69: 69, 70: 70, 77: 77 }
           ],
           29: [
-            function(t, e, n) {
+            function (t, e, n) {
               function i(t, e, n) {
                 let i;
                 t &&
@@ -1334,9 +1347,9 @@
                   (m
                     ? (i = (n || '') + JSON.stringify(e))
                     : n
-                    ? ((i = {}), (i[n] = e))
-                    : (i = e),
-                  t.postMessage(i, '*'));
+                      ? ((i = {}), (i[n] = e))
+                      : (i = e),
+                    t.postMessage(i, '*'));
               }
               function r(t) {
                 return f.isType('string', t) ? t : 'JSONRPC';
@@ -1346,23 +1359,23 @@
                   ? f.isType('string', t) && t.indexOf(e) === 0
                     ? t.substring(e.length)
                     : t[e]
-                    ? t[e]
-                    : void 0
+                      ? t[e]
+                      : void 0
                   : t;
               }
               function s(t, e) {
                 const n = t.document;
                 (this.filter = r(e)),
-                  (this.server = null),
-                  (this.isTwitterFrame = p.isTwitterURL(n.location.href)),
-                  t.addEventListener('message', this._onMessage.bind(this), !1);
+                (this.server = null),
+                (this.isTwitterFrame = p.isTwitterURL(n.location.href)),
+                t.addEventListener('message', this._onMessage.bind(this), !1);
               }
               function a(t, e) {
                 (this.pending = {}),
-                  (this.target = t),
-                  (this.isTwitterHost = p.isTwitterURL(u.href)),
-                  (this.filter = r(e)),
-                  l.addEventListener('message', this._onMessage.bind(this), !1);
+                (this.target = t),
+                (this.isTwitterHost = p.isTwitterURL(u.href)),
+                (this.filter = r(e)),
+                l.addEventListener('message', this._onMessage.bind(this), !1);
               }
               function c(t) {
                 return arguments.length > 0 && (m = !!t), m;
@@ -1381,8 +1394,8 @@
                   this.server &&
                     (!this.isTwitterFrame || p.isTwitterURL(t.origin)) &&
                     ((e = o(t.data, this.filter)),
-                    e &&
-                      this.server.receive(e, t.source).then(function(e) {
+                      e &&
+                      this.server.receive(e, t.source).then(function (e) {
                         e && i(t.source, e, n.filter);
                       }));
                 },
@@ -1393,70 +1406,70 @@
                   this.server = null;
                 }
               }),
-                f.aug(a.prototype, {
-                  _processResponse(t) {
-                    const e = this.pending[t.id];
-                    e && (e.resolve(t), delete this.pending[t.id]);
-                  },
-                  _onMessage(t) {
-                    let e;
-                    if (
-                      (!this.isTwitterHost || p.isTwitterURL(t.origin)) &&
+              f.aug(a.prototype, {
+                _processResponse(t) {
+                  const e = this.pending[t.id];
+                  e && (e.resolve(t), delete this.pending[t.id]);
+                },
+                _onMessage(t) {
+                  let e;
+                  if (
+                    (!this.isTwitterHost || p.isTwitterURL(t.origin)) &&
                       (e = o(t.data, this.filter))
-                    ) {
-                      if (f.isType('string', e)) {
-                        try {
-                          e = JSON.parse(e);
-                        } catch (n) {
-                          return;
-                        }
+                  ) {
+                    if (f.isType('string', e)) {
+                      try {
+                        e = JSON.parse(e);
+                      } catch (n) {
+                        return;
                       }
-                      (e = f.isType('array', e) ? e : [e]),
-                        e.forEach(this._processResponse.bind(this));
                     }
-                  },
-                  send(t) {
-                    const e = new d();
-                    return (
-                      t.id ? (this.pending[t.id] = e) : e.resolve(),
-                      i(this.target, t, this.filter),
-                      e.promise
-                    );
+                    (e = f.isType('array', e) ? e : [e]),
+                    e.forEach(this._processResponse.bind(this));
                   }
-                }),
-                (e.exports = {
-                  Receiver: s,
-                  Dispatcher: a,
-                  _stringifyPayload: c
-                });
+                },
+                send(t) {
+                  const e = new d();
+                  return (
+                    t.id ? (this.pending[t.id] = e) : e.resolve(),
+                    i(this.target, t, this.filter),
+                    e.promise
+                  );
+                }
+              }),
+              (e.exports = {
+                Receiver: s,
+                Dispatcher: a,
+                _stringifyPayload: c
+              });
             },
             { 13: 13, 15: 15, 60: 60, 68: 68, 73: 73, 77: 77 }
           ],
           30: [
-            function(t, e, n) {
+            function (t, e, n) {
               function i(t, e, n, i) {
                 let s,
                   u = this;
                 (this.readyDeferred = new o()),
-                  (this.attrs = t || {}),
-                  (this.styles = e || {}),
-                  (this.appender =
+                (this.attrs = t || {}),
+                (this.styles = e || {}),
+                (this.appender =
                     n ||
-                    function(t) {
+                    function (t) {
                       r.body.appendChild(t);
                     }),
-                  (this.layout =
+                (this.layout =
                     i ||
-                    function(t) {
+                    function (t) {
                       return c.resolve(t());
                     }),
-                  (this.frame = s = a(this.attrs, this.styles)),
-                  (s.onreadystatechange = s.onload = this.getCallback(
-                    this.onLoad
-                  )),
-                  this.layout(function() {
-                    u.appender(s);
-                  });
+                (this.frame = s = a(this.attrs, this.styles)),
+                (s.onreadystatechange = s.onload = this.getCallback(
+                  this.onLoad
+                )),
+                this.layout(function () {
+                  u.appender(s);
+                });
               }
               var r = t(12),
                 o = t(68),
@@ -1465,118 +1478,119 @@
                 c = t(69),
                 u = t(19),
                 l = 0;
-              (i.prototype.getCallback = function(t) {
+              (i.prototype.getCallback = function (t) {
                 let e = this,
                   n = !1;
-                return function() {
+                return function () {
                   n || ((n = !0), t.call(e));
                 };
               }),
-                (i.prototype.registerCallback = function(t) {
-                  const e = `cb${l++}`;
-                  return u.set(['sandbox', e], t), e;
-                }),
-                (i.prototype.onLoad = function() {
-                  try {
-                    this.document = this.frame.contentWindow.document;
-                  } catch (t) {
-                    return void this.setDocDomain();
-                  }
-                  this.writeStandardsDoc(), this.readyDeferred.resolve(this);
-                }),
-                (i.prototype.ready = function() {
-                  return this.readyDeferred.promise;
-                }),
-                (i.prototype.setDocDomain = function() {
-                  let t = this,
-                    e = a(this.attrs, this.styles),
-                    n = this.registerCallback(this.getCallback(this.onLoad));
-                  (e.src = [
-                    'javascript:',
-                    'document.write("");',
+              (i.prototype.registerCallback = function (t) {
+                const e = `cb${l++}`;
+                return u.set(['sandbox', e], t), e;
+              }),
+              (i.prototype.onLoad = function () {
+                try {
+                  this.document = this.frame.contentWindow.document;
+                } catch (t) {
+                  return void this.setDocDomain();
+                }
+                this.writeStandardsDoc(), this.readyDeferred.resolve(this);
+              }),
+              (i.prototype.ready = function () {
+                return this.readyDeferred.promise;
+              }),
+              (i.prototype.setDocDomain = function () {
+                let t = this,
+                  e = a(this.attrs, this.styles),
+                  n = this.registerCallback(this.getCallback(this.onLoad));
+                (e.src = [
+                  'javascript:',
+                  'document.write("");',
+                  'try { window.parent.document; }',
+                  'catch (e) {',
+                  `document.domain="${r.domain}";`,
+                  '}',
+                  `window.parent.${u.fullPath(['sandbox', n])}();`
+                ].join('')),
+                this.layout(function () {
+                  t.frame.parentNode.removeChild(t.frame),
+                  (t.frame = null),
+                  t.appender ? t.appender(e) : r.body.appendChild(e),
+                  (t.frame = e);
+                });
+              }),
+              (i.prototype.writeStandardsDoc = function () {
+                if (s.anyIE() && !s.cspEnabled()) {
+                  const t = [
+                    '<!DOCTYPE html>',
+                    '<html>',
+                    '<head>',
+                    '<scr',
+                    'ipt>',
                     'try { window.parent.document; }',
-                    'catch (e) {',
-                    `document.domain="${r.domain}";`,
-                    '}',
-                    `window.parent.${u.fullPath(['sandbox', n])}();`
-                  ].join('')),
-                    this.layout(function() {
-                      t.frame.parentNode.removeChild(t.frame),
-                        (t.frame = null),
-                        t.appender ? t.appender(e) : r.body.appendChild(e),
-                        (t.frame = e);
-                    });
-                }),
-                (i.prototype.writeStandardsDoc = function() {
-                  if (s.anyIE() && !s.cspEnabled()) {
-                    const t = [
-                      '<!DOCTYPE html>',
-                      '<html>',
-                      '<head>',
-                      '<scr',
-                      'ipt>',
-                      'try { window.parent.document; }',
-                      `catch (e) {document.domain="${r.domain}";}`,
-                      '</scr',
-                      'ipt>',
-                      '</head>',
-                      '<body></body>',
-                      '</html>'
-                    ].join('');
-                    this.document.write(t), this.document.close();
-                  }
-                }),
-                (e.exports = i);
+                    `catch (e) {document.domain="${r.domain}";}`,
+                    '</scr',
+                    'ipt>',
+                    '</head>',
+                    '<body></body>',
+                    '</html>'
+                  ].join('');
+                  this.document.write(t), this.document.close();
+                }
+              }),
+              (e.exports = i);
             },
             { 12: 12, 19: 19, 60: 60, 63: 63, 68: 68, 69: 69 }
           ],
           31: [
-            function(t, e, n) {
+            function (t, e, n) {
               function i() {
-                let t, e;
+                let t,
+                  e;
                 (y = {}),
-                  s ||
+                s ||
                     ((t = a.body.offsetHeight),
-                    (e = a.body.offsetWidth),
-                    (t != b || e != w) &&
-                      (v.forEach(function(t) {
+                      (e = a.body.offsetWidth),
+                      (t != b || e != w) &&
+                      (v.forEach(function (t) {
                         t.dispatchFrameResize(w, b);
                       }),
-                      (b = t),
-                      (w = e)));
+                        (b = t),
+                        (w = e)));
               }
               function r(t) {
                 let e;
                 return t.id
                   ? t.id
                   : (e = t.getAttribute('data-twttr-id'))
-                  ? e
-                  : ((e = `twttr-sandbox-${g++}`),
-                    t.setAttribute('data-twttr-id', e),
-                    e);
+                    ? e
+                    : ((e = `twttr-sandbox-${g++}`),
+                      t.setAttribute('data-twttr-id', e),
+                      e);
               }
               function o(t, e) {
                 const n = this;
                 l.apply(this, [t, e]),
-                  (this._resizeHandlers = []),
-                  (v = v.filter(function(t) {
-                    const e = t._frame.parentElement;
-                    return (
-                      e ||
-                        f.async(function() {
+                (this._resizeHandlers = []),
+                (v = v.filter(function (t) {
+                  const e = t._frame.parentElement;
+                  return (
+                    e ||
+                        f.async(function () {
                           p.removeDelegatesForWidget(t._frame.id);
                         }),
-                      e
-                    );
-                  })),
-                  v.push(this),
-                  this._win.addEventListener(
-                    'resize',
-                    function() {
-                      n.dispatchFrameResize();
-                    },
-                    !1
+                    e
                   );
+                })),
+                v.push(this),
+                this._win.addEventListener(
+                  'resize',
+                  function () {
+                    n.dispatchFrameResize();
+                  },
+                  !1
+                );
               }
               var s,
                 a = t(12),
@@ -1594,135 +1608,135 @@
                 w = 0,
                 b = 0;
               c.addEventListener('resize', i, !1),
-                (o.prototype = new l()),
-                f.aug(o.prototype, {
-                  _addStyleSheet(t, e, n) {
-                    function i() {
-                      const t = o._head.children[0];
-                      return t
-                        ? o._head.insertBefore(s, t)
-                        : o._head.appendChild(s);
-                    }
-                    function r() {
-                      return o._head.appendChild(s);
-                    }
-                    var o = this,
-                      s = this._doc.createElement('link');
-                    return (
-                      (s.type = 'text/css'),
-                      (s.rel = 'stylesheet'),
-                      (s.href = t),
-                      n && (s.onload = n),
-                      this.layout(e ? i : r)
-                    );
-                  },
-                  dispatchFrameResize() {
-                    let t = this._frame.parentNode,
-                      e = r(t),
-                      n = y[e];
-                    (s = !0),
-                      this._resizeHandlers.length &&
+              (o.prototype = new l()),
+              f.aug(o.prototype, {
+                _addStyleSheet(t, e, n) {
+                  function i() {
+                    const t = o._head.children[0];
+                    return t
+                      ? o._head.insertBefore(s, t)
+                      : o._head.appendChild(s);
+                  }
+                  function r() {
+                    return o._head.appendChild(s);
+                  }
+                  var o = this,
+                    s = this._doc.createElement('link');
+                  return (
+                    (s.type = 'text/css'),
+                    (s.rel = 'stylesheet'),
+                    (s.href = t),
+                    n && (s.onload = n),
+                    this.layout(e ? i : r)
+                  );
+                },
+                dispatchFrameResize() {
+                  let t = this._frame.parentNode,
+                    e = r(t),
+                    n = y[e];
+                  (s = !0),
+                  this._resizeHandlers.length &&
                         (n ||
                           (n = y[e] = {
                             w: this._frame.offsetWidth,
                             h: this._frame.offsetHeight
                           }),
-                        (this._frameWidth != n.w || this._frameHeight != n.h) &&
+                          (this._frameWidth != n.w || this._frameHeight != n.h) &&
                           ((this._frameWidth = n.w),
-                          (this._frameHeight = n.h),
-                          this._resizeHandlers.forEach(function(t) {
-                            t(n.w, n.h);
-                          }),
-                          c.setTimeout(function() {
-                            y = {};
-                          }, 50)));
-                  },
-                  addClass(t) {
-                    const e = this._doc.documentElement;
-                    return this.layout(function() {
-                      m.add(e, t);
-                    });
-                  },
-                  prependStyleSheet(t, e) {
-                    return this._addStyleSheet(t, !0, e);
-                  },
-                  appendStyleSheet(t, e) {
-                    return this._addStyleSheet(t, !1, e);
-                  },
-                  removeStyleSheet(t) {
-                    let e,
-                      n = this;
-                    return (
-                      (e = `link[rel="stylesheet"][href="${t}"]`),
-                      this.layout(function() {
-                        const t = n._doc.querySelector(e);
-                        return t && n._head.removeChild(t);
-                      })
-                    );
-                  },
-                  appendCss(t) {
-                    let e,
-                      n = this;
-                    return d.cspEnabled()
-                      ? h.reject('CSP enabled; cannot embed inline styles.')
-                      : ((e = this._doc.createElement('style')),
-                        (e.type = 'text/css'),
-                        e.styleSheet
-                          ? (e.styleSheet.cssText = t)
-                          : e.appendChild(this._doc.createTextNode(t)),
-                        this.layout(function() {
-                          return n._head.appendChild(e);
-                        }));
-                  },
-                  style(t, e) {
-                    const n = this;
-                    return this.layout(function() {
-                      e && (n._frame.style.cssText = ''),
-                        f.forIn(t, function(t, e) {
-                          n._frame.style[t] = e;
-                        });
-                    });
-                  },
-                  onresize(t) {
-                    this._resizeHandlers.push(t);
-                  },
-                  width(t) {
-                    return (
-                      void 0 !== t && (this._frame.style.width = `${t}px`),
-                      d.ios()
-                        ? Math.min(
-                            this._frame.parentNode.offsetWidth,
-                            this._frame.offsetWidth
-                          )
-                        : this._frame.offsetWidth
-                    );
-                  },
-                  height(t) {
-                    return (
-                      void 0 !== t && (this._frame.height = t),
-                      this._frame.offsetHeight
-                    );
-                  },
-                  contentHeight() {
-                    return this._doc.body.firstChild.offsetHeight;
-                  },
-                  hasContent() {
-                    return !!this._doc.body.firstChild;
-                  },
-                  resizeToContent() {
-                    const t = this;
-                    return this.layout(function() {
-                      return t.height(t.contentHeight());
-                    });
-                  }
-                }),
-                (o.createSandbox = function(t, e, n, i) {
-                  const r = new u(t, e, n, i);
-                  return r.ready().then(function(t) {
-                    return new o(t.frame, t.layout);
+                            (this._frameHeight = n.h),
+                            this._resizeHandlers.forEach(function (t) {
+                              t(n.w, n.h);
+                            }),
+                            c.setTimeout(function () {
+                              y = {};
+                            }, 50)));
+                },
+                addClass(t) {
+                  const e = this._doc.documentElement;
+                  return this.layout(function () {
+                    m.add(e, t);
                   });
-                }),
-                (e.exports = o);
+                },
+                prependStyleSheet(t, e) {
+                  return this._addStyleSheet(t, !0, e);
+                },
+                appendStyleSheet(t, e) {
+                  return this._addStyleSheet(t, !1, e);
+                },
+                removeStyleSheet(t) {
+                  let e,
+                    n = this;
+                  return (
+                    (e = `link[rel="stylesheet"][href="${t}"]`),
+                    this.layout(function () {
+                      const t = n._doc.querySelector(e);
+                      return t && n._head.removeChild(t);
+                    })
+                  );
+                },
+                appendCss(t) {
+                  let e,
+                    n = this;
+                  return d.cspEnabled()
+                    ? h.reject('CSP enabled; cannot embed inline styles.')
+                    : ((e = this._doc.createElement('style')),
+                      (e.type = 'text/css'),
+                      e.styleSheet
+                        ? (e.styleSheet.cssText = t)
+                        : e.appendChild(this._doc.createTextNode(t)),
+                      this.layout(function () {
+                        return n._head.appendChild(e);
+                      }));
+                },
+                style(t, e) {
+                  const n = this;
+                  return this.layout(function () {
+                    e && (n._frame.style.cssText = ''),
+                    f.forIn(t, function (t, e) {
+                      n._frame.style[t] = e;
+                    });
+                  });
+                },
+                onresize(t) {
+                  this._resizeHandlers.push(t);
+                },
+                width(t) {
+                  return (
+                    void 0 !== t && (this._frame.style.width = `${t}px`),
+                    d.ios()
+                      ? Math.min(
+                        this._frame.parentNode.offsetWidth,
+                        this._frame.offsetWidth
+                      )
+                      : this._frame.offsetWidth
+                  );
+                },
+                height(t) {
+                  return (
+                    void 0 !== t && (this._frame.height = t),
+                    this._frame.offsetHeight
+                  );
+                },
+                contentHeight() {
+                  return this._doc.body.firstChild.offsetHeight;
+                },
+                hasContent() {
+                  return !!this._doc.body.firstChild;
+                },
+                resizeToContent() {
+                  const t = this;
+                  return this.layout(function () {
+                    return t.height(t.contentHeight());
+                  });
+                }
+              }),
+              (o.createSandbox = function (t, e, n, i) {
+                const r = new u(t, e, n, i);
+                return r.ready().then(function (t) {
+                  return new o(t.frame, t.layout);
+                });
+              }),
+              (e.exports = o);
             },
             {
               12: 12,
@@ -1737,17 +1751,17 @@
             }
           ],
           32: [
-            function(t, e, n) {
+            function (t, e, n) {
               function i(t, e) {
                 t &&
                   ((this._frame = t),
-                  (this._win = t.contentWindow),
-                  (this._doc = this._win.document),
-                  (this._body = this._doc.body),
-                  (this._head = this._body.parentNode.children[0]),
-                  (this.layout = e),
-                  (this.root = this._doc.documentElement),
-                  (this.root.className = 'SandboxRoot'));
+                    (this._win = t.contentWindow),
+                    (this._doc = this._win.document),
+                    (this._body = this._doc.body),
+                    (this._head = this._body.parentNode.children[0]),
+                    (this.layout = e),
+                    (this.root = this._doc.documentElement),
+                    (this.root.className = 'SandboxRoot'));
               }
               let r = t(30),
                 o = t(77);
@@ -1760,7 +1774,7 @@
                 },
                 appendChild(t) {
                   const e = this;
-                  return this.layout(function() {
+                  return this.layout(function () {
                     return e._body.appendChild(t);
                   });
                 },
@@ -1769,7 +1783,7 @@
                     n = this._doc.createElement('base');
                   return (
                     (n.target = t),
-                    this.layout(function() {
+                    this.layout(function () {
                       return e._head.appendChild(n);
                     })
                   );
@@ -1784,18 +1798,18 @@
                   return this._doc;
                 }
               }),
-                (i.createSandbox = function(t, e, n, o) {
-                  const s = new r(t, e, n, o);
-                  return s.ready().then(function(t) {
-                    return new i(t.frame, t.layout);
-                  });
-                }),
-                (e.exports = i);
+              (i.createSandbox = function (t, e, n, o) {
+                const s = new r(t, e, n, o);
+                return s.ready().then(function (t) {
+                  return new i(t.frame, t.layout);
+                });
+              }),
+              (e.exports = i);
             },
             { 30: 30, 77: 77 }
           ],
           33: [
-            function(t, e, n) {
+            function (t, e, n) {
               function i() {
                 return l.formatGenericEventData('syndicated_impression', {});
               }
@@ -1815,14 +1829,14 @@
                 d.isHostPageSensitive() ||
                   h[t] ||
                   ((h[t] = !0),
-                  u.scribe(
-                    l.formatClientEventNamespace({
-                      page: t,
-                      action: 'impression'
-                    }),
-                    i(),
-                    l.AUDIENCE_ENDPOINT
-                  ));
+                    u.scribe(
+                      l.formatClientEventNamespace({
+                        page: t,
+                        action: 'impression'
+                      }),
+                      i(),
+                      l.AUDIENCE_ENDPOINT
+                    ));
               }
               var u = t(35),
                 l = t(36),
@@ -1839,40 +1853,42 @@
             { 35: 35, 36: 36, 72: 72 }
           ],
           34: [
-            function(t, e, n) {
+            function (t, e, n) {
               function i() {
                 return x
                   ? I.promise
                   : (m
-                      .createSandbox(
-                        { id: 'rufous-sandbox' },
-                        { display: 'none' }
-                      )
-                      .then(function(t) {
-                        (h = t), (l = c()), (d = u()), I.resolve([l, d]);
-                      }),
+                    .createSandbox(
+                      { id: 'rufous-sandbox' },
+                      { display: 'none' }
+                    )
+                    .then(function (t) {
+                      (h = t), (l = c()), (d = u()), I.resolve([l, d]);
+                    }),
                     (x = !0),
                     I.promise);
               }
               function r(t, e) {
-                let n, i, r;
+                let n,
+                  i,
+                  r;
                 w.isObject(t) &&
                   w.isObject(e) &&
                   ((r = y.flattenClientEventPayload(t, e)),
-                  (n = l.firstChild),
-                  (n.value = +(+n.value || r.dnt || 0)),
-                  (i = h.createElement('input')),
-                  (i.type = 'hidden'),
-                  (i.name = 'l'),
-                  (i.value = y.stringify(r)),
-                  l.appendChild(i));
+                    (n = l.firstChild),
+                    (n.value = +(+n.value || r.dnt || 0)),
+                    (i = h.createElement('input')),
+                    (i.type = 'hidden'),
+                    (i.name = 'l'),
+                    (i.value = y.stringify(r)),
+                    l.appendChild(i));
               }
               function o(t, e, n) {
                 let i = !w.isObject(t),
                   o = e ? !w.isObject(e) : !1;
                 i ||
                   o ||
-                  I.promise.then(function() {
+                  I.promise.then(function () {
                     r(
                       y.formatClientEventNamespace(t),
                       y.formatClientEventData(e, n)
@@ -1880,15 +1896,15 @@
                   });
               }
               function s() {
-                return I.promise.then(function() {
+                return I.promise.then(function () {
                   if (l.children.length <= 2) return v.reject();
                   const t = v
                     .all([h.appendChild(l), h.appendChild(d)])
-                    .then(function(t) {
+                    .then(function (t) {
                       let e = t[0],
                         n = t[1];
                       return (
-                        n.addEventListener('load', function() {
+                        n.addEventListener('load', function () {
                           a(e, n)(), b.get('events').trigger('logFlushed');
                         }),
                         e.submit(),
@@ -1899,7 +1915,7 @@
                 });
               }
               function a(t, e) {
-                return function() {
+                return function () {
                   const n = t.parentNode;
                   n && (n.removeChild(t), n.removeChild(e));
                 };
@@ -1955,7 +1971,7 @@
             { 20: 20, 32: 32, 36: 36, 59: 59, 63: 63, 68: 68, 69: 69, 77: 77 }
           ],
           35: [
-            function(t, e, n) {
+            function (t, e, n) {
               function i(t, e, n) {
                 return r(t, e, n, 2);
               }
@@ -1975,14 +1991,15 @@
                 (o.action = i || 'click'), r(o, e, n);
               }
               function s(t, e, n) {
-                let i, r;
+                let i,
+                  r;
                 n &&
                   p.isObject(t) &&
                   p.isObject(e) &&
                   ((i = f.flattenClientEventPayload(t, e)),
-                  (r = { l: f.stringify(i) }),
-                  i.dnt && (r.dnt = 1),
-                  l(h.url(n, r)));
+                    (r = { l: f.stringify(i) }),
+                    i.dnt && (r.dnt = 1),
+                    l(h.url(n, r)));
               }
               function a(t, e, n, i) {
                 let r,
@@ -2018,7 +2035,7 @@
                     ),
                   (t = g),
                   (g = []),
-                  (e = t.reduce(function(e, n, r) {
+                  (e = t.reduce(function (e, n, r) {
                     let o,
                       s,
                       a = e.length,
@@ -2042,7 +2059,7 @@
                           e)
                     );
                   }, [])),
-                  e.map(function(t) {
+                  e.map(function (t) {
                     const e = { l: t.items };
                     return (
                       d.enabled() && (e.dnt = 1),
@@ -2074,14 +2091,14 @@
             { 36: 36, 59: 59, 71: 71, 77: 77 }
           ],
           36: [
-            function(t, e, n) {
+            function (t, e, n) {
               function i(t, e) {
                 let n;
                 return (
                   (e = e || {}),
                   t && t.nodeType === Node.ELEMENT_NODE
                     ? ((n = t.getAttribute('data-scribe')) &&
-                        n.split(' ').forEach(function(t) {
+                        n.split(' ').forEach(function (t) {
                           let n = t.trim().split(':'),
                             i = n[0],
                             r = n[1];
@@ -2157,12 +2174,12 @@
             { 12: 12, 19: 19, 59: 59, 77: 77, 79: 79 }
           ],
           37: [
-            function(t, e, n) {
+            function (t, e, n) {
               function i(t, e, n, i) {
                 return (
                   (t = t || []),
                   (n = n || {}),
-                  function() {
+                  function () {
                     let r,
                       o,
                       c,
@@ -2170,41 +2187,41 @@
                       d = Array.prototype.slice.apply(arguments, [0, t.length]),
                       h = Array.prototype.slice.apply(arguments, [t.length]);
                     return (
-                      h.forEach(function(t) {
+                      h.forEach(function (t) {
                         return t
                           ? t.nodeType === 1
                             ? void (c = t)
                             : s.isType('function', t)
-                            ? void (r = t)
-                            : void (s.isType('object', t) && (o = t))
+                              ? void (r = t)
+                              : void (s.isType('object', t) && (o = t))
                           : void 0;
                       }),
                       d.length != t.length || h.length === 0
                         ? (r &&
-                            s.async(function() {
+                            s.async(function () {
                               r(!1);
                             }),
                           a.reject('Not enough parameters'))
                         : c
-                        ? ((o = s.aug(o || {}, n)),
-                          (o.targetEl = c),
-                          t.forEach(function(t) {
-                            o[t] = d.shift();
-                          }),
-                          (l = new e(o)),
-                          u.doLayout(),
-                          l.render(),
-                          i && i(),
-                          r &&
-                            l.completed().then(r, function() {
+                          ? ((o = s.aug(o || {}, n)),
+                            (o.targetEl = c),
+                            t.forEach(function (t) {
+                              o[t] = d.shift();
+                            }),
+                            (l = new e(o)),
+                            u.doLayout(),
+                            l.render(),
+                            i && i(),
+                            r &&
+                            l.completed().then(r, function () {
                               r(!1);
                             }),
-                          l.completed())
-                        : (r &&
-                            s.async(function() {
+                            l.completed())
+                          : (r &&
+                            s.async(function () {
                               r(!1);
                             }),
-                          a.reject('No target specified'))
+                            a.reject('No target specified'))
                     );
                   }
                 );
@@ -2212,11 +2229,11 @@
               function r(t) {
                 let e;
                 (t.linkColor = t.linkColor || t.previewParams.link_color),
-                  (t.theme = t.theme || t.previewParams.theme),
-                  (t.height = t.height || t.previewParams.height),
-                  (e = new p(t)),
-                  (this.render = e.render.bind(e)),
-                  (this.completed = e.completed.bind(e));
+                (t.theme = t.theme || t.previewParams.theme),
+                (t.height = t.height || t.previewParams.height),
+                (e = new p(t)),
+                (this.render = e.render.bind(e)),
+                (this.completed = e.completed.bind(e));
               }
               var o = t(15),
                 s = t(77),
@@ -2247,7 +2264,7 @@
                   createTimeline: _
                 };
               c.isTwitterURL(o.location.href) && (A.createTimelinePreview = E),
-                (e.exports = A);
+              (e.exports = A);
             },
             {
               15: 15,
@@ -2263,7 +2280,7 @@
             }
           ],
           38: [
-            function(t, e, n) {
+            function (t, e, n) {
               function i(t, e) {
                 const n = u.connect({
                   src: t,
@@ -2279,12 +2296,12 @@
                       e = e || {};
                       const i = e.region;
                       delete e.region,
-                        f.get('events').trigger(t, {
-                          target: d.find(n),
-                          data: e,
-                          region: i,
-                          type: t
-                        });
+                      f.get('events').trigger(t, {
+                        target: d.find(n),
+                        data: e,
+                        region: i,
+                        type: t
+                      });
                     },
                     initXPHub() {
                       o(!0);
@@ -2331,12 +2348,12 @@
             { 12: 12, 20: 20, 40: 40, 46: 46, 78: 78, 87: 87, 88: 88 }
           ],
           39: [
-            function(t, e, n) {
+            function (t, e, n) {
               function i() {
                 return o !== o.top
-                  ? r.request(d).then(function(t) {
-                      s.rootDocumentLocation(t.url), t.dnt && a.setOn();
-                    })
+                  ? r.request(d).then(function (t) {
+                    s.rootDocumentLocation(t.url), t.dnt && a.setOn();
+                  })
                   : void 0;
               }
               var r,
@@ -2350,20 +2367,20 @@
                 h = 'twttr.article';
               o === o.top
                 ? new c()
-                    .attachReceiver(new l.Receiver(o, h))
-                    .bind(d, function() {
-                      return {
-                        url: s.rootDocumentLocation(),
-                        dnt: a.enabled()
-                      };
-                    })
+                  .attachReceiver(new l.Receiver(o, h))
+                  .bind(d, function () {
+                    return {
+                      url: s.rootDocumentLocation(),
+                      dnt: a.enabled()
+                    };
+                  })
                 : (r = new u(new l.Dispatcher(o.top, h))),
-                (e.exports = { requestArticleUrl: i });
+              (e.exports = { requestArticleUrl: i });
             },
             { 15: 15, 26: 26, 28: 28, 29: 29, 57: 57, 59: 59 }
           ],
           40: [
-            function(t, e, n) {
+            function (t, e, n) {
               function i(t, e) {
                 let n,
                   i = u[t];
@@ -2398,21 +2415,21 @@
                       'embed/timeline.bb90bc33d9656b090e6a0f0247348a85.gif.rtl.css'
                   }
                 },
-                l = (function() {
+                l = (function () {
                   return /^http\:$/.test(o.protocol)
-                    ? function(t) {
-                        return t ? 'https' : 'http';
-                      }
-                    : function() {
-                        return 'https';
-                      };
-                })();
+                    ? function (t) {
+                      return t ? 'https' : 'http';
+                    }
+                    : function () {
+                      return 'https';
+                    };
+                }());
               e.exports = { builtUrl: i, base: r };
             },
             { 13: 13, 19: 19, 60: 60, 77: 77 }
           ],
           41: [
-            function(t, e, n) {
+            function (t, e, n) {
               let i = t(13),
                 r = t(19),
                 o = t(77),
@@ -2433,65 +2450,65 @@
                   },
                   r.get('endpoints') || {}
                 );
-              (u.tweets = function(t) {
+              (u.tweets = function (t) {
                 const e = { ids: t.ids.join(','), lang: t.lang, new_html: !0 };
                 return s.fetch(l.tweets, e, a);
               }),
-                (u.videos = function(t) {
-                  return s.fetch(
-                    l.videos,
-                    { ids: t.ids.join(','), lang: t.lang },
-                    a
-                  );
-                }),
-                (u.timeline = function(t) {
-                  let e = `tl_${t.id}_${t.instanceId}`,
-                    n = 9e5,
-                    r = Math.floor(+new Date() / n),
-                    a = {
-                      lang: t.lang,
-                      t: r,
-                      domain: i.host,
-                      dnt: t.dnt,
-                      override_type: t.overrideType,
-                      override_id: t.overrideId,
-                      override_name: t.overrideName,
-                      override_owner_id: t.overrideOwnerId,
-                      override_owner_name: t.overrideOwnerName,
-                      with_replies: t.withReplies
-                    };
-                  return o.compact(a), s.fetch(l.timeline + t.id, a, c, e);
-                }),
-                (u.timelinePoll = function(t) {
-                  let e =
+              (u.videos = function (t) {
+                return s.fetch(
+                  l.videos,
+                  { ids: t.ids.join(','), lang: t.lang },
+                  a
+                );
+              }),
+              (u.timeline = function (t) {
+                let e = `tl_${t.id}_${t.instanceId}`,
+                  n = 9e5,
+                  r = Math.floor(+new Date() / n),
+                  a = {
+                    lang: t.lang,
+                    t: r,
+                    domain: i.host,
+                    dnt: t.dnt,
+                    override_type: t.overrideType,
+                    override_id: t.overrideId,
+                    override_name: t.overrideName,
+                    override_owner_id: t.overrideOwnerId,
+                    override_owner_name: t.overrideOwnerName,
+                    with_replies: t.withReplies
+                  };
+                return o.compact(a), s.fetch(l.timeline + t.id, a, c, e);
+              }),
+              (u.timelinePoll = function (t) {
+                let e =
                       t.sinceId || t.maxId || t.maxPosition || t.minPosition,
-                    n = `tlPoll_${t.id}_${t.instanceId}_${e}`,
-                    r = {
-                      lang: t.lang,
-                      since_id: t.sinceId,
-                      max_id: t.maxId,
-                      min_position: t.minPosition,
-                      max_position: t.maxPosition,
-                      domain: i.host,
-                      dnt: t.dnt,
-                      override_type: t.overrideType,
-                      override_id: t.overrideId,
-                      override_name: t.overrideName,
-                      override_owner_id: t.overrideOwnerId,
-                      override_owner_name: t.overrideOwnerName,
-                      with_replies: t.withReplies
-                    };
-                  return o.compact(r), s.fetch(l.timelinePoll + t.id, r, c, n);
-                }),
-                (u.timelinePreview = function(t) {
-                  return s.fetch(l.timelinePreview, t.params, c);
-                }),
-                (e.exports = u);
+                  n = `tlPoll_${t.id}_${t.instanceId}_${e}`,
+                  r = {
+                    lang: t.lang,
+                    since_id: t.sinceId,
+                    max_id: t.maxId,
+                    min_position: t.minPosition,
+                    max_position: t.maxPosition,
+                    domain: i.host,
+                    dnt: t.dnt,
+                    override_type: t.overrideType,
+                    override_id: t.overrideId,
+                    override_name: t.overrideName,
+                    override_owner_id: t.overrideOwnerId,
+                    override_owner_name: t.overrideOwnerName,
+                    with_replies: t.withReplies
+                  };
+                return o.compact(r), s.fetch(l.timelinePoll + t.id, r, c, n);
+              }),
+              (u.timelinePreview = function (t) {
+                return s.fetch(l.timelinePreview, t.params, c);
+              }),
+              (e.exports = u);
             },
             { 13: 13, 19: 19, 4: 4, 5: 5, 6: 6, 77: 77 }
           ],
           42: [
-            function(t, e, n) {
+            function (t, e, n) {
               function i() {
                 let t = 36e5,
                   e = s.combined(o)._;
@@ -2509,28 +2526,31 @@
             { 13: 13, 67: 67 }
           ],
           43: [
-            function(t, e, n) {
+            function (t, e, n) {
               function i(t, e) {
                 return t == 2 || (t == 3 && +e === 0);
               }
               function r(t) {
                 const e = t.split(' ');
                 (this.url = decodeURIComponent(e[0].trim())),
-                  (this.width = +e[1].replace(/w$/, '').trim());
+                (this.width = +e[1].replace(/w$/, '').trim());
               }
               function o(t, e, n) {
-                let i, o, s, a;
+                let i,
+                  o,
+                  s,
+                  a;
                 if (
                   ((t = f.devicePixelRatio ? t * f.devicePixelRatio : t),
-                  (o = e.split(',').map(function(t) {
-                    return new r(t.trim());
-                  })),
-                  n)
+                    (o = e.split(',').map(function (t) {
+                      return new r(t.trim());
+                    })),
+                    n)
                 ) {
                   for (a = 0; a < o.length; a++) o[a].url === n && (i = o[a]);
                 }
                 return (
-                  (s = o.reduce(function(e, n) {
+                  (s = o.reduce(function (e, n) {
                     return n.width < e.width && n.width >= t ? n : e;
                   }, o[0])),
                   i && i.width > s.width ? i : s
@@ -2544,15 +2564,15 @@
               }
               function a(t, e) {
                 (e = void 0 !== e ? !!e : m.retina()),
-                  p
-                    .toRealArray(t.getElementsByTagName('IMG'))
-                    .forEach(function(t) {
-                      let n =
+                p
+                  .toRealArray(t.getElementsByTagName('IMG'))
+                  .forEach(function (t) {
+                    let n =
                           t.getAttribute('data-src-1x') ||
                           t.getAttribute('src'),
-                        i = t.getAttribute('data-src-2x');
-                      e && i ? (t.src = i) : n && (t.src = n);
-                    });
+                      i = t.getAttribute('data-src-2x');
+                    e && i ? (t.src = i) : n && (t.src = n);
+                  });
               }
               function c(t, e, n, r) {
                 let o = 0,
@@ -2562,23 +2582,23 @@
                   return (
                     p
                       .toRealArray(t.querySelectorAll('.NaturalImage-image'))
-                      .forEach(function(t) {
-                        r(function() {
+                      .forEach(function (t) {
+                        r(function () {
                           s(t, e);
                         });
                       }),
                     p
                       .toRealArray(t.querySelectorAll('.CroppedImage-image'))
-                      .forEach(function(t) {
-                        r(function() {
+                      .forEach(function (t) {
+                        r(function () {
                           s(t, e / 2);
                         });
                       }),
                     (m.ios() || m.android()) &&
                       p
                         .toRealArray(t.querySelectorAll('.FilledIframe'))
-                        .forEach(function(t) {
-                          r(function() {
+                        .forEach(function (t) {
+                          r(function () {
                             l(t, {
                               width: t.offsetWidth,
                               height: t.offsetHeight
@@ -2587,24 +2607,24 @@
                         }),
                     p
                       .toRealArray(t.querySelectorAll('.autosized-media'))
-                      .forEach(function(t) {
+                      .forEach(function (t) {
                         const i = u(
                           t.getAttribute('data-width'),
                           t.getAttribute('data-height'),
                           e,
                           n
                         );
-                        r(function() {
+                        r(function () {
                           s(t, e),
-                            (t.width = i.width),
-                            (t.height = i.height),
-                            l(t, i);
+                          (t.width = i.width),
+                          (t.height = i.height),
+                          l(t, i);
                         }),
-                          (o = i.height > o ? i.height : o);
+                        (o = i.height > o ? i.height : o);
                       }),
                     p
                       .toRealArray(t.querySelectorAll('img.cropped-media'))
-                      .forEach(function(t) {
+                      .forEach(function (t) {
                         let a,
                           l,
                           d,
@@ -2616,34 +2636,34 @@
                           b = Math.floor(h / 2 - v),
                           _ = Math.floor(b / (g ? y : w));
                         g || (_ -= v / 2),
-                          (d = u(
-                            t.getAttribute('data-width'),
-                            t.getAttribute('data-height'),
-                            b,
-                            n,
-                            b,
-                            _
-                          )),
-                          (a = d.width - b - p),
-                          (l = d.height - _ - m),
-                          a < 0 && Math.max(0, (p += a)),
-                          l < 0 && Math.max(0, (m += l)),
-                          r(function() {
-                            s(t, b),
-                              (t.width = d.width),
-                              (t.height = d.height),
-                              (f.style.width = `${b - 1}px`),
-                              (f.style.height = `${_}px`),
-                              p &&
+                        (d = u(
+                          t.getAttribute('data-width'),
+                          t.getAttribute('data-height'),
+                          b,
+                          n,
+                          b,
+                          _
+                        )),
+                        (a = d.width - b - p),
+                        (l = d.height - _ - m),
+                        a < 0 && Math.max(0, (p += a)),
+                        l < 0 && Math.max(0, (m += l)),
+                        r(function () {
+                          s(t, b),
+                          (t.width = d.width),
+                          (t.height = d.height),
+                          (f.style.width = `${b - 1}px`),
+                          (f.style.height = `${_}px`),
+                          p &&
                                 (t.style.marginLeft = `-${Math.floor(
                                   (d.width * p) / 100
                                 )}px`),
-                              m &&
+                          m &&
                                 (t.style.marginTop = `-${Math.floor(
                                   (d.height * m) / 100
                                 )}px`);
-                          }),
-                          (o = d.height * (g ? 2 : 1) > o ? d.height : o);
+                        }),
+                        (o = d.height * (g ? 2 : 1) > o ? d.height : o);
                       }),
                     o
                   );
@@ -2667,28 +2687,32 @@
                   const t = { name: 'tfw:resize', dimensions: e };
                   r.postMessage(t, '*');
                 }
-                let i, r, o, s, a;
+                let i,
+                  r,
+                  o,
+                  s,
+                  a;
                 t &&
                   ((r = t.contentWindow),
-                  (i = t.ownerDocument && t.ownerDocument.defaultView),
-                  (o = m.ios() || m.android()),
-                  (s = g.isTwitterURL(t.src)),
-                  (a = r && m.canPostMessage(r)),
-                  o &&
+                    (i = t.ownerDocument && t.ownerDocument.defaultView),
+                    (o = m.ios() || m.android()),
+                    (s = g.isTwitterURL(t.src)),
+                    (a = r && m.canPostMessage(r)),
+                    o &&
                     s &&
                     a &&
                     (n(),
-                    i &&
+                      i &&
                       i.addEventListener(
                         'message',
-                        function(t) {
+                        function (t) {
                           t.data === 'tfw:requestsize' && n();
                         },
                         !1
                       )));
               }
               function d(t, e, n, i) {
-                p.toRealArray(t.querySelectorAll(e)).forEach(function(t) {
+                p.toRealArray(t.querySelectorAll(e)).forEach(function (t) {
                   let e =
                       t.getAttribute('style') || t.getAttribute('data-style'),
                     r = i.test(e) && RegExp.$1;
@@ -2698,9 +2722,9 @@
               function h(t) {
                 m.cspEnabled() &&
                   (d(t, '.MediaCard-widthConstraint', 'maxWidth', b),
-                  d(t, '.MediaCard-mediaContainer', 'paddingBottom', A),
-                  d(t, '.CroppedImage-image', 'top', _),
-                  d(t, '.CroppedImage-image', 'left', E));
+                    d(t, '.MediaCard-mediaContainer', 'paddingBottom', A),
+                    d(t, '.CroppedImage-image', 'top', _),
+                    d(t, '.CroppedImage-image', 'left', E));
               }
               var f = t(15),
                 p = t(77),
@@ -2724,11 +2748,11 @@
             { 15: 15, 60: 60, 73: 73, 77: 77 }
           ],
           44: [
-            function(t, e, n) {
+            function (t, e, n) {
               let i = t(71),
                 r = t(73);
-              e.exports = function(t, e) {
-                return function(n) {
+              e.exports = function (t, e) {
+                return function (n) {
                   let o,
                     s,
                     a = 'data-tw-params';
@@ -2745,11 +2769,11 @@
             { 71: 71, 73: 73 }
           ],
           45: [
-            function(t, e, n) {
+            function (t, e, n) {
               function i() {
                 new s()
                   .attachReceiver(new a.Receiver(r, 'twttr.resize'))
-                  .bind('twttr.private.resizeButton', function(t) {
+                  .bind('twttr.private.resizeButton', function (t) {
                     let e = u(this),
                       n = e && e.id,
                       i = n && o.findInstance(n),
@@ -2769,7 +2793,7 @@
             { 15: 15, 28: 28, 29: 29, 46: 46, 62: 62, 74: 74 }
           ],
           46: [
-            function(t, e, n) {
+            function (t, e, n) {
               function i(t) {
                 let e;
                 t &&
@@ -2777,28 +2801,28 @@
                     ? ((this.srcEl = t),
                       (this.classAttr = t.className.split(' ')))
                     : ((this.srcOb = t), (this.classAttr = [])),
-                  (e = this.params()),
-                  (this.id = this.generateId()),
-                  this.setLanguage(),
-                  (this.related = e.related || this.dataAttr('related')),
-                  (this.partner =
+                    (e = this.params()),
+                    (this.id = this.generateId()),
+                    this.setLanguage(),
+                    (this.related = e.related || this.dataAttr('related')),
+                    (this.partner =
                     e.partner || this.dataAttr('partner') || y.val('partner')),
-                  (this.styleAttr = []),
-                  (this.targetEl = t.targetEl),
-                  g.asBoolean(e.dnt || this.dataAttr('dnt')) && w.setOn(),
-                  (x[this.id] = this),
-                  (this.completeDeferred = new d()),
-                  this.completed().then(function(t) {
-                    t &&
+                    (this.styleAttr = []),
+                    (this.targetEl = t.targetEl),
+                    g.asBoolean(e.dnt || this.dataAttr('dnt')) && w.setOn(),
+                    (x[this.id] = this),
+                    (this.completeDeferred = new d()),
+                    this.completed().then(function (t) {
+                      t &&
                       t != a.body &&
                       E.get('events').trigger('rendered', { target: t });
-                  }));
+                    }));
               }
               function r() {
-                I.forEach(function(t) {
+                I.forEach(function (t) {
                   t();
                 }),
-                  i.doLayout();
+                i.doLayout();
               }
               function o(t) {
                 return t ? (t.lang ? t.lang : o(t.parentNode)) : void 0;
@@ -2848,7 +2872,7 @@
                 ringo(t, e, n) {
                   return (
                     (n = n || /\{\{([\w_]+)\}\}/g),
-                    t.replace(n, function(t, n) {
+                    t.replace(n, function (t, n) {
                       return void 0 !== e[n] ? e[n] : t;
                     })
                   );
@@ -2886,34 +2910,35 @@
                       this.targetEl && this.targetEl.ownerDocument
                     )),
                     this.srcEl
-                      ? this.layout(function() {
-                          return i.srcEl.parentNode.replaceChild(n, i.srcEl), n;
-                        })
+                      ? this.layout(function () {
+                        return i.srcEl.parentNode.replaceChild(n, i.srcEl), n;
+                      })
                       : this.targetEl
-                      ? this.layout(function() {
+                        ? this.layout(function () {
                           return i.targetEl.appendChild(n), n;
                         })
-                      : p.reject('Did not append widget')
+                        : p.reject('Did not append widget')
                   );
                 },
                 setInitialSize(t, e) {
                   let n = this,
                     i = this.element;
                   return i
-                    ? void this.layout(function() {
-                        (n.width = t),
-                          (n.height = e),
-                          (i.style.width = `${t}px`),
-                          (i.style.height = `${e}px`),
-                          (i.style.position = 'static'),
-                          (i.style.visibility = 'visible');
-                      }).then(function() {
-                        n.completeDeferred.resolve(i);
-                      })
+                    ? void this.layout(function () {
+                      (n.width = t),
+                      (n.height = e),
+                      (i.style.width = `${t}px`),
+                      (i.style.height = `${e}px`),
+                      (i.style.position = 'static'),
+                      (i.style.visibility = 'visible');
+                    }).then(function () {
+                      n.completeDeferred.resolve(i);
+                    })
                     : !1;
                 },
                 params() {
-                  let t, e;
+                  let t,
+                    e;
                   return (
                     this.srcOb
                       ? (e = this.srcOb)
@@ -2922,7 +2947,7 @@
                           this.srcEl.href &&
                           this.srcEl.href.split('?')[1]),
                         (e = t ? m.decode(t) : {})),
-                    (this.params = function() {
+                    (this.params = function () {
                       return e;
                     }),
                     e
@@ -2951,78 +2976,78 @@
                     : void 0;
                 }
               }),
-                (i.afterLoad = function(t) {
-                  I.push(t);
-                }),
-                (i.doLayout = function() {
-                  S.exec();
-                }),
-                (i.doLayoutAsync = function() {
-                  S.delayedExec();
-                }),
-                (i.init = function(t) {
-                  s = t;
-                }),
-                (i.reset = function() {
-                  x = {};
-                }),
-                (i.findInstance = function(t) {
-                  return t && x[t] ? x[t] : null;
-                }),
-                (i.find = function(t) {
-                  const e = i.findInstance(t);
-                  return (e && e.element) || null;
-                }),
-                (i.embed = function(t) {
-                  let e = [],
-                    n = [],
-                    o = [];
-                  g.isArray(t) || (t = [t || a]),
-                    b.time('sandboxes'),
-                    t.forEach(function(t) {
-                      v.forIn(s, function(n, i) {
-                        const r = t.querySelectorAll(n);
-                        v.toRealArray(r).forEach(function(t) {
-                          let n;
-                          t.getAttribute(D) ||
+              (i.afterLoad = function (t) {
+                I.push(t);
+              }),
+              (i.doLayout = function () {
+                S.exec();
+              }),
+              (i.doLayoutAsync = function () {
+                S.delayedExec();
+              }),
+              (i.init = function (t) {
+                s = t;
+              }),
+              (i.reset = function () {
+                x = {};
+              }),
+              (i.findInstance = function (t) {
+                return t && x[t] ? x[t] : null;
+              }),
+              (i.find = function (t) {
+                const e = i.findInstance(t);
+                return (e && e.element) || null;
+              }),
+              (i.embed = function (t) {
+                let e = [],
+                  n = [],
+                  o = [];
+                g.isArray(t) || (t = [t || a]),
+                b.time('sandboxes'),
+                t.forEach(function (t) {
+                  v.forIn(s, function (n, i) {
+                    const r = t.querySelectorAll(n);
+                    v.toRealArray(r).forEach(function (t) {
+                      let n;
+                      t.getAttribute(D) ||
                             (t.setAttribute(D, 'true'),
-                            (n = new i(t)),
-                            e.push(n),
-                            o.push(n.sandboxCreated));
-                        });
-                      });
-                    }),
-                    p.all(o).then(function() {
-                      b.timeEnd('sandboxes');
-                    }),
-                    i.doLayout(),
-                    e.forEach(function(t) {
-                      n.push(t.completed()), t.render();
-                    }),
-                    p
-                      .all(n)
-                      .then(function(t) {
-                        (t = t.filter(function(t) {
-                          return t;
-                        })),
-                          t.length &&
-                            (E.get('events').trigger('loaded', { widgets: t }),
-                            b.timeEnd('load'));
-                      })
-                      .then(i.trackRender),
-                    i.doLayoutAsync(),
-                    r();
-                }),
-                (i.trackRender = function() {
-                  l.endAndTrack('render', 'widgets-js-load', 'page', {
-                    widget_origin: _.rootDocumentLocation(),
-                    widget_frame: _.isFramed() && _.currentDocumentLocation()
+                              (n = new i(t)),
+                              e.push(n),
+                              o.push(n.sandboxCreated));
+                    });
                   });
                 }),
-                c.setInterval(function() {
-                  i.doLayout();
-                }, 500),
-                (e.exports = i);
+                p.all(o).then(function () {
+                  b.timeEnd('sandboxes');
+                }),
+                i.doLayout(),
+                e.forEach(function (t) {
+                  n.push(t.completed()), t.render();
+                }),
+                p
+                  .all(n)
+                  .then(function (t) {
+                    (t = t.filter(function (t) {
+                      return t;
+                    })),
+                    t.length &&
+                            (E.get('events').trigger('loaded', { widgets: t }),
+                              b.timeEnd('load'));
+                  })
+                  .then(i.trackRender),
+                i.doLayoutAsync(),
+                r();
+              }),
+              (i.trackRender = function () {
+                l.endAndTrack('render', 'widgets-js-load', 'page', {
+                  widget_origin: _.rootDocumentLocation(),
+                  widget_frame: _.isFramed() && _.currentDocumentLocation()
+                });
+              }),
+              c.setInterval(function () {
+                i.doLayout();
+              }, 500),
+              (e.exports = i);
             },
             {
               12: 12,
@@ -3045,7 +3070,7 @@
             }
           ],
           47: [
-            function(t, e, n) {
+            function (t, e, n) {
               function i(t, e) {
                 let n = t.querySelector('blockquote.subject'),
                   i = t.querySelector('blockquote.reply'),
@@ -3055,91 +3080,93 @@
                   a = {};
                 r &&
                   ((s[r] = { item_type: 0 }),
-                  A.clientEvent(
-                    {
-                      page: 'tweet',
-                      section: 'subject',
-                      component: 'tweet',
-                      action: 'results'
-                    },
-                    w.aug({}, e, { item_ids: [r], item_details: s }),
-                    !0
-                  ),
-                  E.scribeTweetAudienceImpression(),
-                  o &&
-                    ((a[o] = { item_type: 0 }),
                     A.clientEvent(
                       {
                         page: 'tweet',
-                        section: 'conversation',
+                        section: 'subject',
                         component: 'tweet',
                         action: 'results'
                       },
-                      w.aug({}, e, {
-                        item_ids: [o],
-                        item_details: a,
-                        associations: {
-                          4: { association_id: r, association_type: 4 }
-                        }
-                      }),
+                      w.aug({}, e, { item_ids: [r], item_details: s }),
                       !0
-                    )));
+                    ),
+                    E.scribeTweetAudienceImpression(),
+                    o &&
+                    ((a[o] = { item_type: 0 }),
+                      A.clientEvent(
+                        {
+                          page: 'tweet',
+                          section: 'conversation',
+                          component: 'tweet',
+                          action: 'results'
+                        },
+                        w.aug({}, e, {
+                          item_ids: [o],
+                          item_details: a,
+                          associations: {
+                            4: { association_id: r, association_type: 4 }
+                          }
+                        }),
+                        !0
+                      )));
               }
               function r(t, e) {
                 const n = {};
                 t &&
                   ((n[t] = { item_type: 0 }),
-                  A.clientEvent(
-                    {
-                      page: 'tweet',
-                      section: 'subject',
-                      component: 'rawembedcode',
-                      action: 'no_results'
-                    },
-                    {
-                      widget_origin: x.rootDocumentLocation(),
-                      widget_frame: x.isFramed() && x.currentDocumentLocation(),
-                      message: e,
-                      item_ids: [t],
-                      item_details: n
-                    },
-                    !0
-                  ),
-                  E.scribeTweetAudienceImpression());
+                    A.clientEvent(
+                      {
+                        page: 'tweet',
+                        section: 'subject',
+                        component: 'rawembedcode',
+                        action: 'no_results'
+                      },
+                      {
+                        widget_origin: x.rootDocumentLocation(),
+                        widget_frame: x.isFramed() && x.currentDocumentLocation(),
+                        message: e,
+                        item_ids: [t],
+                        item_details: n
+                      },
+                      !0
+                    ),
+                    E.scribeTweetAudienceImpression());
               }
               function o(t, e, n, i) {
                 (P[t] = P[t] || []), P[t].push({ s: n, f: i, lang: e });
               }
               function s(t) {
                 if (t) {
-                  let e, n, i;
+                  let e,
+                    n,
+                    i;
                   d.apply(this, [t]),
-                    (e = this.params()),
-                    (n = this.srcEl && this.srcEl.getElementsByTagName('A')),
-                    (i = n && n[n.length - 1]),
-                    (this.hideThread =
+                  (e = this.params()),
+                  (n = this.srcEl && this.srcEl.getElementsByTagName('A')),
+                  (i = n && n[n.length - 1]),
+                  (this.hideThread =
                       (e.conversation || this.dataAttr('conversation')) ==
                         'none' || w.contains(this.classAttr, 'tw-hide-thread')),
-                    (this.hideCard =
+                  (this.hideCard =
                       (e.cards || this.dataAttr('cards')) == 'hidden' ||
                       w.contains(this.classAttr, 'tw-hide-media')),
-                    (e.align || this.attr('align')) == 'left' ||
+                  (e.align || this.attr('align')) == 'left' ||
                     w.contains(this.classAttr, 'tw-align-left')
-                      ? (this.align = 'left')
-                      : (e.align || this.attr('align')) == 'right' ||
+                    ? (this.align = 'left')
+                    : (e.align || this.attr('align')) == 'right' ||
                         w.contains(this.classAttr, 'tw-align-right')
                       ? (this.align = 'right')
                       : ((e.align || this.attr('align')) == 'center' ||
                           w.contains(this.classAttr, 'tw-align-center')) &&
                         ((this.align = 'center'),
-                        this.containerWidth >
+                          this.containerWidth >
                           this.dimensions.MIN_WIDTH * (1 / 0.7) &&
                           this.width > 0.7 * this.containerWidth &&
                           (this.width = 0.7 * this.containerWidth)),
-                    (this.narrow =
+                  (this.narrow =
                       e.narrow || this.width <= this.dimensions.NARROW_WIDTH),
-                    this.narrow && this.classAttr.push('var-narrow'),
-                    (this.tweetId = e.tweetId || (i && b.status(i.href)));
+                  this.narrow && this.classAttr.push('var-narrow'),
+                  (this.tweetId = e.tweetId || (i && b.status(i.href)));
                 }
               }
               var a = t(3),
@@ -3169,90 +3196,91 @@
                 P = {},
                 R = [];
               (s.prototype = new d()),
-                w.aug(s.prototype, {
-                  renderedClassNames: 'twitter-tweet twitter-tweet-rendered',
-                  dimensions: {
-                    DEFAULT_HEIGHT: '0',
-                    DEFAULT_WIDTH: '500',
-                    NARROW_WIDTH: '350',
-                    maxHeight: '375',
-                    FULL_BLEED_PHOTO_MAX_HEIGHT: '600',
-                    MIN_WIDTH: '220',
-                    MIN_HEIGHT: '0',
-                    MARGIN: '10px 0',
-                    WIDE_MEDIA_PADDING: 32,
-                    NARROW_MEDIA_PADDING: 32,
-                    BORDERS: 0
-                  },
-                  linkColorSelectors: ['a', 'a:visited'],
-                  linkStateColorSelectors: ['a:hover', 'a:focus', 'a:active'],
-                  bgColorSelectors: [],
-                  borderColorSelectors: [],
-                  styleSheetUrl: a.tweet,
-                  addSiteStylesPrefix(t) {
-                    return t;
-                  },
-                  onStyleSheetLoad() {
-                    const t = this;
-                    this.sandbox.hasContent() &&
+              w.aug(s.prototype, {
+                renderedClassNames: 'twitter-tweet twitter-tweet-rendered',
+                dimensions: {
+                  DEFAULT_HEIGHT: '0',
+                  DEFAULT_WIDTH: '500',
+                  NARROW_WIDTH: '350',
+                  maxHeight: '375',
+                  FULL_BLEED_PHOTO_MAX_HEIGHT: '600',
+                  MIN_WIDTH: '220',
+                  MIN_HEIGHT: '0',
+                  MARGIN: '10px 0',
+                  WIDE_MEDIA_PADDING: 32,
+                  NARROW_MEDIA_PADDING: 32,
+                  BORDERS: 0
+                },
+                linkColorSelectors: ['a', 'a:visited'],
+                linkStateColorSelectors: ['a:hover', 'a:focus', 'a:active'],
+                bgColorSelectors: [],
+                borderColorSelectors: [],
+                styleSheetUrl: a.tweet,
+                addSiteStylesPrefix(t) {
+                  return t;
+                },
+                onStyleSheetLoad() {
+                  const t = this;
+                  this.sandbox.hasContent() &&
                       (l.doLayoutAsync(),
-                      this.sandbox.resizeToContent().then(function(e) {
-                        t.height = e;
-                      }));
-                  },
-                  scribeCardShown(t) {
-                    let e, n;
-                    (e = { page: 'tweet', component: 'card', action: 'shown' }),
-                      (n = {
-                        card_details: {
-                          card_name: t.getAttribute('data-card-name')
-                        }
-                      }),
-                      N.clientEvent2(e, n, !1);
-                  },
-                  loadCardCss(t) {
-                    function e() {
-                      r &&
-                        (l.doLayoutAsync(),
-                        n.sandbox.resizeToContent().then(function(t) {
-                          n.height = t;
+                        this.sandbox.resizeToContent().then(function (e) {
+                          t.height = e;
                         }));
+                },
+                scribeCardShown(t) {
+                  let e,
+                    n;
+                  (e = { page: 'tweet', component: 'card', action: 'shown' }),
+                  (n = {
+                    card_details: {
+                      card_name: t.getAttribute('data-card-name')
                     }
-                    var n = this,
-                      i = t && t.getAttribute('data-css'),
-                      r = !1;
-                    i &&
+                  }),
+                  N.clientEvent2(e, n, !1);
+                },
+                loadCardCss(t) {
+                  function e() {
+                    r &&
+                        (l.doLayoutAsync(),
+                          n.sandbox.resizeToContent().then(function (t) {
+                            n.height = t;
+                          }));
+                  }
+                  var n = this,
+                    i = t && t.getAttribute('data-css'),
+                    r = !1;
+                  i &&
                       (w
                         .toRealArray(t.querySelectorAll('img'))
-                        .forEach(function(t) {
+                        .forEach(function (t) {
                           t.addEventListener('load', e, !1);
                         }),
-                      this.sandbox.prependStyleSheet(i, function() {
-                        p.add(t, 'is-ready'),
+                        this.sandbox.prependStyleSheet(i, function () {
+                          p.add(t, 'is-ready'),
                           n.scribeCardShown(t),
                           l.doLayoutAsync(),
-                          n.sandbox.resizeToContent().then(function(t) {
+                          n.sandbox.resizeToContent().then(function (t) {
                             (r = !0), (n.height = t);
                           });
-                      }));
-                  },
-                  create(t) {
-                    let e,
-                      n,
-                      r,
-                      o = this,
-                      s = this.sandbox.createElement('div');
-                    return (
-                      (s.innerHTML = t),
-                      (e = s.children[0] || !1)
-                        ? (this.theme == 'dark' &&
+                        }));
+                },
+                create(t) {
+                  let e,
+                    n,
+                    r,
+                    o = this,
+                    s = this.sandbox.createElement('div');
+                  return (
+                    (s.innerHTML = t),
+                    (e = s.children[0] || !1)
+                      ? (this.theme == 'dark' &&
                             this.classAttr.push('thm-dark'),
-                          this.linkColor && this.addSiteStyles(),
-                          p.present(e, 'media-forward') &&
+                        this.linkColor && this.addSiteStyles(),
+                        p.present(e, 'media-forward') &&
                             ((this.fullBleedPhoto = !0),
-                            (this.dimensions.maxHeight = this.dimensions.FULL_BLEED_PHOTO_MAX_HEIGHT)),
-                          (n = e.querySelector('.GifPlayer')),
-                          n &&
+                              (this.dimensions.maxHeight = this.dimensions.FULL_BLEED_PHOTO_MAX_HEIGHT)),
+                        (n = e.querySelector('.GifPlayer')),
+                        n &&
                             (this.gifPlayer = new I({
                               rootEl: n,
                               videoEl: n.querySelector('.GifPlayer-video'),
@@ -3263,259 +3291,259 @@
                                 this.getTweetElement(e)
                               )
                             })),
-                          T.retinize(e),
-                          T.fixMediaCardLayout(e),
-                          (e.id = this.id),
-                          (e.className += ` ${this.classAttr.join(' ')}`),
-                          (e.lang = this.lang),
-                          this.sandbox.setTitle(
-                            e.getAttribute('data-iframe-title') || 'Tweet'
-                          ),
-                          this.loadCardCss(e.querySelector('.PrerenderedCard')),
-                          this.sandbox.appendChild(e).then(function() {
-                            o.renderedDeferred.resolve(o.sandbox);
-                          }),
-                          (r = this.layout(function() {
-                            (o.predefinedWidth = o.width),
-                              (o.width = o.sandbox.width(o.width)),
-                              o.collapseRegions();
-                          })),
-                          r.then(function() {
-                            o.constrainMedia(e, o.contentWidth(o.width)),
-                              o.setNarrow().then(function() {
-                                o.layout(function() {
-                                  o.completeDeferred.resolve(
-                                    o.sandbox.element()
-                                  );
-                                });
-                              });
-                          }),
-                          i(e, this.baseScribeData(), this.partner),
-                          e)
-                        : void 0
-                    );
-                  },
-                  render() {
-                    let t = this,
-                      e = '',
-                      n = this.tweetId;
-                    return n
-                      ? (this.hideCard && (e += 'c'),
-                        this.hideThread && (e += 't'),
-                        e && (n += `-${e}`),
-                        this.rendered().then(function(e) {
-                          const n = t.srcEl;
-                          n &&
+                        T.retinize(e),
+                        T.fixMediaCardLayout(e),
+                        (e.id = this.id),
+                        (e.className += ` ${this.classAttr.join(' ')}`),
+                        (e.lang = this.lang),
+                        this.sandbox.setTitle(
+                          e.getAttribute('data-iframe-title') || 'Tweet'
+                        ),
+                        this.loadCardCss(e.querySelector('.PrerenderedCard')),
+                        this.sandbox.appendChild(e).then(function () {
+                          o.renderedDeferred.resolve(o.sandbox);
+                        }),
+                        (r = this.layout(function () {
+                          (o.predefinedWidth = o.width),
+                          (o.width = o.sandbox.width(o.width)),
+                          o.collapseRegions();
+                        })),
+                        r.then(function () {
+                          o.constrainMedia(e, o.contentWidth(o.width)),
+                          o.setNarrow().then(function () {
+                            o.layout(function () {
+                              o.completeDeferred.resolve(
+                                o.sandbox.element()
+                              );
+                            });
+                          });
+                        }),
+                        i(e, this.baseScribeData(), this.partner),
+                        e)
+                      : void 0
+                  );
+                },
+                render() {
+                  let t = this,
+                    e = '',
+                    n = this.tweetId;
+                  return n
+                    ? (this.hideCard && (e += 'c'),
+                      this.hideThread && (e += 't'),
+                      e && (n += `-${e}`),
+                      this.rendered().then(function (e) {
+                        const n = t.srcEl;
+                        n &&
                             n.parentNode &&
-                            t.layout(function() {
+                            t.layout(function () {
                               n && n.parentNode && n.parentNode.removeChild(n);
                             }),
-                            t.align == 'center'
-                              ? e.style({
-                                  margin: '7px auto',
-                                  cssFloat: 'none'
-                                })
-                              : t.align &&
+                        t.align == 'center'
+                          ? e.style({
+                            margin: '7px auto',
+                            cssFloat: 'none'
+                          })
+                          : t.align &&
                                 (t.width == t.dimensions.DEFAULT_WIDTH &&
                                   (t.predefinedWidth = t.width =
                                     t.dimensions.NARROW_WIDTH),
-                                e.style({ cssFloat: t.align })),
-                            t.sandbox
-                              .resizeToContent()
-                              .then(function(e) {
-                                return (
-                                  (t.height = e),
-                                  l.doLayoutAsync(),
-                                  t.sandbox.resizeToContent().then(function(e) {
-                                    t.height = e;
-                                  })
-                                );
+                                  e.style({ cssFloat: t.align })),
+                        t.sandbox
+                          .resizeToContent()
+                          .then(function (e) {
+                            return (
+                              (t.height = e),
+                              l.doLayoutAsync(),
+                              t.sandbox.resizeToContent().then(function (e) {
+                                t.height = e;
                               })
-                              .then(function() {
-                                e.onresize(t.handleResize.bind(t));
-                              }),
-                            e.style({
-                              position: 'static',
-                              visibility: 'visible'
-                            }),
-                            l.doLayoutAsync();
+                            );
+                          })
+                          .then(function () {
+                            e.onresize(t.handleResize.bind(t));
+                          }),
+                        e.style({
+                          position: 'static',
+                          visibility: 'visible'
                         }),
-                        o(
-                          n,
-                          this.lang,
-                          function(e) {
-                            t.ready().then(function() {
-                              (t.element = t.create(e)),
-                                t.readTimestampTranslations(),
-                                t.updateTimeStamps(),
-                                t.bindIntentHandlers(),
-                                t.bindUIHandlers(),
-                                t.bindPermalinkHandler(),
-                                l.doLayoutAsync();
-                            });
-                          },
-                          function() {
-                            r(t.tweetId, t.partner),
-                              t.completeDeferred.resolve(t.srcEl);
-                          }
-                        ),
-                        R.push(this.completed()),
-                        this.completed().then(
-                          this.scribePerformance.bind(this)
-                        ),
-                        this.completed())
-                      : (this.completeDeferred.resolve(this.srcEl),
-                        this.completed());
-                  },
-                  bindPermalinkHandler() {
-                    const t = this;
-                    D.delegate(this.element, 'click', 'A', function(t) {
-                      D.stopPropagation(t);
-                    }),
-                      D.delegate(
-                        this.element,
-                        'click',
-                        '.twitter-tweet',
-                        function(e) {
-                          const n = t.getTweetElement();
-                          u.getSelectedText(t.sandbox._win) ||
-                            (t.openPermalink(n),
-                            t.scribePermalinkClick(n, e),
-                            D.stopPropagation(e));
+                        l.doLayoutAsync();
+                      }),
+                      o(
+                        n,
+                        this.lang,
+                        function (e) {
+                          t.ready().then(function () {
+                            (t.element = t.create(e)),
+                            t.readTimestampTranslations(),
+                            t.updateTimeStamps(),
+                            t.bindIntentHandlers(),
+                            t.bindUIHandlers(),
+                            t.bindPermalinkHandler(),
+                            l.doLayoutAsync();
+                          });
+                        },
+                        function () {
+                          r(t.tweetId, t.partner),
+                          t.completeDeferred.resolve(t.srcEl);
                         }
-                      );
-                  },
-                  scribePermalinkClick(t, e) {
-                    const n = this.createScribeData(t);
-                    N.interaction(e, n, !1);
-                  },
-                  getTweetElement(t) {
-                    let e;
-                    return (
-                      (t = t || this.element),
-                      t
-                        ? ((e = t.querySelectorAll('blockquote.tweet')),
-                          e[e.length - 1])
-                        : void 0
-                    );
-                  },
-                  extractPermalinkUrl(t) {
-                    const e = t && t.cite;
-                    return b.isStatus(e) && e;
-                  },
-                  openPermalink(t) {
-                    const e = this.extractPermalinkUrl(t);
-                    e && c.open(e);
-                  },
-                  scribePerformance() {
-                    g.endAndTrack(
-                      'render',
-                      'widgets-js-load',
-                      'tweet',
-                      this.baseScribeData()
-                    );
-                  },
-                  addUrlParams(t) {
-                    let e = this,
-                      n = {
-                        related: this.related,
-                        partner: this.partner,
-                        original_referer: x.rootDocumentLocation(),
-                        tw_p: C
-                      };
-                    return (
-                      (this.addUrlParams = f(n, function(t) {
-                        const n = m.closest('.tweet', t, e.element);
-                        return { tw_i: n.getAttribute('data-tweet-id') };
-                      })),
-                      this.addUrlParams(t)
-                    );
-                  },
-                  baseScribeData() {
-                    return {
-                      widget_origin: x.rootDocumentLocation(),
-                      widget_frame: x.isFramed() && x.currentDocumentLocation(),
-                      message: this.partner
+                      ),
+                      R.push(this.completed()),
+                      this.completed().then(
+                        this.scribePerformance.bind(this)
+                      ),
+                      this.completed())
+                    : (this.completeDeferred.resolve(this.srcEl),
+                      this.completed());
+                },
+                bindPermalinkHandler() {
+                  const t = this;
+                  D.delegate(this.element, 'click', 'A', function (t) {
+                    D.stopPropagation(t);
+                  }),
+                  D.delegate(
+                    this.element,
+                    'click',
+                    '.twitter-tweet',
+                    function (e) {
+                      const n = t.getTweetElement();
+                      u.getSelectedText(t.sandbox._win) ||
+                            (t.openPermalink(n),
+                              t.scribePermalinkClick(n, e),
+                              D.stopPropagation(e));
+                    }
+                  );
+                },
+                scribePermalinkClick(t, e) {
+                  const n = this.createScribeData(t);
+                  N.interaction(e, n, !1);
+                },
+                getTweetElement(t) {
+                  let e;
+                  return (
+                    (t = t || this.element),
+                    t
+                      ? ((e = t.querySelectorAll('blockquote.tweet')),
+                        e[e.length - 1])
+                      : void 0
+                  );
+                },
+                extractPermalinkUrl(t) {
+                  const e = t && t.cite;
+                  return b.isStatus(e) && e;
+                },
+                openPermalink(t) {
+                  const e = this.extractPermalinkUrl(t);
+                  e && c.open(e);
+                },
+                scribePerformance() {
+                  g.endAndTrack(
+                    'render',
+                    'widgets-js-load',
+                    'tweet',
+                    this.baseScribeData()
+                  );
+                },
+                addUrlParams(t) {
+                  let e = this,
+                    n = {
+                      related: this.related,
+                      partner: this.partner,
+                      original_referer: x.rootDocumentLocation(),
+                      tw_p: C
                     };
-                  },
-                  handleResize(t) {
-                    const e = this;
-                    t != this.width &&
+                  return (
+                    (this.addUrlParams = f(n, function (t) {
+                      const n = m.closest('.tweet', t, e.element);
+                      return { tw_i: n.getAttribute('data-tweet-id') };
+                    })),
+                    this.addUrlParams(t)
+                  );
+                },
+                baseScribeData() {
+                  return {
+                    widget_origin: x.rootDocumentLocation(),
+                    widget_frame: x.isFramed() && x.currentDocumentLocation(),
+                    message: this.partner
+                  };
+                },
+                handleResize(t) {
+                  const e = this;
+                  t != this.width &&
                       ((this.width = t),
-                      this.setNarrow(),
-                      this.constrainMedia(this.element, this.contentWidth(t)),
-                      this.collapseRegions(),
-                      this.sandbox.resizeToContent().then(function(t) {
-                        (e.height = t),
+                        this.setNarrow(),
+                        this.constrainMedia(this.element, this.contentWidth(t)),
+                        this.collapseRegions(),
+                        this.sandbox.resizeToContent().then(function (t) {
+                          (e.height = t),
                           S.get('events').trigger('resize', {
                             target: e.sandbox.element()
                           });
-                      }),
-                      l.doLayoutAsync());
-                  },
-                  readTimestampTranslations() {
-                    let t = this.element,
-                      e = 'data-dt-',
-                      n = t.getAttribute(`${e}months`) || '';
-                    this.datetime = new h(
-                      w.compact({
-                        phrases: {
-                          AM: t.getAttribute(`${e}am`),
-                          PM: t.getAttribute(`${e}pm`)
-                        },
-                        months: n.split('|'),
-                        formats: { full: t.getAttribute(`${e}full`) }
-                      })
-                    );
-                  },
-                  updateTimeStamps() {
-                    let t = this.element.querySelector('.long-permalink'),
-                      e = t.getAttribute('data-datetime'),
-                      n = e && this.datetime.localTimeStamp(e),
-                      i = t.getElementsByTagName('TIME')[0];
-                    n &&
-                      (this.layout(function() {
+                        }),
+                        l.doLayoutAsync());
+                },
+                readTimestampTranslations() {
+                  let t = this.element,
+                    e = 'data-dt-',
+                    n = t.getAttribute(`${e}months`) || '';
+                  this.datetime = new h(
+                    w.compact({
+                      phrases: {
+                        AM: t.getAttribute(`${e}am`),
+                        PM: t.getAttribute(`${e}pm`)
+                      },
+                      months: n.split('|'),
+                      formats: { full: t.getAttribute(`${e}full`) }
+                    })
+                  );
+                },
+                updateTimeStamps() {
+                  let t = this.element.querySelector('.long-permalink'),
+                    e = t.getAttribute('data-datetime'),
+                    n = e && this.datetime.localTimeStamp(e),
+                    i = t.getElementsByTagName('TIME')[0];
+                  n &&
+                      (this.layout(function () {
                         return i && i.innerHTML
                           ? void (i.innerHTML = n)
                           : void (t.innerHTML = n);
                       }, 'Update Timestamp'),
-                      l.doLayoutAsync());
-                  }
-                }),
-                (s.fetchAndRender = function() {
-                  function t(t) {
-                    w.forIn(t, function(t, e) {
-                      const n = i[t];
-                      n.forEach(function(t) {
-                        t.s && t.s.call(this, e);
-                      }),
-                        delete i[t];
+                        l.doLayoutAsync());
+                }
+              }),
+              (s.fetchAndRender = function () {
+                function t(t) {
+                  w.forIn(t, function (t, e) {
+                    const n = i[t];
+                    n.forEach(function (t) {
+                      t.s && t.s.call(this, e);
                     }),
-                      l.doLayout(),
-                      w.forIn(i, function(t, e) {
-                        e.forEach(function(e) {
-                          e.f && e.f.call(this, t);
-                        });
-                      }),
-                      l.doLayout();
-                  }
-                  var e,
-                    n,
-                    i = P,
-                    r = [];
-                  if (((P = {}), i.keys)) r = i.keys();
-                  else for (e in i) i.hasOwnProperty(e) && r.push(e);
-                  r.length &&
+                    delete i[t];
+                  }),
+                  l.doLayout(),
+                  w.forIn(i, function (t, e) {
+                    e.forEach(function (e) {
+                      e.f && e.f.call(this, t);
+                    });
+                  }),
+                  l.doLayout();
+                }
+                var e,
+                  n,
+                  i = P,
+                  r = [];
+                if (((P = {}), i.keys)) r = i.keys();
+                else for (e in i) i.hasOwnProperty(e) && r.push(e);
+                r.length &&
                     (A.init(),
-                    (n = i[r[0]][0].lang),
-                    y.always(_.tweets({ ids: r.sort(), lang: n }), t),
-                    v.all(R).then(function() {
-                      A.flush();
-                    }),
-                    (R = []));
-                }),
-                l.afterLoad(s.fetchAndRender),
-                (e.exports = s);
+                      (n = i[r[0]][0].lang),
+                      y.always(_.tweets({ ids: r.sort(), lang: n }), t),
+                      v.all(R).then(function () {
+                        A.flush();
+                      }),
+                      (R = []));
+              }),
+              l.afterLoad(s.fetchAndRender),
+              (e.exports = s);
             },
             {
               10: 10,
@@ -3544,32 +3572,35 @@
             }
           ],
           48: [
-            function(t, e, n) {
+            function (t, e, n) {
               function i(t) {
                 if (t) {
-                  let e, n, i, r;
+                  let e,
+                    n,
+                    i,
+                    r;
                   s.apply(this, [t]),
-                    (e = this.params()),
-                    (n = e.size || this.dataAttr('size')),
-                    (i = e.showScreenName || this.dataAttr('show-screen-name')),
-                    (r = e.count || this.dataAttr('count')),
-                    this.classAttr.push('twitter-follow-button'),
-                    (this.showScreenName = i != 'false'),
-                    (this.showCount = !(
-                      e.showCount === !1 ||
+                  (e = this.params()),
+                  (n = e.size || this.dataAttr('size')),
+                  (i = e.showScreenName || this.dataAttr('show-screen-name')),
+                  (r = e.count || this.dataAttr('count')),
+                  this.classAttr.push('twitter-follow-button'),
+                  (this.showScreenName = i != 'false'),
+                  (this.showCount = !(
+                    e.showCount === !1 ||
                       this.dataAttr('show-count') == 'false'
-                    )),
-                    r == 'none' && (this.showCount = !1),
-                    (this.explicitWidth =
+                  )),
+                  r == 'none' && (this.showCount = !1),
+                  (this.explicitWidth =
                       e.width || this.dataAttr('width') || ''),
-                    (this.screenName =
+                  (this.screenName =
                       e.screen_name ||
                       e.screenName ||
                       a.screenName(this.attr('href'))),
-                    (this.preview =
+                  (this.preview =
                       e.preview || this.dataAttr('preview') || ''),
-                    (this.align = e.align || this.dataAttr('align') || ''),
-                    (this.size = n == 'large' ? 'l' : 'm');
+                  (this.align = e.align || this.dataAttr('align') || ''),
+                  (this.size = n == 'large' ? 'l' : 'm');
                 }
               }
               var r = t(59),
@@ -3578,44 +3609,44 @@
                 a = t(73),
                 c = t(69);
               (i.prototype = new s()),
-                o.aug(i.prototype, {
-                  iframeSource:
+              o.aug(i.prototype, {
+                iframeSource:
                     'widgets/follow_button.0b0ceee8fa9e1bde648efd58520a750f.{{lang}}.html',
-                  widgetUrlParams() {
-                    return o.compact({
-                      screen_name: this.screenName,
-                      lang: this.lang,
-                      show_count: this.showCount,
-                      show_screen_name: this.showScreenName,
-                      align: this.align,
-                      id: this.id,
-                      preview: this.preview,
-                      size: this.size,
-                      partner: this.partner,
-                      dnt: r.enabled(),
-                      _: +new Date()
-                    });
-                  },
-                  render() {
-                    if (!this.screenName) {
-                      return c.reject('Missing Screen Name');
-                    }
-                    let t = this,
-                      e = this.makeIframeSource(),
-                      n = this.create(e, {
-                        title: 'Twitter Follow Button'
-                      }).then(function(e) {
-                        return (t.element = e);
-                      });
-                    return n;
+                widgetUrlParams() {
+                  return o.compact({
+                    screen_name: this.screenName,
+                    lang: this.lang,
+                    show_count: this.showCount,
+                    show_screen_name: this.showScreenName,
+                    align: this.align,
+                    id: this.id,
+                    preview: this.preview,
+                    size: this.size,
+                    partner: this.partner,
+                    dnt: r.enabled(),
+                    _: +new Date()
+                  });
+                },
+                render() {
+                  if (!this.screenName) {
+                    return c.reject('Missing Screen Name');
                   }
-                }),
-                (e.exports = i);
+                  let t = this,
+                    e = this.makeIframeSource(),
+                    n = this.create(e, {
+                      title: 'Twitter Follow Button'
+                    }).then(function (e) {
+                      return (t.element = e);
+                    });
+                  return n;
+                }
+              }),
+              (e.exports = i);
             },
             { 46: 46, 59: 59, 69: 69, 73: 73, 77: 77 }
           ],
           49: [
-            function(t, e, n) {
+            function (t, e, n) {
               function i(t) {
                 p.open(t);
               }
@@ -3628,13 +3659,13 @@
                   if (g.get('eventsHub') && e) {
                     const n = new s(c.generateId(), e);
                     c.add(n),
-                      r(t, e),
-                      m.get('events').trigger('click', {
-                        target: e,
-                        region: 'intent',
-                        type: 'click',
-                        data: {}
-                      });
+                    r(t, e),
+                    m.get('events').trigger('click', {
+                      target: e,
+                      region: 'intent',
+                      type: 'click',
+                      data: {}
+                    });
                   } else i(t);
                 }
               }
@@ -3654,13 +3685,13 @@
                 m = t(20),
                 g = t(19);
               (a.prototype = new l()),
-                d.aug(a.prototype, {
-                  render() {
-                    return (c = this), h.resolve(u.body);
-                  }
-                }),
-                (a.open = o),
-                (e.exports = a);
+              d.aug(a.prototype, {
+                render() {
+                  return (c = this), h.resolve(u.body);
+                }
+              }),
+              (a.open = o),
+              (e.exports = a);
             },
             {
               12: 12,
@@ -3675,81 +3706,81 @@
             }
           ],
           50: [
-            function(t, e, n) {
+            function (t, e, n) {
               function i() {
                 (s =
                   r.VALID_COLOR.test(h.val('widgets:link-color')) && RegExp.$1),
-                  (c =
+                (c =
                     r.VALID_COLOR.test(h.val('widgets:border-color')) &&
                     RegExp.$1),
-                  (a = h.val('widgets:theme'));
+                (a = h.val('widgets:theme'));
               }
               function r(t) {
                 if (t) {
                   let e,
                     n = this;
                   (this.readyDeferred = new E()),
-                    (this.renderedDeferred = new E()),
-                    l.apply(this, [t]),
-                    (e = this.params()),
-                    (this.targetEl =
+                  (this.renderedDeferred = new E()),
+                  l.apply(this, [t]),
+                  (e = this.params()),
+                  (this.targetEl =
                       (this.srcEl && this.srcEl.parentNode) ||
                       e.targetEl ||
                       u.body),
-                    (this.predefinedWidth =
+                  (this.predefinedWidth =
                       r.VALID_UNIT.test(e.width || this.attr('width')) &&
                       RegExp.$1),
-                    this.layout(function() {
-                      return (n.containerWidth = w.effectiveWidth(n.targetEl));
-                    }).then(function(t) {
-                      const i =
+                  this.layout(function () {
+                    return (n.containerWidth = w.effectiveWidth(n.targetEl));
+                  }).then(function (t) {
+                    const i =
                         n.predefinedWidth || t || n.dimensions.DEFAULT_WIDTH;
-                      (n.height =
+                    (n.height =
                         r.VALID_UNIT.test(e.height || n.attr('height')) &&
                         RegExp.$1),
-                        (n.width = Math.max(
-                          n.dimensions.MIN_WIDTH,
-                          Math.min(i, n.dimensions.DEFAULT_WIDTH)
-                        ));
-                    }),
-                    r.VALID_COLOR.test(
-                      e.linkColor || this.dataAttr('link-color')
+                    (n.width = Math.max(
+                      n.dimensions.MIN_WIDTH,
+                      Math.min(i, n.dimensions.DEFAULT_WIDTH)
+                    ));
+                  }),
+                  r.VALID_COLOR.test(
+                    e.linkColor || this.dataAttr('link-color')
+                  )
+                    ? (this.linkColor = RegExp.$1)
+                    : (this.linkColor = s),
+                  r.VALID_COLOR.test(
+                    e.borderColor || this.dataAttr('border-color')
+                  )
+                    ? (this.borderColor = RegExp.$1)
+                    : (this.borderColor = c),
+                  (this.theme = e.theme || this.attr('data-theme') || a),
+                  (this.theme = /(dark|light)/.test(this.theme)
+                    ? this.theme
+                    : ''),
+                  this.classAttr.push(A.touch() ? 'is-touch' : 'not-touch'),
+                  A.ie9() && this.classAttr.push('ie9'),
+                  (this.sandboxCreated = b
+                    .createSandbox(
+                      {
+                        class: this.renderedClassNames,
+                        id: this.id,
+                        allowfullscreen: ''
+                      },
+                      { position: 'absolute', visibility: 'hidden' },
+                      function (t) {
+                        n.modifyFrame && (t = n.modifyFrame(t)),
+                        n.srcEl
+                          ? n.targetEl.insertBefore(t, n.srcEl)
+                          : n.targetEl.appendChild(t);
+                      },
+                      this.layout
                     )
-                      ? (this.linkColor = RegExp.$1)
-                      : (this.linkColor = s),
-                    r.VALID_COLOR.test(
-                      e.borderColor || this.dataAttr('border-color')
-                    )
-                      ? (this.borderColor = RegExp.$1)
-                      : (this.borderColor = c),
-                    (this.theme = e.theme || this.attr('data-theme') || a),
-                    (this.theme = /(dark|light)/.test(this.theme)
-                      ? this.theme
-                      : ''),
-                    this.classAttr.push(A.touch() ? 'is-touch' : 'not-touch'),
-                    A.ie9() && this.classAttr.push('ie9'),
-                    (this.sandboxCreated = b
-                      .createSandbox(
-                        {
-                          class: this.renderedClassNames,
-                          id: this.id,
-                          allowfullscreen: ''
-                        },
-                        { position: 'absolute', visibility: 'hidden' },
-                        function(t) {
-                          n.modifyFrame && (t = n.modifyFrame(t)),
-                            n.srcEl
-                              ? n.targetEl.insertBefore(t, n.srcEl)
-                              : n.targetEl.appendChild(t);
-                        },
-                        this.layout
-                      )
-                      .then(function(t) {
-                        n.setupSandbox(t), new m(t.element().contentWindow);
-                      })),
-                    this.rendered().then(function(t) {
-                      n.applyVisibleSandboxStyles(t);
-                    });
+                    .then(function (t) {
+                      n.setupSandbox(t), new m(t.element().contentWindow);
+                    })),
+                  this.rendered().then(function (t) {
+                    n.applyVisibleSandboxStyles(t);
+                  });
                 }
               }
               function o(t, e) {
@@ -3785,116 +3816,116 @@
                 ],
                 C = { TWEET: 0, RETWEET: 10 };
               (r.prototype = new l()),
-                S.aug(r.prototype, {
-                  dimensions: {},
-                  linkColorSelectors: [
-                    '.customisable',
-                    '.customisable:link',
-                    '.customisable:visited'
-                  ],
-                  linkStateColorSelectors: [
-                    '.customisable:hover',
-                    '.customisable:focus',
-                    '.customisable:active',
-                    '.customisable-highlight:hover',
-                    '.customisable-highlight:focus',
-                    'a:hover .customisable-highlight',
-                    'a:focus .customisable-highlight'
-                  ],
-                  bgColorSelectors: ['a:hover .ic-mask', 'a:focus .ic-mask'],
-                  borderColorSelectors: ['.customisable-border'],
-                  styleSheetUrl() {
-                    throw new Error('must set styleSheetUrl');
-                  },
-                  onStyleSheetLoad() {},
-                  setupSandbox(t) {
-                    let e,
-                      n,
-                      i = this;
-                    (this.sandbox = t),
-                      A.ios() && g.add(this.sandbox.root, 'env-ios'),
-                      (e = this.styleSheetUrl(this.lang, this.theme)),
-                      (n = this.onStyleSheetLoad.bind(this)),
-                      D.some([
-                        i.applyInitialSandboxStyles(t),
-                        t.appendCss('.SandboxRoot { display:none }'),
-                        t.setBaseTarget('_blank'),
-                        t.appendStyleSheet(e, n)
-                      ]).then(function() {
-                        i.readyDeferred.resolve(t);
-                      });
-                  },
-                  ready() {
-                    return this.readyDeferred.promise;
-                  },
-                  rendered() {
-                    return this.renderedDeferred.promise;
-                  },
-                  contentWidth(t) {
-                    let e = this.dimensions,
-                      n = this.borderless ? 0 : e.BORDERS,
-                      i = this.fullBleedPhoto
-                        ? 0
-                        : this.chromeless && this.narrow
+              S.aug(r.prototype, {
+                dimensions: {},
+                linkColorSelectors: [
+                  '.customisable',
+                  '.customisable:link',
+                  '.customisable:visited'
+                ],
+                linkStateColorSelectors: [
+                  '.customisable:hover',
+                  '.customisable:focus',
+                  '.customisable:active',
+                  '.customisable-highlight:hover',
+                  '.customisable-highlight:focus',
+                  'a:hover .customisable-highlight',
+                  'a:focus .customisable-highlight'
+                ],
+                bgColorSelectors: ['a:hover .ic-mask', 'a:focus .ic-mask'],
+                borderColorSelectors: ['.customisable-border'],
+                styleSheetUrl() {
+                  throw new Error('must set styleSheetUrl');
+                },
+                onStyleSheetLoad() {},
+                setupSandbox(t) {
+                  let e,
+                    n,
+                    i = this;
+                  (this.sandbox = t),
+                  A.ios() && g.add(this.sandbox.root, 'env-ios'),
+                  (e = this.styleSheetUrl(this.lang, this.theme)),
+                  (n = this.onStyleSheetLoad.bind(this)),
+                  D.some([
+                    i.applyInitialSandboxStyles(t),
+                    t.appendCss('.SandboxRoot { display:none }'),
+                    t.setBaseTarget('_blank'),
+                    t.appendStyleSheet(e, n)
+                  ]).then(function () {
+                    i.readyDeferred.resolve(t);
+                  });
+                },
+                ready() {
+                  return this.readyDeferred.promise;
+                },
+                rendered() {
+                  return this.renderedDeferred.promise;
+                },
+                contentWidth(t) {
+                  let e = this.dimensions,
+                    n = this.borderless ? 0 : e.BORDERS,
+                    i = this.fullBleedPhoto
+                      ? 0
+                      : this.chromeless && this.narrow
                         ? e.NARROW_MEDIA_PADDING_CL
                         : this.chromeless
-                        ? e.WIDE_MEDIA_PADDING_CL
-                        : this.narrow
-                        ? e.NARROW_MEDIA_PADDING
-                        : e.WIDE_MEDIA_PADDING;
-                    return (t || this.width) - (i + n);
-                  },
-                  applyInitialSandboxStyles(t) {
-                    const e = this;
-                    return t.style(
-                      {
-                        border: 'none',
-                        maxWidth: '100%',
-                        minWidth: `${e.dimensions.MIN_WIDTH}px`,
-                        margin: e.dimensions.MARGIN,
-                        padding: '0',
-                        display: 'block',
-                        position: 'absolute',
-                        visibility: 'hidden'
-                      },
-                      !0
-                    );
-                  },
-                  applyVisibleSandboxStyles(t) {
-                    return t.style({
-                      position: 'static',
-                      visibility: 'visible'
-                    });
-                  },
-                  addSiteStylesPrefix(t) {
-                    return (this.theme == 'dark' ? '.thm-dark ' : '') + t;
-                  },
-                  addSiteStyles() {
-                    let t = [],
-                      e = this.addSiteStylesPrefix.bind(this);
-                    return (
-                      this.headingStyle &&
+                          ? e.WIDE_MEDIA_PADDING_CL
+                          : this.narrow
+                            ? e.NARROW_MEDIA_PADDING
+                            : e.WIDE_MEDIA_PADDING;
+                  return (t || this.width) - (i + n);
+                },
+                applyInitialSandboxStyles(t) {
+                  const e = this;
+                  return t.style(
+                    {
+                      border: 'none',
+                      maxWidth: '100%',
+                      minWidth: `${e.dimensions.MIN_WIDTH}px`,
+                      margin: e.dimensions.MARGIN,
+                      padding: '0',
+                      display: 'block',
+                      position: 'absolute',
+                      visibility: 'hidden'
+                    },
+                    !0
+                  );
+                },
+                applyVisibleSandboxStyles(t) {
+                  return t.style({
+                    position: 'static',
+                    visibility: 'visible'
+                  });
+                },
+                addSiteStylesPrefix(t) {
+                  return (this.theme == 'dark' ? '.thm-dark ' : '') + t;
+                },
+                addSiteStyles() {
+                  let t = [],
+                    e = this.addSiteStylesPrefix.bind(this);
+                  return (
+                    this.headingStyle &&
                         t.push(`${N.map(e).join(',')}{${this.headingStyle}}`),
-                      this.linkColor &&
+                    this.linkColor &&
                         (t.push(
                           `${this.linkColorSelectors.map(e).join(',')}{color:${
                             this.linkColor
                           }}`
                         ),
-                        t.push(
-                          `${this.bgColorSelectors
-                            .map(e)
-                            .join(',')}{background-color:${this.linkColor}}`
-                        ),
-                        t.push(
-                          `${this.linkStateColorSelectors
-                            .map(e)
-                            .join(',')}{color:${_.lighten(
-                            this.linkColor,
-                            0.2
-                          )}}`
-                        )),
-                      this.borderColor &&
+                          t.push(
+                            `${this.bgColorSelectors
+                              .map(e)
+                              .join(',')}{background-color:${this.linkColor}}`
+                          ),
+                          t.push(
+                            `${this.linkStateColorSelectors
+                              .map(e)
+                              .join(',')}{color:${_.lighten(
+                              this.linkColor,
+                              0.2
+                            )}}`
+                          )),
+                    this.borderColor &&
                         t.push(
                           `${this.borderColorSelectors
                             .map(e)
@@ -3905,141 +3936,141 @@
                             )
                             .join(',')}{border-color:${this.borderColor}}`
                         ),
-                      t.length ? this.sandbox.appendCss(t.join('')) : void 0
-                    );
-                  },
-                  setNarrow() {
-                    let t = this,
-                      e = this.narrow;
-                    return (
-                      (this.narrow = this.width < this.dimensions.NARROW_WIDTH),
-                      e != this.narrow
-                        ? this.layout(function() {
-                            g.toggle(t.sandbox.root, 'env-narrow', t.narrow),
-                              g.toggle(t.element, 'var-narrow', t.narrow);
-                          })
-                        : T.resolve(this.narrow)
-                    );
-                  },
-                  createScribeData(t) {
-                    const e = S.aug({}, this.baseScribeData(), {
-                      item_ids: [],
-                      item_details: this.extractTweetScribeDetails(t)
-                    });
-                    return (
-                      S.forIn(e.item_details, function(t) {
-                        e.item_ids.push(t);
-                      }),
-                      e
-                    );
-                  },
-                  bindUIHandlers() {
-                    const t = this.element;
-                    y.delegate(
-                      t,
-                      'click',
-                      '.MediaCard-dismissNsfw',
-                      function() {
-                        const e = v.closest('.MediaCard', this, t);
-                        g.remove(e, 'is-nsfw');
-                      }
-                    );
-                  },
-                  bindIntentHandlers() {
-                    function t(t) {
-                      let i = v.closest('.tweet', this, n),
-                        r = e.createScribeData(i);
-                      p.interaction(t, r, !0);
+                    t.length ? this.sandbox.appendCss(t.join('')) : void 0
+                  );
+                },
+                setNarrow() {
+                  let t = this,
+                    e = this.narrow;
+                  return (
+                    (this.narrow = this.width < this.dimensions.NARROW_WIDTH),
+                    e != this.narrow
+                      ? this.layout(function () {
+                        g.toggle(t.sandbox.root, 'env-narrow', t.narrow),
+                        g.toggle(t.element, 'var-narrow', t.narrow);
+                      })
+                      : T.resolve(this.narrow)
+                  );
+                },
+                createScribeData(t) {
+                  const e = S.aug({}, this.baseScribeData(), {
+                    item_ids: [],
+                    item_details: this.extractTweetScribeDetails(t)
+                  });
+                  return (
+                    S.forIn(e.item_details, function (t) {
+                      e.item_ids.push(t);
+                    }),
+                    e
+                  );
+                },
+                bindUIHandlers() {
+                  const t = this.element;
+                  y.delegate(
+                    t,
+                    'click',
+                    '.MediaCard-dismissNsfw',
+                    function () {
+                      const e = v.closest('.MediaCard', this, t);
+                      g.remove(e, 'is-nsfw');
                     }
-                    var e = this,
-                      n = this.element;
-                    y.delegate(n, 'click', 'A', t),
-                      y.delegate(n, 'click', 'BUTTON', t),
-                      y.delegate(n, 'click', '.profile', function() {
-                        e.addUrlParams(this);
-                      }),
-                      y.delegate(n, 'click', '.follow-button', function(t) {
-                        let n;
-                        t.altKey ||
+                  );
+                },
+                bindIntentHandlers() {
+                  function t(t) {
+                    let i = v.closest('.tweet', this, n),
+                      r = e.createScribeData(i);
+                    p.interaction(t, r, !0);
+                  }
+                  var e = this,
+                    n = this.element;
+                  y.delegate(n, 'click', 'A', t),
+                  y.delegate(n, 'click', 'BUTTON', t),
+                  y.delegate(n, 'click', '.profile', function () {
+                    e.addUrlParams(this);
+                  }),
+                  y.delegate(n, 'click', '.follow-button', function (t) {
+                    let n;
+                    t.altKey ||
                           t.metaKey ||
                           t.shiftKey ||
                           A.ios() ||
                           A.android() ||
                           I.asBoolean(this.getAttribute('data-age-gate')) ||
                           ((n = x.intentForFollowURL(this.href, !0)),
-                          n &&
+                            n &&
                             (d.open(n, e.sandbox.element()),
-                            y.preventDefault(t)));
-                      }),
-                      y.delegate(n, 'click', '.web-intent', function(t) {
-                        e.addUrlParams(this),
-                          t.altKey ||
+                              y.preventDefault(t)));
+                  }),
+                  y.delegate(n, 'click', '.web-intent', function (t) {
+                    e.addUrlParams(this),
+                    t.altKey ||
                             t.metaKey ||
                             t.shiftKey ||
                             (d.open(this.href, e.sandbox.element()),
-                            y.preventDefault(t));
-                      });
-                  },
-                  baseScribeData() {
-                    return {};
-                  },
-                  extractTweetScribeDetails(t) {
-                    let e,
-                      n,
-                      i = {};
-                    return t
-                      ? ((e = t.getAttribute('data-tweet-id')),
-                        (n = t.getAttribute('data-rendered-tweet-id') || e),
-                        n == e
-                          ? (i[n] = { item_type: C.TWEET })
-                          : e &&
+                              y.preventDefault(t));
+                  });
+                },
+                baseScribeData() {
+                  return {};
+                },
+                extractTweetScribeDetails(t) {
+                  let e,
+                    n,
+                    i = {};
+                  return t
+                    ? ((e = t.getAttribute('data-tweet-id')),
+                      (n = t.getAttribute('data-rendered-tweet-id') || e),
+                      n == e
+                        ? (i[n] = { item_type: C.TWEET })
+                        : e &&
                             (i[n] = {
                               item_type: C.RETWEET,
                               target_type: C.TWEET,
                               target_id: e
                             }),
-                        i)
-                      : i;
-                  },
-                  constrainMedia(t, e) {
-                    return f.constrainMedia(
-                      t || this.element,
-                      e || this.contentWidth(),
-                      this.dimensions.maxHeight,
-                      this.layout
-                    );
-                  },
-                  collapseRegions() {
-                    const t = this;
-                    S.toRealArray(
-                      this.element.querySelectorAll('.collapsible-container')
-                    ).forEach(function(e) {
-                      let n,
-                        i,
-                        r = S.toRealArray(e.children),
-                        s = r.length && e.offsetWidth,
-                        a =
+                      i)
+                    : i;
+                },
+                constrainMedia(t, e) {
+                  return f.constrainMedia(
+                    t || this.element,
+                    e || this.contentWidth(),
+                    this.dimensions.maxHeight,
+                    this.layout
+                  );
+                },
+                collapseRegions() {
+                  const t = this;
+                  S.toRealArray(
+                    this.element.querySelectorAll('.collapsible-container')
+                  ).forEach(function (e) {
+                    let n,
+                      i,
+                      r = S.toRealArray(e.children),
+                      s = r.length && e.offsetWidth,
+                      a =
                           r.length &&
-                          r.map(function(t) {
+                          r.map(function (t) {
                             return t.offsetWidth;
                           }),
-                        c = r.length;
-                      if (r.length) {
-                        for (; c > 0; ) {
-                          if ((c--, (n = a.reduce(o, 0)), !s || !n)) return;
-                          if (s > n) return;
-                          (i = r[c].getAttribute('data-collapsed-class')),
-                            i &&
+                      c = r.length;
+                    if (r.length) {
+                      for (; c > 0;) {
+                        if ((c--, (n = a.reduce(o, 0)), !s || !n)) return;
+                        if (s > n) return;
+                        (i = r[c].getAttribute('data-collapsed-class')),
+                        i &&
                               (g.add(t.element, i), (a[c] = r[c].offsetWidth));
-                        }
                       }
-                    });
-                  }
-                }),
-                (r.VALID_UNIT = /^([0-9]+)( ?px)?$/),
-                (r.VALID_COLOR = /^(#(?:[0-9a-f]{3}|[0-9a-f]{6}))$/i),
-                i(),
-                (e.exports = r);
+                    }
+                  });
+                }
+              }),
+              (r.VALID_UNIT = /^([0-9]+)( ?px)?$/),
+              (r.VALID_COLOR = /^(#(?:[0-9a-f]{3}|[0-9a-f]{6}))$/i),
+              i(),
+              (e.exports = r);
             },
             {
               11: 11,
@@ -4065,42 +4096,49 @@
             }
           ],
           51: [
-            function(t, e, n) {
+            function (t, e, n) {
               function i(t) {
                 if (t) {
-                  let e, n, i, r, o, s, c, u;
+                  let e,
+                    n,
+                    i,
+                    r,
+                    o,
+                    s,
+                    c,
+                    u;
                   a.apply(this, [t]),
-                    (e = this.params()),
-                    (n = (e.chrome || this.dataAttr('chrome') || '').split(
-                      ' '
-                    )),
-                    (this.preview = e.previewParams),
-                    (this.widgetId = e.widgetId || this.dataAttr('widget-id')),
-                    (this.instanceId = ++z),
-                    (this.cursors = { maxPosition: 0, minPosition: 0 }),
-                    (r = e.screenName || this.dataAttr('screen-name')) ||
+                  (e = this.params()),
+                  (n = (e.chrome || this.dataAttr('chrome') || '').split(
+                    ' '
+                  )),
+                  (this.preview = e.previewParams),
+                  (this.widgetId = e.widgetId || this.dataAttr('widget-id')),
+                  (this.instanceId = ++z),
+                  (this.cursors = { maxPosition: 0, minPosition: 0 }),
+                  (r = e.screenName || this.dataAttr('screen-name')) ||
                     (o = e.userId || this.dataAttr('user-id'))
-                      ? (this.override = {
-                          overrideType: 'user',
-                          overrideId: o,
-                          overrideName: r,
-                          withReplies: y.asBoolean(
-                            e.showReplies || this.dataAttr('show-replies')
-                          )
-                            ? 'true'
-                            : 'false'
-                        })
-                      : (r =
+                    ? (this.override = {
+                      overrideType: 'user',
+                      overrideId: o,
+                      overrideName: r,
+                      withReplies: y.asBoolean(
+                        e.showReplies || this.dataAttr('show-replies')
+                      )
+                        ? 'true'
+                        : 'false'
+                    })
+                    : (r =
                           e.favoritesScreenName ||
                           this.dataAttr('favorites-screen-name')) ||
                         (o =
                           e.favoritesUserId ||
                           this.dataAttr('favorites-user-id'))
                       ? (this.override = {
-                          overrideType: 'favorites',
-                          overrideId: o,
-                          overrideName: r
-                        })
+                        overrideType: 'favorites',
+                        overrideId: o,
+                        overrideName: r
+                      })
                       : ((r =
                           e.listOwnerScreenName ||
                           this.dataAttr('list-owner-screen-name')) ||
@@ -4108,39 +4146,39 @@
                             e.listOwnerId || this.dataAttr('list-owner-id'))) &&
                         ((s = e.listId || this.dataAttr('list-id')) ||
                           (c = e.listSlug || this.dataAttr('list-slug')))
-                      ? (this.override = {
+                        ? (this.override = {
                           overrideType: 'list',
                           overrideOwnerId: o,
                           overrideOwnerName: r,
                           overrideId: s,
                           overrideName: c
                         })
-                      : (u =
+                        : (u =
                           e.customTimelineId ||
                           this.dataAttr('custom-timeline-id'))
-                      ? (this.override = {
-                          overrideType: 'custom',
-                          overrideId: u
-                        })
-                      : (this.override = {}),
-                    (this.tweetLimit = y.asInt(
-                      e.tweetLimit || this.dataAttr('tweet-limit')
-                    )),
-                    (this.staticTimeline = this.tweetLimit > 0),
-                    n.length &&
+                          ? (this.override = {
+                            overrideType: 'custom',
+                            overrideId: u
+                          })
+                          : (this.override = {}),
+                  (this.tweetLimit = y.asInt(
+                    e.tweetLimit || this.dataAttr('tweet-limit')
+                  )),
+                  (this.staticTimeline = this.tweetLimit > 0),
+                  n.length &&
                       ((i = w.contains(n, 'none')),
-                      (this.chromeless = i || w.contains(n, 'transparent')),
-                      (this.headerless = i || w.contains(n, 'noheader')),
-                      (this.footerless = i || w.contains(n, 'nofooter')),
-                      (this.borderless = i || w.contains(n, 'noborders')),
-                      (this.noscrollbar = w.contains(n, 'noscrollbar'))),
-                    (this.headingStyle = g.sanitize(
-                      e.headingStyle || this.dataAttr('heading-style'),
-                      void 0,
-                      !0
-                    )),
-                    this.classAttr.push('twitter-timeline-rendered'),
-                    (this.ariaPolite =
+                        (this.chromeless = i || w.contains(n, 'transparent')),
+                        (this.headerless = i || w.contains(n, 'noheader')),
+                        (this.footerless = i || w.contains(n, 'nofooter')),
+                        (this.borderless = i || w.contains(n, 'noborders')),
+                        (this.noscrollbar = w.contains(n, 'noscrollbar'))),
+                  (this.headingStyle = g.sanitize(
+                    e.headingStyle || this.dataAttr('heading-style'),
+                    void 0,
+                    !0
+                  )),
+                  this.classAttr.push('twitter-timeline-rendered'),
+                  (this.ariaPolite =
                       e.ariaPolite || this.dataAttr('aria-polite'));
                 }
               }
@@ -4185,57 +4223,57 @@
                 F = 'pending-new-tweet',
                 z = 0;
               (i.prototype = new a()),
-                w.aug(i.prototype, {
-                  renderedClassNames:
+              w.aug(i.prototype, {
+                renderedClassNames:
                     'twitter-timeline twitter-timeline-rendered',
-                  dimensions: {
-                    DEFAULT_HEIGHT: '600',
-                    DEFAULT_WIDTH: '520',
-                    NARROW_WIDTH: '320',
-                    maxHeight: '375',
-                    MIN_WIDTH: '180',
-                    MIN_HEIGHT: '200',
-                    MARGIN: '0',
-                    WIDE_MEDIA_PADDING: 81,
-                    NARROW_MEDIA_PADDING: 16,
-                    WIDE_MEDIA_PADDING_CL: 60,
-                    NARROW_MEDIA_PADDING_CL: 12,
-                    BORDERS: 2
-                  },
-                  styleSheetUrl: o.timeline,
-                  create(t) {
-                    let e,
-                      n,
-                      i,
-                      r,
-                      o = this,
-                      s = this.sandbox.createElement('div'),
-                      a = [];
-                    return (
-                      (s.innerHTML = t.body),
-                      (e = s.children[0] || !1)
-                        ? (this.reconfigure(t.config),
-                          this.discardStaticOverflow(e),
-                          this.sandbox.setTitle(
-                            e.getAttribute('data-iframe-title') || 'Timeline'
-                          ),
-                          h.retinize(e),
-                          this.constrainMedia(e),
-                          (this.searchQuery = e.getAttribute(
-                            'data-search-query'
-                          )),
-                          (this.profileId = e.getAttribute('data-profile-id')),
-                          (this.timelineType = e.getAttribute(
-                            'data-timeline-type'
-                          )),
-                          (r = this.getTweetDetails(s.querySelector(L))),
-                          w.forIn(r, function(t) {
-                            a.push(t);
-                          }),
-                          (i = this.baseScribeData()),
-                          (i.item_ids = a),
-                          (i.item_details = r),
-                          this.timelineType &&
+                dimensions: {
+                  DEFAULT_HEIGHT: '600',
+                  DEFAULT_WIDTH: '520',
+                  NARROW_WIDTH: '320',
+                  maxHeight: '375',
+                  MIN_WIDTH: '180',
+                  MIN_HEIGHT: '200',
+                  MARGIN: '0',
+                  WIDE_MEDIA_PADDING: 81,
+                  NARROW_MEDIA_PADDING: 16,
+                  WIDE_MEDIA_PADDING_CL: 60,
+                  NARROW_MEDIA_PADDING_CL: 12,
+                  BORDERS: 2
+                },
+                styleSheetUrl: o.timeline,
+                create(t) {
+                  let e,
+                    n,
+                    i,
+                    r,
+                    o = this,
+                    s = this.sandbox.createElement('div'),
+                    a = [];
+                  return (
+                    (s.innerHTML = t.body),
+                    (e = s.children[0] || !1)
+                      ? (this.reconfigure(t.config),
+                        this.discardStaticOverflow(e),
+                        this.sandbox.setTitle(
+                          e.getAttribute('data-iframe-title') || 'Timeline'
+                        ),
+                        h.retinize(e),
+                        this.constrainMedia(e),
+                        (this.searchQuery = e.getAttribute(
+                          'data-search-query'
+                        )),
+                        (this.profileId = e.getAttribute('data-profile-id')),
+                        (this.timelineType = e.getAttribute(
+                          'data-timeline-type'
+                        )),
+                        (r = this.getTweetDetails(s.querySelector(L))),
+                        w.forIn(r, function (t) {
+                          a.push(t);
+                        }),
+                        (i = this.baseScribeData()),
+                        (i.item_ids = a),
+                        (i.item_details = r),
+                        this.timelineType &&
                             p.clientEvent(
                               {
                                 page: `${this.timelineType}_timeline`,
@@ -4246,319 +4284,319 @@
                               i,
                               !0
                             ),
-                          p.clientEvent(
-                            {
-                              page: 'timeline',
-                              component: 'timeline',
-                              element: 'initial',
-                              action: a.length ? 'results' : 'no_results'
-                            },
-                            i,
-                            !0
-                          ),
-                          f.scribeTimelineAudienceImpression(),
-                          p.flush(),
-                          this.ariaPolite == 'assertive' &&
+                        p.clientEvent(
+                          {
+                            page: 'timeline',
+                            component: 'timeline',
+                            element: 'initial',
+                            action: a.length ? 'results' : 'no_results'
+                          },
+                          i,
+                          !0
+                        ),
+                        f.scribeTimelineAudienceImpression(),
+                        p.flush(),
+                        this.ariaPolite == 'assertive' &&
                             ((n = e.querySelector(N)),
-                            n.setAttribute('aria-polite', 'assertive')),
-                          (e.id = this.id),
-                          (e.className += ` ${this.classAttr.join(' ')}`),
-                          (e.lang = this.lang),
-                          this.ready().then(function(t) {
-                            t.appendChild(e).then(function() {
-                              o.renderedDeferred.resolve(o.sandbox);
-                            }),
-                              t.style({ display: 'inline-block' }),
-                              o
-                                .layout(function() {
-                                  o.srcEl &&
+                              n.setAttribute('aria-polite', 'assertive')),
+                        (e.id = this.id),
+                        (e.className += ` ${this.classAttr.join(' ')}`),
+                        (e.lang = this.lang),
+                        this.ready().then(function (t) {
+                          t.appendChild(e).then(function () {
+                            o.renderedDeferred.resolve(o.sandbox);
+                          }),
+                          t.style({ display: 'inline-block' }),
+                          o
+                            .layout(function () {
+                              o.srcEl &&
                                     o.srcEl.parentNode &&
                                     o.srcEl.parentNode.removeChild(o.srcEl),
-                                    (o.predefinedWidth = o.width),
-                                    (o.predefinedHeight = o.height),
-                                    (o.width = t.width(o.width)),
-                                    (o.height = t.height(o.height));
-                                })
-                                .then(function() {
-                                  o.setNarrow(),
-                                    o.sandbox.onresize(o.handleResize.bind(o)),
-                                    o.completeDeferred.resolve(
-                                      o.sandbox.element()
-                                    );
-                                });
-                          }),
-                          e)
-                        : void 0
-                    );
-                  },
-                  render() {
-                    const t = this;
-                    return this.preview || this.widgetId
-                      ? (this.rendered().then(
-                          this.staticTimeline
-                            ? function(t) {
-                                t.resizeToContent(), s.doLayoutAsync();
-                              }
-                            : function() {
-                                t.recalculateStreamHeight(), s.doLayoutAsync();
-                              }
-                        ),
-                        this.preview
-                          ? this.getPreviewTimeline()
-                          : this.getTimeline(),
-                        this.completed().then(
-                          this.scribePerformance.bind(this)
-                        ),
-                        this.completed())
-                      : (this.completeDeferred.reject(400), this.completed());
-                  },
-                  scribePerformance() {
-                    l.endAndTrack(
-                      'render',
-                      'widgets-js-load',
-                      'timeline',
-                      this.baseScribeData()
-                    );
-                  },
-                  getPreviewTimeline() {
-                    function t(t) {
-                      n.ready().then(function() {
-                        (n.element = n.create(t)),
-                          n.readTranslations(),
-                          n.bindInteractions(),
-                          n.updateCursors(t.headers, { initial: !0 }),
-                          s.doLayoutAsync();
-                      });
-                    }
-                    function e(t) {
-                      return t && t.headers
-                        ? void n.completeDeferred.reject(t.headers.status)
-                        : void n.completeDeferred.resolve(n.srcEl);
-                    }
-                    var n = this;
-                    d.timelinePreview({ params: this.preview }).then(t, e);
-                  },
-                  getTimeline() {
-                    function t(t) {
-                      n.ready().then(function() {
-                        (n.element = n.create(t)),
-                          n.readTranslations(),
-                          n.bindInteractions(),
-                          n.updateTimeStamps(),
-                          n.updateCursors(t.headers, { initial: !0 }),
-                          t.headers.xPolling &&
+                              (o.predefinedWidth = o.width),
+                              (o.predefinedHeight = o.height),
+                              (o.width = t.width(o.width)),
+                              (o.height = t.height(o.height));
+                            })
+                            .then(function () {
+                              o.setNarrow(),
+                              o.sandbox.onresize(o.handleResize.bind(o)),
+                              o.completeDeferred.resolve(
+                                o.sandbox.element()
+                              );
+                            });
+                        }),
+                        e)
+                      : void 0
+                  );
+                },
+                render() {
+                  const t = this;
+                  return this.preview || this.widgetId
+                    ? (this.rendered().then(
+                      this.staticTimeline
+                        ? function (t) {
+                          t.resizeToContent(), s.doLayoutAsync();
+                        }
+                        : function () {
+                          t.recalculateStreamHeight(), s.doLayoutAsync();
+                        }
+                    ),
+                      this.preview
+                        ? this.getPreviewTimeline()
+                        : this.getTimeline(),
+                      this.completed().then(
+                        this.scribePerformance.bind(this)
+                      ),
+                      this.completed())
+                    : (this.completeDeferred.reject(400), this.completed());
+                },
+                scribePerformance() {
+                  l.endAndTrack(
+                    'render',
+                    'widgets-js-load',
+                    'timeline',
+                    this.baseScribeData()
+                  );
+                },
+                getPreviewTimeline() {
+                  function t(t) {
+                    n.ready().then(function () {
+                      (n.element = n.create(t)),
+                      n.readTranslations(),
+                      n.bindInteractions(),
+                      n.updateCursors(t.headers, { initial: !0 }),
+                      s.doLayoutAsync();
+                    });
+                  }
+                  function e(t) {
+                    return t && t.headers
+                      ? void n.completeDeferred.reject(t.headers.status)
+                      : void n.completeDeferred.resolve(n.srcEl);
+                  }
+                  var n = this;
+                  d.timelinePreview({ params: this.preview }).then(t, e);
+                },
+                getTimeline() {
+                  function t(t) {
+                    n.ready().then(function () {
+                      (n.element = n.create(t)),
+                      n.readTranslations(),
+                      n.bindInteractions(),
+                      n.updateTimeStamps(),
+                      n.updateCursors(t.headers, { initial: !0 }),
+                      t.headers.xPolling &&
                             /\d/.test(t.headers.xPolling) &&
                             (n.pollInterval = 1e3 * t.headers.xPolling),
-                          n.staticTimeline || n.schedulePolling(),
-                          s.doLayoutAsync();
-                      });
-                    }
-                    function e(t) {
-                      return t && t.headers
-                        ? void n.completeDeferred.reject(t.headers.status)
-                        : void n.completeDeferred.resolve(n.srcEl);
-                    }
-                    var n = this;
-                    p.init(),
-                      d
-                        .timeline(
-                          w.aug(
-                            {
-                              id: this.widgetId,
-                              instanceId: this.instanceId,
-                              dnt: A.enabled(),
-                              lang: this.lang
-                            },
-                            this.override
-                          )
-                        )
-                        .then(t, e);
-                  },
-                  reconfigure(t) {
-                    (this.lang = t.lang),
-                      this.theme || (this.theme = t.theme),
-                      this.theme == 'dark' && this.classAttr.push('thm-dark'),
-                      this.chromeless && this.classAttr.push('var-chromeless'),
-                      this.borderless && this.classAttr.push('var-borderless'),
-                      this.headerless && this.classAttr.push('var-headerless'),
-                      this.footerless && this.classAttr.push('var-footerless'),
-                      this.staticTimeline && this.classAttr.push('var-static'),
-                      !this.linkColor &&
+                      n.staticTimeline || n.schedulePolling(),
+                      s.doLayoutAsync();
+                    });
+                  }
+                  function e(t) {
+                    return t && t.headers
+                      ? void n.completeDeferred.reject(t.headers.status)
+                      : void n.completeDeferred.resolve(n.srcEl);
+                  }
+                  var n = this;
+                  p.init(),
+                  d
+                    .timeline(
+                      w.aug(
+                        {
+                          id: this.widgetId,
+                          instanceId: this.instanceId,
+                          dnt: A.enabled(),
+                          lang: this.lang
+                        },
+                        this.override
+                      )
+                    )
+                    .then(t, e);
+                },
+                reconfigure(t) {
+                  (this.lang = t.lang),
+                  this.theme || (this.theme = t.theme),
+                  this.theme == 'dark' && this.classAttr.push('thm-dark'),
+                  this.chromeless && this.classAttr.push('var-chromeless'),
+                  this.borderless && this.classAttr.push('var-borderless'),
+                  this.headerless && this.classAttr.push('var-headerless'),
+                  this.footerless && this.classAttr.push('var-footerless'),
+                  this.staticTimeline && this.classAttr.push('var-static'),
+                  !this.linkColor &&
                         t.linkColor &&
                         a.VALID_COLOR.test(t.linkColor) &&
                         (this.linkColor = RegExp.$1),
-                      !this.height &&
+                  !this.height &&
                         a.VALID_UNIT.test(t.height) &&
                         (this.height = RegExp.$1),
-                      (this.height = Math.max(
-                        this.dimensions.MIN_HEIGHT,
-                        this.height
-                          ? this.height
-                          : this.dimensions.DEFAULT_HEIGHT
-                      )),
-                      this.preview && this.classAttr.push('var-preview'),
-                      (this.narrow =
+                  (this.height = Math.max(
+                    this.dimensions.MIN_HEIGHT,
+                    this.height
+                      ? this.height
+                      : this.dimensions.DEFAULT_HEIGHT
+                  )),
+                  this.preview && this.classAttr.push('var-preview'),
+                  (this.narrow =
                         this.width <= this.dimensions.NARROW_WIDTH),
-                      this.narrow && this.classAttr.push('var-narrow'),
-                      this.addSiteStyles();
-                  },
-                  getTweetDetails(t) {
-                    let e,
-                      n = this,
-                      i = {};
-                    return (
-                      (e = (t && t.children) || []),
-                      w.toRealArray(e).forEach(function(t) {
-                        w.aug(i, n.extractTweetScribeDetails(t));
-                      }),
-                      i
-                    );
-                  },
-                  baseScribeData() {
-                    return {
-                      widget_id: this.widgetId,
-                      widget_origin: T.rootDocumentLocation(),
-                      widget_frame: T.isFramed() && T.currentDocumentLocation(),
-                      message: this.partner,
-                      query: this.searchQuery,
-                      profile_id: this.profileId
-                    };
-                  },
-                  bindInteractions() {
-                    let t = this,
-                      e = this.element,
-                      n = !0;
-                    this.bindIntentHandlers(),
-                      this.bindUIHandlers(),
-                      b.delegate(e, 'click', '.load-tweets', function(e) {
-                        n && ((n = !1), t.forceLoad(), b.stop(e));
-                      }),
-                      b.delegate(
-                        e,
-                        'click',
-                        '.display-sensitive-image',
-                        function(n) {
-                          t.showNSFW(E.closest(k, this, e)), b.stop(n);
-                        }
-                      ),
-                      b.delegate(e, 'mouseover', D, function() {
-                        t.mouseOver = !0;
-                      }),
-                      b.delegate(e, 'mouseout', D, function() {
-                        t.mouseOver = !1;
-                      }),
-                      b.delegate(e, 'mouseover', N, function() {
-                        t.mouseOverNotifier = !0;
-                      }),
-                      b.delegate(e, 'mouseout', N, function() {
-                        (t.mouseOverNotifier = !1),
-                          r.setTimeout(function() {
-                            t.hideNewTweetNotifier();
-                          }, 3e3);
-                      }),
-                      this.staticTimeline ||
-                        (b.delegate(e, 'click', O, function(n) {
+                  this.narrow && this.classAttr.push('var-narrow'),
+                  this.addSiteStyles();
+                },
+                getTweetDetails(t) {
+                  let e,
+                    n = this,
+                    i = {};
+                  return (
+                    (e = (t && t.children) || []),
+                    w.toRealArray(e).forEach(function (t) {
+                      w.aug(i, n.extractTweetScribeDetails(t));
+                    }),
+                    i
+                  );
+                },
+                baseScribeData() {
+                  return {
+                    widget_id: this.widgetId,
+                    widget_origin: T.rootDocumentLocation(),
+                    widget_frame: T.isFramed() && T.currentDocumentLocation(),
+                    message: this.partner,
+                    query: this.searchQuery,
+                    profile_id: this.profileId
+                  };
+                },
+                bindInteractions() {
+                  let t = this,
+                    e = this.element,
+                    n = !0;
+                  this.bindIntentHandlers(),
+                  this.bindUIHandlers(),
+                  b.delegate(e, 'click', '.load-tweets', function (e) {
+                    n && ((n = !1), t.forceLoad(), b.stop(e));
+                  }),
+                  b.delegate(
+                    e,
+                    'click',
+                    '.display-sensitive-image',
+                    function (n) {
+                      t.showNSFW(E.closest(k, this, e)), b.stop(n);
+                    }
+                  ),
+                  b.delegate(e, 'mouseover', D, function () {
+                    t.mouseOver = !0;
+                  }),
+                  b.delegate(e, 'mouseout', D, function () {
+                    t.mouseOver = !1;
+                  }),
+                  b.delegate(e, 'mouseover', N, function () {
+                    t.mouseOverNotifier = !0;
+                  }),
+                  b.delegate(e, 'mouseout', N, function () {
+                    (t.mouseOverNotifier = !1),
+                    r.setTimeout(function () {
+                      t.hideNewTweetNotifier();
+                    }, 3e3);
+                  }),
+                  this.staticTimeline ||
+                        (b.delegate(e, 'click', O, function (n) {
                           n.altKey ||
                             n.metaKey ||
                             n.shiftKey ||
                             (t.toggleExpando(E.closest(k, this, e)), b.stop(n));
                         }),
-                        b.delegate(e, 'click', 'A', function(t) {
-                          b.stopPropagation(t);
-                        }),
-                        b.delegate(e, 'click', '.with-expansion', function(e) {
-                          t.toggleExpando(this), b.stop(e);
-                        }),
-                        b.delegate(e, 'click', '.load-more', function() {
-                          t.loadMore();
-                        }),
-                        b.delegate(e, 'click', N, function() {
-                          t.scrollToTop(), t.hideNewTweetNotifier(!0);
-                        }));
-                  },
-                  scrollToTop() {
-                    const t = this.element.querySelector(R);
-                    (t.scrollTop = 0), t.focus();
-                  },
-                  update() {
-                    let t = this,
-                      e = this.element.querySelector(L),
-                      n = e && e.children[0],
-                      i = n && n.getAttribute('data-tweet-id');
-                    this.updateTimeStamps(),
-                      this.requestTweets(i, !0, function(e) {
-                        e.childNodes.length > 0 && t.insertNewTweets(e);
-                      });
-                  },
-                  loadMore() {
-                    let t = this,
-                      e = w.toRealArray(this.element.querySelectorAll(k)).pop(),
-                      n = e && e.getAttribute('data-tweet-id');
-                    this.requestTweets(n, !1, function(e) {
-                      let i = t.element.querySelector(W),
-                        r = e.childNodes[0];
-                      return (
-                        (i.style.cssText = ''),
-                        r &&
+                          b.delegate(e, 'click', 'A', function (t) {
+                            b.stopPropagation(t);
+                          }),
+                          b.delegate(e, 'click', '.with-expansion', function (e) {
+                            t.toggleExpando(this), b.stop(e);
+                          }),
+                          b.delegate(e, 'click', '.load-more', function () {
+                            t.loadMore();
+                          }),
+                          b.delegate(e, 'click', N, function () {
+                            t.scrollToTop(), t.hideNewTweetNotifier(!0);
+                          }));
+                },
+                scrollToTop() {
+                  const t = this.element.querySelector(R);
+                  (t.scrollTop = 0), t.focus();
+                },
+                update() {
+                  let t = this,
+                    e = this.element.querySelector(L),
+                    n = e && e.children[0],
+                    i = n && n.getAttribute('data-tweet-id');
+                  this.updateTimeStamps(),
+                  this.requestTweets(i, !0, function (e) {
+                    e.childNodes.length > 0 && t.insertNewTweets(e);
+                  });
+                },
+                loadMore() {
+                  let t = this,
+                    e = w.toRealArray(this.element.querySelectorAll(k)).pop(),
+                    n = e && e.getAttribute('data-tweet-id');
+                  this.requestTweets(n, !1, function (e) {
+                    let i = t.element.querySelector(W),
+                      r = e.childNodes[0];
+                    return (
+                      (i.style.cssText = ''),
+                      r &&
                           r.getAttribute('data-tweet-id') == n &&
                           e.removeChild(r),
-                        e.childNodes.length > 0
-                          ? void t.appendTweets(e)
-                          : (_.add(t.element, 'no-more'), void i.focus())
-                      );
-                    });
-                  },
-                  forceLoad() {
-                    let t = this,
-                      e = !!this.element.querySelectorAll(L).length;
-                    this.requestTweets(1, !0, function(n) {
-                      n.childNodes.length &&
+                      e.childNodes.length > 0
+                        ? void t.appendTweets(e)
+                        : (_.add(t.element, 'no-more'), void i.focus())
+                    );
+                  });
+                },
+                forceLoad() {
+                  let t = this,
+                    e = !!this.element.querySelectorAll(L).length;
+                  this.requestTweets(1, !0, function (n) {
+                    n.childNodes.length &&
                         (t[e ? 'insertNewTweets' : 'appendTweets'](n),
-                        _.add(t.element, 'has-tweets'));
-                    });
-                  },
-                  schedulePolling(t) {
-                    const e = this;
-                    this.pollInterval !== null &&
+                          _.add(t.element, 'has-tweets'));
+                  });
+                },
+                schedulePolling(t) {
+                  const e = this;
+                  this.pollInterval !== null &&
                       ((t =
                         I.get('timeline.pollInterval') ||
                         t ||
                         this.pollInterval ||
                         1e4),
-                      t > -1 &&
-                        r.setTimeout(function() {
+                        t > -1 &&
+                        r.setTimeout(function () {
                           e.isUpdating || e.update(), e.schedulePolling();
                         }, t));
-                  },
-                  updateCursors(t, e) {
-                    (e || {}).initial
-                      ? ((this.cursors.maxPosition = t.maxPosition),
-                        (this.cursors.minPosition = t.minPosition))
-                      : (e || {}).newer
+                },
+                updateCursors(t, e) {
+                  (e || {}).initial
+                    ? ((this.cursors.maxPosition = t.maxPosition),
+                      (this.cursors.minPosition = t.minPosition))
+                    : (e || {}).newer
                       ? (this.cursors.maxPosition =
                           t.maxPosition || this.cursors.maxPosition)
                       : (this.cursors.minPosition =
                           t.minPosition || this.cursors.minPosition);
-                  },
-                  requestTweets(t, e, n) {
-                    function i(t) {
-                      if (((o.isUpdating = !1), t && t.headers)) {
-                        if (t.headers.status == '404') {
-                          return void (o.pollInterval = null);
-                        }
-                        if (t.headers.status == '503') {
-                          return void (o.pollInterval *= 1.5);
-                        }
+                },
+                requestTweets(t, e, n) {
+                  function i(t) {
+                    if (((o.isUpdating = !1), t && t.headers)) {
+                      if (t.headers.status == '404') {
+                        return void (o.pollInterval = null);
+                      }
+                      if (t.headers.status == '503') {
+                        return void (o.pollInterval *= 1.5);
                       }
                     }
-                    function r(t) {
-                      let i,
-                        r,
-                        s = o.sandbox.createDocumentFragment(),
-                        a = o.sandbox.createElement('ol'),
-                        c = [];
-                      if (
-                        ((o.isUpdating = !1),
+                  }
+                  function r(t) {
+                    let i,
+                      r,
+                      s = o.sandbox.createDocumentFragment(),
+                      a = o.sandbox.createElement('ol'),
+                      c = [];
+                    if (
+                      ((o.isUpdating = !1),
                         o.updateCursors(t.headers, { newer: e }),
                         t &&
                           t.headers &&
@@ -4566,26 +4604,26 @@
                           /\d+/.test(t.headers.xPolling) &&
                           (o.pollInterval = 1e3 * t.headers.xPolling),
                         t && void 0 !== t.body)
-                      ) {
-                        if (
-                          ((a.innerHTML = t.body),
+                    ) {
+                      if (
+                        ((a.innerHTML = t.body),
                           a.children[0] && a.children[0].tagName != 'LI')
-                        ) {
-                          return;
-                        }
-                        for (
-                          r = o.getTweetDetails(a),
-                            w.forIn(r, function(t) {
-                              c.push(t);
-                            }),
-                            c.length &&
+                      ) {
+                        return;
+                      }
+                      for (
+                        r = o.getTweetDetails(a),
+                        w.forIn(r, function (t) {
+                          c.push(t);
+                        }),
+                        c.length &&
                               ((i = o.baseScribeData()),
-                              (i.item_ids = c),
-                              (i.item_details = r),
-                              (i.event_initiator = e
-                                ? S.CLIENT_SIDE_APP
-                                : S.CLIENT_SIDE_USER),
-                              o.timelineType &&
+                                (i.item_ids = c),
+                                (i.item_details = r),
+                                (i.event_initiator = e
+                                  ? S.CLIENT_SIDE_APP
+                                  : S.CLIENT_SIDE_USER),
+                                o.timelineType &&
                                 p.clientEvent(
                                   {
                                     page: `${o.timelineType}_timeline`,
@@ -4596,350 +4634,350 @@
                                   i,
                                   !0
                                 ),
-                              p.clientEvent(
-                                {
-                                  page: 'timeline',
-                                  component: 'timeline',
-                                  element: e ? 'newer' : 'older',
-                                  action: 'results'
-                                },
-                                i,
-                                !0
-                              ),
-                              p.flush()),
-                            h.retinize(a),
-                            o.constrainMedia(a);
-                          a.children[0];
-
-                        ) {
-                          s.appendChild(a.children[0]);
-                        }
-                        n(s);
-                      }
-                    }
-                    var o = this,
-                      s = {
-                        id: this.widgetId,
-                        instanceId: this.instanceId,
-                        screenName: this.widgetScreenName,
-                        userId: this.widgetUserId,
-                        withReplies: this.widgetShowReplies,
-                        dnt: A.enabled(),
-                        lang: this.lang
-                      };
-                    e && this.cursors.maxPosition
-                      ? (s.minPosition = this.cursors.maxPosition)
-                      : !e && this.cursors.minPosition
-                      ? (s.maxPosition = this.cursors.minPosition)
-                      : e
-                      ? (s.sinceId = t)
-                      : (s.maxId = t),
-                      d.timelinePoll(w.aug(s, this.override)).then(r, i);
-                  },
-                  insertNewTweets(t) {
-                    let e,
-                      n = this,
-                      i = this.element.querySelector(R),
-                      o = i.querySelector(L),
-                      s = o.offsetHeight;
-                    return (
-                      o.insertBefore(t, o.firstChild),
-                      (e = o.offsetHeight - s),
-                      x.get('events').trigger('timelineUpdated', {
-                        target: this.sandbox.element(),
-                        region: 'newer'
-                      }),
-                      i.scrollTop > 40 || this.mouseIsOver()
-                        ? ((i.scrollTop += e),
-                          this.updateTimeStamps(),
-                          void this.showNewTweetNotifier())
-                        : (_.remove(this.element, j),
-                          (o.style.cssText = `margin-top: -${e}px`),
-                          r.setTimeout(function() {
-                            (i.scrollTop = 0),
-                              _.add(n.element, j),
-                              v.cssTransitions()
-                                ? (o.style.cssText = '')
-                                : u.animate(
-                                    function(t) {
-                                      e > t
-                                        ? (o.style.cssText = `margin-top: -${e -
-                                            t}px`)
-                                        : (o.style.cssText = '');
-                                    },
-                                    e,
-                                    500,
-                                    u.easeOut
-                                  );
-                          }, 500),
-                          this.updateTimeStamps(),
-                          void (
-                            this.timelineType != 'custom' && this.gcTweets(50)
-                          ))
-                    );
-                  },
-                  appendTweets(t) {
-                    const e = this.element.querySelector(L);
-                    e.appendChild(t),
-                      this.updateTimeStamps(),
-                      x.get('events').trigger('timelineUpdated', {
-                        target: this.sandbox.element(),
-                        region: 'older'
-                      });
-                  },
-                  gcTweets(t) {
-                    let e,
-                      n = this.element.querySelector(L),
-                      i = n.children.length;
-                    for (t = t || 50; i > t && (e = n.children[i - 1]); i--) {
-                      n.removeChild(e);
-                    }
-                  },
-                  showNewTweetNotifier() {
-                    let t = this,
-                      e = this.element.querySelector(N),
-                      n = e.children[0];
-                    (e.style.cssText = ''),
-                      e.removeChild(n),
-                      e.appendChild(n),
-                      _.add(this.element, q),
-                      r.setTimeout(function() {
-                        _.add(t.element, F);
-                      }, 10),
-                      (this.newNoticeDisplayTime = +new Date()),
-                      r.setTimeout(function() {
-                        t.hideNewTweetNotifier();
-                      }, 5e3);
-                  },
-                  hideNewTweetNotifier(t) {
-                    const e = this;
-                    (t || !this.mouseOverNotifier) &&
-                      (_.remove(this.element, F),
-                      r.setTimeout(function() {
-                        _.remove(e.element, q);
-                      }, 500));
-                  },
-                  discardStaticOverflow(t) {
-                    let e,
-                      n = t.querySelector(L);
-                    if (this.staticTimeline) {
-                      for (
-                        this.height = 0;
-                        (e = n.children[this.tweetLimit]);
+                                p.clientEvent(
+                                  {
+                                    page: 'timeline',
+                                    component: 'timeline',
+                                    element: e ? 'newer' : 'older',
+                                    action: 'results'
+                                  },
+                                  i,
+                                  !0
+                                ),
+                                p.flush()),
+                        h.retinize(a),
+                        o.constrainMedia(a);
+                        a.children[0];
 
                       ) {
-                        n.removeChild(e);
+                        s.appendChild(a.children[0]);
                       }
+                      n(s);
                     }
-                  },
-                  hideStreamScrollBar() {
-                    let t,
-                      e = this.element.querySelector(R),
-                      n = this.element.querySelector(L);
-                    (e.style.width = ''),
-                      (t = this.element.offsetWidth - n.offsetWidth),
-                      t > 0 &&
-                        (e.style.width = `${this.element.offsetWidth + t}px`);
-                  },
-                  readTranslations() {
-                    let t = this.element,
-                      e = 'data-dt-';
-                    this.datetime = new c(
-                      w.compact({
-                        phrases: {
-                          now: t.getAttribute(`${e}now`),
-                          s: t.getAttribute(`${e}s`),
-                          m: t.getAttribute(`${e}m`),
-                          h: t.getAttribute(`${e}h`),
-                          second: t.getAttribute(`${e}second`),
-                          seconds: t.getAttribute(`${e}seconds`),
-                          minute: t.getAttribute(`${e}minute`),
-                          minutes: t.getAttribute(`${e}minutes`),
-                          hour: t.getAttribute(`${e}hour`),
-                          hours: t.getAttribute(`${e}hours`)
-                        },
-                        months: t.getAttribute(`${e}months`).split('|'),
-                        formats: {
-                          abbr: t.getAttribute(`${e}abbr`),
-                          shortdate: t.getAttribute(`${e}short`),
-                          longdate: t.getAttribute(`${e}long`)
-                        }
-                      })
-                    );
-                  },
-                  updateTimeStamps() {
+                  }
+                  var o = this,
+                    s = {
+                      id: this.widgetId,
+                      instanceId: this.instanceId,
+                      screenName: this.widgetScreenName,
+                      userId: this.widgetUserId,
+                      withReplies: this.widgetShowReplies,
+                      dnt: A.enabled(),
+                      lang: this.lang
+                    };
+                  e && this.cursors.maxPosition
+                    ? (s.minPosition = this.cursors.maxPosition)
+                    : !e && this.cursors.minPosition
+                      ? (s.maxPosition = this.cursors.minPosition)
+                      : e
+                        ? (s.sinceId = t)
+                        : (s.maxId = t),
+                  d.timelinePoll(w.aug(s, this.override)).then(r, i);
+                },
+                insertNewTweets(t) {
+                  let e,
+                    n = this,
+                    i = this.element.querySelector(R),
+                    o = i.querySelector(L),
+                    s = o.offsetHeight;
+                  return (
+                    o.insertBefore(t, o.firstChild),
+                    (e = o.offsetHeight - s),
+                    x.get('events').trigger('timelineUpdated', {
+                      target: this.sandbox.element(),
+                      region: 'newer'
+                    }),
+                    i.scrollTop > 40 || this.mouseIsOver()
+                      ? ((i.scrollTop += e),
+                        this.updateTimeStamps(),
+                        void this.showNewTweetNotifier())
+                      : (_.remove(this.element, j),
+                        (o.style.cssText = `margin-top: -${e}px`),
+                        r.setTimeout(function () {
+                          (i.scrollTop = 0),
+                          _.add(n.element, j),
+                          v.cssTransitions()
+                            ? (o.style.cssText = '')
+                            : u.animate(
+                              function (t) {
+                                e > t
+                                  ? (o.style.cssText = `margin-top: -${e -
+                                            t}px`)
+                                  : (o.style.cssText = '');
+                              },
+                              e,
+                              500,
+                              u.easeOut
+                            );
+                        }, 500),
+                        this.updateTimeStamps(),
+                        void (
+                          this.timelineType != 'custom' && this.gcTweets(50)
+                        ))
+                  );
+                },
+                appendTweets(t) {
+                  const e = this.element.querySelector(L);
+                  e.appendChild(t),
+                  this.updateTimeStamps(),
+                  x.get('events').trigger('timelineUpdated', {
+                    target: this.sandbox.element(),
+                    region: 'older'
+                  });
+                },
+                gcTweets(t) {
+                  let e,
+                    n = this.element.querySelector(L),
+                    i = n.children.length;
+                  for (t = t || 50; i > t && (e = n.children[i - 1]); i--) {
+                    n.removeChild(e);
+                  }
+                },
+                showNewTweetNotifier() {
+                  let t = this,
+                    e = this.element.querySelector(N),
+                    n = e.children[0];
+                  (e.style.cssText = ''),
+                  e.removeChild(n),
+                  e.appendChild(n),
+                  _.add(this.element, q),
+                  r.setTimeout(function () {
+                    _.add(t.element, F);
+                  }, 10),
+                  (this.newNoticeDisplayTime = +new Date()),
+                  r.setTimeout(function () {
+                    t.hideNewTweetNotifier();
+                  }, 5e3);
+                },
+                hideNewTweetNotifier(t) {
+                  const e = this;
+                  (t || !this.mouseOverNotifier) &&
+                      (_.remove(this.element, F),
+                        r.setTimeout(function () {
+                          _.remove(e.element, q);
+                        }, 500));
+                },
+                discardStaticOverflow(t) {
+                  let e,
+                    n = t.querySelector(L);
+                  if (this.staticTimeline) {
                     for (
-                      var t,
-                        e,
-                        n,
-                        i,
-                        r = this.element.querySelectorAll(H),
-                        o = 0;
-                      (t = r[o]);
-                      o++
+                      this.height = 0;
+                      (e = n.children[this.tweetLimit]);
+
                     ) {
-                      (n = t.getAttribute('data-datetime')),
-                        (i = n && this.datetime.timeAgo(n, this.i18n)),
-                        (e = t.getElementsByTagName('TIME')[0]),
-                        i &&
+                      n.removeChild(e);
+                    }
+                  }
+                },
+                hideStreamScrollBar() {
+                  let t,
+                    e = this.element.querySelector(R),
+                    n = this.element.querySelector(L);
+                  (e.style.width = ''),
+                  (t = this.element.offsetWidth - n.offsetWidth),
+                  t > 0 &&
+                        (e.style.width = `${this.element.offsetWidth + t}px`);
+                },
+                readTranslations() {
+                  let t = this.element,
+                    e = 'data-dt-';
+                  this.datetime = new c(
+                    w.compact({
+                      phrases: {
+                        now: t.getAttribute(`${e}now`),
+                        s: t.getAttribute(`${e}s`),
+                        m: t.getAttribute(`${e}m`),
+                        h: t.getAttribute(`${e}h`),
+                        second: t.getAttribute(`${e}second`),
+                        seconds: t.getAttribute(`${e}seconds`),
+                        minute: t.getAttribute(`${e}minute`),
+                        minutes: t.getAttribute(`${e}minutes`),
+                        hour: t.getAttribute(`${e}hour`),
+                        hours: t.getAttribute(`${e}hours`)
+                      },
+                      months: t.getAttribute(`${e}months`).split('|'),
+                      formats: {
+                        abbr: t.getAttribute(`${e}abbr`),
+                        shortdate: t.getAttribute(`${e}short`),
+                        longdate: t.getAttribute(`${e}long`)
+                      }
+                    })
+                  );
+                },
+                updateTimeStamps() {
+                  for (
+                    var t,
+                      e,
+                      n,
+                      i,
+                      r = this.element.querySelectorAll(H),
+                      o = 0;
+                    (t = r[o]);
+                    o++
+                  ) {
+                    (n = t.getAttribute('data-datetime')),
+                    (i = n && this.datetime.timeAgo(n, this.i18n)),
+                    (e = t.getElementsByTagName('TIME')[0]),
+                    i &&
                           (e && e.innerHTML
                             ? (e.innerHTML = i)
                             : (t.innerHTML = i));
-                    }
-                  },
-                  mouseIsOver() {
-                    return this.mouseOver;
-                  },
-                  addUrlParams(t) {
-                    let e = this,
-                      n = {
-                        tw_w: this.widgetId,
-                        related: this.related,
-                        partner: this.partner,
-                        query: this.searchQuery,
-                        profile_id: this.profileId,
-                        original_referer: T.rootDocumentLocation(),
-                        tw_p: 'embeddedtimeline'
-                      };
-                    return (
-                      (this.addUrlParams = m(n, function(t) {
-                        const n = E.closest(k, t, e.element);
-                        return n && { tw_i: n.getAttribute('data-tweet-id') };
-                      })),
-                      this.addUrlParams(t)
-                    );
-                  },
-                  showNSFW(t) {
-                    let e,
-                      n,
-                      i,
-                      r,
-                      o,
-                      s,
-                      a = t.querySelector('.nsfw'),
-                      c = 0;
-                    a &&
+                  }
+                },
+                mouseIsOver() {
+                  return this.mouseOver;
+                },
+                addUrlParams(t) {
+                  let e = this,
+                    n = {
+                      tw_w: this.widgetId,
+                      related: this.related,
+                      partner: this.partner,
+                      query: this.searchQuery,
+                      profile_id: this.profileId,
+                      original_referer: T.rootDocumentLocation(),
+                      tw_p: 'embeddedtimeline'
+                    };
+                  return (
+                    (this.addUrlParams = m(n, function (t) {
+                      const n = E.closest(k, t, e.element);
+                      return n && { tw_i: n.getAttribute('data-tweet-id') };
+                    })),
+                    this.addUrlParams(t)
+                  );
+                },
+                showNSFW(t) {
+                  let e,
+                    n,
+                    i,
+                    r,
+                    o,
+                    s,
+                    a = t.querySelector('.nsfw'),
+                    c = 0;
+                  a &&
                       ((n = h.scaleDimensions(
                         a.getAttribute('data-width'),
                         a.getAttribute('data-height'),
                         this.contentWidth(),
                         a.getAttribute('data-height')
                       )),
-                      (e = !!(r = a.getAttribute('data-player'))),
-                      e
-                        ? (o = this.sandbox.createElement('iframe'))
-                        : ((o = this.sandbox.createElement('img')),
-                          (r = a.getAttribute(
-                            v.retina() ? 'data-image-2x' : 'data-image'
-                          )),
-                          (o.alt = a.getAttribute('data-alt')),
-                          (s = this.sandbox.createElement('a')),
-                          (s.href = a.getAttribute('data-href')),
-                          s.appendChild(o)),
-                      (o.title = a.getAttribute('data-title')),
-                      (o.src = r),
-                      (o.width = n.width),
-                      (o.height = n.height),
-                      (i = E.closest(M, a, t)),
-                      (c = n.height - a.offsetHeight),
-                      a.parentNode.replaceChild(e ? o : s, a),
-                      (i.style.cssText = `height:${i.offsetHeight + c}px`));
-                  },
-                  toggleExpando(t) {
-                    let e,
-                      n,
-                      i = t.querySelector(M),
-                      r = i && i.children[0],
-                      o = r && r.getAttribute('data-expanded-media'),
-                      a = 0,
-                      c = t.querySelector(O),
-                      u = c && c.getElementsByTagName('B')[0],
-                      l = u && (u.innerText || u.textContent);
-                    if (u) {
-                      if (
-                        (this.layout(function() {
-                          (u.innerHTML = c.getAttribute('data-toggled-text')),
-                            c.setAttribute('data-toggled-text', l);
-                        }),
+                        (e = !!(r = a.getAttribute('data-player'))),
+                        e
+                          ? (o = this.sandbox.createElement('iframe'))
+                          : ((o = this.sandbox.createElement('img')),
+                            (r = a.getAttribute(
+                              v.retina() ? 'data-image-2x' : 'data-image'
+                            )),
+                            (o.alt = a.getAttribute('data-alt')),
+                            (s = this.sandbox.createElement('a')),
+                            (s.href = a.getAttribute('data-href')),
+                            s.appendChild(o)),
+                        (o.title = a.getAttribute('data-title')),
+                        (o.src = r),
+                        (o.width = n.width),
+                        (o.height = n.height),
+                        (i = E.closest(M, a, t)),
+                        (c = n.height - a.offsetHeight),
+                        a.parentNode.replaceChild(e ? o : s, a),
+                        (i.style.cssText = `height:${i.offsetHeight + c}px`));
+                },
+                toggleExpando(t) {
+                  let e,
+                    n,
+                    i = t.querySelector(M),
+                    r = i && i.children[0],
+                    o = r && r.getAttribute('data-expanded-media'),
+                    a = 0,
+                    c = t.querySelector(O),
+                    u = c && c.getElementsByTagName('B')[0],
+                    l = u && (u.innerText || u.textContent);
+                  if (u) {
+                    if (
+                      (this.layout(function () {
+                        (u.innerHTML = c.getAttribute('data-toggled-text')),
+                        c.setAttribute('data-toggled-text', l);
+                      }),
                         _.present(t, U))
-                      ) {
-                        return (
-                          this.layout(function() {
-                            _.remove(t, U);
-                          }),
-                          i
-                            ? (this.layout(function() {
-                                (i.style.cssText = ''), (r.innerHTML = '');
-                              }),
-                              void s.doLayout())
-                            : void s.doLayout()
-                        );
-                      }
-                      o &&
-                        ((e = this.sandbox.createElement('DIV')),
-                        (e.innerHTML = o),
-                        h.retinize(e),
-                        (a = this.constrainMedia(e)),
-                        this.layout(function() {
-                          r.appendChild(e);
-                        })),
-                        i &&
-                          this.layout(function() {
-                            (n = Math.max(r.offsetHeight, a)),
-                              (i.style.cssText = `height:${n}px`);
-                          }),
-                        this.layout(function() {
-                          _.add(t, U);
+                    ) {
+                      return (
+                        this.layout(function () {
+                          _.remove(t, U);
                         }),
-                        s.doLayout();
-                    }
-                  },
-                  recalculateStreamHeight(t) {
-                    let e = this,
-                      n = this.element.querySelector(C),
-                      i = this.element.querySelector(P),
-                      r = this.element.querySelector(R);
-                    this.layout(function() {
-                      let o = n.offsetHeight + (i ? i.offsetHeight : 0),
-                        s = t || e.sandbox.height();
-                      (r.style.cssText = `height:${s - o - 2}px`),
-                        e.noscrollbar && e.hideStreamScrollBar();
-                    });
-                  },
-                  handleResize(t, e) {
-                    let n = this,
-                      i = Math.min(
-                        this.dimensions.DEFAULT_WIDTH,
-                        Math.max(
-                          this.dimensions.MIN_WIDTH,
-                          Math.min(
-                            this.predefinedWidth ||
-                              this.dimensions.DEFAULT_WIDTH,
-                            t
-                          )
-                        )
+                        i
+                          ? (this.layout(function () {
+                            (i.style.cssText = ''), (r.innerHTML = '');
+                          }),
+                            void s.doLayout())
+                          : void s.doLayout()
                       );
-                    (i != this.width || e != this.height) &&
-                      ((this.width = i),
-                      (this.height = e),
-                      this.setNarrow(),
-                      this.constrainMedia(this.element, this.contentWidth(i)),
-                      this.staticTimeline
-                        ? this.layout(function() {
-                            (n.height = n.element.offsetHeight),
-                              n.sandbox.height(n.height),
-                              x.get('events').trigger('resize', {
-                                target: n.sandbox.element()
-                              });
-                          })
-                        : (this.recalculateStreamHeight(e),
-                          x.get('events').trigger('resize', {
-                            target: this.sandbox.element()
+                    }
+                    o &&
+                        ((e = this.sandbox.createElement('DIV')),
+                          (e.innerHTML = o),
+                          h.retinize(e),
+                          (a = this.constrainMedia(e)),
+                          this.layout(function () {
+                            r.appendChild(e);
                           })),
-                      s.doLayoutAsync());
+                    i &&
+                          this.layout(function () {
+                            (n = Math.max(r.offsetHeight, a)),
+                            (i.style.cssText = `height:${n}px`);
+                          }),
+                    this.layout(function () {
+                      _.add(t, U);
+                    }),
+                    s.doLayout();
                   }
-                }),
-                (e.exports = i);
+                },
+                recalculateStreamHeight(t) {
+                  let e = this,
+                    n = this.element.querySelector(C),
+                    i = this.element.querySelector(P),
+                    r = this.element.querySelector(R);
+                  this.layout(function () {
+                    let o = n.offsetHeight + (i ? i.offsetHeight : 0),
+                      s = t || e.sandbox.height();
+                    (r.style.cssText = `height:${s - o - 2}px`),
+                    e.noscrollbar && e.hideStreamScrollBar();
+                  });
+                },
+                handleResize(t, e) {
+                  let n = this,
+                    i = Math.min(
+                      this.dimensions.DEFAULT_WIDTH,
+                      Math.max(
+                        this.dimensions.MIN_WIDTH,
+                        Math.min(
+                          this.predefinedWidth ||
+                              this.dimensions.DEFAULT_WIDTH,
+                          t
+                        )
+                      )
+                    );
+                  (i != this.width || e != this.height) &&
+                      ((this.width = i),
+                        (this.height = e),
+                        this.setNarrow(),
+                        this.constrainMedia(this.element, this.contentWidth(i)),
+                        this.staticTimeline
+                          ? this.layout(function () {
+                            (n.height = n.element.offsetHeight),
+                            n.sandbox.height(n.height),
+                            x.get('events').trigger('resize', {
+                              target: n.sandbox.element()
+                            });
+                          })
+                          : (this.recalculateStreamHeight(e),
+                            x.get('events').trigger('resize', {
+                              target: this.sandbox.element()
+                            })),
+                        s.doLayoutAsync());
+                }
+              }),
+              (e.exports = i);
             },
             {
               15: 15,
@@ -4968,7 +5006,7 @@
             }
           ],
           52: [
-            function(t, e, n) {
+            function (t, e, n) {
               function i(t) {
                 s.apply(this, [t]);
                 let e = this.params(),
@@ -4979,51 +5017,51 @@
                     this.dataAttr('share-with-retweet') ||
                     a.val('share-with-retweet')}`;
                 this.classAttr.push('twitter-tweet-button'),
-                  e.type == 'hashtag' ||
+                e.type == 'hashtag' ||
                   c.contains(this.classAttr, 'twitter-hashtag-button')
-                    ? ((this.type = 'hashtag'),
-                      this.classAttr.push('twitter-hashtag-button'))
-                    : e.type == 'mention' ||
+                  ? ((this.type = 'hashtag'),
+                    this.classAttr.push('twitter-hashtag-button'))
+                  : e.type == 'mention' ||
                       c.contains(this.classAttr, 'twitter-mention-button')
                     ? ((this.type = 'mention'),
                       this.classAttr.push('twitter-mention-button'))
                     : this.classAttr.push('twitter-share-button'),
-                  (this.text = e.text || this.dataAttr('text')),
-                  this.text &&
+                (this.text = e.text || this.dataAttr('text')),
+                this.text &&
                     /\+/.test(this.text) &&
                     !/ /.test(this.text) &&
                     (this.text = this.text.replace(/\+/g, ' ')),
-                  (this.counturl = e.counturl || this.dataAttr('counturl')),
-                  (this.searchlink =
+                (this.counturl = e.counturl || this.dataAttr('counturl')),
+                (this.searchlink =
                     e.searchlink || this.dataAttr('searchlink')),
-                  (this.button_hashtag = l.hashTag(
-                    e.button_hashtag ||
+                (this.button_hashtag = l.hashTag(
+                  e.button_hashtag ||
                       e.hashtag ||
                       this.dataAttr('button-hashtag'),
-                    !1
-                  )),
-                  (this.size = i == 'large' ? 'l' : 'm'),
-                  (this.align = e.align || this.dataAttr('align') || ''),
-                  (this.via = e.via || this.dataAttr('via')),
-                  (this.hashtags = e.hashtags || this.dataAttr('hashtags')),
-                  (this.screen_name = l.screenName(
-                    e.screen_name ||
+                  !1
+                )),
+                (this.size = i == 'large' ? 'l' : 'm'),
+                (this.align = e.align || this.dataAttr('align') || ''),
+                (this.via = e.via || this.dataAttr('via')),
+                (this.hashtags = e.hashtags || this.dataAttr('hashtags')),
+                (this.screen_name = l.screenName(
+                  e.screen_name ||
                       e.screenName ||
                       this.dataAttr('button-screen-name')
-                  )),
-                  (this.url = e.url || this.dataAttr('url')),
-                  this.type
-                    ? ((this.count = 'none'),
-                      (this.shareWithRetweet = 'never'),
-                      r &&
+                )),
+                (this.url = e.url || this.dataAttr('url')),
+                this.type
+                  ? ((this.count = 'none'),
+                    (this.shareWithRetweet = 'never'),
+                    r &&
                         (this.related = this.related
                           ? `${r},${this.related}`
                           : r))
-                    : ((this.text = this.text || h),
-                      (this.url = this.url || u.getCanonicalURL() || f),
-                      (this.count = c.contains(p, n) ? n : 'horizontal'),
-                      (this.via = this.via || r),
-                      o &&
+                  : ((this.text = this.text || h),
+                    (this.url = this.url || u.getCanonicalURL() || f),
+                    (this.count = c.contains(p, n) ? n : 'horizontal'),
+                    (this.via = this.via || r),
+                    o &&
                         c.contains(m, o) &&
                         (this.shareWithRetweet = o.replace('-', '_')));
               }
@@ -5046,87 +5084,87 @@
                   'author-only'
                 ];
               (i.prototype = new s()),
-                c.aug(i.prototype, {
-                  iframeSource:
+              c.aug(i.prototype, {
+                iframeSource:
                     'widgets/tweet_button.c197f64a14a7434e6e58ca9722b54406.{{lang}}.html',
-                  widgetUrlParams() {
-                    return c.compact({
-                      text: this.text,
-                      url: this.url,
-                      via: this.via,
-                      related: this.related,
-                      count: this.count,
-                      lang: this.lang,
-                      counturl: this.counturl,
-                      searchlink: this.searchlink,
-                      placeid: this.placeid,
-                      original_referer: o.href,
-                      id: this.id,
-                      size: this.size,
-                      type: this.type,
-                      screen_name: this.screen_name,
-                      share_with_retweet: this.shareWithRetweet,
-                      button_hashtag: this.button_hashtag,
-                      hashtags: this.hashtags,
-                      align: this.align,
-                      partner: this.partner,
-                      dnt: d.enabled(),
-                      _: +new Date()
-                    });
-                  },
-                  render() {
-                    let t,
-                      e = this,
-                      n = this.makeIframeSource();
-                    return (
-                      this.count &&
+                widgetUrlParams() {
+                  return c.compact({
+                    text: this.text,
+                    url: this.url,
+                    via: this.via,
+                    related: this.related,
+                    count: this.count,
+                    lang: this.lang,
+                    counturl: this.counturl,
+                    searchlink: this.searchlink,
+                    placeid: this.placeid,
+                    original_referer: o.href,
+                    id: this.id,
+                    size: this.size,
+                    type: this.type,
+                    screen_name: this.screen_name,
+                    share_with_retweet: this.shareWithRetweet,
+                    button_hashtag: this.button_hashtag,
+                    hashtags: this.hashtags,
+                    align: this.align,
+                    partner: this.partner,
+                    dnt: d.enabled(),
+                    _: +new Date()
+                  });
+                },
+                render() {
+                  let t,
+                    e = this,
+                    n = this.makeIframeSource();
+                  return (
+                    this.count &&
                         this.classAttr.push(`twitter-count-${this.count}`),
-                      (t = this.create(n, {
-                        title: 'Twitter Tweet Button'
-                      }).then(function(t) {
-                        return (e.element = t);
-                      }))
-                    );
-                  }
-                }),
-                (e.exports = i);
+                    (t = this.create(n, {
+                      title: 'Twitter Tweet Button'
+                    }).then(function (t) {
+                      return (e.element = t);
+                    }))
+                  );
+                }
+              }),
+              (e.exports = i);
             },
             { 12: 12, 13: 13, 18: 18, 46: 46, 59: 59, 73: 73, 76: 76, 77: 77 }
           ],
           53: [
-            function(t, e, n) {
+            function (t, e, n) {
               function i(t, e, n, i) {
                 (b[t] = b[t] || []), b[t].push({ s: n, f: i, lang: e });
               }
               function r(t, e) {
                 const n = {};
                 (n[t] = { item_type: 0 }),
-                  v.clientEvent(
-                    { page: 'video', component: 'tweet', action: 'results' },
-                    f.aug({}, e, { item_ids: [t], item_details: n }),
-                    !0
-                  ),
-                  g.scribeVideoAudienceImpression();
+                v.clientEvent(
+                  { page: 'video', component: 'tweet', action: 'results' },
+                  f.aug({}, e, { item_ids: [t], item_details: n }),
+                  !0
+                ),
+                g.scribeVideoAudienceImpression();
               }
               function o(t, e) {
                 const n = {};
                 (n[t] = { item_type: 0 }),
-                  v.clientEvent(
-                    {
-                      page: 'video',
-                      component: 'rawembedcode',
-                      action: 'no_results'
-                    },
-                    {
-                      widget_origin: p.rootDocumentLocation(),
-                      widget_frame: p.isFramed() && p.currentDocumentLocation(),
-                      message: e,
-                      item_ids: [t],
-                      item_details: n
-                    },
-                    !0
-                  ),
-                  g.scribeVideoAudienceImpression();
+                v.clientEvent(
+                  {
+                    page: 'video',
+                    component: 'rawembedcode',
+                    action: 'no_results'
+                  },
+                  {
+                    widget_origin: p.rootDocumentLocation(),
+                    widget_frame: p.isFramed() && p.currentDocumentLocation(),
+                    message: e,
+                    item_ids: [t],
+                    item_details: n
+                  },
+                  !0
+                ),
+                g.scribeVideoAudienceImpression();
               }
               function s(t) {
                 if (t) {
@@ -5136,7 +5174,7 @@
                     i = this.params();
                   (this.hideStatus =
                     (i.status || this.dataAttr('status')) === 'hidden'),
-                    (this.tweetId = i.tweetId || (n && y.status(n.href)));
+                  (this.tweetId = i.tweetId || (n && y.status(n.href)));
                 }
               }
               var a = t(3),
@@ -5155,177 +5193,177 @@
                 b = {},
                 _ = [];
               (s.prototype = new u()),
-                f.aug(s.prototype, {
-                  renderedClassNames: 'twitter-video twitter-video-rendered',
-                  videoPlayer: !0,
-                  dimensions: {
-                    DEFAULT_HEIGHT: '0',
-                    DEFAULT_WIDTH: '0',
-                    maxHeight: '500',
-                    MIN_WIDTH: '320',
-                    MIN_HEIGHT: '180',
-                    MARGIN: '10px 0',
-                    WIDE_MEDIA_PADDING: 0,
-                    NARROW_MEDIA_PADDING: 0,
-                    BORDERS: 0
-                  },
-                  styleSheetUrl: a.video,
-                  applyVisibleSandboxStyles(t) {
-                    return t.style({ visibility: 'visible' });
-                  },
-                  applyInitialSandboxStyles(t) {
-                    return t.style({
-                      position: 'absolute',
-                      top: 0,
-                      left: 0,
-                      width: '100%',
-                      height: '100%',
-                      visiblity: 'hidden'
+              f.aug(s.prototype, {
+                renderedClassNames: 'twitter-video twitter-video-rendered',
+                videoPlayer: !0,
+                dimensions: {
+                  DEFAULT_HEIGHT: '0',
+                  DEFAULT_WIDTH: '0',
+                  maxHeight: '500',
+                  MIN_WIDTH: '320',
+                  MIN_HEIGHT: '180',
+                  MARGIN: '10px 0',
+                  WIDE_MEDIA_PADDING: 0,
+                  NARROW_MEDIA_PADDING: 0,
+                  BORDERS: 0
+                },
+                styleSheetUrl: a.video,
+                applyVisibleSandboxStyles(t) {
+                  return t.style({ visibility: 'visible' });
+                },
+                applyInitialSandboxStyles(t) {
+                  return t.style({
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    visiblity: 'hidden'
+                  });
+                },
+                modifyFrame(t) {
+                  return (
+                    (this.constrainingWrapper = w.createElement('div')),
+                    (this.constrainingWrapper.style.minWidth = `${this.dimensions.MIN_WIDTH}px`),
+                    (this.constrainingWrapper.style.margin = this.dimensions.MARGIN),
+                    (this.wrapper = w.createElement('div')),
+                    (this.wrapper.style.position = 'relative'),
+                    (this.wrapper.style.height = 0),
+                    this.constrainingWrapper.appendChild(this.wrapper),
+                    this.wrapper.appendChild(t),
+                    this.constrainingWrapper
+                  );
+                },
+                create(t) {
+                  let e,
+                    n,
+                    i = this,
+                    o = this.sandbox.createElement('div');
+                  if (((o.innerHTML = t), (e = o.children[0]))) {
+                    (n = e.children[0]),
+                    (this.playerConfig = JSON.parse(
+                      e.getAttribute('data-player-config')
+                    )),
+                    this.sandbox.setTitle(
+                      e.getAttribute('data-iframe-title') || 'Video'
+                    ),
+                    this.sandbox.appendChild(e).then(function () {
+                      i.renderedDeferred.resolve(i.sandbox),
+                      i.completeDeferred.resolve(i.sandbox.element());
                     });
-                  },
-                  modifyFrame(t) {
+                    let s = n.getAttribute('data-width'),
+                      a = n.getAttribute('data-height'),
+                      c = s / a,
+                      u = `${(1 / c) * 100}%`;
                     return (
-                      (this.constrainingWrapper = w.createElement('div')),
-                      (this.constrainingWrapper.style.minWidth = `${this.dimensions.MIN_WIDTH}px`),
-                      (this.constrainingWrapper.style.margin = this.dimensions.MARGIN),
-                      (this.wrapper = w.createElement('div')),
-                      (this.wrapper.style.position = 'relative'),
-                      (this.wrapper.style.height = 0),
-                      this.constrainingWrapper.appendChild(this.wrapper),
-                      this.wrapper.appendChild(t),
-                      this.constrainingWrapper
+                      this.layout(function () {
+                        (i.wrapper.style.paddingBottom = u),
+                        (i.constrainingWrapper.style.maxWidth = `${parseInt(
+                          i.dimensions.maxHeight,
+                          10
+                        ) * c}px`);
+                      }),
+                      r(this.tweetId, this.baseScribeData()),
+                      e
                     );
-                  },
-                  create(t) {
-                    let e,
-                      n,
-                      i = this,
-                      o = this.sandbox.createElement('div');
-                    if (((o.innerHTML = t), (e = o.children[0]))) {
-                      (n = e.children[0]),
-                        (this.playerConfig = JSON.parse(
-                          e.getAttribute('data-player-config')
-                        )),
-                        this.sandbox.setTitle(
-                          e.getAttribute('data-iframe-title') || 'Video'
-                        ),
-                        this.sandbox.appendChild(e).then(function() {
-                          i.renderedDeferred.resolve(i.sandbox),
-                            i.completeDeferred.resolve(i.sandbox.element());
-                        });
-                      let s = n.getAttribute('data-width'),
-                        a = n.getAttribute('data-height'),
-                        c = s / a,
-                        u = `${(1 / c) * 100}%`;
-                      return (
-                        this.layout(function() {
-                          (i.wrapper.style.paddingBottom = u),
-                            (i.constrainingWrapper.style.maxWidth = `${parseInt(
-                              i.dimensions.maxHeight,
-                              10
-                            ) * c}px`);
-                        }),
-                        r(this.tweetId, this.baseScribeData()),
-                        e
-                      );
-                    }
-                  },
-                  render() {
-                    const t = this;
-                    return this.tweetId
-                      ? (this.rendered().then(function() {
-                          const e = t.srcEl;
-                          e &&
+                  }
+                },
+                render() {
+                  const t = this;
+                  return this.tweetId
+                    ? (this.rendered().then(function () {
+                      const e = t.srcEl;
+                      e &&
                             e.parentNode &&
-                            t.layout(function() {
+                            t.layout(function () {
                               e.parentNode.removeChild(e);
                             });
-                        }),
-                        i(
-                          this.tweetId,
-                          this.lang,
-                          function(e) {
-                            t.ready().then(function() {
-                              (t.element = t.create(e)),
-                                t.readTimestampTranslations(),
-                                t.writePlayerConfig();
-                            });
-                          },
-                          function() {
-                            o(t.tweetId, t.partner),
-                              t.completeDeferred.resolve(t.srcEl);
-                          }
-                        ),
-                        _.push(this.completed()),
-                        this.completed())
-                      : (this.completeDeferred.resolve(this.srcEl),
-                        this.completed());
-                  },
-                  baseScribeData() {
-                    return {
-                      widget_origin: p.rootDocumentLocation(),
-                      widget_frame: p.isFramed() && p.currentDocumentLocation(),
-                      message: this.partner
-                    };
-                  },
-                  readTimestampTranslations() {
-                    let t = this.element,
-                      e = 'data-dt-',
-                      n = t.getAttribute(`${e}months`) || '';
-                    this.datetime = new l(
-                      f.compact({
-                        phrases: {
-                          AM: t.getAttribute(`${e}am`),
-                          PM: t.getAttribute(`${e}pm`)
-                        },
-                        months: n.split('|'),
-                        formats: { full: t.getAttribute(`${e}full`) }
-                      })
-                    );
-                  },
-                  getTimestamp() {
-                    let t = this.element.getAttribute('data-datetime'),
-                      e = t && this.datetime.localTimeStamp(t);
-                    return { local: e };
-                  },
-                  writePlayerConfig() {
-                    (this.playerConfig.statusTimestamp = this.getTimestamp()),
-                      (this.playerConfig.hideStatus = this.hideStatus),
-                      this.element.setAttribute(
-                        'data-player-config',
-                        JSON.stringify(this.playerConfig)
-                      );
-                  }
-                }),
-                (s.fetchAndRender = function() {
-                  function t(t) {
-                    f.forIn(t, function(t, n) {
-                      const i = e[t];
-                      i.forEach(function(t) {
-                        t.s && t.s.call(this, n);
-                      }),
-                        delete e[t];
                     }),
-                      f.forIn(e, function(t, e) {
-                        e.forEach(function(e) {
-                          e.f && e.f.call(this, t);
-                        });
-                      });
-                  }
-                  var e = b,
-                    n = [];
-                  b = {};
-                  for (const i in e) e.hasOwnProperty(i) && n.push(i);
-                  n.length &&
+                      i(
+                        this.tweetId,
+                        this.lang,
+                        function (e) {
+                          t.ready().then(function () {
+                            (t.element = t.create(e)),
+                            t.readTimestampTranslations(),
+                            t.writePlayerConfig();
+                          });
+                        },
+                        function () {
+                          o(t.tweetId, t.partner),
+                          t.completeDeferred.resolve(t.srcEl);
+                        }
+                      ),
+                      _.push(this.completed()),
+                      this.completed())
+                    : (this.completeDeferred.resolve(this.srcEl),
+                      this.completed());
+                },
+                baseScribeData() {
+                  return {
+                    widget_origin: p.rootDocumentLocation(),
+                    widget_frame: p.isFramed() && p.currentDocumentLocation(),
+                    message: this.partner
+                  };
+                },
+                readTimestampTranslations() {
+                  let t = this.element,
+                    e = 'data-dt-',
+                    n = t.getAttribute(`${e}months`) || '';
+                  this.datetime = new l(
+                    f.compact({
+                      phrases: {
+                        AM: t.getAttribute(`${e}am`),
+                        PM: t.getAttribute(`${e}pm`)
+                      },
+                      months: n.split('|'),
+                      formats: { full: t.getAttribute(`${e}full`) }
+                    })
+                  );
+                },
+                getTimestamp() {
+                  let t = this.element.getAttribute('data-datetime'),
+                    e = t && this.datetime.localTimeStamp(t);
+                  return { local: e };
+                },
+                writePlayerConfig() {
+                  (this.playerConfig.statusTimestamp = this.getTimestamp()),
+                  (this.playerConfig.hideStatus = this.hideStatus),
+                  this.element.setAttribute(
+                    'data-player-config',
+                    JSON.stringify(this.playerConfig)
+                  );
+                }
+              }),
+              (s.fetchAndRender = function () {
+                function t(t) {
+                  f.forIn(t, function (t, n) {
+                    const i = e[t];
+                    i.forEach(function (t) {
+                      t.s && t.s.call(this, n);
+                    }),
+                    delete e[t];
+                  }),
+                  f.forIn(e, function (t, e) {
+                    e.forEach(function (e) {
+                      e.f && e.f.call(this, t);
+                    });
+                  });
+                }
+                var e = b,
+                  n = [];
+                b = {};
+                for (const i in e) e.hasOwnProperty(i) && n.push(i);
+                n.length &&
                     (h.always(
                       m.videos({ ids: n.sort(), lang: e[n[0]][0].lang }),
                       t
                     ),
-                    d.all(_),
-                    (_ = []));
-                }),
-                c.afterLoad(s.fetchAndRender),
-                (e.exports = s);
+                      d.all(_),
+                      (_ = []));
+              }),
+              c.afterLoad(s.fetchAndRender),
+              (e.exports = s);
             },
             {
               12: 12,
@@ -5344,7 +5382,7 @@
             }
           ],
           54: [
-            function(t, e, n) {
+            function (t, e, n) {
               function i(t) {
                 return c.parseInt(t, 16);
               }
@@ -5354,7 +5392,10 @@
                   : null;
               }
               function o(t, e) {
-                let n, o, s, a;
+                let n,
+                  o,
+                  s,
+                  a;
                 return (
                   (t = r(t)),
                   (e = e || 0),
@@ -5389,18 +5430,18 @@
             { 15: 15, 77: 77 }
           ],
           55: [
-            function(t, e, n) {
+            function (t, e, n) {
               e.exports = {
                 sanitize(t, e, n) {
                   let i,
                     r = /^[\w ,%\/"'\-_#]+$/,
                     o =
                       t &&
-                      t.split(';').map(function(t) {
+                      t.split(';').map(function (t) {
                         return t
                           .split(':')
                           .slice(0, 2)
-                          .map(function(t) {
+                          .map(function (t) {
                             return t.trim();
                           });
                       }),
@@ -5421,7 +5462,7 @@
             {}
           ],
           56: [
-            function(t, e, n) {
+            function (t, e, n) {
               function i(t) {
                 return t < 10 ? `0${t}` : t;
               }
@@ -5429,7 +5470,7 @@
                 function e(t, e) {
                   return (
                     n && n[t] && (t = n[t]),
-                    t.replace(/%\{([\w_]+)\}/g, function(t, n) {
+                    t.replace(/%\{([\w_]+)\}/g, function (t, n) {
                       return void 0 !== e[n] ? e[n] : t;
                     })
                   );
@@ -5437,7 +5478,7 @@
                 var n = t && t.phrases,
                   o = (t && t.months) || c,
                   s = (t && t.formats) || u;
-                (this.timeAgo = function(t) {
+                (this.timeAgo = function (t) {
                   let n,
                     i = r.parseDate(t),
                     a = +new Date(),
@@ -5446,63 +5487,63 @@
                     ? isNaN(c) || 2 * l > c
                       ? e('now')
                       : d > c
-                      ? ((n = Math.floor(c / l)),
-                        e(s.abbr, {
-                          number: n,
-                          symbol: e(p, {
-                            abbr: e('s'),
-                            expanded: e(n > 1 ? 'seconds' : 'second')
-                          })
-                        }))
-                      : h > c
-                      ? ((n = Math.floor(c / d)),
-                        e(s.abbr, {
-                          number: n,
-                          symbol: e(p, {
-                            abbr: e('m'),
-                            expanded: e(n > 1 ? 'minutes' : 'minute')
-                          })
-                        }))
-                      : f > c
-                      ? ((n = Math.floor(c / h)),
-                        e(s.abbr, {
-                          number: n,
-                          symbol: e(p, {
-                            abbr: e('h'),
-                            expanded: e(n > 1 ? 'hours' : 'hour')
-                          })
-                        }))
-                      : 365 * f > c
-                      ? e(s.shortdate, {
-                          day: i.getDate(),
-                          month: e(o[i.getMonth()])
-                        })
-                      : e(s.longdate, {
-                          day: i.getDate(),
-                          month: e(o[i.getMonth()]),
-                          year: i
-                            .getFullYear()
-                            .toString()
-                            .slice(2)
-                        })
+                        ? ((n = Math.floor(c / l)),
+                          e(s.abbr, {
+                            number: n,
+                            symbol: e(p, {
+                              abbr: e('s'),
+                              expanded: e(n > 1 ? 'seconds' : 'second')
+                            })
+                          }))
+                        : h > c
+                          ? ((n = Math.floor(c / d)),
+                            e(s.abbr, {
+                              number: n,
+                              symbol: e(p, {
+                                abbr: e('m'),
+                                expanded: e(n > 1 ? 'minutes' : 'minute')
+                              })
+                            }))
+                          : f > c
+                            ? ((n = Math.floor(c / h)),
+                              e(s.abbr, {
+                                number: n,
+                                symbol: e(p, {
+                                  abbr: e('h'),
+                                  expanded: e(n > 1 ? 'hours' : 'hour')
+                                })
+                              }))
+                            : 365 * f > c
+                              ? e(s.shortdate, {
+                                day: i.getDate(),
+                                month: e(o[i.getMonth()])
+                              })
+                              : e(s.longdate, {
+                                day: i.getDate(),
+                                month: e(o[i.getMonth()]),
+                                year: i
+                                  .getFullYear()
+                                  .toString()
+                                  .slice(2)
+                              })
                     : '';
                 }),
-                  (this.localTimeStamp = function(t) {
-                    let n = r.parseDate(t),
-                      a = n && n.getHours();
-                    return n
-                      ? e(s.full, {
-                          day: n.getDate(),
-                          month: e(o[n.getMonth()]),
-                          year: n.getFullYear(),
-                          hours24: i(a),
-                          hours12: a < 13 ? a || '12' : a - 12,
-                          minutes: i(n.getMinutes()),
-                          seconds: i(n.getSeconds()),
-                          amPm: e(a < 12 ? 'AM' : 'PM')
-                        })
-                      : '';
-                  });
+                (this.localTimeStamp = function (t) {
+                  let n = r.parseDate(t),
+                    a = n && n.getHours();
+                  return n
+                    ? e(s.full, {
+                      day: n.getDate(),
+                      month: e(o[n.getMonth()]),
+                      year: n.getFullYear(),
+                      hours24: i(a),
+                      hours12: a < 13 ? a || '12' : a - 12,
+                      minutes: i(n.getMinutes()),
+                      seconds: i(n.getSeconds()),
+                      amPm: e(a < 12 ? 'AM' : 'PM')
+                    })
+                    : '';
+                });
               }
               var o = /(\d{4})-?(\d{2})-?(\d{2})T(\d{2}):?(\d{2}):?(\d{2})(Z|[\+\-]\d{2}:?\d{2})/,
                 s = /[a-z]{3,4} ([a-z]{3}) (\d{1,2}) (\d{1,2}):(\d{2}):(\d{2}) ([\+\-]\d{2}:?\d{2}) (\d{4})/i,
@@ -5533,30 +5574,30 @@
                 h = 60 * d,
                 f = 24 * h,
                 p = '<abbr title="%{expanded}">%{abbr}</abbr>';
-              (r.parseDate = function(t) {
+              (r.parseDate = function (t) {
                 let e,
                   n,
                   i = t || '',
                   r = i.toString();
-                return (e = (function() {
+                return (e = (function () {
                   let t;
                   return a.test(r)
                     ? parseInt(r, 10)
                     : (t = r.match(s))
-                    ? Date.UTC(t[7], c.indexOf(t[1]), t[2], t[3], t[4], t[5])
-                    : (t = r.match(o))
-                    ? Date.UTC(t[1], t[2] - 1, t[3], t[4], t[5], t[6])
-                    : void 0;
-                })())
+                      ? Date.UTC(t[7], c.indexOf(t[1]), t[2], t[3], t[4], t[5])
+                      : (t = r.match(o))
+                        ? Date.UTC(t[1], t[2] - 1, t[3], t[4], t[5], t[6])
+                        : void 0;
+                }()))
                   ? ((n = new Date(e)), !isNaN(n.getTime()) && n)
                   : !1;
               }),
-                (e.exports = r);
+              (e.exports = r);
             },
             {}
           ],
           57: [
-            function(t, e, n) {
+            function (t, e, n) {
               function i(t) {
                 return t && c.isType('string', t) && (u = t), u;
               }
@@ -5580,7 +5621,7 @@
             { 13: 13, 76: 76, 77: 77 }
           ],
           58: [
-            function(t, e, n) {
+            function (t, e, n) {
               function i() {
                 u = 1;
                 for (let t = 0, e = l.length; e > t; t++) l[t]();
@@ -5595,48 +5636,48 @@
                 d = !1,
                 h = a.createElement('a');
               /^loade|c/.test(a.readyState) && (u = 1),
-                a.addEventListener &&
+              a.addEventListener &&
                   a.addEventListener(
                     'DOMContentLoaded',
-                    (o = function() {
+                    (o = function () {
                       a.removeEventListener('DOMContentLoaded', o, d), i();
                     }),
                     d
                   ),
-                h.doScroll &&
+              h.doScroll &&
                   a.attachEvent(
                     'onreadystatechange',
-                    (r = function() {
+                    (r = function () {
                       /^c/.test(a.readyState) &&
                         (a.detachEvent('onreadystatechange', r), i());
                     })
                   ),
-                (s = h.doScroll
-                  ? function(t) {
-                      c.self != c.top
-                        ? u
-                          ? t()
-                          : l.push(t)
-                        : !(function() {
-                            try {
-                              h.doScroll('left');
-                            } catch (e) {
-                              return setTimeout(function() {
-                                s(t);
-                              }, 50);
-                            }
-                            t();
-                          })();
-                    }
-                  : function(t) {
-                      u ? t() : l.push(t);
-                    }),
-                (e.exports = s);
+              (s = h.doScroll
+                ? function (t) {
+                  c.self != c.top
+                    ? u
+                      ? t()
+                      : l.push(t)
+                    : !(function () {
+                      try {
+                        h.doScroll('left');
+                      } catch (e) {
+                        return setTimeout(function () {
+                          s(t);
+                        }, 50);
+                      }
+                      t();
+                    }());
+                }
+                : function (t) {
+                  u ? t() : l.push(t);
+                }),
+              (e.exports = s);
             },
             { 12: 12, 15: 15 }
           ],
           59: [
-            function(t, e, n) {
+            function (t, e, n) {
               function i() {
                 h = !0;
               }
@@ -5644,15 +5685,15 @@
                 return h
                   ? !0
                   : l.asBoolean(d.val('dnt'))
-                  ? !0
-                  : !a || (a.doNotTrack != 1 && a.msDoNotTrack != 1)
-                  ? u.isUrlSensitive(e || s.host)
                     ? !0
-                    : c.isFramed() && u.isUrlSensitive(c.rootDocumentLocation())
-                    ? !0
-                    : ((t = f.test(t || o.referrer) && RegExp.$1),
-                      t && u.isUrlSensitive(t) ? !0 : !1)
-                  : !0;
+                    : !a || (a.doNotTrack != 1 && a.msDoNotTrack != 1)
+                      ? u.isUrlSensitive(e || s.host)
+                        ? !0
+                        : c.isFramed() && u.isUrlSensitive(c.rootDocumentLocation())
+                          ? !0
+                          : ((t = f.test(t || o.referrer) && RegExp.$1),
+                            t && u.isUrlSensitive(t) ? !0 : !1)
+                      : !0;
               }
               var o = t(12),
                 s = t(13),
@@ -5668,16 +5709,16 @@
             { 12: 12, 13: 13, 14: 14, 18: 18, 57: 57, 72: 72, 74: 74 }
           ],
           60: [
-            function(t, e, n) {
+            function (t, e, n) {
               function i(t) {
                 return (
                   (t = t || g),
                   t.devicePixelRatio
                     ? t.devicePixelRatio >= 1.5
                     : t.matchMedia
-                    ? t.matchMedia('only screen and (min-resolution: 144dpi)')
+                      ? t.matchMedia('only screen and (min-resolution: 144dpi)')
                         .matches
-                    : !1
+                      : !1
                 );
               }
               function r(t) {
@@ -5742,15 +5783,15 @@
                   g.Promise.reject &&
                   g.Promise.all &&
                   g.Promise.race &&
-                  (function() {
+                  (function () {
                     let t;
                     return (
-                      new g.Promise(function(e) {
+                      new g.Promise(function (e) {
                         t = e;
                       }),
                       b.isType('function', t)
                     );
-                  })()
+                  }())
                 );
               }
               var p = t(12),
@@ -5766,41 +5807,41 @@
                 T = !1,
                 x = !1,
                 I = 'twitter-csp-test';
-              E.set('verifyCSP', function(t) {
+              E.set('verifyCSP', function (t) {
                 const e = p.getElementById(I);
                 (x = !0), (T = !!t), e && e.parentNode.removeChild(e);
               }),
-                v(function() {
-                  let t;
-                  return w.asBoolean(_.val('widgets:csp'))
-                    ? (T = !0)
-                    : ((t = p.createElement('script')),
-                      (t.id = I),
-                      (t.text = `${E.fullPath('verifyCSP')}(false);`),
-                      p.body.appendChild(t),
-                      void g.setTimeout(function() {
-                        x ||
+              v(function () {
+                let t;
+                return w.asBoolean(_.val('widgets:csp'))
+                  ? (T = !0)
+                  : ((t = p.createElement('script')),
+                    (t.id = I),
+                    (t.text = `${E.fullPath('verifyCSP')}(false);`),
+                    p.body.appendChild(t),
+                    void g.setTimeout(function () {
+                      x ||
                           (y.warn(
                             'TWITTER: Content Security Policy restrictions may be applied to your site. Add <meta name="twitter:widgets:csp" content="on"> to supress this warning.'
                           ),
-                          y.warn(
-                            'TWITTER: Please note: Not all embedded timeline and embedded Tweet functionality is supported when CSP is applied.'
-                          ));
-                      }, 5e3));
-                }),
-                (e.exports = {
-                  retina: i,
-                  anyIE: r,
-                  ie9: o,
-                  ios: s,
-                  android: a,
-                  cspEnabled: c,
-                  flashEnabled: l,
-                  canPostMessage: u,
-                  touch: d,
-                  cssTransitions: h,
-                  hasPromiseSupport: f
-                });
+                            y.warn(
+                              'TWITTER: Please note: Not all embedded timeline and embedded Tweet functionality is supported when CSP is applied.'
+                            ));
+                    }, 5e3));
+              }),
+              (e.exports = {
+                retina: i,
+                anyIE: r,
+                ie9: o,
+                ios: s,
+                android: a,
+                cspEnabled: c,
+                flashEnabled: l,
+                canPostMessage: u,
+                touch: d,
+                cssTransitions: h,
+                hasPromiseSupport: f
+              });
             },
             {
               12: 12,
@@ -5815,7 +5856,7 @@
             }
           ],
           61: [
-            function(t, e, n) {
+            function (t, e, n) {
               let i = t(77),
                 r = {
                   bind(t, e) {
@@ -5836,9 +5877,9 @@
                   trigger(t, e) {
                     const n = this._handlers && this._handlers[t];
                     (e = e || {}),
-                      (e.type = t),
-                      n &&
-                        n.forEach(function(t) {
+                    (e.type = t),
+                    n &&
+                        n.forEach(function (t) {
                           i.async(t.bind(this, e));
                         });
                   }
@@ -5848,7 +5889,7 @@
             { 77: 77 }
           ],
           62: [
-            function(t, e, n) {
+            function (t, e, n) {
               function i(t) {
                 for (
                   var e, n = r.getElementsByTagName('iframe'), i = 0;
@@ -5864,10 +5905,10 @@
             { 12: 12 }
           ],
           63: [
-            function(t, e, n) {
+            function (t, e, n) {
               let i = t(12),
                 r = t(77);
-              e.exports = function(t, e, n) {
+              e.exports = function (t, e, n) {
                 let o;
                 if (((n = n || i), (t = t || {}), (e = e || {}), t.name)) {
                   try {
@@ -5883,10 +5924,10 @@
                   (o.scrolling = 'no'),
                   o.setAttribute('frameBorder', 0),
                   o.setAttribute('allowTransparency', !0),
-                  r.forIn(t, function(t, e) {
+                  r.forIn(t, function (t, e) {
                     o.setAttribute(t, e);
                   }),
-                  r.forIn(e, function(t, e) {
+                  r.forIn(e, function (t, e) {
                     o.style[t] = e;
                   }),
                   o
@@ -5896,37 +5937,37 @@
             { 12: 12, 77: 77 }
           ],
           64: [
-            function(t, e, n) {
+            function (t, e, n) {
               function i() {}
               let r,
                 o = t(15),
                 s = t(68),
                 a = [];
-              (i.prototype.enqueue = function(t, e) {
+              (i.prototype.enqueue = function (t, e) {
                 const n = new s();
                 return a.push({ action: t, deferred: n, note: e }), n.promise;
               }),
-                (i.prototype.exec = function() {
-                  let t,
-                    e = a;
-                  if (e.length) {
-                    for (a = []; e.length; ) {
-                      (t = e.shift()),
-                        t && t.action
-                          ? t.deferred.resolve(t.action())
-                          : t.deferred.reject();
-                    }
+              (i.prototype.exec = function () {
+                let t,
+                  e = a;
+                if (e.length) {
+                  for (a = []; e.length;) {
+                    (t = e.shift()),
+                    t && t.action
+                      ? t.deferred.resolve(t.action())
+                      : t.deferred.reject();
                   }
-                }),
-                (i.prototype.delayedExec = function() {
-                  r && o.clearTimeout(r), (r = o.setTimeout(this.exec, 100));
-                }),
-                (e.exports = i);
+                }
+              }),
+              (i.prototype.delayedExec = function () {
+                r && o.clearTimeout(r), (r = o.setTimeout(this.exec, 100));
+              }),
+              (e.exports = i);
             },
             { 15: 15, 68: 68 }
           ],
           65: [
-            function(t, e, n) {
+            function (t, e, n) {
               function i() {
                 u('info', h.toRealArray(arguments));
               }
@@ -5985,9 +6026,9 @@
             { 13: 13, 15: 15, 77: 77 }
           ],
           66: [
-            function(t, e, n) {
+            function (t, e, n) {
               function i(t) {
-                return function(e) {
+                return function (e) {
                   return o.hasValue(e[t]);
                 };
               }
@@ -5996,76 +6037,77 @@
               }
               var o = t(74),
                 s = t(77);
-              (r.prototype.assert = function(t, e) {
+              (r.prototype.assert = function (t, e) {
                 return (
                   this.assertions.push({ fn: t, msg: e || 'assertion failed' }),
                   this
                 );
               }),
-                (r.prototype.defaults = function(t) {
-                  return (this._defaults = t || this._defaults), this;
-                }),
-                (r.prototype.require = function(t) {
-                  const e = this;
-                  return (
-                    (t = Array.isArray(t) ? t : s.toRealArray(arguments)),
-                    t.forEach(function(t) {
-                      e.assert(i(t), `required: ${t}`);
-                    }),
-                    this
-                  );
-                }),
-                (r.prototype.parse = function(t) {
-                  let e, n;
-                  if (
-                    ((e = s.aug({}, this._defaults, t || {})),
-                    (n = this.assertions.reduce(function(t, n) {
+              (r.prototype.defaults = function (t) {
+                return (this._defaults = t || this._defaults), this;
+              }),
+              (r.prototype.require = function (t) {
+                const e = this;
+                return (
+                  (t = Array.isArray(t) ? t : s.toRealArray(arguments)),
+                  t.forEach(function (t) {
+                    e.assert(i(t), `required: ${t}`);
+                  }),
+                  this
+                );
+              }),
+              (r.prototype.parse = function (t) {
+                let e,
+                  n;
+                if (
+                  ((e = s.aug({}, this._defaults, t || {})),
+                    (n = this.assertions.reduce(function (t, n) {
                       return n.fn(e) || t.push(n.msg), t;
                     }, [])),
                     n.length > 0)
-                  ) {
-                    throw new Error(n.join('\n'));
-                  }
-                  return e;
-                }),
-                (e.exports = r);
+                ) {
+                  throw new Error(n.join('\n'));
+                }
+                return e;
+              }),
+              (e.exports = r);
             },
             { 74: 74, 77: 77 }
           ],
           67: [
-            function(t, e, n) {
+            function (t, e, n) {
               let i,
                 r,
                 o,
                 s = t(71);
-              (i = function(t) {
+              (i = function (t) {
                 const e = t.search.substr(1);
                 return s.decode(e);
               }),
-                (r = function(t) {
-                  let e = t.href,
-                    n = e.indexOf('#'),
-                    i = n < 0 ? '' : e.substring(n + 1);
-                  return s.decode(i);
-                }),
-                (o = function(t) {
-                  let e,
-                    n = {},
-                    o = i(t),
-                    s = r(t);
-                  for (e in o) o.hasOwnProperty(e) && (n[e] = o[e]);
-                  for (e in s) s.hasOwnProperty(e) && (n[e] = s[e]);
-                  return n;
-                }),
-                (e.exports = { combined: o, fromQuery: i, fromFragment: r });
+              (r = function (t) {
+                let e = t.href,
+                  n = e.indexOf('#'),
+                  i = n < 0 ? '' : e.substring(n + 1);
+                return s.decode(i);
+              }),
+              (o = function (t) {
+                let e,
+                  n = {},
+                  o = i(t),
+                  s = r(t);
+                for (e in o) o.hasOwnProperty(e) && (n[e] = o[e]);
+                for (e in s) s.hasOwnProperty(e) && (n[e] = s[e]);
+                return n;
+              }),
+              (e.exports = { combined: o, fromQuery: i, fromFragment: r });
             },
             { 71: 71 }
           ],
           68: [
-            function(t, e, n) {
+            function (t, e, n) {
               function i() {
                 const t = this;
-                this.promise = new r(function(e, n) {
+                this.promise = new r(function (e, n) {
                   (t.resolve = e), (t.reject = n);
                 });
               }
@@ -6075,7 +6117,7 @@
             { 69: 69 }
           ],
           69: [
-            function(t, e, n) {
+            function (t, e, n) {
               let i = t(1).Promise,
                 r = t(15),
                 o = t(60);
@@ -6084,7 +6126,7 @@
             { 1: 1, 15: 15, 60: 60 }
           ],
           70: [
-            function(t, e, n) {
+            function (t, e, n) {
               function i(t, e) {
                 return t.then(e, e);
               }
@@ -6097,15 +6139,15 @@
                   e
                     ? e !== t.length
                       ? s.reject('non-Promise passed to .some')
-                      : new s(function(e, n) {
-                          function i() {
-                            (r += 1), r === t.length && n();
-                          }
-                          var r = 0;
-                          t.forEach(function(t) {
-                            t.then(e, i);
-                          });
-                        })
+                      : new s(function (e, n) {
+                        function i() {
+                          (r += 1), r === t.length && n();
+                        }
+                        var r = 0;
+                        t.forEach(function (t) {
+                          t.then(e, i);
+                        });
+                      })
                     : s.reject('no promises passed to .some')
                 );
               }
@@ -6118,7 +6160,7 @@
             { 69: 69 }
           ],
           71: [
-            function(t, e, n) {
+            function (t, e, n) {
               function i(t) {
                 return encodeURIComponent(t)
                   .replace(/\+/g, '%2B')
@@ -6130,12 +6172,12 @@
               function o(t) {
                 const e = [];
                 return (
-                  l.forIn(t, function(t, n) {
+                  l.forIn(t, function (t, n) {
                     const r = i(t);
                     l.isType('array', n) || (n = [n]),
-                      n.forEach(function(t) {
-                        u.hasValue(t) && e.push(`${r}=${i(t)}`);
-                      });
+                    n.forEach(function (t) {
+                      u.hasValue(t) && e.push(`${r}=${i(t)}`);
+                    });
                   }),
                   e.sort().join('&')
                 );
@@ -6145,7 +6187,7 @@
                   n = {};
                 return t
                   ? ((e = t.split('&')),
-                    e.forEach(function(t) {
+                    e.forEach(function (t) {
                       let e = t.split('='),
                         i = r(e[0]),
                         o = r(e[1]);
@@ -6153,8 +6195,8 @@
                         ? l.isType('array', n[i])
                           ? void n[i].push(o)
                           : i in n
-                          ? ((n[i] = [n[i]]), void n[i].push(o))
-                          : void (n[i] = o)
+                            ? ((n[i] = [n[i]]), void n[i].push(o))
+                            : void (n[i] = o)
                         : void 0;
                     }),
                     n)
@@ -6186,7 +6228,7 @@
             { 74: 74, 77: 77 }
           ],
           72: [
-            function(t, e, n) {
+            function (t, e, n) {
               function i(t) {
                 return t in a ? a[t] : (a[t] = s.test(t));
               }
@@ -6201,7 +6243,7 @@
             { 13: 13 }
           ],
           73: [
-            function(t, e, n) {
+            function (t, e, n) {
               function i(t) {
                 return (
                   typeof t === 'string' && m.test(t) && RegExp.$1.length <= 20
@@ -6217,9 +6259,9 @@
                   (n.screen_name = r(t)),
                   n.screen_name
                     ? p.url(
-                        `https://twitter.com/intent/${e ? 'follow' : 'user'}`,
-                        n
-                      )
+                      `https://twitter.com/intent/${e ? 'follow' : 'user'}`,
+                      n
+                    )
                     : void 0
                 );
               }
@@ -6276,7 +6318,7 @@
             { 71: 71 }
           ],
           74: [
-            function(t, e, n) {
+            function (t, e, n) {
               function i(t) {
                 return void 0 !== t && t !== null && t !== '';
               }
@@ -6340,7 +6382,7 @@
             { 77: 77 }
           ],
           75: [
-            function(t, e, n) {
+            function (t, e, n) {
               function i() {
                 return (
                   String(+new Date()) + Math.floor(1e5 * Math.random()) + r++
@@ -6352,22 +6394,23 @@
             {}
           ],
           76: [
-            function(t, e, n) {
+            function (t, e, n) {
               function i(t, e) {
-                let n, i;
+                let n,
+                  i;
                 return (
                   (e = e || a),
                   /^https?:\/\//.test(t)
                     ? t
                     : /^\/\//.test(t)
-                    ? e.protocol + t
-                    : ((n = e.host + (e.port.length ? `:${e.port}` : '')),
-                      t.indexOf('/') !== 0 &&
+                      ? e.protocol + t
+                      : ((n = e.host + (e.port.length ? `:${e.port}` : '')),
+                        t.indexOf('/') !== 0 &&
                         ((i = e.pathname.split('/')),
-                        i.pop(),
-                        i.push(t),
-                        (t = `/${i.join('/')}`)),
-                      [e.protocol, '//', n, t].join(''))
+                          i.pop(),
+                          i.push(t),
+                          (t = `/${i.join('/')}`)),
+                        [e.protocol, '//', n, t].join(''))
                 );
               }
               function r() {
@@ -6410,13 +6453,13 @@
             { 12: 12, 13: 13, 73: 73 }
           ],
           77: [
-            function(t, e, n) {
+            function (t, e, n) {
               function i(t) {
                 return (
                   d(arguments)
                     .slice(1)
-                    .forEach(function(e) {
-                      o(e, function(e, n) {
+                    .forEach(function (e) {
+                      o(e, function (e, n) {
                         t[e] = n;
                       });
                     }),
@@ -6425,9 +6468,9 @@
               }
               function r(t) {
                 return (
-                  o(t, function(e, n) {
+                  o(t, function (e, n) {
                     c(n) && (r(n), u(n) && delete t[e]),
-                      (void 0 === n || n === null || n === '') && delete t[e];
+                    (void 0 === n || n === null || n === '') && delete t[e];
                   }),
                   t
                 );
@@ -6457,7 +6500,7 @@
                 return !0;
               }
               function l(t, e) {
-                f.setTimeout(function() {
+                f.setTimeout(function () {
                   t.call(e || null);
                 }, 0);
               }
@@ -6484,7 +6527,7 @@
             { 15: 15 }
           ],
           78: [
-            function(t, e, n) {
+            function (t, e, n) {
               function i() {
                 if (o) return o;
                 if (u.isDynamicWidget()) {
@@ -6499,7 +6542,7 @@
                       try {
                         if (
                           ((t = c.parent.frames[e]),
-                          t && typeof t.openIntent === 'function')
+                            t && typeof t.openIntent === 'function')
                         ) {
                           return (o = t);
                         }
@@ -6520,12 +6563,12 @@
                   ((typeof arguments[0]).toLowerCase() === 'function'
                     ? (d.success = arguments[0])
                     : (d = arguments[0]),
-                  (t = d.success || function() {}),
-                  (e = d.timeout || function() {}),
-                  (n = d.nohub || function() {}),
-                  (o = d.complete || function() {}),
-                  (a = void 0 !== d.attempt ? d.attempt : m),
-                  !u.isDynamicWidget() || s)
+                    (t = d.success || function () {}),
+                    (e = d.timeout || function () {}),
+                    (n = d.nohub || function () {}),
+                    (o = d.complete || function () {}),
+                    (a = void 0 !== d.attempt ? d.attempt : m),
+                    !u.isDynamicWidget() || s)
                 ) {
                   return n(), o(), !1;
                 }
@@ -6536,8 +6579,8 @@
                 return a <= 0
                   ? ((s = !0), e(), void o())
                   : +new Date() - f > p * m
-                  ? ((s = !0), void n())
-                  : void c.setTimeout(function() {
+                    ? ((s = !0), void n())
+                    : void c.setTimeout(function () {
                       r({
                         success: t,
                         timeout: e,
@@ -6563,7 +6606,7 @@
             { 13: 13, 15: 15, 42: 42, 60: 60 }
           ],
           79: [
-            function(t, e, n) {
+            function (t, e, n) {
               e.exports = {
                 version:
                   '92b1c2a6225add1bfef7d68a56eae7e27434157b:1433890390298'
@@ -6572,25 +6615,25 @@
             {}
           ],
           80: [
-            function(t, e, n) {
+            function (t, e, n) {
               e.exports = { css: '57bcdf05dce6947403d3f6192b55469a' };
             },
             {}
           ],
           81: [
-            function(t, e, n) {
+            function (t, e, n) {
               function i(t) {
                 (t = r.parse(t)),
-                  (this.rootEl = t.rootEl),
-                  (this.videoEl = t.videoEl),
-                  (this.playButtonEl = t.playButtonEl),
-                  (this.fallbackUrl = t.fallbackUrl),
-                  (this.player = new u({
-                    videoEl: this.videoEl,
-                    loop: !0,
-                    autoplay: !1
-                  })),
-                  this._attachClickListener();
+                (this.rootEl = t.rootEl),
+                (this.videoEl = t.videoEl),
+                (this.playButtonEl = t.playButtonEl),
+                (this.fallbackUrl = t.fallbackUrl),
+                (this.player = new u({
+                  videoEl: this.videoEl,
+                  loop: !0,
+                  autoplay: !1
+                })),
+                this._attachClickListener();
               }
               var r,
                 o = t(7),
@@ -6601,88 +6644,88 @@
               (r = new c()
                 .require('rootEl', 'videoEl', 'playButtonEl')
                 .defaults({ fallbackUrl: null })),
-                (i.prototype._attachClickListener = function() {
-                  function t(t) {
-                    s.stopPropagation(t), e._togglePlayer();
-                  }
-                  var e = this;
-                  this.videoEl.addEventListener('click', t, !1),
-                    this.playButtonEl.addEventListener('click', t, !1);
-                }),
-                (i.prototype._togglePlayer = function() {
-                  return this.player.hasPlayableSource()
-                    ? (this.player.toggle(),
-                      void o.toggle(
-                        this.rootEl,
-                        'is-playing',
-                        !this.player.isPaused()
-                      ))
-                    : void (this.fallbackUrl && a.open(this.fallbackUrl));
-                }),
-                (e.exports = i);
+              (i.prototype._attachClickListener = function () {
+                function t(t) {
+                  s.stopPropagation(t), e._togglePlayer();
+                }
+                var e = this;
+                this.videoEl.addEventListener('click', t, !1),
+                this.playButtonEl.addEventListener('click', t, !1);
+              }),
+              (i.prototype._togglePlayer = function () {
+                return this.player.hasPlayableSource()
+                  ? (this.player.toggle(),
+                    void o.toggle(
+                      this.rootEl,
+                      'is-playing',
+                      !this.player.isPaused()
+                    ))
+                  : void (this.fallbackUrl && a.open(this.fallbackUrl));
+              }),
+              (e.exports = i);
             },
             { 15: 15, 66: 66, 7: 7, 8: 8, 82: 82 }
           ],
           82: [
-            function(t, e, n) {
+            function (t, e, n) {
               function i(t) {
                 let e;
                 (t = r.parse(t)),
-                  (this.videoEl = t.videoEl),
-                  'loop' in t && (this.videoEl.loop = t.loop),
-                  'autoplay' in t && (this.videoEl.autoplay = t.autoplay),
-                  'poster' in t && (this.videoEl.poster = t.poster),
-                  (e = a.toRealArray(this.videoEl.querySelectorAll('source'))),
-                  (this.sourceTypes = e.map(function(t) {
-                    return t.type;
-                  }));
+                (this.videoEl = t.videoEl),
+                'loop' in t && (this.videoEl.loop = t.loop),
+                'autoplay' in t && (this.videoEl.autoplay = t.autoplay),
+                'poster' in t && (this.videoEl.poster = t.poster),
+                (e = a.toRealArray(this.videoEl.querySelectorAll('source'))),
+                (this.sourceTypes = e.map(function (t) {
+                  return t.type;
+                }));
               }
               var r,
                 o = t(12),
                 s = t(66),
                 a = t(77);
               (r = new s().require('videoEl')),
-                (i.prototype.isPaused = function() {
-                  return this.videoEl.paused;
-                }),
-                (i.prototype.play = function() {
-                  return this.videoEl.play(), this;
-                }),
-                (i.prototype.pause = function() {
-                  return this.videoEl.pause(), this;
-                }),
-                (i.prototype.toggle = function() {
-                  return this.videoEl.paused ? this.play() : this.pause();
-                }),
-                (i.prototype.addSource = function(t, e) {
-                  const n = o.createElement('source');
-                  return (
-                    (n.src = t),
-                    (n.type = e),
-                    this.sourceTypes.push(e),
-                    this.videoEl.appendChild(n),
-                    this
-                  );
-                }),
-                (i.prototype.hasPlayableSource = function() {
-                  const t = this.videoEl;
-                  return t.canPlayType
-                    ? this.sourceTypes.reduce(function(e, n) {
-                        return e || !!t.canPlayType(n).replace('no', '');
-                      }, !1)
-                    : !1;
-                }),
-                (i.prototype.setDimensions = function(t, e) {
-                  return (
-                    (this.videoEl.width = t), (this.videoEl.height = e), this
-                  );
-                }),
-                (e.exports = i);
+              (i.prototype.isPaused = function () {
+                return this.videoEl.paused;
+              }),
+              (i.prototype.play = function () {
+                return this.videoEl.play(), this;
+              }),
+              (i.prototype.pause = function () {
+                return this.videoEl.pause(), this;
+              }),
+              (i.prototype.toggle = function () {
+                return this.videoEl.paused ? this.play() : this.pause();
+              }),
+              (i.prototype.addSource = function (t, e) {
+                const n = o.createElement('source');
+                return (
+                  (n.src = t),
+                  (n.type = e),
+                  this.sourceTypes.push(e),
+                  this.videoEl.appendChild(n),
+                  this
+                );
+              }),
+              (i.prototype.hasPlayableSource = function () {
+                const t = this.videoEl;
+                return t.canPlayType
+                  ? this.sourceTypes.reduce(function (e, n) {
+                    return e || !!t.canPlayType(n).replace('no', '');
+                  }, !1)
+                  : !1;
+              }),
+              (i.prototype.setDimensions = function (t, e) {
+                return (
+                  (this.videoEl.width = t), (this.videoEl.height = e), this
+                );
+              }),
+              (e.exports = i);
             },
             { 12: 12, 66: 66, 77: 77 }
           ],
           83: [
-            function(t, e, n) {
+            function (t, e, n) {
               function i(t, e) {
                 return t && t.getAttribute
                   ? t.getAttribute(`data-${e}`)
@@ -6714,16 +6757,16 @@
                 return (
                   c
                     ? (n = l.aug(
-                        {
-                          item_type: m,
-                          card_type: g,
-                          id: i(c, 'tweet-id'),
-                          card_name: i(c, 'card-name'),
-                          publisher_id: i(c, 'publisher-id'),
-                          content_id: i(c, 'content-id')
-                        },
-                        t.itemData || {}
-                      ))
+                      {
+                        item_type: m,
+                        card_type: g,
+                        id: i(c, 'tweet-id'),
+                        card_name: i(c, 'card-name'),
+                        publisher_id: i(c, 'publisher-id'),
+                        content_id: i(c, 'content-id')
+                      },
+                      t.itemData || {}
+                    ))
                     : ((r = d.closest('.cards-multimedia', e)),
                       (a = s(e)),
                       (n = l.aug(
@@ -6743,14 +6786,14 @@
               function u(t) {
                 const e = this;
                 (this.global = t),
-                  (this.server = new h()
-                    .attachReceiver(new p.Receiver(t, ''))
-                    .bind('scribe', function(t) {
-                      e.scribe(t, this);
-                    })
-                    .bind('requestPlayerConfig', function() {
-                      return e.requestPlayerConfig(this);
-                    }));
+                (this.server = new h()
+                  .attachReceiver(new p.Receiver(t, ''))
+                  .bind('scribe', function (t) {
+                    e.scribe(t, this);
+                  })
+                  .bind('requestPlayerConfig', function () {
+                    return e.requestPlayerConfig(this);
+                  }));
               }
               var l = t(77),
                 d = t(9),
@@ -6761,7 +6804,7 @@
                 g = 6,
                 v = 'amplify_player',
                 y = 'undefined';
-              (u.prototype.findIframeByWindow = function(t) {
+              (u.prototype.findIframeByWindow = function (t) {
                 for (
                   let e = this.global.document.getElementsByTagName('iframe'),
                     n = e.length,
@@ -6772,25 +6815,28 @@
                   if (e[i].contentWindow == t) return e[i];
                 }
               }),
-                (u.prototype.requestPlayerConfig = function(t) {
-                  const e = this.findIframeByWindow(t);
-                  if (e) return a(e);
-                }),
-                (u.prototype.scribe = function(t, e) {
-                  let n, i, o, s;
-                  (n = t && t.customScribe),
-                    (i = this.findIframeByWindow(e)),
-                    n &&
+              (u.prototype.requestPlayerConfig = function (t) {
+                const e = this.findIframeByWindow(t);
+                if (e) return a(e);
+              }),
+              (u.prototype.scribe = function (t, e) {
+                let n,
+                  i,
+                  o,
+                  s;
+                (n = t && t.customScribe),
+                (i = this.findIframeByWindow(e)),
+                n &&
                       i &&
                       ((o = r(n, i)), (s = c(n, i)), f.clientEvent2(o, s, !0));
-                }),
-                (e.exports = u);
+              }),
+              (e.exports = u);
             },
             { 28: 28, 29: 29, 35: 35, 77: 77, 9: 9 }
           ],
           84: [
-            function(t, e, n) {
-              !(function() {
+            function (t, e, n) {
+              !(function () {
                 let e = t(12),
                   n = t(39),
                   i = t(58),
@@ -6814,10 +6860,10 @@
                   _ = t(45);
                 if (
                   (y.init('host', 'platform.twitter.com'),
-                  o.start('widgets-js-load'),
-                  n.requestArticleUrl(),
-                  _(),
-                  y.get('widgets.loaded'))
+                    o.start('widgets-js-load'),
+                    n.requestArticleUrl(),
+                    _(),
+                    y.get('widgets.loaded'))
                 ) {
                   return v.call('widgets.load'), !1;
                 }
@@ -6825,48 +6871,48 @@
                 y.set('widgets.init', !0), v.set('init', !0);
                 const E = new b();
                 w.exposeReadyPromise(E.promise, v.base, '_e'),
-                  v.set('events', {
-                    bind(t, e) {
-                      E.promise.then(function(n) {
-                        n.events.bind(t, e);
-                      });
+                v.set('events', {
+                  bind(t, e) {
+                    E.promise.then(function (n) {
+                      n.events.bind(t, e);
+                    });
+                  }
+                }),
+                i(function () {
+                  function t() {
+                    y.set('eventsHub', m.init()), m.init(!0);
+                  }
+                  let n,
+                    i = {
+                      'a.twitter-share-button': c,
+                      'a.twitter-mention-button': c,
+                      'a.twitter-hashtag-button': c,
+                      'a.twitter-follow-button': a,
+                      'blockquote.twitter-tweet': u,
+                      'a.twitter-timeline': l,
+                      'div.twitter-timeline': l,
+                      'blockquote.twitter-video': d,
+                      body: h
+                    },
+                    o = y.get('eventsHub') ? v.get('events') : {};
+                  v.aug('widgets', f, {
+                    load(t) {
+                      r.time('load'),
+                      s.init(i),
+                      s.embed(t),
+                      y.set('widgets.loaded', !0);
                     }
                   }),
-                  i(function() {
-                    function t() {
-                      y.set('eventsHub', m.init()), m.init(!0);
-                    }
-                    let n,
-                      i = {
-                        'a.twitter-share-button': c,
-                        'a.twitter-mention-button': c,
-                        'a.twitter-hashtag-button': c,
-                        'a.twitter-follow-button': a,
-                        'blockquote.twitter-tweet': u,
-                        'a.twitter-timeline': l,
-                        'div.twitter-timeline': l,
-                        'blockquote.twitter-video': d,
-                        body: h
-                      },
-                      o = y.get('eventsHub') ? v.get('events') : {};
-                    v.aug('widgets', f, {
-                      load(t) {
-                        r.time('load'),
-                          s.init(i),
-                          s.embed(t),
-                          y.set('widgets.loaded', !0);
-                      }
-                    }),
-                      v.aug('events', o, p.Emitter),
-                      (n = v.get('events.bind')),
-                      v.set('events.bind', function(e, i) {
-                        t(), (this.bind = n), this.bind(e, i);
-                      }),
-                      E.resolve(v.base),
-                      g.attachTo(e),
-                      v.call('widgets.load');
-                  });
-              })();
+                  v.aug('events', o, p.Emitter),
+                  (n = v.get('events.bind')),
+                  v.set('events.bind', function (e, i) {
+                    t(), (this.bind = n), this.bind(e, i);
+                  }),
+                  E.resolve(v.base),
+                  g.attachTo(e),
+                  v.call('widgets.load');
+                });
+              }());
             },
             {
               12: 12,
@@ -6893,7 +6939,7 @@
             }
           ],
           85: [
-            function(t, e, n) {
+            function (t, e, n) {
               function i() {}
               let r = t(77),
                 o = t(61);
@@ -6904,9 +6950,9 @@
                   let e;
                   this._ready
                     ? this._performSend(t)
-                    : (e = this.bind('ready', function() {
-                        this.unbind('ready', e), this._performSend(t);
-                      }));
+                    : (e = this.bind('ready', function () {
+                      this.unbind('ready', e), this._performSend(t);
+                    }));
                 },
                 ready() {
                   this.trigger('ready', this), (this._ready = !0);
@@ -6918,12 +6964,12 @@
                   this.trigger('message', t);
                 }
               }),
-                (e.exports = { Connection: i });
+              (e.exports = { Connection: i });
             },
             { 61: 61, 77: 77 }
           ],
           86: [
-            function(t, e, n) {
+            function (t, e, n) {
               function i(t, e) {
                 let n = e || Math.floor(100 * Math.random()),
                   i = [
@@ -6943,7 +6989,7 @@
             { 15: 15 }
           ],
           87: [
-            function(t, e, n) {
+            function (t, e, n) {
               function i(t) {
                 return (JSON.parse || JSON.decode)(t);
               }
@@ -6965,21 +7011,21 @@
                   return (
                     this._requests ||
                       ((this._requests = {}),
-                      this.con.bind('message', function(t) {
-                        let e;
-                        try {
-                          t = i(t);
-                        } catch (r) {
-                          return;
-                        }
-                        t.callback &&
+                        this.con.bind('message', function (t) {
+                          let e;
+                          try {
+                            t = i(t);
+                          } catch (r) {
+                            return;
+                          }
+                          t.callback &&
                           typeof t.id === 'number' &&
                           (e = n._requests[t.id]) &&
                           (t.error
                             ? e.trigger('error', t)
                             : e.trigger('success', t),
-                          delete n._requests[t.id]);
-                      })),
+                            delete n._requests[t.id]);
+                        })),
                     (e = new o()),
                     (this._requests[e.id] = e),
                     e.send(
@@ -6991,8 +7037,9 @@
                 },
                 _handleRequest(t) {
                   const e = this;
-                  return function(n) {
-                    let r, o;
+                  return function (n) {
+                    let r,
+                      o;
                     try {
                       n = i(n);
                     } catch (s) {
@@ -7002,14 +7049,14 @@
                       (typeof n.id === 'number' &&
                         typeof t[n.method] === 'function' &&
                         ((o = e._responseCallbacks(n.id)),
-                        (r = t[n.method](...n.params.concat(o))),
-                        typeof r !== 'undefined' && o[0](r)));
+                          (r = t[n.method](...n.params.concat(o))),
+                          typeof r !== 'undefined' && o[0](r)));
                   };
                 },
                 _responseCallbacks(t) {
                   const e = this.con;
                   return [
-                    function(n) {
+                    function (n) {
                       e.send(
                         JSON.stringify({ id: t, result: n, callback: !0 })
                       );
@@ -7020,49 +7067,49 @@
                   ];
                 }
               }),
-                (o.id = 0),
-                s.aug(o.prototype, a.Emitter, {
-                  send(t, e, n) {
-                    return (
-                      t.send(
-                        JSON.stringify({ id: this.id, method: e, params: n })
-                      ),
-                      this
-                    );
-                  },
-                  success(t) {
-                    return this.bind('success', t), this;
-                  },
-                  error(t) {
-                    return this.bind('error', t), this;
-                  }
-                }),
-                (e.exports = function(t) {
-                  return new r(t);
-                });
+              (o.id = 0),
+              s.aug(o.prototype, a.Emitter, {
+                send(t, e, n) {
+                  return (
+                    t.send(
+                      JSON.stringify({ id: this.id, method: e, params: n })
+                    ),
+                    this
+                  );
+                },
+                success(t) {
+                  return this.bind('success', t), this;
+                },
+                error(t) {
+                  return this.bind('error', t), this;
+                }
+              }),
+              (e.exports = function (t) {
+                return new r(t);
+              });
             },
             { 61: 61, 77: 77 }
           ],
           88: [
-            function(t, e, n) {
+            function (t, e, n) {
               function i() {}
               function r(t) {
                 (this.transportMethod = 'PostMessage'),
-                  (this.options = t),
-                  this._createChild();
+                (this.options = t),
+                this._createChild();
               }
               function o(t) {
                 (this.transportMethod = 'Flash'),
-                  (this.options = t),
-                  (this.token = Math.random()
-                    .toString(16)
-                    .substring(2)),
-                  this._setup();
+                (this.options = t),
+                (this.token = Math.random()
+                  .toString(16)
+                  .substring(2)),
+                this._setup();
               }
               function s(t) {
                 (this.transportMethod = 'Fallback'),
-                  (this.options = t),
-                  this._createChild();
+                (this.options = t),
+                this._createChild();
               }
               let a,
                 c = t(12),
@@ -7074,138 +7121,138 @@
                 p = '__ready__',
                 m = 0;
               (i.prototype = new l.Connection()),
-                d.aug(i.prototype, {
-                  _createChild() {
-                    this.options.window
-                      ? this._createWindow()
-                      : this._createIframe();
-                  },
-                  _createIframe() {
-                    function t() {
-                      (o.child = e.contentWindow), o._ready || o.init();
-                    }
-                    var e,
-                      n,
-                      i,
-                      r,
-                      o = this,
-                      s = {
-                        allowTransparency: !0,
-                        frameBorder: '0',
-                        scrolling: 'no',
-                        tabIndex: '0',
-                        name: this._name()
-                      },
-                      l = d.aug(d.aug({}, s), this.options.iframe);
-                    u.postMessage
-                      ? (a || (a = c.createElement('iframe')),
-                        (e = a.cloneNode(!1)))
-                      : (e = c.createElement(`<iframe name="${l.name}">`)),
-                      (e.id = l.name),
-                      d.forIn(l, function(t, n) {
-                        t != 'style' && e.setAttribute(t, n);
-                      }),
-                      (r = e.getAttribute('style')),
-                      r && typeof r.cssText !== 'undefined'
-                        ? (r.cssText = l.style)
-                        : (e.style.cssText = l.style),
-                      e.addEventListener('load', t, !1),
-                      (e.src = this._source()),
-                      (n = this.options.appendTo)
-                        ? n.appendChild(e)
-                        : (i = this.options.replace)
-                        ? ((n = i.parentNode), n && n.replaceChild(e, i))
-                        : c.body.insertBefore(e, c.body.firstChild);
-                  },
-                  _createWindow() {
-                    const t = f.open(this._source()).popup;
-                    t && t.focus(), (this.child = t), this.init();
-                  },
-                  _source() {
-                    return this.options.src;
-                  },
-                  _name() {
-                    let t = `_xd_${m++}`;
-                    return (
-                      u.parent && u.parent != u && u.name && (t = u.name + t), t
-                    );
+              d.aug(i.prototype, {
+                _createChild() {
+                  this.options.window
+                    ? this._createWindow()
+                    : this._createIframe();
+                },
+                _createIframe() {
+                  function t() {
+                    (o.child = e.contentWindow), o._ready || o.init();
                   }
-                }),
-                (r.prototype = new i()),
-                d.aug(r.prototype, {
-                  init() {
-                    function t(t) {
-                      t.source === e.child &&
+                  var e,
+                    n,
+                    i,
+                    r,
+                    o = this,
+                    s = {
+                      allowTransparency: !0,
+                      frameBorder: '0',
+                      scrolling: 'no',
+                      tabIndex: '0',
+                      name: this._name()
+                    },
+                    l = d.aug(d.aug({}, s), this.options.iframe);
+                  u.postMessage
+                    ? (a || (a = c.createElement('iframe')),
+                      (e = a.cloneNode(!1)))
+                    : (e = c.createElement(`<iframe name="${l.name}">`)),
+                  (e.id = l.name),
+                  d.forIn(l, function (t, n) {
+                    t != 'style' && e.setAttribute(t, n);
+                  }),
+                  (r = e.getAttribute('style')),
+                  r && typeof r.cssText !== 'undefined'
+                    ? (r.cssText = l.style)
+                    : (e.style.cssText = l.style),
+                  e.addEventListener('load', t, !1),
+                  (e.src = this._source()),
+                  (n = this.options.appendTo)
+                    ? n.appendChild(e)
+                    : (i = this.options.replace)
+                      ? ((n = i.parentNode), n && n.replaceChild(e, i))
+                      : c.body.insertBefore(e, c.body.firstChild);
+                },
+                _createWindow() {
+                  const t = f.open(this._source()).popup;
+                  t && t.focus(), (this.child = t), this.init();
+                },
+                _source() {
+                  return this.options.src;
+                },
+                _name() {
+                  let t = `_xd_${m++}`;
+                  return (
+                    u.parent && u.parent != u && u.name && (t = u.name + t), t
+                  );
+                }
+              }),
+              (r.prototype = new i()),
+              d.aug(r.prototype, {
+                init() {
+                  function t(t) {
+                    t.source === e.child &&
                         (e._ready || t.data !== p
                           ? e.receive(t.data)
                           : e.ready());
-                    }
-                    var e = this;
-                    u.addEventListener('message', t, !1);
-                  },
-                  _performSend(t) {
-                    this.child.postMessage(t, this.options.src);
                   }
-                }),
-                (o.prototype = new i()),
-                d.aug(o.prototype, {
-                  _setup() {
-                    let e = this,
-                      n = t(86);
-                    u[`__xdcb${e.token}`] = {
-                      receive(t) {
-                        e._ready || t !== p ? e.receive(t) : e.ready();
-                      },
-                      loaded() {}
-                    };
-                    const i = c.createElement('div');
-                    (i.innerHTML = n.object(
-                      `https://platform.twitter.com/xd/ft.swf?&token=${
-                        e.token
-                      }&parent=true&callback=__xdcb${
-                        e.token
-                      }&xdomain=${e._host()}`,
+                  var e = this;
+                  u.addEventListener('message', t, !1);
+                },
+                _performSend(t) {
+                  this.child.postMessage(t, this.options.src);
+                }
+              }),
+              (o.prototype = new i()),
+              d.aug(o.prototype, {
+                _setup() {
+                  let e = this,
+                    n = t(86);
+                  u[`__xdcb${e.token}`] = {
+                    receive(t) {
+                      e._ready || t !== p ? e.receive(t) : e.ready();
+                    },
+                    loaded() {}
+                  };
+                  const i = c.createElement('div');
+                  (i.innerHTML = n.object(
+                    `https://platform.twitter.com/xd/ft.swf?&token=${
                       e.token
-                    )),
-                      c.body.insertBefore(i, c.body.firstChild),
-                      (e.proxy = i.firstChild),
-                      e._createChild();
-                  },
-                  init() {},
-                  _performSend(t) {
-                    this.proxy.send(t);
-                  },
-                  _host() {
-                    return this.options.src
-                      .replace(/https?:\/\//, '')
-                      .split(/(:|\/)/)[0];
-                  },
-                  _source() {
-                    return `${this.options.src +
+                    }&parent=true&callback=__xdcb${
+                      e.token
+                    }&xdomain=${e._host()}`,
+                    e.token
+                  )),
+                  c.body.insertBefore(i, c.body.firstChild),
+                  (e.proxy = i.firstChild),
+                  e._createChild();
+                },
+                init() {},
+                _performSend(t) {
+                  this.proxy.send(t);
+                },
+                _host() {
+                  return this.options.src
+                    .replace(/https?:\/\//, '')
+                    .split(/(:|\/)/)[0];
+                },
+                _source() {
+                  return `${this.options.src +
                       (this.options.src.match(/\?/)
                         ? '&'
                         : '?')}xd_token=${u.escape(this.token)}`;
-                  }
-                }),
-                (s.prototype = new i()),
-                d.aug(s.prototype, {
-                  init() {},
-                  _performSend() {}
-                }),
-                (e.exports = {
-                  connect(t) {
-                    return !h.canPostMessage() || (h.anyIE() && t.window)
-                      ? h.anyIE() && h.flashEnabled()
-                        ? new o(t)
-                        : new s(t)
-                      : new r(t);
-                  }
-                });
+                }
+              }),
+              (s.prototype = new i()),
+              d.aug(s.prototype, {
+                init() {},
+                _performSend() {}
+              }),
+              (e.exports = {
+                connect(t) {
+                  return !h.canPostMessage() || (h.anyIE() && t.window)
+                    ? h.anyIE() && h.flashEnabled()
+                      ? new o(t)
+                      : new s(t)
+                    : new r(t);
+                }
+              });
             },
             { 12: 12, 15: 15, 24: 24, 60: 60, 77: 77, 85: 85, 86: 86 }
           ]
         },
         {},
         [84]
-      ));
-})();
+      )));
+}());
