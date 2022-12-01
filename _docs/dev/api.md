@@ -524,8 +524,8 @@ Link: </api/v1/data/historical_emissions/data_sources>; rel="meta data_sources",
    "data":[
       {
          "id":number,
-         "name":"string e.g. CAIT",
-         "display_name":"string e.g. CAIT",
+         "name":"string e.g. Climate Watch",
+         "display_name":"string e.g. Climate Watch",
          "gas_ids":[1,2,3],
          "sector_ids":[1,2,3],
          "location_ids":[1,2,3]
@@ -856,7 +856,7 @@ Link: </api/v1/data/ndc_content/indicators>; rel="meta indicators", </api/v1/dat
    "data":[
       {
          "id":53,
-         "name":"CAIT"
+         "name":"Climate Watch"
       },
       {
          "id":54,

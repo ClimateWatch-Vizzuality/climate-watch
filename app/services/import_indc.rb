@@ -441,7 +441,7 @@ class ImportIndc
   end
 
   def import_values_ndc
-    valid_sources = [@sources_index['CAIT'], @sources_index['Climate Watch'], @sources_index['NDC Explorer'],
+    valid_sources = [@sources_index['Climate Watch'], @sources_index['NDC Explorer'],
                      @sources_index['WB'], @sources_index['Net_Zero'],
                      @sources_index['UNICEF']]
     values = []

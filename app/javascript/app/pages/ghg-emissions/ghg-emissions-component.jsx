@@ -51,8 +51,8 @@ class GhgEmissions extends PureComponent {
           emissions and key sector to get to net-zero emissions.
         </p>
         <p className={styles.learnMore} data-tour="ghg-05">
-          Learn more about our data sources (CAIT, PIK, UNFCCC, GCP) and
-          methodologies in our{' '}
+          Learn more about our data sources (Climate Watch, PIK, UNFCCC, GCP)
+          and methodologies in our{' '}
           {renderLink(
             'Frequently asked questions',
             'Frequently asked questions',

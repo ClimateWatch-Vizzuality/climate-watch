@@ -37,7 +37,7 @@ function CountryGhgContainer(props) {
   const handleInfoClick = () =>
     setModalMetadata({
       category: 'Country comparison',
-      slugs: 'historical_emissions_cait',
+      slugs: 'historical_emissions_climate_watch',
       open: true
     });
 
