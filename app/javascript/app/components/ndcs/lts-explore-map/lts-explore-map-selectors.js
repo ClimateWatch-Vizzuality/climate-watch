@@ -8,7 +8,11 @@ import { sortLabelByAlpha } from 'utils/graphs';
 import { generateLinkToDataExplorer } from 'utils/data-explorer';
 import getIPPaths from 'app/data/world-50m-paths';
 import { sortByIndexAndNotInfo, getLabels } from 'components/ndcs/shared/utils';
-import { europeSlug, europeanCountries } from 'app/data/european-countries';
+import {
+  europeSlug,
+  europeanCountries,
+  europeGroupExplorerPagesSlug
+} from 'app/data/european-countries';
 import { getIsShowEUCountriesChecked } from 'components/ndcs/shared/explore-map/explore-map-selectors';
 import { TOP_EMITTERS_OPTION } from 'data/constants';
 import {
@@ -62,9 +66,18 @@ export const getLocations = createSelector(
             iso: country.iso_code3
           }));
       regionOptions.push({
-        label: region.wri_standard_name,
-        value: region.iso_code3,
-        iso: region.iso_code3,
+        label:
+          region.iso_code3 === europeSlug
+            ? 'European Union'
+            : region.wri_standard_name,
+        value:
+          region.iso_code3 === europeSlug
+            ? europeGroupExplorerPagesSlug
+            : region.iso_code3,
+        iso:
+          region.iso_code3 === europeSlug
+            ? europeGroupExplorerPagesSlug
+            : region.iso_code3,
         expandsTo: regionMembers,
         regionCountries,
         groupId: 'regions'
