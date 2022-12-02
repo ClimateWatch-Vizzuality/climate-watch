@@ -259,24 +259,18 @@ root.children.forEach(function(d) {
     d.name = d.key;
     if ("values" in d) {
         d.children = d.values;
-        //console.log(d.children);
         d.children.forEach(function(d) {
             d.name = d.key;
             d.children=[];
-            //console.log(d);
             for (var k in d.values[0]) {
                 if (d.values[0].hasOwnProperty(k)) {
-                    //console.log(k);
                     d.children.push({"name": k, "size": d.values[0][k]});
                 }
             }
-            //console.log(JSON.stringify(d.children));
             d.children.sort(function(x, y){
                return d3.descending(+x.size, +y.size);
             });
-            //console.log(JSON.stringify(d.children));
             var counter = 0;
-            //console.log(d.children[0]);
             d.children.forEach(function(d) {
                 d.order = counter;
                 counter++;
@@ -379,7 +373,6 @@ var labelFits = function(d) {
       .attr("x", 0)
       .text(function(d) {
 				// Truncate text where necessary for neatness
-			    //console.log(d.name);
           var firstLine =  d.name.split(" ")[0];
 
 				if (d.depth && firstLine.length > 16) {

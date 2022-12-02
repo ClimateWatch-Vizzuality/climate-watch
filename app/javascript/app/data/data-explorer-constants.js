@@ -322,10 +322,10 @@ export const GROUPED_OR_MULTI_SELECT_FIELDS = {
   'historical-emissions': [
     {
       key: 'regions',
-      label: 'Countries and Regions',
+      label: 'Parties and Regions',
       groups: [
         { groupId: 'regions', title: 'Regions' },
-        { groupId: 'countries', title: 'Countries' }
+        { groupId: 'countries', title: 'Parties' }
       ]
     },
     { key: 'gases' }
@@ -333,30 +333,30 @@ export const GROUPED_OR_MULTI_SELECT_FIELDS = {
   'ndc-content': [
     {
       key: 'locations',
-      label: 'Countries and Regions',
+      label: 'Parties and Regions',
       groups: [
         { groupId: 'regions', title: 'Regions' },
-        { groupId: 'countries', title: 'Countries' }
+        { groupId: 'countries', title: 'Parties' }
       ]
     }
   ],
   'lts-content': [
     {
       key: 'locations',
-      label: 'Countries and Regions',
+      label: 'Parties and Regions',
       groups: [
         { groupId: 'regions', title: 'Regions' },
-        { groupId: 'countries', title: 'Countries' }
+        { groupId: 'countries', title: 'Parties' }
       ]
     }
   ],
   'net-zero-content': [
     {
       key: 'locations',
-      label: 'Countries and Regions',
+      label: 'Parties and Regions',
       groups: [
         { groupId: 'regions', title: 'Regions' },
-        { groupId: 'countries', title: 'Countries' }
+        { groupId: 'countries', title: 'Parties' }
       ]
     }
   ],

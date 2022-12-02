@@ -1,4 +1,5 @@
 export const europeSlug = 'EUU';
+export const europeGroupExplorerPagesSlug = 'EUUGROUP';
 
 export const europeanCountries = [
   'AUT',

@@ -4,6 +4,10 @@ import qs from 'query-string';
 import { findEqual, isANumber, noEmptyValues, useSlug } from 'utils/utils';
 import { isNoColumnField, isNonColumnKey } from 'utils/data-explorer';
 import { isPageContained } from 'utils/navigation';
+import {
+  europeSlug,
+  europeGroupExplorerPagesSlug
+} from 'app/data/european-countries';
 
 import {
   DATA_EXPLORER_BLOCKLIST,
@@ -69,6 +73,18 @@ const getMetaForNoModelFilters = createSelector(
   }
 );
 
+const modifyEUUGROUPinRegions = regions =>
+  regions.map(l => {
+    if (l.iso_code3 === europeSlug && l.members) {
+      return {
+        ...l,
+        wri_standard_name: 'European Union',
+        iso_code3: europeGroupExplorerPagesSlug
+      };
+    }
+    return l;
+  });
+
 const getSectionMeta = createSelector(
   [getMeta, getRegions, getCountries, getSection, getMetaForNoModelFilters],
   (meta, regions, countries, section, noModelFiltersMeta) => {
@@ -77,14 +93,18 @@ const getSectionMeta = createSelector(
     }
     const sectionMeta = { ...meta[section], ...noModelFiltersMeta };
 
-    if (
-      DATA_EXPLORER_FILTERS[section].includes('locations') &&
-      !sectionMeta.locations
-    ) {
-      return { ...sectionMeta, locations: [...regions, ...countries] };
+    if (DATA_EXPLORER_FILTERS[section].includes('locations')) {
+      return {
+        ...sectionMeta,
+        locations: [...modifyEUUGROUPinRegions(regions), ...countries]
+      };
     }
     if (DATA_EXPLORER_FILTERS[section].includes('regions')) {
-      return { ...sectionMeta, regions, countries };
+      return {
+        ...sectionMeta,
+        regions: modifyEUUGROUPinRegions(regions),
+        countries
+      };
     } else if (DATA_EXPLORER_FILTERS[section].includes('countries')) {
       return { ...sectionMeta, countries };
     }
@@ -178,7 +198,7 @@ function extractFilterIds(parsedFilters, metadata, isLinkQuery = false) {
     const parsedKey = correctedKey.replace('-', '_');
     const selectedIds = addTopEmittersMembers(
       parsedFilters[key].split(','),
-      metadata.regions || metadata.locations,
+      metadata.locations || metadata.regions,
       key
     );
 
@@ -372,7 +392,7 @@ export const getCategory = createSelector(
     ) {
       return null;
     }
-    const metadata = sectionMeta;
+    const metadata = { ...sectionMeta };
     const parsedCategory = removeFiltersPrefix(rawQuery, section).categories;
     return findSelectedValueObject(metadata.categories, parsedCategory);
   }
@@ -458,17 +478,19 @@ export const getFilterOptions = createSelector(
       return null;
     }
     const filterKeys = DATA_EXPLORER_FILTERS[section];
-    const filtersMeta = sectionMeta;
+    const filtersMeta = { ...sectionMeta };
     if (!filtersMeta) return null;
     if (filterKeys.includes('regions')) {
-      filtersMeta.regions = addGroupId(regions, 'regions').concat(
-        addGroupId(countries, 'countries')
-      );
+      filtersMeta.regions = addGroupId(
+        modifyEUUGROUPinRegions(regions),
+        'regions'
+      ).concat(addGroupId(countries, 'countries'));
     }
     if (filterKeys.includes('locations')) {
-      filtersMeta.locations = addGroupId(regions, 'regions').concat(
-        addGroupId(countries, 'countries')
-      );
+      filtersMeta.locations = addGroupId(
+        modifyEUUGROUPinRegions(regions),
+        'regions'
+      ).concat(addGroupId(countries, 'countries'));
     }
     if (filterKeys.includes('countries')) filtersMeta.countries = countries;
     if (filterKeys.includes('data-sources')) {
@@ -617,6 +639,7 @@ export const getSelectedFilters = createSelector(
       section
     );
     const selectedFilterObjects = {};
+
     Object.keys(parsedSelectedFilters).forEach(filterKey => {
       const filterId = parsedSelectedFilters[filterKey];
       const isNoModelColumnKey = isNoColumnField(section, filterKey);
