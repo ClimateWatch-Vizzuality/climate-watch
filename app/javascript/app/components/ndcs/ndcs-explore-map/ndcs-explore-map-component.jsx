@@ -138,7 +138,7 @@ const LOCATION_GROUPS = [
   },
   {
     groupId: 'countries',
-    title: 'Countries'
+    title: 'Parties'
   }
 ];
 

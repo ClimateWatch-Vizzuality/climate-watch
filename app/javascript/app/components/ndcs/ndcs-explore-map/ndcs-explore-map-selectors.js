@@ -17,7 +17,11 @@ import {
   getIndicatorEmissionsData,
   getLabels
 } from 'components/ndcs/shared/utils';
-import { europeSlug, europeanCountries } from 'app/data/european-countries';
+import {
+  europeSlug,
+  europeGroupExplorerPagesSlug,
+  europeanCountries
+} from 'app/data/european-countries';
 import {
   DEFAULT_NDC_EXPLORE_CATEGORY_SLUG,
   CATEGORY_SOURCES,
@@ -73,10 +77,20 @@ export const getLocations = createSelector(
             label: country.wri_standard_name,
             iso: country.iso_code3
           }));
+
       regionOptions.push({
-        label: region.wri_standard_name,
-        value: region.iso_code3,
-        iso: region.iso_code3,
+        label:
+          region.iso_code3 === europeSlug
+            ? 'European Union'
+            : region.wri_standard_name,
+        value:
+          region.iso_code3 === europeSlug
+            ? europeGroupExplorerPagesSlug
+            : region.iso_code3,
+        iso:
+          region.iso_code3 === europeSlug
+            ? europeGroupExplorerPagesSlug
+            : region.iso_code3,
         expandsTo: regionMembers,
         regionCountries,
         groupId: 'regions'
@@ -94,11 +108,10 @@ export const getLocations = createSelector(
         });
       }
     });
-    // eslint-disable-next-line no-confusing-arrow
+
     const sortedRegions = sortLabelByAlpha(regionOptions).sort(x =>
       x.value === 'TOP' ? -1 : 0
     );
-
     return sortedRegions.concat(sortLabelByAlpha(updatedCountryOptions));
   }
 );
@@ -435,7 +448,7 @@ const getCountriesAndParties = submissions => {
   const partiesNumber = submissions.length;
   let countriesNumber = submissions.length;
 
-  if (!submissions.includes(europeSlug)) {
+  if (!submissions.includes(europeGroupExplorerPagesSlug)) {
     return { partiesNumber, countriesNumber };
   }
   const europeanCountriesWithSubmission = intersection(
@@ -444,7 +457,7 @@ const getCountriesAndParties = submissions => {
   );
 
   countriesNumber +=
-    europeanCountries.length - europeanCountriesWithSubmission.length - 1;
+    europeanCountries.length - (europeanCountriesWithSubmission.length - 1) - 1; // Don't count the EUU
   return { partiesNumber, countriesNumber };
 };
 

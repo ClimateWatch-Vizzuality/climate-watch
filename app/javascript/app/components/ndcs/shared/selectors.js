@@ -41,29 +41,39 @@ export const selectedCountriesFunction = (locations, regions, countries) => {
   if (!locations || !locations.length || !regions || !regions.length) {
     return countries;
   }
-  const PARTIES_MISSING_IN_WORLD_SECTION = [
-    regions.find(r => r.iso_code3 === 'EUU'),
-    ...NO_DOCUMENT_SUBMITTED_COUNTRIES
-  ];
+  const PARTIES_MISSING_IN_WORLD_SECTION = [...NO_DOCUMENT_SUBMITTED_COUNTRIES];
   const selectedRegionsCountries = locations.reduce((acc, location) => {
     let members = acc;
-    regions.some(region => {
-      if (region.iso_code3 === location.iso) {
-        members = [...acc, ...region.members];
-        return true;
-      }
-      return false;
-    });
     if (location.iso === 'TOP') {
-      members = [...members, ...location.regionCountries];
+      return [...members, ...location.regionCountries];
     }
     if (location.iso === 'WORLD') {
-      members = [
+      return [
         ...members,
         ...location.regionCountries,
         ...PARTIES_MISSING_IN_WORLD_SECTION
       ];
     }
+    if (location.iso === 'EUUGROUP') {
+      regions.some(region => {
+        if (region.iso_code3 === 'EUU') {
+          members = [...acc, ...region.members];
+          return true;
+        }
+        return false;
+      });
+    }
+    // EUU is the aggregated party and is a 'country' so we don't show members
+    if (location.iso !== 'EUU') {
+      regions.some(region => {
+        if (region.iso_code3 === location.iso) {
+          members = [...acc, ...region.members];
+          return true;
+        }
+        return false;
+      });
+    }
+
     return members;
   }, []);
   const selectedRegionsCountriesISOS = selectedRegionsCountries.map(
@@ -170,7 +180,10 @@ export const locationsNamesFunction = (locations, regions, countries) => {
   const selectedRegionsNames = locations.reduce((acc, location) => {
     let names = acc;
     regions.some(region => {
-      if (region.iso_code3 === location.iso) {
+      if (
+        region.iso_code3 === location.iso ||
+        (location.iso === 'EUUGROUP' && region.iso_code3 === 'EUU')
+      ) {
         names = [...acc, region.wri_standard_name];
         return true;
       }
@@ -181,6 +194,7 @@ export const locationsNamesFunction = (locations, regions, countries) => {
 
       return false;
     });
+
     return names;
   }, []);
   const selectedCountriesNames = locations.reduce((acc, location) => {
