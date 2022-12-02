@@ -55,11 +55,15 @@ module Api
           def initialize_locations(params)
             return unless params[:locations]
 
+            iso_codes = params[:locations] - ['EUU']
+            iso_codes << 'EUU' if params[:locations].include? 'EUUGROUP'
+
             @countries = Location.
               left_joins(:members).
-              where(iso_code3: params[:locations]).
-              pluck(Arel.sql('coalesce(members_locations.iso_code3, locations.iso_code3)')).
-              uniq
+              where(iso_code3: iso_codes).
+              pluck(Arel.sql('coalesce(members_locations.iso_code3, locations.iso_code3)'))
+            @countries << 'EUU' if params[:locations].include? 'EUU'
+            @countries.uniq
           end
 
           def apply_filters
