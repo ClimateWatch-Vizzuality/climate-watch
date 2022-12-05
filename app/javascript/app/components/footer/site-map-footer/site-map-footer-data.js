@@ -35,6 +35,7 @@ export const siteMapData = [
       { title: 'Climate Watch Partners', href: '/about/partners' },
       { title: 'Key Visualizations', href: '/key-visualizations' },
       { title: 'Sign up for updates', href: '/about/contact' },
+      { title: 'Trainings & Tutorials', href: '/about/trainings' },
       { title: 'Permissions & Licensing', href: '/about/permissions' },
       { title: 'FAQ', href: '/about/faq/general_questions' }
     ]
