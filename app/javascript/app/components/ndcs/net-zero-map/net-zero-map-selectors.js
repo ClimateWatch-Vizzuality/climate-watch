@@ -312,10 +312,22 @@ export const getTooltipCountryValues = createSelector(
 export const getIndicatorEmissionsData = (
   emissionsIndicator,
   selectedIndicator,
-  legend
+  legend,
+  selectedCountriesISO
 ) => {
   if (!emissionsIndicator) return null;
-  const emissionPercentages = emissionsIndicator.locations;
+  const emissionPercentages =
+    selectedCountriesISO && selectedCountriesISO.length > 0
+      ? Object.entries(emissionsIndicator.locations).reduce(
+        (acc, [iso, value]) => {
+          if (selectedCountriesISO.includes(iso)) {
+            acc[iso] = value;
+          }
+          return acc;
+        },
+        {}
+      )
+      : emissionsIndicator.locations;
   let summedPercentage = 0;
   const data = legend.map(legendItem => {
     let legendItemValue = 0;
@@ -332,7 +344,11 @@ export const getIndicatorEmissionsData = (
         if (locationIso === europeSlug) {
           const EUTotal = parseFloat(emissionPercentages[europeSlug].value);
           const europeanLocationsValue = europeanLocationIsos.reduce(
-            (acc, iso) => acc + parseFloat(emissionPercentages[iso].value),
+            (acc, iso) =>
+              acc +
+              (emissionPercentages[iso]
+                ? parseFloat(emissionPercentages[iso].value)
+                : 0),
             0
           );
           legendItemValue += EUTotal - europeanLocationsValue; // To avoid double counting
