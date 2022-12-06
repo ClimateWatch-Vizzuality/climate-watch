@@ -4,7 +4,7 @@ class ImportHistoricalEmissions
   # rubocop:disable LineLength
   META_SOURCES_FILEPATH = "#{CW_FILES_PREFIX}historical_emissions/CW_HistoricalEmissions_metadata_sources.csv".freeze
   META_SECTORS_FILEPATH = "#{CW_FILES_PREFIX}historical_emissions/CW_HistoricalEmissions_metadata_sectors.csv".freeze
-  DATA_CAIT_FILEPATH = "#{CW_FILES_PREFIX}historical_emissions/CW_HistoricalEmissions_CAIT.csv".freeze
+  DATA_CW_FILEPATH = "#{CW_FILES_PREFIX}historical_emissions/CW_HistoricalEmissions_ClimateWatch.csv".freeze
   DATA_PIK_FILEPATH = "#{CW_FILES_PREFIX}historical_emissions/CW_HistoricalEmissions_PIK.csv".freeze
   DATA_UNFCCC_FILEPATH = "#{CW_FILES_PREFIX}historical_emissions/CW_HistoricalEmissions_UNFCCC.csv".freeze
   DATA_GCP_FILEPATH = "#{CW_FILES_PREFIX}historical_emissions/CW_HistoricalEmissions_GCP.csv".freeze
@@ -18,7 +18,7 @@ class ImportHistoricalEmissions
       cleanup
       import_sources(S3CSVReader.read(META_SOURCES_FILEPATH))
       import_sectors(S3CSVReader.read(META_SECTORS_FILEPATH))
-      import_records(S3CSVReader.read(DATA_CAIT_FILEPATH), DATA_CAIT_FILEPATH)
+      import_records(S3CSVReader.read(DATA_CW_FILEPATH), DATA_CW_FILEPATH)
       import_records(S3CSVReader.read(DATA_PIK_FILEPATH), DATA_PIK_FILEPATH)
       import_records(S3CSVReader.read(DATA_UNFCCC_FILEPATH), DATA_UNFCCC_FILEPATH)
       import_records(S3CSVReader.read(DATA_GCP_FILEPATH), DATA_GCP_FILEPATH)
