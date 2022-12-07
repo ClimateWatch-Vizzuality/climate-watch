@@ -38,7 +38,8 @@ import {
   pathsWithStylesFunction,
   getColorException,
   locationsNamesFunction,
-  getVulnerabilityDataFunction
+  getVulnerabilityDataFunction,
+  isDefaultLocationSelectedFunction
 } from '../shared/selectors';
 
 const NOT_APPLICABLE_LABEL = 'Not Applicable';
@@ -204,6 +205,12 @@ const getSelectedCountries = createSelector(
   [getSelectedLocations, getRegions, getCountries],
   selectedCountriesFunction
 );
+
+const getisDefaultLocationSelected = createSelector(
+  [getSelectedLocations],
+  isDefaultLocationSelectedFunction
+);
+
 export const getSelectedCountriesISO = createSelector(
   [getSelectedCountries],
   selectedCountriesISOFunction
@@ -392,8 +399,20 @@ export const getTooltipCountryValues = createSelector(
 );
 
 export const getEmissionsCardData = createSelector(
-  [getLegend, getMapIndicator, getIndicatorsData, getSelectedCountriesISO],
-  (legend, selectedIndicator, indicators, selectedCountriesISO) => {
+  [
+    getLegend,
+    getMapIndicator,
+    getIndicatorsData,
+    getSelectedCountriesISO,
+    getisDefaultLocationSelected
+  ],
+  (
+    legend,
+    selectedIndicator,
+    indicators,
+    selectedCountriesISO,
+    isDefaultLocationSelected
+  ) => {
     if (!legend || !selectedIndicator || !indicators) {
       return null;
     }
@@ -404,7 +423,8 @@ export const getEmissionsCardData = createSelector(
       emissionsIndicator,
       selectedIndicator,
       legend,
-      selectedCountriesISO
+      selectedCountriesISO,
+      isDefaultLocationSelected
     );
     // Info tooltip only available for this indicator
     const tooltip = selectedIndicator.value === 'child_sensitive_NDC' && {
@@ -467,8 +487,18 @@ export const getLocationsNames = createSelector(
 );
 
 export const getSummaryCardData = createSelector(
-  [getIndicatorsData, getLocationsNames, getSelectedCountriesISO],
-  (indicators, locationNames, selectedCountriesISO) => {
+  [
+    getIndicatorsData,
+    getLocationsNames,
+    getSelectedCountriesISO,
+    getisDefaultLocationSelected
+  ],
+  (
+    indicators,
+    locationNames,
+    selectedCountriesISO,
+    isDefaultLocationSelected
+  ) => {
     if (!indicators) return null;
     const submittedIndicator = indicators.find(
       ind => ind.slug === INDICATOR_SLUGS.enhancements
@@ -476,14 +506,12 @@ export const getSummaryCardData = createSelector(
     const submittedIsos = getSubmitted2020Isos(submittedIndicator);
     if (!submittedIsos || !submittedIsos.length) return null;
     const submittedCountriesAndParties = getCountriesAndParties(submittedIsos);
-    const isDefaultSelected =
-      locationNames.length === 1 && locationNames[0] === 'World';
     return [
       {
-        value: isDefaultSelected
+        value: isDefaultLocationSelected
           ? submittedCountriesAndParties.partiesNumber
           : selectedCountriesISO.length,
-        description: isDefaultSelected
+        description: isDefaultLocationSelected
           ? ` Parties (representing ${submittedCountriesAndParties.countriesNumber} countries) have submitted their new or updated NDCs. `
           : ` Parties (representing ${arrayToSentence(locationNames)})`
       }

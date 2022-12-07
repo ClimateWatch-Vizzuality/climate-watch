@@ -21,7 +21,8 @@ import {
   selectedCountriesFunction,
   categoryIndicatorsFunction,
   pathsWithStylesFunction,
-  locationsNamesFunction
+  locationsNamesFunction,
+  isDefaultLocationSelectedFunction
 } from '../shared/selectors';
 
 const NO_DOCUMENT_SUBMITTED = 'No Document Submitted';
@@ -112,6 +113,11 @@ export const getSelectedLocations = createSelector(
 const getSelectedCountries = createSelector(
   [getSelectedLocations, getRegions, getCountries],
   selectedCountriesFunction
+);
+
+const getisDefaultLocationSelected = createSelector(
+  [getSelectedLocations],
+  isDefaultLocationSelectedFunction
 );
 
 export const getSelectedCountriesISO = createSelector(
@@ -312,21 +318,21 @@ export const getIndicatorEmissionsData = (
   emissionsIndicator,
   selectedIndicator,
   legend,
-  selectedCountriesISO
+  selectedCountriesISO,
+  isDefaultLocationSelected
 ) => {
   if (!emissionsIndicator) return null;
-  const emissionPercentages =
-    selectedCountriesISO && selectedCountriesISO.length > 0
-      ? Object.entries(emissionsIndicator.locations).reduce(
-        (acc, [iso, value]) => {
-          if (selectedCountriesISO.includes(iso)) {
-            acc[iso] = value;
-          }
-          return acc;
-        },
-        {}
-      )
-      : emissionsIndicator.locations;
+  const emissionPercentages = isDefaultLocationSelected
+    ? Object.entries(emissionsIndicator.locations).reduce(
+      (acc, [iso, value]) => {
+        if (selectedCountriesISO.includes(iso)) {
+          acc[iso] = value;
+        }
+        return acc;
+      },
+      {}
+    )
+    : emissionsIndicator.locations;
   let summedPercentage = 0;
   const data = legend.map(legendItem => {
     let legendItemValue = 0;
@@ -389,8 +395,20 @@ export const getIndicatorEmissionsData = (
 };
 
 export const getEmissionsCardData = createSelector(
-  [getLegend, getMapIndicator, getIndicatorsData, getSelectedCountriesISO],
-  (legend, selectedIndicator, indicators, selectedCountriesISO) => {
+  [
+    getLegend,
+    getMapIndicator,
+    getIndicatorsData,
+    getSelectedCountriesISO,
+    getisDefaultLocationSelected
+  ],
+  (
+    legend,
+    selectedIndicator,
+    indicators,
+    selectedCountriesISO,
+    isDefaultLocationSelected
+  ) => {
     if (!legend || !selectedIndicator || !indicators) {
       return null;
     }
@@ -401,7 +419,8 @@ export const getEmissionsCardData = createSelector(
       emissionsIndicator,
       selectedIndicator,
       legend,
-      selectedCountriesISO
+      selectedCountriesISO,
+      isDefaultLocationSelected
     );
     // Remove extra No document submitted. TODO: Fix in data
     data = data.filter(d => d.name !== 'noDocumentSubmitted');
@@ -433,8 +452,18 @@ export const getLocationsNames = createSelector(
 );
 
 export const getSummaryCardData = createSelector(
-  [getIndicatorsData, getLocationsNames, getSelectedCountriesISO],
-  (indicators, locationNames, selectedCountriesISO) => {
+  [
+    getIndicatorsData,
+    getLocationsNames,
+    getSelectedCountriesISO,
+    getisDefaultLocationSelected
+  ],
+  (
+    indicators,
+    locationNames,
+    selectedCountriesISO,
+    isDefaultLocationSelected
+  ) => {
     if (!indicators) return null;
     const LTSIndicator = indicators.find(i => i.slug === 'lts_document');
     if (!LTSIndicator) return null;
@@ -445,13 +474,13 @@ export const getSummaryCardData = createSelector(
     const europeanCountriesWithSubmission = europeanCountries.filter(
       iso => LTSIndicator.locations[iso]
     );
-    const isDefaultSelected =
-      locationNames.length === 1 && locationNames[0] === 'World';
     countriesNumber +=
       europeanCountries.length - europeanCountriesWithSubmission.length - 1; // To avoid double counting, also substract the EUU 'country'
     return {
-      value: isDefaultSelected ? partiesNumber : selectedCountriesISO.length,
-      description: isDefaultSelected
+      value: isDefaultLocationSelected
+        ? partiesNumber
+        : selectedCountriesISO.length,
+      description: isDefaultLocationSelected
         ? ` Parties have submitted a long-term strategy document, representing ${countriesNumber} countries`
         : ` Parties (representing ${arrayToSentence(locationNames)})`
     };

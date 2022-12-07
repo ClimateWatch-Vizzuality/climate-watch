@@ -23,7 +23,8 @@ import {
   selectedCountriesFunction,
   categoryIndicatorsFunction,
   pathsWithStylesFunction,
-  locationsNamesFunction
+  locationsNamesFunction,
+  isDefaultLocationSelectedFunction
 } from '../shared/selectors';
 
 const NO_DOCUMENT_SUBMITTED = 'No Document Submitted';
@@ -128,6 +129,11 @@ export const getCategories = createSelector(getCategoriesData, categories =>
 export const getSelectedCountriesISO = createSelector(
   [getSelectedCountries],
   selectedCountriesISOFunction
+);
+
+const getisDefaultLocationSelected = createSelector(
+  [getSelectedLocations],
+  isDefaultLocationSelectedFunction
 );
 
 export const getMaximumCountries = createSelector(
@@ -313,21 +319,21 @@ export const getIndicatorEmissionsData = (
   emissionsIndicator,
   selectedIndicator,
   legend,
-  selectedCountriesISO
+  selectedCountriesISO,
+  isDefaultLocationSelected
 ) => {
   if (!emissionsIndicator) return null;
-  const emissionPercentages =
-    selectedCountriesISO && selectedCountriesISO.length > 0
-      ? Object.entries(emissionsIndicator.locations).reduce(
-        (acc, [iso, value]) => {
-          if (selectedCountriesISO.includes(iso)) {
-            acc[iso] = value;
-          }
-          return acc;
-        },
-        {}
-      )
-      : emissionsIndicator.locations;
+  const emissionPercentages = isDefaultLocationSelected
+    ? Object.entries(emissionsIndicator.locations).reduce(
+      (acc, [iso, value]) => {
+        if (selectedCountriesISO.includes(iso)) {
+          acc[iso] = value;
+        }
+        return acc;
+      },
+      {}
+    )
+    : emissionsIndicator.locations;
   let summedPercentage = 0;
   const data = legend.map(legendItem => {
     let legendItemValue = 0;
@@ -390,8 +396,20 @@ export const getIndicatorEmissionsData = (
 };
 
 export const getEmissionsCardData = createSelector(
-  [getLegend, getMapIndicator, getIndicatorsData, getSelectedCountriesISO],
-  (legend, selectedIndicator, indicators, selectedCountriesISO) => {
+  [
+    getLegend,
+    getMapIndicator,
+    getIndicatorsData,
+    getSelectedCountriesISO,
+    getisDefaultLocationSelected
+  ],
+  (
+    legend,
+    selectedIndicator,
+    indicators,
+    selectedCountriesISO,
+    isDefaultLocationSelected
+  ) => {
     if (!legend || !selectedIndicator || !indicators) {
       return null;
     }
@@ -403,7 +421,8 @@ export const getEmissionsCardData = createSelector(
       emissionsIndicator,
       selectedIndicator,
       legend,
-      selectedCountriesISO
+      selectedCountriesISO,
+      isDefaultLocationSelected
     );
 
     // Remove extra No document submitted. TODO: Fix in data
@@ -437,8 +456,18 @@ export const getLocationsNames = createSelector(
 );
 
 export const getSummaryCardData = createSelector(
-  [getIndicatorsData, getLocationsNames, getSelectedCountriesISO],
-  (indicators, locationNames, selectedCountriesISO) => {
+  [
+    getIndicatorsData,
+    getLocationsNames,
+    getSelectedCountriesISO,
+    getisDefaultLocationSelected
+  ],
+  (
+    indicators,
+    locationNames,
+    selectedCountriesISO,
+    isDefaultLocationSelected
+  ) => {
     if (!indicators) return null;
     const netZeroIndicator = indicators.find(i => i.slug === 'nz_status');
     if (!netZeroIndicator) return null;
@@ -479,12 +508,11 @@ export const getSummaryCardData = createSelector(
       );
     const roundedEmissions = Math.round(emissionsNumber * 10) / 10;
 
-    const isDefaultSelected =
-      locationNames.length === 1 && locationNames[0] === 'World';
-
     return {
-      value: isDefaultSelected ? partiesNumber : selectedCountriesISO.length,
-      description: isDefaultSelected
+      value: isDefaultLocationSelected
+        ? partiesNumber
+        : selectedCountriesISO.length,
+      description: isDefaultLocationSelected
         ? ` Parties, representing ${countriesNumber} countries and ${roundedEmissions}% of global GHG emissions, have communicated a net-zero target`
         : ` Parties (representing ${arrayToSentence(locationNames)})`
     };

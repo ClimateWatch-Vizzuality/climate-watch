@@ -37,6 +37,13 @@ export const selectedCountriesISOFunction = selectedCountries => {
   return uniq(selectedCountries.map(c => c.iso_code3 || c.iso));
 };
 
+export const isDefaultLocationSelectedFunction = selectedLocations => {
+  if (!selectedLocations) return false;
+  return (
+    selectedLocations.length === 1 && selectedLocations[0].value === 'WORLD'
+  );
+};
+
 export const selectedCountriesFunction = (locations, regions, countries) => {
   if (!locations || !locations.length || !regions || !regions.length) {
     return countries;

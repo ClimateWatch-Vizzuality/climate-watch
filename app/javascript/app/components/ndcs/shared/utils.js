@@ -17,22 +17,22 @@ export const getIndicatorEmissionsData = (
   emissionsIndicator,
   selectedIndicator,
   legend,
-  selectedCountriesISO
+  selectedCountriesISO,
+  isDefaultLocationSelected
 ) => {
   if (!emissionsIndicator) return null;
   // If we have selected countries we calculate the proportional regional values instead of global
-  const emissionPercentages =
-    selectedCountriesISO && selectedCountriesISO.length > 0
-      ? Object.entries(emissionsIndicator.locations).reduce(
-        (acc, [iso, value]) => {
-          if (selectedCountriesISO.includes(iso)) {
-            acc[iso] = value;
-          }
-          return acc;
-        },
-        {}
-      )
-      : emissionsIndicator.locations;
+  const emissionPercentages = isDefaultLocationSelected
+    ? Object.entries(emissionsIndicator.locations).reduce(
+      (acc, [iso, value]) => {
+        if (selectedCountriesISO.includes(iso)) {
+          acc[iso] = value;
+        }
+        return acc;
+      },
+      {}
+    )
+    : emissionsIndicator.locations;
   let summedPercentage = 0;
   let data = legend.map(legendItem => {
     let legendItemValue = 0;
@@ -59,7 +59,7 @@ export const getIndicatorEmissionsData = (
     };
   });
 
-  if (selectedCountriesISO) {
+  if (!isDefaultLocationSelected) {
     // Readjust percentage values to summedPercentage
     data = data.map(d => ({ ...d, value: (d.value * 100) / summedPercentage }));
     // TODO: How to calculate Not covered when we have a country selection
