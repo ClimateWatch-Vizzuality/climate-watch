@@ -104,6 +104,19 @@
   font-size: $font-size-sm;
   background-color: $white;
   box-shadow: $box-shadow-light;
+
+  @media #{$tablet-landscape} {
+    padding: 15px 5px;
+
+    .switchOption,
+    .switchSelected {
+      font-size: $font-size-xs;
+    }
+  }
+
+  @media #{$desktop} {
+    padding: 15px 25px;
+  }
 }
 
 .infoIcon {
