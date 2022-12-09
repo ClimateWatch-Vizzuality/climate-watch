@@ -101,7 +101,16 @@ function NDCSExploreMapContainer(props) {
     selectActiveDonutIndex(0);
   }, [selectActiveDonutIndex]);
   useEffect(() => {
-    if (selectedCategory && selectedCategory.value === 'adaptation') {
+    const vulnerabilityCategories = [
+      'adaptation',
+      'loss_and_damage',
+      'sectoral_adaptation_measures',
+      'transformative_adaptation'
+    ];
+    if (
+      selectedCategory &&
+      vulnerabilityCategories.includes(selectedCategory.value)
+    ) {
       setSecondCardSelectedTab(SWITCH_OPTIONS[1].value);
     } else if (secondCardSelectedTab !== SWITCH_OPTIONS[0].value) {
       setSecondCardSelectedTab(SWITCH_OPTIONS[0].value);
