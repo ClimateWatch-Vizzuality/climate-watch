@@ -266,11 +266,11 @@ export const getVulnerabilityDataFunction = (
         }
         return null;
       })
-      .filter(v => v !== null);
+      .filter(v => v !== null || v === 0);
     const valuesMedian = median(isosValues);
     const medianCategory =
       // eslint-disable-next-line no-nested-ternary
-      valuesMedian < 0.4 ? 'Low' : valuesMedian > 0.5 ? 'High' : 'Medium';
+      valuesMedian < 0.433 ? 'Low' : 'High';
     return {
       ...l,
       median: Math.round(valuesMedian * 1000) / 1000,
