@@ -22,6 +22,11 @@ export default [
     activeId
   },
   {
+    path: '/about/trainings',
+    label: 'Trainings & Tutorials',
+    activeId
+  },
+  {
     path: '/about/faq/general_questions',
     label: 'FAQ',
     activeId
