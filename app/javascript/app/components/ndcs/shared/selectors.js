@@ -64,7 +64,9 @@ export const selectedCountriesFunction = (locations, regions, countries) => {
     if (location.iso === 'EUUGROUP') {
       regions.some(region => {
         if (region.iso_code3 === 'EUU') {
-          members = [...acc, ...region.members];
+          // Add EUU party to the EUUGROUP selection
+          const EUULocation = countries.find(l => l.iso_code3 === 'EUU');
+          members = [...acc, EUULocation, ...region.members];
           return true;
         }
         return false;
