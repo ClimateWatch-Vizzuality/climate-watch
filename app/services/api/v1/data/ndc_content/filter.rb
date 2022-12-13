@@ -62,7 +62,7 @@ module Api
               left_joins(:members).
               where(iso_code3: iso_codes).
               pluck(Arel.sql('coalesce(members_locations.iso_code3, locations.iso_code3)'))
-            @countries << 'EUU' if params[:locations].include? 'EUU'
+            @countries << 'EUU' if (params[:locations] & %w[EUU EUUGROUP]).any?
             @countries.uniq
           end
 
