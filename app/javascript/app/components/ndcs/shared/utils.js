@@ -41,9 +41,9 @@ export const getIndicatorEmissionsData = (
       const [locationIso, { label_id: labelId }] = entry;
       if (
         labelId === parseInt(legendItem.id, 10) &&
+        selectedCountriesISO.includes(locationIso) &&
         // To avoid double counting
         !(
-          selectedCountriesISO &&
           selectedCountriesISO.includes('EUU') &&
           europeanCountries.includes(locationIso)
         ) &&
