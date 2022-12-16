@@ -1,3 +1,4 @@
+import { europeGroupLabel } from 'app/data/european-countries';
 import {
   CHART_NAMED_COLORS,
   CHART_NAMED_EXTENDED_COLORS,
@@ -134,7 +135,7 @@ export const DEFAULT_EMISSIONS_SELECTIONS = {
 export const TOP_EMITTERS_REGION_COUNTRIES = [
   { iso: 'CHN', label: 'China' },
   { iso: 'USA', label: 'United States' },
-  { iso: 'EUU', label: 'European Union' },
+  { iso: 'EUU', label: europeGroupLabel },
   { iso: 'IND', label: 'India' },
   { iso: 'RUS', label: 'Russia' },
   { iso: 'JPN', label: 'Japan' },

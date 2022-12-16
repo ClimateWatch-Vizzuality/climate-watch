@@ -1,6 +1,9 @@
 export const europeSlug = 'EUU';
 export const europeGroupExplorerPagesSlug = 'EUUGROUP';
 
+export const europeLabel = 'European Union (party to the UNFCCC)';
+export const europeGroupLabel = 'European Union (region)';
+
 export const europeanCountries = [
   'AUT',
   'BEL',

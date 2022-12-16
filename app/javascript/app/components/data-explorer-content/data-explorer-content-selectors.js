@@ -6,7 +6,9 @@ import { isNoColumnField, isNonColumnKey } from 'utils/data-explorer';
 import { isPageContained } from 'utils/navigation';
 import {
   europeSlug,
-  europeGroupExplorerPagesSlug
+  europeGroupExplorerPagesSlug,
+  europeLabel,
+  europeGroupLabel
 } from 'app/data/european-countries';
 
 import {
@@ -78,8 +80,19 @@ const modifyEUUGROUPinRegions = regions =>
     if (l.iso_code3 === europeSlug && l.members) {
       return {
         ...l,
-        wri_standard_name: 'European Union',
+        wri_standard_name: europeGroupLabel,
         iso_code3: europeGroupExplorerPagesSlug
+      };
+    }
+    return l;
+  });
+
+const modifyEUULabel = countries =>
+  countries.map(l => {
+    if (l.iso_code3 === europeSlug) {
+      return {
+        ...l,
+        wri_standard_name: europeLabel
       };
     }
     return l;
@@ -96,17 +109,20 @@ const getSectionMeta = createSelector(
     if (DATA_EXPLORER_FILTERS[section].includes('locations')) {
       return {
         ...sectionMeta,
-        locations: [...modifyEUUGROUPinRegions(regions), ...countries]
+        locations: [
+          ...modifyEUUGROUPinRegions(regions),
+          ...modifyEUULabel(countries)
+        ]
       };
     }
     if (DATA_EXPLORER_FILTERS[section].includes('regions')) {
       return {
         ...sectionMeta,
         regions: modifyEUUGROUPinRegions(regions),
-        countries
+        countries: modifyEUULabel(countries)
       };
     } else if (DATA_EXPLORER_FILTERS[section].includes('countries')) {
-      return { ...sectionMeta, countries };
+      return { ...sectionMeta, countries: modifyEUULabel(countries) };
     }
     return { ...sectionMeta };
   }
@@ -480,23 +496,21 @@ export const getFilterOptions = createSelector(
     const filterKeys = DATA_EXPLORER_FILTERS[section];
     const filtersMeta = { ...sectionMeta };
     if (!filtersMeta) return null;
+
+    const updatedLocations = addGroupId(
+      modifyEUUGROUPinRegions(regions),
+      'regions'
+    ).concat(addGroupId(modifyEUULabel(countries), 'countries'));
     if (filterKeys.includes('regions')) {
-      filtersMeta.regions = addGroupId(
-        modifyEUUGROUPinRegions(regions),
-        'regions'
-      ).concat(addGroupId(countries, 'countries'));
+      filtersMeta.regions = updatedLocations;
     }
     if (filterKeys.includes('locations')) {
-      filtersMeta.locations = addGroupId(
-        modifyEUUGROUPinRegions(regions),
-        'regions'
-      ).concat(addGroupId(countries, 'countries'));
+      filtersMeta.locations = updatedLocations;
     }
-    if (filterKeys.includes('countries')) filtersMeta.countries = countries;
+    if (filterKeys.includes('countries')) { filtersMeta.countries = modifyEUULabel(countries); }
     if (filterKeys.includes('data-sources')) {
       filtersMeta['data-sources'] = sourceVersions;
     }
-
     const filterOptions = {};
     filterKeys.forEach(f => {
       const options = getOptions(section, f, filtersMeta, query, category);

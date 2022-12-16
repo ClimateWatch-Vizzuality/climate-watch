@@ -13,7 +13,9 @@ import { sortByIndexAndNotInfo, getLabels } from 'components/ndcs/shared/utils';
 import {
   europeSlug,
   europeanCountries,
-  europeGroupExplorerPagesSlug
+  europeGroupExplorerPagesSlug,
+  europeGroupLabel,
+  europeLabel
 } from 'app/data/european-countries';
 import { getIsShowEUCountriesChecked } from 'components/ndcs/shared/explore-map/explore-map-selectors';
 import { NET_ZERO_POSITIVE_LABELS, TOP_EMITTERS_OPTION } from 'data/constants';
@@ -70,7 +72,7 @@ export const getLocations = createSelector(
       regionOptions.push({
         label:
           region.iso_code3 === europeSlug
-            ? 'European Union'
+            ? europeGroupLabel
             : region.wri_standard_name,
         value:
           region.iso_code3 === europeSlug
@@ -93,7 +95,8 @@ export const getLocations = createSelector(
         updatedCountryOptions.push({
           ...d,
           value: d.iso,
-          groupId: 'countries'
+          groupId: 'countries',
+          label: d.iso === europeSlug ? europeLabel : d.label
         });
       }
     });

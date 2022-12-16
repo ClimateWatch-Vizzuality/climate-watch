@@ -20,7 +20,9 @@ import {
 import {
   europeSlug,
   europeGroupExplorerPagesSlug,
-  europeanCountries
+  europeanCountries,
+  europeLabel,
+  europeGroupLabel
 } from 'app/data/european-countries';
 import {
   DEFAULT_NDC_EXPLORE_CATEGORY_SLUG,
@@ -82,7 +84,7 @@ export const getLocations = createSelector(
       regionOptions.push({
         label:
           region.iso_code3 === europeSlug
-            ? 'European Union'
+            ? europeGroupLabel
             : region.wri_standard_name,
         value:
           region.iso_code3 === europeSlug
@@ -105,7 +107,8 @@ export const getLocations = createSelector(
         updatedCountryOptions.push({
           ...d,
           value: d.iso,
-          groupId: 'countries'
+          groupId: 'countries',
+          label: d.iso === europeSlug ? europeLabel : d.label
         });
       }
     });
