@@ -7,7 +7,6 @@ import {
   toPlural,
   replaceSubscript
 } from 'utils/ghg-emissions';
-import { europeSlug, europeLabel } from 'app/data/european-countries';
 import { sortLabelByAlpha } from 'utils/graphs';
 import {
   GAS_AGGREGATES,
@@ -234,14 +233,6 @@ const getRegionOptions = createSelector(
             label: country.wri_standard_name,
             iso: country.iso_code3
           }));
-
-      // Add European Union (Party) inside the EU group labels
-      if (region.iso_code3 === europeSlug) {
-        regionCountries.push({
-          label: europeLabel,
-          value: europeSlug
-        });
-      }
 
       regionOptions.push({
         label: region.wri_standard_name,
