@@ -68,6 +68,15 @@ export const getLocations = createSelector(
             label: country.wri_standard_name,
             iso: country.iso_code3
           }));
+
+      // Add European Union (Party) inside the EU group labels
+      if (region.iso_code3 === europeSlug) {
+        regionCountries.push({
+          label: europeLabel,
+          value: europeSlug
+        });
+      }
+
       regionOptions.push({
         label:
           region.iso_code3 === europeSlug
