@@ -75,13 +75,13 @@ const getMetaForNoModelFilters = createSelector(
   }
 );
 
-const modifyEUUGROUPinRegions = regions =>
+const modifyEUUGROUPinRegions = (regions, onlyLabel) =>
   regions.map(l => {
     if (l.iso_code3 === europeSlug && l.members) {
       return {
         ...l,
-        wri_standard_name: europeGroupLabel,
-        iso_code3: europeGroupExplorerPagesSlug
+        ...(onlyLabel ? {} : { iso_code3: europeGroupExplorerPagesSlug }),
+        wri_standard_name: europeGroupLabel
       };
     }
     return l;
@@ -118,7 +118,7 @@ const getSectionMeta = createSelector(
     if (DATA_EXPLORER_FILTERS[section].includes('regions')) {
       return {
         ...sectionMeta,
-        regions: modifyEUUGROUPinRegions(regions),
+        regions,
         countries: modifyEUULabel(countries)
       };
     } else if (DATA_EXPLORER_FILTERS[section].includes('countries')) {
@@ -497,17 +497,20 @@ export const getFilterOptions = createSelector(
     const filtersMeta = { ...sectionMeta };
     if (!filtersMeta) return null;
 
-    const updatedLocations = addGroupId(
-      modifyEUUGROUPinRegions(regions),
-      'regions'
-    ).concat(addGroupId(modifyEUULabel(countries), 'countries'));
+    const updatedLocations = modifyEUU =>
+      addGroupId(
+        modifyEUU ? modifyEUUGROUPinRegions(regions) : regions,
+        'regions'
+      ).concat(addGroupId(modifyEUULabel(countries), 'countries'));
     if (filterKeys.includes('regions')) {
-      filtersMeta.regions = updatedLocations;
+      filtersMeta.regions = updatedLocations(false);
     }
     if (filterKeys.includes('locations')) {
-      filtersMeta.locations = updatedLocations;
+      filtersMeta.locations = updatedLocations(true);
     }
-    if (filterKeys.includes('countries')) { filtersMeta.countries = modifyEUULabel(countries); }
+    if (filterKeys.includes('countries')) {
+      filtersMeta.countries = modifyEUULabel(countries);
+    }
     if (filterKeys.includes('data-sources')) {
       filtersMeta['data-sources'] = sourceVersions;
     }
@@ -537,6 +540,7 @@ export const getFilterOptions = createSelector(
         filterOptions[f] = optionsArray;
       }
     });
+
     return filterOptions;
   }
 );
