@@ -3,7 +3,8 @@ layout: default
 title: Developers
 has_children: false
 has_toc: true
-permalink: /_docs/dev
+parent: Developers
+permalink: /_docs/dev/env
 nav_order: 3
 ---
 

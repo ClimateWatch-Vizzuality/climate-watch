@@ -1,7 +1,6 @@
 ---
 layout: default
 title: Domain description and main site sections
-nav_order: 5
 permalink: /_docs/domain-description
 ---
 

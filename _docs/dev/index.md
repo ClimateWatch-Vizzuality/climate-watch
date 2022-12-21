@@ -3,8 +3,8 @@ layout: default
 title: Developers
 has_children: true
 has_toc: true
-permalink: /_docs/dev
-nav_order: 3
+permalink: /_docs/dev/recharts
+nav_order: 1
 ---
 
-Developer docs intro
+Developers documentation

@@ -8,12 +8,12 @@ permalink: /
 {: .no_toc }
 
 This documentation is mainly an onboarding document to Climate Watch for Vizzuality members.
-It is fundamentally focused on developers, although there are general subjects that could benefit any stakeholder on providing them with some useful context on project's domain and current state.
+It is fundamentally focused on developers.
 
 Target readers:
-- Developers
-- Scientists
-- Designers
+- [Developers](/_docs/developers)
+- [Scientists](/_docs/scientists)
+- [Designers](/_docs/designers)
 
 ______
 
@@ -29,6 +29,8 @@ ______
 ## About Climate Watch
 
 Climate Watch offers open data, visualizations and analysis to help policymakers, researchers and other stakeholders gather insights on countries' climate progress.
+
+For more information about the concepts, sections and domain visit [this page](/_docs/domain-description).
 
 ## Where should I go now (project setup)
 

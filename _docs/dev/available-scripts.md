@@ -3,8 +3,9 @@ layout: default
 title: Available Scripts
 has_children: false
 has_toc: true
-permalink: /_docs/dev
-nav_order: 3
+parent: Developers
+permalink: /_docs/dev/available-scripts
+nav_order: 1
 ---
 
 # Available Scripts
