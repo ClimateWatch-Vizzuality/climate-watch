@@ -1,3 +1,8 @@
+---
+layout: default
+title: Changelog
+---
+
 # Changelog
 
 For missing information check the notes on the [releases](https://github.com/ClimateWatch-Vizzuality/climate-watch/releases)

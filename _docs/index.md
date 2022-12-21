@@ -21,7 +21,7 @@ ______
 
 Climate Watch offers open data, visualizations and analysis to help policymakers, researchers and other stakeholders gather insights on countries' climate progress.
 
-For more information about the **concepts, sections and domain** visit [this page](/_docs/climate-watch/domain-description).
+For more information about the **concepts, sections and domain** visit [this page](/climate-watch/_docs/domain-description).
 
 ## Where should I go now (project setup)
 

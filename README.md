@@ -1,5 +1,9 @@
 # Climate Watch
 
+[Docs page](https://climatewatch-vizzuality.github.io/climate-watch/){:target="_blank" .btn .btn-outline }
+
+[Changelog](https://climatewatch-vizzuality.github.io/climate-watch//_docs/changelog){:target="_blank" .btn .btn-outline }
+
 Table of Contents:
 
 - [Local Setup](#local-setup)
