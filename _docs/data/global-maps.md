@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Global Maps generation
-parent: Scientists
+parent: Data
 permalink: /_docs/science/global-maps
 ---
 # Global maps generation

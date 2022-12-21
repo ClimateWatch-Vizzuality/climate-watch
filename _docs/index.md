@@ -12,8 +12,7 @@ It is fundamentally focused on developers.
 
 Target readers:
 - [Developers](/climate-watch/_docs/developers)
-- [Scientists](/climate-watch/_docs/scientists)
-- [Designers](/climate-watch/_docs/designers)
+- [Data](/climate-watch/_docs/data)
 
 ______
 

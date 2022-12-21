@@ -2,7 +2,7 @@
 layout: default
 title: Data format guidelines
 has_toc: true
-parent: Scientists
+parent: Data
 permalink: /_docs/dev/upload-data
 ---
 

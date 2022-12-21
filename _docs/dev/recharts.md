@@ -1,7 +1,6 @@
 ---
 layout: default
-title: Components
-has_children: false
+title: Recharts
 has_toc: true
 parent: Developers
 permalink: /_docs/dev/recharts

@@ -1,8 +1,7 @@
 ---
 layout: default
-title: API and layers
+title: API
 parent: Developers
-has_children: true
 has_toc: true
 nav_order: 1
 permalink: /_docs/dev/API
