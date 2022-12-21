@@ -1,6 +1,6 @@
 ---
 layout: default
-title: State Management
+title: Router
 parent: General architecture
 grand_parent: Developers
 nav_order: 2

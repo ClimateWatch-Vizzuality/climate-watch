@@ -1,6 +1,6 @@
 ---
 layout: default
-title: State Management
+title: Modules and State Management
 parent: General architecture
 grand_parent: Developers
 nav_order: 1
