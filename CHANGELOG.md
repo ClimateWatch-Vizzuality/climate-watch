@@ -1,6 +1,6 @@
-# Climate Watch Changelog
+# Changelog
 
-For missing information check the notes on the releases
+For missing information check the notes on the [releases](https://github.com/ClimateWatch-Vizzuality/climate-watch/releases)
 
 ## [v2.10.8]
   Fix contact form

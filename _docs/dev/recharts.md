@@ -8,7 +8,7 @@ permalink: /_docs/dev/recharts
 nav_order: 5
 ---
 
-# RECHARTS DEFAULT CONFIG
+# Recharts default config
 
 We are using [recharts](https://recharts.org/en-US/) library to build the data visualizations inside Climate Watch and this are the defaults that we use as a reference.
 

@@ -11,29 +11,18 @@ This documentation is mainly an onboarding document to Climate Watch for Vizzual
 It is fundamentally focused on developers.
 
 Target readers:
-- [Developers](/_docs/developers)
-- [Scientists](/_docs/scientists)
-- [Designers](/_docs/designers)
+- [Developers](/_docs/climate-watch/developers)
+- [Scientists](/_docs/climate-watch/scientists)
+- [Designers](/_docs/climate-watch/designers)
 
 ______
-
-<details open markdown="block">
-  <summary>
-    Table of contents
-  </summary>
-  {: .text-delta }
-- TOC
-{:toc}
-</details>
 
 ## About Climate Watch
 
 Climate Watch offers open data, visualizations and analysis to help policymakers, researchers and other stakeholders gather insights on countries' climate progress.
 
-For more information about the concepts, sections and domain visit [this page](/_docs/domain-description).
+For more information about the **concepts, sections and domain** visit [this page](/_docs/climate-watch/domain-description).
 
 ## Where should I go now (project setup)
 
-If you are a technician and want to jump start into contributting to the repo go ahead and head to the README of the project, where you'll find instructions for the setup.
-
-[README](https://github.com/Vizzuality/climate-watch/blob/main/README.md){:target="_blank" .btn .btn-outline }
+If you are a technician and want to jump start into contributting to the repo go ahead and head to the [README](https://github.com/Vizzuality/climate-watch/blob/main/README.md){:target="_blank" .btn .btn-outline } of the project, where you'll find instructions for the setup.

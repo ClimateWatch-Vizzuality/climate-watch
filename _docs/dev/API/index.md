@@ -12,6 +12,15 @@ permalink: /_docs/dev/API
 
 This application is using an API from the rails backend (CW_API) as other services like the Emissions Pathways API (ESP_API) or the Global Forest Watch API (GFW_API).
 
+<details open markdown="block">
+  <summary>
+    Table of contents
+  </summary>
+  {: .text-delta }
+- TOC
+{:toc}
+</details>
+
 ## Climate Watch API
 
 # API docs
