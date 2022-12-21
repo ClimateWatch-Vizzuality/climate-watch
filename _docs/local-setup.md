@@ -1,6 +1,7 @@
 ---
 layout: default
 title: Local setup
+permalink: /_docs/local-setup
 ---
 
 # Local setup

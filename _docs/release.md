@@ -1,6 +1,7 @@
 ---
 layout: default
 title: Release
+permalink: /_docs/release
 ---
 
 # Release

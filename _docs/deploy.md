@@ -1,6 +1,7 @@
 ---
 layout: default
 title: Deploy
+permalink: /_docs/deploy
 ---
 
 # Deploy

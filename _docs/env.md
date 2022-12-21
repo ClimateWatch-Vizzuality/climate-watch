@@ -1,10 +1,7 @@
 ---
 layout: default
 title: Environment variables
-has_children: false
-has_toc: true
-parent: Developers
-permalink: /_docs/dev/env
+permalink: /_docs/env
 nav_order: 3
 ---
 

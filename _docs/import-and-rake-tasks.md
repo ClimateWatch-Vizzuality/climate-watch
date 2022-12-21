@@ -1,10 +1,7 @@
 ---
 layout: default
 title: Import and rake tasks
-has_children: false
-has_toc: true
-parent: Developers
-permalink: /_docs/dev/import-rake
+permalink: /_docs/import-rake
 nav_order: 4
 ---
 

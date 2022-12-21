@@ -1,10 +1,7 @@
 ---
 layout: default
 title: Available Scripts
-has_children: false
-has_toc: true
-parent: Developers
-permalink: /_docs/dev/available-scripts
+permalink: /_docs/available-scripts
 nav_order: 1
 ---
 
@@ -22,19 +19,23 @@ You will also see any lint errors in the console.
 
 ### `yarn test`
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Launches the available tests (with Jest).<br>
 
 ### `yarn build`
 
 Builds the app for production to the `build` folder.<br>
 It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.<br>
 Your app is ready to be deployed!
+
+### `yarn rails:cleanimport`
+
+Drops, creates, migrates and imports the Database to get a full clean import (very slow process)
 
 ### `yarn deploy:staging`
 
-Drops the database and imports
+Deploy to staging
 
 ### `yarn deploy:production`
+
+Deploy to production
