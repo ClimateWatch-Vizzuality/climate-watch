@@ -9,7 +9,6 @@ permalink: /
 
 This documentation is mainly an onboarding document to Climate Watch. It is fundamentally focused on developers.
 
-Target readers:
 - [Developers](/climate-watch/_docs/developers)
 - [Data](/climate-watch/_docs/data)
 - [Local Setup](/climate-watch/_docs/local-setup)
