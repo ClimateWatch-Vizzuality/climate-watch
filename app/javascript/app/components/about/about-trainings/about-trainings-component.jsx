@@ -22,7 +22,7 @@ const AboutTrainings = () => (
         Subscribe to our{' '}
         <a
           href="https://www.climatewatchdata.org/about/contact"
-          target="_parent"
+          target="_blank"
           rel="noopener noreferrer"
         >
           monthly newsletter
