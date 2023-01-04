@@ -40,7 +40,7 @@ module Api
               else
                 %w(
                   historical_emissions_pik
-                  historical_emissions_cait
+                  historical_emissions_climate_watch
                   historical_emissions_unfccc
                 )
               end

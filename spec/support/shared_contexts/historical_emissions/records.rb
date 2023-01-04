@@ -8,7 +8,7 @@ RSpec.shared_context 'historical emissions records' do
   let!(:record1) {
     FactoryBot.create(
       :historical_emissions_record,
-      data_source: source_CAIT,
+      data_source: source_CW,
       sector: sector_energy,
       gas: gas_CO2,
       gwp: gwp_AR2,

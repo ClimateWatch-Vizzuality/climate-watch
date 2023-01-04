@@ -7,8 +7,8 @@ RSpec.describe ImportCountryProfile do
     {
       "#{CW_FILES_PREFIX}country_profile/country_key.csv" => <<~END,
         "file","metadata_info_button","column_name","short_name","long_name","time_series"
-        "country_context.csv","historical_emissions_CAIT","emissions_total",,"Total Emissions (MtCO2e)","FALSE"
-        "country_context.csv","historical_emissions_CAIT","emissions_capita",,"Emissions per Capita (tCO2e/person)","FALSE"
+        "country_context.csv","historical_emissions_climate_watch","emissions_total",,"Total Emissions (MtCO2e)","FALSE"
+        "country_context.csv","historical_emissions_climate_watch","emissions_capita",,"Emissions per Capita (tCO2e/person)","FALSE"
         "country_adaptation.csv","Vulnerability ","vulnerability","Vulnerability","ND-GAIN vulnerability score","FALSE"
         "subnational_city.csv","GCOM","city_badge_type",,"Population and badges by commited cities","TRUE"
         "subnational_company.csv","SBT","company_target_qualification",,"Targets set by company","TRUE"
@@ -84,7 +84,7 @@ RSpec.describe ImportCountryProfile do
     indicator = CountryProfile::Indicator.find_by(slug: 'emissions_capita')
     expect(indicator.name).to eq('Emissions per Capita (tCO2e/person)')
     expect(indicator.file).to eq('country_context.csv')
-    expect(indicator.metadata_source).to eq('historical_emissions_CAIT')
+    expect(indicator.metadata_source).to eq('historical_emissions_climate_watch')
 
     indicator = CountryProfile::Indicator.find_by(slug: 'company_target_qualification')
     expect(indicator.values.find_by(location: aut, category: '1.5°C', year: 2020).value).to eq('3.0')

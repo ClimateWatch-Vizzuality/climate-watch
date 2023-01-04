@@ -95,11 +95,6 @@ export const QUANTIFICATIONS_CONFIG = {
 export const DATA_SCALE = 1000000;
 
 export const DEFAULT_EMISSIONS_SELECTIONS = {
-  CAIT: {
-    gas: 'All GHG',
-    sector: 'Total including LUCF',
-    location: 'WORLD'
-  },
   'Climate Watch': {
     gas: 'All GHG',
     sector: 'Total including LUCF',
@@ -390,8 +385,8 @@ export const AGRICULTURE_INDICATORS_MAP_BUCKETS = {
 export const DEFAULT_NDC_EXPLORE_CATEGORY_SLUG = 'unfccc_process';
 
 export const CATEGORY_SOURCES = {
-  NDC_EXPLORE: ['Climate Watch', 'CAIT', 'WB', 'NDC Explorer', 'UNICEF'],
-  NDC_CONTENT: ['Climate Watch', 'CAIT', 'WB', 'NDC Explorer', 'UNICEF']
+  NDC_EXPLORE: ['Climate Watch', 'WB', 'NDC Explorer', 'UNICEF'],
+  NDC_CONTENT: ['Climate Watch', 'WB', 'NDC Explorer', 'UNICEF']
 };
 
 export const ENHANCEMENT_CATEGORIES = [

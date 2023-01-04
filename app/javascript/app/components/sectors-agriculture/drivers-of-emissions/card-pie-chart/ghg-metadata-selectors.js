@@ -20,9 +20,7 @@ const getGhgEmissionGas = createSelector([getGhgGas], gases => {
 
 const getGhgEmissionSource = createSelector([getGhgSources], sources => {
   if (!sources) return null;
-  const defaultSource = sources.find(
-    s => s.label === 'CAIT' || s.label === 'Climate Watch'
-  );
+  const defaultSource = sources.find(s => s.label === 'Climate Watch');
   return defaultSource || sources[0];
 });
 

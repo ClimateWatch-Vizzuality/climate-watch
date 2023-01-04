@@ -148,7 +148,6 @@ export const DATA_EXPLORER_SECTIONS = {
 export const DATA_EXPLORER_METHODOLOGY_SOURCE = {
   'historical-emissions': {
     PIK: ['historical_emissions_pik'],
-    CAIT: ['historical_emissions_cait'],
     'Climate Watch': ['historical_emissions_climate_watch'],
     'UNFCCC Annex I': ['historical_emissions_unfccc'],
     'UNFCCC Non-Annex I': ['historical_emissions_unfccc'],
