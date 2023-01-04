@@ -1,19 +1,33 @@
+/* eslint-disable max-len */
 /* eslint-disable no-confusing-arrow */
 import { createSelector } from 'reselect';
-import {
-  getColorByIndex,
-  createLegendBuckets,
-  shouldShowPath
-} from 'utils/map';
+import { getColorByIndex, createLegendBuckets } from 'utils/map';
+import { arrayToSentence } from 'utils/utils';
+import { sortLabelByAlpha } from 'utils/graphs';
 import uniqBy from 'lodash/uniqBy';
 import sortBy from 'lodash/sortBy';
 import { generateLinkToDataExplorer } from 'utils/data-explorer';
 import getIPPaths from 'app/data/world-50m-paths';
-import { COUNTRY_STYLES } from 'components/ndcs/shared/constants';
+
 import { sortByIndexAndNotInfo, getLabels } from 'components/ndcs/shared/utils';
-import { europeSlug, europeanCountries } from 'app/data/european-countries';
+import {
+  europeSlug,
+  europeanCountries,
+  europeGroupExplorerPagesSlug,
+  europeGroupLabel,
+  europeLabel
+} from 'app/data/european-countries';
 import { getIsShowEUCountriesChecked } from 'components/ndcs/shared/explore-map/explore-map-selectors';
-import { NET_ZERO_POSITIVE_LABELS } from 'data/constants';
+import { NET_ZERO_POSITIVE_LABELS, TOP_EMITTERS_OPTION } from 'data/constants';
+import {
+  selectedLocationsFunction,
+  selectedCountriesISOFunction,
+  selectedCountriesFunction,
+  categoryIndicatorsFunction,
+  pathsWithStylesFunction,
+  locationsNamesFunction,
+  isDefaultLocationSelectedFunction
+} from '../shared/selectors';
 
 const NO_DOCUMENT_SUBMITTED = 'No Document Submitted';
 
@@ -25,6 +39,95 @@ const getZoom = state => state.map.zoom || null;
 export const getDonutActiveIndex = state =>
   state.exploreMap.activeIndex || null;
 
+const getRegions = state =>
+  (state && state.regions && state.regions.data) || null;
+
+export const getLocations = createSelector(
+  [getRegions, getCountries],
+  (regions, countries) => {
+    if (!regions || !countries || !regions.length || !countries.length) {
+      return null;
+    }
+    const countryOptions = countries.map(country => ({
+      iso: country.iso_code3,
+      label: country.wri_standard_name
+    }));
+    const SOURCES = ['CAIT', 'Climate Watch'];
+
+    const regionOptions = [TOP_EMITTERS_OPTION];
+    const updatedRegions = regions;
+    updatedRegions.forEach(region => {
+      const regionMembers =
+        region.members && region.members.map(m => m.iso_code3 || m.iso);
+      const regionCountries =
+        region.members &&
+        region.members
+          .filter(
+            m => !m.ghg_sources || SOURCES.some(s => m.ghg_sources.includes(s))
+          )
+          .map(country => ({
+            label: country.wri_standard_name,
+            iso: country.iso_code3
+          }));
+
+      // Add European Union (Party) inside the EU group labels
+      if (region.iso_code3 === europeSlug) {
+        regionCountries.push({
+          label: europeLabel,
+          value: europeSlug
+        });
+      }
+
+      regionOptions.push({
+        label:
+          region.iso_code3 === europeSlug
+            ? europeGroupLabel
+            : region.wri_standard_name,
+        value:
+          region.iso_code3 === europeSlug
+            ? europeGroupExplorerPagesSlug
+            : region.iso_code3,
+        iso:
+          region.iso_code3 === europeSlug
+            ? europeGroupExplorerPagesSlug
+            : region.iso_code3,
+        expandsTo: regionMembers,
+        regionCountries,
+        groupId: 'regions'
+      });
+    });
+    const updatedCountryOptions = [];
+    const regionISOs = regionOptions.map(r => r.iso);
+
+    countryOptions.forEach(d => {
+      if (!regionISOs.includes(d.iso)) {
+        updatedCountryOptions.push({
+          ...d,
+          value: d.iso,
+          groupId: 'countries',
+          label: d.iso === europeSlug ? europeLabel : d.label
+        });
+      }
+    });
+    // eslint-disable-next-line no-confusing-arrow
+    const sortedRegions = sortLabelByAlpha(regionOptions).sort(x =>
+      x.value === 'TOP' ? -1 : 0
+    );
+
+    return sortedRegions.concat(sortLabelByAlpha(updatedCountryOptions));
+  }
+);
+
+export const getSelectedLocations = createSelector(
+  [getLocations, getSearch],
+  selectedLocationsFunction
+);
+
+const getSelectedCountries = createSelector(
+  [getSelectedLocations, getRegions, getCountries],
+  selectedCountriesFunction
+);
+
 export const getCategories = createSelector(getCategoriesData, categories =>
   !categories
     ? null
@@ -35,8 +138,19 @@ export const getCategories = createSelector(getCategoriesData, categories =>
     }))
 );
 
-export const getMaximumCountries = createSelector([getCountries], countries =>
-  countries ? countries.length : null
+export const getSelectedCountriesISO = createSelector(
+  [getSelectedCountries],
+  selectedCountriesISOFunction
+);
+
+const getisDefaultLocationSelected = createSelector(
+  [getSelectedLocations],
+  isDefaultLocationSelectedFunction
+);
+
+export const getMaximumCountries = createSelector(
+  getSelectedCountriesISO,
+  countries => countries.length
 );
 
 export const getISOCountries = createSelector([getCountries], countries =>
@@ -89,13 +203,7 @@ export const getSelectedCategory = createSelector(
 
 export const getCategoryIndicators = createSelector(
   [getIndicatorsParsed, getSelectedCategory],
-  (indicatorsParsed, category) => {
-    if (!indicatorsParsed || !category) return null;
-    const categoryIndicators = indicatorsParsed.filter(
-      indicator => indicator.categoryIds.indexOf(parseInt(category.id, 10)) > -1
-    );
-    return categoryIndicators;
-  }
+  categoryIndicatorsFunction
 );
 
 export const getSelectedIndicator = createSelector(
@@ -125,58 +233,14 @@ export const getMapIndicator = createSelector(
 );
 
 export const getPathsWithStyles = createSelector(
-  [getMapIndicator, getZoom, getIsShowEUCountriesChecked, getIPPaths],
-  (indicator, zoom, showEUCountriesChecked, worldPaths) => {
-    if (!indicator || !worldPaths) return [];
-    const paths = [];
-    const selectedWorldPaths = showEUCountriesChecked
-      ? worldPaths
-      : worldPaths.filter(p => !europeanCountries.includes(p.properties.id));
-    selectedWorldPaths.forEach(path => {
-      if (shouldShowPath(path, zoom)) {
-        const { locations, legendBuckets } = indicator;
-
-        if (!locations) {
-          paths.push({
-            ...path,
-            COUNTRY_STYLES
-          });
-          return null;
-        }
-
-        const iso = path.properties && path.properties.id;
-        const countryData = locations[iso];
-        const strokeWidth = zoom > 2 ? (1 / zoom) * 2 : 0.5;
-        const style = {
-          ...COUNTRY_STYLES,
-          default: {
-            ...COUNTRY_STYLES.default,
-            'stroke-width': strokeWidth,
-            fillOpacity: 1
-          },
-          hover: {
-            ...COUNTRY_STYLES.hover,
-            cursor: 'pointer',
-            'stroke-width': strokeWidth,
-            fillOpacity: 1
-          }
-        };
-        if (countryData && countryData.label_id) {
-          const legendIndex = legendBuckets[countryData.label_id].index;
-          const color = getColorByIndex(legendBuckets, legendIndex);
-          style.default.fill = color;
-          style.hover.fill = color;
-        }
-
-        paths.push({
-          ...path,
-          style
-        });
-      }
-      return null;
-    });
-    return paths;
-  }
+  [
+    getMapIndicator,
+    getZoom,
+    getIsShowEUCountriesChecked,
+    getIPPaths,
+    getSelectedCountriesISO
+  ],
+  pathsWithStylesFunction
 );
 
 export const getLinkToDataExplorer = createSelector(
@@ -200,8 +264,8 @@ const percentage = (value, total) => (value * 100) / total;
 // Chart data methods
 
 export const getLegend = createSelector(
-  [getMapIndicator, getMaximumCountries],
-  (indicator, maximumCountries) => {
+  [getMapIndicator, getMaximumCountries, getSelectedCountriesISO],
+  (indicator, maximumCountries, selectedCountriesISO) => {
     if (!indicator || !indicator.legendBuckets || !maximumCountries) {
       return null;
     }
@@ -209,14 +273,19 @@ export const getLegend = createSelector(
       ...indicator.legendBuckets[id],
       id
     }));
+    const selectedLocationValues = Object.entries(indicator.locations)
+      .map(([iso, value]) =>
+        selectedCountriesISO.includes(iso) ? value : undefined
+      )
+      .filter(Boolean);
+
     const legendItems = uniqBy(
       bucketsWithId.map(label => {
-        let countriesNumber = Object.values(indicator.locations).filter(
+        let countriesNumber = selectedLocationValues.filter(
           l => l.label_id === parseInt(label.id, 10)
         ).length;
         if (label.name === NO_DOCUMENT_SUBMITTED) {
-          countriesNumber =
-            maximumCountries - Object.values(indicator.locations).length;
+          countriesNumber = maximumCountries - selectedLocationValues.length;
         }
         return {
           ...label,
@@ -261,10 +330,22 @@ export const getTooltipCountryValues = createSelector(
 export const getIndicatorEmissionsData = (
   emissionsIndicator,
   selectedIndicator,
-  legend
+  legend,
+  selectedCountriesISO,
+  isDefaultLocationSelected
 ) => {
   if (!emissionsIndicator) return null;
-  const emissionPercentages = emissionsIndicator.locations;
+  const emissionPercentages = isDefaultLocationSelected
+    ? Object.entries(emissionsIndicator.locations).reduce(
+      (acc, [iso, value]) => {
+        if (selectedCountriesISO.includes(iso)) {
+          acc[iso] = value;
+        }
+        return acc;
+      },
+      {}
+    )
+    : emissionsIndicator.locations;
   let summedPercentage = 0;
   const data = legend.map(legendItem => {
     let legendItemValue = 0;
@@ -281,7 +362,11 @@ export const getIndicatorEmissionsData = (
         if (locationIso === europeSlug) {
           const EUTotal = parseFloat(emissionPercentages[europeSlug].value);
           const europeanLocationsValue = europeanLocationIsos.reduce(
-            (acc, iso) => acc + parseFloat(emissionPercentages[iso].value),
+            (acc, iso) =>
+              acc +
+              (emissionPercentages[iso]
+                ? parseFloat(emissionPercentages[iso].value)
+                : 0),
             0
           );
           legendItemValue += EUTotal - europeanLocationsValue; // To avoid double counting
@@ -316,12 +401,27 @@ export const getIndicatorEmissionsData = (
     }
   }
 
-  return data;
+  return sortBy(
+    data.filter(d => d.value !== 0),
+    'value'
+  ).reverse();
 };
 
 export const getEmissionsCardData = createSelector(
-  [getLegend, getMapIndicator, getIndicatorsData],
-  (legend, selectedIndicator, indicators) => {
+  [
+    getLegend,
+    getMapIndicator,
+    getIndicatorsData,
+    getSelectedCountriesISO,
+    getisDefaultLocationSelected
+  ],
+  (
+    legend,
+    selectedIndicator,
+    indicators,
+    selectedCountriesISO,
+    isDefaultLocationSelected
+  ) => {
     if (!legend || !selectedIndicator || !indicators) {
       return null;
     }
@@ -332,14 +432,14 @@ export const getEmissionsCardData = createSelector(
     let data = getIndicatorEmissionsData(
       emissionsIndicator,
       selectedIndicator,
-      legend
+      legend,
+      selectedCountriesISO,
+      isDefaultLocationSelected
     );
 
     // Remove extra No document submitted. TODO: Fix in data
-    data = sortBy(
-      data.filter(d => d.name !== 'noDocumentSubmitted'),
-      'value'
-    );
+    data = data.filter(d => d.name !== 'noDocumentSubmitted');
+
     const config = {
       animation: true,
       innerRadius: 50,
@@ -362,9 +462,24 @@ export const getEmissionsCardData = createSelector(
   }
 );
 
+export const getLocationsNames = createSelector(
+  [getSelectedLocations, getRegions, getCountries],
+  locationsNamesFunction
+);
+
 export const getSummaryCardData = createSelector(
-  [getIndicatorsData],
-  indicators => {
+  [
+    getIndicatorsData,
+    getLocationsNames,
+    getSelectedCountriesISO,
+    getisDefaultLocationSelected
+  ],
+  (
+    indicators,
+    locationNames,
+    selectedCountriesISO,
+    isDefaultLocationSelected
+  ) => {
     if (!indicators) return null;
     const netZeroIndicator = indicators.find(i => i.slug === 'nz_status');
     if (!netZeroIndicator) return null;
@@ -404,17 +519,24 @@ export const getSummaryCardData = createSelector(
         0
       );
     const roundedEmissions = Math.round(emissionsNumber * 10) / 10;
+
     return {
-      value: partiesNumber,
-      description: ` Parties, representing ${countriesNumber} countries and ${roundedEmissions}% of global GHG emissions, have communicated a net-zero target`
+      value: isDefaultLocationSelected
+        ? partiesNumber
+        : selectedCountriesISO.length,
+      description: isDefaultLocationSelected
+        ? ` Parties, representing ${countriesNumber} countries and ${roundedEmissions}% of global GHG emissions, have communicated a net-zero target`
+        : ` Parties (representing ${arrayToSentence(locationNames)})`
     };
   }
 );
 
 export const getPngSelectionSubtitle = createSelector(
-  [getSelectedIndicator, getSelectedCategory],
-  (indicator, category) => {
+  [getSelectedIndicator, getSelectedCategory, getLocationsNames],
+  (indicator, category, locationNames) => {
     if (!indicator || !category) return null;
-    return `Category: ${category.label}; Indicator: ${indicator.label}.`;
+    return `Category: ${category.label}; Indicator: ${
+      indicator.label
+    }; Countries and Regions: ${arrayToSentence(locationNames)}.`;
   }
 );

@@ -74,7 +74,7 @@ export const FIRST_TABLE_HEADERS = {
 
 export const FILTER_DEFAULTS = {
   'historical-emissions': {
-    'data-sources': 'CAIT',
+    'data-sources': 'Climate Watch',
     regions: ALL_SELECTED,
     gases: 'All GHG',
     sectors: 'Total including LUCF'
@@ -83,18 +83,18 @@ export const FILTER_DEFAULTS = {
     categories: 'UNFCCC Process',
     indicators: ALL_SELECTED,
     sectors: ALL_SELECTED,
-    countries: ALL_SELECTED
+    locations: ALL_SELECTED
   },
   'lts-content': {
     categories: 'Communication of Long-term Strategy',
     indicators: ALL_SELECTED,
     sectors: ALL_SELECTED,
-    countries: ALL_SELECTED
+    locations: ALL_SELECTED
   },
   'net-zero-content': {
     categories: 'Target Description',
     indicators: ALL_SELECTED,
-    countries: ALL_SELECTED
+    locations: ALL_SELECTED
   },
   'ndc-sdg-linkages': {
     countries: ALL_SELECTED,
@@ -149,6 +149,7 @@ export const DATA_EXPLORER_METHODOLOGY_SOURCE = {
   'historical-emissions': {
     PIK: ['historical_emissions_pik'],
     CAIT: ['historical_emissions_cait'],
+    'Climate Watch': ['historical_emissions_climate_watch'],
     'UNFCCC Annex I': ['historical_emissions_unfccc'],
     'UNFCCC Non-Annex I': ['historical_emissions_unfccc'],
     GCP: ['historical_emissions_gcp']
@@ -186,9 +187,9 @@ export const DATA_EXPLORER_FILTERS = {
     'subcategories',
     'indicators'
   ],
-  'ndc-content': ['categories', 'indicators', 'sectors', 'countries'], // TODO: add focus when ready
-  'lts-content': ['categories', 'indicators', 'sectors', 'countries'], // TODO: add focus when ready
-  'net-zero-content': ['categories', 'indicators', 'countries'] // TODO: add focus when ready
+  'ndc-content': ['categories', 'indicators', 'sectors', 'locations'], // TODO: add focus when ready
+  'lts-content': ['categories', 'indicators', 'sectors', 'locations'], // TODO: add focus when ready
+  'net-zero-content': ['categories', 'indicators', 'locations'] // TODO: add focus when ready
 };
 
 // The dropdown named as the keys will be deleted if one of the values column changes
@@ -239,7 +240,8 @@ export const DATA_EXPLORER_TO_MODULES_PARAMS = {
     },
     indicators: {
       key: 'indicator'
-    }
+    },
+    locations: { key: 'locations' }
   },
   'lts-content': {
     sectors: {
@@ -250,7 +252,8 @@ export const DATA_EXPLORER_TO_MODULES_PARAMS = {
     },
     indicators: {
       key: 'indicator'
-    }
+    },
+    locations: { key: 'locations' }
   },
   'net-zero-content': {
     categories: {
@@ -258,7 +261,8 @@ export const DATA_EXPLORER_TO_MODULES_PARAMS = {
     },
     indicators: {
       key: 'indicator'
-    }
+    },
+    locations: { key: 'locations' }
   },
   'emission-pathways': {
     locations: {
@@ -318,13 +322,43 @@ export const GROUPED_OR_MULTI_SELECT_FIELDS = {
   'historical-emissions': [
     {
       key: 'regions',
-      label: 'Countries and Regions',
+      label: 'Parties and Regions',
       groups: [
         { groupId: 'regions', title: 'Regions' },
-        { groupId: 'countries', title: 'Countries' }
+        { groupId: 'countries', title: 'Parties' }
       ]
     },
     { key: 'gases' }
+  ],
+  'ndc-content': [
+    {
+      key: 'locations',
+      label: 'Parties and Regions',
+      groups: [
+        { groupId: 'regions', title: 'Regions' },
+        { groupId: 'countries', title: 'Parties' }
+      ]
+    }
+  ],
+  'lts-content': [
+    {
+      key: 'locations',
+      label: 'Parties and Regions',
+      groups: [
+        { groupId: 'regions', title: 'Regions' },
+        { groupId: 'countries', title: 'Parties' }
+      ]
+    }
+  ],
+  'net-zero-content': [
+    {
+      key: 'locations',
+      label: 'Parties and Regions',
+      groups: [
+        { groupId: 'regions', title: 'Regions' },
+        { groupId: 'countries', title: 'Parties' }
+      ]
+    }
   ],
   'emission-pathways': [{ key: 'scenarios' }]
 };
@@ -333,7 +367,10 @@ export const DATA_EXPLORER_PER_PAGE = 200;
 
 export const SECTION_NAMES = {
   pathways: 'emission-pathways',
-  historicalEmissions: 'historical-emissions'
+  historicalEmissions: 'historical-emissions',
+  ndc: 'ndc-content',
+  lts: 'lts-content',
+  netZero: 'net-zero-content'
 };
 
 export const FILTER_NAMES = {
@@ -342,7 +379,8 @@ export const FILTER_NAMES = {
   indicators: 'indicators',
   categories: 'categories',
   subcategories: 'subcategories',
-  regions: 'regions'
+  regions: 'regions',
+  locations: 'locations'
 };
 
 export const FILTERED_FIELDS = {

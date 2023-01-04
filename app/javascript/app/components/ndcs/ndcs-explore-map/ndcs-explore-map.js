@@ -1,13 +1,18 @@
-import { PureComponent, createElement } from 'react';
+import { useState, useEffect, createElement } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
 import qs from 'query-string';
+import castArray from 'lodash/castArray';
 import { handleAnalytics } from 'utils/analytics';
 import { isCountryIncluded } from 'app/utils';
 import { getLocationParamUpdated } from 'utils/navigation';
 import { IGNORED_COUNTRIES_ISOS } from 'data/ignored-countries';
 import { getHoverIndex } from 'components/ndcs/shared/utils';
+import {
+  NO_DOCUMENT_SUBMITTED_COUNTRIES,
+  SWITCH_OPTIONS
+} from 'components/ndcs/shared/constants';
 import { actions as modalActions } from 'components/modal-metadata';
 import { actions as pngModalActions } from 'components/modal-png-download';
 import exploreMapActions from 'components/ndcs/shared/explore-map/explore-map-actions';
@@ -17,7 +22,7 @@ import Component from './ndcs-explore-map-component';
 import {
   getMapIndicator,
   getPathsWithStyles,
-  getISOCountries,
+  getSelectedCountriesISO,
   getLinkToDataExplorer,
   getEmissionsCardData,
   getLegend,
@@ -29,7 +34,10 @@ import {
   getSelectedCategory,
   getTooltipCountryValues,
   getDonutActiveIndex,
-  getPngSelectionSubtitle
+  getPngSelectionSubtitle,
+  getLocations,
+  getSelectedLocations,
+  getVulnerabilityData
 } from './ndcs-explore-map-selectors';
 
 const actions = { ...modalActions, ...exploreMapActions, ...pngModalActions };
@@ -56,11 +64,12 @@ const mapStateToProps = (state, { location }) => {
     selectedDocument: getSelectedDocument(ndcsExploreWithSelection),
     selectedCategory: getSelectedCategory(ndcsExploreWithSelection),
     selectedIndicator: getMapIndicator(ndcsExploreWithSelection),
+    selectedLocations: getSelectedLocations(ndcsExploreWithSelection),
     documents: getDocuments(ndcsExploreWithSelection),
     categories: getCategories(ndcsExploreWithSelection),
     indicators: getCategoryIndicators(ndcsExploreWithSelection),
     paths: getPathsWithStyles(ndcsExploreWithSelection),
-    isoCountries: getISOCountries(ndcsExploreWithSelection),
+    isoCountries: getSelectedCountriesISO(ndcsExploreWithSelection),
     emissionsCardData: getEmissionsCardData(ndcsExploreWithSelection),
     tooltipCountryValues: getTooltipCountryValues(ndcsExploreWithSelection),
     legendData: getLegend(ndcsExploreWithSelection),
@@ -68,30 +77,66 @@ const mapStateToProps = (state, { location }) => {
     downloadLink: getLinkToDataExplorer(ndcsExploreWithSelection),
     donutActiveIndex: getDonutActiveIndex(ndcsExploreWithSelection),
     checked: getIsShowEUCountriesChecked(ndcsExploreWithSelection),
-    pngSelectionSubtitle: getPngSelectionSubtitle(ndcsExploreWithSelection)
+    pngSelectionSubtitle: getPngSelectionSubtitle(ndcsExploreWithSelection),
+    locations: getLocations(ndcsExploreWithSelection),
+    vulnerabilityData: getVulnerabilityData(ndcsExploreWithSelection)
   };
 };
 const pngDownloadId = 'ndcs-explore-map';
 
-class NDCSExploreMapContainer extends PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = {
-      country: null,
-      tooltipValues: {}
-    };
-  }
+function NDCSExploreMapContainer(props) {
+  const {
+    setModalMetadata,
+    selectedCategory,
+    query,
+    indicator,
+    summaryData,
+    selectActiveDonutIndex,
+    checked
+  } = props;
+  const [country, setCountry] = useState(null);
+  const [tooltipValues, setTooltipValues] = useState({});
+  const [secondCardSelectedTab, setSecondCardSelectedTab] = useState(null);
+  useEffect(() => {
+    selectActiveDonutIndex(0);
+  }, [selectActiveDonutIndex]);
+  useEffect(() => {
+    const vulnerabilityCategories = [
+      'adaptation',
+      'loss_and_damage',
+      'sectoral_adaptation_measures',
+      'transformative_adaptation'
+    ];
+    if (
+      selectedCategory &&
+      vulnerabilityCategories.includes(selectedCategory.value)
+    ) {
+      setSecondCardSelectedTab(SWITCH_OPTIONS[1].value);
+    } else if (secondCardSelectedTab !== SWITCH_OPTIONS[0].value) {
+      setSecondCardSelectedTab(SWITCH_OPTIONS[0].value);
+    }
+  }, [selectedCategory && selectedCategory.value]);
 
-  handleSearchChange = query => {
-    this.updateUrlParams([{ name: 'search', value: query }]);
+  const updateUrlParams = (params, clear) => {
+    const { history, location } = props;
+    history.replace(getLocationParamUpdated(location, params, clear));
   };
 
-  handleCountryClick = (geography, countryData) => {
-    const { isoCountries, history } = this.props;
+  const handleSearchChange = q => {
+    updateUrlParams([{ name: 'search', value: q }]);
+  };
+
+  const handleCountryClick = (geography, countryData) => {
+    const { isoCountries, history } = props;
     const { id: iso, name } = countryData || {};
     const countryIso =
       iso || (geography && geography.properties && geography.properties.id);
-    if (countryIso && isCountryIncluded(isoCountries, countryIso)) {
+
+    if (
+      countryIso &&
+      !NO_DOCUMENT_SUBMITTED_COUNTRIES.some(c => c.iso === countryIso) &&
+      isCountryIncluded(isoCountries, countryIso)
+    ) {
       history.push(`/ndcs/country/${countryIso}`);
       handleAnalytics(
         'NDCS Explore Map',
@@ -101,18 +146,14 @@ class NDCSExploreMapContainer extends PureComponent {
     }
   };
 
-  handleCountryEnter = geography => {
-    const {
-      tooltipCountryValues,
-      legendData,
-      selectActiveDonutIndex,
-      emissionsCardData
-    } = this.props;
+  const handleCountryEnter = geography => {
+    const { tooltipCountryValues, legendData, emissionsCardData } = props;
     const iso = geography.properties && geography.properties.id;
 
     if (IGNORED_COUNTRIES_ISOS.includes(iso)) {
-      // We won't show Taiwan and Western Sahara as an independent country
-      this.setState({ tooltipValues: null, country: null });
+      // We won't show Taiwan and Western Sahara as a independent countries
+      setTooltipValues(null);
+      setCountry(null);
     } else {
       const tooltipValue = tooltipCountryValues && tooltipCountryValues[iso];
       if (tooltipValue && tooltipValue.labelId) {
@@ -131,21 +172,31 @@ class NDCSExploreMapContainer extends PureComponent {
         );
       }
 
-      const tooltipValues = {
+      setTooltipValues({
         value: (tooltipValue && tooltipValue.value) || 'Not Applicable',
         indicators: tooltipValue && tooltipValue.indicators,
         countryName: geography.properties && geography.properties.name
-      };
-
-      this.setState({ tooltipValues, country: geography.properties });
+      });
+      setCountry(geography.properties);
     }
   };
 
-  handleSearchChange = query => {
-    this.updateUrlParams([{ name: 'search', value: query }]);
+  const handleLocationsChange = filters => {
+    const filtersArray = castArray(filters);
+    const values = filtersArray.map(v => v.value);
+    const resetToWorld = values[values.length - 1] === 'WORLD';
+    const value = resetToWorld
+      ? []
+      : values.filter(v => v !== 'WORLD').join(',');
+    updateUrlParams([
+      {
+        name: 'locations',
+        value
+      }
+    ]);
   };
 
-  handleDropdownChange = (type, selection) => {
+  const handleDropdownChange = (type, selection) => {
     const clearDependency = {
       document: ['category', 'indicator'],
       category: ['indicator']
@@ -167,12 +218,12 @@ class NDCSExploreMapContainer extends PureComponent {
       );
     }
 
-    this.updateUrlParams(params);
+    updateUrlParams(params);
     handleAnalytics('NDCS Explore Map', `Change ${type}`, selection.label);
   };
 
-  handleInfoClick = () => {
-    this.props.setModalMetadata({
+  const handleInfoClick = () => {
+    setModalMetadata({
       customTitle: 'Explore NDCs',
       category: 'NDCS Explore Map',
       slugs: [
@@ -187,56 +238,44 @@ class NDCSExploreMapContainer extends PureComponent {
     });
   };
 
-  handleOnChangeChecked = query => {
-    this.updateUrlParams([{ name: 'showEUCountries', value: query }]);
+  const handleOnChangeChecked = q => {
+    updateUrlParams([{ name: 'showEUCountries', value: q }]);
   };
 
-  updateUrlParams(params, clear) {
-    const { history, location } = this.props;
-    history.replace(getLocationParamUpdated(location, params, clear));
-  }
-
-  handlePngDownloadModal = () => {
-    const { setModalPngDownload } = this.props;
+  const handlePngDownloadModal = () => {
+    const { setModalPngDownload } = props;
     setModalPngDownload({ open: pngDownloadId });
   };
 
-  render() {
-    const {
-      query,
-      indicator,
-      summaryData,
-      selectedCategory,
-      checked
-    } = this.props;
-    const { country: countryData, tooltipValues } = this.state;
-    const noContentMsg = query
-      ? 'No results found'
-      : 'There is no data for this indicator';
-    return createElement(Component, {
-      ...this.props,
-      pngDownloadId,
-      handleCountryClick: this.handleCountryClick,
-      handleCountryEnter: this.handleCountryEnter,
-      handleInfoClick: this.handleInfoClick,
-      noContentMsg,
-      handleSearchChange: this.handleSearchChange,
-      handleDocumentChange: selection =>
-        this.handleDropdownChange('document', selection),
-      handleCategoryChange: selection =>
-        this.handleDropdownChange('category', selection),
-      handleIndicatorChange: selection =>
-        this.handleDropdownChange('indicator', selection),
-      handleOnChangeChecked: this.handleOnChangeChecked,
-      handlePngDownloadModal: this.handlePngDownloadModal,
-      checked,
-      indicator,
-      summaryData,
-      selectedCategory,
-      countryData,
-      tooltipValues
-    });
-  }
+  const noContentMsg = query
+    ? 'No results found'
+    : 'There is no data for this indicator';
+  return createElement(Component, {
+    ...props,
+    pngDownloadId,
+    handleCountryClick,
+    handleCountryEnter,
+    handleInfoClick,
+    noContentMsg,
+    handleSearchChange,
+    handleDocumentChange: selection =>
+      handleDropdownChange('document', selection),
+    handleCategoryChange: selection =>
+      handleDropdownChange('category', selection),
+    handleIndicatorChange: selection =>
+      handleDropdownChange('indicator', selection),
+    handleOnChangeChecked,
+    handleLocationsChange,
+    handlePngDownloadModal,
+    checked,
+    indicator,
+    summaryData,
+    selectedCategory,
+    countryData: country,
+    tooltipValues,
+    secondCardSelectedTab,
+    setSecondCardSelectedTab
+  });
 }
 
 NDCSExploreMapContainer.propTypes = {
@@ -253,7 +292,9 @@ NDCSExploreMapContainer.propTypes = {
   selectActiveDonutIndex: PropTypes.func.isRequired,
   legendData: PropTypes.array,
   checked: PropTypes.bool,
-  tooltipCountryValues: PropTypes.object
+  tooltipCountryValues: PropTypes.object,
+  secondCardSelectedTab: PropTypes.string,
+  setSecondCardSelectedTab: PropTypes.string
 };
 
 export default withRouter(

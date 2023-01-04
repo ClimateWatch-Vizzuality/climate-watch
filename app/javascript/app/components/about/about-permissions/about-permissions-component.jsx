@@ -154,9 +154,9 @@ const AboutPermissions = ({ location }) => (
               part, they should contact FAO directly at copyright@fao.org.
             </li>
             <li>
-              CAIT data are derived from several sources. Any use of the
-              Land-Use Change and Forestry or Agriculture indicator should be
-              cited as FAO 2022, FAOSTAT Emissions Database. Any use of
+              Climate Watch data are derived from several sources. Any use of
+              the Land-Use Change and Forestry or Agriculture indicator should
+              be cited as FAO 2022, FAOSTAT Emissions Database. Any use of
               emissions from fuel combustion data should be cited as GHG
               Emissions from Fuel Combustion, OECD/IEA, 2021
             </li>

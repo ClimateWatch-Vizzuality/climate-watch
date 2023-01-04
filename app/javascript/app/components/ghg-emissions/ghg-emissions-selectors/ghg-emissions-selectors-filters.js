@@ -207,7 +207,6 @@ const getRegionOptions = createSelector(
   ],
   (regions, sourceSelected, options, countries, isSubnational) => {
     if (!regions || !sourceSelected) return null;
-
     const regionOptions = isSubnational ? [] : [TOP_EMITTERS_OPTION];
     const updatedRegions = isSubnational
       ? countries.filter(c => c.iso_code3 === 'USA')
@@ -234,6 +233,7 @@ const getRegionOptions = createSelector(
             label: country.wri_standard_name,
             iso: country.iso_code3
           }));
+
       regionOptions.push({
         label: region.wri_standard_name,
         value: region.iso_code3,

@@ -27,7 +27,7 @@ function countryIncludesInputValue(option, inputValue) {
   return option.label.toLowerCase().startsWith(inputValue.toLowerCase());
 }
 
-const GhgMultiselectDropdowComponent = ({
+const MultiselectDropdownComponent = ({
   label,
   options,
   values,
@@ -209,7 +209,7 @@ const GhgMultiselectDropdowComponent = ({
   );
 };
 
-GhgMultiselectDropdowComponent.propTypes = {
+MultiselectDropdownComponent.propTypes = {
   label: PropTypes.string,
   options: PropTypes.array,
   values: PropTypes.array,
@@ -218,4 +218,4 @@ GhgMultiselectDropdowComponent.propTypes = {
   groups: PropTypes.array
 };
 
-export default GhgMultiselectDropdowComponent;
+export default MultiselectDropdownComponent;

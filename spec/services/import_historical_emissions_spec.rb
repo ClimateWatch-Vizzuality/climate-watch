@@ -15,7 +15,7 @@ object_contents = {
     PIK,,Total including LUCF,
     UNFCCC_AI,AI,Total GHG emissions without LULUCF,
   END
-  ImportHistoricalEmissions::DATA_CAIT_FILEPATH => <<~END,
+  ImportHistoricalEmissions::DATA_CW_FILEPATH => <<~END,
     Country,Source,Sector,Gas,GWP,1990,1991,1992
     ABW,CAIT,Total excluding LUCF,All GHG,AR2,15.21284765,15.28643902,14.01053087,14.02811754
   END

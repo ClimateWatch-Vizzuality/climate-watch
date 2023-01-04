@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import React, { PureComponent } from 'react';
 import cx from 'classnames';
 import PropTypes from 'prop-types';
@@ -37,7 +38,7 @@ class GhgEmissions extends PureComponent {
           {renderLink(
             'nearly three-quarters of global emissions',
             'Energy makes up nearly three-quarters of global emissions',
-            '/ghg-emissions?breakBy=sector&chartType=percentage&source=CAIT'
+            '/ghg-emissions?breakBy=sector&chartType=percentage' // TODO: not sure if source param is needed here, should be new Climate Watch if it is
           )}
           , followed by agriculture. Within the energy sector, the{' '}
           {renderLink(

@@ -4,6 +4,8 @@ import Proptypes from 'prop-types';
 import Header from 'components/header';
 import Intro from 'components/intro';
 import { renderToString } from 'react-dom/server';
+import RegionsProvider from 'providers/regions-provider/regions-provider';
+import CountriesProvider from 'providers/countries-provider/countries-provider';
 
 import layout from 'styles/layout.scss';
 import styles from './net-zero-styles.scss';
@@ -23,7 +25,12 @@ const NetZero = ({ route }) => (
                     (GHG) emissions must be slashed in half during the next
                     decade and reach net-zero early in the second half of the
                     century. Given this need, a growing number of Parties to the
-                    Paris Agreement are adopting net-zero emissions targets. This tracker presents the net-zero targets that have been communicated in a Party’s nationally determined contribution (NDC), long-term low GHG emissions development strategy (LTS), domestic law, policy, or high-level political pledge such as head of state commitment.
+                    Paris Agreement are adopting net-zero emissions targets.
+                    This tracker presents the net-zero targets that have been
+                    communicated in a Party’s nationally determined contribution
+                    (NDC), long-term low GHG emissions development strategy
+                    (LTS), domestic law, policy, or high-level political pledge
+                    such as head of state commitment.
                   </div>
                 </React.Fragment>
               )}
@@ -42,6 +49,8 @@ const NetZero = ({ route }) => (
           </div>
         ))}
     </div>
+    <CountriesProvider />
+    <RegionsProvider />
   </div>
 );
 

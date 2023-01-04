@@ -1,5 +1,7 @@
 import camelCase from 'lodash/camelCase';
+import sortBy from 'lodash/sortBy';
 import { NOT_COVERED_LABEL } from 'data/constants';
+import { europeanCountries } from 'data/european-countries';
 
 const NOT_APPLICABLE_LABEL = 'Not Applicable';
 const NOT_APPLICABLE_OR_NOT_INFO_LABEL = 'Not applicable or No information';
@@ -14,39 +16,68 @@ export const sortByIndexAndNotInfo = (a, b) => {
 export const getIndicatorEmissionsData = (
   emissionsIndicator,
   selectedIndicator,
-  legend
+  legend,
+  selectedCountriesISO,
+  isDefaultLocationSelected
 ) => {
   if (!emissionsIndicator) return null;
-  const emissionPercentages = emissionsIndicator.locations;
+
+  // If we have selected countries we calculate the proportional regional values instead of global
+  const emissionPercentages = isDefaultLocationSelected
+    ? emissionsIndicator.locations
+    : Object.entries(emissionsIndicator.locations).reduce(
+      (acc, [iso, value]) => {
+        if (selectedCountriesISO.includes(iso)) {
+          acc[iso] = value;
+        }
+        return acc;
+      },
+      {}
+    );
   let summedPercentage = 0;
-  const data = legend.map(legendItem => {
+  let data = legend.map(legendItem => {
     let legendItemValue = 0;
     Object.entries(selectedIndicator.locations).forEach(entry => {
       const [locationIso, { label_id: labelId }] = entry;
       if (
         labelId === parseInt(legendItem.id, 10) &&
-        locationIso !== 'EUU' && // To avoid double counting
+        selectedCountriesISO.includes(locationIso) &&
+        // To avoid double counting
+        !(
+          selectedCountriesISO.includes('EUU') &&
+          europeanCountries.includes(locationIso)
+        ) &&
         emissionPercentages[locationIso]
       ) {
         legendItemValue += parseFloat(emissionPercentages[locationIso].value);
       }
     });
     summedPercentage += legendItemValue;
-
     return {
       name: legendItem.name,
       value: legendItemValue
     };
   });
 
-  if (summedPercentage < 100) {
+  if (!isDefaultLocationSelected) {
+    // Readjust percentage values to summedPercentage
+    data = data.map(d => ({
+      ...d,
+      value: summedPercentage === 0 ? 0 : (d.value * 100) / summedPercentage
+    }));
+    // TODO: How to calculate Not covered when we have a country selection
+    // Do we have not covered on this case?
+  } else if (summedPercentage < 100) {
     data.push({
       name: NOT_COVERED_LABEL,
       value: 100 - summedPercentage
     });
   }
 
-  return data;
+  return sortBy(
+    data.filter(d => d.value !== 0),
+    'value'
+  ).reverse();
 };
 
 export const getLabels = ({

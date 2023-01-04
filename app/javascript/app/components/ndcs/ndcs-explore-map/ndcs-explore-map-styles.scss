@@ -97,12 +97,42 @@
   }
 }
 
-.donutContainer {
-  height: 180px;
+.secondCard {
   padding: 15px 25px;
+  display: flex;
+  flex-direction: column;
   font-size: $font-size-sm;
   background-color: $white;
   box-shadow: $box-shadow-light;
+
+  @media #{$tablet-landscape} {
+    padding: 15px 5px;
+
+    .switchOption,
+    .switchSelected {
+      font-size: $font-size-xs;
+    }
+  }
+
+  @media #{$desktop} {
+    padding: 15px 25px;
+  }
+}
+
+.infoIcon {
+  vertical-align: text-bottom;
+}
+
+.switch {
+  max-height: 40px;
+  margin-bottom: 20px;
+}
+
+.switchOption,
+.switchSelected {
+  padding: 8px 15px;
+  width: 50%;
+  text-align: center;
 }
 
 .pieChart {
@@ -110,7 +140,7 @@
 }
 
 .summaryCardContainer {
-  height: 180px;
+  overflow: scroll;
   background-color: $white;
   box-shadow: $box-shadow-light;
   display: flex;
@@ -212,14 +242,10 @@
 }
 
 .filtersGroup {
+  @include columns(6);
+
   &.sticky {
     padding: 10px 0 20px;
-  }
-}
-
-@media #{$tablet-portrait} {
-  .filtersGroup {
-    @include columns(6);
   }
 }
 
@@ -233,42 +259,35 @@
 
 @media #{$tablet-landscape} {
   .filtersLayout {
-    @include row((8, 4));
+    @include columns((8.75, 3.25));
 
     justify-content: space-between;
     margin-bottom: 0;
   }
 
   .filtersGroup {
-    &:not(.withDocumentDropdown) {
-      @include columns(5.8);
+    @include columns(3);
 
-      > *:first-child {
-        @include xy-gutters(0, $gutter-position: 'left');
-      }
-    }
-
-    &.withDocumentDropdown {
-      @include columns(4);
-
-      > *:first-child {
-        margin-left: 0;
-      }
+    > *:first-child {
+      margin-left: 0;
     }
   }
 }
 
 .buttonGroupContainer {
   width: auto;
+  margin: 22px 0;
   min-width: 200px;
   display: flex;
   justify-content: flex-end;
-  margin: 22px 0;
 
-  @include xy-gutters($gutter-position: ('right', 'left'), $gutters: 0);
+  > span {
+    width: 100%;
+  }
 
   @media #{$tablet-landscape} {
     width: 150px;
+    margin: 22px 0;
   }
 
   &.padded {
@@ -277,15 +296,27 @@
 }
 
 .buttonGroup {
-  margin-top: 0;
   min-height: 45px;
   width: 100%;
+  margin-bottom: 10px;
+  margin-right: 20px;
+  margin-top: 0;
 
   @media #{$tablet-portrait} {
     width: 150px;
   }
+}
 
-  margin-right: 20px;
+.shareButton {
+  width: 118px;
+
+  @media #{$tablet-landscape} {
+    width: 100px;
+  }
+
+  @media screen and (min-width: 1210px) {
+    width: 118px;
+  }
 }
 
 .mapInfo {

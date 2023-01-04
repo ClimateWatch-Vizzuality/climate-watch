@@ -1,3 +1,4 @@
+/* eslint-disable no-mixed-operators */
 import React from 'react';
 import { connect } from 'react-redux';
 import html2canvas from 'html2canvas';
@@ -25,17 +26,16 @@ const ModalPngDownloadContainer = props => {
   function handlePngToCanvasDownload() {
     const { id } = props;
     const node = document.querySelector(`#modal-png-content-${id}`);
-    const appNode = document.querySelector('#app');
     const nodePosition = node.getBoundingClientRect();
-    const appScroll = appNode ? appNode.getBoundingClientRect().top : 0;
     const padding = 20;
-    const { width, height, y, x } = nodePosition;
+    const { width, height } = nodePosition;
 
     // We scale the image to have a better resolution for the final screenshot
     const SCALE = 4;
+    if (!node.parentElement) return;
     const config = {
-      y: y - appScroll - padding,
-      x: x - padding,
+      y: 0 - padding,
+      x: 0 - padding,
       width: width + padding * 2,
       height: height + padding * 2,
       scale: SCALE,

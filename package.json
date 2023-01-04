@@ -110,6 +110,7 @@
     "react-dotdotdot": "^1.2.3",
     "react-draggable": "^4.4.3",
     "react-ga": "2.3.5",
+    "react-gtm-module": "^2.0.11",
     "react-helmet": "5.2.0",
     "react-horizontal-timeline": "1.4.0",
     "react-hot-loader": "3.0.0-beta.7",

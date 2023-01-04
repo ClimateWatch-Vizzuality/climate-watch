@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
 import qs from 'query-string';
+import castArray from 'lodash/castArray';
 import { handleAnalytics } from 'utils/analytics';
 import { isCountryIncluded } from 'app/utils';
 import { getLocationParamUpdated } from 'utils/navigation';
@@ -28,7 +29,9 @@ import {
   getSelectedCategory,
   getTooltipCountryValues,
   getDonutActiveIndex,
-  getPngSelectionSubtitle
+  getPngSelectionSubtitle,
+  getLocations,
+  getSelectedLocations
 } from './lts-explore-map-selectors';
 
 const actions = {
@@ -71,7 +74,9 @@ const mapStateToProps = (state, { location }) => {
     selectedCategory: getSelectedCategory(LTSWithSelection),
     checked: getIsShowEUCountriesChecked(LTSWithSelection),
     donutActiveIndex: getDonutActiveIndex(LTSWithSelection),
-    pngSelectionSubtitle: getPngSelectionSubtitle(LTSWithSelection)
+    pngSelectionSubtitle: getPngSelectionSubtitle(LTSWithSelection),
+    locations: getLocations(LTSWithSelection),
+    selectedLocations: getSelectedLocations(LTSWithSelection)
   };
 };
 
@@ -93,11 +98,11 @@ class LTSExploreMapContainer extends PureComponent {
   }
 
   handleOnChangeChecked = query => {
-    this.updateUrlParam({ name: 'showEUCountries', value: query });
+    this.updateUrlParams([{ name: 'showEUCountries', value: query }]);
   };
 
   handleSearchChange = query => {
-    this.updateUrlParam({ name: 'search', value: query });
+    this.updateUrlParams([{ name: 'search', value: query }]);
   };
 
   handleCountryClick = (geography, countryData) => {
@@ -154,23 +159,41 @@ class LTSExploreMapContainer extends PureComponent {
     }
   };
 
+  handleLocationsChange = filters => {
+    const filtersArray = castArray(filters);
+    const values = filtersArray.map(v => v.value);
+    const value =
+      values.length > 1 && values.includes('WORLD')
+        ? values.filter(v => v !== 'WORLD').join(',')
+        : values.join(',');
+    this.updateUrlParams([
+      {
+        name: 'locations',
+        value
+      }
+    ]);
+  };
+
   handleSearchChange = query => {
-    this.updateUrlParam({ name: 'search', value: query });
+    this.updateUrlParams([{ name: 'search', value: query }]);
   };
 
   handleCategoryChange = category => {
-    this.updateUrlParam(
+    this.updateUrlParams([
       {
         name: 'category',
         value: category.value
       },
-      true
-    );
+      {
+        name: 'indicator',
+        value: undefined
+      }
+    ]);
     handleAnalytics('LTS Explore Map', 'Change category', category.label);
   };
 
   handleIndicatorChange = indicator => {
-    this.updateUrlParam({ name: 'indicator', value: indicator.value });
+    this.updateUrlParams([{ name: 'indicator', value: indicator.value }]);
     handleAnalytics('LTS Explore Map', 'Change indicator', indicator.label);
   };
 
@@ -183,9 +206,9 @@ class LTSExploreMapContainer extends PureComponent {
     });
   };
 
-  updateUrlParam(param, clear) {
+  updateUrlParams(param) {
     const { history, location } = this.props;
-    history.replace(getLocationParamUpdated(location, param, clear));
+    history.replace(getLocationParamUpdated(location, param));
   }
 
   handlePngDownloadModal = () => {
@@ -210,6 +233,7 @@ class LTSExploreMapContainer extends PureComponent {
       handleIndicatorChange: this.handleIndicatorChange,
       handleOnChangeChecked: this.handleOnChangeChecked,
       handlePngDownloadModal: this.handlePngDownloadModal,
+      handleLocationsChange: this.handleLocationsChange,
       checked: this.props.checked,
       indicator: this.props.indicator,
       countryData: this.state.country,

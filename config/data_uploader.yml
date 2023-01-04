@@ -35,7 +35,7 @@ platforms:
         datasets:
           - CW_HistoricalEmissions_metadata_sources
           - CW_HistoricalEmissions_metadata_sectors
-          - CW_HistoricalEmissions_CAIT
+          - CW_HistoricalEmissions_ClimateWatch
           - CW_HistoricalEmissions_PIK
           - CW_HistoricalEmissions_UNFCCC
           - CW_HistoricalEmissions_GCP

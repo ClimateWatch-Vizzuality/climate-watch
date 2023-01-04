@@ -1,3 +1,4 @@
+import { europeGroupLabel } from 'app/data/european-countries';
 import {
   CHART_NAMED_COLORS,
   CHART_NAMED_EXTENDED_COLORS,
@@ -99,6 +100,11 @@ export const DEFAULT_EMISSIONS_SELECTIONS = {
     sector: 'Total including LUCF',
     location: 'WORLD'
   },
+  'Climate Watch': {
+    gas: 'All GHG',
+    sector: 'Total including LUCF',
+    location: 'WORLD'
+  },
   PIK: {
     gas: 'KYOTOGHG',
     sector: 'Total excluding LULUCF',
@@ -129,7 +135,7 @@ export const DEFAULT_EMISSIONS_SELECTIONS = {
 export const TOP_EMITTERS_REGION_COUNTRIES = [
   { iso: 'CHN', label: 'China' },
   { iso: 'USA', label: 'United States' },
-  { iso: 'EUU', label: 'European Union' },
+  { iso: 'EUU', label: europeGroupLabel },
   { iso: 'IND', label: 'India' },
   { iso: 'RUS', label: 'Russia' },
   { iso: 'JPN', label: 'Japan' },
@@ -384,8 +390,8 @@ export const AGRICULTURE_INDICATORS_MAP_BUCKETS = {
 export const DEFAULT_NDC_EXPLORE_CATEGORY_SLUG = 'unfccc_process';
 
 export const CATEGORY_SOURCES = {
-  NDC_EXPLORE: ['CAIT', 'WB', 'NDC Explorer', 'UNICEF'],
-  NDC_CONTENT: ['CAIT', 'WB', 'NDC Explorer', 'UNICEF']
+  NDC_EXPLORE: ['Climate Watch', 'CAIT', 'WB', 'NDC Explorer', 'UNICEF'],
+  NDC_CONTENT: ['Climate Watch', 'CAIT', 'WB', 'NDC Explorer', 'UNICEF']
 };
 
 export const ENHANCEMENT_CATEGORIES = [

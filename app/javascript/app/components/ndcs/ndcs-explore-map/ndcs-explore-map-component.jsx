@@ -2,6 +2,8 @@
 /* eslint-disable react/no-danger */
 import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
+import Sticky from 'react-stickynode';
+import cx from 'classnames';
 import { TabletLandscape } from 'components/responsive';
 import Map from 'components/map';
 import AbbrReplace from 'components/abbr-replace';
@@ -10,25 +12,36 @@ import Loading from 'components/loading';
 import Dropdown from 'components/dropdown';
 import ModalMetadata from 'components/modal-metadata';
 import ModalPngDownload from 'components/modal-png-download';
-import { PieChart, MultiLevelDropdown, CheckInput } from 'cw-components';
+import {
+  PieChart,
+  MultiLevelDropdown,
+  CheckInput,
+  Switch
+} from 'cw-components';
 import CustomTooltip from 'components/ndcs/shared/donut-tooltip';
 import ExploreMapTooltip from 'components/ndcs/shared/explore-map-tooltip';
 import { getHoverIndex } from 'components/ndcs/shared/utils';
 import HandIconInfo from 'components/ndcs/shared/hand-icon-info';
 import CustomInnerHoverLabel from 'components/ndcs/shared/donut-custom-label';
 import LegendItem from 'components/ndcs/shared/legend-item';
+import VulnerabilityChart from 'components/ndcs/shared/vulnerability-chart';
 import ShareButton from 'components/button/share-button';
-import Sticky from 'react-stickynode';
-import cx from 'classnames';
+import SEOTags from 'components/seo-tags';
+import GhgMultiselectDropdown from 'components/ghg-multiselect-dropdown';
 import ModalShare from 'components/modal-share';
+
 import NDCSExploreProvider from 'providers/ndcs-explore-provider';
 import NDCSPreviousComparisonProvider from 'providers/ndcs-previous-comparison-provider';
 import DocumentsProvider from 'providers/documents-provider';
+
 import { SEO_PAGES } from 'data/seo';
-import SEOTags from 'components/seo-tags';
+
 import newMapTheme from 'styles/themes/map/map-new-zoom-controls.scss';
 import layout from 'styles/layout.scss';
 import blueCheckboxTheme from 'styles/themes/checkbox/blue-checkbox.scss';
+
+import { SWITCH_OPTIONS } from 'components/ndcs/shared/constants';
+
 import styles from './ndcs-explore-map-styles.scss';
 
 const renderButtonGroup = (
@@ -69,7 +82,7 @@ const renderButtonGroup = (
           }
         ]}
       />
-      <ShareButton />
+      <ShareButton className={styles.shareButton} />
     </span>
     <ModalShare analyticsName="NDC Explore" />
   </div>
@@ -118,6 +131,17 @@ const renderLegend = (legendData, emissionsCardData, isPNG) => (
   </div>
 );
 
+const LOCATION_GROUPS = [
+  {
+    groupId: 'regions',
+    title: 'Regions'
+  },
+  {
+    groupId: 'countries',
+    title: 'Parties'
+  }
+];
+
 function NDCSExploreMap(props) {
   const {
     loading,
@@ -125,6 +149,7 @@ function NDCSExploreMap(props) {
     downloadLink,
     countryData,
     emissionsCardData,
+    vulnerabilityData,
     summaryCardData,
     legendData,
     handleInfoClick,
@@ -133,12 +158,15 @@ function NDCSExploreMap(props) {
     documents,
     categories,
     indicators,
+    locations,
+    handleLocationsChange,
     handleDocumentChange,
     handleCategoryChange,
     handleIndicatorChange,
     selectedDocument,
     selectedCategory,
     selectedIndicator,
+    selectedLocations,
     tooltipValues,
     selectActiveDonutIndex,
     donutActiveIndex,
@@ -146,32 +174,63 @@ function NDCSExploreMap(props) {
     handlePngDownloadModal,
     pngSelectionSubtitle,
     checked,
-    pngDownloadId
+    pngDownloadId,
+    secondCardSelectedTab,
+    setSecondCardSelectedTab
   } = props;
 
   const tooltipParentRef = useRef(null);
   const pieChartRef = useRef(null);
   const [stickyStatus, setStickyStatus] = useState(Sticky.STATUS_ORIGINAL);
-  const renderDonutChart = () => (
-    <div className={styles.donutContainer} ref={pieChartRef}>
-      <PieChart
-        customActiveIndex={donutActiveIndex}
-        onHover={(_, index) => selectActiveDonutIndex(index)}
-        data={emissionsCardData.data}
-        width={200}
-        config={emissionsCardData.config}
-        customTooltip={
-          <CustomTooltip
-            reference={tooltipParentRef.current}
-            chartReference={pieChartRef.current}
-            data={emissionsCardData.data}
-          />
-        }
-        customInnerHoverLabel={CustomInnerHoverLabel}
-        theme={{ pieChart: styles.pieChart }}
+  const renderSecondChartsCard = () => (
+    <div className={styles.secondCard}>
+      <Switch
+        options={SWITCH_OPTIONS}
+        selectedOption={secondCardSelectedTab}
+        onClick={e => setSecondCardSelectedTab(e.value)}
+        theme={{
+          wrapper: styles.switch,
+          option: styles.switchOption,
+          checkedOption: styles.switchSelected
+        }}
       />
+      {secondCardSelectedTab === SWITCH_OPTIONS[0].value ? (
+        renderDonutChart()
+      ) : (
+        <VulnerabilityChart data={vulnerabilityData} />
+      )}
     </div>
   );
+
+  const renderDonutChart = () => {
+    const isRegional =
+      selectedLocations &&
+      selectedLocations.length &&
+      selectedLocations[0].value !== 'WORLD';
+    return (
+      <div ref={pieChartRef}>
+        <PieChart
+          customActiveIndex={donutActiveIndex}
+          onHover={(_, index) => selectActiveDonutIndex(index)}
+          data={emissionsCardData.data}
+          width={200}
+          config={emissionsCardData.config}
+          customTooltip={
+            <CustomTooltip
+              reference={tooltipParentRef.current}
+              chartReference={pieChartRef.current}
+              data={emissionsCardData.data}
+              isRegional={isRegional}
+            />
+          }
+          customInnerHoverLabel={p => (
+            <CustomInnerHoverLabel {...p} isRegional={isRegional} />
+          )}
+          theme={{ pieChart: styles.pieChart }}
+        />
+      </div>
+    );
+  };
 
   // eslint-disable-next-line react/prop-types
   const renderMap = ({ isTablet, png }) => {
@@ -211,13 +270,9 @@ function NDCSExploreMap(props) {
                 <div className="grid-column-item">
                   <div className={styles.filtersLayout}>
                     <div
-                      className={cx(
-                        styles.filtersGroup,
-                        styles.withDocumentDropdown,
-                        {
-                          [styles.sticky]: stickyStatus === Sticky.STATUS_FIXED
-                        }
-                      )}
+                      className={cx(styles.filtersGroup, {
+                        [styles.sticky]: stickyStatus === Sticky.STATUS_FIXED
+                      })}
                       data-tour="ndc-explore-02"
                     >
                       <Dropdown
@@ -258,6 +313,13 @@ function NDCSExploreMap(props) {
                         disabled={loading}
                         onChange={handleIndicatorChange}
                       />
+                      <GhgMultiselectDropdown
+                        label={'Location'}
+                        groups={LOCATION_GROUPS}
+                        options={locations || []}
+                        values={selectedLocations || []}
+                        onSelectionChange={handleLocationsChange}
+                      />
                     </div>
                     {isTablet &&
                       renderButtonGroup(
@@ -284,8 +346,7 @@ function NDCSExploreMap(props) {
                       {!loading && (
                         <React.Fragment>
                           {summaryCardData && renderSummary(summaryCardData)}
-                          {emissionsCardData &&
-                            renderDonutChart(emissionsCardData)}
+                          {emissionsCardData && renderSecondChartsCard()}
                           {legendData &&
                             renderLegend(legendData, emissionsCardData)}
                         </React.Fragment>
@@ -358,7 +419,8 @@ NDCSExploreMap.propTypes = {
   downloadLink: PropTypes.string,
   countryData: PropTypes.object,
   emissionsCardData: PropTypes.object,
-  summaryCardData: PropTypes.object,
+  vulnerabilityData: PropTypes.object,
+  summaryCardData: PropTypes.array,
   legendData: PropTypes.array,
   handleCountryClick: PropTypes.func.isRequired,
   handleCountryEnter: PropTypes.func.isRequired,
@@ -366,10 +428,13 @@ NDCSExploreMap.propTypes = {
   documents: PropTypes.array,
   categories: PropTypes.array,
   indicators: PropTypes.array,
+  locations: PropTypes.array,
   selectedDocument: PropTypes.object,
   selectedCategory: PropTypes.object,
   selectedIndicator: PropTypes.object,
+  selectedLocations: PropTypes.array,
   handleDocumentChange: PropTypes.func,
+  handleLocationsChange: PropTypes.func,
   handleCategoryChange: PropTypes.func,
   handleIndicatorChange: PropTypes.func,
   tooltipValues: PropTypes.object,
@@ -379,7 +444,9 @@ NDCSExploreMap.propTypes = {
   pngSelectionSubtitle: PropTypes.string,
   pngDownloadId: PropTypes.string.isRequired,
   checked: PropTypes.bool,
-  donutActiveIndex: PropTypes.number
+  donutActiveIndex: PropTypes.number,
+  secondCardSelectedTab: PropTypes.string,
+  setSecondCardSelectedTab: PropTypes.string
 };
 
 export default NDCSExploreMap;

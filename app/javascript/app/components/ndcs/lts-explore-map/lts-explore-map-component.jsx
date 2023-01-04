@@ -1,5 +1,5 @@
 /* eslint-disable react/no-danger */
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { TabletLandscape } from 'components/responsive';
 import Map from 'components/map';
@@ -15,6 +15,7 @@ import HandIconInfo from 'components/ndcs/shared/hand-icon-info';
 import CustomInnerHoverLabel from 'components/ndcs/shared/donut-custom-label';
 import LegendItem from 'components/ndcs/shared/legend-item';
 import ShareButton from 'components/button/share-button';
+import GhgMultiselectDropdown from 'components/ghg-multiselect-dropdown';
 import ExploreMapTooltip from 'components/ndcs/shared/explore-map-tooltip';
 import ModalShare from 'components/modal-share';
 import Sticky from 'react-stickynode';
@@ -69,7 +70,7 @@ const renderButtonGroup = (
           }
         ]}
       />
-      <ShareButton />
+      <ShareButton className={styles.shareButton} />
     </span>
     <ModalShare analyticsName="LTS Explore" />
   </div>
@@ -111,6 +112,17 @@ const renderLegend = (legendData, emissionsCardData, isPNG) => (
   </div>
 );
 
+const LOCATION_GROUPS = [
+  {
+    groupId: 'regions',
+    title: 'Regions'
+  },
+  {
+    groupId: 'countries',
+    title: 'Parties'
+  }
+];
+
 function LTSExploreMap(props) {
   const {
     loading,
@@ -127,6 +139,9 @@ function LTSExploreMap(props) {
     indicators,
     selectedIndicator,
     handleCategoryChange,
+    locations,
+    handleLocationsChange,
+    selectedLocations,
     selectedCategory,
     handleIndicatorChange,
     handleOnChangeChecked,
@@ -138,9 +153,16 @@ function LTSExploreMap(props) {
     selectActiveDonutIndex,
     pngDownloadId
   } = props;
+  useEffect(() => {
+    selectActiveDonutIndex(0);
+  }, [selectActiveDonutIndex]);
   const tooltipParentRef = useRef(null);
   const pieChartRef = useRef(null);
   const [stickyStatus, setStickyStatus] = useState(Sticky.STATUS_ORIGINAL);
+  const isRegional =
+    selectedLocations &&
+    selectedLocations.length &&
+    selectedLocations[0].value !== 'WORLD';
   const renderDonutChart = () => (
     <div className={styles.donutContainer} ref={pieChartRef}>
       <PieChart
@@ -155,9 +177,12 @@ function LTSExploreMap(props) {
             chartReference={pieChartRef.current}
             data={emissionsCardData.data}
             itemName={'Parties'}
+            isRegional={isRegional}
           />
         }
-        customInnerHoverLabel={CustomInnerHoverLabel}
+        customInnerHoverLabel={p => (
+          <CustomInnerHoverLabel {...p} isRegional={isRegional} />
+        )}
         theme={{ pieChart: styles.pieChart }}
       />
     </div>
@@ -230,6 +255,13 @@ function LTSExploreMap(props) {
                           selectedIndicator.label.length > 14
                         }
                       />
+                      <GhgMultiselectDropdown
+                        label={'Location'}
+                        groups={LOCATION_GROUPS}
+                        options={locations || []}
+                        values={selectedLocations || []}
+                        onSelectionChange={handleLocationsChange}
+                      />
                     </div>
                     {isTablet &&
                       renderButtonGroup(
@@ -255,7 +287,7 @@ function LTSExploreMap(props) {
                     >
                       {!loading && (
                         <React.Fragment>
-                          {FEATURE_SHOW_LTS_SUMMARY &&
+                          {(isRegional || FEATURE_SHOW_LTS_SUMMARY) &&
                             summaryCardData &&
                             renderSummary(summaryCardData)}
                           {emissionsCardData &&
@@ -330,8 +362,11 @@ LTSExploreMap.propTypes = {
   categories: PropTypes.array,
   indicators: PropTypes.array,
   selectedIndicator: PropTypes.object,
+  selectedLocations: PropTypes.array,
   handleCategoryChange: PropTypes.func,
   selectedCategory: PropTypes.object,
+  locations: PropTypes.array,
+  handleLocationsChange: PropTypes.func,
   tooltipValues: PropTypes.object,
   handleOnChangeChecked: PropTypes.func,
   checked: PropTypes.bool,

@@ -4,6 +4,12 @@ import qs from 'query-string';
 import { findEqual, isANumber, noEmptyValues, useSlug } from 'utils/utils';
 import { isNoColumnField, isNonColumnKey } from 'utils/data-explorer';
 import { isPageContained } from 'utils/navigation';
+import {
+  europeSlug,
+  europeGroupExplorerPagesSlug,
+  europeLabel,
+  europeGroupLabel
+} from 'app/data/european-countries';
 
 import {
   DATA_EXPLORER_BLOCKLIST,
@@ -69,6 +75,29 @@ const getMetaForNoModelFilters = createSelector(
   }
 );
 
+const modifyEUUGROUPinRegions = (regions, onlyLabel) =>
+  regions.map(l => {
+    if (l.iso_code3 === europeSlug && l.members) {
+      return {
+        ...l,
+        ...(onlyLabel ? {} : { iso_code3: europeGroupExplorerPagesSlug }),
+        wri_standard_name: europeGroupLabel
+      };
+    }
+    return l;
+  });
+
+const modifyEUULabel = countries =>
+  countries.map(l => {
+    if (l.iso_code3 === europeSlug) {
+      return {
+        ...l,
+        wri_standard_name: europeLabel
+      };
+    }
+    return l;
+  });
+
 const getSectionMeta = createSelector(
   [getMeta, getRegions, getCountries, getSection, getMetaForNoModelFilters],
   (meta, regions, countries, section, noModelFiltersMeta) => {
@@ -77,10 +106,23 @@ const getSectionMeta = createSelector(
     }
     const sectionMeta = { ...meta[section], ...noModelFiltersMeta };
 
+    if (DATA_EXPLORER_FILTERS[section].includes('locations')) {
+      return {
+        ...sectionMeta,
+        locations: [
+          ...modifyEUUGROUPinRegions(regions),
+          ...modifyEUULabel(countries)
+        ]
+      };
+    }
     if (DATA_EXPLORER_FILTERS[section].includes('regions')) {
-      return { ...sectionMeta, regions, countries };
+      return {
+        ...sectionMeta,
+        regions,
+        countries: modifyEUULabel(countries)
+      };
     } else if (DATA_EXPLORER_FILTERS[section].includes('countries')) {
-      return { ...sectionMeta, countries };
+      return { ...sectionMeta, countries: modifyEUULabel(countries) };
     }
     return { ...sectionMeta };
   }
@@ -143,9 +185,14 @@ const findSelectedValueObject = (meta, selectedId) =>
       String(option.id) === selectedId
   );
 const addTopEmittersMembers = (isosArray, regions, key) => {
-  if (key === FILTER_NAMES.regions && isosArray.includes('TOP')) {
+  if (
+    (key === FILTER_NAMES.regions || key === FILTER_NAMES.locations) &&
+    isosArray.includes('TOP')
+  ) {
     const topRegion = regions.find(r => r.iso === 'TOP');
-    if (topRegion) return isosArray.concat(topRegion.members);
+    if (topRegion) {
+      return isosArray.concat(topRegion.members || topRegion.expandsTo);
+    }
   }
   return isosArray;
 };
@@ -167,9 +214,10 @@ function extractFilterIds(parsedFilters, metadata, isLinkQuery = false) {
     const parsedKey = correctedKey.replace('-', '_');
     const selectedIds = addTopEmittersMembers(
       parsedFilters[key].split(','),
-      metadata.regions,
+      metadata.locations || metadata.regions,
       key
     );
+
     const filters = [];
     if (metadataWithSubcategories[parsedKey]) {
       selectedIds.forEach(selectedId => {
@@ -198,7 +246,6 @@ function filterQueryIds(sectionMeta, search, section, isLinkQuery) {
     sectionMeta,
     isLinkQuery
   );
-
   return filterIds;
 }
 
@@ -361,7 +408,7 @@ export const getCategory = createSelector(
     ) {
       return null;
     }
-    const metadata = sectionMeta;
+    const metadata = { ...sectionMeta };
     const parsedCategory = removeFiltersPrefix(rawQuery, section).categories;
     return findSelectedValueObject(metadata.categories, parsedCategory);
   }
@@ -447,31 +494,38 @@ export const getFilterOptions = createSelector(
       return null;
     }
     const filterKeys = DATA_EXPLORER_FILTERS[section];
-    const filtersMeta = sectionMeta;
+    const filtersMeta = { ...sectionMeta };
     if (!filtersMeta) return null;
-    if (
-      section === SECTION_NAMES.historicalEmissions &&
-      filterKeys.includes('regions')
-    ) {
-      filtersMeta.regions = addGroupId(regions, 'regions').concat(
-        addGroupId(countries, 'countries')
-      );
+
+    const updatedLocations = modifyEUU =>
+      addGroupId(
+        modifyEUU ? modifyEUUGROUPinRegions(regions) : regions,
+        'regions'
+      ).concat(addGroupId(modifyEUULabel(countries), 'countries'));
+    if (filterKeys.includes('regions')) {
+      filtersMeta.regions = updatedLocations(false);
     }
-    if (filterKeys.includes('countries')) filtersMeta.countries = countries;
+    if (filterKeys.includes('locations')) {
+      filtersMeta.locations = updatedLocations(true);
+    }
+    if (filterKeys.includes('countries')) {
+      filtersMeta.countries = modifyEUULabel(countries);
+    }
     if (filterKeys.includes('data-sources')) {
       filtersMeta['data-sources'] = sourceVersions;
     }
-
     const filterOptions = {};
     filterKeys.forEach(f => {
       const options = getOptions(section, f, filtersMeta, query, category);
       if (options) {
-        if (f === 'regions') options.unshift(TOP_EMITTERS_OPTION);
+        if (['regions', 'locations'].includes(f)) {
+          options.unshift(TOP_EMITTERS_OPTION);
+        }
         const optionsArray = options.map(option => {
           const updatedOption = { ...option };
           updatedOption.label = getLabel(option, f);
           updatedOption.value = getValue(option);
-          if (f === 'regions') {
+          if (['regions', 'locations'].includes(f)) {
             updatedOption.iso = option.iso_code3;
             const regionMembers =
               option.members && option.members.map(m => m.iso_code3);
@@ -486,6 +540,7 @@ export const getFilterOptions = createSelector(
         filterOptions[f] = optionsArray;
       }
     });
+
     return filterOptions;
   }
 );
@@ -602,6 +657,7 @@ export const getSelectedFilters = createSelector(
       section
     );
     const selectedFilterObjects = {};
+
     Object.keys(parsedSelectedFilters).forEach(filterKey => {
       const filterId = parsedSelectedFilters[filterKey];
       const isNoModelColumnKey = isNoColumnField(section, filterKey);
