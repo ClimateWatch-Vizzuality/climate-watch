@@ -26,7 +26,7 @@
         }
       ],
       "short_name": "Indicator short",
-      "metadata_source": "CAIT",
+      "metadata_source": "Climate Watch",
       "max_value": null
     },
     {
@@ -55,7 +55,7 @@
         }
       ],
       "short_name": "Indicator short",
-      "metadata_source": "CAIT",
+      "metadata_source": "Climate Watch",
       "max_value": null
     },
     {
@@ -84,14 +84,14 @@
         }
       ],
       "short_name": "Indicator short",
-      "metadata_source": "CAIT",
+      "metadata_source": "Climate Watch",
       "max_value": null
     },
     {
       "slug": "some_rank",
       "name": "Indicator name",
       "short_name": "Indicator short",
-      "metadata_source": "CAIT",
+      "metadata_source": "Climate Watch",
       "max_value": 4,
       "values": [
         {

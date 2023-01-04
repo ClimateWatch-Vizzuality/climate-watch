@@ -103,9 +103,7 @@ export const getSourceSelected = createSelector(
   (sources, selected) => {
     if (!sources || !sources.length) return {};
     if (!selected) {
-      const defaultSource = sources.find(
-        s => s.name === 'CAIT' || s.name === 'Climate Watch'
-      );
+      const defaultSource = sources.find(s => s.name === 'Climate Watch');
       return defaultSource || sources[0];
     }
 

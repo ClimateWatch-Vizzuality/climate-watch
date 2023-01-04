@@ -63,7 +63,7 @@ export const getLocations = createSelector(
       iso: country.iso_code3,
       label: country.wri_standard_name
     }));
-    const SOURCES = ['CAIT', 'Climate Watch'];
+    const SOURCES = ['Climate Watch'];
 
     const regionOptions = [TOP_EMITTERS_OPTION];
     const updatedRegions = regions;

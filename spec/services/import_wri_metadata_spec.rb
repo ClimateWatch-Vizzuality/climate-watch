@@ -7,7 +7,7 @@ object_contents = {
   END
   "#{CW_FILES_PREFIX}wri_metadata/metadata_sources.csv" => <<~END,
     dataset,title,subtitle
-    historical_emissions_CAIT,CAIT Historical Emissions,CAIT Historical Emissions
+    historical_emissions_climate_watch,Climate Watch Historical Emissions,Climate Watch Historical Emissions
   END
   "#{CW_FILES_PREFIX}wri_metadata/metadata_sources_descriptions.csv" => <<~END
     id,description

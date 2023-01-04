@@ -3,7 +3,7 @@ FactoryBot.define do
     sequence(:slug) { |n| "indicator_slug_#{n}" }
     name { 'Indicator name' }
     short_name { 'Indicator short' }
-    metadata_source { 'CAIT' }
+    metadata_source { 'Climate Watch' }
 
     trait :with_values do
       transient do

@@ -20,7 +20,7 @@ RSpec.describe ImportZipFiles do
       END
       "#{CW_FILES_PREFIX}indc/NDC_metadata.csv" => <<~END,
         global_category,overview_category,map_category,column_name,long_name,Definition,Source,multiple_version
-        Overview,UNFCCC Process,Other,domestic_approval,Domestic Approval Processes Category,,CAIT,TRUE
+        Overview,UNFCCC Process,Other,domestic_approval,Domestic Approval Processes Category,,Climate Watch,TRUE
         Mitigation,Target,,M_TarYr,Target year,The year by which mitigation objectives are expected to be achieved,WB,TRUE
       END
       "#{CW_FILES_PREFIX}indc/NDC_data.csv" => <<~END,
