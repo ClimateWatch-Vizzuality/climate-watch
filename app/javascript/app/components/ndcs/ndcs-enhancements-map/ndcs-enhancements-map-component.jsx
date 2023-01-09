@@ -31,7 +31,7 @@ const renderButtonGroup = (
         <em>
           <AbbrReplace>
             Track which countries are submitting their national climate
-            commitments in the lead up to COP26. You can compare countries’
+            commitments. You can compare countries’
             submissions side by side{' '}
             <Link to="custom-compare/overview" title="Compare submissions">
               here
