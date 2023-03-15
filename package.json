@@ -156,7 +156,7 @@
     "terser-webpack-plugin": "^5.1.1",
     "topojson-client": "3.0.0",
     "uuid": "3.2.1",
-    "webpack": "^5.1.0",
+    "webpack": "^5.76.0",
     "webpack-assets-manifest": "^5.0.6",
     "webpack-cli": "^4.5.0",
     "webpack-merge": "4.1.0"
