@@ -1,31 +1,53 @@
 version: '3'
 services:
   app:
+    image: "climate_watch"
     build:
       context: .
       args:
         secretKey: 1234567890
     ports:
-      - "3000:3000"
-      - "8080:8080"
+      - "3000:3000" # rails server
+      - "3035:3035" # webpacker dev server
     env_file:
       - .env
     environment:
-      - PORT=3000
       - POSTGRES_URL=postgres://postgres:example@postgres:5432/climate_watch
-    restart: always
-    container_name: climate-watch
+      - REDIS_SERVER=redis://redis:6379/0
+    command: start
     depends_on:
       - postgres
+      - redis
     volumes:
       - .:/usr/src/climate-watch
+      - /usr/src/climate-watch/node_modules
+
+  sidekiq:
+    image: "climate_watch"
+    build:
+      context: .
+      args:
+        secretKey: 1234567890
+    environment:
+      - POSTGRES_URL=postgres://postgres:example@postgres:5432/climate_watch
+      - REDIS_SERVER=redis://redis:6379/0
+    env_file:
+      - .env
+    command: sidekiq
+    depends_on:
+      - postgres
+      - redis
 
   postgres:
     image: postgres:13.3
-    restart: always
     ports:
       - "5432"
     environment:
       - POSTGRES_PASSWORD=example
       - POSTGRES_USER=postgres
       - POSTGRES_DB=climate_watch
+
+  redis:
+    image: redis
+    ports:
+      - "6379"
