@@ -17,7 +17,8 @@ module Api
               },
               {
                 column: 'iso_code3',
-                alias: 'iso_code3'
+                alias: 'iso_code3',
+                display: "ISO"
               },
               {
                 column: 'region',
