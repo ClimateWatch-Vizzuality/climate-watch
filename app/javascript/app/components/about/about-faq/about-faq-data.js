@@ -327,7 +327,7 @@ export const sectionsData = [
       {
         type: 'html',
         title:
-          'WWhy are UNFCCC emissions estimates scattered for certain Non-Annex I countries?',
+          'Why are UNFCCC emissions estimates scattered for certain Non-Annex I countries?',
         answer:
           '<p>The reporting requirements for GHG inventories are different for Annex I and Non-Annex I Parties of the UNFCCC. Unlike Annex-I countries who report their GHG inventories annually through National Inventory Reports and in common reporting format (CRF) tables, Non-Annex I countries report their emissions data through National Communications and Biennial Update Reports which are submitted in different points and in varied forms.</p><p>Furthermore, Climate Watch only publishes data collected and made available through UNFCCC’s GHG data interface, which displays data ‘as received’ from Parties. Climate Watch does not attempt data collection on our own. Some Non-Annex I Parties submitted their GHG inventory data using the format of the 2006 IPCC Guidelines for reporting GHG emissions/removals and are not included in UNFCCC’s data interface. Thus, those emissions inventories are not available through Climate Watch.</p><p>For the most up to date list of latest reports, please visit UNFCCC page <a href="https://unfccc.int/process-and-meetings/transparency-and-reporting/greenhouse-gas-data/notes-on-ghg-data">here</a>. Direct access to the latest NCs and BURs documents can be found in the UNFCCC timeline  at the top of each Climate Watch Country Profile page.</p>'
       },
