@@ -18,7 +18,7 @@ module Api
               {
                 column: 'iso_code3',
                 alias: 'iso_code3',
-                visible: false
+                display: "ISO"
               },
               {
                 column: 'region',
