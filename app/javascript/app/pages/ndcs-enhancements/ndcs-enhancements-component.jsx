@@ -36,7 +36,7 @@ const NDCSEnhancements = ({ route }) => (
         {route.sections &&
           route.sections.length > 0 &&
           route.sections.map(section => (
-            <div className={styles.section}>
+            <div key={section.hash} className={styles.section}>
               <div id={section.hash} className={styles.sectionHash} />
               <section.component />
             </div>
