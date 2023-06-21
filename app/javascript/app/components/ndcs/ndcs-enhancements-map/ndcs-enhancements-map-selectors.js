@@ -247,14 +247,14 @@ export const getPathsWithStyles = createSelector(
             ...COUNTRY_STYLES,
             default: {
               ...COUNTRY_STYLES.default,
-              'stroke-width': strokeWidth,
+              strokeWidth,
               fill: color,
               fillOpacity: 1
             },
             hover: {
               ...COUNTRY_STYLES.hover,
               cursor: 'pointer',
-              'stroke-width': strokeWidth,
+              strokeWidth,
               fill: color,
               fillOpacity: 1
             }
