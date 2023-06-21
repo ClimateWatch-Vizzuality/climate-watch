@@ -50,4 +50,22 @@ RSpec.describe Story, type: :model do
       expect(Story.stories_filter('NDC, esp, climate watch', 5)).to have(5).items
     end
   end
+
+  describe '#resized_background_image_url' do
+    context 'when background image comes from WRI' do
+      let(:story) { FactoryBot.create(:story, background_image_url: 'https://files.wri.org/d8/s3fs-public/2023-03/ipcc-flooding_0.jpg') }
+
+      it 'should return resized background image url' do
+        expect(story.resized_background_image_url).to include('https://files.wri.org/d8/s3fs-public/styles/500x300/s3/2023-03/ipcc-flooding_0.jpg')
+      end
+    end
+
+    context 'when background image does not come from WRI' do
+      let(:story) { FactoryBot.create(:story, background_image_url: 'https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png') }
+
+      it 'should return resized background image url' do
+        expect(story.resized_background_image_url).to eq('https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png')
+      end
+    end
+  end
 end
