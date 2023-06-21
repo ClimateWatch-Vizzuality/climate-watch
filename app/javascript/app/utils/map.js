@@ -29,7 +29,7 @@ export function getColorByIndex(data, index, colors = buckets) {
 
 export function createLegendBuckets(
   locations,
-  labels,
+  labels = {},
   isos,
   notApplicableLabel = 'Not Applicable'
 ) {
@@ -50,11 +50,11 @@ export function createLegendBuckets(
 // If we have a zoom level we show the points until we reach the MIN_ZOOM_SHOW_ISLANDS level
 // If we dont we always show the points instead of the islands
 export const shouldShowPath = (path, zoom) =>
-  (zoom
+  zoom
     ? (zoom >= MIN_ZOOM_SHOW_ISLANDS &&
         (path.properties.layer === PATH_LAYERS.COUNTRIES ||
           path.properties.layer === PATH_LAYERS.ISLANDS)) ||
       (zoom < MIN_ZOOM_SHOW_ISLANDS &&
         (path.properties.layer === PATH_LAYERS.COUNTRIES ||
           path.properties.layer === PATH_LAYERS.POINTS))
-    : path.properties.layer !== PATH_LAYERS.ISLANDS);
+    : path.properties.layer !== PATH_LAYERS.ISLANDS;

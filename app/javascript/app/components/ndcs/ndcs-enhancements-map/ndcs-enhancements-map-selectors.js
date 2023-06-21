@@ -73,7 +73,7 @@ export const getIndicatorsParsed = createSelector(
         'value'
       ),
       'label'
-    ).filter(ind => ind.categoryIds.indexOf(parseInt(categoryId, 10)) > -1);
+    ).filter(ind => ind.categoryIds?.indexOf(parseInt(categoryId, 10)) > -1);
   }
 );
 

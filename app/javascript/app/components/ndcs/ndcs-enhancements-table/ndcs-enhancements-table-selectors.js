@@ -48,8 +48,9 @@ export const getIndicatorsParsed = createSelector(
         ),
         'label'
       );
+
     const filteredIndicators = sortAndParseIndicators(indicators).filter(
-      ind => ind.categoryIds.indexOf(parseInt(categoryId, 10)) > -1
+      ind => ind.categoryIds?.indexOf(parseInt(categoryId, 10)) > -1
     );
 
     return previousComparisonIndicators
