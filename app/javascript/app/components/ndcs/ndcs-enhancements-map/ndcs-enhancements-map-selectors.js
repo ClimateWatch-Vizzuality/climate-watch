@@ -408,11 +408,11 @@ export const summarizeIndicators = createSelector(
     });
     // Add text
     Object.keys(summaryData).forEach(type => {
-      const emissionsString = `<span title="2018 emissions data">${summaryData[type].emissions.value}% of global emissions</span>`;
+      const emissionsString = `<span title="2020 emissions data">${summaryData[type].emissions.value}% of global emissions</span>`;
       summaryData[type].countries.opts.label = {
         [ENHANCEMENT_LABEL_SLUGS.ENHANCED_MITIGATION]: `<strong>of the ${
           summaryData[ENHANCEMENT_LABEL_SLUGS.SUBMITTED_2020].countries.value
-        } countries</strong> (${emissionsString}) have submitted a <strong>new or updated NDC with reduced total emissions</strong> compared to their previous NDC`,
+        } countries</strong> (${emissionsString}) have submitted a <strong>new or updated NDC with reduced total emissions</strong> compared to their <span title ="Initial NDCs: each country's most recent submission as of December 31, 2019, excluding updated first NDCs and second NDCs, as well as intended NDCs (INDCs) dated subsequent to first NDCs.">initial NDC</span>`,
         [ENHANCEMENT_LABEL_SLUGS.SUBMITTED_2020]: `<strong>countries</strong> (${emissionsString}) have submitted a <strong>new or updated NDC</strong>`
       }[type];
     });

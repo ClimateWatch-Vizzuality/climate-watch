@@ -7,15 +7,16 @@ module Api
         class CsvContent
           def initialize(filter)
             @grouped_query = filter.call
-            @headers = filter.column_aliases
+            @headers = filter.column_display_names
+            @aliases = filter.column_aliases
             @years = filter.header_years
           end
 
           def call
             CSV.generate do |output|
-              output << (@headers.map(&:humanize) + @years)
+              output << @headers + @years
               @grouped_query.each do |record|
-                ary = @headers.map { |h| record[h] }
+                ary = @aliases.map { |h| record[h] }
                 ary += @years.map do |y|
                   emission = record.emissions.find { |e| e['year'] == y }
                   (emission && emission['value']) || 'N/A'
