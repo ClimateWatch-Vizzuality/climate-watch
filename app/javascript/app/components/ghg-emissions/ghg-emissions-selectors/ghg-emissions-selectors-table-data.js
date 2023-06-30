@@ -52,6 +52,8 @@ export const getTableData = createSelector(
       return { [String(d.x)]: formatValue(d[c.value]) }; // year: value
     };
     return yColumnOptions.map(c => ({
+      // Conditionally add ISO to the data when countries or regions is selected
+      ...(model === 'regions' && { iso: c.iso }),
       [GHG_TABLE_HEADER[model]]: c.label,
       unit,
       ...data.reduce(

@@ -317,7 +317,11 @@ function GhgEmissions(props) {
             <Table
               data={tableData}
               horizontalScroll
-              firstColumnHeaders={[GHG_TABLE_HEADER[fieldToBreakBy], 'unit']}
+              firstColumnHeaders={[
+                'iso',
+                GHG_TABLE_HEADER[fieldToBreakBy],
+                'unit'
+              ]}
               flexGrow={0}
               headerHeight={30}
               parseHtml
