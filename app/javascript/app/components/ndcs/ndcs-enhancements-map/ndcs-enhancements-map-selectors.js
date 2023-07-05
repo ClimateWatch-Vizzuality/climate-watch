@@ -296,7 +296,7 @@ export const getPreviousComparisonCountryValues = createSelector(
   [getPreviousComparisonIndicators, getISOCountries],
   (previousComparisonIndicators, isos) => {
     if (!previousComparisonIndicators) return null;
-    const previousComparisonCountryValues = [];
+    const previousComparisonCountryValues = {};
     isos.forEach(iso => {
       previousComparisonCountryValues[
         iso
