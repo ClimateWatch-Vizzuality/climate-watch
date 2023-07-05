@@ -10,9 +10,9 @@ const setError = (state, error) => ({ ...state, error });
 const setLoaded = (state, loaded) => ({ ...state, loaded });
 
 export default {
-  fetchNDCSInit: state => setLoading(state, true),
+  fetchNDCSExploreInit: state => setLoading(state, true),
   // eslint-disable-next-line no-confusing-arrow
-  fetchNDCSReady: (state, { payload }) =>
+  fetchNDCSExploreReady: (state, { payload }) =>
     !state.data || !payload
       ? null
       : setLoaded(
@@ -29,5 +29,5 @@ export default {
         ),
         true
       ),
-  fetchNDCSFail: state => setError(state, true)
+  fetchNDCSExploreFail: state => setError(state, true)
 };

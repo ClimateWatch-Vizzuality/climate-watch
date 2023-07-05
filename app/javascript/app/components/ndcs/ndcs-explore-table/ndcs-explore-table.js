@@ -16,7 +16,7 @@ import {
 } from './ndcs-explore-table-selectors';
 
 const mapStateToProps = (state, { location }) => {
-  const { data, loading } = state.ndcs;
+  const { data, loading } = state.ndcsExplore;
   const { countries } = state;
   const search = qs.parse(location.search);
   const ndcsNDCSWithSelection = {
