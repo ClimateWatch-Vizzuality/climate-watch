@@ -21,6 +21,7 @@ function TableComponent(props) {
     data,
     hasColumnSelect,
     activeColumns,
+    hiddenColumns = [],
     columnsOptions,
     handleColumnChange,
     setRowsHeight,
@@ -58,7 +59,9 @@ function TableComponent(props) {
 
   if (!data || !data.length) return null;
   const hasColumnSelectedOptions = hasColumnSelect && columnsOptions;
-  const activeColumnNames = activeColumns.map(c => c.value);
+  const activeColumnNames = activeColumns
+    .map(c => c.value)
+    .filter(c => !hiddenColumns.includes(c));
   const firstColumns =
     firstColumnHeaders.filter(c => activeColumnNames.includes(c)) || [];
   const columnData = firstColumns.concat(
@@ -182,7 +185,7 @@ function TableComponent(props) {
       >
         <AutoSizer disableHeight>
           {({ width }) =>
-            (splittedColumns ? (
+            splittedColumns ? (
               <ScrollSync>
                 {({ onScroll, scrollTop }) => (
                   <div className={styles.scrollTable}>
@@ -206,7 +209,7 @@ function TableComponent(props) {
                 position: 'full',
                 width
               })
-            ))
+            )
           }
         </AutoSizer>
       </div>
@@ -220,6 +223,7 @@ TableComponent.propTypes = {
   hasColumnSelect: PropTypes.bool,
   flexGrow: PropTypes.number,
   activeColumns: PropTypes.array,
+  hiddenColumns: PropTypes.array,
   columnsOptions: PropTypes.array,
   handleColumnChange: PropTypes.func,
   setRowsHeight: PropTypes.func.isRequired,
