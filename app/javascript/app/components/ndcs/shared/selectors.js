@@ -1,5 +1,5 @@
 import uniq from 'lodash/uniq';
-import { europeanCountries } from 'app/data/european-countries';
+import { europeanCountries, europeSlug } from 'app/data/european-countries';
 import {
   NO_DOCUMENT_SUBMITTED_COUNTRIES,
   COUNTRY_STYLES
@@ -129,12 +129,34 @@ export const pathsWithStylesFunction = (
 ) => {
   if (!indicator || !worldPaths) return [];
   const paths = [];
-  const selectedWorldPaths = showEUCountriesChecked
-    ? worldPaths
-    : worldPaths.filter(p => !europeanCountries.includes(p.properties.id));
+
+  const euGroupDisplayed = selectedCountriesISO.includes(europeSlug);
+  const allEuCountriesDisplayed = europeanCountries.every(c =>
+    selectedCountriesISO.includes(c)
+  );
+
+  const removeEuCountriesFromPaths =
+    !showEUCountriesChecked && (euGroupDisplayed || allEuCountriesDisplayed);
+  const selectedWorldPaths = removeEuCountriesFromPaths
+    ? worldPaths.filter(p => !europeanCountries.includes(p.properties.id))
+    : worldPaths;
+
+  let countriesToDisplay = selectedCountriesISO;
+  if (euGroupDisplayed && showEUCountriesChecked) {
+    countriesToDisplay = selectedCountriesISO.filter(iso => iso !== europeSlug);
+    countriesToDisplay.push(...europeanCountries);
+  }
+  if (allEuCountriesDisplayed && !showEUCountriesChecked) {
+    countriesToDisplay = selectedCountriesISO.filter(
+      iso => !europeanCountries.includes(iso)
+    );
+    countriesToDisplay.push(europeSlug);
+  }
+
   selectedWorldPaths.forEach(path => {
     if (shouldShowPath(path, zoom)) {
       const { locations, legendBuckets } = indicator;
+
       if (!locations) {
         paths.push({
           ...path,
@@ -161,7 +183,7 @@ export const pathsWithStylesFunction = (
         }
       };
 
-      if (!selectedCountriesISO.includes(iso)) {
+      if (!countriesToDisplay.includes(iso)) {
         const color = '#e8ecf5';
         style.default.fill = color;
         style.hover.fill = color;
