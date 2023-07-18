@@ -326,6 +326,7 @@ function GhgEmissions(props) {
               splittedColumns
               titleLinks={titleLinks}
               theme={ghgTableTheme}
+              hiddenColumns={['iso']}
             />
           </span>
         )}
