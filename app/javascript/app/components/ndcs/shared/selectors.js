@@ -120,26 +120,34 @@ export const categoryIndicatorsFunction = (indicatorsParsed, category) => {
   return categoryIndicators;
 };
 
-export const pathsWithStylesFunction = (
-  indicator,
-  zoom,
+const getEuGroupDisplayed = selectedCountriesISO =>
+  selectedCountriesISO.includes(europeSlug);
+
+const getAllEuCountriesDisplayed = selectedCountriesISO =>
+  europeanCountries.every(c => selectedCountriesISO.includes(c));
+
+const getRemoveEuCountriesFromPaths = (
   showEUCountriesChecked,
-  worldPaths,
   selectedCountriesISO
 ) => {
-  if (!indicator || !worldPaths) return [];
-  const paths = [];
-
-  const euGroupDisplayed = selectedCountriesISO.includes(europeSlug);
-  const allEuCountriesDisplayed = europeanCountries.every(c =>
-    selectedCountriesISO.includes(c)
+  const euGroupDisplayed = getEuGroupDisplayed(selectedCountriesISO);
+  const allEuCountriesDisplayed = getAllEuCountriesDisplayed(
+    selectedCountriesISO
   );
 
-  const removeEuCountriesFromPaths =
-    !showEUCountriesChecked && (euGroupDisplayed || allEuCountriesDisplayed);
-  const selectedWorldPaths = removeEuCountriesFromPaths
-    ? worldPaths.filter(p => !europeanCountries.includes(p.properties.id))
-    : worldPaths;
+  return (
+    !showEUCountriesChecked && (euGroupDisplayed || allEuCountriesDisplayed)
+  );
+};
+
+export const selectedMapCountriesISOFunction = (
+  showEUCountriesChecked,
+  selectedCountriesISO
+) => {
+  const euGroupDisplayed = getEuGroupDisplayed(selectedCountriesISO);
+  const allEuCountriesDisplayed = getAllEuCountriesDisplayed(
+    selectedCountriesISO
+  );
 
   let countriesToDisplay = selectedCountriesISO;
   if (euGroupDisplayed && showEUCountriesChecked) {
@@ -152,6 +160,33 @@ export const pathsWithStylesFunction = (
     );
     countriesToDisplay.push(europeSlug);
   }
+
+  return countriesToDisplay;
+};
+
+export const pathsWithStylesFunction = (
+  indicator,
+  zoom,
+  showEUCountriesChecked,
+  worldPaths,
+  selectedCountriesISO
+) => {
+  if (!indicator || !worldPaths) return [];
+  const paths = [];
+
+  const removeEuCountriesFromPaths = getRemoveEuCountriesFromPaths(
+    showEUCountriesChecked,
+    selectedCountriesISO
+  );
+
+  const countriesToDisplayISO = selectedMapCountriesISOFunction(
+    showEUCountriesChecked,
+    selectedCountriesISO
+  );
+
+  const selectedWorldPaths = removeEuCountriesFromPaths
+    ? worldPaths.filter(p => !europeanCountries.includes(p.properties.id))
+    : worldPaths;
 
   selectedWorldPaths.forEach(path => {
     if (shouldShowPath(path, zoom)) {
@@ -183,7 +218,7 @@ export const pathsWithStylesFunction = (
         }
       };
 
-      if (!countriesToDisplay.includes(iso)) {
+      if (!countriesToDisplayISO.includes(iso)) {
         const color = '#e8ecf5';
         style.default.fill = color;
         style.hover.fill = color;
