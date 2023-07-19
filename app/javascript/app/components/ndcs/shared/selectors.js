@@ -120,18 +120,18 @@ export const categoryIndicatorsFunction = (indicatorsParsed, category) => {
   return categoryIndicators;
 };
 
-const getEuGroupDisplayed = selectedCountriesISO =>
+const getIsEUGroupDisplayed = selectedCountriesISO =>
   selectedCountriesISO.includes(europeSlug);
 
-const getAllEuCountriesDisplayed = selectedCountriesISO =>
+const getAreAllEuCountriesDisplayed = selectedCountriesISO =>
   europeanCountries.every(c => selectedCountriesISO.includes(c));
 
 const getRemoveEuCountriesFromPaths = (
   showEUCountriesChecked,
   selectedCountriesISO
 ) => {
-  const euGroupDisplayed = getEuGroupDisplayed(selectedCountriesISO);
-  const allEuCountriesDisplayed = getAllEuCountriesDisplayed(
+  const euGroupDisplayed = getIsEUGroupDisplayed(selectedCountriesISO);
+  const allEuCountriesDisplayed = getAreAllEuCountriesDisplayed(
     selectedCountriesISO
   );
 
@@ -144,8 +144,8 @@ export const selectedMapCountriesISOFunction = (
   showEUCountriesChecked,
   selectedCountriesISO
 ) => {
-  const euGroupDisplayed = getEuGroupDisplayed(selectedCountriesISO);
-  const allEuCountriesDisplayed = getAllEuCountriesDisplayed(
+  const euGroupDisplayed = getIsEUGroupDisplayed(selectedCountriesISO);
+  const allEuCountriesDisplayed = getAreAllEuCountriesDisplayed(
     selectedCountriesISO
   );
 
