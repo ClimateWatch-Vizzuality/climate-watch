@@ -126,19 +126,14 @@ const getIsEUGroupDisplayed = selectedCountriesISO =>
 const getAreAllEuCountriesDisplayed = selectedCountriesISO =>
   europeanCountries.every(c => selectedCountriesISO.includes(c));
 
+export const getIsEUDisplayedFunction = selectedCountriesISO =>
+  getIsEUGroupDisplayed(selectedCountriesISO) ||
+  getAreAllEuCountriesDisplayed(selectedCountriesISO);
+
 const getRemoveEuCountriesFromPaths = (
   showEUCountriesChecked,
   selectedCountriesISO
-) => {
-  const euGroupDisplayed = getIsEUGroupDisplayed(selectedCountriesISO);
-  const allEuCountriesDisplayed = getAreAllEuCountriesDisplayed(
-    selectedCountriesISO
-  );
-
-  return (
-    !showEUCountriesChecked && (euGroupDisplayed || allEuCountriesDisplayed)
-  );
-};
+) => !showEUCountriesChecked && getIsEUDisplayedFunction(selectedCountriesISO);
 
 export const selectedMapCountriesISOFunction = (
   showEUCountriesChecked,
