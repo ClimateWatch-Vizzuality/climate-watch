@@ -5,7 +5,7 @@ import { filterQuery } from 'app/utils';
 import { replaceStringAbbr } from 'components/abbr-replace';
 import {
   getMapIndicator,
-  getSelectedCountriesISO
+  getSelectedMapCountriesISO
 } from 'components/ndcs/ndcs-explore-map/ndcs-explore-map-selectors';
 import {
   getIndicatorsParsed,
@@ -51,8 +51,8 @@ export const getDefaultColumns = createSelector(
 );
 
 export const tableGetSelectedData = createSelector(
-  [getIndicatorsParsed, getCountries, getSelectedCountriesISO],
-  (indicators, countries, selectedCountriesISO) => {
+  [getIndicatorsParsed, getCountries, getSelectedMapCountriesISO],
+  (indicators, countries, selectedMapCountriesISO) => {
     if (
       !indicators ||
       !indicators.length ||
@@ -68,7 +68,7 @@ export const tableGetSelectedData = createSelector(
     if (!refIndicator) return null;
     return Object.keys(refIndicator.locations)
       .map(iso => {
-        if (!selectedCountriesISO.includes(iso)) return null;
+        if (!selectedMapCountriesISO.includes(iso)) return null;
         const countryData =
           countries.find(country => country.iso_code3 === iso) || {};
         const row = {
