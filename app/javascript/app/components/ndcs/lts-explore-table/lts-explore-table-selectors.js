@@ -6,7 +6,7 @@ import isEmpty from 'lodash/isEmpty';
 import { replaceStringAbbr } from 'components/abbr-replace';
 import {
   getMapIndicator,
-  getSelectedCountriesISO
+  getSelectedMapCountriesISO
 } from 'components/ndcs/lts-explore-map/lts-explore-map-selectors';
 
 const getCountries = state => state.countries || null;
@@ -35,8 +35,8 @@ export const getIndicatorsParsed = createSelector(
 );
 
 export const tableGetSelectedData = createSelector(
-  [getIndicatorsParsed, getCountries, getSelectedCountriesISO],
-  (indicators, countries, selectedCountriesISO) => {
+  [getIndicatorsParsed, getCountries, getSelectedMapCountriesISO],
+  (indicators, countries, selectedMapCountriesISO) => {
     if (!indicators || !indicators.length || !indicators[0].locations) {
       return [];
     }
@@ -45,7 +45,7 @@ export const tableGetSelectedData = createSelector(
 
     return Object.keys(refIndicator.locations)
       .map(iso => {
-        if (!selectedCountriesISO.includes(iso)) return null;
+        if (!selectedMapCountriesISO.includes(iso)) return null;
         const countryData =
           countries.find(country => country.iso_code3 === iso) || {};
         const row = {

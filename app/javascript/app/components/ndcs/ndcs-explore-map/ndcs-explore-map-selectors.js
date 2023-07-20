@@ -35,6 +35,7 @@ import { getSubmitted2020Isos } from 'utils/indicatorCalculations';
 import {
   selectedLocationsFunction,
   selectedCountriesISOFunction,
+  selectedMapCountriesISOFunction,
   selectedCountriesFunction,
   categoryIndicatorsFunction,
   pathsWithStylesFunction,
@@ -225,6 +226,11 @@ const getisDefaultLocationSelected = createSelector(
 export const getSelectedCountriesISO = createSelector(
   [getSelectedCountries],
   selectedCountriesISOFunction
+);
+
+export const getSelectedMapCountriesISO = createSelector(
+  [getIsShowEUCountriesChecked, getSelectedCountriesISO],
+  selectedMapCountriesISOFunction
 );
 
 export const getMaximumCountries = createSelector(
