@@ -122,19 +122,19 @@ export const categoryIndicatorsFunction = (indicatorsParsed, category) => {
 
 // Get whether the EU countries are selected, checking by the 'EUU' iso code.
 // eg: ['EUU', ...]
-const getIsEUGroupDisplayed = selectedCountriesISO =>
+const getIsEUGroupSelected = selectedCountriesISO =>
   selectedCountriesISO.includes(europeSlug);
 
 // Get whether all EU countries are selected, checking by all their individual iso codes.
 // eg: ['PRT', 'ESP', ...])
-const getAreAllEuCountriesDisplayed = selectedCountriesISO =>
+const getAreAllEuCountriesSelected = selectedCountriesISO =>
   europeanCountries.every(c => selectedCountriesISO.includes(c));
 
 // Get whether all EU countries are selected, either by the 'EUU' iso code or
 // all their individual iso codes.
-export const getIsEUDisplayedFunction = selectedCountriesISO =>
-  getIsEUGroupDisplayed(selectedCountriesISO) ||
-  getAreAllEuCountriesDisplayed(selectedCountriesISO);
+export const getIsEUSelectedFunction = selectedCountriesISO =>
+  getIsEUGroupSelected(selectedCountriesISO) ||
+  getAreAllEuCountriesSelected(selectedCountriesISO);
 
 // Get wether individual EU countries paths should be removed from the map, based on both
 // the "Visualize individual submissions of EU Members" checkbox and on whether all EU
@@ -142,7 +142,7 @@ export const getIsEUDisplayedFunction = selectedCountriesISO =>
 const getRemoveEuCountriesFromPaths = (
   showEUCountriesChecked,
   selectedCountriesISO
-) => !showEUCountriesChecked && getIsEUDisplayedFunction(selectedCountriesISO);
+) => !showEUCountriesChecked && getIsEUSelectedFunction(selectedCountriesISO);
 
 // This function takes the array from selectedCountriesISO as well as the value from the
 // "Visualize individual submissions of EU Members" and creates a new array of iso codes
@@ -152,10 +152,10 @@ export const selectedMapCountriesISOFunction = (
   selectedCountriesISO
 ) => {
   // EU countries selected as a group ('EUU' iso code)
-  const euGroupDisplayed = getIsEUGroupDisplayed(selectedCountriesISO);
+  const euGroupSelected = getIsEUGroupSelected(selectedCountriesISO);
 
   // All EU countries selected by their individual ISO codes
-  const allEuCountriesDisplayed = getAreAllEuCountriesDisplayed(
+  const allEuCountriesSelected = getAreAllEuCountriesSelected(
     selectedCountriesISO
   );
 
@@ -163,14 +163,14 @@ export const selectedMapCountriesISOFunction = (
 
   // If the EU countries are displayed as a group and we want to display them individually
   // on the map, then we remove the 'EUU' iso code and add the countries' individual iso codes.
-  if (euGroupDisplayed && showEUCountriesChecked) {
+  if (euGroupSelected && showEUCountriesChecked) {
     countriesToDisplay = selectedCountriesISO.filter(iso => iso !== europeSlug);
     countriesToDisplay.push(...europeanCountries);
   }
 
   // If the EU countries are displayed individually by their iso codes but we would like
   // to display them as the EU group, we remove their individual iso codes and add the 'EUU' one.
-  if (allEuCountriesDisplayed && !showEUCountriesChecked) {
+  if (allEuCountriesSelected && !showEUCountriesChecked) {
     countriesToDisplay = selectedCountriesISO.filter(
       iso => !europeanCountries.includes(iso)
     );
