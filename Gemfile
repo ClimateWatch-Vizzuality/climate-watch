@@ -41,6 +41,7 @@ gem 'aws-sdk-s3', '~> 1'
 
 # jobs
 gem 'sidekiq', '>= 6.1.0'
+gem 'sidekiq-failures'
 
 # Error monitoring
 gem 'appsignal'
