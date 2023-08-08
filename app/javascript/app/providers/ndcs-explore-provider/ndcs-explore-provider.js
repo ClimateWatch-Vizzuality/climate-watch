@@ -5,10 +5,10 @@ import reducers, { initialState } from './ndcs-explore-provider-reducers';
 import actions from './ndcs-explore-provider-actions';
 
 const NDCSExploreProvider = props => {
-  const { fetchNDCS, subcategory, document } = props;
+  const { fetchNDCSExplore, subcategory, document } = props;
 
   useEffect(() => {
-    fetchNDCS({
+    fetchNDCSExplore({
       subcategory,
       document
     });
@@ -18,7 +18,7 @@ const NDCSExploreProvider = props => {
 };
 
 NDCSExploreProvider.propTypes = {
-  fetchNDCS: PropTypes.func.isRequired
+  fetchNDCSExplore: PropTypes.func.isRequired
 };
 export { actions, reducers, initialState };
 

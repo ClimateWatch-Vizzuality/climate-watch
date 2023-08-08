@@ -18,5 +18,6 @@ module ClimateWatch
 
     config.active_record.schema_format = :sql
     config.active_job.queue_adapter = :sidekiq
+    config.active_storage.queue = :active_storage
   end
 end

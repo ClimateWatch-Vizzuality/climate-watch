@@ -220,7 +220,11 @@ function GhgEmissionsContainer(props) {
   };
 
   const createCSVContent = () => {
-    const defaultColumnOrder = [GHG_TABLE_HEADER[fieldToBreakBy], 'unit'];
+    const defaultColumnOrder = [
+      'iso',
+      GHG_TABLE_HEADER[fieldToBreakBy],
+      'unit'
+    ];
     const stripHtmlFromUnit = d => ({ ...d, unit: stripHTML(d.unit) });
     const parsedTableData = tableData.map(stripHtmlFromUnit);
     const encodeParam = param =>

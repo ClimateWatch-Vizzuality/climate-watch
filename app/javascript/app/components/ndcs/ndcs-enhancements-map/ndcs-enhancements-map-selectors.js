@@ -73,7 +73,7 @@ export const getIndicatorsParsed = createSelector(
         'value'
       ),
       'label'
-    ).filter(ind => ind.categoryIds.indexOf(parseInt(categoryId, 10)) > -1);
+    ).filter(ind => ind.categoryIds?.indexOf(parseInt(categoryId, 10)) > -1);
   }
 );
 
@@ -247,14 +247,14 @@ export const getPathsWithStyles = createSelector(
             ...COUNTRY_STYLES,
             default: {
               ...COUNTRY_STYLES.default,
-              'stroke-width': strokeWidth,
+              strokeWidth,
               fill: color,
               fillOpacity: 1
             },
             hover: {
               ...COUNTRY_STYLES.hover,
               cursor: 'pointer',
-              'stroke-width': strokeWidth,
+              strokeWidth,
               fill: color,
               fillOpacity: 1
             }

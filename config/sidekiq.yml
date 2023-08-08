@@ -8,3 +8,4 @@ production:
   :concurrency: 2
 :queues:
   - database
+  - active_storage

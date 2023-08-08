@@ -21,6 +21,7 @@ import { getIsShowEUCountriesChecked } from 'components/ndcs/shared/explore-map/
 import { NET_ZERO_POSITIVE_LABELS, TOP_EMITTERS_OPTION } from 'data/constants';
 import {
   selectedLocationsFunction,
+  selectedMapCountriesISOFunction,
   selectedCountriesISOFunction,
   selectedCountriesFunction,
   categoryIndicatorsFunction,
@@ -141,6 +142,11 @@ export const getCategories = createSelector(getCategoriesData, categories =>
 export const getSelectedCountriesISO = createSelector(
   [getSelectedCountries],
   selectedCountriesISOFunction
+);
+
+export const getSelectedMapCountriesISO = createSelector(
+  [getIsShowEUCountriesChecked, getSelectedCountriesISO],
+  selectedMapCountriesISOFunction
 );
 
 const getisDefaultLocationSelected = createSelector(

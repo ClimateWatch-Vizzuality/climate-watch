@@ -20,6 +20,7 @@ import { TOP_EMITTERS_OPTION } from 'data/constants';
 import {
   selectedLocationsFunction,
   selectedCountriesISOFunction,
+  selectedMapCountriesISOFunction,
   selectedCountriesFunction,
   categoryIndicatorsFunction,
   pathsWithStylesFunction,
@@ -135,6 +136,11 @@ const getisDefaultLocationSelected = createSelector(
 export const getSelectedCountriesISO = createSelector(
   [getSelectedCountries],
   selectedCountriesISOFunction
+);
+
+export const getSelectedMapCountriesISO = createSelector(
+  [getIsShowEUCountriesChecked, getSelectedCountriesISO],
+  selectedMapCountriesISOFunction
 );
 
 export const getCategories = createSelector(getCategoriesData, categories =>

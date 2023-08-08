@@ -1,5 +1,5 @@
 import uniq from 'lodash/uniq';
-import { europeanCountries } from 'app/data/european-countries';
+import { europeanCountries, europeSlug } from 'app/data/european-countries';
 import {
   NO_DOCUMENT_SUBMITTED_COUNTRIES,
   COUNTRY_STYLES
@@ -120,6 +120,69 @@ export const categoryIndicatorsFunction = (indicatorsParsed, category) => {
   return categoryIndicators;
 };
 
+// Get whether the EU countries are selected, checking by the 'EUU' iso code.
+// eg: ['EUU', ...]
+const getIsEUGroupSelected = selectedCountriesISO =>
+  selectedCountriesISO.includes(europeSlug);
+
+// Get whether all EU countries are selected, checking by all their individual iso codes.
+// eg: ['PRT', 'ESP', ...])
+const getAreAllEuCountriesSelected = selectedCountriesISO =>
+  europeanCountries.every(c => selectedCountriesISO.includes(c));
+
+// Get whether all EU countries are selected, either by the 'EUU' iso code or
+// all their individual iso codes.
+export const getIsEUSelectedFunction = selectedCountriesISO =>
+  getIsEUGroupSelected(selectedCountriesISO) ||
+  getAreAllEuCountriesSelected(selectedCountriesISO);
+
+// Get wether individual EU countries paths should be removed from the map, based on both
+// the "Visualize individual submissions of EU Members" checkbox and on whether all EU
+// countries are selected.
+const getRemoveEuCountriesFromPaths = (
+  showEUCountriesChecked,
+  selectedCountriesISO
+) => !showEUCountriesChecked && getIsEUSelectedFunction(selectedCountriesISO);
+
+// This function takes the array from selectedCountriesISO as well as the value from the
+// "Visualize individual submissions of EU Members" and creates a new array of iso codes
+// that can be used to correctly highlight the selected countries on the map.
+export const selectedMapCountriesISOFunction = (
+  showEUCountriesChecked,
+  selectedCountriesISO
+) => {
+  // EU countries selected as a group ('EUU' iso code)
+  const euGroupSelected = getIsEUGroupSelected(selectedCountriesISO);
+
+  // All EU countries selected by their individual ISO codes
+  const allEuCountriesSelected = getAreAllEuCountriesSelected(
+    selectedCountriesISO
+  );
+
+  let countriesToDisplay = selectedCountriesISO;
+
+  // If the EU countries are displayed as a group and we want to display them individually
+  // on the map, then we remove the 'EUU' iso code and add the countries' individual iso codes.
+  if (euGroupSelected && showEUCountriesChecked) {
+    countriesToDisplay = selectedCountriesISO.filter(iso => iso !== europeSlug);
+    countriesToDisplay.push(...europeanCountries);
+  }
+
+  // If the EU countries are displayed individually by their iso codes but we would like
+  // to display them as the EU group, we remove their individual iso codes and add the 'EUU' one.
+  if (allEuCountriesSelected && !showEUCountriesChecked) {
+    countriesToDisplay = selectedCountriesISO.filter(
+      iso => !europeanCountries.includes(iso)
+    );
+    countriesToDisplay.push(europeSlug);
+  }
+
+  return countriesToDisplay;
+};
+
+// Based on the indicator, zoom level, the selected countries and the "Visualize individual
+// submissions of EU Members" checkbox, return the paths to the map with the correct countries
+// highlighted.
 export const pathsWithStylesFunction = (
   indicator,
   zoom,
@@ -129,12 +192,25 @@ export const pathsWithStylesFunction = (
 ) => {
   if (!indicator || !worldPaths) return [];
   const paths = [];
-  const selectedWorldPaths = showEUCountriesChecked
-    ? worldPaths
-    : worldPaths.filter(p => !europeanCountries.includes(p.properties.id));
+
+  const removeEuCountriesFromPaths = getRemoveEuCountriesFromPaths(
+    showEUCountriesChecked,
+    selectedCountriesISO
+  );
+
+  const countriesToDisplayISO = selectedMapCountriesISOFunction(
+    showEUCountriesChecked,
+    selectedCountriesISO
+  );
+
+  const selectedWorldPaths = removeEuCountriesFromPaths
+    ? worldPaths.filter(p => !europeanCountries.includes(p.properties.id))
+    : worldPaths;
+
   selectedWorldPaths.forEach(path => {
     if (shouldShowPath(path, zoom)) {
       const { locations, legendBuckets } = indicator;
+
       if (!locations) {
         paths.push({
           ...path,
@@ -161,7 +237,7 @@ export const pathsWithStylesFunction = (
         }
       };
 
-      if (!selectedCountriesISO.includes(iso)) {
+      if (!countriesToDisplayISO.includes(iso)) {
         const color = '#e8ecf5';
         style.default.fill = color;
         style.hover.fill = color;
