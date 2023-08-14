@@ -17,7 +17,9 @@ module Api
                 column: 'source', alias: 'source', visible: false
               },
               {
-                column: 'iso_code3', alias: 'iso_code3', visible: false
+                column: 'iso_code3',
+                alias: 'iso_code3',
+                display: "ISO"
               },
               {
                 column: 'country', alias: 'country'
