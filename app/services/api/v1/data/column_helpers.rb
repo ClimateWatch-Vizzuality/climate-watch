@@ -27,18 +27,6 @@ module Api
           {columns: sortable_columns.map { |cp| cp[:alias] }}
         end
 
-        def csv_column_aliases
-          csv_columns.map do |column_properties|
-            column_properties[:alias]
-          end
-        end
-
-        def csv_column_display_names
-          csv_columns.map do |column_properties|
-            column_properties[:display] || column_properties[:alias]&.humanize
-          end
-        end
-
         private
 
         def visible_columns
@@ -72,14 +60,6 @@ module Api
           end
           groupable_columns.map do |column_properties|
             column_properties[:column]
-          end
-        end
-
-        ## CSV specific
-
-        def csv_columns
-          select_columns_map.select do |column_properties|
-            column_properties[:csv].nil? || column_properties[:csv] == true
           end
         end
       end

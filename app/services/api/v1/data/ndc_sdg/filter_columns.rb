@@ -18,7 +18,7 @@ module Api
               {
                 column: 'locations.iso_code3',
                 alias: 'iso_code3',
-                visible: false
+                display: 'ISO'
               },
               {
                 column: 'locations.wri_standard_name',
@@ -57,12 +57,12 @@ module Api
               {
                 column: 'ndcs.document_type',
                 alias: 'document_type',
-                csv: false
+                visible: false
               },
               {
                 column: 'ndcs.language',
                 alias: 'document_language',
-                csv: false
+                visible: false
               }
             ]
           end
