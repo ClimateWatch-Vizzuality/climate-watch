@@ -482,19 +482,20 @@ export const getVulnerabilityData = createSelector(
 );
 
 const getCountriesAndParties = submissions => {
+  const countriesSubmissions = submissions.filter(s => s !== europeSlug);
   const partiesNumber = submissions.length;
-  let countriesNumber = submissions.length;
+  let countriesNumber = countriesSubmissions.length;
 
-  if (!submissions.includes(europeGroupExplorerPagesSlug)) {
-    return { partiesNumber, countriesNumber };
+  if (submissions.includes(europeGroupExplorerPagesSlug)) {
+    const europeanCountriesWithSubmission = intersection(
+      europeanCountries,
+      countriesSubmissions
+    );
+
+    countriesNumber +=
+      europeanCountries.length - (europeanCountriesWithSubmission.length - 1);
   }
-  const europeanCountriesWithSubmission = intersection(
-    europeanCountries,
-    submissions
-  );
 
-  countriesNumber +=
-    europeanCountries.length - (europeanCountriesWithSubmission.length - 1) - 1; // Don't count the EUU
   return { partiesNumber, countriesNumber };
 };
 
