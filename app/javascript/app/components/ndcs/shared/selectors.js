@@ -48,7 +48,13 @@ export const selectedCountriesFunction = (locations, regions, countries) => {
   if (!locations || !locations.length || !regions || !regions.length) {
     return countries;
   }
-  const PARTIES_MISSING_IN_WORLD_SECTION = [...NO_DOCUMENT_SUBMITTED_COUNTRIES];
+
+  const EUURegion = regions.find(r => r.iso_code3 === 'EUU');
+  // EUU as a country is not included in the WORLD section
+  const PARTIES_MISSING_IN_WORLD_SECTION = [
+    ...NO_DOCUMENT_SUBMITTED_COUNTRIES,
+    { iso: europeSlug, label: EUURegion?.label }
+  ];
   const selectedRegionsCountries = locations.reduce((acc, location) => {
     let members = acc;
     if (location.iso === 'TOP') {
@@ -82,9 +88,9 @@ export const selectedCountriesFunction = (locations, regions, countries) => {
         return false;
       });
     }
-
     return members;
   }, []);
+
   const selectedRegionsCountriesISOS = selectedRegionsCountries.map(
     c => c.iso_code3
   );
