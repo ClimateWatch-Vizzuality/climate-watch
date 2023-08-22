@@ -209,11 +209,17 @@ function GhgEmissionsContainer(props) {
   const handleInfoClick = () => {
     let { label: source } = selected.sourcesSelected || {};
     if (source) {
-      if (source.startsWith('UNFCCC')) source = 'UNFCCC';
-      const slugs = `historical_emissions_${source.replace(' ', '_')}`;
+      if (source.startsWith('UNFCCC')) {
+        source = 'historical_emissions_UNFCCC';
+      } else if (source === 'US State Inventory') {
+        source = 'historical_emissions_us state inventory';
+      } else {
+        source = `historical_emissions_${source.replace(' ', '_')}`;
+      }
+
       setModalMetadata({
         category: 'Historical Emissions',
-        slugs,
+        slugs: source,
         open: true
       });
     }
