@@ -460,11 +460,10 @@ export const getEmissionsCardData = createSelector(
     }
 
     const emissionsIndicator = indicators.find(i => i.slug === 'lts_ghg');
-    const emissionsIndicator2 = indicators.find(i => i.slug === 'ndce_ghg');
     if (!emissionsIndicator) return null;
 
     let data = getIndicatorEmissionsData(
-      emissionsIndicator2,
+      emissionsIndicator,
       selectedIndicator,
       legend,
       selectedCountriesISO,
