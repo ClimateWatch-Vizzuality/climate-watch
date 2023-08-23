@@ -340,8 +340,11 @@ export const getIndicatorEmissionsData = (
   isDefaultLocationSelected
 ) => {
   if (!emissionsIndicator) return null;
+
+  // Emission percentages filtered by the selected countries
   const emissionPercentages = isDefaultLocationSelected
-    ? Object.entries(emissionsIndicator.locations).reduce(
+    ? emissionsIndicator.locations
+    : Object.entries(emissionsIndicator.locations).reduce(
       (acc, [iso, value]) => {
         if (selectedCountriesISO.includes(iso)) {
           acc[iso] = value;
@@ -349,21 +352,40 @@ export const getIndicatorEmissionsData = (
         return acc;
       },
       {}
-    )
-    : emissionsIndicator.locations;
+    );
+
+  const europeanLocationIsos = Object.keys(
+    selectedIndicator.locations
+  ).filter(iso => europeanCountries.includes(iso));
+
+  // Check summedPercentage for needed adjustments
   let summedPercentage = 0;
+
   const data = legend.map(legendItem => {
-    let legendItemValue = 0;
-    const locationEntries = Object.entries(selectedIndicator.locations);
-    const europeanLocationIsos = Object.keys(
-      selectedIndicator.locations
-    ).filter(iso => europeanCountries.includes(iso));
-    locationEntries.forEach(entry => {
-      const [locationIso, { label_id: labelId }] = entry;
-      if (
-        labelId === parseInt(legendItem.id, 10) &&
-        emissionPercentages[locationIso]
-      ) {
+    let itemEmissionsPercentage = 0;
+
+    selectedCountriesISO.forEach(locationIso => {
+      const locationValue = selectedIndicator.locations[locationIso];
+      const { label_id: labelId } = locationValue || {};
+
+      if (!emissionPercentages[locationIso]?.value) {
+        console.warn('We dont have emission percentages for', locationIso);
+        return;
+      }
+
+      // If they don't have a locationValue it means they are not submitted
+      const isNoSubmittedLegendItem =
+        legendItem.name === 'No Document Submitted';
+      const noLocationValue = !labelId || !locationValue;
+      if (isNoSubmittedLegendItem && noLocationValue) {
+        itemEmissionsPercentage += parseFloat(
+          emissionPercentages[locationIso].value
+        );
+      }
+
+      // If they do have a locationValue we have to check the locationValue labelId
+      // and see if it matches with the legend item
+      if (labelId === parseInt(legendItem.id, 10)) {
         if (locationIso === europeSlug) {
           const EUTotal = parseFloat(emissionPercentages[europeSlug].value);
           const europeanLocationsValue = europeanLocationIsos.reduce(
@@ -374,36 +396,42 @@ export const getIndicatorEmissionsData = (
                 : 0),
             0
           );
-          legendItemValue += EUTotal - europeanLocationsValue; // To avoid double counting
+          itemEmissionsPercentage += EUTotal - europeanLocationsValue; // To avoid double counting
         } else {
-          legendItemValue += parseFloat(emissionPercentages[locationIso].value);
+          itemEmissionsPercentage += parseFloat(
+            emissionPercentages[locationIso].value
+          );
         }
       }
     });
-    summedPercentage += legendItemValue;
+    summedPercentage += itemEmissionsPercentage;
 
     return {
       name: legendItem.name,
-      value: legendItemValue
+      value: itemEmissionsPercentage
     };
   });
 
+  // If the sum of the percentages is less than 100 for now we just display a warning
   if (summedPercentage < 100) {
-    const notSubmittedDataItem = data.find(
-      d => d.name === NO_DOCUMENT_SUBMITTED
-    );
-    if (notSubmittedDataItem) {
-      const notApplicablePosition = data.indexOf(notSubmittedDataItem);
-      data[notApplicablePosition] = {
-        name: NO_DOCUMENT_SUBMITTED,
-        value: notSubmittedDataItem.value + (100 - summedPercentage)
-      };
-    } else {
-      data.push({
-        name: NO_DOCUMENT_SUBMITTED,
-        value: 100 - summedPercentage
-      });
-    }
+    console.warn('summedPercentage is less than 100', summedPercentage);
+
+    // We add the missing percentage to the No Document Submitted legend item
+    //   const notSubmittedDataItem = data.find(
+    //     d => d.name === NO_DOCUMENT_SUBMITTED
+    //   );
+    //   if (notSubmittedDataItem) {
+    //     const notApplicablePosition = data.indexOf(notSubmittedDataItem);
+    //     data[notApplicablePosition] = {
+    //       name: NO_DOCUMENT_SUBMITTED,
+    //       value: notSubmittedDataItem.value + (100 - summedPercentage)
+    //     };
+    //   } else {
+    //     data.push({
+    //       name: NO_DOCUMENT_SUBMITTED,
+    //       value: 100 - summedPercentage
+    //     });
+    //   }
   }
 
   return sortBy(
@@ -432,9 +460,11 @@ export const getEmissionsCardData = createSelector(
     }
 
     const emissionsIndicator = indicators.find(i => i.slug === 'lts_ghg');
+    const emissionsIndicator2 = indicators.find(i => i.slug === 'ndce_ghg');
     if (!emissionsIndicator) return null;
+
     let data = getIndicatorEmissionsData(
-      emissionsIndicator,
+      emissionsIndicator2,
       selectedIndicator,
       legend,
       selectedCountriesISO,
@@ -456,7 +486,6 @@ export const getEmissionsCardData = createSelector(
         noLabelOverride: true
       })
     };
-
     return {
       config,
       data
