@@ -1,7 +1,7 @@
 import camelCase from 'lodash/camelCase';
 import sortBy from 'lodash/sortBy';
 import { NOT_COVERED_LABEL } from 'data/constants';
-import { europeanCountries } from 'data/european-countries';
+import { europeanCountries, europeSlug } from 'data/european-countries';
 
 const NOT_APPLICABLE_LABEL = 'Not Applicable';
 const NOT_APPLICABLE_OR_NOT_INFO_LABEL = 'Not applicable or No information';
@@ -11,6 +11,116 @@ export const sortByIndexAndNotInfo = (a, b) => {
   if (isNotInfo(a)) return 1;
   if (isNotInfo(b)) return -1;
   return a.index - b.index;
+};
+
+// On LTS and Net-zero the selected indicator doesn't have values labeled as 'No Document Submitted'
+// That is why we have two different functions to calculate the emissions data
+export const getIndicatorEmissionsDataLTSandNetZero = (
+  emissionsIndicator,
+  selectedIndicator,
+  legend,
+  selectedCountriesISO,
+  isDefaultLocationSelected
+) => {
+  if (!emissionsIndicator) return null;
+
+  // Emission percentages filtered by the selected countries
+  const emissionPercentages = isDefaultLocationSelected
+    ? emissionsIndicator.locations
+    : Object.entries(emissionsIndicator.locations).reduce(
+      (acc, [iso, value]) => {
+        if (selectedCountriesISO.includes(iso)) {
+          acc[iso] = value;
+        }
+        return acc;
+      },
+      {}
+    );
+
+  const europeanLocationIsos = Object.keys(
+    selectedIndicator.locations
+  ).filter(iso => europeanCountries.includes(iso));
+
+  // Check summedPercentage for needed adjustments
+  let summedPercentage = 0;
+
+  const data = legend.map(legendItem => {
+    let itemEmissionsPercentage = 0;
+
+    selectedCountriesISO.forEach(locationIso => {
+      const locationValue = selectedIndicator.locations[locationIso];
+      const { label_id: labelId } = locationValue || {};
+
+      if (!emissionPercentages[locationIso]?.value) {
+        console.warn('We dont have emission percentages for', locationIso);
+        return;
+      }
+
+      // If they don't have a locationValue it means they are not submitted
+      const isNoSubmittedLegendItem =
+        legendItem.name === 'No Document Submitted';
+      const noLocationValue = !labelId || !locationValue;
+      if (isNoSubmittedLegendItem && noLocationValue) {
+        itemEmissionsPercentage += parseFloat(
+          emissionPercentages[locationIso].value
+        );
+      }
+
+      // If they do have a locationValue we have to check the locationValue labelId
+      // and see if it matches with the legend item
+      if (labelId === parseInt(legendItem.id, 10)) {
+        if (locationIso === europeSlug) {
+          const EUTotal = parseFloat(emissionPercentages[europeSlug].value);
+          const europeanLocationsValue = europeanLocationIsos.reduce(
+            (acc, iso) =>
+              acc +
+              (emissionPercentages[iso]
+                ? parseFloat(emissionPercentages[iso].value)
+                : 0),
+            0
+          );
+          itemEmissionsPercentage += EUTotal - europeanLocationsValue; // To avoid double counting
+        } else {
+          itemEmissionsPercentage += parseFloat(
+            emissionPercentages[locationIso].value
+          );
+        }
+      }
+    });
+    summedPercentage += itemEmissionsPercentage;
+
+    return {
+      name: legendItem.name,
+      value: itemEmissionsPercentage
+    };
+  });
+
+  // If the sum of the percentages is less than 100 for now we just display a warning
+  if (summedPercentage < 100) {
+    console.warn('summedPercentage is less than 100', summedPercentage);
+
+    // We add the missing percentage to the No Document Submitted legend item
+    //   const notSubmittedDataItem = data.find(
+    //     d => d.name === NO_DOCUMENT_SUBMITTED
+    //   );
+    //   if (notSubmittedDataItem) {
+    //     const notApplicablePosition = data.indexOf(notSubmittedDataItem);
+    //     data[notApplicablePosition] = {
+    //       name: NO_DOCUMENT_SUBMITTED,
+    //       value: notSubmittedDataItem.value + (100 - summedPercentage)
+    //     };
+    //   } else {
+    //     data.push({
+    //       name: NO_DOCUMENT_SUBMITTED,
+    //       value: 100 - summedPercentage
+    //     });
+    //   }
+  }
+
+  return sortBy(
+    data.filter(d => d.value !== 0),
+    'value'
+  ).reverse();
 };
 
 export const getIndicatorEmissionsData = (

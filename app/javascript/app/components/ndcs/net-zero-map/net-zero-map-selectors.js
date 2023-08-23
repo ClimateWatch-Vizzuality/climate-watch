@@ -8,8 +8,11 @@ import uniqBy from 'lodash/uniqBy';
 import sortBy from 'lodash/sortBy';
 import { generateLinkToDataExplorer } from 'utils/data-explorer';
 import getIPPaths from 'app/data/world-50m-paths';
-
-import { sortByIndexAndNotInfo, getLabels } from 'components/ndcs/shared/utils';
+import {
+  sortByIndexAndNotInfo,
+  getIndicatorEmissionsDataLTSandNetZero as getIndicatorEmissionsData,
+  getLabels
+} from 'components/ndcs/shared/utils';
 import {
   europeSlug,
   europeanCountries,
@@ -332,86 +335,6 @@ export const getTooltipCountryValues = createSelector(
     return tooltipCountryValues;
   }
 );
-
-export const getIndicatorEmissionsData = (
-  emissionsIndicator,
-  selectedIndicator,
-  legend,
-  selectedCountriesISO,
-  isDefaultLocationSelected
-) => {
-  if (!emissionsIndicator) return null;
-  const emissionPercentages = isDefaultLocationSelected
-    ? Object.entries(emissionsIndicator.locations).reduce(
-      (acc, [iso, value]) => {
-        if (selectedCountriesISO.includes(iso)) {
-          acc[iso] = value;
-        }
-        return acc;
-      },
-      {}
-    )
-    : emissionsIndicator.locations;
-  let summedPercentage = 0;
-  const data = legend.map(legendItem => {
-    let legendItemValue = 0;
-    const locationEntries = Object.entries(selectedIndicator.locations);
-    const europeanLocationIsos = Object.keys(
-      selectedIndicator.locations
-    ).filter(iso => europeanCountries.includes(iso));
-    locationEntries.forEach(entry => {
-      const [locationIso, { label_id: labelId }] = entry;
-      if (
-        labelId === parseInt(legendItem.id, 10) &&
-        emissionPercentages[locationIso]
-      ) {
-        if (locationIso === europeSlug) {
-          const EUTotal = parseFloat(emissionPercentages[europeSlug].value);
-          const europeanLocationsValue = europeanLocationIsos.reduce(
-            (acc, iso) =>
-              acc +
-              (emissionPercentages[iso]
-                ? parseFloat(emissionPercentages[iso].value)
-                : 0),
-            0
-          );
-          legendItemValue += EUTotal - europeanLocationsValue; // To avoid double counting
-        } else {
-          legendItemValue += parseFloat(emissionPercentages[locationIso].value);
-        }
-      }
-    });
-    summedPercentage += legendItemValue;
-
-    return {
-      name: legendItem.name,
-      value: legendItemValue
-    };
-  });
-
-  if (summedPercentage < 100) {
-    const notSubmittedDataItem = data.find(
-      d => d.name === NO_DOCUMENT_SUBMITTED
-    );
-    if (notSubmittedDataItem) {
-      const notApplicablePosition = data.indexOf(notSubmittedDataItem);
-      data[notApplicablePosition] = {
-        name: NO_DOCUMENT_SUBMITTED,
-        value: notSubmittedDataItem.value + (100 - summedPercentage)
-      };
-    } else {
-      data.push({
-        name: NO_DOCUMENT_SUBMITTED,
-        value: 100 - summedPercentage
-      });
-    }
-  }
-
-  return sortBy(
-    data.filter(d => d.value !== 0),
-    'value'
-  ).reverse();
-};
 
 export const getEmissionsCardData = createSelector(
   [
