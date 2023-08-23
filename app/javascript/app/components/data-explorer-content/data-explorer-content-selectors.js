@@ -611,13 +611,21 @@ export const parseExternalParams = createSelector(
         parsedFields[`${section}-${metaMatchingKey}`] = externalFields[k];
       } else if (metaMatchingKey !== 'undefined') {
         if (metaMatchingKey === 'subcategories') metaMatchingKey = 'categories';
+        if (metaMatchingKey === 'regions') {
+          metaMatchingKey = ['regions', 'countries'];
+        }
+
         const ids = externalFields[k].split(',');
-        const filterObjects = sectionMeta[metaMatchingKey].filter(
+        const objectsToFilter = Array.isArray(metaMatchingKey)
+          ? metaMatchingKey.map(key => sectionMeta[key]).flat()
+          : sectionMeta[metaMatchingKey];
+        const filterObjects = objectsToFilter.filter(
           i =>
             ids.map(f => parseInt(f, 10)).includes(i.id) ||
             ids.includes(i.number) ||
             ids.includes(i.iso_code3) ||
             ids.includes(i.iso) ||
+            ids.includes(i.name) || // name added because Climate Watch source slug is climate-watch and the others are camelCase
             ids.map(f => f.toLowerCase()).includes(i.slug)
         );
 
