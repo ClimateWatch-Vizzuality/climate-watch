@@ -24,6 +24,8 @@ export const getIndicatorEmissionsDataLTSandNetZero = (
 ) => {
   if (!emissionsIndicator) return null;
 
+  const NO_DOCUMENT_SUBMITTED = 'No Document Submitted';
+
   // Emission percentages filtered by the selected countries
   const emissionPercentages = isDefaultLocationSelected
     ? emissionsIndicator.locations
@@ -57,8 +59,7 @@ export const getIndicatorEmissionsDataLTSandNetZero = (
       }
 
       // If they don't have a locationValue it means they are not submitted
-      const isNoSubmittedLegendItem =
-        legendItem.name === 'No Document Submitted';
+      const isNoSubmittedLegendItem = legendItem.name === NO_DOCUMENT_SUBMITTED;
       const noLocationValue = !labelId || !locationValue;
       if (isNoSubmittedLegendItem && noLocationValue) {
         itemEmissionsPercentage += parseFloat(
@@ -100,21 +101,21 @@ export const getIndicatorEmissionsDataLTSandNetZero = (
     console.warn('summedPercentage is less than 100', summedPercentage);
 
     // We add the missing percentage to the No Document Submitted legend item
-    //   const notSubmittedDataItem = data.find(
-    //     d => d.name === NO_DOCUMENT_SUBMITTED
-    //   );
-    //   if (notSubmittedDataItem) {
-    //     const notApplicablePosition = data.indexOf(notSubmittedDataItem);
-    //     data[notApplicablePosition] = {
-    //       name: NO_DOCUMENT_SUBMITTED,
-    //       value: notSubmittedDataItem.value + (100 - summedPercentage)
-    //     };
-    //   } else {
-    //     data.push({
-    //       name: NO_DOCUMENT_SUBMITTED,
-    //       value: 100 - summedPercentage
-    //     });
-    //   }
+    const notSubmittedDataItem = data.find(
+      d => d.name === NO_DOCUMENT_SUBMITTED
+    );
+    if (notSubmittedDataItem) {
+      const notApplicablePosition = data.indexOf(notSubmittedDataItem);
+      data[notApplicablePosition] = {
+        name: NO_DOCUMENT_SUBMITTED,
+        value: notSubmittedDataItem.value + (100 - summedPercentage)
+      };
+    } else {
+      data.push({
+        name: NO_DOCUMENT_SUBMITTED,
+        value: 100 - summedPercentage
+      });
+    }
   }
 
   return sortBy(
