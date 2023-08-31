@@ -79,26 +79,29 @@ class DataExplorerFilters extends PureComponent {
       isDisabled,
       handleChangeSelectorAnalytics
     } = this.props;
+
     const multipleSection = field =>
       MULTIPLE_LEVEL_SECTION_FIELDS[section] &&
       MULTIPLE_LEVEL_SECTION_FIELDS[section].find(s => s.key === field);
     const groupedSelect = field =>
       GROUPED_OR_MULTI_SELECT_FIELDS[section] &&
       GROUPED_OR_MULTI_SELECT_FIELDS[section].find(s => s.key === field);
+
+    const getSelectedValue = option => {
+      if (isArray(option)) {
+        return option.length > 0 && last(option).value === ALL_SELECTED
+          ? ALL_SELECTED
+          : option
+            .map(o => o.slug)
+            .filter(v => v !== ALL_SELECTED)
+            .join();
+      }
+      return option && option.slug;
+    };
+
     const fieldFilters = filters.map(field => {
       if (multipleSection(field)) {
         const isMulti = multipleSection(field).multiselect;
-        const getSelectedValue = option => {
-          if (isArray(option)) {
-            return option.length > 0 && last(option).value === ALL_SELECTED
-              ? ALL_SELECTED
-              : option
-                .map(o => o.slug)
-                .filter(v => v !== ALL_SELECTED)
-                .join();
-          }
-          return option && option.slug;
-        };
 
         return (
           <MultiLevelDropdown
@@ -122,6 +125,23 @@ class DataExplorerFilters extends PureComponent {
           f => f.key === field
         );
         const label = fieldInfo.label || fieldInfo.key;
+        const parseSelected = option => {
+          const lastSelectedIsAllSelected =
+            isArray(option) &&
+            option.length > 0 &&
+            option[option.length - 1].value === ALL_SELECTED;
+          if (lastSelectedIsAllSelected) {
+            // Clear is all selected
+            return [];
+          }
+          const hasAllSelectedAndOtherValue =
+            isArray(option) &&
+            option.length > 0 &&
+            option.some(o => o.value === ALL_SELECTED);
+          return hasAllSelectedAndOtherValue
+            ? option.filter(o => o.value !== ALL_SELECTED)
+            : option;
+        };
         return (
           <Multiselect
             key={fieldInfo.key}
@@ -133,7 +153,7 @@ class DataExplorerFilters extends PureComponent {
             groups={fieldInfo.groups}
             disabled={isDisabled(field)}
             onValueChange={selected => {
-              handleFiltersChange({ [field]: selected });
+              handleFiltersChange({ [field]: parseSelected(selected) });
               handleChangeSelectorAnalytics();
             }}
             theme={dropdownTheme}

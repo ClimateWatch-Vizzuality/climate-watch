@@ -13,11 +13,11 @@ export function getPathwaysModelOptions(query, filtersMeta, filter) {
     model => model.id === selectedModelId
   );
   const locationHasModel = modelSelected.find(model =>
-    model.geographic_coverage.includes(locationsSelected.name)
+    model.geographic_coverage.includes(locationsSelected?.name)
   );
   if (modelSelected.length && !locationHasModel) return filtersMeta[filter];
   return filtersMeta[filter].filter(model =>
-    model.geographic_coverage.includes(locationsSelected.name)
+    model.geographic_coverage.includes(locationsSelected?.name)
   );
 }
 
