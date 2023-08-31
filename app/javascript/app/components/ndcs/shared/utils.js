@@ -46,15 +46,15 @@ export const getIndicatorEmissionsDataLTSandNetZero = (
   // Check summedPercentage for needed adjustments
   let summedPercentage = 0;
 
-  const data = legend.map(legendItem => {
+  let data = legend.map(legendItem => {
     let itemEmissionsPercentage = 0;
-
+    const missingIsos = [];
     selectedCountriesISO.forEach(locationIso => {
       const locationValue = selectedIndicator.locations[locationIso];
       const { label_id: labelId } = locationValue || {};
 
       if (!emissionPercentages[locationIso]?.value) {
-        console.warn('We dont have emission percentages for', locationIso);
+        missingIsos.push(locationIso);
         return;
       }
 
@@ -88,6 +88,9 @@ export const getIndicatorEmissionsDataLTSandNetZero = (
         }
       }
     });
+    if (missingIsos.length > 0) {
+      console.warn('We dont have emission percentages for', missingIsos);
+    }
     summedPercentage += itemEmissionsPercentage;
 
     return {
@@ -96,25 +99,33 @@ export const getIndicatorEmissionsDataLTSandNetZero = (
     };
   });
 
-  // If the sum of the percentages is less than 100 for now we just display a warning
+  // If the sum of the percentages is less than 100 we have to adjust the data
   if (summedPercentage < 100) {
     console.warn('summedPercentage is less than 100', summedPercentage);
 
-    // We add the missing percentage to the No Document Submitted legend item
-    const notSubmittedDataItem = data.find(
-      d => d.name === NO_DOCUMENT_SUBMITTED
-    );
-    if (notSubmittedDataItem) {
-      const notApplicablePosition = data.indexOf(notSubmittedDataItem);
-      data[notApplicablePosition] = {
-        name: NO_DOCUMENT_SUBMITTED,
-        value: notSubmittedDataItem.value + (100 - summedPercentage)
-      };
+    if (isDefaultLocationSelected) {
+      // We add the missing percentage to the No Document Submitted legend item if the selection is World
+      const notSubmittedDataItem = data.find(
+        d => d.name === NO_DOCUMENT_SUBMITTED
+      );
+      if (notSubmittedDataItem) {
+        const notApplicablePosition = data.indexOf(notSubmittedDataItem);
+        data[notApplicablePosition] = {
+          name: NO_DOCUMENT_SUBMITTED,
+          value: notSubmittedDataItem.value + (100 - summedPercentage)
+        };
+      } else {
+        data.push({
+          name: NO_DOCUMENT_SUBMITTED,
+          value: 100 - summedPercentage
+        });
+      }
     } else {
-      data.push({
-        name: NO_DOCUMENT_SUBMITTED,
-        value: 100 - summedPercentage
-      });
+      // Translate regional values to full 100% percentage
+      data = data.map(d => ({
+        ...d,
+        value: summedPercentage === 0 ? 0 : (d.value * 100) / summedPercentage
+      }));
     }
   }
 
