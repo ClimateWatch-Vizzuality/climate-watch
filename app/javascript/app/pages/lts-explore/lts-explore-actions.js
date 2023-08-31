@@ -17,11 +17,21 @@ const fetchLTS = createThunkAction('fetchLTS', () => (dispatch, state) => {
     !LTS.loading
   ) {
     dispatch(fetchLTSInit());
-    apiWithCache
-      .get('/api/v1/lts?source=LTS&filter=map')
-      .then(response => {
-        if (response.data) return response.data;
-        throw Error(response.statusText);
+    Promise.all([
+      apiWithCache.get('/api/v1/lts?source=LTS&filter=map'),
+      apiWithCache.get('/api/v1/ndcs?indicators=ndce_ghg')
+    ])
+      .then(responses => {
+        if (!responses[0].data) throw Error(responses[0].statusText);
+        if (!responses[1].data) throw Error(responses[1].statusText);
+
+        return {
+          ...responses[0].data,
+          indicators: [
+            ...responses[0].data.indicators,
+            ...responses[1].data.indicators
+          ]
+        };
       })
       .then(data => getFirstDocumentValue(data))
       .then(data => {
