@@ -34,7 +34,8 @@ import {
   ALL_SELECTED,
   ALL_SELECTED_OPTION,
   CONTAINED_PATHNAME,
-  TOP_EMITTERS_OPTION
+  TOP_EMITTERS_OPTION,
+  TOP_EMITTERS_REGION_COUNTRIES
 } from 'data/constants';
 import {
   getPathwaysModelOptions,
@@ -115,10 +116,22 @@ const getSectionMeta = createSelector(
         ]
       };
     }
+
+    const TOP_EMITTERS_META = {
+      iso_code3: 'TOP',
+      groupId: 'regions',
+      is_in_eu: null,
+      members: TOP_EMITTERS_REGION_COUNTRIES.map(topCountry =>
+        countries.find(c => c.iso_code3 === topCountry.iso)
+      ),
+      pik_name: 'Top Emitters',
+      wri_standard_name: 'Top Emitters'
+    };
+
     if (DATA_EXPLORER_FILTERS[section].includes('regions')) {
       return {
         ...sectionMeta,
-        regions,
+        regions: regions.concat(TOP_EMITTERS_META),
         countries: modifyEUULabel(countries)
       };
     } else if (DATA_EXPLORER_FILTERS[section].includes('countries')) {
@@ -189,9 +202,11 @@ const addTopEmittersMembers = (isosArray, regions, key) => {
     (key === FILTER_NAMES.regions || key === FILTER_NAMES.locations) &&
     isosArray.includes('TOP')
   ) {
-    const topRegion = regions.find(r => r.iso === 'TOP');
+    const topRegion = regions.find(
+      r => r.iso === 'TOP' || r.iso_code3 === 'TOP'
+    );
     if (topRegion) {
-      return isosArray.concat(topRegion.members || topRegion.expandsTo);
+      return topRegion.members.map(m => m.iso_code3);
     }
   }
   return isosArray;
@@ -217,18 +232,26 @@ function extractFilterIds(parsedFilters, metadata, isLinkQuery = false) {
       metadata.locations || metadata.regions,
       key
     );
-
     const filters = [];
     if (metadataWithSubcategories[parsedKey]) {
       selectedIds.forEach(selectedId => {
-        const foundSelectedOption = findSelectedValueObject(
-          metadataWithSubcategories[parsedKey],
-          selectedId
-        );
+        const foundSelectedOption =
+          parsedKey === 'regions'
+            ? findSelectedValueObject(
+              [
+                ...metadataWithSubcategories.regions,
+                ...metadataWithSubcategories.countries
+              ],
+              selectedId
+            )
+            : findSelectedValueObject(
+              metadataWithSubcategories[parsedKey],
+              selectedId
+            );
+
         if (foundSelectedOption) filters.push(foundSelectedOption);
       });
     }
-
     if (filters && filters.length > 0) {
       filterIds[parsedKey] = filters.map(
         f => f.id || f.iso_code || f.iso_code3
@@ -518,7 +541,7 @@ export const getFilterOptions = createSelector(
     filterKeys.forEach(f => {
       const options = getOptions(section, f, filtersMeta, query, category);
       if (options) {
-        if (['regions', 'locations'].includes(f)) {
+        if (['regions', 'locations', 'countries'].includes(f)) {
           options.unshift(TOP_EMITTERS_OPTION);
         }
         const optionsArray = options.map(option => {
@@ -610,14 +633,23 @@ export const parseExternalParams = createSelector(
       if (isNonColumnKey(keyWithoutSection)) {
         parsedFields[`${section}-${metaMatchingKey}`] = externalFields[k];
       } else if (metaMatchingKey !== 'undefined') {
+        // Fix discrepancies on meta keys
         if (metaMatchingKey === 'subcategories') metaMatchingKey = 'categories';
+        if (metaMatchingKey === 'regions') {
+          metaMatchingKey = ['regions', 'countries'];
+        }
+
         const ids = externalFields[k].split(',');
-        const filterObjects = sectionMeta[metaMatchingKey].filter(
+        const objectsToFilter = Array.isArray(metaMatchingKey)
+          ? metaMatchingKey.map(key => sectionMeta[key]).flat()
+          : sectionMeta[metaMatchingKey];
+        const filterObjects = objectsToFilter.filter(
           i =>
             ids.map(f => parseInt(f, 10)).includes(i.id) ||
             ids.includes(i.number) ||
             ids.includes(i.iso_code3) ||
             ids.includes(i.iso) ||
+            ids.includes(i.name) || // name added because Climate Watch source slug is climate-watch and the others are camelCase
             ids.map(f => f.toLowerCase()).includes(i.slug)
         );
 
