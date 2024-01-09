@@ -33,6 +33,7 @@ import ModalShare from 'components/modal-share';
 import NDCSExploreProvider from 'providers/ndcs-explore-provider';
 import NDCSPreviousComparisonProvider from 'providers/ndcs-previous-comparison-provider';
 import DocumentsProvider from 'providers/documents-provider';
+import MetadataProvider from 'providers/metadata-provider';
 
 import { SEO_PAGES } from 'data/seo';
 
@@ -176,7 +177,8 @@ function NDCSExploreMap(props) {
     checked,
     pngDownloadId,
     secondCardSelectedTab,
-    setSecondCardSelectedTab
+    setSecondCardSelectedTab,
+    metadata
   } = props;
 
   const tooltipParentRef = useRef(null);
@@ -357,7 +359,13 @@ function NDCSExploreMap(props) {
                       <HandIconInfo className={styles.mapInfo}>
                         The map reflects latest submission of each country,
                         click on a country to see in-depth analysis of its
-                        latest NDC and previous submissions
+                        latest NDC and previous submissions.
+                        {metadata && (
+                          <span className={styles.lastUpdated}>
+                            {' '}
+                            {metadata?.frequency_of_updates}
+                          </span>
+                        )}
                       </HandIconInfo>
                       <span data-tour="ndc-explore-04">
                         {renderMap({ isTablet })}
@@ -401,6 +409,7 @@ function NDCSExploreMap(props) {
         {legendData && renderLegend(legendData, emissionsCardData, true)}
       </ModalPngDownload>
       <DocumentsProvider />
+      <MetadataProvider source="ndc_cw" />
       <React.Fragment>
         <NDCSExploreProvider
           document={selectedDocument && selectedDocument.value}
@@ -447,7 +456,8 @@ NDCSExploreMap.propTypes = {
   checked: PropTypes.bool,
   donutActiveIndex: PropTypes.number,
   secondCardSelectedTab: PropTypes.string,
-  setSecondCardSelectedTab: PropTypes.string
+  setSecondCardSelectedTab: PropTypes.string,
+  metadata: PropTypes.object
 };
 
 export default NDCSExploreMap;

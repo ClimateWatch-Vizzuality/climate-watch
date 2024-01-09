@@ -37,7 +37,8 @@ import {
   getPngSelectionSubtitle,
   getLocations,
   getSelectedLocations,
-  getVulnerabilityData
+  getVulnerabilityData,
+  getMetadata
 } from './ndcs-explore-map-selectors';
 
 const actions = { ...modalActions, ...exploreMapActions, ...pngModalActions };
@@ -79,7 +80,8 @@ const mapStateToProps = (state, { location }) => {
     checked: getIsShowEUCountriesChecked(ndcsExploreWithSelection),
     pngSelectionSubtitle: getPngSelectionSubtitle(ndcsExploreWithSelection),
     locations: getLocations(ndcsExploreWithSelection),
-    vulnerabilityData: getVulnerabilityData(ndcsExploreWithSelection)
+    vulnerabilityData: getVulnerabilityData(ndcsExploreWithSelection),
+    metadata: getMetadata(ndcsExploreWithSelection)
   };
 };
 const pngDownloadId = 'ndcs-explore-map';
