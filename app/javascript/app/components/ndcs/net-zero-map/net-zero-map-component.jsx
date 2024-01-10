@@ -300,10 +300,11 @@ function NetZeroMap(props) {
                       data-tour="net-zero-03"
                     >
                       {loading && <Loading light className={styles.loader} />}
-                      <HandIconInfo
-                        className={styles.mapInfo}
-                        text="The map reflects latest communication of each country. Explore which countries have adopted a net-zero target below and click on a country to see its climate profile."
-                      />
+                      <HandIconInfo className={styles.mapInfo}>
+                        The map reflects latest communication of each country.
+                        Explore which countries have adopted a net-zero target
+                        below and click on a country to see its climate profile.
+                      </HandIconInfo>
                       {renderMap({ isTablet })}
                       <CheckInput
                         theme={blueCheckboxTheme}

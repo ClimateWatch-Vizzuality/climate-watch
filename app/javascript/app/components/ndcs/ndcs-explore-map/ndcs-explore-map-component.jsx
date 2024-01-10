@@ -354,10 +354,11 @@ function NDCSExploreMap(props) {
                     </div>
                     <div className={styles.containerMap}>
                       {loading && <Loading light className={styles.loader} />}
-                      <HandIconInfo
-                        className={styles.mapInfo}
-                        text="The map reflects latest submission of each country, click on a country to see in-depth analysis of its latest NDC and previous submissions"
-                      />
+                      <HandIconInfo className={styles.mapInfo}>
+                        The map reflects latest submission of each country,
+                        click on a country to see in-depth analysis of its
+                        latest NDC and previous submissions
+                      </HandIconInfo>
                       <span data-tour="ndc-explore-04">
                         {renderMap({ isTablet })}
                       </span>

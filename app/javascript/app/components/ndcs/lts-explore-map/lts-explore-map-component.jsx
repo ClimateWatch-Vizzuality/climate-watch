@@ -299,10 +299,10 @@ function LTSExploreMap(props) {
                     </div>
                     <div className={styles.containerMap}>
                       {loading && <Loading light className={styles.loader} />}
-                      <HandIconInfo
-                        className={styles.mapInfo}
-                        text="Click on a country to see an in-depth analysis of its long-term strategy"
-                      />
+                      <HandIconInfo className={styles.mapInfo}>
+                        Click on a country to see an in-depth analysis of its
+                        long-term strategy
+                      </HandIconInfo>
                       <span data-tour="lts-explore-03">
                         {renderMap({ isTablet })}
                       </span>
