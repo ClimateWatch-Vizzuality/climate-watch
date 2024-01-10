@@ -24,6 +24,7 @@ import cx from 'classnames';
 import { getHoverIndex } from 'components/ndcs/shared/utils';
 import { SEO_PAGES } from 'data/seo';
 import SEOTags from 'components/seo-tags';
+import MetadataProvider from 'providers/metadata-provider';
 
 import layout from 'styles/layout.scss';
 import newMapTheme from 'styles/themes/map/map-new-zoom-controls.scss';
@@ -148,7 +149,8 @@ function NetZeroMap(props) {
     tooltipValues,
     donutActiveIndex,
     selectActiveDonutIndex,
-    pngDownloadId
+    pngDownloadId,
+    metadata
   } = props;
   useEffect(() => {
     selectActiveDonutIndex(0);
@@ -304,6 +306,12 @@ function NetZeroMap(props) {
                         The map reflects latest communication of each country.
                         Explore which countries have adopted a net-zero target
                         below and click on a country to see its climate profile.
+                        {metadata && (
+                          <span className={styles.lastUpdated}>
+                            {' '}
+                            {metadata?.frequency_of_updates}
+                          </span>
+                        )}
                       </HandIconInfo>
                       {renderMap({ isTablet })}
                       <CheckInput
@@ -344,6 +352,7 @@ function NetZeroMap(props) {
           </div>
         )}
       </TabletLandscape>
+      <MetadataProvider source="net_zero" />
     </div>
   );
 }
@@ -375,7 +384,8 @@ NetZeroMap.propTypes = {
   pngSelectionSubtitle: PropTypes.string,
   pngDownloadId: PropTypes.string.isRequired,
   selectActiveDonutIndex: PropTypes.func.isRequired,
-  donutActiveIndex: PropTypes.number
+  donutActiveIndex: PropTypes.number,
+  metadata: PropTypes.object
 };
 
 export default NetZeroMap;
