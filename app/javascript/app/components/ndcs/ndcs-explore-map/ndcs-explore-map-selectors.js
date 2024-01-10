@@ -54,7 +54,8 @@ const getCountries = state => state.countries || null;
 const getRegions = state =>
   (state && state.regions && state.regions.data) || null;
 
-export const getMetadata = (state) => state.metadata.data;
+export const getMetadata = state =>
+  !state.metadata.loading ? state.metadata.data : null;
 
 export const getLocations = createSelector(
   [getRegions, getCountries],

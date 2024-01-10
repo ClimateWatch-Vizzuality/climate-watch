@@ -38,7 +38,8 @@ const getCountriesDocuments = state => state.countriesDocuments.data || null;
 
 export const getCountries = state =>
   (state.countries && state.countries.data) || null;
-export const getMetadata = state => state.metadata.data;
+export const getMetadata = state =>
+  !state.metadata.loading ? state.metadata.data : null;
 
 export const getIsEnhancedChecked = createSelector(
   getSearch,
