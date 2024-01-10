@@ -263,5 +263,8 @@
 }
 
 .lastUpdated {
+  // Due to the use of AbbrReplace in HandIconInfo, the lastUpdated element brings
+  // extra text with it to a new line. This is a quick fix for that.
+  display: block;
   white-space: nowrap;
 }
