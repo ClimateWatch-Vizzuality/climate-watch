@@ -23,6 +23,7 @@ import cx from 'classnames';
 import { getHoverIndex } from 'components/ndcs/shared/utils';
 import { SEO_PAGES } from 'data/seo';
 import SEOTags from 'components/seo-tags';
+import MetadataProvider from 'providers/metadata-provider';
 
 import layout from 'styles/layout.scss';
 import newMapTheme from 'styles/themes/map/map-new-zoom-controls.scss';
@@ -151,7 +152,8 @@ function LTSExploreMap(props) {
     handlePngDownloadModal,
     pngSelectionSubtitle,
     selectActiveDonutIndex,
-    pngDownloadId
+    pngDownloadId,
+    metadata
   } = props;
   useEffect(() => {
     selectActiveDonutIndex(0);
@@ -299,10 +301,16 @@ function LTSExploreMap(props) {
                     </div>
                     <div className={styles.containerMap}>
                       {loading && <Loading light className={styles.loader} />}
-                      <HandIconInfo
-                        className={styles.mapInfo}
-                        text="Click on a country to see an in-depth analysis of its long-term strategy"
-                      />
+                      <HandIconInfo className={styles.mapInfo}>
+                        Click on a country to see an in-depth analysis of its
+                        long-term strategy.
+                        {metadata && (
+                          <span className={styles.lastUpdated}>
+                            {' '}
+                            {metadata?.frequency_of_updates}
+                          </span>
+                        )}
+                      </HandIconInfo>
                       <span data-tour="lts-explore-03">
                         {renderMap({ isTablet })}
                       </span>
@@ -344,6 +352,7 @@ function LTSExploreMap(props) {
           </div>
         )}
       </TabletLandscape>
+      <MetadataProvider source="ndc_lts" />
     </div>
   );
 }
@@ -375,7 +384,8 @@ LTSExploreMap.propTypes = {
   handlePngDownloadModal: PropTypes.func.isRequired,
   pngSelectionSubtitle: PropTypes.string,
   pngDownloadId: PropTypes.string.isRequired,
-  donutActiveIndex: PropTypes.number
+  donutActiveIndex: PropTypes.number,
+  metadata: PropTypes.object
 };
 
 export default LTSExploreMap;

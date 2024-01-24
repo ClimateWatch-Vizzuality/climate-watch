@@ -96,8 +96,6 @@
     padding-left: calc(#{$gutter-padding} / 2);
   }
 
-  padding-top: calc(#{$gutter-padding} / 2);
-
   [class*=map-styles__wrapper] {
     &,
     &[class*=__notDraggable] {
@@ -235,4 +233,10 @@
 
 .map {
   cursor: grab;
+}
+
+.lastUpdated {
+  position: absolute;
+  white-space: nowrap;
+  font-style: italic;
 }

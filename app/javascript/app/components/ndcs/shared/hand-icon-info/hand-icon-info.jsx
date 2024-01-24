@@ -6,17 +6,17 @@ import AbbrReplace from 'components/abbr-replace';
 import handCursorIcon from 'assets/icons/hand-cursor.svg';
 import styles from './hand-icon-info-styles.scss';
 
-const HandIconInfo = ({ text, className }) => (
+const HandIconInfo = ({ className, children }) => (
   <p className={cx(styles.handIconInfo, className)}>
     <Icon icon={handCursorIcon} className={styles.handIcon} />
     <span>
-      <AbbrReplace>{text}</AbbrReplace>
+      <AbbrReplace>{children}</AbbrReplace>
     </span>
   </p>
 );
 
 HandIconInfo.propTypes = {
-  text: PropTypes.string,
+  children: PropTypes.node.isRequired,
   className: PropTypes.string
 };
 

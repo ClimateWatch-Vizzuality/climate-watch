@@ -24,6 +24,7 @@ import {
   getPreviousComparisonCountryValues,
   getCompareLinks,
   getCountries,
+  getMetadata,
   MAP_COLORS
 } from './ndcs-enhancements-map-selectors';
 
@@ -53,6 +54,7 @@ const mapStateToProps = (state, { location }) => {
     previousComparisonCountryValues: getPreviousComparisonCountryValues(
       ndcsEnhancementsWithSelection
     ),
+    metadata: getMetadata(ndcsEnhancementsWithSelection),
     mapColors: MAP_COLORS
   };
 };

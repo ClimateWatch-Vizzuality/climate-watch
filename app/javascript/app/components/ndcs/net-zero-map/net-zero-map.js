@@ -31,7 +31,8 @@ import {
   getDonutActiveIndex,
   getPngSelectionSubtitle,
   getLocations,
-  getSelectedLocations
+  getSelectedLocations,
+  getMetadata
 } from './net-zero-map-selectors';
 
 const actions = {
@@ -76,7 +77,8 @@ const mapStateToProps = (state, { location }) => {
     donutActiveIndex: getDonutActiveIndex(netZeroWithSelection),
     pngSelectionSubtitle: getPngSelectionSubtitle(netZeroWithSelection),
     selectedLocations: getSelectedLocations(netZeroWithSelection),
-    locations: getLocations(netZeroWithSelection)
+    locations: getLocations(netZeroWithSelection),
+    metadata: getMetadata(netZeroWithSelection)
   };
 };
 
