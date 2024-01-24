@@ -88,10 +88,10 @@ const NDCCompareAllTargets = props => {
         </div>
       </Header>
       <div className={cx(layout.content, styles.wrapper)}>
-        <HandIconInfo
-          className={styles.handIconInfo}
-          text="Click on up to 3 of the submitted boxes and click on the compare button."
-        />
+        <HandIconInfo className={styles.handIconInfo}>
+          Click on up to 3 of the submitted boxes and click on the compare
+          button.
+        </HandIconInfo>
         <div>
           <div className={styles.legendAndActions}>
             {renderLegend()}

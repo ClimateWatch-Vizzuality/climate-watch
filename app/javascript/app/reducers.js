@@ -47,6 +47,7 @@ import * as agricultureWorldMeatTradeProvider from 'providers/agriculture-world-
 import * as ndcCompareAllTargetsProvider from 'providers/ndc-compare-all-targets-provider';
 import * as customCompareAccordionProvider from 'providers/custom-compare-accordion-provider';
 import * as keyVisualizationsProvider from 'providers/key-visualizations-provider';
+import * as metadataProvider from 'providers/metadata-provider';
 
 const providersReducers = {
   ndcs: handleActions(NDCSProvider),
@@ -94,7 +95,8 @@ const providersReducers = {
   meatWorldTrade: handleActions(agricultureWorldMeatTradeProvider),
   compareAll: handleActions(ndcCompareAllTargetsProvider),
   customCompareAccordion: handleActions(customCompareAccordionProvider),
-  keyVisualizations: handleActions(keyVisualizationsProvider)
+  keyVisualizations: handleActions(keyVisualizationsProvider),
+  metadata: handleActions(metadataProvider)
 };
 
 // Pages

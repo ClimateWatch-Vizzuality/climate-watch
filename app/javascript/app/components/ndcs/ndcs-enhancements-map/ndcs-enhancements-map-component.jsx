@@ -8,6 +8,7 @@ import MapLegend from 'components/map-legend';
 import ButtonGroup from 'components/button-group';
 import CountriesDocumentsProvider from 'providers/countries-documents-provider';
 import NDCSPreviousComparisonProvider from 'providers/ndcs-previous-comparison-provider';
+import MetadataProvider from 'providers/metadata-provider';
 import NdcsProvider from 'providers/ndcs-provider';
 import AbbrReplace, { replaceStringAbbr } from 'components/abbr-replace';
 import { CheckInput } from 'cw-components';
@@ -31,8 +32,7 @@ const renderButtonGroup = (
         <em>
           <AbbrReplace>
             Track which countries are submitting their national climate
-            commitments. You can compare countries’
-            submissions side by side{' '}
+            commitments. You can compare countries’ submissions side by side{' '}
             <Link to="custom-compare/overview" title="Compare submissions">
               here
             </Link>{' '}
@@ -133,7 +133,8 @@ const NDCSEnhancementsMap = ({
   handlePngDownloadModal,
   handleCountryClick,
   checked,
-  pngDownloadId
+  pngDownloadId,
+  metadata
 }) => {
   // eslint-disable-next-line react/prop-types
   const renderMap = ({ isTablet, png }) => (
@@ -204,6 +205,12 @@ const NDCSEnhancementsMap = ({
                     downloadLink,
                     handlePngDownloadModal
                   )}
+                {metadata && (
+                  <span className={styles.lastUpdated}>
+                    {' '}
+                    {metadata?.frequency_of_updates}
+                  </span>
+                )}
                 <span data-tour="ndc-enhancement-tracker-02">
                   {renderMap({ isTablet })}
                 </span>
@@ -249,6 +256,7 @@ const NDCSEnhancementsMap = ({
                 'ndce_date'
               ]}
             />
+            <MetadataProvider source="2020_ndc" />
           </div>
         )}
       </TabletLandscape>
@@ -270,7 +278,8 @@ NDCSEnhancementsMap.propTypes = {
   handlePngDownloadModal: PropTypes.func.isRequired,
   handleCountryClick: PropTypes.func.isRequired,
   checked: PropTypes.bool,
-  mapColors: PropTypes.array
+  mapColors: PropTypes.array,
+  metadata: PropTypes.object
 };
 
 export default NDCSEnhancementsMap;

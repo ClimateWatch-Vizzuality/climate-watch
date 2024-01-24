@@ -31,7 +31,8 @@ import {
   getDonutActiveIndex,
   getPngSelectionSubtitle,
   getLocations,
-  getSelectedLocations
+  getSelectedLocations,
+  getMetadata
 } from './lts-explore-map-selectors';
 
 const actions = {
@@ -76,7 +77,8 @@ const mapStateToProps = (state, { location }) => {
     donutActiveIndex: getDonutActiveIndex(LTSWithSelection),
     pngSelectionSubtitle: getPngSelectionSubtitle(LTSWithSelection),
     locations: getLocations(LTSWithSelection),
-    selectedLocations: getSelectedLocations(LTSWithSelection)
+    selectedLocations: getSelectedLocations(LTSWithSelection),
+    metadata: getMetadata(LTSWithSelection)
   };
 };
 

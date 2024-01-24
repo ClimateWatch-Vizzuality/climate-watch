@@ -38,8 +38,11 @@ const getSearch = state => state.search || null;
 const getCategoriesData = state => state.categories || null;
 const getIndicatorsData = state => state.indicators || null;
 const getZoom = state => state.map.zoom || null;
-
 const getCountries = state => state.countries || null;
+
+export const getMetadata = state =>
+  !state.metadata.loading ? state.metadata.data : null;
+
 export const getRegions = state =>
   (state && state.regions && state.regions.data) || null;
 

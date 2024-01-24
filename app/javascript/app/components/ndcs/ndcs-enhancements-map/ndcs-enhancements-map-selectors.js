@@ -26,8 +26,6 @@ const ENHANCEMENT_SLUGS = {
 };
 
 const getSearch = state => state.search || null;
-export const getCountries = state =>
-  (state.countries && state.countries.data) || null;
 const getCategories = state =>
   (state.ndcs && state.ndcs.data && state.ndcs.data.categories) || null;
 const getIndicatorsData = state =>
@@ -37,6 +35,11 @@ const getZoom = state => state.map.zoom || null;
 const getPreviousComparisonIndicators = state =>
   state.ndcsPreviousComparison && state.ndcsPreviousComparison.data;
 const getCountriesDocuments = state => state.countriesDocuments.data || null;
+
+export const getCountries = state =>
+  (state.countries && state.countries.data) || null;
+export const getMetadata = state =>
+  !state.metadata.loading ? state.metadata.data : null;
 
 export const getIsEnhancedChecked = createSelector(
   getSearch,
