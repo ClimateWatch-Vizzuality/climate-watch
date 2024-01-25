@@ -208,6 +208,7 @@ export const getCategories = createSelector(
     const availableCategoryKeys = Object.keys(categories).filter(categoryId =>
       uniqAvailableCategoryIds.includes(+categoryId)
     );
+
     return availableCategoryKeys.map(category => ({
       label: categories[category].name,
       value: categories[category].slug,
@@ -249,6 +250,8 @@ export const getIndicatorsParsed = createSelector(
     const parsedIndicators = sortBy(
       uniqBy(
         indicators.map(i => {
+          if (!(i.locations && Object.values(i.locations)[0])) return null;
+
           // Add indicator groups from the sector relationship - Sectoral categories
           let parentSectorName;
           if (i.locations && Object.values(i.locations)[0]) {
@@ -263,6 +266,7 @@ export const getIndicatorsParsed = createSelector(
               parentIndicatorNames.push(parentSectorName);
             }
           }
+
           return {
             label: i.name,
             value: i.slug,
@@ -271,13 +275,14 @@ export const getIndicatorsParsed = createSelector(
             legendBuckets: i.labels,
             group: parentSectorName
           };
-        }),
+        }).filter((i) => i !== null),
         'value'
       ),
       'label'
     );
 
     parentIndicatorNames = uniq(parentIndicatorNames);
+
     return parsedIndicators.map(i =>
       parentIndicatorNames.includes(i.label)
         ? { ...i, groupParent: i.label }
@@ -305,7 +310,7 @@ export const getSelectedCategory = createSelector(
 
 export const getCategoryIndicators = createSelector(
   [getIndicatorsParsed, getSelectedCategory],
-  categoryIndicatorsFunction
+  (indicatorsParsed, selectedCategory) => categoryIndicatorsFunction(indicatorsParsed, selectedCategory)
 );
 
 export const getSelectedIndicator = createSelector(
