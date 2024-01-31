@@ -4,7 +4,6 @@ export const SUBSCRIPTS = ['CO2', 'CH4', 'N2O', 'NF3', 'SF6'];
 export const CONFLICTS = {
   BRICS: 'BR',
   INDC: 'NDC',
-  LULUCF: 'LUCF',
   MtCO2e: 'Mt',
   UNFCCC: 'UN'
 };
@@ -47,7 +46,6 @@ export const ABBREVIATIONS = {
   IPCC: 'Intergovernmental Panel on Climate Change',
   LTS: 'Long-term Strategy',
   LULUCF: 'Land-Use, Land-Use Change and Forestry',
-  LUCF: 'Land-use Change and Forestry',
   MtCO2e: 'Million metric tonnes of carbon dioxide equivalent',
   Mt: 'Million metric tonnes',
   N2O: 'Nitrous Oxide',
