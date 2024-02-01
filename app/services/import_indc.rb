@@ -598,7 +598,7 @@ class ImportIndc
         next
       end
 
-      next unless r[:responsetext]
+      next if r[:responsetext].blank?
 
       parse_adaptation_actions(r, location)
       group_index = values_apply_group_index(r, indicator)
