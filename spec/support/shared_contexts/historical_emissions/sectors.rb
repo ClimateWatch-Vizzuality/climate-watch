@@ -1,7 +1,7 @@
 RSpec.shared_context 'historical emissions sectors' do
   let(:sector_total) {
     FactoryBot.create(
-      :historical_emissions_sector, name: 'Total including LUCF'
+      :historical_emissions_sector, name: 'Total including LULUCF'
     )
   }
   let(:sector_energy) {
