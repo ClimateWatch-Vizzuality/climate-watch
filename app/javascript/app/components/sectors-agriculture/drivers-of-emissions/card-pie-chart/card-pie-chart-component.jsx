@@ -83,7 +83,7 @@ class CardPieChart extends PureComponent {
     const totalIncludingLUCF = pieChartData && pieChartData.totalIncludingLUCF;
     const totalExcludingLUCF = pieChartData && pieChartData.totalExcludingLUCF;
     const subtitle = pieChartData
-      ? `${location} GHG emissions by sector in ${year} (excluding LUCF). Source: Climate Watch.`
+      ? `${location} GHG emissions by sector in ${year} (excluding LULUCF). Source: Climate Watch.`
       : 'Source: Climate Watch.';
 
     const cardTheme = {
@@ -112,7 +112,7 @@ class CardPieChart extends PureComponent {
                 <span>
                   {agricultureEmissions.includingLUCF.formattedPercentage}
                 </span>{' '}
-                including LUCF ({renderEmissionValue(totalIncludingLUCF)})
+                including LULUCF ({renderEmissionValue(totalIncludingLUCF)})
               </p>
               <TabletLandscape>
                 {this.renderAgricultureLabel()}

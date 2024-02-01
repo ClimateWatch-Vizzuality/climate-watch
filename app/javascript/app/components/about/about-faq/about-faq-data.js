@@ -137,10 +137,6 @@ export const sectionsData = [
           },
           { Acronym: 'LTS', 'Acronym definition': 'Long-term Strategy' },
           {
-            Acronym: 'LUCF',
-            'Acronym definition': 'Land-use Change and Forestry'
-          },
-          {
             Acronym: 'LULUCF',
             'Acronym definition': 'Land-use, land-use Change and Forestry'
           },
@@ -204,7 +200,7 @@ export const sectionsData = [
             'Climate Watch':
               'The Climate Watch dataset is the most comprehensive included on Climate Watch and includes all sectors and gases. In order to emphasize comparability of data across countries, it does not use countries’ official inventories reported to the UNFCCC. It has a 3 year lag.',
             'PIK PRIMAP-hist':
-              'The PIK PRIMAP-hist dataset included on Climate Watch combines UNFCCC reported data where available and fills gaps with other sources. It does not include land use change and forestry (LUCF) but covers all other sectors and has a 3 year lag. Additional data to what is shown on Climate Watch is available from <a href="https://www.pik-potsdam.de/paris-reality-check/primap-hist/">PIK</a>.',
+              'The PIK PRIMAP-hist dataset included on Climate Watch combines UNFCCC reported data where available and fills gaps with other sources. It does not include land use change and forestry (LULUCF) but covers all other sectors and has a 3 year lag. Additional data to what is shown on Climate Watch is available from <a href="https://www.pik-potsdam.de/paris-reality-check/primap-hist/">PIK</a>.',
             UNFCCC:
               'UNFCCC includes only officially reported data by countries. It has large data gaps for non-Annex I countries. Due to different reporting requirements for Annex I and non-Annex I countries, the data is not internally comparable. It covers all sectors and has 2-3 year lag.',
             GCP:
@@ -244,7 +240,7 @@ export const sectionsData = [
             'Climate Watch':
               'Main IPCC sectors, including energy sub-sectors. Includes:<ul><li>agriculture</li><li>bunker fuels</li><li>energy<ul><li>electricity/heat</li><li>fugitive emissions</li><li>manufacturing/ construction</li><li>other fuel combustion</li><li>transportation</li></ul></li><li>industrial processes</li><li>land-use change and forestry</li><li>waste</li>',
             'PIK PRIMAP-hist':
-              'Main IPCC sectors excluding LUCF. Includes: <ul><li>agriculture</li><li>energy</li><li>industrial processes and product use</li><li>other</li><li>waste</li></ul>Excludes: <ul><li>land use change and forestry</li><li>bunker fuels</li></ul> Additional sub-sectors are included in the original source and not reflected on Climate Watch.',
+              'Main IPCC sectors excluding LULUCF. Includes: <ul><li>agriculture</li><li>energy</li><li>industrial processes and product use</li><li>other</li><li>waste</li></ul>Excludes: <ul><li>land use change and forestry</li><li>bunker fuels</li></ul> Additional sub-sectors are included in the original source and not reflected on Climate Watch.',
             UNFCCC:
               'Main IPCC sectors; energy sub-sectors are reported but not included on Climate Watch. For Annex I countries: <ul><li>agriculture</li><li>energy</li><li>industrial processes and product use</li><li>land use, land-use change, and forestry</li><li>other</li><li>waste</li></ul>Excludes: <ul><li>bunker fuels (reported separately)</li></ul>For non-Annex I countries: <ul><li>agriculture</li><li>energy</li><li>industrial processes</li><li>land-use change and forestry</li><li>other</li><li>solvent and other product use</li><li>waste</li></ul>Excludes: <ul><li>bunker fuels (reported separately)</li></ul>',
             GCP:
@@ -301,7 +297,7 @@ export const sectionsData = [
         type: 'html',
         title: 'Why do some countries have sectors with negative emissions?',
         answer:
-          '<p>The Land-use Change & Forestry (LUCF) sector can be a carbon sink or a source of emissions. Trees and other vegetation take up carbon dioxide from the atmosphere, but they also release emissions when they are cut down, burned or converted to other land uses. Depending on the balance between emissions and carbon sequestration in this sector within a country’s territory, the resulting net emissions could be positive or negative.</p><p>This WRI <a href="https://www.wri.org/insights/forests-absorb-twice-much-carbon-they-emit-each-year">article</a> has more detail on how trees contribute to carbon sequestration.</p>'
+          '<p>The Land-use Change & Forestry (LULUCF) sector can be a carbon sink or a source of emissions. Trees and other vegetation take up carbon dioxide from the atmosphere, but they also release emissions when they are cut down, burned or converted to other land uses. Depending on the balance between emissions and carbon sequestration in this sector within a country’s territory, the resulting net emissions could be positive or negative.</p><p>This WRI <a href="https://www.wri.org/insights/forests-absorb-twice-much-carbon-they-emit-each-year">article</a> has more detail on how trees contribute to carbon sequestration.</p>'
       },
       {
         type: 'html',

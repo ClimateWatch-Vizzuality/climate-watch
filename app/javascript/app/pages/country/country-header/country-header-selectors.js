@@ -52,7 +52,7 @@ export const getEmissionProviderFilters = createSelector(
     const allGhgGas = meta.gas.find(g => g.label === 'All GHG');
     const source = meta.data_source.find(g => g.name === 'Climate Watch');
     const TotalExcludingLucfSector = meta.sector.find(
-      g => g.label === 'Total including LUCF'
+      g => g.label === 'Total including LULUCF'
     );
     return {
       gas: allGhgGas && allGhgGas.value,
