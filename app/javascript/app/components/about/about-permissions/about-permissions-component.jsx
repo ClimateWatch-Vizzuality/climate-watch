@@ -44,7 +44,7 @@ const AboutPermissions = ({ location }) => (
       </p>
       <h3>Citation of Climate Watch platform and data:</h3>
       <p>
-        Climate Watch. 2022. Washington, DC: World Resources Institute.
+        Climate Watch. 2024. Washington, DC: World Resources Institute.
         Available online at:{' '}
         <a href="https://www.climatewatchdata.org">
           https://www.climatewatchdata.org
@@ -59,37 +59,6 @@ const AboutPermissions = ({ location }) => (
         In addition to Climate Watch, please also cite original data sources
         when used:
       </p>
-      <h4>Explore NDCs:</h4>
-      <ul>
-        <li>
-          World Bank. 2017. Nationally Determined Contributions (NDCs).
-          Available at:{' '}
-          <a href="http://spappssecext.worldbank.org/sites/indc/Pages/INDCHome.aspx">
-            http://spappssecext.worldbank.org/sites/indc/Pages/INDCHome.aspx
-          </a>
-          .
-        </li>
-        <li>
-          Pauw, W.P, Cassanmagnano, D., Mbeva, K., Hein, J., Guarin, A., Brandi,
-          C., Dzebo, A., Canales, N., Adams, K.M., Atteridge, A., Bock, T.,
-          Helms, J., Zalewski, A., Frommé. E., Lindener, A., Muhammad, D.
-          (2016). NDC Explorer. German Development Institute / Deutsches
-          Institut für Entwicklungspolitik (DIE), African Centre for Technology
-          Studies (ACTS), Stockholm Environment Institute (SEI). DOI:
-          10.23661/ndc_explorer_2017_2.0
-        </li>
-      </ul>
-      <h4>NDC Targets:</h4>
-      <ul>
-        <li>
-          Fenhann, Joergen. 2020. Pledge Pipeline | Climate Change. Available
-          online at:{' '}
-          <a href="https://www.unenvironment.org/explore-topics/climate-change/what-we-do/mitigation/pledge-pipeline">
-            https://www.unenvironment.org/explore-topics/climate-change/what-we-do/mitigation/pledge-pipeline
-          </a>
-          .
-        </li>
-      </ul>
       <h4>NDC Text in HTML:</h4>
       <ul>
         <li>
@@ -100,9 +69,9 @@ const AboutPermissions = ({ location }) => (
           .
         </li>
         <li>
-          NDCs: UNFCCC. 2022. NDC Registry (interim). Available at:{' '}
-          <a href="http://www4.unfccc.int/ndcregistry/Pages/All.aspx">
-            http://www4.unfccc.int/ndcregistry/Pages/All.aspx
+          NDCs: UNFCCC. 2024. NDC Registry. Available at:{' '}
+          <a href="ttps://unfccc.int/NDCREG">
+            ttps://unfccc.int/NDCREG
           </a>
           .
         </li>
@@ -126,19 +95,11 @@ const AboutPermissions = ({ location }) => (
           Washington, DC: World Resources Institute. Available at:{' '}
           <a href="www.wri.org/design-net-zero">www.wri.org/design-net-zero</a>.
         </li>
-        <li>
-          Net Zero Tracker. Energy & Climate Intelligence Unit. Net Zero
-          Emissions Race. 2020 Scorecard. Available at:{' '}
-          <a href="https://eciu.net/netzerotracker">
-            https://eciu.net/netzerotracker
-          </a>
-          .
-        </li>
       </ul>
       <h4>GHG Emissions:</h4>
       <ul>
         <li>
-          Climate Watch data: Climate Watch. 2022. GHG Emissions. Washington,
+          Climate Watch data: Climate Watch. 2024. GHG Emissions. Washington,
           DC: World Resources Institute. Available at:{' '}
           <a href="https://www.climatewatchdata.org/ghg-emissions">
             https://www.climatewatchdata.org/ghg-emissions
@@ -156,16 +117,14 @@ const AboutPermissions = ({ location }) => (
             <li>
               Climate Watch data are derived from several sources. Any use of
               the Land-Use Change and Forestry or Agriculture indicator should
-              be cited as FAO 2022, FAOSTAT Emissions Database. Any use of
+              be cited as FAO 2023, FAOSTAT Emissions Database. Any use of
               emissions from fuel combustion data should be cited as GHG
-              Emissions from Fuel Combustion, OECD/IEA, 2021
+              Emissions from Fuel Combustion, OECD/IEA, 2023
             </li>
           </ul>
         </li>
         <li>
-          PIK data: Gütschow, J.; Günther, A.; Pflüger, M. (2021): The
-          PRIMAP-hist national historical emissions time series v2.3.1
-          (1850-2019). zenodo. doi:10.5281/zenodo.5494497.
+          PIK data: Gütschow, J.; Pflüger, M. (2023): The PRIMAP-hist national historical emissions time series v2.5 (1750-2022). zenodo. doi:10.5281/zenodo.10006301.
           <ul>
             <li>
               When using this dataset or one of its updates, please also cite
@@ -174,22 +133,19 @@ const AboutPermissions = ({ location }) => (
               supplement to. Please consider also citing the relevant original
               sources.
             </li>
+            <li>Gütschow, J.; Jeffery, L.; Gieseke, R.; Gebel, R.; Stevens, D.; Krapp, M.; Rocha, M. (2016): The PRIMAP-hist national historical emissions time series, Earth Syst. Sci. Data, 8, 571-603, doi:10.5194/essd-8-571-2016 
+            </li>
           </ul>
         </li>
         <li>
           UNFCCC data: UNFCCC. 2022. Greenhouse Gas Inventory Data.{' '}
           <a href="http://di.unfccc.int/">http://di.unfccc.int/</a>.
         </li>
-        Global Carbon Project. (2021). Supplemental data of Global Carbon Budget
-        2021 (Version 1.0) [Data set]. Global Carbon Project.
-        https://doi.org/10.18160/gcp-2021
         <li>
-          GCP data: Global Carbon Project. (2021). Supplemental data of Global
-          Carbon Budget 2021 (Version 1.0) [Data set]. Global Carbon Project.{' '}
-          <a href="https://doi.org/10.18160/gcp-2021">
-            https://doi.org/10.18160/gcp-2021
-          </a>
-          .
+          GCP data: Global Carbon Project. (2023). Supplemental data of Global Carbon Budget 2023 (Version 1.1) [Data set]. Global Carbon Project.{' '}
+          <a href="https://doi.org/10.18160/gcp-2023">
+            https://doi.org/10.18160/gcp-2023
+          </a>.
           <ul>
             <li>
               The use of data is conditional on citing the original data
@@ -227,7 +183,7 @@ const AboutPermissions = ({ location }) => (
       <h4>World Development Indicators:</h4>
       <ul>
         <li>
-          World Development Indicators. 2022. The World Bank. Available at:{' '}
+          World Development Indicators. 2023. The World Bank. Available at:{' '}
           <a href="http://databank.worldbank.org/data/reports.aspx?source=world-development-indicators">
             http://databank.worldbank.org/data/reports.aspx?source=world-development-indicators
           </a>
