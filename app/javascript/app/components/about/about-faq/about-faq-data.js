@@ -25,7 +25,7 @@ export const sectionsData = [
         type: 'html',
         title: 'How do I cite Climate Watch data as a source?',
         answer:
-          '<span>Use the info button next to each dataset and figure on Climate Watch to see its citation information.  A general citation for Climate Watch is as follows: Climate Watch. 2022. Washington, D.C.: World Resources Institute. Available online at: <link to="/" innerText="www.climatewatchdata.org"></link>. See our <Link to="/about/permissions" innertext="Permissions and Licensing" />  page for more information about citation.  '
+          '<span>Use the info button next to each dataset and figure on Climate Watch to see its citation information.  A general citation for Climate Watch is as follows: Climate Watch. 2024. Washington, D.C.: World Resources Institute. Available online at: <link to="/" innerText="www.climatewatchdata.org"></link>. See our <Link to="/about/permissions" innertext="Permissions and Licensing" />  page for more information about citation.  '
       },
       {
         type: 'html',
@@ -223,11 +223,11 @@ export const sectionsData = [
           },
           {
             '': 'Temporal coverage',
-            'Climate Watch': '1990-2019',
-            'PIK PRIMAP-hist': '1850-2019',
+            'Climate Watch': '1990-2020',
+            'PIK PRIMAP-hist': '1850-2022',
             UNFCCC:
-              '1990-2019 for Annex I countries; Varied coverage for non-Annex I countries',
-            GCP: '1960-2020'
+              '1990-2021 for Annex I countries; Varied coverage for non-Annex I countries',
+            GCP: '1960-2022'
           },
           {
             '': 'Geographic coverage',
@@ -260,7 +260,7 @@ export const sectionsData = [
           {
             '': 'Timeliness',
             'Climate Watch': '3 year lag',
-            'PIK PRIMAP-hist': '3 year lag',
+            'PIK PRIMAP-hist': '2 year lag',
             UNFCCC: '2-3 year lag',
             GCP: '1-2 year lag'
           },
@@ -295,7 +295,7 @@ export const sectionsData = [
         title:
           'How significant are uncertainties in the emissions data, particularly in the land-use change and forestry sector? ',
         answer:
-          'According to the Working Group III Contribution to the IPCC Sixth Assessment Report, estimated uncertainly for global CO<sub>2</sub> emissions from fossil fuels is relatively low, about 8%. For non-CO<sub>2</sub> GHG emissions, CH<sub>4</sub> and F-gases have relatively ‘intermediate’ uncertainties of around 30%, while N<sub>2</sub>O has a higher uncertainty of around 60%. CO22 emissions from land-use change and forestry have very large uncertainties of 70%. In total, when combining these uncertainties, estimates of global total GHG emissions have an uncertainty of around 10%.<br>You can find out more about the uncertainties in the Climate Watch data in our <a href="https://wri-sites.s3.us-east-1.amazonaws.com/climatewatch.org/www.climatewatch.org/climate-watch/wri_metadata/CW_GHG_Method_Note.pdf">Methodology</a> document.'
+          'According to the Working Group III Contribution to the IPCC Sixth Assessment Report, estimated uncertainly for global CO<sub>2</sub> emissions from fossil fuels is relatively low, about 8%. For non-CO<sub>2</sub> GHG emissions, CH<sub>4</sub> and F-gases have relatively ‘intermediate’ uncertainties of around 30%, while N<sub>2</sub>O has a higher uncertainty of around 60%. CO<sub>2</sub> emissions from land-use change and forestry have very large uncertainties of 70%. In total, when combining these uncertainties, estimates of global total GHG emissions have an uncertainty of around 10%.<br>You can find out more about the uncertainties in the Climate Watch data in our <a href="https://wri-sites.s3.us-east-1.amazonaws.com/climatewatch.org/www.climatewatch.org/climate-watch/wri_metadata/CW_GHG_Method_Note.pdf">Methodology</a> document.'
       },
       {
         type: 'html',
@@ -359,15 +359,15 @@ export const sectionsData = [
       {
         type: 'html',
         title:
-          'Can you explain some of the terms used, like target, policy, action and plan?',
+          'Can you explain some of the terms used in NDC sectoral mitigation information, like measure, target, and policy?',
         answer:
-          '<ul><li>Targets are an intention to achieve a specific result, for example, to reduce GHG emissions to a specific level (a GHG target) or increase energy efficiency or renewable energy to a specific level (a non-GHG target), typically by a certain date.</li><li>Actions are an intention to implement specific means of achieving GHG reductions, usually in forms of concrete projects.</li><li>Policies are domestic planning documents such as policies, regulations or guidlines. </li><li>Plans and strategies are broader than specific policies or actions, such as a general intention to ‘improve efficiency’, ‘develop renewable energy’, etc. The terms come from the World Bank\'s <a href="http://spappssecext.worldbank.org/sites/indc/Pages/INDCHome.aspx" rel="noopener noreferrer" target="_blank" >NDC platform</a> and WRI\'s <a href="https://www.wri.org/research/designing-and-preparing-intended-nationally-determined-contributions-indcs" rel="noopener noreferrer" target="_blank" >publication</a> (Figure 4.1). </li></ul>'
+          '<p>For the purposes of NDC analysis, measures are defined as any action that a country is taking or commits to take to reduce emissions in order to achieve its top-line GHG reduction targets. Some of these measures are considered policies, and others contain targets.</p><p>Policies are domestic planning documents such as policies, regulations or guidelines.</p><p>A target is defined as a quantifiable goal for an entire sector, subsector, technology, and/or gas(es).</p>'
       },
       {
         type: 'html',
         title: 'What is the methodology behind the data? ',
         // eslint-disable-next-line quotes
-        answer: `<p>Some of the key indicators of the NDC analysis are explained <a href="https://wri-sites.s3.us-east-1.amazonaws.com/climatewatch.org/www.climatewatch.org/climate-watch/wri_metadata/NDC_methodology.pdf" rel="noopener noreferrer" target="_blank">in this document</a>.</p><p>The structured indicators used for presenting NDC information are adapted from several data sources, including the <a href="http://spappssecext.worldbank.org/sites/indc/Pages/INDCHome.aspx" rel="noopener noreferrer" target="_blank">World Bank's NDC Platform</a> and  <a href="https://klimalog.die-gdi.de/ndc/#NDCExplorer/worldMap?NDC??income???catIncome" rel="noopener noreferrer" target="_blank">DIE's NDC Explorer</a>. Please refer to respective resources for detailed documentation. The terms and phrases used in this tool follow, to the extent possible, those outlined in WRI’s publication <a href="https://www.wri.org/publication/designing-and-preparing-indcs" rel="noopener noreferrer" target="_blank">"Designing and Preparing INDCs."</a></p>`
+        answer: `<p>Some of the key indicators of the NDC analysis are explained <a href="https://wri-sites.s3.us-east-1.amazonaws.com/climatewatch.org/www.climatewatch.org/climate-watch/wri_metadata/NDC_methodology.pdf" rel="noopener noreferrer" target="_blank">in this document</a>.</p><p>The terms and phrases used in this tool follow, to the extent possible, those outlined in WRI’s publication <a href="https://www.wri.org/publication/designing-and-preparing-indcs" rel="noopener noreferrer" target="_blank">"Designing and Preparing INDCs"</a>.</p>`
       },
       {
         type: 'text',
@@ -386,7 +386,7 @@ export const sectionsData = [
         title:
           'How do we determine enhanced ambition/overall comparison with previous NDC? ',
         answer:
-          'You can find all the indicators from the “Overall comparison with previous NDC” in this <a href="https://wri-sites.s3.us-east-1.amazonaws.com/climatewatch.org/www.climatewatch.org/climate-watch/wri_metadata/NDC_methodology.pdf" rel="noopener noreferrer" target="_blank">link</a>.'
+          'You can find all the indicators from the “Overall comparison with previous NDC” section <a href="https://wri-sites.s3.us-east-1.amazonaws.com/climatewatch.org/www.climatewatch.org/climate-watch/wri_metadata/NDC_methodology.pdf" rel="noopener noreferrer" target="_blank">in this document</a>.'
       }
     ]
   },
@@ -489,7 +489,7 @@ export const sectionsData = [
         type: 'text',
         title: 'How frequently is the data updated? ',
         answer:
-          'NDC-SDG linkages data are updated as new NDCs are submitted or revised.'
+          'NDC-SDG linkages data cover NDCs submitted prior to May 2021.'
       },
       {
         type: 'html',
@@ -559,7 +559,7 @@ export const sectionsData = [
         type: 'text',
         title: 'Is there a country profile for every country? ',
         answer:
-          'There are country profiles for all parties to the United Nations Framework Convention on Climate Change (UNFCCC) – 196 countries plus the European Union, which submitted their NDC together.'
+          'There are country profiles for all parties to the United Nations Framework Convention on Climate Change (UNFCCC) – 197 countries plus the European Union.'
       },
       {
         type: 'text',
