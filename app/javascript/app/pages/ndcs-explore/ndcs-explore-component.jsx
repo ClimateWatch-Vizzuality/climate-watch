@@ -24,7 +24,7 @@ const NDCSExplore = ({ route }) => (
             <div className={styles.headerLayout}>
               <Intro
                 title="Explore Nationally Determined Contributions (NDCs)"
-                description="Under the Paris Agreement, nearly every nation made a commitment to tackle climate change and strengthen their efforts over time. Explore the content of these Nationally Determined Contributions (NDCs) by searching for key terms. You can analyze and compare NDCs using over 150 structured indicators."
+                description="Under the Paris Agreement, nearly every nation made a commitment to tackle climate change and strengthen their efforts over time. The last round of Nationally Determined Contributions (NDCs) were submitted in 2020-2021 whereas the deadline to submit the next round of NDCs is in the spring of 2025. Explore the content of 2020-2021 NDCs by searching for relevant keywords. You can analyze and compare NDCs using over 150 structured indicators."
               />
             </div>
             <div className={styles.searchWrapper}>
