@@ -21,7 +21,7 @@ const NDCSEnhancements = ({ route }) => (
             <Intro
               title="NDC Enhancement Tracker"
               description={
-                '<p>The Paris Agreement calls on countries to deliver new Nationally Determined Contributions (NDCs) every five years that are informed by the latest advances in technology, science and shifting economic trends.</p>'
+                '<p>The Paris Agreement calls on countries to deliver new Nationally Determined Contributions (NDCs) every five years. The last round of Nationally Determined Contributions (NDCs) were submitted in 2020-2021.  Explore the content of current NDCs from this 2020-2021 submission round with over 150 structured indicators to analyze and compare as seen below.</p><p>The next batch of NDCs, expected to be more ambitious, is slated for submission in 2025 before COP30. Stay tuned for Climate Watch’s new 2025 NDCs Tracker, set to launch later this year.</p></Intro>'
               }
             />
             <span data-tour="ndc-enhancement-tracker-01">
