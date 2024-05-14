@@ -378,7 +378,7 @@ export const sectionsData = [
           'Searching for a word in English will produce results only among I/NDCs that are in English; similarly searching for a word in French would produce results among I/NDCs in French. '
       },
       {
-        type: 'text',
+        type: 'html',
         title:
           'How do we determine enhanced ambition/overall comparison with previous NDC? ',
         answer:
@@ -484,8 +484,7 @@ export const sectionsData = [
       {
         type: 'text',
         title: 'How frequently is the data updated? ',
-        answer:
-          'NDC-SDG linkages data cover NDCs submitted prior to May 2021.'
+        answer: 'NDC-SDG linkages data cover NDCs submitted prior to May 2021.'
       },
       {
         type: 'html',
