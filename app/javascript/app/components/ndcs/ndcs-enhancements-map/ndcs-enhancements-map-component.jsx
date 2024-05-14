@@ -33,7 +33,11 @@ const renderButtonGroup = (
           <AbbrReplace>
             Track which countries are submitting their national climate
             commitments. You can compare countries’ submissions side by side{' '}
-            <Link to="custom-compare/overview" title="Compare submissions">
+            <Link
+              to="custom-compare/overview"
+              title="Compare submissions"
+              target="_blank"
+            >
               here
             </Link>{' '}
             or by referring to the table below. To request changes or additions,
