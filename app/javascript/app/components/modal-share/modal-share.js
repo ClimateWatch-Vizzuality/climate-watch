@@ -14,7 +14,8 @@ const mapStateToProps = (state, { shouldEmbedQueryParams = true }) => {
   const { isOpen: isModalOpen, sharePath } = state.modalShare;
   const { origin, pathname, search, hash } = location;
   const queryParams = shouldEmbedQueryParams ? search + hash : '';
-  const embedUri = `/embed${sharePath || pathname.replace('/embed', '')}`;
+  const embedUri = `/embed${sharePath ||
+    pathname.replace('/embed', '').replace('/contained', '')}`;
   const url = `${origin}${embedUri}${encodeURIComponent(queryParams)}`;
   const copyUrl = () => copy(url);
   const iframeCode = `<iframe src="${url}" frameborder="0" style="height: 600px; width: 1230px"></iframe>`;
