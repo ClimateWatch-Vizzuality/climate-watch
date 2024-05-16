@@ -13,7 +13,9 @@ import styles from './embed-styles.scss';
 class Embed extends PureComponent {
   render() {
     const { route, location } = this.props;
-    const link = location.pathname.replace('/embed', '');
+    const link = location.pathname
+      .replace('/embed', '')
+      .replace('/contained', '');
     const isNdcp = isPageNdcp(location);
     return (
       <div className={cx(styles.embed, { [styles.embedNdcp]: isNdcp })}>
