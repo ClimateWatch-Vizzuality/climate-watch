@@ -1,0 +1,32 @@
+Host the contents of this zipfile at a URL of your choice. Then on the page where you would like to embed the visualization or story, use one of the following embed codes, replacing {{URL}} with the real URL corresponding to the directory these unpacked files are in (see the notes below).
+
+Preferred method: flourish.embed.js
+-----------------------------------
+
+Use the included flourish.embed.js file to embed (recommended; best for responsive). Target a container div where you want the visualization to appear using the data-src attribute, as follows:
+
+    <div class="flourish-embed" data-src="{{URL}}/index.html"><script src="{{URL}}/flourish.embed.js"></script></div>
+
+You only need to include the script once in your HTML page, even if you have multiple visualizations displayed (though there is no harm in including it multiple times; it will only run once).
+
+In order to fully utilize the dynamic resizing features of Flourish, such as Flourish.setHeight, which adjusts the size of your visualization based on different devices and chart types, it's important to configure the domain where you're embedding the visualization. This setup is especially relevant when you are self-hosting the visualizations. To enable this feature, you need to add the domain of your embed site to a specific field in your company settings. Look for a setting titled 'Self-hosted embed domain' on your company's page in the Flourish platform. Simply enter the domain where you're embedding the visualization into this field. This step is crucial for the Flourish.setHeight function to operate correctly, ensuring that your visualizations and stories resize appropriately according to the context they are viewed in.
+
+If you simply want to make the embed fill a fixed-height container, add data-height="100%" to your embed code. See an example of this here: https://help.flourish.studio/article/502-how-to-set-custom-height-to-self-hosted-visualizations.
+
+Alternative method: iframe embed
+--------------------------------
+
+You can also embed via a simple iframe (this is best if your CMS blocks scripts):
+
+    <iframe scrolling="no" src="{{URL}}" data-id="story/2350784" class="flourish-embed-iframe" title='Interactive or visual content' frameborder='0' style='width:100%;height:600px;' sandbox='allow-same-origin allow-forms allow-scripts allow-downloads allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation'></iframe>
+
+Be sure to specify scrolling="no" to avoid problems on iOS.
+
+Notes
+-----
+
+1. Your {{URL}} must be a full path, not a local file URL - in other words it should begin http:// or https://, not file://.
+2. If necessary, also update the height and width.
+3. You may not remove the Flourish credit unless you are a premium customer or have permission from Flourish HQ.
+
+
