@@ -38,5 +38,10 @@ export default [
     path: '/net-zero-tracker',
     label: 'NET-ZERO TRACKER',
     activeId
+  },
+  {
+    path: '/2025-ndc-tracker',
+    label: '2025 NDC Tracker',
+    activeId
   }
 ].filter(o => !isEmpty(o));

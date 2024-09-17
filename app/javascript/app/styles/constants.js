@@ -36,10 +36,6 @@ export const SECTOR_COLORS_BY_LABEL = {
   Energy: SECTOR_COLORS.energy,
   Agriculture: SECTOR_COLORS.agriculture,
   'Industrial Processes': SECTOR_COLORS.industrial,
-  // Note: We're keeping the next entry to facilitate a transition from LUCF to LULUCF.
-  //       This entry should be able to be removed once all changes (FE, Data, Files) are
-  //       merged into production.
   'Land-Use Change and Forestry': SECTOR_COLORS.landUse,
-  'Land Use, Land-Use Change and Forestry': SECTOR_COLORS.landUse,
   Waste: SECTOR_COLORS.waste
 };

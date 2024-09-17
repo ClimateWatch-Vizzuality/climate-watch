@@ -26,6 +26,7 @@ import Sectors from 'pages/sectors';
 import SectorsAgriculture from 'pages/sectors-agriculture';
 import LTSExplore from 'pages/lts-explore';
 import NetZero from 'pages/net-zero';
+import Ndc2025Tracker from 'pages/ndc-2025-tracker';
 import NDCSExplore from 'pages/ndcs-explore';
 import NdcOverview from 'pages/ndc-overview';
 import CustomCompare from 'pages/custom-compare';
@@ -60,6 +61,7 @@ import agricultureSections from './sectors-agriculture-sections';
 import ndcsEnhancementsSections from './ndcs-enhancements-sections';
 import LTSExploreSections from './lts-explore-sections';
 import NetZeroSections from './net-zero-sections';
+import Ndc2025TrackerSections from './ndc-2025-sections';
 import NDCSExploreSections from './ndcs-explore-sections';
 import NDCOverviewRoutes from './ndcs-overview-routes';
 
@@ -171,6 +173,13 @@ export default [
     path: '/net-zero-tracker',
     component: NetZero,
     sections: NetZeroSections,
+    headerGradient: HEADER_GRADIENTS.commitments,
+    headerColor: HEADER_COLORS.ndc
+  },
+  {
+    path: '/2025-ndc-tracker',
+    component: Ndc2025Tracker,
+    sections: Ndc2025TrackerSections,
     headerGradient: HEADER_GRADIENTS.commitments,
     headerColor: HEADER_COLORS.ndc
   },
