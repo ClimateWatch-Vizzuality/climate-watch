@@ -10,7 +10,7 @@ import CountriesDocumentsProvider from 'providers/countries-documents-provider';
 import NDCSPreviousComparisonProvider from 'providers/ndcs-previous-comparison-provider';
 import MetadataProvider from 'providers/metadata-provider';
 import NdcsProvider from 'providers/ndcs-provider';
-import AbbrReplace, { replaceStringAbbr } from 'components/abbr-replace';
+import AbbrReplace from 'components/abbr-replace';
 import { CheckInput } from 'cw-components';
 import Loading from 'components/loading';
 import ModalMetadata from 'components/modal-metadata';
@@ -18,7 +18,7 @@ import ModalPngDownload from 'components/modal-png-download';
 import NDCSEnhancementsTooltip from 'components/ndcs/ndcs-enhancements-map/ndcs-enhancements-tooltip';
 import blueCheckboxTheme from 'styles/themes/checkbox/blue-checkbox.scss';
 import { Link } from 'react-router-dom';
-import { ENHANCEMENT_LABEL_SLUGS, INDICATOR_SLUGS } from 'data/constants';
+import { INDICATOR_SLUGS } from 'data/constants';
 import styles from './ndcs-enhancements-2025-map-styles.scss';
 
 const renderButtonGroup = (
@@ -92,35 +92,6 @@ const renderButtonGroup = (
   </div>
 );
 
-const renderSummaryItem = (datum, isPNG) => (
-  <div
-    className={cx({
-      [styles.summaryItemContainer]: !isPNG,
-      [styles.pngSummaryItemContainer]: isPNG
-    })}
-  >
-    <div className={styles.summaryItemValuesContainer}>
-      <div className={styles.summaryItemValues}>
-        <div
-          style={{
-            color: datum.opts.color
-          }}
-        >
-          {datum.opts.prefix}
-          {datum.value}
-        </div>
-      </div>
-    </div>
-    <div className={styles.summaryItemLabels}>
-      <div
-        dangerouslySetInnerHTML={{
-          __html: isPNG ? datum.opts.label : replaceStringAbbr(datum.opts.label)
-        }}
-      />
-    </div>
-  </div>
-);
-
 const TOOLTIP_ID = 'ndcs-map-tooltip';
 
 const NDCSEnhancements2025Map = ({
@@ -129,7 +100,6 @@ const NDCSEnhancements2025Map = ({
   paths,
   tooltipValues,
   downloadLink,
-  summaryData,
   handleInfoClick,
   handleCountryEnter,
   mapColors,
@@ -137,8 +107,7 @@ const NDCSEnhancements2025Map = ({
   handlePngDownloadModal,
   handleCountryClick,
   checked,
-  pngDownloadId,
-  metadata
+  pngDownloadId
 }) => {
   // eslint-disable-next-line react/prop-types
   const renderMap = ({ isTablet, png }) => (
@@ -153,6 +122,7 @@ const NDCSEnhancements2025Map = ({
       className={styles.map}
     />
   );
+
   const renderMapLegend = isPNG => (
     <MapLegend
       className={cx(styles.legend, { [styles.isPNG]: isPNG })}
@@ -161,26 +131,7 @@ const NDCSEnhancements2025Map = ({
       mapColors={mapColors}
     />
   );
-  const renderSummaryItems = isPNG => (
-    <div
-      className={cx({
-        [styles.summaryItemsContainer]: !isPNG,
-        [styles.pngSummaryItemsContainer]: isPNG
-      })}
-    >
-      {renderSummaryItem(
-        summaryData[ENHANCEMENT_LABEL_SLUGS.SUBMITTED_2020].countries,
-        isPNG
-      )}
-      {renderSummaryItem(
-        summaryData[ENHANCEMENT_LABEL_SLUGS.ENHANCED_MITIGATION].countries,
-        isPNG
-      )}
-      <div className={styles.summaryHint}>
-        Click on the country or see table below to compare with previous NDC
-      </div>
-    </div>
-  );
+
   return (
     <div className={styles.ndcTracker}>
       <TabletLandscape>
@@ -196,11 +147,6 @@ const NDCSEnhancements2025Map = ({
             </div>
 
             <div className={styles.containerUpper}>
-              <div className={styles.containerCharts}>
-                {!loading && summaryData && (
-                  <div className={styles.summary}>{renderSummaryItems()}</div>
-                )}
-              </div>
               <div className={styles.containerMap}>
                 {loading && <Loading light className={styles.loader} />}
                 {!isTablet &&
@@ -209,12 +155,6 @@ const NDCSEnhancements2025Map = ({
                     downloadLink,
                     handlePngDownloadModal
                   )}
-                {metadata && (
-                  <span className={styles.lastUpdated}>
-                    {' '}
-                    {metadata?.frequency_of_updates}
-                  </span>
-                )}
                 <span data-tour="ndc-enhancement-tracker-02">
                   {renderMap({ isTablet })}
                 </span>
@@ -241,9 +181,6 @@ const NDCSEnhancements2025Map = ({
               {renderMap({ isTablet: true, png: true })}
               <div className={styles.pngLegendAndSummary}>
                 {indicator && renderMapLegend(true)}
-                <div className={styles.pngSummary}>
-                  {!loading && summaryData && renderSummaryItems(true)}
-                </div>
               </div>
             </ModalPngDownload>
             <ModalMetadata />
@@ -275,15 +212,13 @@ NDCSEnhancements2025Map.propTypes = {
   tooltipValues: PropTypes.object,
   downloadLink: PropTypes.string,
   pngDownloadId: PropTypes.string.isRequired,
-  summaryData: PropTypes.object,
   handleCountryEnter: PropTypes.func.isRequired,
   handleInfoClick: PropTypes.func.isRequired,
   handleOnChangeChecked: PropTypes.func.isRequired,
   handlePngDownloadModal: PropTypes.func.isRequired,
   handleCountryClick: PropTypes.func.isRequired,
   checked: PropTypes.bool,
-  mapColors: PropTypes.array,
-  metadata: PropTypes.object
+  mapColors: PropTypes.array
 };
 
 export default NDCSEnhancements2025Map;
