@@ -86,33 +86,17 @@
 }
 
 .containerUpper,
-.containerCharts,
 .containerMap {
   position: relative;
 }
 
 .containerMap {
-  @media #{$tablet-landscape} {
-    padding-left: calc(#{$gutter-padding} / 2);
-  }
-
   [class*=map-styles__wrapper] {
     &,
     &[class*=__notDraggable] {
       cursor: default;
     }
   }
-}
-
-.containerUpper {
-  @media #{$desktop} {
-    @include columns((4,8));
-  }
-}
-
-.containerCharts {
-  background-color: $white;
-  box-shadow: $box-shadow-light;
 }
 
 .summaryTitle {
