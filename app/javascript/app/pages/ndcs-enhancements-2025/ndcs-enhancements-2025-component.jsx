@@ -20,6 +20,7 @@ const NDCSEnhancements2025 = ({ route }) => (
             <Intro
               title="2025 NDC Tracker"
               description={
+                // eslint-disable-next-line max-len
                 '<p>The Paris Agreement calls on countries to deliver new Nationally Determined Contributions (NDCs) every five years that are informed by the latest advances in technology, science and shifting economic trends.</p>'
               }
               disclaimer="Latest 2025 NDC Submitted"
@@ -32,7 +33,7 @@ const NDCSEnhancements2025 = ({ route }) => (
       <div className={layout.content}>
         {route.sections &&
           route.sections.length > 0 &&
-          route.sections.map((section) => (
+          route.sections.map(section => (
             <div key={section.hash} className={styles.section}>
               <div id={section.hash} className={styles.sectionHash} />
               <section.component />
