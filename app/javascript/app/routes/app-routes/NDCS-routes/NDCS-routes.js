@@ -24,6 +24,11 @@ export default [
     activeId
   },
   {
+    path: '/2025-ndc-tracker',
+    label: '2025 NDC Tracker',
+    activeId
+  },
+  {
     path: '/ndcs-sdg',
     label: 'EXPLORE NDC-SDG LINKAGES',
     activeId

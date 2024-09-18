@@ -13,6 +13,7 @@ import LTSCountry from 'pages/lts-country';
 import NDCCompare from 'pages/ndc-compare';
 import NDCCompareAll from 'pages/ndc-compare-all-targets';
 import NDCSEnhancements from 'pages/ndcs-enhancements';
+import NDCSEnhancements2025 from 'pages/ndcs-enhancements-2025';
 import NDCSDG from 'pages/ndc-sdg';
 import Country from 'pages/country';
 import EmissionPathways from 'pages/emission-pathways';
@@ -179,6 +180,12 @@ export default [
     component: NDCSEnhancements,
     headerImage: 'ndc',
     sections: ndcsEnhancementsSections,
+    headerGradient: HEADER_GRADIENTS.commitments
+  },
+  {
+    path: '/2025-ndc-tracker',
+    component: NDCSEnhancements2025,
+    headerImage: 'ndc',
     headerGradient: HEADER_GRADIENTS.commitments
   },
   {
