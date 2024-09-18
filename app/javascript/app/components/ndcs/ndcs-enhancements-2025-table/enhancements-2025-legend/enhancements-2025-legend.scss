@@ -1,0 +1,80 @@
+@import '~styles/settings.scss';
+
+.enhancementsLegend {
+  display: flex;
+  padding: 20px;
+  background-color: $white;
+  margin-top: 60px;
+  font-size: $font-size-s;
+  flex-direction: column;
+  max-width: 90vw;
+
+  @media #{$tablet-landscape} {
+    flex-direction: row;
+  }
+}
+
+.enhancementsLegendNDCValues {
+  min-width: 310px;
+  border-bottom: 3px solid $gray3;
+  padding-bottom: 20px;
+
+  @media #{$tablet-landscape} {
+    border-bottom: none;
+    padding: 0 20px;
+    border-right: 3px solid $gray3;
+  }
+}
+
+.enhancementsLegendValues {
+  min-width: 310px;
+  border-bottom: 3px solid $gray3;
+  padding: 20px 0;
+
+  @media #{$tablet-landscape} {
+    border-bottom: none;
+    padding: 0 20px;
+    border-right: 3px solid $gray3;
+  }
+}
+
+.enhancementsLegendIndicators {
+  padding: 20px 0 0;
+
+  @media #{$tablet-landscape} {
+    padding: 0 0 0 20px;
+  }
+}
+
+.value,
+.indicator {
+  margin-bottom: 10px;
+  display: flex;
+}
+
+.value {
+  align-items: center;
+}
+
+.enhancementsIcon {
+  min-width: 14px;
+  min-height: 14px;
+  max-width: 14px;
+  max-height: 14px;
+  margin-right: 10px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &.withBorder {
+    border: 3px solid $black;
+  }
+}
+
+.enhancementsIndicatorLetter {
+  font-weight: $font-weight-bold;
+  padding-right: 10px;
+  margin-bottom: 1px;
+  width: 22px;
+}
