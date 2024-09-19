@@ -6,8 +6,10 @@ import BackButton from 'components/back-button';
 import { SEO_PAGES } from 'data/seo';
 import SEOTags from 'components/seo-tags';
 
+import Ndc2025Timeline from 'components/ndcs/ndc-2025-timeline/ndc-2025-timeline';
 import layout from 'styles/layout.scss';
 import styles from './ndcs-enhancements-2025-styles.scss';
+
 
 const NDCSEnhancements2025 = ({ route }) => (
   <div>
@@ -25,6 +27,7 @@ const NDCSEnhancements2025 = ({ route }) => (
               }
               disclaimer="Latest 2025 NDC Submitted"
             />
+            <Ndc2025Timeline />
           </div>
         </div>
       </div>
@@ -33,7 +36,7 @@ const NDCSEnhancements2025 = ({ route }) => (
       <div className={layout.content}>
         {route.sections &&
           route.sections.length > 0 &&
-          route.sections.map(section => (
+          route.sections.map((section) => (
             <div key={section.hash} className={styles.section}>
               <div id={section.hash} className={styles.sectionHash} />
               <section.component />
