@@ -18,7 +18,6 @@ import {
   getIndicatorsParsed,
   getPathsWithStyles,
   getISOCountries,
-  getLinkToDataExplorer,
   summarizeIndicators,
   getIsEnhancedChecked,
   getPreviousComparisonCountryValues,
@@ -49,7 +48,6 @@ const mapStateToProps = (state, { location }) => {
     indicator: sortIndicatorLegend(ndcsEnhancementsWithSelection),
     indicators: getIndicatorsParsed(ndcsEnhancementsWithSelection),
     summaryData: summarizeIndicators(ndcsEnhancementsWithSelection),
-    downloadLink: getLinkToDataExplorer(ndcsEnhancementsWithSelection),
     compareLinks: getCompareLinks(ndcsEnhancementsWithSelection),
     previousComparisonCountryValues: getPreviousComparisonCountryValues(
       ndcsEnhancementsWithSelection
@@ -157,23 +155,10 @@ class NDCSEnhancements2025MapContainer extends PureComponent {
     this.updateUrlParam({ name: 'search', value: query });
   };
 
-  handleInfoClick = () => {
-    this.props.setModalMetadata({
-      category: 'NDC Content Map',
-      slugs: '2020_NDC',
-      open: true
-    });
-  };
-
   updateUrlParam(param, clear) {
     const { history, location } = this.props;
     history.replace(getLocationParamUpdated(location, param, clear));
   }
-
-  handlePngDownloadModal = () => {
-    const { setModalPngDownload } = this.props;
-    setModalPngDownload({ open: pngDownloadId });
-  };
 
   render() {
     const tooltipValues = this.getTooltipValues();
@@ -187,9 +172,7 @@ class NDCSEnhancements2025MapContainer extends PureComponent {
       pngDownloadId,
       handleCountryClick: this.handleCountryClick,
       handleCountryEnter: this.handleCountryEnter,
-      handleInfoClick: this.handleInfoClick,
       handleOnChangeChecked: this.handleOnChangeChecked,
-      handlePngDownloadModal: this.handlePngDownloadModal,
       noContentMsg,
       handleSearchChange: this.handleSearchChange,
       checked,
@@ -210,9 +193,7 @@ NDCSEnhancements2025MapContainer.propTypes = {
   isoCountries: PropTypes.array.isRequired,
   compareLinks: PropTypes.object,
   countries: PropTypes.array,
-  previousComparisonCountryValues: PropTypes.array,
-  setModalMetadata: PropTypes.func.isRequired,
-  setModalPngDownload: PropTypes.func.isRequired
+  previousComparisonCountryValues: PropTypes.array
 };
 
 export default withRouter(
