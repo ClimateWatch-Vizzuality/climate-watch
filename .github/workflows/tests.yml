@@ -64,7 +64,7 @@ jobs:
           DEV_USER_TOKEN: DEV_USER_TOKEN_PLACEHOLDER
         run: bundle exec rspec
       - name: Upload Code Coverage
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: code-coverage
           path: coverage/
