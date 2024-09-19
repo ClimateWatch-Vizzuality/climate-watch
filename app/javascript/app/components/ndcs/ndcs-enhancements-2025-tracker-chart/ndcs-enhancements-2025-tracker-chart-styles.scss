@@ -1,0 +1,169 @@
+@import "~styles/layout.scss";
+
+.wrapper {
+  position: relative;
+}
+
+.summary {
+  h2 {
+    font-size: $font-size-large;
+    color: $theme-color;
+    margin-bottom: 34px;
+    font-weight: $font-weight;
+  }
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(3, 235px);
+  margin-block: 45px 30px;
+  row-gap: 6px;
+  column-gap: 52px;
+
+  p {
+    display: flex;
+    align-items: center;
+
+    &:nth-child(2),
+    &:nth-child(3) {
+      font-size: $font-size-large;
+      padding-bottom: 7px;
+      justify-content: center;
+      font-weight: $font-weight-bold;
+    }
+  }
+
+  .bigCard {
+    height: 103px;
+    background-color: $white;
+    font-size: 72px;
+    font-weight: $font-weight-bold;
+  }
+
+  .smallCard {
+    height: 34px;
+    font-size: 20px;
+    background-color: $white;
+    font-weight: $font-weight-bold;
+  }
+
+  .submitted {
+    color: $theme-color-medium;
+    justify-content: center;
+  }
+
+  .notSubmitted {
+    color: $chart-gray-color-1;
+    justify-content: center;
+  }
+}
+
+.ndc2025TrackerChart {
+  width: 100%;
+
+  .title {
+    display: flex;
+    justify-content: space-between;
+    align-self: center;
+
+    h3 {
+      font-size: $font-size;
+      font-weight: $font-weight;
+      color: black;
+      font-style: italic;
+    }
+
+    .switchTitle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+
+      > span {
+        font-size: $font-size;
+        font-weight: $font-weight;
+        color: black;
+      }
+
+      > div {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+
+        span {
+          font-size: $font-size-sm;
+          font-weight: $font-weight-bold;
+          color: $theme-color;
+        }
+      }
+
+      .switchWrapper {
+        width: 28px;
+        height: 16px;
+        padding: 2px;
+        background: $theme-color;
+        border-color: $theme-color;
+        justify-content: space-between;
+
+        label {
+          padding: 1px 5px;
+        }
+      }
+
+      .switchSelected {
+        background: $white;
+        height: 10px;
+        width: 10px;
+        border-radius: 50%;
+        display: inline-block;
+      }
+    }
+  }
+}
+
+.barChart {
+  width: 100%;
+  height: 100px;
+  margin-top: 20px;
+}
+
+.barChartBar {
+  fill: $chart-gray-color-1;
+  height: 50px;
+}
+
+.submitted {
+  fill: $theme-color-medium;
+  stroke: $white;
+}
+
+.notSubmitted {
+  fill: $chart-gray-color-1;
+  stroke: $white;
+}
+
+.barChartBarHovered {
+  filter: brightness(1.5);
+}
+
+.chartBarAxis {
+  display: none;
+}
+
+.barChartTooltip {
+  background-color: $white;
+  border: 1px solid $chart-gray-color-1;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+  transform: translateY(-100%);
+  z-index: 100;
+
+  p {
+    margin-top: 4px;
+
+    &:first-child {
+      font-weight: 600;
+    }
+  }
+}
