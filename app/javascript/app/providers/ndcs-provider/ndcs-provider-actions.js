@@ -35,6 +35,7 @@ const fetchNDCS = createThunkAction('fetchNDCS', props => (dispatch, state) => {
   }
 
   const promises = [];
+
   promises.push(
     apiWithCache.get(
       `/api/v1/ndcs${params.length ? `?${params.join('&')}` : ''}`
