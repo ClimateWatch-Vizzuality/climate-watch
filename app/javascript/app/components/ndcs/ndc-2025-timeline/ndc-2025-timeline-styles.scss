@@ -1,0 +1,226 @@
+@import "~styles/layout.scss";
+
+.documentLink {
+  // position: absolute;
+  padding: 8px;
+  top: 0;
+  transform: translate(-50%, -64px);
+  width: max-content;
+  height: auto;
+  background-color: $white;
+}
+
+.timelineDescription {
+  font-size: $font-size-s;
+  font-weight: $font-weight-bold;
+  color: $white;
+}
+
+.timelineContainer {
+  overflow-x: hidden;
+
+  &.opened {
+    @include overflowFix(80px);
+  }
+}
+
+.timeline {
+  // overwriting timeline styles
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 80px;
+  margin-bottom: 100px;
+
+  > div {
+    > div :global {
+      .events-wrapper {
+        overflow: initial !important;
+        width: 100% !important;
+        margin: 0 !important;
+
+        // Timeline start fade effect
+        &::before {
+          content: "";
+          position: absolute;
+          top: 50%;
+          left: 0;
+          height: 100px;
+          width: 50px;
+          background: linear-gradient(91deg, #011880 14.04%, rgba(1, 24, 128, 0) 50.81%);
+          z-index: 1;
+        }
+
+        .events {
+          width: 100% !important;
+
+          .timeline-eventline {
+            min-width: 100% !important;
+            background-color: $white !important;
+            height: 1px;
+            opacity: 0.5;
+
+            &:first-of-type::after {
+              content: "";
+              position: absolute;
+              right: -5px;
+              top: calc(50% - 7px);
+              bottom: 0;
+              width: 14px;
+              height: 14px;
+              background-position: center;
+              background-image: url("../../../assets/icon-pngs/accordion-arrow.png");
+              filter: brightness(10);
+              background-repeat: no-repeat;
+              background-size: contain;
+              color: $white !important;
+            }
+          }
+
+          .timeline-eventline:nth-child(2) {
+            background-color: transparent !important;
+          }
+
+          .dot-label {
+            &.present,
+            &.past,
+            &.future {
+              > span:last-child {
+                background-color: $theme-color-medium !important;
+                border-color: white !important;
+              }
+            }
+          }
+        }
+      }
+
+      ul {
+        display: none;
+      }
+
+      .timelineTooltip {
+        &.-open::before {
+          content: " ";
+          top: calc(100% - 15px);
+          left: 42px;
+          border: solid transparent;
+          height: 0;
+          width: 0;
+          position: absolute;
+          pointer-events: none;
+          border-color: rgba(255, 255, 255, 0);
+          border-top-color: $gray3;
+          border-width: 6px;
+          margin-left: -6px;
+        }
+
+        .links {
+          display: block !important;
+          width: max-content;
+          position: absolute;
+          bottom: 15px;
+          border-radius: 4px;
+          background-color: $gray3;
+          overflow: hidden;
+          padding: 4px;
+
+          li {
+            text-align: left;
+            position: relative;
+            display: block !important;
+            border-bottom: 1px solid rgba($white, 0.2);
+            transition: color 0.1s linear;
+            border-radius: 4px;
+
+            a {
+              padding: 10px 30px 10px 10px;
+              width: auto;
+              height: auto;
+              font-size: $font-size;
+              line-height: $line-height-medium;
+              color: $gray1;
+              background-color: transparent;
+              transition: color 0.1s linear;
+            }
+
+            &::after {
+              content: "";
+              opacity: 0;
+              position: absolute;
+              right: 10px;
+              top: calc(50% - 7px);
+              bottom: 0;
+              width: 14px;
+              height: 14px;
+              background-position: center;
+              background-image: url("../../../assets/icon-pngs/accordion-arrow.png");
+              background-repeat: no-repeat;
+              background-size: contain;
+              background-color: transparent;
+              transition: opacity 0.1s linear;
+            }
+
+            &:hover {
+              background-color: $white;
+
+              a {
+                color: $theme-color;
+              }
+
+              &::after {
+                opacity: 1;
+              }
+            }
+          }
+        }
+
+        .timelineLabel {
+          position: absolute;
+          top: 30px;
+          left: 0;
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          justify-items: center;
+
+          .yearLabel {
+            font-size: $font-size-s;
+            line-height: 1.54;
+            text-align: center;
+            display: block;
+          }
+        }
+      }
+
+      .buttons {
+        // Hide timeline prev and next buttons
+        display: none;
+
+        li {
+          height: 32px !important;
+          width: 32px !important;
+          background-color: $white;
+          box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.09);
+          border: solid 1px $gray2;
+          transform: none !important;
+
+          &.button-back {
+            svg {
+              left: -2px !important;
+            }
+          }
+
+          > svg {
+            fill: $theme-color !important;
+            height: 24px !important;
+            width: 32px !important;
+          }
+
+          &.disabled {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+}
