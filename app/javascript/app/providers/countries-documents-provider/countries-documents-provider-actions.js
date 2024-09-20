@@ -23,7 +23,9 @@ export const fetchCountriesDocuments = createThunkAction(
         !countriesDocuments.data ||
         isEmpty(countriesDocuments.data[location]))
     ) {
-      const url = `/api/v1/ndcs/countries_documents${
+      // !IMPORTANT: This endpoint is broken on staging. We'll hardcode it to production while it's broken
+      // !           in order to be able to proceed with development.
+      const url = `https://www.climatewatchdata.org/api/v1/ndcs/countries_documents${
         location ? `?location=${location}` : ''
       }`;
       dispatch(fetchCountriesDocumentsInit());
