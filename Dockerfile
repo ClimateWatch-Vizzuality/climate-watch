@@ -3,7 +3,7 @@ MAINTAINER info@vizzuality.com
 
 ENV NAME climate-watch
 ENV ESP_API https://data.emissionspathways.org/api/v1
-ENV CW_API https://www.climatewatchdata.org/api/v1
+ENV CW_API /api/v1
 ENV GFW_API https://production-api.globalforestwatch.org
 ENV S3_BUCKET_NAME wri-sites
 
