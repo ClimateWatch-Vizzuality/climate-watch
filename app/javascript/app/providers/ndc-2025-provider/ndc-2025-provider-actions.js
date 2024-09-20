@@ -4,7 +4,7 @@ import isEmpty from 'lodash/isEmpty';
 import mockup from './timeline.json';
 
 const getTimelineInit = createAction('getNdc2025TimelineInit');
-const getTimelineReady = createAction('getNdc2025TimelineReady');
+const getTimelineReady = createAction('getNdc2025TimelineReady');  
 
 const getTimeline = createThunkAction(
   'getNdc2025Timeline',

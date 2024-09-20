@@ -100,7 +100,7 @@ const Ndc2025TrackerChartComponent = () => {
 
   return (
     <div className={styles.wrapper}>
-      <div lassName={layout.content}>
+      <div className={layout.content}>
         <div className={styles.summary}>
           <h2>What countries have submitted a 2025 NDC?</h2>
           <p>
