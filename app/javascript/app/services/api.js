@@ -78,9 +78,6 @@ export const CWAPI = new API(CW_API, cwConfig);
 
 // Create `axios` instance with pre-configured `axios-cache-adapter` attached to it
 export const apiWithCache = setup({
-
-  // TO - DO - update this to come from ENV VAR
-  baseURL: "https://www.climatewatchdata.org",
   cache: {
     maxAge: 15 * 60 * 1000,
     exclude: { query: false }
