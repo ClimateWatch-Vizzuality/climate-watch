@@ -1,0 +1,82 @@
+@import '~styles/layout.scss';
+@import '~styles/settings.scss';
+
+.wrapper {
+  position: relative;
+  margin-bottom: 40px;
+  min-height: 535px;
+}
+
+.column {
+  @include columns();
+}
+
+.searchBox {
+  @media #{$tablet-landscape} {
+    @include column-offset(9, $gutters: true);
+
+    margin-top: 20px;
+  }
+}
+
+.loader {
+  min-height: 500px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: $z-index-loader;
+}
+
+.tableWrapper {
+  margin-top: 20px;
+
+  [class*=__headerRow] {
+    height: 52px !important;
+    align-items: flex-end;
+  }
+}
+
+.submissionWithIcon,
+.overallComparison,
+.comparisonValue {
+  display: flex;
+}
+
+.submissionIcon {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+}
+
+.comparisonIcon {
+  min-width: 24px;
+  min-height: 24px;
+  max-width: 24px;
+  max-height: 24px;
+  margin-right: 5px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &.withBorder {
+    border: 3px solid $black;
+  }
+
+  &.tooltipIcon {
+    min-width: 20px;
+    min-height: 20px;
+    max-width: 20px;
+    max-height: 20px;
+  }
+}
+
+.comparisonTooltip {
+  display: flex;
+  flex-direction: column;
+}
+
+.comparisonTooltipTitle {
+  font-weight: $font-weight-bold;
+  margin-bottom: 10px;
+}
