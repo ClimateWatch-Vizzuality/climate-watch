@@ -23,7 +23,7 @@ export const fetchCountriesDocuments = createThunkAction(
         !countriesDocuments.data ||
         isEmpty(countriesDocuments.data[location]))
     ) {
-      const url = `https://www.climatewatchdata.org/api/v1/ndcs/countries_documents${
+      const url = `/api/v1/ndcs/countries_documents${
         location ? `?location=${location}` : ''
       }`;
       dispatch(fetchCountriesDocumentsInit());
