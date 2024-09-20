@@ -21,7 +21,7 @@ const renderSearch = (searchHandler, query) => (
 );
 const setColumnWidth = col => {
   const columnWidth = {
-    country: 100,
+    country: 120,
     'NDC Status': 75,
     'Share of Global GHG Emissions': 120,
     'Source Link': 150,

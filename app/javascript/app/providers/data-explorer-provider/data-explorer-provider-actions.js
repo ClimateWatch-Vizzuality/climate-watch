@@ -83,7 +83,7 @@ export const fetchSectionMetadata = createThunkAction(
   'fetchSectionMetadata',
   () => dispatch => {
     dispatch(fetchSectionMetadataInit());
-    fetch('https://www.climatewatchdata.org/api/v1/metadata')
+    fetch('/api/v1/metadata')
       .then(response => {
         if (response.ok) {
           return response.json();
