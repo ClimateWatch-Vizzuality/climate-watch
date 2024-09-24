@@ -1,0 +1,52 @@
+{
+  "data": [
+    {
+      "location_id": 96,
+      "submission": "MySubmission",
+      "date": "2024-11-03",
+      "url": "http://internet.tld/path/file.ext",
+      "location": {
+        "iso_code3": "AAB",
+        "pik_name": "MyText",
+        "cait_name": "MyText",
+        "ndcp_navigators_name": "MyText",
+        "wri_standard_name": "MyText",
+        "unfccc_group": "MyText",
+        "centroid": null,
+        "is_in_eu": null
+      }
+    },
+    {
+      "location_id": 97,
+      "submission": "MySubmission",
+      "date": "2024-11-03",
+      "url": "http://internet.tld/path/file.ext",
+      "location": {
+        "iso_code3": "AAC",
+        "pik_name": "MyText",
+        "cait_name": "MyText",
+        "ndcp_navigators_name": "MyText",
+        "wri_standard_name": "MyText",
+        "unfccc_group": "MyText",
+        "centroid": null,
+        "is_in_eu": null
+      }
+    },
+    {
+      "location_id": 98,
+      "submission": "MySubmission",
+      "date": "2024-11-03",
+      "url": "http://internet.tld/path/file.ext",
+      "location": {
+        "iso_code3": "AAD",
+        "pik_name": "MyText",
+        "cait_name": "MyText",
+        "ndcp_navigators_name": "MyText",
+        "wri_standard_name": "MyText",
+        "unfccc_group": "MyText",
+        "centroid": null,
+        "is_in_eu": null
+      }
+    }
+  ]
+}

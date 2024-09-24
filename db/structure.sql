@@ -1317,6 +1317,40 @@ ALTER SEQUENCE public.indc_submissions_id_seq OWNED BY public.indc_submissions.i
 
 
 --
+-- Name: indc_timelines; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.indc_timelines (
+    id bigint NOT NULL,
+    location_id bigint NOT NULL,
+    submission character varying,
+    date date,
+    url character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: indc_timelines_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.indc_timelines_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: indc_timelines_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.indc_timelines_id_seq OWNED BY public.indc_timelines.id;
+
+
+--
 -- Name: indc_values; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2609,6 +2643,13 @@ ALTER TABLE ONLY public.indc_submissions ALTER COLUMN id SET DEFAULT nextval('pu
 
 
 --
+-- Name: indc_timelines id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.indc_timelines ALTER COLUMN id SET DEFAULT nextval('public.indc_timelines_id_seq'::regclass);
+
+
+--
 -- Name: indc_values id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -3184,6 +3225,14 @@ ALTER TABLE ONLY public.indc_sources
 
 ALTER TABLE ONLY public.indc_submissions
     ADD CONSTRAINT indc_submissions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: indc_timelines indc_timelines_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.indc_timelines
+    ADD CONSTRAINT indc_timelines_pkey PRIMARY KEY (id);
 
 
 --
@@ -3885,6 +3934,13 @@ CREATE INDEX index_indc_submissions_on_location_id ON public.indc_submissions US
 
 
 --
+-- Name: index_indc_timelines_on_location_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_indc_timelines_on_location_id ON public.indc_timelines USING btree (location_id);
+
+
+--
 -- Name: index_indc_values_on_document_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -4213,6 +4269,14 @@ ALTER TABLE ONLY public.ndcs
 
 ALTER TABLE ONLY public.indc_submissions
     ADD CONSTRAINT fk_rails_1d04ac5809 FOREIGN KEY (document_id) REFERENCES public.indc_documents(id);
+
+
+--
+-- Name: indc_timelines fk_rails_251d19cc02; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.indc_timelines
+    ADD CONSTRAINT fk_rails_251d19cc02 FOREIGN KEY (location_id) REFERENCES public.locations(id) ON DELETE CASCADE;
 
 
 --
@@ -4793,6 +4857,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220420152331'),
 ('20220519084239'),
 ('20220520090514'),
-('20220527093456');
+('20220527093456'),
+('20240924080237');
 
 

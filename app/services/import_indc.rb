@@ -18,6 +18,7 @@ class ImportIndc
     "#{CW_FILES_PREFIX}indc/NDC_metadata.csv".freeze
   DOCUMENTS_FILEPATH =
     "#{CW_FILES_PREFIX}indc/NDC_documents.csv".freeze
+  DATA_TIMELINE_FILEPATH = "#{CW_FILES_PREFIX}indc/NDC_timeline.csv".freeze
   PLEDGES_DATA_FILEPATH = "#{CW_FILES_PREFIX}indc/pledges_data.csv".freeze
   COMPARISON_FILEPATH = "#{CW_FILES_PREFIX}indc/comparison_matrix.csv".freeze
 
@@ -58,6 +59,7 @@ class ImportIndc
 
       import_submissions
       import_comparison_slugs
+      import_timelines
     end
 
     generate_subsectors_map_data
@@ -167,6 +169,7 @@ class ImportIndc
     Indc::Source.delete_all
     Indc::Submission.delete_all
     Indc::Document.delete_all
+    Indc::Timeline.delete_all
   end
 
   def load_csvs
@@ -187,6 +190,7 @@ class ImportIndc
     @submissions = S3CSVReader.read(SUBMISSIONS_FILEPATH).map(&:to_h)
     @pledges_data = S3CSVReader.read(PLEDGES_DATA_FILEPATH).map(&:to_h)
     @comparison_indicators = S3CSVReader.read(COMPARISON_FILEPATH).map(&:to_h)
+    @timelines = S3CSVReader.read(DATA_TIMELINE_FILEPATH).map(&:to_h)
   end
 
   def load_locations
@@ -273,6 +277,15 @@ class ImportIndc
       submission_date: submission[:date_of_submission],
       url: submission[:url],
       document_id: @documents_cache[doc_slug]&.id
+    }
+  end
+
+  def timeline_attributes(location, timeline)
+    {
+      location: location,
+      submission: timeline[:submission],
+      date: timeline[:date],
+      url: timeline[:url]
     }
   end
 
@@ -708,6 +721,17 @@ class ImportIndc
       slugs = [ind[:pledges_slug], ind[:ndc_slug], ind[:lts_slug], ind[:lse_slug]]
       Indc::Indicator.where(slug: slugs).update_all(normalized_label: ind[:normalized_label],
                                                     normalized_slug: ind[:normalized_slug])
+    end
+  end
+
+  def import_timelines
+    @timelines.each do |timeline|
+      location = Location.find_by(iso_code3: timeline[:iso])
+      next unless location
+
+      Indc::Timeline.create!(timeline_attributes(location, timeline))
+    rescue
+      puts "This row failed #{timeline}"
     end
   end
 

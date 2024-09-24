@@ -84,6 +84,12 @@ object_contents = {
     AF,first_ndc,Water,Water Infrastructure,GCA_Sector,Adapt sector 2
     AF,first_ndc,Water,Water Infrastructure,GCA_subsector,Adapt subsector 2
   END
+
+  "#{CW_FILES_PREFIX}indc/NDC_timeline.csv" => <<~END,
+    Country,ISO,submission,date,url
+    Afghanistan,AFG,First NDC Submitted,11/3/24,https://unfccc.int/NDCREG
+    Algeria,DZA,First NDC Submitted,12/3/24,https://unfccc.int/NDCREG
+  END
 }
 
 describe ImportIndc do
@@ -145,6 +151,10 @@ describe ImportIndc do
 
   it 'Creates new INDC submission records' do
     expect { subject }.to change { Indc::Submission.count }.by(1)
+  end
+
+  it 'Creates new INDC timeline records' do
+    expect { subject }.to change { Indc::Timeline.count }.by(2)
   end
 
   it 'Creates new adaptation actions' do
