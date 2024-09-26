@@ -7,12 +7,12 @@ import reducers, { initialState } from './ndc-2025-timeline-provider-reducers';
 
 class Ndc2025TimelineProvider extends PureComponent {
   componentDidMount() {
-    const { getNdc2025Timeline } = this.props;
-    getNdc2025Timeline();
+    const { getTimeline } = this.props;
+    getTimeline();
   }
 
   componentWillReceiveProps() {
-    this.props.getNdc2025Timeline();
+    this.props.getTimeline();
   }
 
   render() {
@@ -21,7 +21,7 @@ class Ndc2025TimelineProvider extends PureComponent {
 }
 
 Ndc2025TimelineProvider.propTypes = {
-  getNdc2025Timeline: PropTypes.func.isRequired
+  getTimeline: PropTypes.func.isRequired
 };
 
 export { actions, reducers, initialState };
