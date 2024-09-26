@@ -3,7 +3,7 @@ import { utcFormat } from 'd3-time-format';
 import PropTypes from 'prop-types';
 import ClickOutside from 'react-click-outside';
 import HorizontalTimeline from 'react-horizontal-timeline';
-import TimelineProvider from 'providers/ndc-2025-provider';
+import TimelineProvider from 'providers/ndc-2025-timeline-provider';
 import cx from 'classnames';
 import AbbrReplace from 'components/abbr-replace';
 import styles from './ndc-2025-timeline-styles.scss';
