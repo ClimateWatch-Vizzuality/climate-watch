@@ -10,11 +10,11 @@ import Ndc2025TimelineComponent from './ndc-2025-timeline-component';
 import { getDates } from './ndc-2025-timeline-selectors';
 
 const mapStateToProps = state => {
-  const Ndc2025Timeline = {
+  const ndc2025Timeline = {
     timeline: state.timeline
   };
 
-  const documents = getDates(Ndc2025Timeline);
+  const documents = getDates(ndc2025Timeline);
   const documentYears = documents && Object.keys(documents);
 
   return {

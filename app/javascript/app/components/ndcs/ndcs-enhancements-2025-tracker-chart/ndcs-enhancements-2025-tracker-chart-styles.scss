@@ -5,11 +5,29 @@
 }
 
 .summary {
+  .summaryHeader {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 34px;
+  }
   h2 {
     font-size: $font-size-large;
     color: $theme-color;
-    margin-bottom: 34px;
     font-weight: $font-weight;
+  }
+}
+
+.buttonGroup {
+  width: auto;
+  min-width: 148px;
+  float: right;
+
+  .containerControls & {
+    @media #{$tablet-portrait} {
+      margin-top: 0;
+      width: 100%;
+      min-width: 0;
+    }
   }
 }
 

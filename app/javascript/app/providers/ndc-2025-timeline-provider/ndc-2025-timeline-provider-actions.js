@@ -3,16 +3,16 @@ import { createThunkAction } from 'utils/redux';
 import isEmpty from 'lodash/isEmpty';
 import mockup from './timeline.json';
 
-const getTimelineInit = createAction('getNdc2025TimelineInit');
-const getTimelineReady = createAction('getNdc2025TimelineReady');  
+const getNdc2025TimelineInit = createAction('getNdc2025TimelineInit');
+const getNdc2025TimelineReady = createAction('getNdc2025TimelineReady');  
 
-const getTimeline = createThunkAction(
+const getNdc2025Timeline = createThunkAction(
   'getNdc2025Timeline',
   () => (dispatch, state) => {
     const { regions } = state();
     if (regions && isEmpty(regions.data)) {
-      dispatch(getTimelineInit());
-      dispatch(getTimelineReady(mockup));
+      dispatch(getNdc2025TimelineInit());
+      dispatch(getNdc2025TimelineReady(mockup));
       // fetch(
       //   '/api/v1/...'
       // )
@@ -31,7 +31,7 @@ const getTimeline = createThunkAction(
 );
 
 export default {
-  getTimeline,
-  getTimelineInit,
-  getTimelineReady
+  getNdc2025Timeline,
+  getNdc2025TimelineInit,
+  getNdc2025TimelineReady
 };

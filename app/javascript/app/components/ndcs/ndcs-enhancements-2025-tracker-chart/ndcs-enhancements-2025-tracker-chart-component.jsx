@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/label-has-for */
 import { groupBy } from 'lodash';
+import PropTypes from 'prop-types';
 
 import layout from 'styles/layout';
 import classNames from 'classnames';
@@ -13,9 +14,12 @@ import {
 } from 'recharts';
 import { Switch } from 'cw-components';
 import { Link } from 'react-router-dom';
-
+import ButtonGroup from 'components/button-group';
+import { generateLinkToDataExplorer } from 'utils/data-explorer';
 import React from 'react';
 import styles from './ndcs-enhancements-2025-tracker-chart-styles.scss';
+import ModalMetadata from 'components/modal-metadata';
+import MetadataProvider from 'providers/metadata-provider';
 
 import mockup from './mockup.json';
 
@@ -30,10 +34,14 @@ const getEmissionValue = emissionStr => {
   return Number(emission);
 };
 
-const Ndc2025TrackerChartComponent = () => {
+const downloadLink = generateLinkToDataExplorer({ category: '2025_ndc_tracker' }, 'ndc-content')
+
+const Ndc2025TrackerChartComponent = (props) => {
+
+  const { handleInfoClick, handlePngDownloadModal } = props;
+
   const [selectedType, setSelectedType] = React.useState('emissions');
   const [hoveredBar, setHoveredBar] = React.useState(null);
-
   const isSubmittedText = 'INDC Submitted';
 
   const chartData = mockup;
@@ -98,11 +106,47 @@ const Ndc2025TrackerChartComponent = () => {
     .reduce((acc, d) => acc + getEmissionValue(d.ndce_ghg), 0)
     .toFixed(0);
 
+  const renderMap = () => {
+    return <div style={{ background: "red", width: 500, height:500}}>Map</div>;
+  } 
+
   return (
     <div className={styles.wrapper}>
       <div className={layout.content}>
         <div className={styles.summary}>
-          <h2>What countries have submitted a 2025 NDC?</h2>
+          <div className={styles.summaryHeader}>
+            <h2>What countries have submitted a 2025 NDC?</h2>
+            <ButtonGroup
+             className={styles.buttonGroup}
+             dataTour="ndc-enhancement-tracker-04"
+             buttonsConfig={[
+               {
+                 type: 'info',
+                 onClick: handleInfoClick,
+               },
+               {
+                 type: 'share',
+                 shareUrl: '/embed/2025-ndc-tracker',
+                 analyticsGraphName: 'Ndcs',
+                 positionRight: true
+               },
+               {
+                 type: 'downloadCombo',
+                 options: [
+                   {
+                     label: 'Save as image (PNG)',
+                     action: handlePngDownloadModal
+                   },
+                   {
+                     label: 'Go to data explorer',
+                     link: downloadLink,
+                     target: '_self'
+                   }
+                 ]
+               },
+             ]}
+            />
+          </div>
           <p>
             Track which countries are submitting an updated version of their
             NDC--a 2025 NDC. You can compare countries’ submissions side by side{' '}
@@ -213,7 +257,17 @@ const Ndc2025TrackerChartComponent = () => {
           </ResponsiveContainer>
         </div>
       </div>
+      <ModalMetadata />
+      <MetadataProvider source="ndc_cw" />
     </div>
   );
 };
+
+Ndc2025TrackerChartComponent.propTypes = {
+  metadata: PropTypes.object,
+  pngDownloadId: PropTypes.string.isRequired,
+  handleInfoClick: PropTypes.func.isRequired,
+  handlePngDownloadModal: PropTypes.func.isRequired,
+}
+
 export default Ndc2025TrackerChartComponent;

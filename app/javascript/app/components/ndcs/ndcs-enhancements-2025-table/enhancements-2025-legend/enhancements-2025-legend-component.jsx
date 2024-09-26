@@ -1,9 +1,7 @@
 import React from 'react';
 import cx from 'classnames';
 import {
-  ENHANCEMENT_LABELS_WITH_LETTERS,
-  ENHANCEMENT_LABEL_COLORS,
-  LEGEND_ENHANCEMENT_VALUES_COLORS
+  LEGEND_STATUS_2025_VALUES_COLORS, LEGEND_COMPARISON_2025_VALUES_COLORS, LEGEND_COMPARISON_2025_LETTERS,
 } from 'data/constants';
 import styles from './enhancements-2025-legend.scss';
 
@@ -11,41 +9,33 @@ function Enhancements2025Legend() {
   return (
     <div className={styles.enhancementsLegend}>
       <div className={styles.enhancementsLegendNDCValues}>
-        <div className={styles.value}>
-          <div
-            className={cx(styles.enhancementsIcon)}
-            style={{
-              backgroundColor: ENHANCEMENT_LABEL_COLORS.ENHANCED_MITIGATION
-            }}
-          />
-          <div>Submitted New or Updated NDC with Reduced Total Emissions</div>
-        </div>
-        <div className={styles.value}>
-          <div
-            className={cx(styles.enhancementsIcon)}
-            style={{
-              backgroundColor: ENHANCEMENT_LABEL_COLORS.SUBMITTED_2020
-            }}
-          />
-          <div>Submitted New or Updated NDC</div>
-        </div>
+        {Object.entries(LEGEND_STATUS_2025_VALUES_COLORS).map(([key, value]) =>
+          <div key={key} className={styles.value}>
+            <div
+              className={cx(styles.enhancementsIcon)}
+              style={{
+                backgroundColor: value
+              }}
+            />
+          <div>{key}</div>
+        </div>)}
       </div>
       <div className={styles.enhancementsLegendValues}>
-        {Object.keys(LEGEND_ENHANCEMENT_VALUES_COLORS).map(value => (
-          <div className={styles.value}>
+        {Object.entries(LEGEND_COMPARISON_2025_VALUES_COLORS).map(([key, value]) => (
+          <div key={key} className={styles.value}>
             <div
               className={cx(styles.enhancementsIcon, styles.withBorder)}
               style={{
-                backgroundColor: LEGEND_ENHANCEMENT_VALUES_COLORS[value]
+                backgroundColor: value
               }}
             />
-            <div>{value}</div>
+            <div>{key}</div>
           </div>
         ))}
       </div>
       <div className={styles.enhancementsLegendIndicators}>
-        {ENHANCEMENT_LABELS_WITH_LETTERS.map(indicator => (
-          <div className={styles.indicator}>
+        {LEGEND_COMPARISON_2025_LETTERS.map(indicator => (
+          <div key={indicator.letter} className={styles.indicator}>
             <div className={cx(styles.enhancementsIndicatorLetter)}>
               {indicator.letter}
             </div>
