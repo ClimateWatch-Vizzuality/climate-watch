@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { actions as modalActions } from 'components/modal-metadata';
 import { actions as pngModalActions } from 'components/modal-png-download';
 import { createElement } from 'react';
-import {getMetadata} from './ndcs-enhancements-2025-chart-selectors'
+import { getData, getMetadata } from './ndcs-enhancements-2025-chart-selectors'
 
 const actions = { ...modalActions, ...pngModalActions };
 
@@ -14,15 +14,21 @@ const mapStateToProps = (state) => {
   const ndcsExploreWithSelection = {
     ...state,
     ...data,
-  };
-  return {
+  };  
+  
+  // const ndc2025TrackerData = {
+  //   ndc2025Tracker: state.ndc2025Tracker
+  // }
+
+  return { 
+    // data: getData(ndc2025TrackerData),
     metadata: getMetadata(ndcsExploreWithSelection)
   };
 }
 
 const pngDownloadId = 'ndcs-enhancements-map';
 
-function NDCSExploreMapContainer(props) {
+function Ndc2025TrackerChartContainer(props) {
   const {
     setModalMetadata,
     setModalPngDownload
@@ -46,7 +52,7 @@ function NDCSExploreMapContainer(props) {
   });
 }
 
-NDCSExploreMapContainer.propTypes = {
+Ndc2025TrackerChartContainer.propTypes = {
   setModalMetadata: PropTypes.func.isRequired,
   setModalPngDownload: PropTypes.func.isRequired,
   summaryData: PropTypes.array,
@@ -54,5 +60,5 @@ NDCSExploreMapContainer.propTypes = {
 };
 
 export default withRouter(
-  connect(mapStateToProps, actions)(NDCSExploreMapContainer)
+  connect(mapStateToProps, actions)(Ndc2025TrackerChartContainer)
 );

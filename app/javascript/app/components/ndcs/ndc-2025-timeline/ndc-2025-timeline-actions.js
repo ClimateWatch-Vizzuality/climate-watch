@@ -1,7 +1,7 @@
 import { createAction } from 'redux-actions';
 
-const ndc2025TimelineAction = createAction('ndc2025TimelineAction');
+const countryTimelineAction = createAction('countryTimelineAction');
 
 export default {
-  ndc2025TimelineAction
+  countryTimelineAction
 };

@@ -49,6 +49,7 @@ import * as ndcCompareAllTargetsProvider from 'providers/ndc-compare-all-targets
 import * as customCompareAccordionProvider from 'providers/custom-compare-accordion-provider';
 import * as keyVisualizationsProvider from 'providers/key-visualizations-provider';
 import * as metadataProvider from 'providers/metadata-provider';
+import * as ndc2025Provider from 'providers/ndc-2025-provider';
 
 const providersReducers = {
   ndcs: handleActions(NDCSProvider),
@@ -98,7 +99,8 @@ const providersReducers = {
   customCompareAccordion: handleActions(customCompareAccordionProvider),
   keyVisualizations: handleActions(keyVisualizationsProvider),
   metadata: handleActions(metadataProvider),
-  ndc2025Timeline: handleActions(ncd2025Timeline)
+  ndc2025Timeline: handleActions(ncd2025Timeline),
+  ndc2025: handleActions(ndc2025Provider)
 };
 
 // Pages

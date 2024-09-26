@@ -20,6 +20,7 @@ import React from 'react';
 import styles from './ndcs-enhancements-2025-tracker-chart-styles.scss';
 import ModalMetadata from 'components/modal-metadata';
 import MetadataProvider from 'providers/metadata-provider';
+import Ndc2025Provider from 'providers/ndc-2025-provider';
 
 import mockup from './mockup.json';
 
@@ -37,7 +38,6 @@ const getEmissionValue = emissionStr => {
 const downloadLink = generateLinkToDataExplorer({ category: '2025_ndc_tracker' }, 'ndc-content')
 
 const Ndc2025TrackerChartComponent = (props) => {
-
   const { handleInfoClick, handlePngDownloadModal } = props;
 
   const [selectedType, setSelectedType] = React.useState('emissions');
@@ -258,13 +258,14 @@ const Ndc2025TrackerChartComponent = (props) => {
         </div>
       </div>
       <ModalMetadata />
+      <Ndc2025Provider />
       <MetadataProvider source="ndc_cw" />
     </div>
   );
 };
 
 Ndc2025TrackerChartComponent.propTypes = {
-  metadata: PropTypes.object,
+  metadata: PropTypes.array,
   pngDownloadId: PropTypes.string.isRequired,
   handleInfoClick: PropTypes.func.isRequired,
   handlePngDownloadModal: PropTypes.func.isRequired,
