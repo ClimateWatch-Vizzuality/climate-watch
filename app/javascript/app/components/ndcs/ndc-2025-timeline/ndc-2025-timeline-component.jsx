@@ -30,11 +30,7 @@ class CountryTimeline extends PureComponent {
           <ul className="links">
             {countries.map(c => (
               <li key={c.location.wri_standard_name}>
-                <a
-                  className={styles.url}
-                  target="_blank"
-                  href={c.url}
-                >
+                <a className={styles.url} target="_blank" href={c.url}>
                   <AbbrReplace>
                     {c.submission} {c.location.wri_standard_name}
                   </AbbrReplace>
@@ -53,7 +49,9 @@ class CountryTimeline extends PureComponent {
           <span className="yearLabel">{formattedDate}</span>
           <ul className="yearLabel">
             {countries.map(c => (
-              <li key={c.location.wri_standard_name}>{c.location.wri_standard_name}</li>
+              <li key={c.location.wri_standard_name}>
+                {c.location.wri_standard_name}
+              </li>
             ))}
           </ul>
         </div>
@@ -64,8 +62,9 @@ class CountryTimeline extends PureComponent {
   closeTooltip = () => {
     this.setState({ open: false });
   };
-
   render() {
+    if (!this.props.documentYears) return null;
+
     const { documentYears } = this.props;
     const { index: currentIndex, open } = this.state;
     return (
@@ -78,7 +77,7 @@ class CountryTimeline extends PureComponent {
           <h3 className={styles.timelineDescription}>
             <AbbrReplace>Latest 2025 NDC Submitted</AbbrReplace>
           </h3>
-          {documentYears && documentYears.length > 0 ? (
+          {documentYears?.length > 0 ? (
             <HorizontalTimeline
               index={
                 currentIndex === 0

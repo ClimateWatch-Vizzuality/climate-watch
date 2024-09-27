@@ -24,7 +24,7 @@ import * as ltsContentOverviewProvider from 'providers/lts-content-overview-prov
 import * as ghgEmissionsProvider from 'providers/ghg-emissions-meta-provider';
 import * as wbCountryProvider from 'providers/wb-country-data-provider';
 import * as timelineProvider from 'providers/timeline-provider';
-import * as ncd2025Timeline from 'providers/ndc-2025-timeline-provider'
+import * as ncd2025Timeline from 'providers/ndc-2025-timeline-provider';
 import * as socioeconomicsProvider from 'providers/socioeconomics-provider';
 import * as ndcsDocumentsMetaProvider from 'providers/ndcs-documents-meta-provider';
 import * as espModelsProvider from 'providers/esp-models-provider';
@@ -144,6 +144,7 @@ import * as ExploreMapShared from 'components/ndcs/shared/explore-map';
 import * as ndcCountryAccordionComponent from 'components/ndcs/ndcs-country-accordion';
 import * as NotificationBellComponent from 'components/notification-bell';
 import * as WebTourComponent from 'components/web-tour';
+import * as CountryTimeline2025Component from 'components/ndcs/ndc-2025-timeline/ndc-2025-timeline';
 
 const componentsReducers = {
   map: handleActions(mapComponent),
@@ -170,7 +171,8 @@ const componentsReducers = {
   exploreMap: handleActions(ExploreMapShared),
   ndcCountryAccordion: handleActions(ndcCountryAccordionComponent),
   notifications: handleActions(NotificationBellComponent),
-  tour: handleActions(WebTourComponent)
+  tour: handleActions(WebTourComponent),
+  countryTimeline2025: handleActions(CountryTimeline2025Component)
 };
 
 export default combineReducers({
