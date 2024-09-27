@@ -29,14 +29,14 @@ class CountryTimeline extends PureComponent {
         <ClickOutside onClickOutside={this.closeTooltip}>
           <ul className="links">
             {countries.map(c => (
-              <li key={c.Country}>
+              <li key={c.location.wri_standard_name}>
                 <a
-                  className={styles.documentLink}
+                  className={styles.url}
                   target="_blank"
-                  href={c.Country}
+                  href={c.url}
                 >
                   <AbbrReplace>
-                    {c.submission} {c.Country}
+                    {c.submission} {c.location.wri_standard_name}
                   </AbbrReplace>
                 </a>
               </li>
@@ -53,7 +53,7 @@ class CountryTimeline extends PureComponent {
           <span className="yearLabel">{formattedDate}</span>
           <ul className="yearLabel">
             {countries.map(c => (
-              <li key={c.Country}>{c.Country}</li>
+              <li key={c.location.wri_standard_name}>{c.location.wri_standard_name}</li>
             ))}
           </ul>
         </div>

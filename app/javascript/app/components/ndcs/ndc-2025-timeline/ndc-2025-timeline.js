@@ -7,17 +7,11 @@ import actions from './ndc-2025-timeline-actions';
 import reducers, { initialState } from './ndc-2025-timeline-reducers';
 
 import CountryTimelineComponent from './ndc-2025-timeline-component';
-import { getDates } from './ndc-2025-timeline-selectors';
+import { getTimelineDates } from './ndc-2025-timeline-selectors';
 
-const mapStateToProps = (state, { match }) => {
-  const { iso } = match.params;
-  const countryTimeline = {
-    timeline: state.timeline,
-    iso
-  };
-
-  const documents = getDates(countryTimeline);
-  const documentYears = documents && Object.keys(documents);
+const mapStateToProps = (state) => {
+  const documents = getTimelineDates(state);
+  const documentYears = documents &&  documents?.map(d => d.date) || [];
 
   return {
     documents,
