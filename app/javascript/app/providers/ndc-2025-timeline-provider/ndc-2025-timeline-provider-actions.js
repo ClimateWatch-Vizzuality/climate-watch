@@ -1,6 +1,5 @@
 import { createAction } from 'redux-actions';
 import { createThunkAction } from 'utils/redux';
-import isEmpty from 'lodash/isEmpty';
 
 const getTimelineInit = createAction('getTimelineInit');
 const getTimelineReady = createAction('getTimelineReady');
@@ -18,7 +17,8 @@ const getTimeline = createThunkAction(
           throw Error(response.statusText);
         })
         .then(data => {
-          dispatch(getTimelineReady(data));
+          const d = Array.isArray(data) ? data : Array.isArray(data.data) ? data.data : [];
+          dispatch(getTimelineReady(d));
         })
         .catch(error => {
           console.info(error);
