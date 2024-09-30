@@ -97,15 +97,17 @@ const NDCSEnhancements2025Map = ({
             <NdcsProvider
               overrideFilter
               indicatorSlugs={[
-                INDICATOR_SLUGS.enhancements,
+                INDICATOR_SLUGS.submitted2025,
                 INDICATOR_SLUGS.emissions,
-                'ndce_compare',
-                'ndce_statement',
-                'ndce_source',
-                'ndce_date'
+                '2025_compare_1',
+                '2025_compare_2',
+                '2025_compare_3',
+                '2025_statement',
+                '2025_source',
+                '2025_date'
               ]}
             />
-            <MetadataProvider source="2020_ndc" />
+            <MetadataProvider source="2025_status" />
           </div>
         )}
       </TabletLandscape>

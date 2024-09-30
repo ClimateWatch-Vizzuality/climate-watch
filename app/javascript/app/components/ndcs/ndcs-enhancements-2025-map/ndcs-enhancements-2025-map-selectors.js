@@ -16,13 +16,13 @@ import { COUNTRY_STYLES } from 'components/ndcs/shared/constants';
 import {
   ENHANCEMENT_CATEGORIES,
   ENHANCEMENT_LABEL_SLUGS,
-  ENHANCEMENT_LABEL_COLORS,
+  NDC_2025_LABEL_COLORS,
   INDICATOR_SLUGS
 } from 'data/constants';
 
-const ENHANCEMENT_SLUGS = {
+const NDC_2025_SLUGS = {
   EMISSIONS: INDICATOR_SLUGS.emissions,
-  MAP: INDICATOR_SLUGS.enhancements
+  MAP: INDICATOR_SLUGS.submitted2025
 };
 
 const getSearch = state => state.search || null;
@@ -54,9 +54,10 @@ export const getIndicatorsParsed = createSelector(
   [getCategories, getIndicatorsData, getISOCountries],
   (categories, indicators, isos) => {
     if (!categories || !indicators || !indicators.length) return null;
-    const categoryId = Object.keys(categories).find(id =>
-      ENHANCEMENT_CATEGORIES.includes(categories[id].slug)
-    );
+    // const categoryId = Object.keys(categories).find(id =>
+    //   ENHANCEMENT_CATEGORIES.includes(categories[id].slug)
+    // );
+
     return sortBy(
       uniqBy(
         indicators.map(i => {
@@ -76,7 +77,7 @@ export const getIndicatorsParsed = createSelector(
         'value'
       ),
       'label'
-    ).filter(ind => ind.categoryIds?.indexOf(parseInt(categoryId, 10)) > -1);
+    ); // .filter(ind => ind.categoryIds?.indexOf(parseInt(categoryId, 10)) > -1);
   }
 );
 
@@ -85,16 +86,22 @@ export const getMapIndicator = createSelector(
   (indicators, isos) => {
     if (!indicators || !indicators.length) return null;
     const mapIndicator = indicators.find(
-      ind => ind.value === ENHANCEMENT_SLUGS.MAP
+      ind => ind.value === NDC_2025_SLUGS.MAP
     );
+
     if (!mapIndicator) return null;
 
     const updatedMapIndicator = { ...mapIndicator };
+
+    // Missing slug in the legendBuckets data
     const noInfoId = Object.keys(updatedMapIndicator.legendBuckets).find(
-      id =>
-        updatedMapIndicator.legendBuckets[id].slug ===
-        ENHANCEMENT_LABEL_SLUGS.NO_INFO
+      id => updatedMapIndicator.legendBuckets[id].name === 'No Information'
     );
+    // .find(
+    //   id =>
+    //     updatedMapIndicator.legendBuckets[id].slug ===
+    //     ENHANCEMENT_LABEL_SLUGS.NO_INFO
+    // );
 
     // Set all countries without values to "No Information" by default
     if (noInfoId) {
@@ -156,7 +163,7 @@ export const filterEnhancedValueOnIndicator = createSelector(
         legendBuckets[key].slug === ENHANCEMENT_LABEL_SLUGS.ENHANCED_MITIGATION
     );
     const submittedLabelId = Object.keys(legendBuckets).find(
-      key => legendBuckets[key].slug === ENHANCEMENT_LABEL_SLUGS.SUBMITTED_2020
+      key => legendBuckets[key].slug === ENHANCEMENT_LABEL_SLUGS.SUBMITTED_2025
     );
 
     const updatedLegendBuckets = { ...legendBuckets };
@@ -192,9 +199,7 @@ export const sortIndicatorLegend = createSelector(
     if (!indicator) return null;
     const updatedIndicator = { ...indicator };
     const slugsLegendOrder = [
-      ENHANCEMENT_LABEL_SLUGS.ENHANCED_MITIGATION,
-      ENHANCEMENT_LABEL_SLUGS.SUBMITTED_2020,
-      ENHANCEMENT_LABEL_SLUGS.INTENDS_TO_ENHANCE,
+      ENHANCEMENT_LABEL_SLUGS.SUBMITTED_2025,
       null,
       ENHANCEMENT_LABEL_SLUGS.NO_INFO
     ]; // null it's for 'Not Applicable'
@@ -209,7 +214,7 @@ export const sortIndicatorLegend = createSelector(
 );
 
 const MAP_LABEL_COLORS = [
-  ...Object.values(ENHANCEMENT_LABEL_COLORS),
+  ...Object.values(NDC_2025_LABEL_COLORS),
   'rgb(204, 204, 204)'
 ];
 export const MAP_COLORS = [
@@ -309,116 +314,5 @@ export const getPreviousComparisonCountryValues = createSelector(
       ]);
     });
     return previousComparisonCountryValues;
-  }
-);
-
-export const summarizeIndicators = createSelector(
-  [getIndicatorsParsed, getMapIndicator],
-  (indicators, indicator) => {
-    if (!indicator || !indicators) return null;
-    const summaryData = {};
-
-    const locations = Object.keys(indicator.locations);
-    const summaryLabels = [
-      'enhance_2020',
-      'enhanced_migitation',
-      'submitted_2020'
-    ];
-    const labels = Object.keys(indicator.legendBuckets)
-      .filter(id => summaryLabels.includes(indicator.legendBuckets[id].slug))
-      .map(id => ({
-        ...indicator.legendBuckets[id],
-        id
-      }));
-
-    labels.forEach(label => {
-      const color = getColorByIndex(
-        indicator.legendBuckets,
-        label.index,
-        MAP_COLORS
-      );
-      summaryData[label.slug] = {
-        includesEU: false,
-        countries: {
-          value: 0,
-          max: locations.length,
-          opts: { color }
-        },
-        emissions: {
-          value: 0,
-          max: 100,
-          opts: { color }
-        }
-      };
-    });
-
-    const emissionsIndicator = indicators.find(
-      ind => ind.value === ENHANCEMENT_SLUGS.EMISSIONS
-    );
-
-    // Calculate countries number and emissions
-    locations.forEach(l => {
-      const location = indicator.locations[l];
-      const type = location.label_slug;
-      const emissionPercentages = emissionsIndicator.locations;
-      if (type && summaryData[type]) {
-        if (l === europeSlug) {
-          const EUTotal = parseFloat(emissionPercentages[europeSlug].value);
-          const europeanLocationIsos = locations.filter(iso =>
-            europeanCountries.includes(iso)
-          );
-          const europeanLocationsValue = europeanLocationIsos.reduce(
-            (acc, iso) => acc + parseFloat(emissionPercentages[iso].value),
-            0
-          );
-          summaryData[type].emissions.value += EUTotal - europeanLocationsValue; // To avoid double counting
-          summaryData[type].countries.value +=
-            europeanCountries.length - europeanLocationIsos.length; // To avoid double counting
-
-          summaryData[type].includesEU = true;
-        } else {
-          summaryData[type].countries.value += 1;
-
-          // Enhanced mitigation should be counted as submitted 2020
-          if (type === ENHANCEMENT_LABEL_SLUGS.ENHANCED_MITIGATION) {
-            summaryData[
-              ENHANCEMENT_LABEL_SLUGS.SUBMITTED_2020
-            ].countries.value += 1;
-          }
-
-          if (emissionsIndicator.locations[l]) {
-            summaryData[type].emissions.value += parseFloat(
-              emissionsIndicator.locations[l].value
-            );
-          }
-        }
-      }
-    });
-
-    // Add emissions values
-    Object.keys(summaryData).forEach(type => {
-      // Enhanced mitigation should be counted as submitted 2020
-      const emissionsParsedValue =
-        type === ENHANCEMENT_LABEL_SLUGS.SUBMITTED_2020
-          ? parseFloat(summaryData.submitted_2020.emissions.value) +
-            parseFloat(
-              summaryData[ENHANCEMENT_LABEL_SLUGS.ENHANCED_MITIGATION].emissions
-                .value
-            )
-          : parseFloat(summaryData[type].emissions.value);
-
-      summaryData[type].emissions.value = emissionsParsedValue.toFixed(1);
-    });
-    // Add text
-    Object.keys(summaryData).forEach(type => {
-      const emissionsString = `<span title="2020 emissions data">${summaryData[type].emissions.value}% of global emissions</span>`;
-      summaryData[type].countries.opts.label = {
-        [ENHANCEMENT_LABEL_SLUGS.ENHANCED_MITIGATION]: `<strong>of the ${
-          summaryData[ENHANCEMENT_LABEL_SLUGS.SUBMITTED_2020].countries.value
-        } countries</strong> (${emissionsString}) have submitted a <strong>new or updated NDC with reduced total emissions</strong> compared to their <span title ="Initial NDCs: each country's most recent submission as of December 31, 2019, excluding updated first NDCs and second NDCs, as well as intended NDCs (INDCs) dated subsequent to first NDCs.">initial NDC</span>`,
-        [ENHANCEMENT_LABEL_SLUGS.SUBMITTED_2020]: `<strong>countries</strong> (${emissionsString}) have submitted a <strong>new or updated NDC</strong>`
-      }[type];
-    });
-    return summaryData;
   }
 );

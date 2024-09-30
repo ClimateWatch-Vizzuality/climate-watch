@@ -398,6 +398,7 @@ export const ENHANCEMENT_CATEGORIES = [
 export const ENHANCEMENT_LABEL_SLUGS = {
   INTENDS_TO_ENHANCE: 'enhance_2020',
   SUBMITTED_2020: 'submitted_2020',
+  SUBMITTED_2025: '2025_status',
   ENHANCED_MITIGATION: 'enhanced_migitation',
   NO_INFO: 'no_info_2020'
 };
@@ -413,9 +414,15 @@ export const ENHANCEMENT_LABEL_COLORS = {
   ENHANCED_MITIGATION: CHART_NAMED_COLORS.color2
 };
 
+export const NDC_2025_LABEL_COLORS = {
+  SUBMITTED_2025: CHART_NAMED_COLORS.color2,
+  ENHANCED_MITIGATION: CHART_NAMED_COLORS.color1
+};
+
 export const INDICATOR_SLUGS = {
   emissions: 'ndce_ghg',
-  enhancements: 'ndce_status_2020'
+  enhancements: 'ndce_status_2020',
+  submitted2025: '2025_status'
 };
 
 export const CATEGORY_SLUGS = {
@@ -507,23 +514,24 @@ export const NDC_2025_COLORS = {
   lightGray: '#CCCDCF',
   orange: '#FF6C2F',
   yellow: '#FFB800'
-}
+};
 
 export const LEGEND_STATUS_2025_VALUES_COLORS = {
   'Submitted 2025 NDC': NDC_2025_COLORS.darkBlue,
   'No information': NDC_2025_COLORS.darkGray,
-  'Not Applicable: Countries that are not a Party to the UNFCCC': NDC_2025_COLORS.lightGray,
+  'Not Applicable: Countries that are not a Party to the UNFCCC':
+    NDC_2025_COLORS.lightGray
 };
 
 export const LEGEND_COMPARISON_2025_VALUES_COLORS = {
   'Revised NDC compared with previous version': NDC_2025_COLORS.lightBlue,
   'Yes, enhancement in the revised submission': NDC_2025_COLORS.lightBlue,
   'No, no enhancement in the revised submission': NDC_2025_COLORS.orange,
-  'Unclear': NDC_2025_COLORS.yellow,
+  Unclear: NDC_2025_COLORS.yellow
 };
 
 export const LEGEND_COMPARISON_2025_LETTERS = [
   { value: 'ndce_revised', letter: 'R', label: '2025 Compare 1 indicator' },
   { value: 'ndce_revised', letter: 'M', label: '2025 Compare 2 indicator' },
-  { value: 'ndce_revised', letter: 'G', label: '2025 Compare 3 indicator' },
+  { value: 'ndce_revised', letter: 'G', label: '2025 Compare 3 indicator' }
 ];

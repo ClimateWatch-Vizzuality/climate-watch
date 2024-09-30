@@ -1,4 +1,5 @@
 /* eslint-disable jsx-a11y/label-has-for */
+import React from 'react';
 import { groupBy } from 'lodash';
 import PropTypes from 'prop-types';
 
@@ -16,12 +17,9 @@ import { Switch } from 'cw-components';
 import { Link } from 'react-router-dom';
 import ButtonGroup from 'components/button-group';
 import { generateLinkToDataExplorer } from 'utils/data-explorer';
-import React from 'react';
-import styles from './ndcs-enhancements-2025-tracker-chart-styles.scss';
 import ModalMetadata from 'components/modal-metadata';
 import MetadataProvider from 'providers/metadata-provider';
-
-import mockup from './mockup.json';
+import styles from './ndcs-enhancements-2025-tracker-chart-styles.scss';
 
 const getEmissionValue = emissionStr => {
   if (!emissionStr) {
@@ -34,29 +32,28 @@ const getEmissionValue = emissionStr => {
   return Number(emission);
 };
 
-const downloadLink = generateLinkToDataExplorer({ category: '2025_ndc_tracker' }, 'ndc-content')
+const downloadLink = generateLinkToDataExplorer(
+  { category: '2025_ndc_tracker' },
+  'ndc-content'
+);
 
-const Ndc2025TrackerChartComponent = (props) => {
-  const { handleInfoClick, handlePngDownloadModal } = props;
+const Ndc2025TrackerChartComponent = props => {
+  const { handleInfoClick, handlePngDownloadModal, data: _data } = props;
 
   const [selectedType, setSelectedType] = React.useState('emissions');
   const [hoveredBar, setHoveredBar] = React.useState(null);
-  const isSubmittedText = 'INDC Submitted';
-
-  const chartData = mockup;
+  const submittedTexts = [
+    'Submitted 2025 NDC',
+    'Submitted 2025 NDC with 2030 target'
+  ];
 
   const data = React.useMemo(() => {
-    const selectedData = chartData.map(d => ({
-      indc_submission: d.indc_submission,
-      submission_date: d.submission_date,
-      country: d.Country,
-      emissions: getEmissionValue(d.ndce_ghg),
-      iso: d.ISO
-    }));
-
+    if (!_data) return null;
     const dataGroups = Object.values(
-      groupBy(selectedData, d =>
-        d.indc_submission === isSubmittedText ? 'submitted' : 'notSubmitted'
+      groupBy(_data, d =>
+        submittedTexts.includes(d.indc_submission)
+          ? 'submitted'
+          : 'notSubmitted'
       )
     );
 
@@ -65,7 +62,7 @@ const Ndc2025TrackerChartComponent = (props) => {
         if (selectedType === 'submission_date') {
           return new Date(a.submission_date) - new Date(b.submission_date);
         }
-        return b.emissions - a.emissions;
+        return b.ndce_ghg - a.ndce_ghg;
       })
     );
 
@@ -82,32 +79,32 @@ const Ndc2025TrackerChartComponent = (props) => {
     const emissionsData = [
       {
         ...sortedBars.reduce(
-          (acc, d) => ({ ...acc, [d.index]: d.emissions }),
+          (acc, d) => ({ ...acc, [d.index]: getEmissionValue(d.ndce_ghg) }),
           {}
         ),
         name: 'emissions'
       }
     ];
-
     return { emissionsData, sortedBars };
-  }, [selectedType]);
+  }, [selectedType, _data]);
 
-  const totalCountriesSubmitted = chartData.filter(
-    d => d.indc_submission === isSubmittedText
+  const hasBeenSubmitted = d => submittedTexts.includes(d.indc_submission);
+  const totalCountriesSubmitted = _data?.filter(d =>
+    submittedTexts.includes(d.indc_submission)
   ).length;
-  const totalCountriesNotSubmitted = chartData.length - totalCountriesSubmitted;
-  const totalEmissionsSubmitted = chartData
-    .filter(d => d.indc_submission === isSubmittedText)
-    .reduce((acc, d) => acc + getEmissionValue(d.ndce_ghg), 0)
-    .toFixed(0);
-  const totalEmissionsNotSubmitted = chartData
-    .filter(d => d.indc_submission !== isSubmittedText)
+  const totalCountriesNotSubmitted = _data?.length - totalCountriesSubmitted;
+
+  const totalEmissionsSubmitted = _data
+    ?.filter(hasBeenSubmitted)
     .reduce((acc, d) => acc + getEmissionValue(d.ndce_ghg), 0)
     .toFixed(0);
 
-  const renderMap = () => {
-    return <div style={{ background: "red", width: 500, height:500}}>Map</div>;
-  } 
+  const totalEmissionsNotSubmitted = _data
+    ?.filter(hasBeenSubmitted)
+    .reduce((acc, d) => acc + getEmissionValue(d.ndce_ghg), 0)
+    .toFixed(0);
+
+  if (!data) return null;
 
   return (
     <div className={styles.wrapper}>
@@ -116,34 +113,34 @@ const Ndc2025TrackerChartComponent = (props) => {
           <div className={styles.summaryHeader}>
             <h2>What countries have submitted a 2025 NDC?</h2>
             <ButtonGroup
-             className={styles.buttonGroup}
-             dataTour="ndc-enhancement-tracker-04"
-             buttonsConfig={[
-               {
-                 type: 'info',
-                 onClick: handleInfoClick,
-               },
-               {
-                 type: 'share',
-                 shareUrl: '/embed/2025-ndc-tracker',
-                 analyticsGraphName: 'Ndcs',
-                 positionRight: true
-               },
-               {
-                 type: 'downloadCombo',
-                 options: [
-                   {
-                     label: 'Save as image (PNG)',
-                     action: handlePngDownloadModal
-                   },
-                   {
-                     label: 'Go to data explorer',
-                     link: downloadLink,
-                     target: '_self'
-                   }
-                 ]
-               },
-             ]}
+              className={styles.buttonGroup}
+              dataTour="ndc-enhancement-tracker-04"
+              buttonsConfig={[
+                {
+                  type: 'info',
+                  onClick: handleInfoClick
+                },
+                {
+                  type: 'share',
+                  shareUrl: '/embed/2025-ndc-tracker',
+                  analyticsGraphName: 'Ndcs',
+                  positionRight: true
+                },
+                {
+                  type: 'downloadCombo',
+                  options: [
+                    {
+                      label: 'Save as image (PNG)',
+                      action: handlePngDownloadModal
+                    },
+                    {
+                      label: 'Go to data explorer',
+                      link: downloadLink,
+                      target: '_self'
+                    }
+                  ]
+                }
+              ]}
             />
           </div>
           <p>
@@ -225,7 +222,7 @@ const Ndc2025TrackerChartComponent = (props) => {
                     <p>{hoveredBar?.country}</p>
                     <p>
                       GHG Emissions:{' '}
-                      <span>{hoveredBar?.emissions?.toFixed(2)}%</span>
+                      <span>{hoveredBar?.ndce_ghg?.toFixed(2)}%</span>
                     </p>
                     <p>
                       Submission date:{' '}
@@ -238,12 +235,12 @@ const Ndc2025TrackerChartComponent = (props) => {
               />
               {data?.sortedBars.map((d, i) => (
                 <Bar
-                  onMouseEnter={() => setHoveredBar(d)}
+                  onMouseEnter={() => setHoveredBar(getEmissionValue(d))}
                   onMouseLeave={() => setHoveredBar(false)}
                   key={d.iso}
                   className={classNames(
                     styles.barChartBar,
-                    d.indc_submission === isSubmittedText
+                    hasBeenSubmitted(d)
                       ? styles.submitted
                       : styles.notSubmitted,
                     hoveredBar?.iso === d.iso && styles.barChartBarHovered
@@ -263,10 +260,11 @@ const Ndc2025TrackerChartComponent = (props) => {
 };
 
 Ndc2025TrackerChartComponent.propTypes = {
-  metadata: PropTypes.array,
-  pngDownloadId: PropTypes.string.isRequired,
+  // metadata: PropTypes.array,
+  data: PropTypes.array,
+  // pngDownloadId: PropTypes.string.isRequired,
   handleInfoClick: PropTypes.func.isRequired,
-  handlePngDownloadModal: PropTypes.func.isRequired,
-}
+  handlePngDownloadModal: PropTypes.func.isRequired
+};
 
 export default Ndc2025TrackerChartComponent;
