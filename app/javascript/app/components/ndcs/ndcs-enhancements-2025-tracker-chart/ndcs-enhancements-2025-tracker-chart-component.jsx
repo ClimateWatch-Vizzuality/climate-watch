@@ -20,7 +20,6 @@ import React from 'react';
 import styles from './ndcs-enhancements-2025-tracker-chart-styles.scss';
 import ModalMetadata from 'components/modal-metadata';
 import MetadataProvider from 'providers/metadata-provider';
-import Ndc2025Provider from 'providers/ndc-2025-provider';
 
 import mockup from './mockup.json';
 
@@ -258,7 +257,6 @@ const Ndc2025TrackerChartComponent = (props) => {
         </div>
       </div>
       <ModalMetadata />
-      <Ndc2025Provider />
       <MetadataProvider source="ndc_cw" />
     </div>
   );
