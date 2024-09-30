@@ -6,7 +6,6 @@ const getTimeline = state => state.countryTimeline2025 || null;
 export const getTimelineDates = createSelector([getTimeline], timeline => {
   if (!timeline) return null;
   const { data } = timeline;
-  console.log(data);
   if (!data) return null;
   const d = Object.values(data);
   const documents = Object.entries(groupBy(d, 'date'))

@@ -16,19 +16,20 @@ const fetchCountryTimelineData = createThunkAction(
     dispatch(fetchCountryTimelineInit());
 
     apiWithCache
-    .get('/api/v1/data/ndc_content/timelines')
-    .then(response => {
-      if (response.data) return response.data;
-      throw Error(response.statusText);
-    }).then(d => {
-      const data = Array.isArray(d) ? d : Array.isArray(d.data) ? d.data : [];
-      dispatch(fetchCountryTimelineDataReady(data));
-    })
-    .catch(error => {
-      console.warn(error);
-      console.info('error', error);
-      dispatch(fetchCountryTimelineFail());
-    });
+      .get('/api/v1/data/ndc_content/timelines')
+      .then(response => {
+        if (response.data) return response.data;
+        throw Error(response.statusText);
+      })
+      .then(d => {
+        // eslint-disable-next-line no-nested-ternary
+        const data = Array.isArray(d) ? d : Array.isArray(d.data) ? d.data : [];
+        dispatch(fetchCountryTimelineDataReady(data));
+      })
+      .catch(error => {
+        console.warn('error', error);
+        dispatch(fetchCountryTimelineFail());
+      });
   }
 );
 
