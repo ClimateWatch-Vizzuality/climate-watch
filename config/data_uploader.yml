@@ -52,6 +52,7 @@ platforms:
           - NDC_metadata
           - NDC_single_version
           - NDC_documents
+          - NDC_timeline
           - pledges_data
           - comparison_matrix
       - name: locations
