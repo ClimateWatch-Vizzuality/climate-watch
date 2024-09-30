@@ -1,21 +1,16 @@
 import { PureComponent, createElement } from 'react';
 import { connect } from 'react-redux';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
-
 import actions from './ndc-2025-timeline-actions';
 import reducers, { initialState } from './ndc-2025-timeline-reducers';
 
-import Ndc2025TimelineComponent from './ndc-2025-timeline-component';
-import { getDates } from './ndc-2025-timeline-selectors';
+import CountryTimelineComponent from './ndc-2025-timeline-component';
+import { getTimelineDates } from './ndc-2025-timeline-selectors';
 
 const mapStateToProps = state => {
-  const Ndc2025Timeline = {
-    timeline: state.timeline
-  };
-
-  const documents = getDates(Ndc2025Timeline);
-  const documentYears = documents && Object.keys(documents);
+  const documents = getTimelineDates(state);
+  const documentYears = documents?.map(d => d.date) || [];
 
   return {
     documents,
@@ -23,18 +18,24 @@ const mapStateToProps = state => {
   };
 };
 
-class Ndc2025TimelineContainer extends PureComponent {
+class CountryTimelineContainer extends PureComponent {
+  componentDidMount() {
+    this.props.fetchCountryTimelineData();
+  }
+
   render() {
-    return createElement(Ndc2025TimelineComponent, {
+    return createElement(CountryTimelineComponent, {
       ...this.props
     });
   }
 }
 
-Ndc2025TimelineContainer.propTypes = {};
+CountryTimelineContainer.propTypes = {
+  fetchCountryTimelineData: PropTypes.func.isRequired
+};
 
 export { actions, reducers, initialState };
 
 export default withRouter(
-  connect(mapStateToProps, actions)(Ndc2025TimelineContainer)
+  connect(mapStateToProps, actions)(CountryTimelineContainer)
 );

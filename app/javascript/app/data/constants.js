@@ -499,3 +499,31 @@ export const EXTERNAL_COUNTRY_LINKS = {
   indonesia: 'https://indonesia.climatewatchdata.org',
   india: 'https://indiaclimateexplorer.org/'
 };
+
+export const NDC_2025_COLORS = {
+  lightBlue: '#62C0FF',
+  darkBlue: '#0845CB',
+  darkGray: '#999C9F',
+  lightGray: '#CCCDCF',
+  orange: '#FF6C2F',
+  yellow: '#FFB800'
+}
+
+export const LEGEND_STATUS_2025_VALUES_COLORS = {
+  'Submitted 2025 NDC': NDC_2025_COLORS.darkBlue,
+  'No information': NDC_2025_COLORS.darkGray,
+  'Not Applicable: Countries that are not a Party to the UNFCCC': NDC_2025_COLORS.lightGray,
+};
+
+export const LEGEND_COMPARISON_2025_VALUES_COLORS = {
+  'Revised NDC compared with previous version': NDC_2025_COLORS.lightBlue,
+  'Yes, enhancement in the revised submission': NDC_2025_COLORS.lightBlue,
+  'No, no enhancement in the revised submission': NDC_2025_COLORS.orange,
+  'Unclear': NDC_2025_COLORS.yellow,
+};
+
+export const LEGEND_COMPARISON_2025_LETTERS = [
+  { value: 'ndce_revised', letter: 'R', label: '2025 Compare 1 indicator' },
+  { value: 'ndce_revised', letter: 'M', label: '2025 Compare 2 indicator' },
+  { value: 'ndce_revised', letter: 'G', label: '2025 Compare 3 indicator' },
+];

@@ -1,3 +1,64 @@
-import NdcsEnhancements2025TrackerChart from './ndcs-enhancements-2025-tracker-chart-component';
+import Component from './ndcs-enhancements-2025-tracker-chart-component';
+import PropTypes from 'prop-types';
+import { withRouter } from 'react-router';
+import { connect } from 'react-redux';
+import { actions as modalActions } from 'components/modal-metadata';
+import { actions as pngModalActions } from 'components/modal-png-download';
+import { createElement } from 'react';
+import { getData, getMetadata } from './ndcs-enhancements-2025-chart-selectors'
 
-export default NdcsEnhancements2025TrackerChart;
+const actions = { ...modalActions, ...pngModalActions };
+
+const mapStateToProps = (state) => {
+  const { data, loading } = state.ndcsExplore;
+  const ndcsExploreWithSelection = {
+    ...state,
+    ...data,
+  };  
+  
+  // const ndc2025TrackerData = {
+  //   ndc2025Tracker: state.ndc2025Tracker
+  // }
+
+  return { 
+    // data: getData(ndc2025TrackerData),
+    metadata: getMetadata(ndcsExploreWithSelection)
+  };
+}
+
+const pngDownloadId = 'ndcs-enhancements-map';
+
+function Ndc2025TrackerChartContainer(props) {
+  const {
+    setModalMetadata,
+    setModalPngDownload
+  } = props;
+
+  const handlePngDownloadModal = () => {
+    setModalPngDownload({ open: pngDownloadId });
+  }
+  const handleInfoClick = () => {
+    setModalMetadata({
+      category: 'NDC Content Map',
+      slugs: '2020_NDC',
+      open: true
+    });
+  }
+  return createElement(Component, {
+      ...props,
+      pngDownloadId,
+      handleInfoClick,
+      handlePngDownloadModal,
+  });
+}
+
+Ndc2025TrackerChartContainer.propTypes = {
+  setModalMetadata: PropTypes.func.isRequired,
+  setModalPngDownload: PropTypes.func.isRequired,
+  summaryData: PropTypes.array,
+  selectedCategory: PropTypes.object,
+};
+
+export default withRouter(
+  connect(mapStateToProps, actions)(Ndc2025TrackerChartContainer)
+);

@@ -3,7 +3,6 @@ import { utcFormat } from 'd3-time-format';
 import PropTypes from 'prop-types';
 import ClickOutside from 'react-click-outside';
 import HorizontalTimeline from 'react-horizontal-timeline';
-import TimelineProvider from 'providers/ndc-2025-provider';
 import cx from 'classnames';
 import AbbrReplace from 'components/abbr-replace';
 import styles from './ndc-2025-timeline-styles.scss';
@@ -29,14 +28,10 @@ class CountryTimeline extends PureComponent {
         <ClickOutside onClickOutside={this.closeTooltip}>
           <ul className="links">
             {countries.map(c => (
-              <li key={c.Country}>
-                <a
-                  className={styles.documentLink}
-                  target="_blank"
-                  href={c.Country}
-                >
+              <li key={c.location?.wri_standard_name}>
+                <a className={styles.url} target="_blank" href={c.url}>
                   <AbbrReplace>
-                    {c.submission} {c.Country}
+                    {c.submission} {c.location?.wri_standard_name}
                   </AbbrReplace>
                 </a>
               </li>
@@ -53,7 +48,9 @@ class CountryTimeline extends PureComponent {
           <span className="yearLabel">{formattedDate}</span>
           <ul className="yearLabel">
             {countries.map(c => (
-              <li key={c.Country}>{c.Country}</li>
+              <li key={c.location?.wri_standard_name}>
+                {c.location?.wri_standard_name}
+              </li>
             ))}
           </ul>
         </div>
@@ -64,8 +61,9 @@ class CountryTimeline extends PureComponent {
   closeTooltip = () => {
     this.setState({ open: false });
   };
-
   render() {
+    if (!this.props.documentYears) return null;
+
     const { documentYears } = this.props;
     const { index: currentIndex, open } = this.state;
     return (
@@ -74,11 +72,10 @@ class CountryTimeline extends PureComponent {
         data-tour="countries-01"
       >
         <div className={styles.timeline}>
-          <TimelineProvider />
           <h3 className={styles.timelineDescription}>
             <AbbrReplace>Latest 2025 NDC Submitted</AbbrReplace>
           </h3>
-          {documentYears && documentYears.length > 0 ? (
+          {documentYears?.length > 0 ? (
             <HorizontalTimeline
               index={
                 currentIndex === 0

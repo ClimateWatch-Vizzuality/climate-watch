@@ -5,28 +5,55 @@
 }
 
 .summary {
+  .summaryHeader {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-bottom: 34px;
+    gap: 8px;
+  }
   h2 {
     font-size: $font-size-large;
     color: $theme-color;
-    margin-bottom: 34px;
     font-weight: $font-weight;
+  }
+}
+
+.buttonGroup {
+  width: auto;
+  min-width: 148px;
+  float: right;
+
+  .containerControls & {
+    @media #{$tablet-portrait} {
+      margin-top: 0;
+      width: 100%;
+      min-width: 0;
+    }
   }
 }
 
 .cards {
   display: grid;
-  grid-template-columns: repeat(3, 235px);
+  grid-template-columns: repeat(3, 1fr);
   margin-block: 45px 30px;
   row-gap: 6px;
-  column-gap: 52px;
-
+  column-gap: 32px;
+  @media #{$mobile-only} {
+    column-gap: 30px; }
+  @media #{$tablet-landscape} {
+    grid-template-columns: repeat(3, 235px);
+    column-gap: 52px;
+  }
   p {
     display: flex;
     align-items: center;
-
     &:nth-child(2),
     &:nth-child(3) {
-      font-size: $font-size-large;
+      @media #{$tablet-portrait} {
+        font-size: $font-size-large;
+      }
+      font-size: $font-size-m;
       padding-bottom: 7px;
       justify-content: center;
       font-weight: $font-weight-bold;
@@ -34,9 +61,13 @@
   }
 
   .bigCard {
-    height: 103px;
+
+    @media #{$tablet-portrait} {
+      font-size: 72px;
+      height: 103px;
+    }
+    font-size: 50px;
     background-color: $white;
-    font-size: 72px;
     font-weight: $font-weight-bold;
   }
 
@@ -65,7 +96,8 @@
     display: flex;
     justify-content: space-between;
     align-self: center;
-
+    flex-wrap: wrap;
+    gap: 16px;
     h3 {
       font-size: $font-size;
       font-weight: $font-weight;
