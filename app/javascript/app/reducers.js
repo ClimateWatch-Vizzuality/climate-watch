@@ -24,7 +24,6 @@ import * as ltsContentOverviewProvider from 'providers/lts-content-overview-prov
 import * as ghgEmissionsProvider from 'providers/ghg-emissions-meta-provider';
 import * as wbCountryProvider from 'providers/wb-country-data-provider';
 import * as timelineProvider from 'providers/timeline-provider';
-import * as ncd2025Timeline from 'providers/ndc-2025-timeline-provider';
 import * as socioeconomicsProvider from 'providers/socioeconomics-provider';
 import * as ndcsDocumentsMetaProvider from 'providers/ndcs-documents-meta-provider';
 import * as espModelsProvider from 'providers/esp-models-provider';
@@ -49,7 +48,6 @@ import * as ndcCompareAllTargetsProvider from 'providers/ndc-compare-all-targets
 import * as customCompareAccordionProvider from 'providers/custom-compare-accordion-provider';
 import * as keyVisualizationsProvider from 'providers/key-visualizations-provider';
 import * as metadataProvider from 'providers/metadata-provider';
-import * as ndc2025Provider from 'providers/ndc-2025-provider';
 
 const providersReducers = {
   ndcs: handleActions(NDCSProvider),
@@ -99,8 +97,6 @@ const providersReducers = {
   customCompareAccordion: handleActions(customCompareAccordionProvider),
   keyVisualizations: handleActions(keyVisualizationsProvider),
   metadata: handleActions(metadataProvider),
-  ndc2025Timeline: handleActions(ncd2025Timeline),
-  ndc2025: handleActions(ndc2025Provider)
 };
 
 // Pages
