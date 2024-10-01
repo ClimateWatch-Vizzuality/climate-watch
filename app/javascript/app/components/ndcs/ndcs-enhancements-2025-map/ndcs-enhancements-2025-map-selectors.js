@@ -266,7 +266,6 @@ export const sortIndicatorLegend = createSelector(
 const NOT_APPLICABLE_COLOR = 'rgb(153, 156, 159)';
 const MAP_LABEL_COLORS = [
   ...Object.values(NDC_2025_LABEL_COLORS),
-  'rgb(204, 204, 204)',
   NOT_APPLICABLE_COLOR
 ];
 export const MAP_COLORS = [
