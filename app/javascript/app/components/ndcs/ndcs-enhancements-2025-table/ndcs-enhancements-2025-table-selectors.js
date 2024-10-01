@@ -60,32 +60,30 @@ export const tableGetSelectedData = createSelector(
     if (!indicators || !indicators.length || !indicators[0].locations) {
       return [];
     }
-    const refIndicator = indicators[0];
-
+    const refIndicator = indicators.find(
+      ind => ind.value === INDICATOR_SLUGS.emissions
+    ); // Emissions indicator is used as reference to get all countries
     return Object.keys(refIndicator.locations).map(iso => {
-      if (refIndicator.locations[iso].label_slug !== 'no_info_2025') {
-        const countryData =
-          countries.find(country => country.iso_code3 === iso) || {};
-        const row = {
-          country: countryData.wri_standard_name || iso,
-          iso
-        };
-        indicators.forEach(ind => {
-          if (ind.locations[iso]) {
-            if (ind.value === INDICATOR_SLUGS.enhancements) {
-              row[ind.label] = {
-                slug: ind.locations[iso].label_slug,
-                label: ind.locations[iso].value
-              };
-            } else {
-              row[ind.isPreviousComparison ? ind.value : ind.label] =
-                ind.locations[iso].value;
-            }
+      const countryData =
+        countries.find(country => country.iso_code3 === iso) || {};
+      const row = {
+        country: countryData.wri_standard_name || iso,
+        iso
+      };
+      indicators.forEach(ind => {
+        if (ind.locations[iso]) {
+          if (ind.value === INDICATOR_SLUGS.enhancements) {
+            row[ind.label] = {
+              slug: ind.locations[iso].label_slug,
+              label: ind.locations[iso].value
+            };
+          } else {
+            row[ind.isPreviousComparison ? ind.value : ind.label] =
+              ind.locations[iso].value;
           }
-        });
-        return row;
-      }
-      return false;
+        }
+      });
+      return row;
     });
   }
 );
@@ -108,23 +106,6 @@ export const tableRemoveIsoFromData = createSelector(
     }
     const updatedData = data.filter(Boolean).map(d => {
       const updatedD = { ...d };
-      let date = d['Statement Date'];
-      try {
-        date = new Date(d['Statement Date']);
-        date = !isNaN(date.getTime())
-          ? {
-            name: date.toLocaleDateString('en-US'),
-            value: date.getTime()
-          }
-          : {
-            name: undefined,
-            value: undefined
-          };
-      } catch (e) {
-        console.error(e);
-      }
-      updatedD['Statement Date'] = date.name;
-
       updatedD['2025 Statement'] = updatedD['2025 NDC Statement'];
 
       // Use the color of the NDC status to color also the 2030 target status
@@ -134,11 +115,17 @@ export const tableRemoveIsoFromData = createSelector(
           : d['2025 NDC Submission'];
 
       const color =
-        d['2025 NDC Submission'] &&
-        NDC_2025_LABEL_COLORS[INVERTED_NDC_2025_LABEL_SLUGS[submissionValue]];
+        (d['2025 NDC Submission'] &&
+          NDC_2025_LABEL_COLORS[
+            INVERTED_NDC_2025_LABEL_SLUGS[submissionValue]
+          ]) ||
+        NDC_2025_LABEL_COLORS.NO_SUBMISSION;
       updatedD['NDC Status'] = submissionValue && {
         color,
-        text: d['2025 NDC Submission'],
+        text:
+          d['2025 NDC Submission'] === 'No Information'
+            ? 'No 2025 NDC'
+            : d['2025 NDC Submission'],
         sortIndex: color === NDC_2025_LABEL_COLORS.SUBMITTED_2025 ? '1' : '0'
       };
 
