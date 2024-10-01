@@ -79,13 +79,13 @@ class NDCSEnhancements2025MapContainer extends PureComponent {
     const id = isEuropeanCountry ? europeSlug : geometryIdHover;
 
     const statementIndicator = indicators.find(
-      i => i.value === 'ndce_statement'
+      i => i.value === '2025_statement'
     );
 
     if (
       indicator.locations &&
       indicator.locations[id] &&
-      indicator.locations[id].label_slug !== 'no_info_2020'
+      indicator.locations[id].label_slug !== 'no_info_2025'
     ) {
       const statement =
         statementIndicator.locations[id] &&
