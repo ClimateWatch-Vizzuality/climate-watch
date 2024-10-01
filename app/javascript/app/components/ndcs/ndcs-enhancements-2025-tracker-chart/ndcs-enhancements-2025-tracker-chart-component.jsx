@@ -1,6 +1,5 @@
 /* eslint-disable jsx-a11y/label-has-for */
 import React from 'react';
-import { groupBy } from 'lodash';
 import PropTypes from 'prop-types';
 
 import layout from 'styles/layout';
@@ -21,6 +20,12 @@ import ModalMetadata from 'components/modal-metadata';
 import MetadataProvider from 'providers/metadata-provider';
 import styles from './ndcs-enhancements-2025-tracker-chart-styles.scss';
 
+const SUBMISSION_TYPES = {
+  submittedEnhanced: 'Submitted 2025 NDC with 2030 target',
+  submitted: 'Submitted 2025 NDC',
+  notSubmitted: 'Not Submitted'
+};
+
 const getEmissionValue = emissionStr => {
   if (!emissionStr) {
     return 0;
@@ -40,71 +45,67 @@ const downloadLink = generateLinkToDataExplorer(
 const Ndc2025TrackerChartComponent = props => {
   const { handleInfoClick, handlePngDownloadModal, data: _data } = props;
 
-  const [selectedType, setSelectedType] = React.useState('emissions');
+  const [sortedBy, setSortedBy] = React.useState('emissions');
   const [hoveredBar, setHoveredBar] = React.useState(null);
-  const submittedTexts = [
-    'Submitted 2025 NDC',
-    'Submitted 2025 NDC with 2030 target'
-  ];
 
-  const data = React.useMemo(() => {
-    if (!_data) return null;
-    const dataGroups = Object.values(
-      groupBy(_data, d =>
-        submittedTexts.includes(d.indc_submission)
-          ? 'submitted'
-          : 'notSubmitted'
-      )
-    );
+  // Helper to select the correct fill style for the bar colors
+  const getCountrySubmissionTypeKey = (country) => Object.keys(SUBMISSION_TYPES).find(
+    (key) => SUBMISSION_TYPES[key] === country.indc_submission
+  ) || 'notSubmitted';
 
-    const sortedData = dataGroups.map(group =>
-      group.sort((a, b) => {
-        if (selectedType === 'submission_date') {
-          return new Date(a.submission_date) - new Date(b.submission_date);
-        }
-        return b.ndce_ghg - a.ndce_ghg;
-      })
-    );
+  // Parse data in order to include the `emissions` property in a number format
+  const parsedData = React.useMemo(() =>
+    (_data || []).map((country) => ({
+      ...country,
+      emissions: getEmissionValue(country.ndce_ghg) || 0
+    }))
+  );
 
-    const sortedBarsGrouped = sortedData.map((group, index) =>
-      group.reduce(
-        (acc, d, i) => [
-          ...acc,
-          { ...d, index: `${sortedData[0].length * index + i}` }
-        ],
-        []
-      )
+  // Group countries by submission type
+  const countriesBySubmissionType = React.useMemo(() => {
+    const findCountriesBySubmissionType = (submissionType) =>
+      parsedData?.filter(
+        ({ indc_submission }) => indc_submission === submissionType
+      );
+
+    return Object.entries(SUBMISSION_TYPES).reduce(
+      (acc, [key, submissionType]) => ({
+        ...acc,
+        [key]: findCountriesBySubmissionType(submissionType)
+      }),
+      {}
     );
-    const sortedBars = sortedBarsGrouped.flat();
-    const emissionsData = [
-      {
-        ...sortedBars.reduce(
-          (acc, d) => ({ ...acc, [d.index]: getEmissionValue(d.ndce_ghg) }),
-          {}
-        ),
-        name: 'emissions'
+  });
+
+  // Calculate statistics per type in order to display in the boxes
+  const submissionStats = React.useMemo(() => {
+    const globalEmissionsBySubmissionType = (submissionType) => {
+      const countries = countriesBySubmissionType[submissionType] || [];
+      return countries.reduce((acc, country) => acc + country.emissions, 0);
+    };
+
+    return Object.keys(SUBMISSION_TYPES).reduce((acc, key) => ({
+      ...acc,
+      [key]: {
+        numCountries: countriesBySubmissionType[key]?.length || 0,
+        emissionsPerc: globalEmissionsBySubmissionType(key) || 0
       }
-    ];
-    return { emissionsData, sortedBars };
-  }, [selectedType, _data]);
+    }), {});
+  });
 
-  const hasBeenSubmitted = d => submittedTexts.includes(d.indc_submission);
-  const totalCountriesSubmitted = _data?.filter(d =>
-    submittedTexts.includes(d.indc_submission)
-  ).length;
-  const totalCountriesNotSubmitted = _data?.length - totalCountriesSubmitted;
+  // Parse data to create a chart display
+  const chartData = React.useMemo(() => {
+    const sortedData = (parsedData || []).sort((a, b) => b[sortedBy] - a[sortedBy]);
+    const barsData = sortedData.map((country, idx) => ({ ...country, index: idx }));
+    const emissionsData = [Object.assign({}, (barsData || []).map((country) => country.emissions))];
 
-  const totalEmissionsSubmitted = _data
-    ?.filter(hasBeenSubmitted)
-    .reduce((acc, d) => acc + getEmissionValue(d.ndce_ghg), 0)
-    .toFixed(0);
+    return {
+      barsData,
+      emissionsData
+    };
+  });
 
-  const totalEmissionsNotSubmitted = _data
-    ?.filter(hasBeenSubmitted)
-    .reduce((acc, d) => acc + getEmissionValue(d.ndce_ghg), 0)
-    .toFixed(0);
-
-  if (!data) return null;
+  if (!parsedData) return null;
 
   return (
     <div className={styles.wrapper}>
@@ -156,21 +157,30 @@ const Ndc2025TrackerChartComponent = props => {
         </div>
         <div className={styles.cards}>
           <p />
-          <p className={styles.submitted}>Submitted 2025 NDC</p>
-          <p className={styles.notSubmitted}>No 2025 NDC</p>
+          <p className={styles.submittedEnhanced}>
+            2025 NDCs<span>with enhanced 2035 targets</span>
+          </p>
+          <p className={styles.submitted}>2025 NDCs</p>
+          <p className={styles.notSubmitted}>No 2025 NDCs</p>
           <p>Total Countries</p>
+          <p className={classNames(styles.bigCard, styles.submittedEnhanced)}>
+            {submissionStats.submittedEnhanced.numCountries}
+          </p>
           <p className={classNames(styles.bigCard, styles.submitted)}>
-            {totalCountriesSubmitted}
+            {submissionStats.submitted.numCountries}
           </p>
           <p className={classNames(styles.bigCard, styles.notSubmitted)}>
-            {totalCountriesNotSubmitted}
+            {submissionStats.notSubmitted.numCountries}
           </p>
           <p>Global Emissions</p>
+          <p className={classNames(styles.smallCard, styles.submittedEnhanced)}>
+            {submissionStats.submittedEnhanced.emissionsPerc}%
+          </p>
           <p className={classNames(styles.smallCard, styles.submitted)}>
-            {totalEmissionsSubmitted}%
+            {submissionStats.submitted.emissionsPerc}%
           </p>
           <p className={classNames(styles.smallCard, styles.notSubmitted)}>
-            {totalEmissionsNotSubmitted}%
+            {submissionStats.notSubmitted.emissionsPerc}%
           </p>
         </div>
         <div className={styles.ndc2025TrackerChart}>
@@ -190,8 +200,8 @@ const Ndc2025TrackerChartComponent = props => {
                     },
                     { label: 'Total emissions', value: 'emissions' }
                   ]}
-                  selectedOption={selectedType}
-                  onClick={a => setSelectedType(a.value)}
+                  selectedOption={sortedBy}
+                  onClick={(a) => setSortedBy(a.value)}
                   theme={{
                     wrapper: styles.switchWrapper,
                     checkedOption: styles.switchSelected
@@ -207,7 +217,7 @@ const Ndc2025TrackerChartComponent = props => {
             <BarChart
               className={styles.barChart}
               layout="vertical"
-              data={data?.emissionsData}
+              data={chartData.emissionsData}
               maxBarSize={100}
               margin={{
                 top: 0,
@@ -221,29 +231,26 @@ const Ndc2025TrackerChartComponent = props => {
                   <div className={styles.barChartTooltip}>
                     <p>{hoveredBar?.country}</p>
                     <p>
-                      GHG Emissions:{' '}
-                      <span>{hoveredBar?.ndce_ghg?.toFixed(2)}%</span>
+                      GHG Emissions: <span>{hoveredBar?.ndce_ghg}</span>
                     </p>
                     <p>
-                      Submission date:{' '}
-                      <span>{hoveredBar?.submission_date}</span>
+                      <span>{hoveredBar?.indc_submission}</span>
                     </p>
                   </div>
                 )}
                 offset={0}
                 cursor={false}
               />
-              {data?.sortedBars.map((d, i) => (
+              {chartData?.barsData.map((d, i) => (
                 <Bar
-                  onMouseEnter={() => setHoveredBar(getEmissionValue(d))}
+                  onMouseEnter={() => setHoveredBar(d)}
                   onMouseLeave={() => setHoveredBar(false)}
                   key={d.iso}
                   className={classNames(
                     styles.barChartBar,
-                    hasBeenSubmitted(d)
-                      ? styles.submitted
-                      : styles.notSubmitted,
-                    hoveredBar?.iso === d.iso && styles.barChartBarHovered
+                    styles[getCountrySubmissionTypeKey(d)],
+                    styles.submitted,
+                      hoveredBar?.iso === d.iso && styles.barChartBarHovered
                   )}
                   dataKey={`${i}`}
                   stackId="emissions"
