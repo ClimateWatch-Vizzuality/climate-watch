@@ -193,39 +193,90 @@ export const filterEnhancedValueOnIndicator = createSelector(
   }
 );
 
-export const sortIndicatorLegend = createSelector(
+export const reduceLegendBuckets = createSelector(
   [filterEnhancedValueOnIndicator],
   indicator => {
     if (!indicator) return null;
     const updatedIndicator = { ...indicator };
-    const slugsLegendOrder = [
-      ENHANCEMENT_LABEL_SLUGS.SUBMITTED_2025,
-      null,
-      ENHANCEMENT_LABEL_SLUGS.NO_INFO
-    ]; // null it's for 'Not Applicable'
+
+    // const namesLegendOrder = [
+    //   'Submitted 2025 NDC',
+    //   'No 2025 NDC',
+    //   'Not Applicable'
+    // ];
+    // Get legend buckets and only use the ones on the namesLegendOrder
+    updatedIndicator.legendBuckets = Object.entries(
+      updatedIndicator.legendBuckets
+    ).reduce((acc, [key, value]) => {
+      const allowedNames = [
+        'Submitted 2025 NDC',
+        'No Information',
+        'Not Applicable'
+      ];
+      if (value.name === 'No Information') {
+        acc[key] = { ...value, name: 'No 2025 NDC' };
+      } else if (!allowedNames.includes(value.name)) {
+        delete acc[key];
+        const submitted2025NDC = Object.entries(
+          updatedIndicator.legendBuckets
+        ).find(([, v]) => v.name === 'Submitted 2025 NDC');
+        acc[key] = submitted2025NDC[1];
+      } else {
+        acc[key] = value;
+      }
+      return acc;
+    }, {});
+    updatedIndicator.locations = Object.entries(
+      updatedIndicator.locations
+    ).reduce((acc, [key, value]) => {
+      if (value.name === 'No Information') {
+        acc[key] = { ...value, name: 'No 2025 NDC' };
+      } else {
+        acc[key] = value;
+      }
+      return acc;
+    }, {});
+
+    return updatedIndicator;
+  }
+);
+
+export const sortIndicatorLegend = createSelector(
+  [reduceLegendBuckets],
+  indicator => {
+    if (!indicator) return null;
+    const updatedIndicator = { ...indicator };
+
+    const namesLegendOrder = [
+      'Submitted 2025 NDC',
+      'No 2025 NDC',
+      'Not Applicable'
+    ];
+
     Object.entries(updatedIndicator.legendBuckets).forEach(([key, value]) => {
       updatedIndicator.legendBuckets[key] = {
         ...updatedIndicator.legendBuckets[key],
-        order: value.slug ? slugsLegendOrder.indexOf(value.slug) : 3 // Not Applicable should have order number 3
+        order: value.name ? namesLegendOrder.indexOf(value.name) : 2,
+        index: value.name === 'Not Applicable' ? 3 : value.index
       };
     });
     return updatedIndicator;
   }
 );
-
+const NOT_APPLICABLE_COLOR = 'rgb(153, 156, 159)';
 const MAP_LABEL_COLORS = [
   ...Object.values(NDC_2025_LABEL_COLORS),
-  'rgb(204, 204, 204)'
+  'rgb(204, 204, 204)',
+  NOT_APPLICABLE_COLOR
 ];
 export const MAP_COLORS = [
-  [...MAP_LABEL_COLORS],
   [...MAP_LABEL_COLORS],
   [...MAP_LABEL_COLORS],
   [...MAP_LABEL_COLORS]
 ];
 
 export const getPathsWithStyles = createSelector(
-  [filterEnhancedValueOnIndicator, getIPPaths, getZoom],
+  [reduceLegendBuckets, getIPPaths, getZoom],
   (indicator, worldPaths, zoom) => {
     if (!indicator || !worldPaths) return [];
     const paths = [];
@@ -247,10 +298,20 @@ export const getPathsWithStyles = createSelector(
           : locations[iso];
 
         let style = COUNTRY_STYLES;
+        const submittedLabelId = Object.values(locations).find(
+          l => l.value === 'Submitted 2025 NDC'
+        )?.label_id;
+
+        const strokeWidth = zoom > 2 ? (1 / zoom) * 2 : 0.5;
+
         if (countryData && countryData.label_id) {
-          const legendIndex = legendBuckets[countryData.label_id].index;
+          // Correction for the enhanced 2025 NDCs. We only want to show the Submitted 2025 NDCs info
+          const reducedLabelId =
+            countryData.value === 'No Information'
+              ? countryData.label_id
+              : submittedLabelId;
+          const legendIndex = legendBuckets[reducedLabelId].index;
           const color = getColorByIndex(legendBuckets, legendIndex, MAP_COLORS);
-          const strokeWidth = zoom > 2 ? (1 / zoom) * 2 : 0.5;
           style = {
             ...COUNTRY_STYLES,
             default: {
@@ -264,6 +325,25 @@ export const getPathsWithStyles = createSelector(
               cursor: 'pointer',
               strokeWidth,
               fill: color,
+              fillOpacity: 1
+            }
+          };
+        }
+
+        // Not applicable countries
+        if (!countryData) {
+          style = {
+            ...COUNTRY_STYLES,
+            default: {
+              ...COUNTRY_STYLES.default,
+              strokeWidth,
+              fill: NOT_APPLICABLE_COLOR,
+              fillOpacity: 1
+            },
+            hover: {
+              ...COUNTRY_STYLES.hover,
+              strokeWidth,
+              fill: NOT_APPLICABLE_COLOR,
               fillOpacity: 1
             }
           };
