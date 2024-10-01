@@ -403,6 +403,11 @@ export const ENHANCEMENT_LABEL_SLUGS = {
   NO_INFO: 'no_info_2020'
 };
 
+export const NDC_2025_LABEL_SLUGS = {
+  SUBMITTED_2025: 'Submitted 2025 NDC',
+  NO_INFO: 'No Information'
+};
+
 export const NET_ZERO_POSITIVE_LABELS = [
   'Net-zero Target in Law',
   'Net-zero Target in Policy Document',

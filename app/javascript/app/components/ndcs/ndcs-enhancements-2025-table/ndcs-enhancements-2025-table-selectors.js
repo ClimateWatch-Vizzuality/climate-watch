@@ -3,13 +3,12 @@ import { deburrUpper, filterQuery } from 'app/utils';
 import { replaceStringAbbr } from 'components/abbr-replace';
 import uniqBy from 'lodash/uniqBy';
 import sortBy from 'lodash/sortBy';
-import pick from 'lodash/pick';
 import isEmpty from 'lodash/isEmpty';
 import invert from 'lodash/invert';
 import {
-  ENHANCEMENT_CATEGORIES,
+  NDC_2025_LABEL_COLORS,
+  NDC_2025_LABEL_SLUGS,
   ENHANCEMENT_LABEL_SLUGS,
-  ENHANCEMENT_LABEL_COLORS,
   ENHANCEMENT_LABELS_WITH_LETTERS,
   INDICATOR_SLUGS
 } from 'data/constants';
@@ -30,9 +29,6 @@ export const getIndicatorsParsed = createSelector(
   [getCategories, getIndicatorsData, getPreviousComparisonData],
   (categories, indicators, previousComparisonIndicators) => {
     if (!categories || !indicators || !indicators.length) return null;
-    const categoryId = Object.keys(categories).find(id =>
-      ENHANCEMENT_CATEGORIES.includes(categories[id].slug)
-    );
     const sortAndParseIndicators = (ind, isPreviousComparison) =>
       sortBy(
         uniqBy(
@@ -48,10 +44,7 @@ export const getIndicatorsParsed = createSelector(
         ),
         'label'
       );
-
-    const filteredIndicators = sortAndParseIndicators(indicators).filter(
-      ind => ind.categoryIds?.indexOf(parseInt(categoryId, 10)) > -1
-    );
+    const filteredIndicators = sortAndParseIndicators(indicators);
 
     return previousComparisonIndicators
       ? filteredIndicators.concat(
@@ -67,11 +60,10 @@ export const tableGetSelectedData = createSelector(
     if (!indicators || !indicators.length || !indicators[0].locations) {
       return [];
     }
-
     const refIndicator = indicators[0];
 
     return Object.keys(refIndicator.locations).map(iso => {
-      if (refIndicator.locations[iso].label_slug !== 'no_info_2020') {
+      if (refIndicator.locations[iso].label_slug !== 'no_info_2025') {
         const countryData =
           countries.find(country => country.iso_code3 === iso) || {};
         const row = {
@@ -98,7 +90,7 @@ export const tableGetSelectedData = createSelector(
   }
 );
 
-const INVERTED_ENHANCEMENT_LABEL_SLUGS = invert(ENHANCEMENT_LABEL_SLUGS);
+const INVERTED_NDC_2025_LABEL_SLUGS = invert(NDC_2025_LABEL_SLUGS);
 
 export const getLoadingCompareLinks = createSelector(
   [getCompareLinks],
@@ -133,19 +125,25 @@ export const tableRemoveIsoFromData = createSelector(
       }
       updatedD['Statement Date'] = date.name;
 
+      updatedD['2025 Statement'] = updatedD['2025 NDC Statement'];
+
+      // Use the color of the NDC status to color also the 2030 target status
+      const submissionValue =
+        d['2025 NDC Submission'] === 'Submitted 2025 NDC with 2030 target'
+          ? 'Submitted 2025 NDC'
+          : d['2025 NDC Submission'];
+
       const color =
-        d['NDC Status'] &&
-        ENHANCEMENT_LABEL_COLORS[
-          INVERTED_ENHANCEMENT_LABEL_SLUGS[d['NDC Status'].slug]
-        ];
-      updatedD['NDC Status'] = d['NDC Status'] && {
+        d['2025 NDC Submission'] &&
+        NDC_2025_LABEL_COLORS[INVERTED_NDC_2025_LABEL_SLUGS[submissionValue]];
+      updatedD['NDC Status'] = submissionValue && {
         color,
-        text: d['NDC Status'].label,
-        sortIndex: color === ENHANCEMENT_LABEL_COLORS.SUBMITTED_2020 ? '1' : '0'
+        text: d['2025 NDC Submission'],
+        sortIndex: color === NDC_2025_LABEL_COLORS.SUBMITTED_2025 ? '1' : '0'
       };
 
-      updatedD['Source Link'] = d['Source Link']
-        ? d['Source Link'].replace('href=', "target='_blank' href=")
+      updatedD['Source Link'] = d.Source
+        ? d.Source.replace('href=', "target='_blank' href=")
         : undefined;
 
       updatedD.country = `<a href="/ndcs/country/${d.iso}">${d.country}</a>`;
@@ -155,7 +153,7 @@ export const tableRemoveIsoFromData = createSelector(
         const hasPreviousSubmission =
           d['NDC Status'] &&
           [
-            ENHANCEMENT_LABEL_SLUGS.SUBMITTED_2020,
+            ENHANCEMENT_LABEL_SLUGS.SUBMITTED_2025,
             ENHANCEMENT_LABEL_SLUGS.ENHANCED_MITIGATION
           ].includes(d['NDC Status'].slug);
         updatedD[
@@ -180,30 +178,20 @@ export const getDefaultColumns = createSelector(
   [getIndicatorsParsed],
   indicators => {
     if (!indicators || isEmpty(indicators)) return [];
-
     const columnIds = [
       'country',
       INDICATOR_SLUGS.emissions,
-      INDICATOR_SLUGS.enhancements,
-      'Compare with previous submissions',
+      'NDC Status',
       'Overall comparison with previous NDC',
-      'ndce_statement',
-      'ndce_source',
-      'ndce_date'
+      '2025 Statement',
+      'Source Link',
+      'Date'
     ];
 
     return columnIds.map(id => {
       const match = indicators.find(indicator => indicator.value === id);
       return match ? match.label : id;
     });
-  }
-);
-
-export const getFilteredData = createSelector(
-  [tableRemoveIsoFromData, getDefaultColumns],
-  (data, columnHeaders) => {
-    if (!data || !columnHeaders) return null;
-    return data.map(d => pick(d, columnHeaders));
   }
 );
 

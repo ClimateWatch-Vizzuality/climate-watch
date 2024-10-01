@@ -36,9 +36,9 @@ const cellRenderer = props => {
     return (
       <div
         data-for="submission-icon-info"
-        data-tip={cellData.text}
+        data-tip={cellData?.text}
         className={styles.submissionIcon}
-        style={{ 'background-color': cellData.color }}
+        style={{ 'background-color': cellData?.color }}
       />
     );
   }

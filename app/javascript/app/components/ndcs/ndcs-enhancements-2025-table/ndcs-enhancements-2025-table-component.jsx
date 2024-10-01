@@ -9,8 +9,6 @@ import styles from './ndcs-enhancements-2025-table-styles.scss';
 import customCellRenderer from './ndcs-enhancements-2025-table-cell-renderer';
 import Enhancements2025Legend from './enhancements-2025-legend';
 
-import mockupData from './mock.json';
-
 const renderSearch = (searchHandler, query) => (
   <Search
     value={query}
@@ -24,8 +22,9 @@ const setColumnWidth = col => {
     country: 120,
     'NDC Status': 75,
     'Share of Global GHG Emissions': 120,
+    'Overall comparison with previous NDC': 280,
     'Source Link': 150,
-    '2025 Statement': 220,
+    '2025 Statement': 260,
     Date: 75
   }[col];
   return columnWidth || 170;
@@ -33,16 +32,12 @@ const setColumnWidth = col => {
 
 const NDCSEnhancements2025Table = ({
   loading,
-  // tableData,
+  tableData,
   query,
   handleSearchChange,
   noContentMsg,
   columns
-}) => {
-
-  // TO - DO Connect to the API
-  const tableData = mockupData;
-  return (
+}) => (
   <div>
     <div className={styles.wrapper}>
       {loading && <Loading light className={styles.loader} />}
@@ -64,9 +59,7 @@ const NDCSEnhancements2025Table = ({
             dynamicRowsHeight
             setColumnWidth={setColumnWidth}
             customCellRenderer={customCellRenderer}
-            // TO - DO when from the API
-            // defaultColumns={columns}
-            defaultColumns={['country', 'Share of Global GHG Emissions', 'NDC Status', 'Overall comparison with previous NDC', '2025 Statement', 'Source Link', 'Date']}
+            defaultColumns={columns}
             sortBy="Share of Global GHG Emissions"
             sortASC={false}
             dynamicRowsConfig={{
@@ -88,7 +81,7 @@ const NDCSEnhancements2025Table = ({
       )}
     </div>
   </div>
-)};
+);
 
 NDCSEnhancements2025Table.propTypes = {
   loading: PropTypes.bool,
