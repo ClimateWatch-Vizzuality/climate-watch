@@ -88,6 +88,7 @@ class NDCSEnhancements2025MapContainer extends PureComponent {
       indicator.locations[id].label_slug !== 'no_info_2025'
     ) {
       const statement =
+        statementIndicator &&
         statementIndicator.locations[id] &&
         statementIndicator.locations[id].value;
       const indicatorLabelId = indicator.locations[id].label_id;
