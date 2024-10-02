@@ -210,11 +210,6 @@ export const reduceLegendBuckets = createSelector(
     if (!indicator) return null;
     const updatedIndicator = { ...indicator };
 
-    // const namesLegendOrder = [
-    //   'Submitted 2025 NDC',
-    //   'No 2025 NDC',
-    //   'Not Applicable'
-    // ];
     // Get legend buckets and only use the ones on the namesLegendOrder
     updatedIndicator.legendBuckets = Object.entries(
       updatedIndicator.legendBuckets
@@ -268,7 +263,7 @@ export const sortIndicatorLegend = createSelector(
       updatedLegendBuckets[key] = {
         ...updatedIndicator.legendBuckets[key],
         order: value.name ? namesLegendOrder.indexOf(value.name) : 2,
-        index: value.name === 'Not Applicable' ? 3 : value.index
+        index: value.name === 'Not Applicable' ? 5 : value.index
       };
     });
 
@@ -277,16 +272,13 @@ export const sortIndicatorLegend = createSelector(
   }
 );
 
-const NOT_APPLICABLE_COLOR = 'rgb(153, 156, 159)';
+const NOT_APPLICABLE_COLOR = '#CCCDCF';
 const MAP_LABEL_COLORS = [
   ...Object.values(NDC_2025_LABEL_COLORS),
   NOT_APPLICABLE_COLOR
 ];
-export const MAP_COLORS = [
-  [...MAP_LABEL_COLORS],
-  [...MAP_LABEL_COLORS],
-  [...MAP_LABEL_COLORS]
-];
+
+export const MAP_COLORS = [[...MAP_LABEL_COLORS]];
 
 export const getPathsWithStyles = createSelector(
   [reduceLegendBuckets, getIPPaths, getZoom],

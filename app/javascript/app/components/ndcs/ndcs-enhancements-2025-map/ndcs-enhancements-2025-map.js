@@ -55,7 +55,7 @@ const mapStateToProps = (state, { location }) => {
   };
 };
 
-const pngDownloadId = 'ndcs-2025-tracker-map';
+const pngDownloadId = 'ndcs-enhancements-map';
 
 class NDCSEnhancements2025MapContainer extends PureComponent {
   constructor(props) {

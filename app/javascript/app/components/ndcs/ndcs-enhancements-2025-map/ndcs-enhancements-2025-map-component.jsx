@@ -17,7 +17,7 @@ import blueCheckboxTheme from 'styles/themes/checkbox/blue-checkbox.scss';
 import { INDICATOR_SLUGS } from 'data/constants';
 import styles from './ndcs-enhancements-2025-map-styles.scss';
 
-const TOOLTIP_ID = 'ndcs-map-tooltip';
+const TOOLTIP_ID = 'ndcs-2025-map-tooltip';
 
 // Show submitted 2025 only once. Remove if we want to add more values
 const uniqueLegendItems = legendBuckets => {
@@ -95,7 +95,7 @@ const NDCSEnhancements2025Map = ({
                 {indicator && renderMapLegend()}
               </div>
             </div>
-            <ModalPngDownload id={pngDownloadId} title="NDC enhancements">
+            <ModalPngDownload id={pngDownloadId} title="2025 NDC Submission">
               {renderMap({ isTablet: true, png: true })}
               <div className={styles.pngLegendAndSummary}>
                 {indicator && renderMapLegend(true)}
