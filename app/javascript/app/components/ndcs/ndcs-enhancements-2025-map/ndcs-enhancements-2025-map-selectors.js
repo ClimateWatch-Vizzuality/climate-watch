@@ -257,23 +257,26 @@ export const sortIndicatorLegend = createSelector(
   indicator => {
     if (!indicator) return null;
     const updatedIndicator = { ...indicator };
-
     const namesLegendOrder = [
       'Submitted 2025 NDC',
       'No 2025 NDC',
       'Not Applicable'
     ];
+    const updatedLegendBuckets = {};
 
     Object.entries(updatedIndicator.legendBuckets).forEach(([key, value]) => {
-      updatedIndicator.legendBuckets[key] = {
+      updatedLegendBuckets[key] = {
         ...updatedIndicator.legendBuckets[key],
         order: value.name ? namesLegendOrder.indexOf(value.name) : 2,
         index: value.name === 'Not Applicable' ? 3 : value.index
       };
     });
+
+    updatedIndicator.legendBuckets = updatedLegendBuckets;
     return updatedIndicator;
   }
 );
+
 const NOT_APPLICABLE_COLOR = 'rgb(153, 156, 159)';
 const MAP_LABEL_COLORS = [
   ...Object.values(NDC_2025_LABEL_COLORS),
