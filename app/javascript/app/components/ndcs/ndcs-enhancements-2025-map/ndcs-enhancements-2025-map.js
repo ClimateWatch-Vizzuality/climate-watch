@@ -190,7 +190,7 @@ NDCSEnhancements2025MapContainer.propTypes = {
   isoCountries: PropTypes.array.isRequired,
   compareLinks: PropTypes.object,
   countries: PropTypes.array,
-  previousComparisonCountryValues: PropTypes.array
+  previousComparisonCountryValues: PropTypes.object
 };
 
 export default withRouter(
