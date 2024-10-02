@@ -564,7 +564,11 @@ export const LEGEND_COMPARISON_2025_VALUES_COLORS = {
 };
 
 export const LEGEND_COMPARISON_2025_LETTERS = [
-  { value: 'ndce_revised', letter: 'R', label: '2025 Compare 1 indicator' },
-  { value: 'ndce_revised', letter: 'M', label: '2025 Compare 2 indicator' },
-  { value: 'ndce_revised', letter: 'G', label: '2025 Compare 3 indicator' }
+  { value: '2025_compare_1', letter: 'R', label: '2035 GHG target included' },
+  {
+    value: '2025_compare_2',
+    letter: 'M',
+    label: 'Economy-wide GHG target (for 2035) included'
+  },
+  { value: '2025_compare_3', letter: 'G', label: 'Strengthened 2030 target' }
 ];
