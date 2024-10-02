@@ -12,6 +12,7 @@
     margin-bottom: 34px;
     gap: 8px;
   }
+
   h2 {
     font-size: $font-size-large;
     color: $theme-color;
@@ -36,36 +37,54 @@
 .cards {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  // For use when displaying enhanced card
+  // grid-template-columns: repeat(4, 1fr);
   margin-block: 45px 30px;
   row-gap: 6px;
   column-gap: 32px;
+
   @media #{$mobile-only} {
-    column-gap: 30px; }
+    column-gap: 30px;
+  }
+
   @media #{$tablet-landscape} {
     grid-template-columns: repeat(3, 235px);
+    // For use when displaying enhanced card
+    // grid-template-columns: repeat(4, 235px);
     column-gap: 52px;
   }
+
   p {
     display: flex;
     align-items: center;
+    flex-direction: column;
+
     &:nth-child(2),
     &:nth-child(3) {
+      // For use when displaying enhanced card
+      // &:nth-child(4) {
       @media #{$tablet-portrait} {
         font-size: $font-size-large;
       }
+
       font-size: $font-size-m;
       padding-bottom: 7px;
-      justify-content: center;
+      justify-content: end;
       font-weight: $font-weight-bold;
     }
+
+    // For use when displaying enhanced card
+    // span {
+    //   font-size: $font-size-sm
+    // }
   }
 
   .bigCard {
-
     @media #{$tablet-portrait} {
       font-size: 72px;
       height: 103px;
     }
+
     font-size: 50px;
     background-color: $white;
     font-weight: $font-weight-bold;
@@ -77,6 +96,12 @@
     background-color: $white;
     font-weight: $font-weight-bold;
   }
+
+  // For use when displaying enhanced card
+  // .submittedEnhanced {
+  //   color: $chart-color-4;
+  //   justify-content: center;
+  // }
 
   .submitted {
     color: $theme-color-medium;
@@ -98,6 +123,7 @@
     align-self: center;
     flex-wrap: wrap;
     gap: 16px;
+
     h3 {
       font-size: $font-size;
       font-weight: $font-weight;
@@ -163,6 +189,12 @@
   fill: $chart-gray-color-1;
   height: 50px;
 }
+
+// For use when displaying enhanced card
+// .submittedEnhanced {
+//   fill: $chart-color-4;
+//   stroke: $white;
+// }
 
 .submitted {
   fill: $theme-color-medium;

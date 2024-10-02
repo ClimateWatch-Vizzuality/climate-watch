@@ -32,5 +32,6 @@ export const getData = createSelector([getIndicatorsData], indicators => {
       ndce_ghg: location?.value
     })
   );
+
   return data;
 });
