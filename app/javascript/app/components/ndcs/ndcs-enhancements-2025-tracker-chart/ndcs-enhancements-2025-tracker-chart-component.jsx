@@ -134,37 +134,37 @@ const Ndc2025TrackerChartComponent = props => {
               dataTour="ndc-enhancement-tracker-04"
               buttonsConfig={[
                 {
-                  type: "info",
-                  onClick: handleInfoClick,
+                  type: 'info',
+                  onClick: handleInfoClick
                 },
                 {
-                  type: "share",
-                  shareUrl: "/embed/2025-ndc-tracker",
-                  analyticsGraphName: "Ndcs",
-                  positionRight: true,
+                  type: 'share',
+                  shareUrl: '/embed/2025-ndc-tracker',
+                  analyticsGraphName: 'Ndcs',
+                  positionRight: true
                 },
                 {
-                  type: "downloadCombo",
+                  type: 'downloadCombo',
                   options: [
                     {
-                      label: "Save as image (PNG)",
-                      action: handlePngDownloadModal,
+                      label: 'Save as image (PNG)',
+                      action: handlePngDownloadModal
                     },
                     {
-                      label: "Go to data explorer",
+                      label: 'Go to data explorer',
                       link: downloadLink,
-                      target: "_self",
-                    },
-                  ],
-                },
+                      target: '_self'
+                    }
+                  ]
+                }
               ]}
             />
           </div>
           <p>
             Track which countries are submitting an updated version of their
-            NDC--a 2025 NDC. You can compare countries’ submissions side by side{" "}
+            NDC--a 2025 NDC. You can compare countries’ submissions side by side{' '}
             <Link to="TODO-ADD_LINK_HERE">here</Link> or by referring to the
-            table below. To request changes or additions, please contact{" "}
+            table below. To request changes or additions, please contact{' '}
             <a target="_blank" href="TODO-ADD_LINK_HERE">
               Mengpin Ge
             </a>
@@ -177,8 +177,8 @@ const Ndc2025TrackerChartComponent = props => {
           {/* <p className={styles.submittedEnhanced}>
             2025 NDCs<span>with enhanced 2035 targets</span>
           </p> */}
-          <p className={styles.submitted}>2025 NDCs</p>
-          <p className={styles.notSubmitted}>No 2025 NDCs</p>
+          <p className={styles.submitted}>2025 NDC</p>
+          <p className={styles.notSubmitted}>No 2025 NDC</p>
           <p>Total Countries</p>
           {/* For use when displaying enhanced card */}
           {/* <p className={classNames(styles.bigCard, styles.submittedEnhanced)}>
@@ -217,16 +217,16 @@ const Ndc2025TrackerChartComponent = props => {
                 <Switch
                   options={[
                     {
-                      label: "Latest NDC submission",
-                      value: "submission_date",
+                      label: 'Latest NDC submission',
+                      value: 'submission_date'
                     },
-                    { label: "Total emissions", value: "emissions" },
+                    { label: 'Total emissions', value: 'emissions' }
                   ]}
                   selectedOption={sortedBy}
-                  onClick={(a) => setSortedBy(a.value)}
+                  onClick={a => setSortedBy(a.value)}
                   theme={{
                     wrapper: styles.switchWrapper,
-                    checkedOption: styles.switchSelected,
+                    checkedOption: styles.switchSelected
                   }}
                 />
                 <label htmlFor="emissions">
@@ -243,7 +243,7 @@ const Ndc2025TrackerChartComponent = props => {
               maxBarSize={100}
               margin={{
                 top: 0,
-                bottom: 0,
+                bottom: 0
               }}
             >
               <XAxis domain={[0, 100]} hide type="number" />
