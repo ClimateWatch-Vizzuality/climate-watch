@@ -26,36 +26,33 @@ const SUBMISSION_TYPES = {
   notSubmitted: 'Not Submitted'
 };
 
-const getEmissionValue = emissionStr => {
-  if (!emissionStr) {
-    return 0;
-  }
-  const emission = emissionStr.replace('%', '');
-  if (Number.isNaN(Number(emission))) {
-    return 0;
-  }
-  return Number(emission);
-};
-
-const downloadLink = generateLinkToDataExplorer(
-  { category: '2025_ndc_tracker' },
-  'ndc-content'
-);
-
 const Ndc2025TrackerChartComponent = props => {
   const { handleInfoClick, handlePngDownloadModal, data: _data } = props;
 
   const [sortedBy, setSortedBy] = React.useState('emissions');
   const [hoveredBar, setHoveredBar] = React.useState(null);
 
+  // Get emission value from 'ndce_ghg' string and convert it into numeric format
+  const getEmissionValue = emissionStr => {
+    if (!emissionStr) {
+      return 0;
+    }
+    const emission = emissionStr.replace('%', '');
+    if (Number.isNaN(Number(emission))) {
+      return 0;
+    }
+    return Number(emission);
+  };
+
   // Helper to select the correct fill style for the bar colors
-  const getCountrySubmissionTypeKey = (country) => Object.keys(SUBMISSION_TYPES).find(
-    (key) => SUBMISSION_TYPES[key] === country.indc_submission
-  ) || 'notSubmitted';
+  const getCountrySubmissionTypeKey = country =>
+    Object.keys(SUBMISSION_TYPES).find(
+      key => SUBMISSION_TYPES[key] === country.indc_submission
+    ) || 'notSubmitted';
 
   // Parse data in order to include the `emissions` property in a number format
   const parsedData = React.useMemo(() =>
-    (_data || []).map((country) => ({
+    (_data || []).map(country => ({
       ...country,
       emissions: getEmissionValue(country.ndce_ghg) || 0
     }))
@@ -63,7 +60,7 @@ const Ndc2025TrackerChartComponent = props => {
 
   // Group countries by submission type
   const countriesBySubmissionType = React.useMemo(() => {
-    const findCountriesBySubmissionType = (submissionType) =>
+    const findCountriesBySubmissionType = submissionType =>
       parsedData?.filter(
         ({ indc_submission }) => indc_submission === submissionType
       );
@@ -79,31 +76,50 @@ const Ndc2025TrackerChartComponent = props => {
 
   // Calculate statistics per type in order to display in the boxes
   const submissionStats = React.useMemo(() => {
-    const globalEmissionsBySubmissionType = (submissionType) => {
+    const globalEmissionsBySubmissionType = submissionType => {
       const countries = countriesBySubmissionType[submissionType] || [];
       return countries.reduce((acc, country) => acc + country.emissions, 0);
     };
 
-    return Object.keys(SUBMISSION_TYPES).reduce((acc, key) => ({
-      ...acc,
-      [key]: {
-        numCountries: countriesBySubmissionType[key]?.length || 0,
-        emissionsPerc: globalEmissionsBySubmissionType(key) || 0
-      }
-    }), {});
+    return Object.keys(SUBMISSION_TYPES).reduce(
+      (acc, key) => ({
+        ...acc,
+        [key]: {
+          numCountries: countriesBySubmissionType[key]?.length || 0,
+          emissionsPerc: globalEmissionsBySubmissionType(key) || 0
+        }
+      }),
+      {}
+    );
   });
 
   // Parse data to create a chart display
   const chartData = React.useMemo(() => {
-    const sortedData = (parsedData || []).sort((a, b) => b[sortedBy] - a[sortedBy]);
-    const barsData = sortedData.map((country, idx) => ({ ...country, index: idx }));
-    const emissionsData = [Object.assign({}, (barsData || []).map((country) => country.emissions))];
+    const sortedData = (parsedData || []).sort(
+      (a, b) => b[sortedBy] - a[sortedBy]
+    );
+    const barsData = sortedData.map((country, idx) => ({
+      ...country,
+      index: idx
+    }));
+    const emissionsData = [
+      Object.assign(
+        {},
+        (barsData || []).map(country => country.emissions)
+      )
+    ];
 
     return {
       barsData,
       emissionsData
     };
   });
+
+  // Generate data explorer link
+  const downloadLink = generateLinkToDataExplorer(
+    { category: '2025_ndc_tracker' },
+    'ndc-content'
+  );
 
   if (!parsedData) return null;
 
@@ -201,7 +217,7 @@ const Ndc2025TrackerChartComponent = props => {
                     { label: 'Total emissions', value: 'emissions' }
                   ]}
                   selectedOption={sortedBy}
-                  onClick={(a) => setSortedBy(a.value)}
+                  onClick={a => setSortedBy(a.value)}
                   theme={{
                     wrapper: styles.switchWrapper,
                     checkedOption: styles.switchSelected
@@ -250,7 +266,7 @@ const Ndc2025TrackerChartComponent = props => {
                     styles.barChartBar,
                     styles[getCountrySubmissionTypeKey(d)],
                     styles.submitted,
-                      hoveredBar?.iso === d.iso && styles.barChartBarHovered
+                    hoveredBar?.iso === d.iso && styles.barChartBarHovered
                   )}
                   dataKey={`${i}`}
                   stackId="emissions"
