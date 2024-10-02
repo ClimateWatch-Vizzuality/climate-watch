@@ -124,14 +124,19 @@ const Ndc2025TrackerChartComponent = props => {
   });
 
   // Parse data to create a chart display
+  // We do not want to display EU countries in the chart; instead we do EUU.
   const chartData = React.useMemo(() => {
-    const sortedData = (parsedData || []).sort(
+    const parsedDataWithoutEuCountries = parsedData.filter((country) => country.is_in_eu === false);
+
+    const sortedData = (parsedDataWithoutEuCountries || []).sort(
       (a, b) => b[sortedBy] - a[sortedBy]
     );
+
     const barsData = sortedData.map((country, idx) => ({
       ...country,
       index: idx
     }));
+
     const emissionsData = [
       Object.assign(
         {},
