@@ -27,7 +27,7 @@ const SUBMISSION_TYPES = {
 };
 
 const Ndc2025TrackerChartComponent = props => {
-  const { handleInfoClick, handlePngDownloadModal, data: _data } = props;
+  const { handleInfoClick, handlePngDownloadModal, data } = props;
 
   const [sortedBy, setSortedBy] = React.useState('emissions');
   const [hoveredBar, setHoveredBar] = React.useState(null);
@@ -52,7 +52,7 @@ const Ndc2025TrackerChartComponent = props => {
 
   // Parse data in order to include the `emissions` property in a number format
   const parsedData = React.useMemo(() =>
-    (_data || []).map(country => ({
+    (data || []).map(country => ({
       ...country,
       emissions: getEmissionValue(country.ndce_ghg) || 0
     }))
@@ -97,7 +97,7 @@ const Ndc2025TrackerChartComponent = props => {
   // Note: We are bundling both submitted ndcs and enhanced submitted NDCs, which is
   //       the reason for this extra processing. In addition, we are also ensuring
   //       percentages get formatted correctly for the display in the cards, without
-  //       decimals, as well as insuring that the result adds to 100%. 
+  //       decimals, as well as insuring that the result adds to 100%.
   const cardsData = React.useMemo(() => {
     const submittedNumCountries =
       submissionTypeStatistics.submittedEnhanced.numCountries +
