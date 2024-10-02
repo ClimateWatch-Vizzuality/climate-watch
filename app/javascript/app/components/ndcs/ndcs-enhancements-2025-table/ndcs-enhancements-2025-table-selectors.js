@@ -199,7 +199,8 @@ export const replaceAbbreviations = createSelector(
     return data.map(d => {
       const updatedD = d;
       Object.keys(updatedD).forEach(key => {
-        updatedD[key] = replaceStringAbbr(d[key]);
+        updatedD[key] =
+          typeof d[key] === 'string' ? replaceStringAbbr(d[key]) : d[key];
       });
       return updatedD;
     });
