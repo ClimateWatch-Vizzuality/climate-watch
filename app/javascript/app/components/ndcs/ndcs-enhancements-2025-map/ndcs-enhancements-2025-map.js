@@ -18,7 +18,6 @@ import {
   getIndicatorsParsed,
   getPathsWithStyles,
   getISOCountries,
-  summarizeIndicators,
   getIsEnhancedChecked,
   getPreviousComparisonCountryValues,
   getCompareLinks,
@@ -47,7 +46,6 @@ const mapStateToProps = (state, { location }) => {
     compareLink: getCompareLinks(ndcsEnhancementsWithSelection),
     indicator: sortIndicatorLegend(ndcsEnhancementsWithSelection),
     indicators: getIndicatorsParsed(ndcsEnhancementsWithSelection),
-    summaryData: summarizeIndicators(ndcsEnhancementsWithSelection),
     compareLinks: getCompareLinks(ndcsEnhancementsWithSelection),
     previousComparisonCountryValues: getPreviousComparisonCountryValues(
       ndcsEnhancementsWithSelection
@@ -81,15 +79,16 @@ class NDCSEnhancements2025MapContainer extends PureComponent {
     const id = isEuropeanCountry ? europeSlug : geometryIdHover;
 
     const statementIndicator = indicators.find(
-      i => i.value === 'ndce_statement'
+      i => i.value === '2025_statement'
     );
 
     if (
       indicator.locations &&
       indicator.locations[id] &&
-      indicator.locations[id].label_slug !== 'no_info_2020'
+      indicator.locations[id].label_slug !== 'no_info_2025'
     ) {
       const statement =
+        statementIndicator &&
         statementIndicator.locations[id] &&
         statementIndicator.locations[id].value;
       const indicatorLabelId = indicator.locations[id].label_id;
@@ -134,7 +133,7 @@ class NDCSEnhancements2025MapContainer extends PureComponent {
     if (iso && isCountryIncluded(isoCountries, iso)) {
       history.push(compareLinks[iso].link);
       handleAnalytics(
-        'NDC Enhancements Map',
+        '2025 NDC Enhancements Map',
         'Use link to compare enhancements',
         geography.properties.name
       );
@@ -162,7 +161,7 @@ class NDCSEnhancements2025MapContainer extends PureComponent {
 
   render() {
     const tooltipValues = this.getTooltipValues();
-    const { query, indicator, checked, summaryData } = this.props;
+    const { query, indicator, checked } = this.props;
     const noContentMsg = query
       ? 'No results found'
       : 'There is no data for this indicator';
@@ -176,8 +175,7 @@ class NDCSEnhancements2025MapContainer extends PureComponent {
       noContentMsg,
       handleSearchChange: this.handleSearchChange,
       checked,
-      indicator,
-      summaryData
+      indicator
     });
   }
 }
@@ -187,13 +185,12 @@ NDCSEnhancements2025MapContainer.propTypes = {
   query: PropTypes.string,
   indicator: PropTypes.object,
   indicators: PropTypes.array,
-  summaryData: PropTypes.object,
   checked: PropTypes.bool,
   location: PropTypes.object.isRequired,
   isoCountries: PropTypes.array.isRequired,
   compareLinks: PropTypes.object,
   countries: PropTypes.array,
-  previousComparisonCountryValues: PropTypes.array
+  previousComparisonCountryValues: PropTypes.object
 };
 
 export default withRouter(

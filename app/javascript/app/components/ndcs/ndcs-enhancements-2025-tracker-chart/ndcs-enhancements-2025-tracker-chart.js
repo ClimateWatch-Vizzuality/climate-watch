@@ -1,54 +1,39 @@
-import Component from './ndcs-enhancements-2025-tracker-chart-component';
+import { createElement } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import { actions as modalActions } from 'components/modal-metadata';
 import { actions as pngModalActions } from 'components/modal-png-download';
-import { createElement } from 'react';
-import { getData, getMetadata } from './ndcs-enhancements-2025-chart-selectors'
+import Component from './ndcs-enhancements-2025-tracker-chart-component';
+import { getData, getMetadata } from './ndcs-enhancements-2025-chart-selectors';
 
 const actions = { ...modalActions, ...pngModalActions };
 
-const mapStateToProps = (state) => {
-  const { data, loading } = state.ndcsExplore;
-  const ndcsExploreWithSelection = {
-    ...state,
-    ...data,
-  };  
-  
-  // const ndc2025TrackerData = {
-  //   ndc2025Tracker: state.ndc2025Tracker
-  // }
-
-  return { 
-    // data: getData(ndc2025TrackerData),
-    metadata: getMetadata(ndcsExploreWithSelection)
-  };
-}
+const mapStateToProps = state => ({
+  data: getData(state),
+  metadata: getMetadata(state)
+});
 
 const pngDownloadId = 'ndcs-enhancements-map';
 
 function Ndc2025TrackerChartContainer(props) {
-  const {
-    setModalMetadata,
-    setModalPngDownload
-  } = props;
+  const { setModalMetadata, setModalPngDownload } = props;
 
   const handlePngDownloadModal = () => {
     setModalPngDownload({ open: pngDownloadId });
-  }
+  };
   const handleInfoClick = () => {
     setModalMetadata({
       category: 'NDC Content Map',
-      slugs: '2020_NDC',
+      slugs: '2025_status',
       open: true
     });
-  }
+  };
   return createElement(Component, {
-      ...props,
-      pngDownloadId,
-      handleInfoClick,
-      handlePngDownloadModal,
+    ...props,
+    pngDownloadId,
+    handleInfoClick,
+    handlePngDownloadModal
   });
 }
 
@@ -56,7 +41,7 @@ Ndc2025TrackerChartContainer.propTypes = {
   setModalMetadata: PropTypes.func.isRequired,
   setModalPngDownload: PropTypes.func.isRequired,
   summaryData: PropTypes.array,
-  selectedCategory: PropTypes.object,
+  selectedCategory: PropTypes.object
 };
 
 export default withRouter(

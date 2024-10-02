@@ -6,7 +6,6 @@ import { TabletLandscape } from 'components/responsive';
 import Map from 'components/map';
 import MapLegend from 'components/map-legend';
 import CountriesDocumentsProvider from 'providers/countries-documents-provider';
-import NDCSPreviousComparisonProvider from 'providers/ndcs-previous-comparison-provider';
 import MetadataProvider from 'providers/metadata-provider';
 import NdcsProvider from 'providers/ndcs-provider';
 import { CheckInput } from 'cw-components';
@@ -18,7 +17,18 @@ import blueCheckboxTheme from 'styles/themes/checkbox/blue-checkbox.scss';
 import { INDICATOR_SLUGS } from 'data/constants';
 import styles from './ndcs-enhancements-2025-map-styles.scss';
 
-const TOOLTIP_ID = 'ndcs-map-tooltip';
+const TOOLTIP_ID = 'ndcs-2025-map-tooltip';
+
+// Show submitted 2025 only once. Remove if we want to add more values
+const uniqueLegendItems = legendBuckets => {
+  const uniqueItems = {};
+  Object.entries(legendBuckets).forEach(([key, item]) => {
+    if (!Object.values(uniqueItems).find(uItem => uItem.name === item.name)) {
+      uniqueItems[key] = item;
+    }
+  });
+  return uniqueItems;
+};
 
 const NDCSEnhancements2025Map = ({
   loading,
@@ -50,7 +60,7 @@ const NDCSEnhancements2025Map = ({
     <MapLegend
       className={cx(styles.legend, { [styles.isPNG]: isPNG })}
       title={indicator.legend}
-      buckets={indicator.legendBuckets}
+      buckets={uniqueLegendItems(indicator.legendBuckets)}
       mapColors={mapColors}
     />
   );
@@ -85,27 +95,28 @@ const NDCSEnhancements2025Map = ({
                 {indicator && renderMapLegend()}
               </div>
             </div>
-            <ModalPngDownload id={pngDownloadId} title="NDC enhancements">
+            <ModalPngDownload id={pngDownloadId} title="2025 NDC Submission">
               {renderMap({ isTablet: true, png: true })}
               <div className={styles.pngLegendAndSummary}>
                 {indicator && renderMapLegend(true)}
               </div>
             </ModalPngDownload>
             <ModalMetadata />
-            <NDCSPreviousComparisonProvider />
             <CountriesDocumentsProvider />
             <NdcsProvider
               overrideFilter
               indicatorSlugs={[
-                INDICATOR_SLUGS.enhancements,
+                INDICATOR_SLUGS.submitted2025,
                 INDICATOR_SLUGS.emissions,
-                'ndce_compare',
-                'ndce_statement',
-                'ndce_source',
-                'ndce_date'
+                '2025_compare_1',
+                '2025_compare_2',
+                '2025_compare_3',
+                '2025_statement',
+                '2025_source',
+                '2025_date'
               ]}
             />
-            <MetadataProvider source="2020_ndc" />
+            <MetadataProvider source="2025_status" />
           </div>
         )}
       </TabletLandscape>
