@@ -6,7 +6,7 @@ import ReactDOMServer from 'react-dom/server';
 import cx from 'classnames';
 import {
   ENHANCEMENT_VALUE_COLORS,
-  ALL_ENHANCEMENT_VALUES_COLORS
+  ALL_2025_ENHANCEMENT_VALUES_COLORS
 } from 'data/constants';
 import styles from './ndcs-enhancements-2025-table-styles.scss';
 
@@ -49,7 +49,7 @@ const cellRenderer = props => {
         {cellData &&
           cellData.map(indicator => {
             const indicatorColor =
-              ALL_ENHANCEMENT_VALUES_COLORS[indicator.value];
+              ALL_2025_ENHANCEMENT_VALUES_COLORS[indicator.value];
             return (
               <div
                 key={`${columnIndex}${indicator.letter}`}

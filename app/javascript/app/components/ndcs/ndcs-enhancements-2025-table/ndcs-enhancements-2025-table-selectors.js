@@ -9,7 +9,7 @@ import {
   NDC_2025_LABEL_COLORS,
   NDC_2025_LABEL_SLUGS,
   ENHANCEMENT_LABEL_SLUGS,
-  ENHANCEMENT_LABELS_WITH_LETTERS,
+  ENHANCEMENT_2025_LABELS_WITH_LETTERS,
   INDICATOR_SLUGS
 } from 'data/constants';
 import { getCompareLinks } from 'components/ndcs/ndcs-enhancements-map/ndcs-enhancements-map-selectors';
@@ -143,13 +143,15 @@ export const tableRemoveIsoFromData = createSelector(
             ENHANCEMENT_LABEL_SLUGS.SUBMITTED_2025,
             ENHANCEMENT_LABEL_SLUGS.ENHANCED_MITIGATION
           ].includes(d['NDC Status'].slug);
+
         updatedD[
           'Overall comparison with previous NDC'
-        ] = ENHANCEMENT_LABELS_WITH_LETTERS.map(enhancementLabelWithLetter => ({
-          ...enhancementLabelWithLetter,
-          value: d[enhancementLabelWithLetter.value]
-        }));
-
+        ] = ENHANCEMENT_2025_LABELS_WITH_LETTERS.map(
+          enhancementLabelWithLetter => ({
+            ...enhancementLabelWithLetter,
+            value: d[enhancementLabelWithLetter.value]
+          })
+        );
         updatedD['Compare with previous submissions'] = hasPreviousSubmission
           ? `<a href="${compareLink.link}" title=${d['NDCE Compare']}">${d['NDCE Compare']}</a>`
           : d['NDCE Compare'];

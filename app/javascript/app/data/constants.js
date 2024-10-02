@@ -468,6 +468,16 @@ export const ALL_ENHANCEMENT_VALUES_COLORS = {
   ...ENHANCEMENT_VALUES_COLORS
 };
 
+export const ALL_2025_ENHANCEMENT_VALUES_COLORS = {
+  'Yes, 2035 GHG target included': ENHANCEMENT_VALUE_COLORS.blue,
+  'Yes, economy-wide GHG target (for 2035) included':
+    ENHANCEMENT_VALUE_COLORS.blue,
+  'Yes, enhancement in the revised submission': ENHANCEMENT_VALUE_COLORS.blue,
+  'No, no economy-wide GHG target (for 2035) included':
+    ENHANCEMENT_VALUE_COLORS.red,
+  ...ENHANCEMENT_VALUES_COLORS
+};
+
 export const ENHANCEMENT_LABELS_WITH_LETTERS = [
   {
     value: 'ndce_revised',
@@ -504,6 +514,24 @@ export const ENHANCEMENT_LABELS_WITH_LETTERS = [
     letter: 'I',
     label:
       'Information: Provided additional Information for clarity, transparency, and understanding'
+  }
+];
+
+export const ENHANCEMENT_2025_LABELS_WITH_LETTERS = [
+  {
+    value: '2035 GHG target included',
+    letter: 'R',
+    label: '2035 GHG target included'
+  },
+  {
+    value: 'Economy-wide GHG target (for 2035) included',
+    letter: 'M',
+    label: 'Economy-wide GHG target (for 2035) included'
+  },
+  {
+    value: 'Strengthened 2030 target',
+    letter: 'G',
+    label: 'Strengthened 2030 target'
   }
 ];
 
