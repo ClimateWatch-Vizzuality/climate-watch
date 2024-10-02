@@ -6,7 +6,6 @@ import { TabletLandscape } from 'components/responsive';
 import Map from 'components/map';
 import MapLegend from 'components/map-legend';
 import CountriesDocumentsProvider from 'providers/countries-documents-provider';
-import NDCSPreviousComparisonProvider from 'providers/ndcs-previous-comparison-provider';
 import MetadataProvider from 'providers/metadata-provider';
 import NdcsProvider from 'providers/ndcs-provider';
 import { CheckInput } from 'cw-components';
@@ -92,7 +91,6 @@ const NDCSEnhancements2025Map = ({
               </div>
             </ModalPngDownload>
             <ModalMetadata />
-            <NDCSPreviousComparisonProvider />
             <CountriesDocumentsProvider />
             <NdcsProvider
               overrideFilter

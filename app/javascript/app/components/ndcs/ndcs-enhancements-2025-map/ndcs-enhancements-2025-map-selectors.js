@@ -32,8 +32,6 @@ const getIndicatorsData = state =>
   (state.ndcs && state.ndcs.data && state.ndcs.data.indicators) || null;
 const getZoom = state => state.map.zoom || null;
 
-const getPreviousComparisonIndicators = state =>
-  state.ndcsPreviousComparison && state.ndcsPreviousComparison.data;
 const getCountriesDocuments = state => state.countriesDocuments.data || null;
 
 export const getCountries = state =>
@@ -78,6 +76,19 @@ export const getIndicatorsParsed = createSelector(
       ),
       'label'
     ); // .filter(ind => ind.categoryIds?.indexOf(parseInt(categoryId, 10)) > -1);
+  }
+);
+
+const getPreviousComparisonIndicators = createSelector(
+  [getIndicatorsParsed],
+  indicators => {
+    if (!indicators) return null;
+    const compareIndicatorSlugs = [
+      '2025_compare_1',
+      '2025_compare_2',
+      '2025_compare_3'
+    ];
+    return indicators.filter(ind => compareIndicatorSlugs.includes(ind.value));
   }
 );
 
@@ -388,8 +399,8 @@ export const getPreviousComparisonCountryValues = createSelector(
       previousComparisonCountryValues[
         iso
       ] = previousComparisonIndicators.map(indicator => [
-        indicator.name,
-        indicator.locations[iso].value
+        indicator.label,
+        indicator.locations[iso]?.value || 'No Document Submitted'
       ]);
     });
     return previousComparisonCountryValues;
