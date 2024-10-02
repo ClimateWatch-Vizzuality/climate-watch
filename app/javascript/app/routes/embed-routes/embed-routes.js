@@ -2,6 +2,7 @@ import { createElement } from 'react';
 import { Redirect } from 'react-router-dom';
 
 import NDCSEnhancementsMap from 'components/ndcs/ndcs-enhancements-map';
+import NDCS2025EnhancementsMap from 'components/ndcs/ndcs-enhancements-2025-map';
 import GhgEmissionsGraph from 'components/ghg-emissions';
 import CompareGhgChart from 'components/compare/compare-ghg-chart';
 import CountryGhg from 'components/country/country-ghg';
@@ -25,6 +26,11 @@ export default [
   {
     path: '/embed/2020-ndc-tracker',
     component: NDCSEnhancementsMap,
+    exact: true
+  },
+  {
+    path: '/embed/2025-ndc-tracker',
+    component: NDCS2025EnhancementsMap,
     exact: true
   },
   {
