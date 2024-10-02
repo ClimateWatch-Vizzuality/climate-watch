@@ -62,7 +62,9 @@ const Ndc2025TrackerChartComponent = props => {
   const countriesBySubmissionType = React.useMemo(() => {
     const findCountriesBySubmissionType = submissionType =>
       parsedData?.filter(
-        ({ indc_submission }) => indc_submission === submissionType
+        // Don't include EU countries in the chart; instead we account for EUU
+        ({ indc_submission, is_in_eu }) =>
+          !is_in_eu && indc_submission === submissionType
       );
 
     return Object.entries(SUBMISSION_TYPES).reduce(
@@ -92,7 +94,6 @@ const Ndc2025TrackerChartComponent = props => {
       {}
     );
   });
-
   // Calculate statistics to display in the cards
   // Note: We are bundling both submitted ndcs and enhanced submitted NDCs, which is
   //       the reason for this extra processing. In addition, we are also ensuring
@@ -108,7 +109,8 @@ const Ndc2025TrackerChartComponent = props => {
       submissionTypeStatistics.submitted.emissionsPerc
     ).toFixed(0);
 
-    const notSubmittedNumCountries = submissionTypeStatistics.notSubmitted.numCountries;
+    const notSubmittedNumCountries =
+      submissionTypeStatistics.notSubmitted.numCountries;
     const notSubmittedEmissionsPerc = 100 - submittedEmissionsPerc;
 
     return {
@@ -126,7 +128,9 @@ const Ndc2025TrackerChartComponent = props => {
   // Parse data to create a chart display
   // We do not want to display EU countries in the chart; instead we do EUU.
   const chartData = React.useMemo(() => {
-    const parsedDataWithoutEuCountries = parsedData.filter((country) => country.is_in_eu === false);
+    const parsedDataWithoutEuCountries = parsedData.filter(
+      country => country.is_in_eu === false
+    );
 
     const sortedData = (parsedDataWithoutEuCountries || []).sort(
       (a, b) => b[sortedBy] - a[sortedBy]
