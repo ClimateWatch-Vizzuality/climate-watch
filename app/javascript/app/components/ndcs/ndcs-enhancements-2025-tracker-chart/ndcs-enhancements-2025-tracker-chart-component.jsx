@@ -197,7 +197,7 @@ const Ndc2025TrackerChartComponent = props => {
             {submissionStats.submittedEnhanced.emissionsPerc}%
           </p> */}
           <p className={classNames(styles.smallCard, styles.submitted)}>
-            {submissionStats.submitted.emissionsPerc +
+            {submissionStats.submittedEnhanced.emissionsPerc +
               submissionStats.submitted.emissionsPerc}
             %
           </p>
