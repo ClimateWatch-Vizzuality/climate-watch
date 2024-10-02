@@ -113,7 +113,9 @@ const NDCSEnhancements2025Map = ({
                 '2025_compare_3',
                 '2025_statement',
                 '2025_source',
-                '2025_date'
+                '2025_date',
+                // Needed for chart data date sorting
+                'ndce_date'
               ]}
             />
             <MetadataProvider source="2025_status" />
