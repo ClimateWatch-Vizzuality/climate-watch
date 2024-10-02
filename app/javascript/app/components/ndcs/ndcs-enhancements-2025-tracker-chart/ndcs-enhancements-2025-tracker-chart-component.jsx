@@ -131,10 +131,17 @@ const Ndc2025TrackerChartComponent = props => {
     const parsedDataWithoutEuCountries = parsedData.filter(
       country => country.is_in_eu === false
     );
-
-    const sortedData = (parsedDataWithoutEuCountries || []).sort(
-      (a, b) => b[sortedBy] - a[sortedBy]
-    );
+    let sortedData = parsedDataWithoutEuCountries || [];
+    if (sortedBy === 'submission_date') {
+      sortedData = sortedData.sort((a, b) => {
+        if (a.submission_date === b.submission_date) return 0;
+        if (!a.submission_date) return 1;
+        if (!b.submission_date) return -1;
+        return new Date(b.submission_date) - new Date(a.submission_date);
+      });
+    } else if (sortedBy === 'emissions') {
+      sortedData = sortedData.sort((a, b) => b[sortedBy] - a[sortedBy]);
+    }
 
     const barsData = sortedData.map((country, idx) => ({
       ...country,
