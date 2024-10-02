@@ -27,7 +27,7 @@ const SUBMISSION_TYPES = {
 };
 
 const Ndc2025TrackerChartComponent = props => {
-  const { handleInfoClick, handlePngDownloadModal, data: _data } = props;
+  const { handleInfoClick, handlePngDownloadModal, data } = props;
 
   const [sortedBy, setSortedBy] = React.useState('emissions');
   const [hoveredBar, setHoveredBar] = React.useState(null);
@@ -52,7 +52,7 @@ const Ndc2025TrackerChartComponent = props => {
 
   // Parse data in order to include the `emissions` property in a number format
   const parsedData = React.useMemo(() =>
-    (_data || []).map(country => ({
+    (data || []).map(country => ({
       ...country,
       emissions: getEmissionValue(country.ndce_ghg) || 0
     }))
@@ -62,7 +62,9 @@ const Ndc2025TrackerChartComponent = props => {
   const countriesBySubmissionType = React.useMemo(() => {
     const findCountriesBySubmissionType = submissionType =>
       parsedData?.filter(
-        ({ indc_submission }) => indc_submission === submissionType
+        // Don't include EU countries in the chart; instead we account for EUU
+        ({ indc_submission, is_in_eu }) =>
+          !is_in_eu && indc_submission === submissionType
       );
 
     return Object.entries(SUBMISSION_TYPES).reduce(
@@ -75,7 +77,7 @@ const Ndc2025TrackerChartComponent = props => {
   });
 
   // Calculate statistics per submission type
-  const submissionStats = React.useMemo(() => {
+  const submissionTypeStatistics = React.useMemo(() => {
     const globalEmissionsBySubmissionType = submissionType => {
       const countries = countriesBySubmissionType[submissionType] || [];
       return countries.reduce((acc, country) => acc + country.emissions, 0);
@@ -92,16 +94,60 @@ const Ndc2025TrackerChartComponent = props => {
       {}
     );
   });
+  // Calculate statistics to display in the cards
+  // Note: We are bundling both submitted ndcs and enhanced submitted NDCs, which is
+  //       the reason for this extra processing. In addition, we are also ensuring
+  //       percentages get formatted correctly for the display in the cards, without
+  //       decimals, as well as insuring that the result adds to 100%.
+  const cardsData = React.useMemo(() => {
+    const submittedNumCountries =
+      submissionTypeStatistics.submittedEnhanced.numCountries +
+      submissionTypeStatistics.submitted.numCountries;
+
+    const submittedEmissionsPerc = (
+      submissionTypeStatistics.submittedEnhanced.emissionsPerc +
+      submissionTypeStatistics.submitted.emissionsPerc
+    ).toFixed(0);
+
+    const notSubmittedNumCountries =
+      submissionTypeStatistics.notSubmitted.numCountries;
+    const notSubmittedEmissionsPerc = 100 - submittedEmissionsPerc;
+
+    return {
+      submitted: {
+        numCountries: submittedNumCountries,
+        emissionsPerc: submittedEmissionsPerc
+      },
+      notSubmitted: {
+        numCountries: notSubmittedNumCountries,
+        emissionsPerc: notSubmittedEmissionsPerc
+      }
+    };
+  });
 
   // Parse data to create a chart display
+  // We do not want to display EU countries in the chart; instead we do EUU.
   const chartData = React.useMemo(() => {
-    const sortedData = (parsedData || []).sort(
-      (a, b) => b[sortedBy] - a[sortedBy]
+    const parsedDataWithoutEuCountries = parsedData.filter(
+      country => country.is_in_eu === false
     );
+    let sortedData = parsedDataWithoutEuCountries || [];
+    if (sortedBy === 'submission_date') {
+      sortedData = sortedData.sort((a, b) => {
+        if (a.submission_date === b.submission_date) return 0;
+        if (!a.submission_date) return 1;
+        if (!b.submission_date) return -1;
+        return new Date(b.submission_date) - new Date(a.submission_date);
+      });
+    } else if (sortedBy === 'emissions') {
+      sortedData = sortedData.sort((a, b) => b[sortedBy] - a[sortedBy]);
+    }
+
     const barsData = sortedData.map((country, idx) => ({
       ...country,
       index: idx
     }));
+
     const emissionsData = [
       Object.assign(
         {},
@@ -196,11 +242,10 @@ const Ndc2025TrackerChartComponent = props => {
             {submissionStats.submittedEnhanced.numCountries}
           </p> */}
           <p className={classNames(styles.bigCard, styles.submitted)}>
-            {submissionStats.submittedEnhanced.numCountries +
-              submissionStats.submitted.numCountries}
+            {cardsData.submitted.numCountries}
           </p>
           <p className={classNames(styles.bigCard, styles.notSubmitted)}>
-            {submissionStats.notSubmitted.numCountries}
+            {cardsData.notSubmitted.numCountries}
           </p>
           <p>Global Emissions</p>
           {/* For use when displaying enhanced card */}
@@ -208,12 +253,10 @@ const Ndc2025TrackerChartComponent = props => {
             {submissionStats.submittedEnhanced.emissionsPerc}%
           </p> */}
           <p className={classNames(styles.smallCard, styles.submitted)}>
-            {submissionStats.submittedEnhanced.emissionsPerc +
-              submissionStats.submitted.emissionsPerc}
-            %
+            {cardsData.submitted.emissionsPerc}%
           </p>
           <p className={classNames(styles.smallCard, styles.notSubmitted)}>
-            {submissionStats.notSubmitted.emissionsPerc}%
+            {cardsData.notSubmitted.emissionsPerc}%
           </p>
         </div>
         <div className={styles.ndc2025TrackerChart}>
