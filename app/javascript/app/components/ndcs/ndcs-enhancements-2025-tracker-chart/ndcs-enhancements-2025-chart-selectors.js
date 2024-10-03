@@ -38,7 +38,8 @@ export const getData = createSelector(
         iso,
         country: iso,
         indc_submission:
-          statusIndicator.locations[iso]?.value || 'Not Submitted',
+          // ! TODO Default value conflicts with the one in the component. Needs to be addressed
+          statusIndicator.locations[iso]?.value || 'No 2025 NDC',
         submission_date:
           dateIndicator.locations[iso]?.value ||
           no2025DateIndicator.locations[iso]?.value,
