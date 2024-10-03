@@ -93,7 +93,6 @@
     font-weight: $font-weight-bold;
   }
 
-  // TODO: Fix colors
   .submittedWith2030And2035 {
     color: $chart-color-4;
     align-items: center;
@@ -195,19 +194,18 @@
   height: 50px;
 }
 
-// TODO: Fix colors
 .submittedWith2030And2035 {
-  fill: $chart-color-4;
+  fill: $chart-color-1;
   stroke: $white;
 }
 
 .submittedWith2030 {
-  fill: $chart-color-4;
+  fill: $chart-color-3;
   stroke: $white;
 }
 
 .submitted2025 {
-  fill: $theme-color-medium;
+  fill: $chart-color-2;
   stroke: $white;
 }
 
