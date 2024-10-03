@@ -142,10 +142,18 @@ const Ndc2025TrackerChartComponent = props => {
     let sortedData = parsedDataWithoutEuCountries || [];
     if (sortedBy === 'submission_date') {
       sortedData = sortedData.sort((a, b) => {
-        if (a.submission_date === b.submission_date) return 0;
-        if (!a.submission_date) return 1;
-        if (!b.submission_date) return -1;
-        return new Date(b.submission_date) - new Date(a.submission_date);
+        const indcSubmissionSortOrder = [
+          'Submitted 2025 NDC with 2030 target',
+          'Submitted 2025 NDC with 2030 and 2035 targets',
+          'Submitted 2025 NDC',
+          'No 2025 NDC'
+        ];
+        const sortByIndcSubmission =
+          indcSubmissionSortOrder.indexOf(a.indc_submission) -
+          indcSubmissionSortOrder.indexOf(b.indc_submission);
+        // Sort first by ndce_status and then by emissions
+        if (sortByIndcSubmission !== 0) return sortByIndcSubmission;
+        return parseFloat(b.ndce_ghg) - parseFloat(a.ndce_ghg);
       });
     } else if (sortedBy === 'emissions') {
       sortedData = sortedData.sort((a, b) => b[sortedBy] - a[sortedBy]);

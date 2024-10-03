@@ -18,7 +18,6 @@ import {
   getIndicatorsParsed,
   getPathsWithStyles,
   getISOCountries,
-  getIsEnhancedChecked,
   getPreviousComparisonCountryValues,
   getCompareLinks,
   getCountries,
@@ -41,7 +40,6 @@ const mapStateToProps = (state, { location }) => {
     query: ndcsEnhancementsWithSelection.query,
     paths: getPathsWithStyles(ndcsEnhancementsWithSelection),
     countries: getCountries(ndcsEnhancementsWithSelection),
-    checked: getIsEnhancedChecked(ndcsEnhancementsWithSelection),
     isoCountries: getISOCountries(ndcsEnhancementsWithSelection),
     compareLink: getCompareLinks(ndcsEnhancementsWithSelection),
     indicator: sortIndicatorLegend(ndcsEnhancementsWithSelection),
@@ -140,10 +138,6 @@ class NDCSEnhancements2025MapContainer extends PureComponent {
     }
   };
 
-  handleOnChangeChecked = query => {
-    this.updateUrlParam({ name: 'showEnhancedAmbition', value: query });
-  };
-
   handleCountryEnter = geography => {
     const iso = geography.properties && geography.properties.id;
     if (iso) this.setState({ geometryIdHover: iso });
@@ -161,7 +155,7 @@ class NDCSEnhancements2025MapContainer extends PureComponent {
 
   render() {
     const tooltipValues = this.getTooltipValues();
-    const { query, indicator, checked } = this.props;
+    const { query, indicator } = this.props;
     const noContentMsg = query
       ? 'No results found'
       : 'There is no data for this indicator';
@@ -171,10 +165,8 @@ class NDCSEnhancements2025MapContainer extends PureComponent {
       pngDownloadId,
       handleCountryClick: this.handleCountryClick,
       handleCountryEnter: this.handleCountryEnter,
-      handleOnChangeChecked: this.handleOnChangeChecked,
       noContentMsg,
       handleSearchChange: this.handleSearchChange,
-      checked,
       indicator
     });
   }
@@ -185,7 +177,6 @@ NDCSEnhancements2025MapContainer.propTypes = {
   query: PropTypes.string,
   indicator: PropTypes.object,
   indicators: PropTypes.array,
-  checked: PropTypes.bool,
   location: PropTypes.object.isRequired,
   isoCountries: PropTypes.array.isRequired,
   compareLinks: PropTypes.object,

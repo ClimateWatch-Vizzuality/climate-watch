@@ -525,18 +525,30 @@ export const ENHANCEMENT_LABELS_WITH_LETTERS = [
 export const ENHANCEMENT_2025_LABELS_WITH_LETTERS = [
   {
     value: '2035 GHG target included',
-    letter: 'R',
+    letter: 'I',
     label: '2035 GHG target included'
   },
   {
     value: 'Economy-wide GHG target (for 2035) included',
-    letter: 'M',
+    letter: 'E',
     label: 'Economy-wide GHG target (for 2035) included'
   },
   {
     value: 'Strengthened 2030 target',
-    letter: 'G',
+    letter: 'S',
     label: 'Strengthened 2030 target'
+  },
+  {
+    value: 'Strengthened adaptation',
+    letter: 'A',
+    label: 'Strengthened adaptation'
+  },
+  {
+    value:
+      'Provided additional Information for clarity, transparency, and understanding',
+    letter: 'P',
+    label:
+      'Provided additional Information for clarity, transparency, and understanding'
   }
 ];
 
@@ -573,11 +585,18 @@ export const LEGEND_COMPARISON_2025_VALUES_COLORS = {
 };
 
 export const LEGEND_COMPARISON_2025_LETTERS = [
-  { value: '2025_compare_1', letter: 'R', label: '2035 GHG target included' },
+  { value: '2025_compare_1', letter: 'I', label: '2035 GHG target included' },
   {
     value: '2025_compare_2',
-    letter: 'M',
+    letter: 'E',
     label: 'Economy-wide GHG target (for 2035) included'
   },
-  { value: '2025_compare_3', letter: 'G', label: 'Strengthened 2030 target' }
+  { value: '2025_compare_3', letter: 'S', label: 'Strengthened 2030 target' },
+  { value: '2025_compare_4', letter: 'A', label: 'Strengthened adaptation' },
+  {
+    value: '2025_compare_5',
+    letter: 'P',
+    label:
+      'Provided additional Information for clarity, transparency, and understanding'
+  }
 ];
