@@ -52,9 +52,6 @@ export const getIndicatorsParsed = createSelector(
   [getCategories, getIndicatorsData, getISOCountries],
   (categories, indicators, isos) => {
     if (!categories || !indicators || !indicators.length) return null;
-    // const categoryId = Object.keys(categories).find(id =>
-    //   ENHANCEMENT_CATEGORIES.includes(categories[id].slug)
-    // );
 
     return sortBy(
       uniqBy(
@@ -75,7 +72,7 @@ export const getIndicatorsParsed = createSelector(
         'value'
       ),
       'label'
-    ); // .filter(ind => ind.categoryIds?.indexOf(parseInt(categoryId, 10)) > -1);
+    );
   }
 );
 
@@ -210,28 +207,17 @@ export const reduceLegendBuckets = createSelector(
     if (!indicator) return null;
     const updatedIndicator = { ...indicator };
 
-    // Get legend buckets and only use the ones on the namesLegendOrder
     updatedIndicator.legendBuckets = Object.entries(
       updatedIndicator.legendBuckets
     ).reduce((acc, [key, value]) => {
-      const allowedNames = [
-        'Submitted 2025 NDC',
-        'No Information',
-        'Not Applicable'
-      ];
       if (value.name === 'No Information') {
         acc[key] = { ...value, name: 'No 2025 NDC' };
-      } else if (!allowedNames.includes(value.name)) {
-        delete acc[key];
-        const submitted2025NDC = Object.entries(
-          updatedIndicator.legendBuckets
-        ).find(([, v]) => v.name === 'Submitted 2025 NDC');
-        acc[key] = submitted2025NDC[1];
       } else {
         acc[key] = value;
       }
       return acc;
     }, {});
+
     updatedIndicator.locations = Object.entries(
       updatedIndicator.locations
     ).reduce((acc, [key, value]) => {
@@ -253,6 +239,8 @@ export const sortIndicatorLegend = createSelector(
     if (!indicator) return null;
     const updatedIndicator = { ...indicator };
     const namesLegendOrder = [
+      'Submitted 2025 NDC with 2030 and 2035 targets',
+      'Submitted 2025 NDC with 2030 target',
       'Submitted 2025 NDC',
       'No 2025 NDC',
       'Not Applicable'
@@ -303,19 +291,10 @@ export const getPathsWithStyles = createSelector(
           : locations[iso];
 
         let style = COUNTRY_STYLES;
-        const submittedLabelId = Object.values(locations).find(
-          l => l.value === 'Submitted 2025 NDC'
-        )?.label_id;
-
         const strokeWidth = zoom > 2 ? (1 / zoom) * 2 : 0.5;
 
         if (countryData && countryData.label_id) {
-          // Correction for the enhanced 2025 NDCs. We only want to show the Submitted 2025 NDCs info
-          const reducedLabelId =
-            countryData.value === 'No Information'
-              ? countryData.label_id
-              : submittedLabelId;
-          const legendIndex = legendBuckets[reducedLabelId].index;
+          const legendIndex = legendBuckets[countryData.label_id].index;
           const color = getColorByIndex(legendBuckets, legendIndex, MAP_COLORS);
           style = {
             ...COUNTRY_STYLES,

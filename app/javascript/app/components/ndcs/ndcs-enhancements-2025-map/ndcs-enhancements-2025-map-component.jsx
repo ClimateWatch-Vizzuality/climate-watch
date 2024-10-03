@@ -19,17 +19,6 @@ import styles from './ndcs-enhancements-2025-map-styles.scss';
 
 const TOOLTIP_ID = 'ndcs-2025-map-tooltip';
 
-// Show submitted 2025 only once. Remove if we want to add more values
-const uniqueLegendItems = legendBuckets => {
-  const uniqueItems = {};
-  Object.entries(legendBuckets).forEach(([key, item]) => {
-    if (!Object.values(uniqueItems).find(uItem => uItem.name === item.name)) {
-      uniqueItems[key] = item;
-    }
-  });
-  return uniqueItems;
-};
-
 const NDCSEnhancements2025Map = ({
   loading,
   indicator,
@@ -60,7 +49,7 @@ const NDCSEnhancements2025Map = ({
     <MapLegend
       className={cx(styles.legend, { [styles.isPNG]: isPNG })}
       title={indicator.legend}
-      buckets={uniqueLegendItems(indicator.legendBuckets)}
+      buckets={indicator.legendBuckets}
       mapColors={mapColors}
     />
   );
