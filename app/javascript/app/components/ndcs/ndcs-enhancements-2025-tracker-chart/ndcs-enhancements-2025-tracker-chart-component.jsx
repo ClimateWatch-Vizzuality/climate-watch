@@ -24,7 +24,8 @@ const SUBMISSION_TYPES = {
   submittedWith2030And2035: 'Submitted 2025 NDC with 2030 and 2035 targets',
   submittedWith2030: 'Submitted 2025 NDC with 2030 target',
   submitted2025: 'Submitted 2025 NDC',
-  notSubmitted: 'Not Submitted'
+  // ! TODO Default value conflicts with the the default on in the selector. Needs to be addressed
+  notSubmitted: 'No 2025 NDC'
 };
 
 const Ndc2025TrackerChartComponent = props => {
