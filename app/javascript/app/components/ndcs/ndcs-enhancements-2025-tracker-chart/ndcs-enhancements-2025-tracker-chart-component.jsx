@@ -99,23 +99,25 @@ const Ndc2025TrackerChartComponent = props => {
   const cardsData = React.useMemo(() => {
     // Get keys to calculate cards' data. "Not submitted" will be calculated by hand, as it'll depend
     // on the remaining values in order to ensure percentages don't add up to more than 100%.
-    const submissionTypesKeys = Object.keys(SUBMISSION_TYPES).filter((key) => key !== 'notSubmitted');
-
-    const submittedTypesData = submissionTypesKeys.reduce(
-      (acc, key) => {
-        const stats = submissionTypeStatistics[key];
-        return {
-          ...acc,
-          [key]: {
-            numCountries: stats.numCountries.toFixed(0),
-            emissionsPerc: stats.emissionsPerc.toFixed(0)
-          }
-        };
-      },
-      {}
+    const submissionTypesKeys = Object.keys(SUBMISSION_TYPES).filter(
+      key => key !== 'notSubmitted'
     );
 
-    const allSubmittedTypesPerc = Object.values(submittedTypesData).reduce((acc, d) => acc + d?.emissionsPerc || 0, 0);
+    const submittedTypesData = submissionTypesKeys.reduce((acc, key) => {
+      const stats = submissionTypeStatistics[key];
+      return {
+        ...acc,
+        [key]: {
+          numCountries: stats.numCountries.toFixed(0),
+          emissionsPerc: stats.emissionsPerc.toFixed(0)
+        }
+      };
+    }, {});
+
+    const allSubmittedTypesPerc = Object.values(submittedTypesData).reduce(
+      (acc, d) => acc + d?.emissionsPerc || 0,
+      0
+    );
 
     return {
       ...submittedTypesData,
@@ -197,44 +199,44 @@ const Ndc2025TrackerChartComponent = props => {
               dataTour="ndc-enhancement-tracker-04"
               buttonsConfig={[
                 {
-                  type: "info",
-                  onClick: handleInfoClick,
+                  type: 'info',
+                  onClick: handleInfoClick
                 },
                 {
-                  type: "share",
-                  shareUrl: "/embed/2025-ndc-tracker",
-                  analyticsGraphName: "Ndcs",
-                  positionRight: true,
+                  type: 'share',
+                  shareUrl: '/embed/2025-ndc-tracker',
+                  analyticsGraphName: 'Ndcs',
+                  positionRight: true
                 },
                 {
-                  type: "downloadCombo",
+                  type: 'downloadCombo',
                   options: [
                     {
-                      label: "Save as image (PNG)",
-                      action: handlePngDownloadModal,
+                      label: 'Save as image (PNG)',
+                      action: handlePngDownloadModal
                     },
                     {
-                      label: "Go to data explorer",
+                      label: 'Go to data explorer',
                       link: downloadLink,
-                      target: "_self",
-                    },
-                  ],
-                },
+                      target: '_self'
+                    }
+                  ]
+                }
               ]}
             />
           </div>
           <p>
             Track which countries are submitting an updated version of their
-            NDC--a 2025 NDC. You can compare countries’ submissions side by side{" "}
+            NDC--a 2025 NDC. You can compare countries’ submissions side by side{' '}
             <Link
               to="custom-compare/overview"
               title="Compare submissions"
               target="_blank"
             >
               here
-            </Link>{" "}
+            </Link>{' '}
             or by referring to the table below. To request changes or additions,
-            please contact{" "}
+            please contact{' '}
             <a
               href="mailto:Mengpin.Ge@wri.org?subject=NDC 2025 Tracker Update"
               target="_blank"
@@ -248,38 +250,32 @@ const Ndc2025TrackerChartComponent = props => {
         <div className={styles.cards}>
           <p />
           {renderCardHead(
-            "submittedWith2030",
-            "2025 NDCs",
-            "with 2030 and 2035 targets"
+            'submittedWith2030',
+            '2025 NDCs',
+            'with 2030 and 2035 targets'
           )}
-          {renderCardHead("submittedWith2030", "2025 NDCs", "with 2030 target")}
-          {renderCardHead(
-            "submitted2025",
-            "2025 NDCs",
-          )}
-          {renderCardHead(
-            "notSubmitted",
-            "No 2025 NDCs",
-          )}
+          {renderCardHead('submittedWith2030', '2025 NDCs', 'with 2030 target')}
+          {renderCardHead('submitted2025', '2025 NDCs')}
+          {renderCardHead('notSubmitted', 'No 2025 NDCs')}
 
           <p>Total Countries</p>
           {renderCard(
-            "submittedWith2030And2035",
-            "numCountries",
+            'submittedWith2030And2035',
+            'numCountries',
             styles.bigCard
           )}
-          {renderCard("submittedWith2030", "numCountries", styles.bigCard)}
-          {renderCard("submitted2025", "numCountries", styles.bigCard)}
-          {renderCard("notSubmitted", "numCountries", styles.bigCard)}
+          {renderCard('submittedWith2030', 'numCountries', styles.bigCard)}
+          {renderCard('submitted2025', 'numCountries', styles.bigCard)}
+          {renderCard('notSubmitted', 'numCountries', styles.bigCard)}
           <p>Global Emissions</p>
           {renderCard(
-            "submittedWith2030And2035",
-            "emissionsPerc",
+            'submittedWith2030And2035',
+            'emissionsPerc',
             styles.smallCard
           )}
-          {renderCard("submittedWith2030", "emissionsPerc", styles.smallCard)}
-          {renderCard("submitted2025", "emissionsPerc", styles.smallCard)}
-          {renderCard("notSubmitted", "emissionsPerc", styles.smallCard)}
+          {renderCard('submittedWith2030', 'emissionsPerc', styles.smallCard)}
+          {renderCard('submitted2025', 'emissionsPerc', styles.smallCard)}
+          {renderCard('notSubmitted', 'emissionsPerc', styles.smallCard)}
         </div>
         <div className={styles.ndc2025TrackerChart}>
           <div className={styles.title}>
@@ -293,16 +289,16 @@ const Ndc2025TrackerChartComponent = props => {
                 <Switch
                   options={[
                     {
-                      label: "Latest NDC submission",
-                      value: "submission_date",
+                      label: 'Latest NDC submission',
+                      value: 'submission_date'
                     },
-                    { label: "Total emissions", value: "emissions" },
+                    { label: 'Total emissions', value: 'emissions' }
                   ]}
                   selectedOption={sortedBy}
-                  onClick={(a) => setSortedBy(a.value)}
+                  onClick={a => setSortedBy(a.value)}
                   theme={{
                     wrapper: styles.switchWrapper,
-                    checkedOption: styles.switchSelected,
+                    checkedOption: styles.switchSelected
                   }}
                 />
                 <label htmlFor="emissions">
@@ -319,7 +315,7 @@ const Ndc2025TrackerChartComponent = props => {
               maxBarSize={100}
               margin={{
                 top: 0,
-                bottom: 0,
+                bottom: 0
               }}
             >
               <XAxis domain={[0, 100]} hide type="number" />
