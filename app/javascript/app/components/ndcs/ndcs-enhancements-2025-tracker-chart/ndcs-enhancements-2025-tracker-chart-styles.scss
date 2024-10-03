@@ -36,9 +36,7 @@
 
 .cards {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  // For use when displaying enhanced card
-  // grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   margin-block: 45px 30px;
   row-gap: 6px;
   column-gap: 32px;
@@ -48,9 +46,7 @@
   }
 
   @media #{$tablet-landscape} {
-    grid-template-columns: repeat(3, 235px);
-    // For use when displaying enhanced card
-    // grid-template-columns: repeat(4, 235px);
+    grid-template-columns: repeat(4, 235px);
     column-gap: 52px;
   }
 
@@ -60,9 +56,8 @@
     flex-direction: column;
 
     &:nth-child(2),
-    &:nth-child(3) {
-      // For use when displaying enhanced card
-      // &:nth-child(4) {
+    &:nth-child(3),
+    &:nth-child(4) {
       @media #{$tablet-portrait} {
         font-size: $font-size-large;
       }
@@ -73,10 +68,9 @@
       font-weight: $font-weight-bold;
     }
 
-    // For use when displaying enhanced card
-    // span {
-    //   font-size: $font-size-sm
-    // }
+    span {
+      font-size: $font-size-sm
+    }
   }
 
   .bigCard {
@@ -97,11 +91,10 @@
     font-weight: $font-weight-bold;
   }
 
-  // For use when displaying enhanced card
-  // .submittedEnhanced {
-  //   color: $chart-color-4;
-  //   justify-content: center;
-  // }
+  .submittedEnhanced {
+    color: $chart-color-4;
+    justify-content: center;
+  }
 
   .submitted {
     color: $theme-color-medium;
@@ -190,11 +183,10 @@
   height: 50px;
 }
 
-// For use when displaying enhanced card
-// .submittedEnhanced {
-//   fill: $chart-color-4;
-//   stroke: $white;
-// }
+.submittedEnhanced {
+  fill: $chart-color-4;
+  stroke: $white;
+}
 
 .submitted {
   fill: $theme-color-medium;
