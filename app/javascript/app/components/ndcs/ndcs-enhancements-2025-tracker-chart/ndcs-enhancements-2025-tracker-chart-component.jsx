@@ -21,6 +21,7 @@ import MetadataProvider from 'providers/metadata-provider';
 import styles from './ndcs-enhancements-2025-tracker-chart-styles.scss';
 
 const SUBMISSION_TYPES = {
+  submittedWith2030And2035: 'Submitted 2025 NDC with 2030 and 2035 targets',
   submittedWith2030: 'Submitted 2025 NDC with 2030 target',
   submitted2025: 'Submitted 2025 NDC',
   notSubmitted: 'Not Submitted'
@@ -95,12 +96,20 @@ const Ndc2025TrackerChartComponent = props => {
     );
   });
 
+  // TODO: Simplify calculations
   // Calculate statistics to display in the cards
   // Note: We are bundling both submitted ndcs and enhanced submitted NDCs, which is
   //       the reason for this extra processing. In addition, we are also ensuring
   //       percentages get formatted correctly for the display in the cards, without
   //       decimals, as well as insuring that the result adds to 100%.
   const cardsData = React.useMemo(() => {
+    // 2030 and 2035
+    const submittedWith2030And2035NumCountries =
+      submissionTypeStatistics.submittedWith2030And2035.numCountries;
+    const submittedWith2030And2035EmissionsPerc = submissionTypeStatistics.submittedWith2030And2035.emissionsPerc.toFixed(
+      0
+    );
+
     const submittedWith2030NumCountries =
       submissionTypeStatistics.submittedWith2030.numCountries;
     const submittedWith2030EmissionsPerc =
@@ -118,6 +127,10 @@ const Ndc2025TrackerChartComponent = props => {
       100 - submittedWith2030EmissionsPerc - submitted2025EmissionsPerc;
 
     return {
+      submittedWith2030And2035: {
+        numCountries: submittedWith2030And2035NumCountries,
+        emissionsPerc: submittedWith2030And2035EmissionsPerc
+      },
       submittedWith2030: {
         numCountries: submittedWith2030NumCountries,
         emissionsPerc: submittedWith2030EmissionsPerc
@@ -239,12 +252,24 @@ const Ndc2025TrackerChartComponent = props => {
         </div>
         <div className={styles.cards}>
           <p />
+          {/* TODO: Simplify display */}
+          <p className={styles.submittedWith2030}>
+            2025 NDCs<span>with 2030 and 2035 targets</span>
+          </p>
           <p className={styles.submittedWith2030}>
             2025 NDCs<span>with 2030 target</span>
           </p>
-          <p className={styles.submitted2025}>2025 NDC</p>
-          <p className={styles.notSubmitted}>No 2025 NDC</p>
+          <p className={styles.submitted2025}>2025 NDsC</p>
+          <p className={styles.notSubmitted}>No 2025 NDCs</p>
           <p>Total Countries</p>
+          <p
+            className={classNames(
+              styles.bigCard,
+              styles.submittedWith2030And2035
+            )}
+          >
+            {cardsData.submittedWith2030And2035.numCountries}
+          </p>
           <p className={classNames(styles.bigCard, styles.submittedWith2030)}>
             {cardsData.submittedWith2030.numCountries}
           </p>
@@ -255,6 +280,14 @@ const Ndc2025TrackerChartComponent = props => {
             {cardsData.notSubmitted.numCountries}
           </p>
           <p>Global Emissions</p>
+          <p
+            className={classNames(
+              styles.smallCard,
+              styles.submittedWith2030And2035
+            )}
+          >
+            {cardsData.submittedWith2030And2035.emissionsPerc}%
+          </p>
           <p className={classNames(styles.smallCard, styles.submittedWith2030)}>
             {cardsData.submittedWith2030.emissionsPerc}%
           </p>
@@ -331,7 +364,6 @@ const Ndc2025TrackerChartComponent = props => {
                   className={classNames(
                     styles.barChartBar,
                     styles[getCountrySubmissionTypeKey(d)],
-                    styles.submitted2025,
                     hoveredBar?.iso === d.iso && styles.barChartBarHovered
                   )}
                   dataKey={`${i}`}
