@@ -86,6 +86,8 @@ const NDCSEnhancements2025Map = ({
                 '2025_compare_1',
                 '2025_compare_2',
                 '2025_compare_3',
+                '2025_compare_4',
+                '2025_compare_5',
                 '2025_statement',
                 '2025_source',
                 '2025_date',

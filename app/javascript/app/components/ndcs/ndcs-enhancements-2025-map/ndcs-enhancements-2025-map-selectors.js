@@ -78,7 +78,9 @@ const getPreviousComparisonIndicators = createSelector(
     const compareIndicatorSlugs = [
       '2025_compare_1',
       '2025_compare_2',
-      '2025_compare_3'
+      '2025_compare_3',
+      '2025_compare_4',
+      '2025_compare_5'
     ];
     return indicators.filter(ind => compareIndicatorSlugs.includes(ind.value));
   }
