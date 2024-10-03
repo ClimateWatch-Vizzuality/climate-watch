@@ -71,7 +71,7 @@
     }
 
     span {
-      font-size: $font-size-sm
+      font-size: $font-size-sm;
     }
   }
 
@@ -94,19 +94,19 @@
   }
 
   .submittedWith2030And2035 {
-    color: $chart-color-4;
+    color: $chart-color-1;
     align-items: center;
     justify-content: center;
   }
 
   .submittedWith2030 {
-    color: $chart-color-4;
+    color: $chart-color-3;
     align-items: center;
     justify-content: center;
   }
 
   .submitted2025 {
-    color: $theme-color-medium;
+    color: $chart-color-2;
     align-items: center;
     justify-content: center;
   }
