@@ -8,12 +8,10 @@ import MapLegend from 'components/map-legend';
 import CountriesDocumentsProvider from 'providers/countries-documents-provider';
 import MetadataProvider from 'providers/metadata-provider';
 import NdcsProvider from 'providers/ndcs-provider';
-import { CheckInput } from 'cw-components';
 import Loading from 'components/loading';
 import ModalMetadata from 'components/modal-metadata';
 import ModalPngDownload from 'components/modal-png-download';
 import NDCSEnhancementsTooltip from 'components/ndcs/ndcs-enhancements-map/ndcs-enhancements-tooltip';
-import blueCheckboxTheme from 'styles/themes/checkbox/blue-checkbox.scss';
 import { INDICATOR_SLUGS } from 'data/constants';
 import styles from './ndcs-enhancements-2025-map-styles.scss';
 
@@ -26,9 +24,7 @@ const NDCSEnhancements2025Map = ({
   tooltipValues,
   handleCountryEnter,
   mapColors,
-  handleOnChangeChecked,
   handleCountryClick,
-  checked,
   pngDownloadId
 }) => {
   // eslint-disable-next-line react/prop-types
@@ -65,16 +61,6 @@ const NDCSEnhancements2025Map = ({
                 <span data-tour="ndc-enhancement-tracker-02">
                   {renderMap({ isTablet })}
                 </span>
-                {!loading && (
-                  <div className={styles.checkboxContainer}>
-                    <CheckInput
-                      theme={blueCheckboxTheme}
-                      label="Show which new NDCs reduce total emissions from previous NDC"
-                      checked={checked}
-                      onChange={() => handleOnChangeChecked(!checked)}
-                    />
-                  </div>
-                )}
                 {!loading && tooltipValues && (
                   <NDCSEnhancementsTooltip
                     id={TOOLTIP_ID}
@@ -122,9 +108,7 @@ NDCSEnhancements2025Map.propTypes = {
   tooltipValues: PropTypes.object,
   pngDownloadId: PropTypes.string.isRequired,
   handleCountryEnter: PropTypes.func.isRequired,
-  handleOnChangeChecked: PropTypes.func.isRequired,
   handleCountryClick: PropTypes.func.isRequired,
-  checked: PropTypes.bool,
   mapColors: PropTypes.array
 };
 
