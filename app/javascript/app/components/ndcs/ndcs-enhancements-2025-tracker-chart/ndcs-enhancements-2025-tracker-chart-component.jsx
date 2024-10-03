@@ -275,33 +275,36 @@ const Ndc2025TrackerChartComponent = props => {
         </div>
         <div className={styles.cards}>
           <p />
-          {renderCardHead(
+          {/* {renderCardHead(
             'submittedWith2030And2035',
             '2025 NDCs',
             'with 2030 and 2035 targets'
           )}
-          {renderCardHead('submittedWith2030', '2025 NDCs', 'with 2030 target')}
+          {renderCardHead('submittedWith2030', '2025 NDCs', 'with 2030 target')} */}
           {renderCardHead('submitted2025', '2025 NDCs')}
           {renderCardHead('notSubmitted', 'No 2025 NDCs')}
+          <p />
 
           <p>Total Countries</p>
-          {renderCard(
+          {/* {renderCard(
             'submittedWith2030And2035',
             'numCountries',
             styles.bigCard
           )}
-          {renderCard('submittedWith2030', 'numCountries', styles.bigCard)}
+          {renderCard('submittedWith2030', 'numCountries', styles.bigCard)} */}
           {renderCard('submitted2025', 'numCountries', styles.bigCard)}
           {renderCard('notSubmitted', 'numCountries', styles.bigCard)}
+          <p />
           <p>Global Emissions</p>
-          {renderCard(
+          {/* {renderCard(
             'submittedWith2030And2035',
             'emissionsPerc',
             styles.smallCard
           )}
-          {renderCard('submittedWith2030', 'emissionsPerc', styles.smallCard)}
+          {renderCard('submittedWith2030', 'emissionsPerc', styles.smallCard)} */}
           {renderCard('submitted2025', 'emissionsPerc', styles.smallCard)}
           {renderCard('notSubmitted', 'emissionsPerc', styles.smallCard)}
+          <p />
         </div>
         <div className={styles.ndc2025TrackerChart}>
           <div className={styles.title}>

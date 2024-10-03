@@ -36,18 +36,27 @@
 
 .cards {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  // For use when displaying extra indicator cards
+  // grid-template-columns: repeat(5, 1fr);
+  // column-gap: 20px;
+  grid-template-columns: repeat(4, 1fr);
+  column-gap: 32px;
+
   margin-block: 45px 30px;
   row-gap: 6px;
-  column-gap: 20px;
 
   @media #{$mobile-only} {
-    column-gap: 8px;
+    // For use when displaying extra indicator cards
+    // column-gap: 8px;
+    column-gap: 30px;
   }
 
   @media #{$tablet-landscape} {
-    grid-template-columns: repeat(5, 214px);
-    column-gap: 14px;
+    // For use when displaying extra indicator cards
+    // grid-template-columns: repeat(5, 214px);
+    // column-gap: 14px;
+    grid-template-columns: repeat(4, 235);
+    column-gap: 52px;
   }
 
   p {
@@ -56,9 +65,11 @@
     flex-direction: column;
 
     &:nth-child(2),
-    &:nth-child(3),
-    &:nth-child(4),
-    &:nth-child(5) {
+    &:nth-child(3) {
+    // For use when displaying enhanced card
+    // &:nth-child(4),
+    // For use when displaying extra indicator cards
+    // &:nth-child(5) {
       @media #{$tablet-portrait} {
         font-size: $font-size-large;
       }
@@ -93,17 +104,18 @@
     font-weight: $font-weight-bold;
   }
 
-  .submittedWith2030And2035 {
-    color: $chart-color-1;
-    align-items: center;
-    justify-content: center;
-  }
+  // For use when displaying extra indicator cards
+  // .submittedWith2030And2035 {
+  //   color: $chart-color-1;
+  //   align-items: center;
+  //   justify-content: center;
+  // }
 
-  .submittedWith2030 {
-    color: $chart-color-3;
-    align-items: center;
-    justify-content: center;
-  }
+  // .submittedWith2030 {
+  //   color: $chart-color-3;
+  //   align-items: center;
+  //   justify-content: center;
+  // }
 
   .submitted2025 {
     color: $chart-color-2;
@@ -194,15 +206,16 @@
   height: 50px;
 }
 
-.submittedWith2030And2035 {
-  fill: $chart-color-1;
-  stroke: $white;
-}
+// For use when displaying extra indicator cards
+// .submittedWith2030And2035 {
+//   fill: $chart-color-1;
+//   stroke: $white;
+// }
 
-.submittedWith2030 {
-  fill: $chart-color-3;
-  stroke: $white;
-}
+// .submittedWith2030 {
+//   fill: $chart-color-3;
+//   stroke: $white;
+// }
 
 .submitted2025 {
   fill: $chart-color-2;
