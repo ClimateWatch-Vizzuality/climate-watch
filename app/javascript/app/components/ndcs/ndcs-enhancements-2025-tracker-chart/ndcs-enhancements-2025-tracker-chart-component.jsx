@@ -96,52 +96,32 @@ const Ndc2025TrackerChartComponent = props => {
     );
   });
 
-  // TODO: Simplify calculations
-  // Calculate statistics to display in the cards
-  // Note: We are bundling both submitted ndcs and enhanced submitted NDCs, which is
-  //       the reason for this extra processing. In addition, we are also ensuring
-  //       percentages get formatted correctly for the display in the cards, without
-  //       decimals, as well as insuring that the result adds to 100%.
   const cardsData = React.useMemo(() => {
-    // 2030 and 2035
-    const submittedWith2030And2035NumCountries =
-      submissionTypeStatistics.submittedWith2030And2035.numCountries;
-    const submittedWith2030And2035EmissionsPerc = submissionTypeStatistics.submittedWith2030And2035.emissionsPerc.toFixed(
-      0
+    // Get keys to calculate cards' data. "Not submitted" will be calculated by hand, as it'll depend
+    // on the remaining values in order to ensure percentages don't add up to more than 100%.
+    const submissionTypesKeys = Object.keys(SUBMISSION_TYPES).filter((key) => key !== 'notSubmitted');
+
+    const submittedTypesData = submissionTypesKeys.reduce(
+      (acc, key) => {
+        const stats = submissionTypeStatistics[key];
+        return {
+          ...acc,
+          [key]: {
+            numCountries: stats.numCountries.toFixed(0),
+            emissionsPerc: stats.emissionsPerc.toFixed(0)
+          }
+        };
+      },
+      {}
     );
 
-    const submittedWith2030NumCountries =
-      submissionTypeStatistics.submittedWith2030.numCountries;
-    const submittedWith2030EmissionsPerc =
-      submissionTypeStatistics.submittedWith2030.emissionsPerc.toFixed(0);
-
-    const submitted2025NumCountries =
-      submissionTypeStatistics.submitted2025.numCountries;
-    const submitted2025EmissionsPerc = submissionTypeStatistics.submitted2025.emissionsPerc.toFixed(
-      0
-    );
-
-    const notSubmittedNumCountries =
-      submissionTypeStatistics.notSubmitted.numCountries;
-    const notSubmittedEmissionsPerc =
-      100 - submittedWith2030EmissionsPerc - submitted2025EmissionsPerc;
+    const allSubmittedTypesPerc = Object.values(submittedTypesData).reduce((acc, d) => acc + d?.emissionsPerc || 0, 0);
 
     return {
-      submittedWith2030And2035: {
-        numCountries: submittedWith2030And2035NumCountries,
-        emissionsPerc: submittedWith2030And2035EmissionsPerc
-      },
-      submittedWith2030: {
-        numCountries: submittedWith2030NumCountries,
-        emissionsPerc: submittedWith2030EmissionsPerc
-      },
-      submitted2025: {
-        numCountries: submitted2025NumCountries,
-        emissionsPerc: submitted2025EmissionsPerc
-      },
+      ...submittedTypesData,
       notSubmitted: {
-        numCountries: notSubmittedNumCountries,
-        emissionsPerc: notSubmittedEmissionsPerc
+        numCountries: submissionTypeStatistics.notSubmitted.numCountries,
+        emissionsPerc: 100 - allSubmittedTypesPerc // Ensure it won't cause values to go over 100%
       }
     };
   });
@@ -259,7 +239,7 @@ const Ndc2025TrackerChartComponent = props => {
           <p className={styles.submittedWith2030}>
             2025 NDCs<span>with 2030 target</span>
           </p>
-          <p className={styles.submitted2025}>2025 NDsC</p>
+          <p className={styles.submitted2025}>2025 NDCS</p>
           <p className={styles.notSubmitted}>No 2025 NDCs</p>
           <p>Total Countries</p>
           <p
