@@ -21,9 +21,11 @@ import MetadataProvider from 'providers/metadata-provider';
 import styles from './ndcs-enhancements-2025-tracker-chart-styles.scss';
 
 const SUBMISSION_TYPES = {
-  submittedEnhanced: 'Submitted 2025 NDC with 2030 target',
-  submitted: 'Submitted 2025 NDC',
-  notSubmitted: 'Not Submitted'
+  submittedWith2030And2035: 'Submitted 2025 NDC with 2030 and 2035 targets',
+  submittedWith2030: 'Submitted 2025 NDC with 2030 target',
+  submitted2025: 'Submitted 2025 NDC',
+  // ! TODO Default value conflicts with the the default on in the selector. Needs to be addressed
+  notSubmitted: 'No 2025 NDC'
 };
 
 const Ndc2025TrackerChartComponent = props => {
@@ -94,33 +96,38 @@ const Ndc2025TrackerChartComponent = props => {
       {}
     );
   });
-  // Calculate statistics to display in the cards
-  // Note: We are bundling both submitted ndcs and enhanced submitted NDCs, which is
-  //       the reason for this extra processing. In addition, we are also ensuring
-  //       percentages get formatted correctly for the display in the cards, without
-  //       decimals, as well as insuring that the result adds to 100%.
+
   const cardsData = React.useMemo(() => {
-    const submittedNumCountries =
-      submissionTypeStatistics.submittedEnhanced.numCountries +
-      submissionTypeStatistics.submitted.numCountries;
+    // Get keys to calculate cards' data. "Not submitted" will be calculated by hand, as it'll depend
+    // on the remaining values in order to ensure percentages don't add up to more than 100%.
+    const submissionTypesKeys = Object.keys(SUBMISSION_TYPES).filter(
+      key => key !== 'notSubmitted'
+    );
 
-    const submittedEmissionsPerc = (
-      submissionTypeStatistics.submittedEnhanced.emissionsPerc +
-      submissionTypeStatistics.submitted.emissionsPerc
-    ).toFixed(0);
+    const submittedTypesData = submissionTypesKeys.reduce((acc, key) => {
+      const stats = submissionTypeStatistics[key];
+      const emissionsPercNotZero = stats.emissionsPerc > 0;
 
-    const notSubmittedNumCountries =
-      submissionTypeStatistics.notSubmitted.numCountries;
-    const notSubmittedEmissionsPerc = 100 - submittedEmissionsPerc;
+      return {
+        ...acc,
+        [key]: {
+          numCountries: stats.numCountries.toFixed(0),
+          emissionsPerc: stats.emissionsPerc.toFixed(0),
+          emissionsPercNotZero
+        }
+      };
+    }, {});
+
+    const allSubmittedTypesPerc = Object.values(submittedTypesData).reduce(
+      (acc, d) => acc + d?.emissionsPerc || 0,
+      0
+    );
 
     return {
-      submitted: {
-        numCountries: submittedNumCountries,
-        emissionsPerc: submittedEmissionsPerc
-      },
+      ...submittedTypesData,
       notSubmitted: {
-        numCountries: notSubmittedNumCountries,
-        emissionsPerc: notSubmittedEmissionsPerc
+        numCountries: submissionTypeStatistics.notSubmitted.numCountries,
+        emissionsPerc: 100 - allSubmittedTypesPerc // Ensure it won't cause values to go over 100%
       }
     };
   });
@@ -131,6 +138,7 @@ const Ndc2025TrackerChartComponent = props => {
     const parsedDataWithoutEuCountries = parsedData.filter(
       country => country.is_in_eu === false
     );
+
     let sortedData = parsedDataWithoutEuCountries || [];
     if (sortedBy === 'submission_date') {
       sortedData = sortedData.sort((a, b) => {
@@ -168,6 +176,35 @@ const Ndc2025TrackerChartComponent = props => {
   );
 
   if (!parsedData) return null;
+
+  // Quick helpers to simplify rendering cards
+  const renderCardHead = (key, title, subtitle) => (
+    <p className={styles[key]}>
+      {title}
+      {subtitle && <span>{subtitle}</span>}
+    </p>
+  );
+
+  const renderCard = (key, property, style) => {
+    let displayValue = cardsData[key][property];
+
+    // It can be that emissionsPercentage got rounded down to 0, due to it being a small number. In order
+    // to not induce the user into error thinking it's actually a straight 0, we'll display '<1%'
+    if (
+      property === 'emissionsPerc' &&
+      displayValue === '0' &&
+      cardsData[key].emissionsPercNotZero
+    ) {
+      displayValue = '<1';
+    }
+
+    return (
+      <p className={classNames(style, styles[key])}>
+        {displayValue}
+        {property === 'emissionsPerc' && <>%</>}
+      </p>
+    );
+  };
 
   return (
     <div className={styles.wrapper}>
@@ -230,34 +267,33 @@ const Ndc2025TrackerChartComponent = props => {
         </div>
         <div className={styles.cards}>
           <p />
-          {/* For use when displaying enhanced card */}
-          {/* <p className={styles.submittedEnhanced}>
-            2025 NDCs<span>with enhanced 2035 targets</span>
-          </p> */}
-          <p className={styles.submitted}>2025 NDC</p>
-          <p className={styles.notSubmitted}>No 2025 NDC</p>
+          {renderCardHead(
+            'submittedWith2030And2035',
+            '2025 NDCs',
+            'with 2030 and 2035 targets'
+          )}
+          {renderCardHead('submittedWith2030', '2025 NDCs', 'with 2030 target')}
+          {renderCardHead('submitted2025', '2025 NDCs')}
+          {renderCardHead('notSubmitted', 'No 2025 NDCs')}
+
           <p>Total Countries</p>
-          {/* For use when displaying enhanced card */}
-          {/* <p className={classNames(styles.bigCard, styles.submittedEnhanced)}>
-            {submissionStats.submittedEnhanced.numCountries}
-          </p> */}
-          <p className={classNames(styles.bigCard, styles.submitted)}>
-            {cardsData.submitted.numCountries}
-          </p>
-          <p className={classNames(styles.bigCard, styles.notSubmitted)}>
-            {cardsData.notSubmitted.numCountries}
-          </p>
+          {renderCard(
+            'submittedWith2030And2035',
+            'numCountries',
+            styles.bigCard
+          )}
+          {renderCard('submittedWith2030', 'numCountries', styles.bigCard)}
+          {renderCard('submitted2025', 'numCountries', styles.bigCard)}
+          {renderCard('notSubmitted', 'numCountries', styles.bigCard)}
           <p>Global Emissions</p>
-          {/* For use when displaying enhanced card */}
-          {/* <p className={classNames(styles.smallCard, styles.submittedEnhanced)}>
-            {submissionStats.submittedEnhanced.emissionsPerc}%
-          </p> */}
-          <p className={classNames(styles.smallCard, styles.submitted)}>
-            {cardsData.submitted.emissionsPerc}%
-          </p>
-          <p className={classNames(styles.smallCard, styles.notSubmitted)}>
-            {cardsData.notSubmitted.emissionsPerc}%
-          </p>
+          {renderCard(
+            'submittedWith2030And2035',
+            'emissionsPerc',
+            styles.smallCard
+          )}
+          {renderCard('submittedWith2030', 'emissionsPerc', styles.smallCard)}
+          {renderCard('submitted2025', 'emissionsPerc', styles.smallCard)}
+          {renderCard('notSubmitted', 'emissionsPerc', styles.smallCard)}
         </div>
         <div className={styles.ndc2025TrackerChart}>
           <div className={styles.title}>
@@ -325,7 +361,6 @@ const Ndc2025TrackerChartComponent = props => {
                   className={classNames(
                     styles.barChartBar,
                     styles[getCountrySubmissionTypeKey(d)],
-                    styles.submitted,
                     hoveredBar?.iso === d.iso && styles.barChartBarHovered
                   )}
                   dataKey={`${i}`}
