@@ -250,7 +250,7 @@ const Ndc2025TrackerChartComponent = props => {
         <div className={styles.cards}>
           <p />
           {renderCardHead(
-            'submittedWith2030',
+            'submittedWith2030And2035',
             '2025 NDCs',
             'with 2030 and 2035 targets'
           )}
