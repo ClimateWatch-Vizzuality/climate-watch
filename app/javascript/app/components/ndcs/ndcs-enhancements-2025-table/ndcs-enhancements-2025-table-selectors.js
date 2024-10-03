@@ -108,25 +108,21 @@ export const tableRemoveIsoFromData = createSelector(
       const updatedD = { ...d };
       updatedD['2025 Statement'] = updatedD['2025 NDC Statement'];
 
-      // Use the color of the NDC status to color also the 2030 target status
-      const submissionValue =
-        d['2025 NDC Submission'] === 'Submitted 2025 NDC with 2030 target'
-          ? 'Submitted 2025 NDC'
-          : d['2025 NDC Submission'];
-
       const color =
         (d['2025 NDC Submission'] &&
           NDC_2025_LABEL_COLORS[
-            INVERTED_NDC_2025_LABEL_SLUGS[submissionValue]
+            INVERTED_NDC_2025_LABEL_SLUGS[d['2025 NDC Submission']]
           ]) ||
         NDC_2025_LABEL_COLORS.NO_SUBMISSION;
-      updatedD['NDC Status'] = submissionValue && {
+      updatedD['NDC Status'] = d['2025 NDC Submission'] && {
         color,
         text:
           d['2025 NDC Submission'] === 'No Information'
             ? 'No 2025 NDC'
             : d['2025 NDC Submission'],
-        sortIndex: color === NDC_2025_LABEL_COLORS.SUBMITTED_2025 ? '1' : '0'
+        sortIndex: Object.values(NDC_2025_LABEL_SLUGS).indexOf(
+          d['2025 NDC Submission']
+        )
       };
 
       updatedD['Source Link'] = d.Source
