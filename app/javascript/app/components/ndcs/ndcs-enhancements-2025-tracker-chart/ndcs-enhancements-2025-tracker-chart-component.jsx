@@ -106,11 +106,14 @@ const Ndc2025TrackerChartComponent = props => {
 
     const submittedTypesData = submissionTypesKeys.reduce((acc, key) => {
       const stats = submissionTypeStatistics[key];
+      const emissionsPercNotZero = stats.emissionsPerc > 0;
+
       return {
         ...acc,
         [key]: {
           numCountries: stats.numCountries.toFixed(0),
-          emissionsPerc: stats.emissionsPerc.toFixed(0)
+          emissionsPerc: stats.emissionsPerc.toFixed(0),
+          emissionsPercNotZero
         }
       };
     }, {});
@@ -182,12 +185,26 @@ const Ndc2025TrackerChartComponent = props => {
     </p>
   );
 
-  const renderCard = (key, property, style) => (
-    <p className={classNames(style, styles[key])}>
-      {cardsData[key][property]}
-      {property === 'emissionsPerc' && <>%</>}
-    </p>
-  );
+  const renderCard = (key, property, style) => {
+    let displayValue = cardsData[key][property];
+
+    // It can be that emissionsPercentage got rounded down to 0, due to it being a small number. In order
+    // to not induce the user into error thinking it's actually a straight 0, we'll display '<1%'
+    if (
+      property === 'emissionsPerc' &&
+      displayValue === '0' &&
+      cardsData[key].emissionsPercNotZero
+    ) {
+      displayValue = '<1';
+    }
+
+    return (
+      <p className={classNames(style, styles[key])}>
+        {displayValue}
+        {property === 'emissionsPerc' && <>%</>}
+      </p>
+    );
+  };
 
   return (
     <div className={styles.wrapper}>
