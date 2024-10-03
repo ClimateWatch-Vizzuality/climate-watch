@@ -404,9 +404,9 @@ export const ENHANCEMENT_LABEL_SLUGS = {
 };
 
 export const NDC_2025_LABEL_SLUGS = {
-  SUBMITTED_2025_WITH_2030_AND_2035_TARGETS:
-    'Submitted 2025 NDC with 2030 and 2035 targets',
-  SUBMITTED_2025_WITH_2030_TARGET: 'Submitted 2025 NDC with 2030 target',
+  // SUBMITTED_2025_WITH_2030_AND_2035_TARGETS:
+  //   'Submitted 2025 NDC with 2030 and 2035 targets',
+  // SUBMITTED_2025_WITH_2030_TARGET: 'Submitted 2025 NDC with 2030 target',
   SUBMITTED_2025: 'Submitted 2025 NDC',
   NO_INFO: 'No Information'
 };
@@ -567,10 +567,10 @@ export const NDC_2025_COLORS = {
 };
 
 export const LEGEND_STATUS_2025_VALUES_COLORS = {
-  'Submitted 2025 NDC with 2030 and 2035 targets':
-    NDC_2025_LABEL_COLORS.SUBMITTED_2025_WITH_2030_AND_2035_TARGETS,
-  'Submitted 2025 NDC with 2030 target':
-    NDC_2025_LABEL_COLORS.SUBMITTED_2025_WITH_2030_TARGET,
+  // 'Submitted 2025 NDC with 2030 and 2035 targets':
+  //   NDC_2025_LABEL_COLORS.SUBMITTED_2025_WITH_2030_AND_2035_TARGETS,
+  // 'Submitted 2025 NDC with 2030 target':
+  //   NDC_2025_LABEL_COLORS.SUBMITTED_2025_WITH_2030_TARGET,
   'Submitted 2025 NDC': NDC_2025_LABEL_COLORS.SUBMITTED_2025,
   'No information': NDC_2025_LABEL_COLORS.NO_SUBMISSION,
   'Not Applicable: Countries that are not a Party to the UNFCCC':
