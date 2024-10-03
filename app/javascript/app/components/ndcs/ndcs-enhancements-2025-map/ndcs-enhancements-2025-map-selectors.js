@@ -39,11 +39,6 @@ export const getCountries = state =>
 export const getMetadata = state =>
   !state.metadata.loading ? state.metadata.data : null;
 
-export const getIsEnhancedChecked = createSelector(
-  getSearch,
-  search => search.showEnhancedAmbition !== 'false'
-);
-
 export const getISOCountries = createSelector([getCountries], countries =>
   countries.map(country => country.iso_code3)
 );
@@ -161,10 +156,9 @@ export const getCompareLinks = createSelector(
 );
 
 export const filterEnhancedValueOnIndicator = createSelector(
-  [getMapIndicator, getIsEnhancedChecked],
-  (indicator, isEnhancedChecked) => {
+  [getMapIndicator],
+  indicator => {
     if (!indicator) return null;
-    if (isEnhancedChecked) return indicator;
     const { legendBuckets, locations } = indicator;
     const enhancedLabelId = Object.keys(legendBuckets).find(
       key =>
@@ -182,7 +176,6 @@ export const filterEnhancedValueOnIndicator = createSelector(
       const countryData = updatedLocations[iso];
       if (countryData && countryData.label_id) {
         const shouldHideEnhancedLabel =
-          !isEnhancedChecked &&
           String(countryData.label_id) === enhancedLabelId;
         const updatedLabelId = shouldHideEnhancedLabel
           ? submittedLabelId
