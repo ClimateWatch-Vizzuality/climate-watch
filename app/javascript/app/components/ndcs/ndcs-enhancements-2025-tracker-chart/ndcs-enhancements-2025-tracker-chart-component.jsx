@@ -21,8 +21,8 @@ import MetadataProvider from 'providers/metadata-provider';
 import styles from './ndcs-enhancements-2025-tracker-chart-styles.scss';
 
 const SUBMISSION_TYPES = {
-  submittedEnhanced: 'Submitted 2025 NDC with 2030 target',
-  submitted: 'Submitted 2025 NDC',
+  submittedWith2030: 'Submitted 2025 NDC with 2030 target',
+  submitted2025: 'Submitted 2025 NDC',
   notSubmitted: 'Not Submitted'
 };
 
@@ -101,29 +101,30 @@ const Ndc2025TrackerChartComponent = props => {
   //       percentages get formatted correctly for the display in the cards, without
   //       decimals, as well as insuring that the result adds to 100%.
   const cardsData = React.useMemo(() => {
-    const submittedEnhancedNumCountries =
-      submissionTypeStatistics.submittedEnhanced.numCountries;
-    const submittedEnhancedEmissionsPerc =
-      submissionTypeStatistics.submittedEnhanced.emissionsPerc.toFixed(0);
+    const submittedWith2030NumCountries =
+      submissionTypeStatistics.submittedWith2030.numCountries;
+    const submittedWith2030EmissionsPerc =
+      submissionTypeStatistics.submittedWith2030.emissionsPerc.toFixed(0);
 
-    const submittedNumCountries =
-      submissionTypeStatistics.submitted.numCountries;
-    const submittedEmissionsPerc =
-      submissionTypeStatistics.submitted.emissionsPerc.toFixed(0);
+    const submitted2025NumCountries =
+      submissionTypeStatistics.submitted2025.numCountries;
+    const submitted2025EmissionsPerc = submissionTypeStatistics.submitted2025.emissionsPerc.toFixed(
+      0
+    );
 
     const notSubmittedNumCountries =
       submissionTypeStatistics.notSubmitted.numCountries;
     const notSubmittedEmissionsPerc =
-      100 - submittedEnhancedEmissionsPerc - submittedEmissionsPerc;
+      100 - submittedWith2030EmissionsPerc - submitted2025EmissionsPerc;
 
     return {
-      submittedEnhanced: {
-        numCountries: submittedEnhancedNumCountries,
-        emissionsPerc: submittedEnhancedEmissionsPerc
+      submittedWith2030: {
+        numCountries: submittedWith2030NumCountries,
+        emissionsPerc: submittedWith2030EmissionsPerc
       },
-      submitted: {
-        numCountries: submittedNumCountries,
-        emissionsPerc: submittedEmissionsPerc
+      submitted2025: {
+        numCountries: submitted2025NumCountries,
+        emissionsPerc: submitted2025EmissionsPerc
       },
       notSubmitted: {
         numCountries: notSubmittedNumCountries,
@@ -238,27 +239,27 @@ const Ndc2025TrackerChartComponent = props => {
         </div>
         <div className={styles.cards}>
           <p />
-          <p className={styles.submittedEnhanced}>
-            2025 NDCs<span>with enhanced 2035 targets</span>
+          <p className={styles.submittedWith2030}>
+            2025 NDCs<span>with 2030 target</span>
           </p>
-          <p className={styles.submitted}>2025 NDC</p>
+          <p className={styles.submitted2025}>2025 NDC</p>
           <p className={styles.notSubmitted}>No 2025 NDC</p>
           <p>Total Countries</p>
-          <p className={classNames(styles.bigCard, styles.submittedEnhanced)}>
-            {cardsData.submittedEnhanced.numCountries}
+          <p className={classNames(styles.bigCard, styles.submittedWith2030)}>
+            {cardsData.submittedWith2030.numCountries}
           </p>
-          <p className={classNames(styles.bigCard, styles.submitted)}>
-            {cardsData.submitted.numCountries}
+          <p className={classNames(styles.bigCard, styles.submitted2025)}>
+            {cardsData.submitted2025.numCountries}
           </p>
           <p className={classNames(styles.bigCard, styles.notSubmitted)}>
             {cardsData.notSubmitted.numCountries}
           </p>
           <p>Global Emissions</p>
-          <p className={classNames(styles.smallCard, styles.submittedEnhanced)}>
-            {cardsData.submittedEnhanced.emissionsPerc}%
+          <p className={classNames(styles.smallCard, styles.submittedWith2030)}>
+            {cardsData.submittedWith2030.emissionsPerc}%
           </p>
-          <p className={classNames(styles.smallCard, styles.submitted)}>
-            {cardsData.submitted.emissionsPerc}%
+          <p className={classNames(styles.smallCard, styles.submitted2025)}>
+            {cardsData.submitted2025.emissionsPerc}%
           </p>
           <p className={classNames(styles.smallCard, styles.notSubmitted)}>
             {cardsData.notSubmitted.emissionsPerc}%
@@ -282,7 +283,7 @@ const Ndc2025TrackerChartComponent = props => {
                     { label: 'Total emissions', value: 'emissions' }
                   ]}
                   selectedOption={sortedBy}
-                  onClick={a => setSortedBy(a.value)}
+                  onClick={(a) => setSortedBy(a.value)}
                   theme={{
                     wrapper: styles.switchWrapper,
                     checkedOption: styles.switchSelected
@@ -330,7 +331,7 @@ const Ndc2025TrackerChartComponent = props => {
                   className={classNames(
                     styles.barChartBar,
                     styles[getCountrySubmissionTypeKey(d)],
-                    styles.submitted,
+                    styles.submitted2025,
                     hoveredBar?.iso === d.iso && styles.barChartBarHovered
                   )}
                   dataKey={`${i}`}
