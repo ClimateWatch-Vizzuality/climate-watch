@@ -39,18 +39,6 @@
         width: 100% !important;
         margin: 0 !important;
 
-        // Timeline start fade effect
-        &::before {
-          content: "";
-          position: absolute;
-          top: 50%;
-          left: 0;
-          height: 100px;
-          width: 50px;
-          background: linear-gradient(91deg, #011880 14.04%, rgba(1, 24, 128, 0) 50.81%);
-          z-index: 1;
-        }
-
         .events {
           width: 100% !important;
 
@@ -193,8 +181,7 @@
       }
 
       .buttons {
-        // Hide timeline prev and next buttons
-        display: none;
+        display: block;
 
         li {
           height: 32px !important;
