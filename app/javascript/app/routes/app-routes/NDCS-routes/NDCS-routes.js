@@ -25,7 +25,7 @@ export default [
   },
   {
     path: '/2025-ndc-tracker',
-    label: '2025 NDC Tracker',
+    label: 'NDC Tracker',
     activeId
   },
   {

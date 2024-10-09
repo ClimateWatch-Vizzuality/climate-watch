@@ -19,7 +19,7 @@ const NDCSEnhancements2025 = ({ route }) => (
           <div className={styles.headerLayout}>
             <BackButton pathname="/ndcs-explore" backLabel="Explore NDCs" />
             <Intro
-              title="2025 NDC Tracker"
+              title="NDC Tracker"
               description={
                 // eslint-disable-next-line max-len
                 '<p>The Paris Agreement calls on countries to deliver new Nationally Determined Contributions (NDCs) every five years that are informed by the latest advances in technology, science and shifting economic trends.</p>'
