@@ -25,7 +25,7 @@ function Ndc2025TrackerChartContainer(props) {
   const handleInfoClick = () => {
     setModalMetadata({
       category: 'NDC Content Map',
-      slugs: '2025_status',
+      slugs: '2025_ndc',
       open: true
     });
   };
