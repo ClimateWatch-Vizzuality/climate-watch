@@ -252,8 +252,8 @@ const Ndc2025TrackerChartComponent = props => {
             />
           </div>
           <p>
-            Track which countries are submitting an updated version of their
-            NDC--a 2025 NDC. You can compare countries’ submissions side by side{' '}
+            Track which countries have submitted a new NDC. You can compare
+            countries’ submissions side by side{' '}
             <Link
               to="custom-compare/overview"
               title="Compare submissions"
@@ -261,14 +261,21 @@ const Ndc2025TrackerChartComponent = props => {
             >
               here
             </Link>{' '}
-            or by referring to the table below. To request changes or additions,
-            please contact{' '}
+            . To request changes or additions, please contact{' '}
             <a
               href="mailto:Mengpin.Ge@wri.org?subject=NDC 2025 Tracker Update"
               target="_blank"
               rel="noopener noreferrer"
             >
               Mengpin Ge
+            </a>
+            . Find out more about our resources on NDCs{' '}
+            <a
+              href="https://www.wri.org/ndcs"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <u>here</u>
             </a>
             .
           </p>
