@@ -219,7 +219,7 @@ const Ndc2025TrackerChartComponent = props => {
       <div className={layout.content}>
         <div className={styles.summary}>
           <div className={styles.summaryHeader}>
-            <h2>What countries have submitted a 2025 NDC?</h2>
+            <h2>Which countries have submitted a new NDC?</h2>
             <ButtonGroup
               className={styles.buttonGroup}
               dataTour="ndc-enhancement-tracker-04"
