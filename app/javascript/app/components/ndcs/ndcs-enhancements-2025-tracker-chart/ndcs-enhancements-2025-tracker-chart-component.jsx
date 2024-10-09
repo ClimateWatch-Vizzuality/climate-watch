@@ -284,12 +284,12 @@ const Ndc2025TrackerChartComponent = props => {
           <p />
           {/* {renderCardHead(
             'submittedWith2030And2035',
-            '2025 NDCs',
+            'New NDCs',
             'with 2030 and 2035 targets'
           )}
-          {renderCardHead('submittedWith2030', '2025 NDCs', 'with 2030 target')} */}
-          {renderCardHead('submitted2025', '2025 NDCs')}
-          {renderCardHead('notSubmitted', 'No 2025 NDCs')}
+          {renderCardHead('submittedWith2030', 'New NDCs', 'with 2030 target')} */}
+          {renderCardHead('submitted2025', 'New NDCs')}
+          {renderCardHead('notSubmitted', 'No New NDCs')}
           <p />
 
           <p>Total Countries</p>
