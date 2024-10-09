@@ -36,7 +36,12 @@ export const getData = createSelector(
     const data = Object.entries(emissionsIndicator.locations).map(
       ([iso, location]) => ({
         iso,
-        country: iso,
+        // Country property is only used to display the country name on the chart tooltips.
+        // We'll use the wri_standard_name as a standard, and default to the ISO code if one doesn't
+        // exist in order to fail safely. (IE: FE not crashing due to unexpected/missing data)
+        country:
+          countries.find(country => iso === country.iso_code3)
+            ?.wri_standard_name || iso,
         indc_submission:
           // ! TODO Default value conflicts with the one in the component. Needs to be addressed
           statusIndicator.locations[iso]?.value || 'No 2025 NDC',
