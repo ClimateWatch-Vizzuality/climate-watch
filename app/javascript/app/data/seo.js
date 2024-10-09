@@ -87,7 +87,8 @@ export const STATIC_TITLE_PARTS = {
   [SEO_PAGES.ltsExplore]: 'Explore Long-Term Strategies (LTS)',
   [SEO_PAGES.ltsCountry]: '| Long-Term Strategy (LTS) ',
   [SEO_PAGES.ndc2020]: '2020 NDC Enhancements',
-  [SEO_PAGES.ndc2025]: 'NDC Tracker',
+  [SEO_PAGES.ndc2025]:
+    'Nationally Determined Contributions (NDC) Tracker | 2025 NDCs | NDCs 3.0',
   [SEO_PAGES.netZero]: '| Net-Zero Targets',
   [SEO_PAGES.ndcSdg]: 'Explore NDC-SDG Linkages',
   [SEO_PAGES.compare]: 'Compare climate targets',
