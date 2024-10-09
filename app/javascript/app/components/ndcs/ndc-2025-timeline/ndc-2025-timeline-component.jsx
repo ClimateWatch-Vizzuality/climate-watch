@@ -73,7 +73,7 @@ class CountryTimeline extends PureComponent {
       >
         <div className={styles.timeline}>
           <h3 className={styles.timelineDescription}>
-            <AbbrReplace>Latest 2025 NDC Submitted</AbbrReplace>
+            <AbbrReplace>Latest NDC Submissions</AbbrReplace>
           </h3>
           {documentYears?.length > 0 ? (
             <HorizontalTimeline
