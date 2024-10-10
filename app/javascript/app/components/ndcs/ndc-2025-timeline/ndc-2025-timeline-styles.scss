@@ -103,25 +103,27 @@
         }
 
         .links {
-          display: block !important;
-          width: max-content;
+          display: block;
+          min-width: 220px;
+          width: fit-content;
           position: absolute;
           bottom: 15px;
           border-radius: 4px;
           background-color: $gray3;
-          overflow: hidden;
+          overflow-y: auto;
+          max-height: 140px;
           padding: 4px;
 
           li {
             text-align: left;
             position: relative;
-            display: block !important;
             border-bottom: 1px solid rgba($white, 0.2);
             transition: color 0.1s linear;
             border-radius: 4px;
 
             a {
               padding: 10px 30px 10px 10px;
+              display: block;
               width: auto;
               height: auto;
               font-size: $font-size;
