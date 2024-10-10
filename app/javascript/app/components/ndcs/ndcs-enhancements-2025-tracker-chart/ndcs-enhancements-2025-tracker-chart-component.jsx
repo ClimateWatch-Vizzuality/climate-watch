@@ -135,13 +135,9 @@ const Ndc2025TrackerChartComponent = props => {
   // Parse data to create a chart display
   // We do not want to display EU countries in the chart; instead we do EUU.
   const chartData = React.useMemo(() => {
-    const parsedDataWithoutEuCountries = parsedData.filter(
-      country => country.is_in_eu === false
-    );
-
-    let sortedData = parsedDataWithoutEuCountries || [];
+    let sortedData = [];
     if (sortedBy === 'submission_date') {
-      sortedData = sortedData.sort((a, b) => {
+      sortedData = parsedData.sort((a, b) => {
         const indcSubmissionSortOrder = [
           'Submitted 2025 NDC with 2030 target',
           'Submitted 2025 NDC with 2030 and 2035 targets',
@@ -156,7 +152,7 @@ const Ndc2025TrackerChartComponent = props => {
         return parseFloat(b.ndce_ghg) - parseFloat(a.ndce_ghg);
       });
     } else if (sortedBy === 'emissions') {
-      sortedData = sortedData.sort((a, b) => b[sortedBy] - a[sortedBy]);
+      sortedData = parsedData.sort((a, b) => b[sortedBy] - a[sortedBy]);
     }
 
     const barsData = sortedData.map((country, idx) => ({
