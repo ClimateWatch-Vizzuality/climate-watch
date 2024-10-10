@@ -25,7 +25,7 @@ const SUBMISSION_TYPES = {
   submittedWith2030: 'Submitted 2025 NDC with 2030 target',
   submitted2025: 'Submitted 2025 NDC',
   // ! TODO Default value conflicts with the the default on in the selector. Needs to be addressed
-  notSubmitted: 'No 2025 NDC'
+  notSubmitted: 'No New NDC'
 };
 
 const Ndc2025TrackerChartComponent = props => {
@@ -142,12 +142,7 @@ const Ndc2025TrackerChartComponent = props => {
     let sortedData = parsedDataWithoutEuCountries || [];
     if (sortedBy === 'submission_date') {
       sortedData = sortedData.sort((a, b) => {
-        const indcSubmissionSortOrder = [
-          'Submitted 2025 NDC with 2030 target',
-          'Submitted 2025 NDC with 2030 and 2035 targets',
-          'Submitted 2025 NDC',
-          'No 2025 NDC'
-        ];
+        const indcSubmissionSortOrder = ['New NDC', 'No New NDC'];
         const sortByIndcSubmission =
           indcSubmissionSortOrder.indexOf(a.indc_submission) -
           indcSubmissionSortOrder.indexOf(b.indc_submission);

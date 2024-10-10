@@ -44,7 +44,7 @@ export const getData = createSelector(
             ?.wri_standard_name || iso,
         indc_submission:
           // ! TODO Default value conflicts with the one in the component. Needs to be addressed
-          statusIndicator.locations[iso]?.value || 'No 2025 NDC',
+          statusIndicator.locations[iso]?.value || 'No New NDC',
         submission_date:
           dateIndicator.locations[iso]?.value ||
           no2025DateIndicator.locations[iso]?.value,

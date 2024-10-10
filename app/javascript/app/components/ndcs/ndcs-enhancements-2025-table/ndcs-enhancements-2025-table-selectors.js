@@ -70,7 +70,9 @@ export const tableGetSelectedData = createSelector(
 
     return Object.keys(refIndicator.locations)
       .map(iso => {
-        if (refIndicator.locations[iso]?.label_id === noInformationLabelId) { return null; }
+        if (refIndicator.locations[iso]?.label_id === noInformationLabelId) {
+          return null;
+        }
         const countryData =
           countries.find(country => country.iso_code3 === iso) || {};
         const row = {
@@ -125,9 +127,10 @@ export const tableRemoveIsoFromData = createSelector(
       updatedD['NDC Status'] = d['2025 NDC Submission'] && {
         color,
         text:
-          d['2025 NDC Submission'] === 'No Information'
-            ? 'No 2025 NDC'
-            : d['2025 NDC Submission'],
+          {
+            'Submitted 2025 NDC': 'New NDC',
+            'No Information': 'No New NDC'
+          }[d['2025 NDC Submission']] || d['2025 NDC Submission'],
         sortIndex: Object.values(NDC_2025_LABEL_SLUGS).indexOf(
           d['2025 NDC Submission']
         )

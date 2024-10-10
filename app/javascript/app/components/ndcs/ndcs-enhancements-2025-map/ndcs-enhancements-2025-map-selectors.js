@@ -206,7 +206,9 @@ export const reduceLegendBuckets = createSelector(
       updatedIndicator.legendBuckets
     ).reduce((acc, [key, value]) => {
       if (value.name === 'No Information') {
-        acc[key] = { ...value, name: 'No 2025 NDC' };
+        acc[key] = { ...value, name: 'No New NDC' };
+      } else if (value.name === 'Submitted 2025 NDC') {
+        acc[key] = { ...value, name: 'New NDC' };
       } else {
         acc[key] = value;
       }
@@ -217,7 +219,9 @@ export const reduceLegendBuckets = createSelector(
       updatedIndicator.locations
     ).reduce((acc, [key, value]) => {
       if (value.name === 'No Information') {
-        acc[key] = { ...value, name: 'No 2025 NDC' };
+        acc[key] = { ...value, name: 'No New NDC' };
+      } else if (value.name === 'Submitted 2025 NDC') {
+        acc[key] = { ...value, name: 'New NDC' };
       } else {
         acc[key] = value;
       }
@@ -233,13 +237,7 @@ export const sortIndicatorLegend = createSelector(
   indicator => {
     if (!indicator) return null;
     const updatedIndicator = { ...indicator };
-    const namesLegendOrder = [
-      'Submitted 2025 NDC with 2030 and 2035 targets',
-      'Submitted 2025 NDC with 2030 target',
-      'Submitted 2025 NDC',
-      'No 2025 NDC',
-      'Not Applicable'
-    ];
+    const namesLegendOrder = ['New NDC', 'No New NDC', 'Not Applicable'];
     const updatedLegendBuckets = {};
 
     Object.entries(updatedIndicator.legendBuckets).forEach(([key, value]) => {
