@@ -14,6 +14,7 @@ import {
 } from 'recharts';
 import { Switch } from 'cw-components';
 import { Link } from 'react-router-dom';
+import Button from 'components/button';
 import ButtonGroup from 'components/button-group';
 import { generateLinkToDataExplorer } from 'utils/data-explorer';
 import ModalMetadata from 'components/modal-metadata';
@@ -246,6 +247,14 @@ const Ndc2025TrackerChartComponent = props => {
                 }
               ]}
             />
+            <Button
+              className={styles.exploreNdcContentButton}
+              variant="primary"
+              href="/ndcs-explore"
+              // TODO: Analytics? Category, etc
+            >
+              Explore NDC Content
+            </Button>
           </div>
           <p>
             Track which countries have submitted a new NDC. You can compare
