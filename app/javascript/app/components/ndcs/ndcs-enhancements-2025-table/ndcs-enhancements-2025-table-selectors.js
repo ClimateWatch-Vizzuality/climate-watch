@@ -38,6 +38,7 @@ export const getIndicatorsParsed = createSelector(
               value: i.slug,
               categoryIds: i.category_ids,
               locations: i.locations,
+              labels: i.labels,
               isPreviousComparison
             })),
           'value'
@@ -61,30 +62,39 @@ export const tableGetSelectedData = createSelector(
       return [];
     }
     const refIndicator = indicators.find(
-      ind => ind.value === INDICATOR_SLUGS.emissions
-    ); // Emissions indicator is used as reference to get all countries
-    return Object.keys(refIndicator.locations).map(iso => {
-      const countryData =
-        countries.find(country => country.iso_code3 === iso) || {};
-      const row = {
-        country: countryData.wri_standard_name || iso,
-        iso
-      };
-      indicators.forEach(ind => {
-        if (ind.locations[iso]) {
-          if (ind.value === INDICATOR_SLUGS.enhancements) {
-            row[ind.label] = {
-              slug: ind.locations[iso].label_slug,
-              label: ind.locations[iso].value
-            };
-          } else {
-            row[ind.isPreviousComparison ? ind.value : ind.label] =
-              ind.locations[iso].value;
-          }
+      ind => ind.value === INDICATOR_SLUGS.submitted2025
+    );
+    const noInformationLabelId = Object.entries(refIndicator.labels).find(
+      ([, { name }]) => name === 'No Information'
+    )?.[0];
+
+    return Object.keys(refIndicator.locations)
+      .map(iso => {
+        if (refIndicator.locations[iso]?.label_id === noInformationLabelId) {
+          return null;
         }
-      });
-      return row;
-    });
+        const countryData =
+          countries.find(country => country.iso_code3 === iso) || {};
+        const row = {
+          country: countryData.wri_standard_name || iso,
+          iso
+        };
+        indicators.forEach(ind => {
+          if (ind.locations[iso]) {
+            if (ind.value === INDICATOR_SLUGS.enhancements) {
+              row[ind.label] = {
+                slug: ind.locations[iso].label_slug,
+                label: ind.locations[iso].value
+              };
+            } else {
+              row[ind.isPreviousComparison ? ind.value : ind.label] =
+                ind.locations[iso].value;
+            }
+          }
+        });
+        return row;
+      })
+      .filter(Boolean);
   }
 );
 
@@ -117,9 +127,10 @@ export const tableRemoveIsoFromData = createSelector(
       updatedD['NDC Status'] = d['2025 NDC Submission'] && {
         color,
         text:
-          d['2025 NDC Submission'] === 'No Information'
-            ? 'No 2025 NDC'
-            : d['2025 NDC Submission'],
+          {
+            'Submitted 2025 NDC': 'New NDC',
+            'No Information': 'No New NDC'
+          }[d['2025 NDC Submission']] || d['2025 NDC Submission'],
         sortIndex: Object.values(NDC_2025_LABEL_SLUGS).indexOf(
           d['2025 NDC Submission']
         )

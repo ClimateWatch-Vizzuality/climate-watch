@@ -65,6 +65,7 @@ const NDCSEnhancements2025Map = ({
                   <NDCSEnhancementsTooltip
                     id={TOOLTIP_ID}
                     tooltipValues={tooltipValues}
+                    is2025
                   />
                 )}
                 {indicator && renderMapLegend()}

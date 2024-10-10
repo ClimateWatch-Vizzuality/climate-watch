@@ -404,9 +404,6 @@ export const ENHANCEMENT_LABEL_SLUGS = {
 };
 
 export const NDC_2025_LABEL_SLUGS = {
-  // SUBMITTED_2025_WITH_2030_AND_2035_TARGETS:
-  //   'Submitted 2025 NDC with 2030 and 2035 targets',
-  // SUBMITTED_2025_WITH_2030_TARGET: 'Submitted 2025 NDC with 2030 target',
   SUBMITTED_2025: 'Submitted 2025 NDC',
   NO_INFO: 'No Information'
 };
@@ -424,8 +421,6 @@ export const ENHANCEMENT_LABEL_COLORS = {
 
 export const NDC_2025_LABEL_COLORS = {
   SUBMITTED_2025: CHART_NAMED_COLORS.color2,
-  SUBMITTED_2025_WITH_2030_AND_2035_TARGETS: CHART_NAMED_COLORS.color1,
-  SUBMITTED_2025_WITH_2030_TARGET: CHART_NAMED_COLORS.color3,
   NO_SUBMISSION: '#999C9F'
 };
 
@@ -525,30 +520,30 @@ export const ENHANCEMENT_LABELS_WITH_LETTERS = [
 export const ENHANCEMENT_2025_LABELS_WITH_LETTERS = [
   {
     value: '2035 GHG target included',
-    letter: 'I',
-    label: '2035 GHG target included'
+    letter: 'N',
+    label: 'New Target: 2035 GHG target included '
   },
   {
     value: 'Economy-wide GHG target (for 2035) included',
     letter: 'E',
-    label: 'Economy-wide GHG target (for 2035) included'
+    label: 'Economy-wide: Economy-wide 2035 GHG target included'
   },
   {
     value: 'Strengthened 2030 target',
-    letter: 'S',
-    label: 'Strengthened 2030 target'
+    letter: 'M',
+    label: 'Mitigation: Strengthened 2030 GHG Target '
   },
   {
     value: 'Strengthened adaptation',
     letter: 'A',
-    label: 'Strengthened adaptation'
+    label: 'Adaptation: Strengthened Adaptation'
   },
   {
     value:
       'Provided additional Information for clarity, transparency, and understanding',
-    letter: 'P',
+    letter: 'I',
     label:
-      'Provided additional Information for clarity, transparency, and understanding'
+      'Information: Provided additional Information for clarity, transparency, and understanding '
   }
 ];
 
@@ -567,12 +562,8 @@ export const NDC_2025_COLORS = {
 };
 
 export const LEGEND_STATUS_2025_VALUES_COLORS = {
-  // 'Submitted 2025 NDC with 2030 and 2035 targets':
-  //   NDC_2025_LABEL_COLORS.SUBMITTED_2025_WITH_2030_AND_2035_TARGETS,
-  // 'Submitted 2025 NDC with 2030 target':
-  //   NDC_2025_LABEL_COLORS.SUBMITTED_2025_WITH_2030_TARGET,
-  'Submitted 2025 NDC': NDC_2025_LABEL_COLORS.SUBMITTED_2025,
-  'No information': NDC_2025_LABEL_COLORS.NO_SUBMISSION,
+  'New NDC': NDC_2025_LABEL_COLORS.SUBMITTED_2025,
+  'No New NDC': NDC_2025_LABEL_COLORS.NO_SUBMISSION,
   'Not Applicable: Countries that are not a Party to the UNFCCC':
     NDC_2025_COLORS.lightGray
 };
@@ -585,18 +576,30 @@ export const LEGEND_COMPARISON_2025_VALUES_COLORS = {
 };
 
 export const LEGEND_COMPARISON_2025_LETTERS = [
-  { value: '2025_compare_1', letter: 'I', label: '2035 GHG target included' },
+  {
+    value: '2025_compare_1',
+    letter: 'N',
+    label: 'New Target: 2035 GHG target included '
+  },
   {
     value: '2025_compare_2',
     letter: 'E',
-    label: 'Economy-wide GHG target (for 2035) included'
+    label: 'Economy-wide: Economy-wide 2035 GHG target included'
   },
-  { value: '2025_compare_3', letter: 'S', label: 'Strengthened 2030 target' },
-  { value: '2025_compare_4', letter: 'A', label: 'Strengthened adaptation' },
+  {
+    value: '2025_compare_3',
+    letter: 'M',
+    label: 'Mitigation: Strengthened 2030 GHG Target '
+  },
+  {
+    value: '2025_compare_4',
+    letter: 'A',
+    label: 'Adaptation: Strengthened Adaptation'
+  },
   {
     value: '2025_compare_5',
-    letter: 'P',
+    letter: 'I',
     label:
-      'Provided additional Information for clarity, transparency, and understanding'
+      'Information: Provided additional Information for clarity, transparency, and understanding'
   }
 ];

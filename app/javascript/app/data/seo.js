@@ -87,7 +87,8 @@ export const STATIC_TITLE_PARTS = {
   [SEO_PAGES.ltsExplore]: 'Explore Long-Term Strategies (LTS)',
   [SEO_PAGES.ltsCountry]: '| Long-Term Strategy (LTS) ',
   [SEO_PAGES.ndc2020]: '2020 NDC Enhancements',
-  [SEO_PAGES.ndc2025]: '2025 NDC Enhancements',
+  [SEO_PAGES.ndc2025]:
+    'Nationally Determined Contributions (NDC) Tracker | 2025 NDCs | NDCs 3.0',
   [SEO_PAGES.netZero]: '| Net-Zero Targets',
   [SEO_PAGES.ndcSdg]: 'Explore NDC-SDG Linkages',
   [SEO_PAGES.compare]: 'Compare climate targets',
@@ -111,6 +112,8 @@ export const getDescription = ({ page, countryName = '' }) => {
     [SEO_PAGES.home]:
       'Climate Watch is an open online platform designed to empower users with the climate data, visualizations and resources they need to gather insights on national and global progress on climate change, sustainable development, and help advance the goals of the Paris Agreement.',
     [SEO_PAGES.ndc2020]:
+      'Climate Watch is an open online platform designed to empower users with the climate data, visualizations and resources they need to gather insights on national and global progress on climate change, sustainable development, and help advance the goals of the Paris Agreement.',
+    [SEO_PAGES.ndc2025]:
       'Climate Watch is an open online platform designed to empower users with the climate data, visualizations and resources they need to gather insights on national and global progress on climate change, sustainable development, and help advance the goals of the Paris Agreement.',
     [SEO_PAGES.sector]:
       'Explore sectoral profiles, global and by country, for historical and projected emissions, overview of sectoral measures included in Nationally Determined Contributions (NDC), and more',

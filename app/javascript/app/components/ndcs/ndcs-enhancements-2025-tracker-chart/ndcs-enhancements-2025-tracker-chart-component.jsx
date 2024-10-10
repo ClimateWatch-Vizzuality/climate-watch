@@ -14,6 +14,7 @@ import {
 } from 'recharts';
 import { Switch } from 'cw-components';
 import { Link } from 'react-router-dom';
+import Button from 'components/button';
 import ButtonGroup from 'components/button-group';
 import { generateLinkToDataExplorer } from 'utils/data-explorer';
 import ModalMetadata from 'components/modal-metadata';
@@ -25,7 +26,7 @@ const SUBMISSION_TYPES = {
   submittedWith2030: 'Submitted 2025 NDC with 2030 target',
   submitted2025: 'Submitted 2025 NDC',
   // ! TODO Default value conflicts with the the default on in the selector. Needs to be addressed
-  notSubmitted: 'No 2025 NDC'
+  notSubmitted: 'No New NDC'
 };
 
 const Ndc2025TrackerChartComponent = props => {
@@ -64,9 +65,9 @@ const Ndc2025TrackerChartComponent = props => {
   const countriesBySubmissionType = React.useMemo(() => {
     const findCountriesBySubmissionType = submissionType =>
       parsedData?.filter(
-        // Don't include EU countries in the chart; instead we account for EUU
-        ({ indc_submission, is_in_eu }) =>
-          !is_in_eu && indc_submission === submissionType
+        // Note: 'EUU' is not a country, we need to explicitly exclude it.
+        ({ indc_submission, iso }) =>
+          iso !== 'EUU' && indc_submission === submissionType
       );
 
     return Object.entries(SUBMISSION_TYPES).reduce(
@@ -135,19 +136,10 @@ const Ndc2025TrackerChartComponent = props => {
   // Parse data to create a chart display
   // We do not want to display EU countries in the chart; instead we do EUU.
   const chartData = React.useMemo(() => {
-    const parsedDataWithoutEuCountries = parsedData.filter(
-      country => country.is_in_eu === false
-    );
-
-    let sortedData = parsedDataWithoutEuCountries || [];
+    let sortedData = [];
     if (sortedBy === 'submission_date') {
       sortedData = sortedData.sort((a, b) => {
-        const indcSubmissionSortOrder = [
-          'Submitted 2025 NDC with 2030 target',
-          'Submitted 2025 NDC with 2030 and 2035 targets',
-          'Submitted 2025 NDC',
-          'No 2025 NDC'
-        ];
+        const indcSubmissionSortOrder = ['New NDC', 'No New NDC'];
         const sortByIndcSubmission =
           indcSubmissionSortOrder.indexOf(a.indc_submission) -
           indcSubmissionSortOrder.indexOf(b.indc_submission);
@@ -156,7 +148,7 @@ const Ndc2025TrackerChartComponent = props => {
         return parseFloat(b.ndce_ghg) - parseFloat(a.ndce_ghg);
       });
     } else if (sortedBy === 'emissions') {
-      sortedData = sortedData.sort((a, b) => b[sortedBy] - a[sortedBy]);
+      sortedData = parsedData.sort((a, b) => b[sortedBy] - a[sortedBy]);
     }
 
     const barsData = sortedData.map((country, idx) => ({
@@ -219,7 +211,7 @@ const Ndc2025TrackerChartComponent = props => {
       <div className={layout.content}>
         <div className={styles.summary}>
           <div className={styles.summaryHeader}>
-            <h2>What countries have submitted a 2025 NDC?</h2>
+            <h2>Which countries have submitted a new NDC?</h2>
             <ButtonGroup
               className={styles.buttonGroup}
               dataTour="ndc-enhancement-tracker-04"
@@ -250,10 +242,18 @@ const Ndc2025TrackerChartComponent = props => {
                 }
               ]}
             />
+            <Button
+              className={styles.exploreNdcContentButton}
+              variant="primary"
+              href="/ndcs-explore"
+              // TODO: Analytics? Category, etc
+            >
+              Explore NDC Content
+            </Button>
           </div>
           <p>
-            Track which countries are submitting an updated version of their
-            NDC--a 2025 NDC. You can compare countries’ submissions side by side{' '}
+            Track which countries have submitted a new NDC. You can compare
+            countries’ submissions side by side{' '}
             <Link
               to="custom-compare/overview"
               title="Compare submissions"
@@ -261,14 +261,21 @@ const Ndc2025TrackerChartComponent = props => {
             >
               here
             </Link>{' '}
-            or by referring to the table below. To request changes or additions,
-            please contact{' '}
+            . To request changes or additions, please contact{' '}
             <a
               href="mailto:Mengpin.Ge@wri.org?subject=NDC 2025 Tracker Update"
               target="_blank"
               rel="noopener noreferrer"
             >
               Mengpin Ge
+            </a>
+            . Find out more about our resources on NDCs{' '}
+            <a
+              href="https://www.wri.org/ndcs"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <u>here</u>
             </a>
             .
           </p>
@@ -277,12 +284,12 @@ const Ndc2025TrackerChartComponent = props => {
           <p />
           {/* {renderCardHead(
             'submittedWith2030And2035',
-            '2025 NDCs',
+            'New NDCs',
             'with 2030 and 2035 targets'
           )}
-          {renderCardHead('submittedWith2030', '2025 NDCs', 'with 2030 target')} */}
-          {renderCardHead('submitted2025', '2025 NDCs')}
-          {renderCardHead('notSubmitted', 'No 2025 NDCs')}
+          {renderCardHead('submittedWith2030', 'New NDCs', 'with 2030 target')} */}
+          {renderCardHead('submitted2025', 'New NDCs')}
+          {renderCardHead('notSubmitted', 'No New NDCs')}
           <p />
 
           <p>Total Countries</p>
