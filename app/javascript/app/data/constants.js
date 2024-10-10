@@ -525,30 +525,30 @@ export const ENHANCEMENT_LABELS_WITH_LETTERS = [
 export const ENHANCEMENT_2025_LABELS_WITH_LETTERS = [
   {
     value: '2035 GHG target included',
-    letter: 'I',
-    label: '2035 GHG target included'
+    letter: 'N',
+    label: 'New Target: 2035 GHG target included '
   },
   {
     value: 'Economy-wide GHG target (for 2035) included',
     letter: 'E',
-    label: 'Economy-wide GHG target (for 2035) included'
+    label: 'Economy-wide: Economy-wide 2035 GHG target included'
   },
   {
     value: 'Strengthened 2030 target',
-    letter: 'S',
-    label: 'Strengthened 2030 target'
+    letter: 'M',
+    label: 'Mitigation: Strengthened 2030 GHG Target '
   },
   {
     value: 'Strengthened adaptation',
     letter: 'A',
-    label: 'Strengthened adaptation'
+    label: 'Adaptation: Strengthened Adaptation'
   },
   {
     value:
       'Provided additional Information for clarity, transparency, and understanding',
-    letter: 'P',
+    letter: 'I',
     label:
-      'Provided additional Information for clarity, transparency, and understanding'
+      'Information: Provided additional Information for clarity, transparency, and understanding '
   }
 ];
 
@@ -585,18 +585,30 @@ export const LEGEND_COMPARISON_2025_VALUES_COLORS = {
 };
 
 export const LEGEND_COMPARISON_2025_LETTERS = [
-  { value: '2025_compare_1', letter: 'I', label: '2035 GHG target included' },
+  {
+    value: '2025_compare_1',
+    letter: 'N',
+    label: 'New Target: 2035 GHG target included '
+  },
   {
     value: '2025_compare_2',
     letter: 'E',
-    label: 'Economy-wide GHG target (for 2035) included'
+    label: 'Economy-wide: Economy-wide 2035 GHG target included'
   },
-  { value: '2025_compare_3', letter: 'S', label: 'Strengthened 2030 target' },
-  { value: '2025_compare_4', letter: 'A', label: 'Strengthened adaptation' },
+  {
+    value: '2025_compare_3',
+    letter: 'M',
+    label: 'Mitigation: Strengthened 2030 GHG Target '
+  },
+  {
+    value: '2025_compare_4',
+    letter: 'A',
+    label: 'Adaptation: Strengthened Adaptation'
+  },
   {
     value: '2025_compare_5',
-    letter: 'P',
+    letter: 'I',
     label:
-      'Provided additional Information for clarity, transparency, and understanding'
+      'Information: Provided additional Information for clarity, transparency, and understanding'
   }
 ];
