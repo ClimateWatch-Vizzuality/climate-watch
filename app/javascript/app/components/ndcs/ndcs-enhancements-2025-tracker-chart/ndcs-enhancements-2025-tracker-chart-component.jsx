@@ -64,9 +64,9 @@ const Ndc2025TrackerChartComponent = props => {
   const countriesBySubmissionType = React.useMemo(() => {
     const findCountriesBySubmissionType = submissionType =>
       parsedData?.filter(
-        // Don't include EU countries in the chart; instead we account for EUU
-        ({ indc_submission, is_in_eu }) =>
-          !is_in_eu && indc_submission === submissionType
+        // Note: 'EUU' is not a country, we need to explicitly exclude it.
+        ({ indc_submission, iso }) =>
+          iso !== 'EUU' && indc_submission === submissionType
       );
 
     return Object.entries(SUBMISSION_TYPES).reduce(
