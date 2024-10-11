@@ -324,7 +324,10 @@ const Ndc2025TrackerChartComponent = props => {
             <div className={styles.switchTitle}>
               <span>Sort countries by:</span>
               <div>
-                <label htmlFor="submission_date">
+                <label
+                  className={styles.switchSelectorLabel}
+                  htmlFor="submission_date"
+                >
                   <span>Latest NDC submission</span>
                 </label>
                 <Switch
@@ -342,8 +345,11 @@ const Ndc2025TrackerChartComponent = props => {
                     checkedOption: styles.switchSelected
                   }}
                 />
-                <label htmlFor="emissions">
-                  <span>Total emissions</span>
+                <label
+                  className={styles.switchSelectorLabel}
+                  htmlFor="emissions"
+                >
+                  <span className>Total emissions</span>
                 </label>
               </div>
             </div>
