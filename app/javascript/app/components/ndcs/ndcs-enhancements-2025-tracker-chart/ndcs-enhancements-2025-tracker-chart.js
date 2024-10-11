@@ -4,6 +4,7 @@ import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import { actions as modalActions } from 'components/modal-metadata';
 import { actions as pngModalActions } from 'components/modal-png-download';
+import { handleAnalytics } from 'utils/analytics';
 import Component from './ndcs-enhancements-2025-tracker-chart-component';
 import { getData, getMetadata } from './ndcs-enhancements-2025-chart-selectors';
 
@@ -25,15 +26,21 @@ function Ndc2025TrackerChartContainer(props) {
   const handleInfoClick = () => {
     setModalMetadata({
       category: 'NDC Content Map',
-      slugs: '2025_ndc',
+      slugs: '2025_NDC',
       open: true
     });
   };
+
+  const handleAnalyticsClick = () => {
+    handleAnalytics('NDC 2025 tracker', 'Leave page to explore data');
+  };
+
   return createElement(Component, {
     ...props,
     pngDownloadId,
     handleInfoClick,
-    handlePngDownloadModal
+    handlePngDownloadModal,
+    handleAnalyticsClick
   });
 }
 
