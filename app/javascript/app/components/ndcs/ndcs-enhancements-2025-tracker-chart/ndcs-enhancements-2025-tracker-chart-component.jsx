@@ -138,7 +138,7 @@ const Ndc2025TrackerChartComponent = props => {
   const chartData = React.useMemo(() => {
     let sortedData = [];
     if (sortedBy === 'submission_date') {
-      sortedData = sortedData.sort((a, b) => {
+      sortedData = parsedData.sort((a, b) => {
         const indcSubmissionSortOrder = ['New NDC', 'No New NDC'];
         const sortByIndcSubmission =
           indcSubmissionSortOrder.indexOf(a.indc_submission) -
