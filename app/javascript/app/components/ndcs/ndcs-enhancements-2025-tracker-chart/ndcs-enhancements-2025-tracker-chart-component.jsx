@@ -30,7 +30,12 @@ const SUBMISSION_TYPES = {
 };
 
 const Ndc2025TrackerChartComponent = props => {
-  const { handleInfoClick, handlePngDownloadModal, data } = props;
+  const {
+    handleInfoClick,
+    handlePngDownloadModal,
+    data,
+    handleAnalyticsClick
+  } = props;
 
   const [sortedBy, setSortedBy] = React.useState('emissions');
   const [hoveredBar, setHoveredBar] = React.useState(null);
@@ -251,7 +256,7 @@ const Ndc2025TrackerChartComponent = props => {
               className={styles.exploreNdcContentButton}
               variant="primary"
               href="/ndcs-explore"
-              // TODO: Analytics? Category, etc
+              onClick={handleAnalyticsClick}
             >
               Explore NDC Content
             </Button>
@@ -411,7 +416,8 @@ Ndc2025TrackerChartComponent.propTypes = {
   data: PropTypes.array,
   // pngDownloadId: PropTypes.string.isRequired,
   handleInfoClick: PropTypes.func.isRequired,
-  handlePngDownloadModal: PropTypes.func.isRequired
+  handlePngDownloadModal: PropTypes.func.isRequired,
+  handleAnalyticsClick: PropTypes.func.isRequired
 };
 
 export default Ndc2025TrackerChartComponent;
