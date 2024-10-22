@@ -77,6 +77,14 @@
     align-items: left;
     flex-direction: column;
 
+    // First column of the grid, right align horizontally and vertical align to the middle.
+    // Ignore gap (the negative margin) to better get items closer to the first card
+    &:nth-child(4n + 1) {
+      justify-content: center;
+      text-align: end;
+      margin-right: -20px;
+    }
+
     &:nth-child(2),
     &:nth-child(3) {
       // For use when displaying enhanced card
