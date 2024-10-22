@@ -20,7 +20,7 @@ const NDCSEnhancements2025 = ({ route }) => (
             <BackButton pathname="/ndcs-explore" backLabel="Explore NDCs" />
             <Intro
               title="NDC Tracker"
-              description="The Paris Agreement requires countries to submit new Nationally Determined Contributions (NDCs) every five years, reflecting progressively higher ambition and taking into account each country’s capacity. The new round of NDCs, due in early 2025, will outline countries’ climate actions through 2035 and take into account the Global Stocktake. To learn more, please visit WRI’s page on Next Generation NDCs."
+              description="The Paris Agreement requires countries to submit new Nationally Determined Contributions (NDCs) every five years, reflecting progressively higher ambition and taking into account each country’s capacity. The new round of NDCs, due in early 2025, will outline countries’ climate actions through 2035 and take into account the Global Stocktake. To learn more, please visit WRI’s page on <a href='https://www.wri.org/ndcs'>Next Generation NDCs.</a>"
               skipAbbrReplace
             />
             <Ndc2025Timeline />
