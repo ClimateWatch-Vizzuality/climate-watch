@@ -72,9 +72,7 @@ class CountryTimeline extends PureComponent {
         data-tour="countries-01"
       >
         <div className={styles.timeline}>
-          <h3 className={styles.timelineDescription}>
-            <AbbrReplace>Latest NDC Submissions</AbbrReplace>
-          </h3>
+          <h3 className={styles.timelineDescription}>Latest NDC Submissions</h3>
           {documentYears?.length > 0 ? (
             <HorizontalTimeline
               index={
