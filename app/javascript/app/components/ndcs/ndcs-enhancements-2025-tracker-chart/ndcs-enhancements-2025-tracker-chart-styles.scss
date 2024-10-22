@@ -51,9 +51,9 @@
 .cards {
   display: grid;
   // For use when displaying extra indicator cards
-  // grid-template-columns: 160px repeat(4, 1fr);
+  // grid-template-columns: repeat(4, 1fr);
   // column-gap: 20px;
-  grid-template-columns: 160px repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   column-gap: 32px;
   margin-block: 45px 30px;
   row-gap: 6px;
@@ -66,9 +66,9 @@
 
   @media #{$tablet-landscape} {
     // For use when displaying extra indicator cards
-    // grid-template-columns: 160px repeat(4, 214px);
+    // grid-template-columns: repeat(4, 214px);
     // column-gap: 14px;
-    grid-template-columns: 160px repeat(3, 235);
+    grid-template-columns: repeat(3, 235);
     column-gap: 52px;
   }
 
