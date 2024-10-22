@@ -46,9 +46,10 @@ const Intro = props => {
     return (
       <p
         className={cx(theme.description, textColumns ? theme.columns : '')}
+        // eslint-disable-next-line
         dangerouslySetInnerHTML={{
           __html: skipAbbrReplace ? description : replaceStringAbbr(description)
-        }} // eslint-disable-line
+        }}
       />
     );
   };

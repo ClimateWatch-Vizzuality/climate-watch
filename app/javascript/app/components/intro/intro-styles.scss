@@ -12,7 +12,6 @@
   @include columns(12);
 
   a {
-    color: $theme-color;
     border-bottom: solid 1px $theme-secondary;
   }
 
@@ -49,6 +48,15 @@
   margin-bottom: 30px;
   line-height: $line-height-medium;
   color: $white;
+
+  a {
+    text-decoration: underline;
+
+    &:link,
+    &:visited {
+      color: $white;
+    }
+  }
 
   br {
     line-height: 200%;
