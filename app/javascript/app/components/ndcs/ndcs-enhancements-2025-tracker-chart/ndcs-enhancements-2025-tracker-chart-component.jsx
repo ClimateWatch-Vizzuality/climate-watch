@@ -12,13 +12,14 @@ import {
   ResponsiveContainer,
   Tooltip
 } from 'recharts';
-import { Switch } from 'cw-components';
+import { CheckInput } from 'cw-components';
 import { Link } from 'react-router-dom';
 import Button from 'components/button';
 import ButtonGroup from 'components/button-group';
 import { generateLinkToDataExplorer } from 'utils/data-explorer';
 import ModalMetadata from 'components/modal-metadata';
 import MetadataProvider from 'providers/metadata-provider';
+import toggleCheckboxTheme from 'styles/themes/checkbox/toggle-checkbox.scss';
 import styles from './ndcs-enhancements-2025-tracker-chart-styles.scss';
 
 const SUBMISSION_TYPES = {
@@ -29,6 +30,11 @@ const SUBMISSION_TYPES = {
   notSubmitted: 'No New NDC'
 };
 
+const COUNTRY_SORTING = {
+  emissions: 'emissions',
+  submissionDate: 'submission_date'
+};
+
 const Ndc2025TrackerChartComponent = props => {
   const {
     handleInfoClick,
@@ -37,7 +43,7 @@ const Ndc2025TrackerChartComponent = props => {
     handleAnalyticsClick
   } = props;
 
-  const [sortedBy, setSortedBy] = React.useState('emissions');
+  const [sortedBy, setSortedBy] = React.useState(COUNTRY_SORTING.emissions);
   const [hoveredBar, setHoveredBar] = React.useState(null);
 
   // Get emission value from 'ndce_ghg' string and convert it into numeric format
@@ -321,34 +327,25 @@ const Ndc2025TrackerChartComponent = props => {
         <div className={styles.ndc2025TrackerChart}>
           <div className={styles.title}>
             <h3>Countries’ GHG Emissions Breakdown</h3>
-            <div className={styles.switchTitle}>
+            <div className={styles.toggleTitle}>
               <span>Sort countries by:</span>
-              <div>
-                <label
-                  className={styles.switchSelectorLabel}
-                  htmlFor="submission_date"
-                >
+              <div className={styles.countrySortingToggleContainer}>
+                <label htmlFor="submission_date">
                   <span>Latest NDC submission</span>
                 </label>
-                <Switch
-                  options={[
-                    {
-                      label: 'Latest NDC submission',
-                      value: 'submission_date'
-                    },
-                    { label: 'Total emissions', value: 'emissions' }
-                  ]}
-                  selectedOption={sortedBy}
-                  onClick={a => setSortedBy(a.value)}
-                  theme={{
-                    wrapper: styles.switchWrapper,
-                    checkedOption: styles.switchSelected
+                <CheckInput
+                  id="country-sorting"
+                  checked={sortedBy === COUNTRY_SORTING.emissions}
+                  onChange={() => {
+                    setSortedBy(
+                      sortedBy === COUNTRY_SORTING.emissions
+                        ? COUNTRY_SORTING.submissionDate
+                        : COUNTRY_SORTING.emissions
+                    );
                   }}
+                  theme={toggleCheckboxTheme}
                 />
-                <label
-                  className={styles.switchSelectorLabel}
-                  htmlFor="emissions"
-                >
+                <label htmlFor="emissions">
                   <span className>Total emissions</span>
                 </label>
               </div>

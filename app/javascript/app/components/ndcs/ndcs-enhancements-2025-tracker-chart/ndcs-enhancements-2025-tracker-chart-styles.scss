@@ -168,7 +168,7 @@
       font-style: italic;
     }
 
-    .switchTitle {
+    .toggleTitle {
       display: flex;
       align-items: center;
       justify-content: center;
@@ -182,7 +182,7 @@
 
       > div {
         display: flex;
-        align-items: center;
+        align-items: end;
         gap: 6px;
 
         span {
@@ -190,31 +190,6 @@
           font-weight: $font-weight-bold;
           color: $theme-color;
         }
-      }
-
-      .switchWrapper {
-        width: 28px;
-        height: 16px;
-        padding: 2px;
-        background: $theme-color;
-        border-color: $theme-color;
-        justify-content: space-between;
-
-        label {
-          padding: 1px 5px;
-        }
-      }
-
-      .switchSelected {
-        background: $white;
-        height: 10px;
-        width: 10px;
-        border-radius: 50%;
-        display: inline-block;
-      }
-
-      .switchSelectorLabel {
-        cursor: pointer;
       }
     }
   }
