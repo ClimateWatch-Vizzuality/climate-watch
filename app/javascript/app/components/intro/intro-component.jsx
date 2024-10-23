@@ -18,7 +18,8 @@ const Intro = props => {
     button,
     customButton,
     className,
-    tag
+    tag,
+    skipAbbrReplace
   } = props;
   const actionButton =
     (customButton || button) &&
@@ -27,24 +28,41 @@ const Intro = props => {
         {button.text}
       </Button>
     ));
+
   const TitleTagComponent = tag;
+
+  const renderTitleAndSubtitle = () => {
+    const Component = skipAbbrReplace ? React.Fragment : AbbrReplace;
+    return (
+      <Component>
+        <div className={theme.titleText}>{title}</div>
+        {subtitle && <span className={theme.subtitle}>{subtitle}</span>}
+      </Component>
+    );
+  };
+
+  const renderDescription = () => {
+    if (!description) return null;
+    return (
+      <p
+        className={cx(theme.description, textColumns ? theme.columns : '')}
+        // eslint-disable-next-line
+        dangerouslySetInnerHTML={{
+          __html: skipAbbrReplace ? description : replaceStringAbbr(description)
+        }}
+      />
+    );
+  };
+
   return (
     <div className={cx(styles.wrapper, className)}>
       <div className={cx(theme.main, { [styles.withButton]: !!actionButton })}>
         <TitleTagComponent className={theme.title}>
-          <AbbrReplace>
-            <div className={theme.titleText}>{title}</div>
-            {subtitle && <span className={theme.subtitle}>{subtitle}</span>}
-          </AbbrReplace>
+          {renderTitleAndSubtitle()}
         </TitleTagComponent>
         <TabletLandscape> {actionButton} </TabletLandscape>
       </div>
-      {description && (
-        <p
-          className={cx(theme.description, textColumns ? theme.columns : '')}
-          dangerouslySetInnerHTML={{ __html: replaceStringAbbr(description) }} // eslint-disable-line
-        />
-      )}
+      {renderDescription()}
       {disclaimer && <p className={styles.disclaimer}>{disclaimer}</p>}
       <TabletPortraitOnly> {actionButton} </TabletPortraitOnly>
     </div>
@@ -61,12 +79,14 @@ Intro.propTypes = {
   customButton: PropTypes.object,
   textColumns: PropTypes.bool,
   className: PropTypes.string,
-  tag: PropTypes.string
+  tag: PropTypes.string,
+  skipAbbrReplace: PropTypes.bool
 };
 
 Intro.defaultProps = {
   disclaimer: '',
-  tag: 'h1'
+  tag: 'h1',
+  skipAbbrReplace: false
 };
 
 export default themr('Intro', styles)(Intro);

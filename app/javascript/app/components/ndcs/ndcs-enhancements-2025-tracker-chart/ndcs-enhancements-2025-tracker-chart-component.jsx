@@ -265,7 +265,7 @@ const Ndc2025TrackerChartComponent = props => {
               target="_blank"
             >
               here
-            </Link>{' '}
+            </Link>
             . To request changes or additions, please contact{' '}
             <a
               href="mailto:Mengpin.Ge@wri.org?subject=NDC 2025 Tracker Update"
