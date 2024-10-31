@@ -14,11 +14,11 @@
   }
 
   a {
-    color: $theme-color;
+    color: $theme-color-medium;
 
     &:visited,
     &:link {
-      color: $theme-color;
+      color: $theme-color-medium;
     }
   }
 
