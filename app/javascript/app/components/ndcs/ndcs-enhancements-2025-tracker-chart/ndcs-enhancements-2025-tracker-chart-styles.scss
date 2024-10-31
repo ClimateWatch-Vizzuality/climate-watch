@@ -13,12 +13,14 @@
     gap: 20px;
   }
 
-  a {
-    color: $theme-color-medium;
-
-    &:visited,
-    &:link {
+  .summaryDescription {
+    a {
       color: $theme-color-medium;
+
+      &:visited,
+      &:link {
+        color: $theme-color-medium;
+      }
     }
   }
 
