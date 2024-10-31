@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import ClickOutside from 'react-click-outside';
 import HorizontalTimeline from 'react-horizontal-timeline';
 import cx from 'classnames';
-import AbbrReplace from 'components/abbr-replace';
 import styles from './ndc-2025-timeline-styles.scss';
 
 class CountryTimeline extends PureComponent {
@@ -30,9 +29,7 @@ class CountryTimeline extends PureComponent {
             {countries.map(c => (
               <li key={c.location?.wri_standard_name}>
                 <a className={styles.url} target="_blank" href={c.url}>
-                  <AbbrReplace>
-                    {c.submission} {c.location?.wri_standard_name}
-                  </AbbrReplace>
+                  {c.submission} {c.location?.wri_standard_name}
                 </a>
               </li>
             ))}
