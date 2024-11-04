@@ -108,6 +108,7 @@ Rails.application.routes.draw do
           resources :labels, only: [:index]
           resources :sectors, only: [:index]
           resources :documents, only: [:index]
+          resources :timelines, only: [:index]
         end
         resources :lts_content, only: [:index] do
           get :download, on: :collection, defaults: { format: 'zip' }

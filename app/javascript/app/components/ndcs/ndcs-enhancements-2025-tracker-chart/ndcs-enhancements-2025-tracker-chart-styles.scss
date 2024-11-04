@@ -1,0 +1,256 @@
+@import "~styles/layout.scss";
+
+.wrapper {
+  position: relative;
+}
+
+.summary {
+  .summaryHeader {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-bottom: 34px;
+    gap: 20px;
+  }
+
+  .summaryDescription {
+    a {
+      color: $theme-color-medium;
+
+      &:visited,
+      &:link {
+        color: $theme-color-medium;
+      }
+    }
+  }
+
+  h2 {
+    font-size: $font-size-large;
+    color: $theme-color;
+    font-weight: $font-weight;
+    flex: 1;
+  }
+}
+
+.buttonGroup {
+  width: auto;
+  min-width: 148px;
+  float: right;
+
+  .containerControls & {
+    @media #{$tablet-portrait} {
+      margin-top: 0;
+      width: 100%;
+      min-width: 0;
+    }
+  }
+}
+
+.exploreNdcContentButton {
+  width: auto;
+}
+
+.cards {
+  display: grid;
+  // For use when displaying extra indicator cards
+  // grid-template-columns: repeat(4, 1fr);
+  // column-gap: 20px;
+  grid-template-columns: repeat(4, 1fr);
+  column-gap: 32px;
+  margin-block: 45px 30px;
+  row-gap: 6px;
+
+  @media #{$mobile-only} {
+    // For use when displaying extra indicator cards
+    // column-gap: 8px;
+    column-gap: 30px;
+  }
+
+  @media #{$tablet-landscape} {
+    // For use when displaying extra indicator cards
+    // grid-template-columns: repeat(4, 214px);
+    // column-gap: 14px;
+    grid-template-columns: repeat(3, 235);
+    column-gap: 52px;
+  }
+
+  p {
+    display: flex;
+    align-items: left;
+    flex-direction: column;
+
+    // First column of the grid, right align horizontally and vertical align to the middle.
+    // Ignore gap (the negative margin) to better get items closer to the first card
+    &:nth-child(4n + 1) {
+      justify-content: center;
+      text-align: end;
+      margin-right: -20px;
+    }
+
+    &:nth-child(2),
+    &:nth-child(3) {
+      // For use when displaying enhanced card
+      // &:nth-child(4),
+      // For use when displaying extra indicator cards
+      // &:nth-child(5) {
+      @media #{$tablet-portrait} {
+        font-size: $font-size-large;
+      }
+
+      align-items: center;
+      font-size: $font-size-m;
+      padding-bottom: 7px;
+      justify-content: end;
+      font-weight: $font-weight-bold;
+    }
+
+    span {
+      font-size: $font-size-sm;
+    }
+  }
+
+  .bigCard {
+    @media #{$tablet-portrait} {
+      font-size: 72px;
+      height: 103px;
+    }
+
+    font-size: 50px;
+    background-color: $white;
+    font-weight: $font-weight-bold;
+  }
+
+  .smallCard {
+    height: 34px;
+    font-size: 20px;
+    background-color: $white;
+    font-weight: $font-weight-bold;
+  }
+
+  // For use when displaying extra indicator cards
+  // .submittedWith2030And2035 {
+  //   color: $chart-color-1;
+  //   align-items: center;
+  //   justify-content: center;
+  // }
+
+  // .submittedWith2030 {
+  //   color: $chart-color-3;
+  //   align-items: center;
+  //   justify-content: center;
+  // }
+
+  .submitted2025 {
+    color: $chart-color-2;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .notSubmitted {
+    color: $chart-gray-color-1;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.ndc2025TrackerChart {
+  width: 100%;
+
+  .title {
+    display: flex;
+    justify-content: space-between;
+    align-self: center;
+    flex-wrap: wrap;
+    gap: 16px;
+
+    h3 {
+      font-size: $font-size;
+      font-weight: $font-weight;
+      color: black;
+      font-style: italic;
+    }
+
+    .toggleTitle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+
+      > span {
+        font-size: $font-size;
+        font-weight: $font-weight;
+        color: black;
+      }
+
+      > div {
+        display: flex;
+        align-items: end;
+        gap: 6px;
+
+        span {
+          font-size: $font-size-sm;
+          font-weight: $font-weight-bold;
+          color: $theme-color;
+        }
+      }
+    }
+  }
+}
+
+.barChart {
+  width: 100%;
+  height: 100px;
+  margin-top: 20px;
+}
+
+.barChartBar {
+  fill: $chart-gray-color-1;
+  height: 50px;
+}
+
+// For use when displaying extra indicator cards
+// .submittedWith2030And2035 {
+//   fill: $chart-color-1;
+//   stroke: $white;
+// }
+
+// .submittedWith2030 {
+//   fill: $chart-color-3;
+//   stroke: $white;
+// }
+
+.submitted2025 {
+  fill: $chart-color-2;
+  stroke: $white;
+}
+
+.notSubmitted {
+  fill: $chart-gray-color-1;
+  stroke: $white;
+}
+
+.barChartBarHovered {
+  filter: brightness(1.5);
+}
+
+.chartBarAxis {
+  display: none;
+}
+
+.barChartTooltip {
+  background-color: $white;
+  border: 1px solid $chart-gray-color-1;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+  transform: translateY(-100%);
+  z-index: 100;
+
+  p {
+    margin-top: 4px;
+
+    &:first-child {
+      font-weight: 600;
+    }
+  }
+}

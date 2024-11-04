@@ -13,6 +13,7 @@ import LTSCountry from 'pages/lts-country';
 import NDCCompare from 'pages/ndc-compare';
 import NDCCompareAll from 'pages/ndc-compare-all-targets';
 import NDCSEnhancements from 'pages/ndcs-enhancements';
+import NDCSEnhancements2025 from 'pages/ndcs-enhancements-2025';
 import NDCSDG from 'pages/ndc-sdg';
 import Country from 'pages/country';
 import EmissionPathways from 'pages/emission-pathways';
@@ -58,6 +59,7 @@ import emissionPathwaysSections from './emission-pathways-sections';
 import countryCompareSections from './country-compare-sections';
 import agricultureSections from './sectors-agriculture-sections';
 import ndcsEnhancementsSections from './ndcs-enhancements-sections';
+import ndcsEnhancements2025Sections from './ndcs-enhancements-2025-sections';
 import LTSExploreSections from './lts-explore-sections';
 import NetZeroSections from './net-zero-sections';
 import NDCSExploreSections from './ndcs-explore-sections';
@@ -179,6 +181,13 @@ export default [
     component: NDCSEnhancements,
     headerImage: 'ndc',
     sections: ndcsEnhancementsSections,
+    headerGradient: HEADER_GRADIENTS.commitments
+  },
+  {
+    path: '/2025-ndc-tracker',
+    component: NDCSEnhancements2025,
+    headerImage: 'ndc',
+    sections: ndcsEnhancements2025Sections,
     headerGradient: HEADER_GRADIENTS.commitments
   },
   {

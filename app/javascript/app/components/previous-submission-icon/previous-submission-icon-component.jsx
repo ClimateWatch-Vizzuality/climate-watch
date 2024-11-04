@@ -19,6 +19,7 @@ const icons = {
     'Revised NDC compared with previous version': enhancementIconWhite,
     'Yes, enhancement in the revised submission': enhancementIconWhite,
     'No, no enhancement in the revised submission': noEnhancementIconWhite,
+    'No, no economy-wide GHG target (for 2035) included': noEnhancementIconWhite,
     Unclear: unclearIconWhite,
     'No revision compared with previous version': missingIconWhite,
     'No previous submission available': missingIconWhite,
@@ -51,7 +52,11 @@ const PreviousSubmissionIcon = ({
   className,
   tooltipId
 }) => {
-  const iconValue = submissionIconValue || value;
+  const iconValue =
+    submissionIconValue || value.startsWith('Yes')
+      ? 'Yes, enhancement in the revised submission'
+      : value;
+
   const icon = icons[white ? 'white' : 'color'][iconValue];
   if (!icon) return null;
   return (

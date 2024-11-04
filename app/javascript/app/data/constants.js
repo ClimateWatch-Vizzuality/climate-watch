@@ -398,8 +398,14 @@ export const ENHANCEMENT_CATEGORIES = [
 export const ENHANCEMENT_LABEL_SLUGS = {
   INTENDS_TO_ENHANCE: 'enhance_2020',
   SUBMITTED_2020: 'submitted_2020',
+  SUBMITTED_2025: '2025_status',
   ENHANCED_MITIGATION: 'enhanced_migitation',
   NO_INFO: 'no_info_2020'
+};
+
+export const NDC_2025_LABEL_SLUGS = {
+  SUBMITTED_2025: 'Submitted 2025 NDC',
+  NO_INFO: 'No Information'
 };
 
 export const NET_ZERO_POSITIVE_LABELS = [
@@ -413,9 +419,15 @@ export const ENHANCEMENT_LABEL_COLORS = {
   ENHANCED_MITIGATION: CHART_NAMED_COLORS.color2
 };
 
+export const NDC_2025_LABEL_COLORS = {
+  SUBMITTED_2025: CHART_NAMED_COLORS.color2,
+  NO_SUBMISSION: '#999C9F'
+};
+
 export const INDICATOR_SLUGS = {
   emissions: 'ndce_ghg',
-  enhancements: 'ndce_status_2020'
+  enhancements: 'ndce_status_2020',
+  submitted2025: '2025_status'
 };
 
 export const CATEGORY_SLUGS = {
@@ -453,6 +465,16 @@ export const LEGEND_ENHANCEMENT_VALUES_COLORS = {
 export const ALL_ENHANCEMENT_VALUES_COLORS = {
   'Revised NDC compared with previous version': ENHANCEMENT_VALUE_COLORS.blue,
   'Revised from the previous submission': ENHANCEMENT_VALUE_COLORS.blue,
+  ...ENHANCEMENT_VALUES_COLORS
+};
+
+export const ALL_2025_ENHANCEMENT_VALUES_COLORS = {
+  'Yes, 2035 GHG target included': ENHANCEMENT_VALUE_COLORS.blue,
+  'Yes, economy-wide GHG target (for 2035) included':
+    ENHANCEMENT_VALUE_COLORS.blue,
+  'Yes, enhancement in the revised submission': ENHANCEMENT_VALUE_COLORS.blue,
+  'No, no economy-wide GHG target (for 2035) included':
+    ENHANCEMENT_VALUE_COLORS.red,
   ...ENHANCEMENT_VALUES_COLORS
 };
 
@@ -495,7 +517,89 @@ export const ENHANCEMENT_LABELS_WITH_LETTERS = [
   }
 ];
 
+export const ENHANCEMENT_2025_LABELS_WITH_LETTERS = [
+  {
+    value: '2035 GHG target included',
+    letter: 'N',
+    label: 'New Target: 2035 GHG target included '
+  },
+  {
+    value: 'Economy-wide GHG target (for 2035) included',
+    letter: 'E',
+    label: 'Economy-wide: Economy-wide 2035 GHG target included'
+  },
+  {
+    value: 'Strengthened 2030 target',
+    letter: 'M',
+    label: 'Mitigation: Strengthened 2030 GHG Target '
+  },
+  {
+    value: 'Strengthened adaptation',
+    letter: 'A',
+    label: 'Adaptation: Strengthened Adaptation'
+  },
+  {
+    value:
+      'Provided additional Information for clarity, transparency, and understanding',
+    letter: 'I',
+    label:
+      'Information: Provided additional Information for clarity, transparency, and understanding '
+  }
+];
+
 export const EXTERNAL_COUNTRY_LINKS = {
   indonesia: 'https://indonesia.climatewatchdata.org',
   india: 'https://indiaclimateexplorer.org/'
 };
+
+export const NDC_2025_COLORS = {
+  lightBlue: '#62C0FF',
+  darkBlue: '#0845CB',
+  darkGray: '#999C9F',
+  lightGray: '#CCCDCF',
+  orange: '#FF6C2F',
+  yellow: '#FFB800'
+};
+
+export const LEGEND_STATUS_2025_VALUES_COLORS = {
+  'New NDC': NDC_2025_LABEL_COLORS.SUBMITTED_2025,
+  'No New NDC': NDC_2025_LABEL_COLORS.NO_SUBMISSION,
+  'Not Applicable: Countries that are not a Party to the UNFCCC':
+    NDC_2025_COLORS.lightGray
+};
+
+export const LEGEND_COMPARISON_2025_VALUES_COLORS = {
+  'Revised NDC compared with previous version': NDC_2025_COLORS.lightBlue,
+  'Yes, enhancement in the revised submission': NDC_2025_COLORS.lightBlue,
+  'No, no enhancement in the revised submission': NDC_2025_COLORS.orange,
+  Unclear: NDC_2025_COLORS.yellow
+};
+
+export const LEGEND_COMPARISON_2025_LETTERS = [
+  {
+    value: '2025_compare_1',
+    letter: 'N',
+    label: 'New Target: 2035 GHG target included '
+  },
+  {
+    value: '2025_compare_2',
+    letter: 'E',
+    label: 'Economy-wide: Economy-wide 2035 GHG target included'
+  },
+  {
+    value: '2025_compare_3',
+    letter: 'M',
+    label: 'Mitigation: Strengthened 2030 GHG Target '
+  },
+  {
+    value: '2025_compare_4',
+    letter: 'A',
+    label: 'Adaptation: Strengthened Adaptation'
+  },
+  {
+    value: '2025_compare_5',
+    letter: 'I',
+    label:
+      'Information: Provided additional Information for clarity, transparency, and understanding'
+  }
+];
