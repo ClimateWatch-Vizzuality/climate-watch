@@ -187,7 +187,7 @@ const Ndc2025TrackerChartComponent = props => {
 
   // Generate data explorer link
   const downloadLink = generateLinkToDataExplorer(
-    { category: '2025_ndc_tracker' },
+    { category: 'ndc_tracker' },
     'ndc-content'
   );
 
@@ -238,7 +238,7 @@ const Ndc2025TrackerChartComponent = props => {
                 },
                 {
                   type: 'share',
-                  shareUrl: '/embed/2025-ndc-tracker',
+                  shareUrl: '/embed/ndc-tracker',
                   analyticsGraphName: 'Ndcs',
                   positionRight: true
                 },
