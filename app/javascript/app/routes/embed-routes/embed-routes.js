@@ -29,7 +29,7 @@ export default [
     exact: true
   },
   {
-    path: '/embed/2025-ndc-tracker',
+    path: '/embed/ndc-tracker',
     component: NDCS2025EnhancementsMap,
     exact: true
   },
