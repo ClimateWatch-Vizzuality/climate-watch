@@ -233,7 +233,7 @@ const Ndc2025TrackerChartComponent = props => {
                 },
                 {
                   type: 'share',
-                  shareUrl: '/embed/2025-ndc-tracker',
+                  shareUrl: '/embed/ndc-tracker',
                   analyticsGraphName: 'Ndcs',
                   positionRight: true
                 },
