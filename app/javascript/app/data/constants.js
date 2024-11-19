@@ -31,7 +31,7 @@ export const GHG_CALCULATION_OPTIONS = {
     value: 'PER_GDP'
   },
   CUMULATIVE: {
-    label: 'Cumulative across available years',
+    label: 'Cumulative across selected years',
     value: 'CUMULATIVE'
   },
   PERCENTAGE_CHANGE: {
