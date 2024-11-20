@@ -30,30 +30,23 @@ export const getData = createSelector(
     const no2025DateIndicator = indicators.find(
       indicator => indicator.slug === 'ndce_date'
     );
+
     if (!statusIndicator) return null;
 
-    // We use emissionsIndicator to get all countries (the submissions indicator only has countries with submissions)
-    const data = Object.entries(emissionsIndicator.locations).map(
-      ([iso, location]) => ({
+    const data = countries?.map(country => {
+      const { iso_code3: iso, wri_standard_name, is_in_eu = false } = country;
+
+      return {
         iso,
-        // Country property is only used to display the country name on the chart tooltips.
-        // We'll use the wri_standard_name as a standard, and default to the ISO code if one doesn't
-        // exist in order to fail safely. (IE: FE not crashing due to unexpected/missing data)
-        country:
-          countries.find(country => iso === country.iso_code3)
-            ?.wri_standard_name || iso,
-        indc_submission:
-          // ! TODO Default value conflicts with the one in the component. Needs to be addressed
-          statusIndicator.locations[iso]?.value || 'No New NDC',
+        is_in_eu,
+        country: wri_standard_name,
+        indc_submission: statusIndicator?.locations[iso]?.value || 'No New NDC',
         submission_date:
           dateIndicator.locations[iso]?.value ||
           no2025DateIndicator.locations[iso]?.value,
-        ndce_ghg: location?.value,
-        is_in_eu:
-          countries.find(country => country.iso_code3 === iso)?.is_in_eu ||
-          false
-      })
-    );
+        ndce_ghg: emissionsIndicator?.locations[iso]?.value
+      };
+    });
 
     return data;
   }
