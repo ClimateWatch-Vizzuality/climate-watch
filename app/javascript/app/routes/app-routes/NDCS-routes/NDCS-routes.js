@@ -23,11 +23,11 @@ export default [
     label: 'NDC Enhancement Tracker',
     activeId
   },
-  // {
-  //   path: '/ndc-tracker',
-  //   label: 'NDC Tracker',
-  //   activeId
-  // },
+  {
+    path: '/ndc-tracker',
+    label: 'NDC Tracker',
+    activeId
+  },
   {
     path: '/ndcs-sdg',
     label: 'EXPLORE NDC-SDG LINKAGES',
