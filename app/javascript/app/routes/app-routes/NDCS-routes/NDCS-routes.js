@@ -18,16 +18,16 @@ export default [
     label: 'Explore LTS',
     activeId
   },
-  {
-    path: '/2020-ndc-tracker',
-    label: 'NDC Enhancement Tracker',
-    activeId
-  },
   // {
-  //   path: '/2025-ndc-tracker',
-  //   label: 'NDC Tracker',
+  //   path: '/2020-ndc-tracker',
+  //   label: 'NDC Enhancement Tracker',
   //   activeId
   // },
+  {
+    path: '/ndc-tracker',
+    label: 'NDC Tracker',
+    activeId
+  },
   {
     path: '/ndcs-sdg',
     label: 'EXPLORE NDC-SDG LINKAGES',

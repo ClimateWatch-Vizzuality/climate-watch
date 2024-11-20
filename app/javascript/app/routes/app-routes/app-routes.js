@@ -12,7 +12,7 @@ import NDCCountry from 'pages/ndc-country';
 import LTSCountry from 'pages/lts-country';
 import NDCCompare from 'pages/ndc-compare';
 import NDCCompareAll from 'pages/ndc-compare-all-targets';
-import NDCSEnhancements from 'pages/ndcs-enhancements';
+// import NDCSEnhancements from 'pages/ndcs-enhancements';
 import NDCSEnhancements2025 from 'pages/ndcs-enhancements-2025';
 import NDCSDG from 'pages/ndc-sdg';
 import Country from 'pages/country';
@@ -58,7 +58,7 @@ import emissionPathwaysScenarioSections from './emission-pathways-scenario-secti
 import emissionPathwaysSections from './emission-pathways-sections';
 import countryCompareSections from './country-compare-sections';
 import agricultureSections from './sectors-agriculture-sections';
-import ndcsEnhancementsSections from './ndcs-enhancements-sections';
+// import ndcsEnhancementsSections from './ndcs-enhancements-sections';
 import ndcsEnhancements2025Sections from './ndcs-enhancements-2025-sections';
 import LTSExploreSections from './lts-explore-sections';
 import NetZeroSections from './net-zero-sections';
@@ -176,13 +176,13 @@ export default [
     headerGradient: HEADER_GRADIENTS.commitments,
     headerColor: HEADER_COLORS.ndc
   },
-  {
-    path: '/2020-ndc-tracker',
-    component: NDCSEnhancements,
-    headerImage: 'ndc',
-    sections: ndcsEnhancementsSections,
-    headerGradient: HEADER_GRADIENTS.commitments
-  },
+  // {
+  //   path: '/2020-ndc-tracker',
+  //   component: NDCSEnhancements,
+  //   headerImage: 'ndc',
+  //   sections: ndcsEnhancementsSections,
+  //   headerGradient: HEADER_GRADIENTS.commitments
+  // },
   {
     path: '/2025-ndc-tracker',
     component: NDCSEnhancements2025,
@@ -312,6 +312,10 @@ export default [
   {
     path: '/lts-tracker',
     component: () => createElement(Redirect, { to: '/lts-explore' })
+  },
+  {
+    path: '/2020-ndc-tracker',
+    component: () => createElement(Redirect, { to: '/ndc-tracker' })
   },
   {
     path: '/',
