@@ -184,7 +184,7 @@ export default [
   //   headerGradient: HEADER_GRADIENTS.commitments
   // },
   {
-    path: '/2025-ndc-tracker',
+    path: '/ndc-tracker',
     component: NDCSEnhancements2025,
     headerImage: 'ndc',
     sections: ndcsEnhancements2025Sections,
