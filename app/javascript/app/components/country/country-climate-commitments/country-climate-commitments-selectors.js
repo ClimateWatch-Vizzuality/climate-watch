@@ -66,7 +66,7 @@ const getNetZeroAnd2020StatusValues = createSelector(
 
     return [
       ['Net-Zero Target', statusNetZeroValue],
-      ['New or Updated NDC', status2020value]
+      ['2020 NDC', status2020value]
     ];
   }
 );
@@ -86,7 +86,7 @@ export const getCountriesDocumentsValues = createSelector(
 
     const sortedKeys = [
       'First NDC',
-      'New or Updated NDC',
+      '2020 NDC',
       'Long-term Strategy',
       'Net-Zero Target'
     ];
