@@ -23,8 +23,8 @@ export const slidesData = [
         type: 'button'
       },
       {
-        text: 'NDC Enhancement Tracker',
-        link: '/2020-ndc-tracker',
+        text: 'NDC Tracker',
+        link: '/ndc-tracker',
         variant: 'primary',
         type: 'button'
       },
@@ -51,8 +51,8 @@ export const slidesData = [
         type: 'button'
       },
       {
-        text: 'NDC Enhancement Tracker',
-        link: '/2020-ndc-tracker',
+        text: 'NDC Tracker',
+        link: '/ndc-tracker',
         variant: 'primary',
         type: 'button'
       },
