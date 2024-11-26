@@ -30,10 +30,10 @@ const NDCSExplore = ({ route }) => (
             <div className={styles.searchWrapper}>
               <Button
                 variant="primary"
-                link="/2020-ndc-tracker"
+                link="/ndc-tracker"
                 className="link-button"
               >
-                <AbbrReplace>Go to NDC Enhancement Tracker</AbbrReplace>
+                <AbbrReplace>Go to NDC Tracker</AbbrReplace>
               </Button>
               <span data-tour="ndc-explore-01">
                 <AutocompleteSearch
