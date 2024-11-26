@@ -122,7 +122,11 @@ function CountryClimateCommitments({
       <CountriesDocumentsProvider location={iso} />
       <NDCSProvider
         overrideFilter
-        indicatorSlugs={['nz_status', INDICATOR_SLUGS.enhancements]}
+        indicatorSlugs={[
+          'nz_status',
+          INDICATOR_SLUGS.enhancements,
+          INDICATOR_SLUGS.submitted2025
+        ]}
       />
     </div>
   );

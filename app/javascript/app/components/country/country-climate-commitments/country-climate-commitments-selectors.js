@@ -30,9 +30,12 @@ const getNetZeroAnd2020StatusValues = createSelector(
     const status2020indicator = indicators.find(
       i => i.slug === INDICATOR_SLUGS.enhancements
     );
+    const status2025indicator = indicators.find(
+      i => i.slug === INDICATOR_SLUGS.submitted2025
+    );
     const netZeroIndicator = indicators.find(i => i.slug === 'nz_status');
 
-    if (!status2020indicator || !netZeroIndicator) return null;
+    if (!status2020indicator || !status2025indicator || !netZeroIndicator) { return null; }
 
     const status2020Label =
       status2020indicator &&
@@ -46,6 +49,10 @@ const getNetZeroAnd2020StatusValues = createSelector(
         [ENHANCEMENT_LABEL_SLUGS.INTENDS_TO_ENHANCE]:
           SUBMISSION_ICON_VALUE.intends
       }[status2020Label] || SUBMISSION_ICON_VALUE.no;
+
+    const status2025Value = status2025indicator?.locations[iso]
+      ? SUBMISSION_ICON_VALUE.yes
+      : SUBMISSION_ICON_VALUE.no;
 
     const statusNetZeroLabelId =
       netZeroIndicator &&
@@ -66,6 +73,7 @@ const getNetZeroAnd2020StatusValues = createSelector(
 
     return [
       ['Net-Zero Target', statusNetZeroValue],
+      ['2025 NDC (NDC 3.0)', status2025Value],
       ['2020 NDC', status2020value]
     ];
   }
@@ -87,6 +95,7 @@ export const getCountriesDocumentsValues = createSelector(
     const sortedKeys = [
       'First NDC',
       '2020 NDC',
+      '2025 NDC (NDC 3.0)',
       'Long-term Strategy',
       'Net-Zero Target'
     ];
