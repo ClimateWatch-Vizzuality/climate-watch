@@ -80,7 +80,7 @@ function CountryClimateCommitments({
                       icon={countryDocumentsIcons[+value]}
                       className={styles.icon}
                     />
-                    <span>{key}</span>
+                    <span className={styles.labelDescription}>{key}</span>
                     <div className={styles.valueDescription}>
                       {countryDocumentsLabels(key, +value)}
                     </div>
