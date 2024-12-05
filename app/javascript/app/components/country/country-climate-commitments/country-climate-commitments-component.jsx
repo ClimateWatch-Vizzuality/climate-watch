@@ -80,7 +80,7 @@ function CountryClimateCommitments({
                       icon={countryDocumentsIcons[+value]}
                       className={styles.icon}
                     />
-                    <span>{key}</span>
+                    <span className={styles.labelDescription}>{key}</span>
                     <div className={styles.valueDescription}>
                       {countryDocumentsLabels(key, +value)}
                     </div>
@@ -122,7 +122,11 @@ function CountryClimateCommitments({
       <CountriesDocumentsProvider location={iso} />
       <NDCSProvider
         overrideFilter
-        indicatorSlugs={['nz_status', INDICATOR_SLUGS.enhancements]}
+        indicatorSlugs={[
+          'nz_status',
+          INDICATOR_SLUGS.enhancements,
+          INDICATOR_SLUGS.submitted2025
+        ]}
       />
     </div>
   );

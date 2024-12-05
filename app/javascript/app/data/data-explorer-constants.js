@@ -143,11 +143,11 @@ export const DATA_EXPLORER_SECTIONS = {
     linkLabel: 'net-zero-tracker',
     linkName: 'net-zero-tracker'
   },
-  '2025-nds-tracker': {
-    label: '2025_ndc_tracker',
-    moduleName: '2025-ndc-tracker',
-    linkLabel: '2025_ndc_tracker',
-    linkName: '2025-ndc-tracker'
+  'ndc-tracker': {
+    label: 'ndc_tracker',
+    moduleName: 'ndc-tracker',
+    linkLabel: 'ndc_tracker',
+    linkName: 'ndc-tracker'
   }
 };
 

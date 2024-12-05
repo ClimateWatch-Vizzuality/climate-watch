@@ -12,6 +12,10 @@
 .intro {
   margin-bottom: 14px;
   text-align: center;
+
+  p + p {
+    margin-top: 12px;
+  }
 }
 
 .homeIntro {
