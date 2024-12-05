@@ -24,7 +24,7 @@ const NDCSExplore = ({ route }) => (
             <div className={styles.headerLayout}>
               <Intro
                 title="Explore Nationally Determined Contributions (NDCs)"
-                description="Under the Paris Agreement, countries regularly submit <a href='https://www.wri.org/insights/nationally-determined-contributions-ndcs-explained' class=${styles.link}>Nationally Determined Contributions (NDCs)</a>, their commitments to tackle climate change. Countries are expected to submit new NDCs by early 2025. Learn about <a href='https://www.wri.org/ndcs' class=${styles.link}>the many befits of strong new NDCs</a>."
+                description="Under the Paris Agreement, countries regularly submit <a href='https://www.wri.org/insights/nationally-determined-contributions-ndcs-explained'>Nationally Determined Contributions (NDCs)</a>, their commitments to tackle climate change. Countries are expected to submit new NDCs by early 2025. Learn about <a href='https://www.wri.org/ndcs'>the many befits of strong new NDCs</a>."
               />
             </div>
             <div className={styles.searchWrapper}>
