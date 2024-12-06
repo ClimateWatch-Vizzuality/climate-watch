@@ -4,6 +4,7 @@ export const DOCUMENT_COLUMNS_SLUGS = {
   NDC: 'first_ndc',
   'Updated First NDC': 'revised_first_ndc',
   '2nd NDC': 'second_ndc',
+  '3rd NDC': 'third_ndc',
   LTS: 'lts'
   // 'Climate Framework Laws or Policies': 'framework',
   // 'Sectoral Laws or Policies': 'sectoral'
