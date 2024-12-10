@@ -27,8 +27,9 @@ function CountryClimateEnhancements({ previousComparisonValues, countryName }) {
               The Paris Agreement calls on countries to deliver new Nationally
               Determined Contributions (NDCs) every five years that are informed
               by the latest advances in technology, science and shifting
-              economic trends. The following indicators describe whether the
-              country enhanced its level of ambition in seven key indicators.
+              economic trends. The following indicators assess whether the
+              country has increased its level of ambition across these key
+              areas.
             </p>
           </AbbrReplace>
         </div>
