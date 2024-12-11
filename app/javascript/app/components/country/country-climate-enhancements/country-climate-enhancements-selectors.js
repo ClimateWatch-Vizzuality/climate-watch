@@ -1,4 +1,7 @@
 import { createSelector } from 'reselect';
+import sortBy from 'lodash/sortBy';
+
+import { COMPARISON_2025_INDICATORS_ORDER, COMPARISON_2025_INDICATORS_LABELS } from 'data/constants';
 
 const getIso = state => state.iso || null;
 const getCountries = state => state.countries.data || null;
@@ -9,10 +12,12 @@ const get2025ComparisonIndicators = state =>
 
 const parseComparisonIndicators = (iso, indicators) => {
   if (!indicators) return null;
-  const parsedIndicators = indicators.map(indicator => ({
-    name: indicator?.name,
-    value: indicator.locations[iso]?.value
-  }))?.filter(({ value }) => !!value);
+  const parsedIndicators = indicators
+    .map(indicator => ({
+      name: indicator?.name,
+      value: indicator.locations[iso]?.value
+    }))
+    ?.filter(({ value }) => !!value);
   return parsedIndicators.length ? parsedIndicators : null;
 };
 
@@ -23,7 +28,20 @@ const getCountry = createSelector([getCountries, getIso], (countries, iso) => {
 
 const getParsed2025Indicators = createSelector(
   [get2025ComparisonIndicators, getIso],
-  (indicators, iso) => parseComparisonIndicators(iso, indicators)
+  (indicators, iso) => {
+    // Unlike the previous indicators, there is no guarantee that these will
+    // come ordered for display from the API. We'll order them first.
+    const orderedIndicators = sortBy(indicators, indicator =>
+      COMPARISON_2025_INDICATORS_ORDER.indexOf(indicator?.slug)
+    );
+    // We are overriding labels on the 2025 indicators. We'll re-label now
+    // them before parsing them, as the parsing function is generic.
+    const labeledIndicators = orderedIndicators.map((indicator) => ({
+      ...indicator,
+      name: COMPARISON_2025_INDICATORS_LABELS[indicator?.slug] || indicator?.slug
+    }));
+    return parseComparisonIndicators(iso, labeledIndicators);
+  }
 );
 
 const getParsedPreviousIndicators = createSelector(
