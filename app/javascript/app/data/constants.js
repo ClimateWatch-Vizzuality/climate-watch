@@ -603,3 +603,21 @@ export const LEGEND_COMPARISON_2025_LETTERS = [
       'Information: Provided additional Information for clarity, transparency, and understanding'
   }
 ];
+
+// 2025 Comparison indicators ordering + label overrides
+
+export const COMPARISON_2025_INDICATORS_ORDER = [
+  '2025_compare_2',
+  '2025_compare_1',
+  '2025_compare_3',
+  '2025_compare_4',
+  '2025_compare_5'
+];
+
+export const COMPARISON_2025_INDICATORS_LABELS = {
+  '2025_compare_1': '2035 GHG target included',
+  '2025_compare_2': 'Economy-wide (for 2035) GHG target included',
+  '2025_compare_3': 'Strengthened or added policies and actions',
+  '2025_compare_4': 'Strengthened Adaptation',
+  '2025_compare_5': 'Provided additional Information for clarity, transparency, and understanding'
+};
