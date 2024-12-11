@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
+import cx from 'classnames';
 import ReactTooltip from 'react-tooltip';
 import NDCSPreviousComparisonProvider from 'providers/ndcs-previous-comparison-provider';
 import NDCS2025ComparisonProvider from 'providers/ndcs-2025-comparison-provider';
@@ -11,7 +12,7 @@ import styles from './country-climate-enhancements-styles.scss';
 function CountryClimateEnhancements({ comparisonIndicators, countryName }) {
   const [tooltipContent, setTooltipContent] = useState(null);
 
-  const handleTooltip = useCallback((evt) => {
+  const handleTooltip = useCallback(evt => {
     setTooltipContent(evt.target.dataset['tooltip-content']);
   }, []);
 
@@ -34,11 +35,15 @@ function CountryClimateEnhancements({ comparisonIndicators, countryName }) {
             </p>
           </AbbrReplace>
         </div>
-        <div className={styles.previousComparison}>
+        <div
+          className={cx(styles.comparisonIndicator, {
+            [styles.comparisonIndicatorReducedWidth]: true
+          })}
+        >
           {comparisonIndicators.map(({ name, value }) => (
             <div
               key={name}
-              className={styles.item}
+              className={styles.comparisonIndicatorItem}
               data-tooltip-content={value}
               onMouseMove={handleTooltip}
             >
