@@ -51,7 +51,7 @@ const cellRenderer = (
   }
 
   if (dataKey === 'Share of global GHG emissions') {
-    return cellData;
+    return <span className={styles.ghgEmissionsColumn}>{cellData}</span>;
   }
 
   switch (cellData) {
@@ -135,10 +135,10 @@ const CompareAllTable = ({
         <Table
           data={tableData}
           tableHeight={550}
-          tableWidthOffset={-100}
+          tableWidthOffset={-82}
           parseHtml
           titleLinks={titleLinks}
-          setColumnWidth={() => 115}
+          setColumnWidth={() => 144}
           setRowsHeight={() => 50}
           defaultColumns={columns}
           theme={compareTableTheme}
