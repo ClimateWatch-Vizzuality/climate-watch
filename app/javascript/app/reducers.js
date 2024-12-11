@@ -7,6 +7,7 @@ import * as NdcsAdaptationsProvider from 'providers/ndcs-adaptation-provider';
 import * as NDCSProvider from 'providers/ndcs-provider';
 import * as NDCSExploreProvider from 'providers/ndcs-explore-provider';
 import * as NDCSPreviousComparison from 'providers/ndcs-previous-comparison-provider';
+import * as NDCS2025Comparison from 'providers/ndcs-2025-comparison-provider';
 import * as loginProvider from 'providers/login-provider';
 import * as countriesProvider from 'providers/countries-provider';
 import * as countryProfileIndicatorsProvider from 'providers/country-profile-indicators-provider';
@@ -53,6 +54,7 @@ const providersReducers = {
   ndcs: handleActions(NDCSProvider),
   ndcsExplore: handleActions(NDCSExploreProvider),
   ndcsPreviousComparison: handleActions(NDCSPreviousComparison),
+  ndcs2025Comparison: handleActions(NDCS2025Comparison),
   login: handleActions(loginProvider),
   countries: handleActions(countriesProvider),
   regions: handleActions(regionsProvider),
@@ -96,7 +98,7 @@ const providersReducers = {
   compareAll: handleActions(ndcCompareAllTargetsProvider),
   customCompareAccordion: handleActions(customCompareAccordionProvider),
   keyVisualizations: handleActions(keyVisualizationsProvider),
-  metadata: handleActions(metadataProvider),
+  metadata: handleActions(metadataProvider)
 };
 
 // Pages
