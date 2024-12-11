@@ -53,7 +53,7 @@ const PreviousSubmissionIcon = ({
   tooltipId
 }) => {
   const iconValue =
-    submissionIconValue || (value.startsWith('Yes')
+    submissionIconValue || (value?.startsWith('Yes')
       ? 'Yes, enhancement in the revised submission'
       : value);
 
