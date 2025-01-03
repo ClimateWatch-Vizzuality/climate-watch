@@ -353,7 +353,7 @@ const Ndc2025TrackerChartComponent = props => {
                   theme={toggleCheckboxTheme}
                 />
                 <label htmlFor="emissions">
-                  <span className>Total emissions</span>
+                  <span>Total emissions</span>
                 </label>
               </div>
             </div>
