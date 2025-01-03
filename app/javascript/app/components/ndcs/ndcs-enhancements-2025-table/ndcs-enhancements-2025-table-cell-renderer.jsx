@@ -38,7 +38,7 @@ const cellRenderer = props => {
         data-for="submission-icon-info"
         data-tip={cellData?.text}
         className={styles.submissionIcon}
-        style={{ 'background-color': cellData?.color }}
+        style={{ backgroundColor: cellData?.color }}
       />
     );
   }
@@ -61,7 +61,7 @@ const cellRenderer = props => {
                     indicatorColor !== ENHANCEMENT_VALUE_COLORS.white
                 })}
                 style={{
-                  'background-color': indicatorColor || 'lightgray'
+                  backgroundColor: indicatorColor || 'lightgray'
                 }}
               >
                 {indicator.letter}
