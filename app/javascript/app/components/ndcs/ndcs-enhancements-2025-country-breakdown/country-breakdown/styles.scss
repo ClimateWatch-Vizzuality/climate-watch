@@ -1,0 +1,41 @@
+@import "~styles/layout.scss";
+
+.wrapper {
+  display: block;
+  position: relative;
+  width: 100%;
+}
+
+.summaryHeader {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin: 10px 0;
+  gap: 20px;
+}
+
+.summaryDescription {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+// .buttonGroupContainer {
+//   border: 1px solid red;
+// }
+
+.buttonGroup {
+  > *,
+  button {
+    width: 50px !important;
+  }
+}
+
+// .chartContainer {}
+
+.chartPlaceholderImg {
+  // border: 1px solid red;
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 100%;
+}
