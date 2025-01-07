@@ -33,9 +33,21 @@
 
 .chartOptionsContainer {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  align-items: end;
+  justify-content: end;
+  gap: 14px;
   margin: 24px 0;
+}
+
+.chartDropdownsContainer {
+  display: flex;
+  gap: 14px;
+  white-space: nowrap;
+  margin-bottom: 1px;
+}
+
+.conditionalSwitchContainer {
+  white-space: nowrap;
 }
 
 // .chartContainer {}

@@ -1,11 +1,26 @@
 import React, { useState } from 'react';
-import { Switch } from 'cw-components';
+import { Dropdown, Switch } from 'cw-components';
 
 import ButtonGroup from 'components/button-group';
 
 import countryChartPlaceholder from 'assets/placeholders/iconic-country-placeholder.png';
 
 import styles from './styles.scss';
+
+const viewDropdownOptions = [
+  { label: 'Baseline Year Comparison', value: 'baseline-year-comparison' },
+  { label: '2030-2035 Target Comparison', value: '2030-2035-target-comparison' }
+];
+
+const locationDropdownOptions = [
+  { label: 'Top Emitters', value: 'top-emitters' }
+];
+
+const baselineYearDropdownOptions = [
+  { label: '1990 Historical Emissions', value: '1990' },
+  { label: '2005 Historical Emissions', value: '1990' },
+  { label: '2018 Historical Emissions', value: '1990' }
+];
 
 const conditionalSwitchOptions = [
   {
@@ -19,6 +34,11 @@ const conditionalSwitchOptions = [
 ];
 
 const CountryBreakdownComponent = () => {
+  const [view, setView] = useState(viewDropdownOptions[0]);
+  const [location, setLocation] = useState(locationDropdownOptions[0]);
+  const [baselineYear, setBaselineYear] = useState(
+    baselineYearDropdownOptions[0]
+  );
   const [conditionalNDC, setConditionalNDC] = useState(
     conditionalSwitchOptions[0]
   );
@@ -59,8 +79,30 @@ const CountryBreakdownComponent = () => {
       </div>
 
       <div className={styles.chartOptionsContainer}>
-        <div>Dropdowns</div>
-        <div>
+        <div className={styles.chartDropdownsContainer}>
+          <Dropdown
+            label="View"
+            value={view}
+            options={viewDropdownOptions}
+            onValueChange={setView}
+            hideResetButton
+          />
+          <Dropdown
+            label="Location"
+            value={location}
+            options={locationDropdownOptions}
+            onValueChange={setLocation}
+            hideResetButton
+          />
+          <Dropdown
+            label="Baseline Year"
+            value={baselineYear}
+            options={baselineYearDropdownOptions}
+            onValueChange={setBaselineYear}
+            hideResetButton
+          />
+        </div>
+        <div className={styles.conditionalSwitchContainer}>
           <Switch
             options={conditionalSwitchOptions}
             selectedOption={conditionalNDC.value}
