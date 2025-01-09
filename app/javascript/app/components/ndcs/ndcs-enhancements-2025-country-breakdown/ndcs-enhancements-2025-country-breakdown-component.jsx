@@ -4,8 +4,8 @@ import { Switch } from 'cw-components';
 import layout from 'styles/layout';
 import styles from './ndcs-enhancements-2025-country-breakdown-styles.scss';
 
-import GlobalViewComponent from './global-view/component';
-import CountryBreakdownComponent from './country-breakdown/component';
+import GlobalViewComponent from './global-view';
+import CountryBreakdownComponent from './country-breakdown';
 
 const tabs = [
   {
