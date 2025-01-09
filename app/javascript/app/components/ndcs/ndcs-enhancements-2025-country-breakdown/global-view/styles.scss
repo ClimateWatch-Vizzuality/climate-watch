@@ -37,11 +37,16 @@
   margin: 24px 0;
 }
 
-// .chartContainer {}
+.chartContainerGlobal {
+  position: relative;
+  padding: 0 14px;
 
-.chartPlaceholderImg {
-  // border: 1px solid red;
-  background-size: contain;
-  background-repeat: no-repeat;
-  width: 100%;
+  svg {
+    overflow: visible;
+  }
+}
+
+.lastUpdated {
+  margin-top: 14px;
+  font-style: italic;
 }
