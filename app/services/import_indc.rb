@@ -19,6 +19,7 @@ class ImportIndc
   DOCUMENTS_FILEPATH =
     "#{CW_FILES_PREFIX}indc/NDC_documents.csv".freeze
   DATA_TIMELINE_FILEPATH = "#{CW_FILES_PREFIX}indc/NDC_timeline.csv".freeze
+  DATA_GLOBAL_EMISSIONS_FILEPATH = "#{CW_FILES_PREFIX}indc/NDC_global_emissions.csv".freeze
   PLEDGES_DATA_FILEPATH = "#{CW_FILES_PREFIX}indc/pledges_data.csv".freeze
   COMPARISON_FILEPATH = "#{CW_FILES_PREFIX}indc/comparison_matrix.csv".freeze
 
@@ -170,6 +171,7 @@ class ImportIndc
     Indc::Submission.delete_all
     Indc::Document.delete_all
     Indc::Timeline.delete_all
+    Indc::GlobalEmission.delete_all
   end
 
   def load_csvs
@@ -191,6 +193,7 @@ class ImportIndc
     @pledges_data = S3CSVReader.read(PLEDGES_DATA_FILEPATH).map(&:to_h)
     @comparison_indicators = S3CSVReader.read(COMPARISON_FILEPATH).map(&:to_h)
     @timelines = S3CSVReader.read(DATA_TIMELINE_FILEPATH).map(&:to_h)
+    @global_emissions = S3CSVReader.read(DATA_GLOBAL_EMISSIONS_FILEPATH).map(&:to_h)
   end
 
   def load_locations
@@ -286,6 +289,20 @@ class ImportIndc
       submission: timeline[:submission],
       date: timeline[:date],
       url: timeline[:url]
+    }
+  end
+
+  def global_emission_attributes(emission)
+    {
+      year: emission['year'],
+      historical_emission: emission['Historical emissions'],
+      current_policies_scenario: emission['Current policies scenario'],
+      ndcs_conditional_2020: emission['NDCs conditional 2020'],
+      ndcs_unconditional_2020: emission['NDCs unconditional 2020'],
+      ndcs_conditional_2025: emission['NDCs conditional 2025'],
+      ndcs_unconditional_2025: emission['NDCs unconditional 2025'],
+      target_2c: emission['2C target'],
+      target_1_5c: emission['1.5C target']
     }
   end
 
@@ -732,6 +749,14 @@ class ImportIndc
       Indc::Timeline.create!(timeline_attributes(location, timeline))
     rescue
       puts "This row failed #{timeline}"
+    end
+  end
+
+  def import_global_emissions
+    @global_emissions.each do |emission|
+      Indc::GlobalEmission.create!(global_emission_attributes(emission))
+    rescue
+      puts "This row failed #{emission}"
     end
   end
 
