@@ -91,7 +91,7 @@ object_contents = {
     Algeria,DZA,First NDC Submitted,12/3/24,https://unfccc.int/NDCREG
   END
 
-  "#{CW_FILES_PREFIX}indc/NDC_global_emissions.csv" => <<~END,
+  "#{CW_FILES_PREFIX}indc/NDC_global_emissions.csv" => <<~END
     year,Historical emissions,Current policies scenario,2020 NDCs conditional,2020 NDCs unconditional,2025 NDCs conditional,2025 NDCs unconditional,2C,1.5C
     2030,100,56,1,48,3,4,32,24
     2031,200,56,1,2,45,47,28,17
