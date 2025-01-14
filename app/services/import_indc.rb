@@ -293,17 +293,23 @@ class ImportIndc
     }
   end
 
+  def convert_to_decimal_or_nil(str)
+    BigDecimal(str)
+  rescue ArgumentError, TypeError
+    nil
+  end
+
   def global_emission_attributes(emission)
     {
-      year: emission['year'],
-      historical_emission: emission['Historical emissions'],
-      current_policies_scenario: emission['Current policies scenario'],
-      ndcs_conditional_2020: emission['NDCs conditional 2020'],
-      ndcs_unconditional_2020: emission['NDCs unconditional 2020'],
-      ndcs_conditional_2025: emission['NDCs conditional 2025'],
-      ndcs_unconditional_2025: emission['NDCs unconditional 2025'],
-      target_2c: emission['2C target'],
-      target_1_5c: emission['1.5C target']
+      year: Integer(emission['year']),
+      historical_emission: convert_to_decimal_or_nil(emission['Historical emissions']),
+      current_policies_scenario: convert_to_decimal_or_nil(emission['Current policies scenario']),
+      ndcs_conditional_2020: convert_to_decimal_or_nil(emission['NDCs conditional 2020']),
+      ndcs_unconditional_2020: convert_to_decimal_or_nil(emission['NDCs unconditional 2020']),
+      ndcs_conditional_2025: convert_to_decimal_or_nil(emission['NDCs conditional 2025']),
+      ndcs_unconditional_2025:convert_to_decimal_or_nil( emission['NDCs unconditional 2025']),
+      target_2c: convert_to_decimal_or_nil(emission['2C target']),
+      target_1_5c: convert_to_decimal_or_nil(emission['1.5C target'])
     }
   end
 
