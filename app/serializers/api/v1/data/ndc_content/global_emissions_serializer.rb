@@ -5,7 +5,7 @@ module Api
         class GlobalEmissionsSerializer < ActiveModel::Serializer
           attributes :id,
                      :year,
-                     :historical_emissions,
+                     :historical_emission,
                      :current_policies_scenario,
                      :ndcs_conditional_2020,
                      :ndcs_unconditional_2020,
