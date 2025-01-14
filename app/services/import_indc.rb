@@ -302,14 +302,14 @@ class ImportIndc
   def global_emission_attributes(emission)
     {
       year: Integer(emission[:year]),
-      historical_emission: convert_to_decimal_or_nil(emission[:historical_emissions]),
-      current_policies_scenario: convert_to_decimal_or_nil(emission[:current_policies_scenario]),
-      ndcs_conditional_2020: convert_to_decimal_or_nil(emission[:2020_ndcs_conditional]),
-      ndcs_unconditional_2020: convert_to_decimal_or_nil(emission[:2020_ndcs_unconditional]),
-      ndcs_conditional_2025: convert_to_decimal_or_nil(emission[:2025_ndcs_conditional]),
-      ndcs_unconditional_2025:convert_to_decimal_or_nil( emission[:2025_ndcs_unconditional]),
-      target_2c: convert_to_decimal_or_nil(emission[:2c]),
-      target_1_5c: convert_to_decimal_or_nil(emission[:15c])
+      historical_emission: convert_to_decimal_or_nil(emission['historical_emissions']),
+      current_policies_scenario: convert_to_decimal_or_nil(emission['current_policies_scenario']),
+      ndcs_conditional_2020: convert_to_decimal_or_nil(emission['2020_ndcs_conditional']),
+      ndcs_unconditional_2020: convert_to_decimal_or_nil(emission['2020_ndcs_unconditional']),
+      ndcs_conditional_2025: convert_to_decimal_or_nil(emission['2025_ndcs_conditional']),
+      ndcs_unconditional_2025:convert_to_decimal_or_nil( emission['2025_ndcs_unconditional']),
+      target_2c: convert_to_decimal_or_nil(emission['2c']),
+      target_1_5c: convert_to_decimal_or_nil(emission['15c'])
     }
   end
 
