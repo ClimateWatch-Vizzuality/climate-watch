@@ -6,7 +6,7 @@ RSpec.describe Api::V1::Data::NdcContent::GlobalEmissionsController, type: :cont
       FactoryBot.create :indc_global_emission, year: 2020
       FactoryBot.create :indc_global_emission,
                         year: 2021,
-                        historical_emissions: 100,
+                        historical_emission: 100,
                         ndcs_conditional_2020: 200
     end
 
