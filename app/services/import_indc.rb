@@ -762,8 +762,8 @@ class ImportIndc
   def import_global_emissions
     @global_emissions.each do |emission|
       Indc::GlobalEmission.create!(global_emission_attributes(emission))
-    rescue
-      puts "This row failed #{emission}"
+    rescue => e
+      puts "This row failed #{emission}, reason: #{e.message}"
     end
   end
 
