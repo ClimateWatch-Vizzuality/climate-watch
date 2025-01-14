@@ -61,6 +61,7 @@ class ImportIndc
       import_submissions
       import_comparison_slugs
       import_timelines
+      import_global_emissions
     end
 
     generate_subsectors_map_data
