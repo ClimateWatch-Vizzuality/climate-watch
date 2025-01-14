@@ -3,8 +3,8 @@ require 'rails_helper'
 RSpec.describe Api::V1::Data::NdcContent::GlobalEmissionsController, type: :controller do
   describe 'GET index' do
     before do
-      FactoryBot.create :indc_global_emissions, year: 2020
-      FactoryBot.create :indc_global_emissions,
+      FactoryBot.create :indc_global_emission, year: 2020
+      FactoryBot.create :indc_global_emission,
                         year: 2021,
                         historical_emissions: 100,
                         ndcs_conditional_2020: 200
