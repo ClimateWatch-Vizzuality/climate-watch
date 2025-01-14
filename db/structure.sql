@@ -1128,7 +1128,8 @@ CREATE TABLE public.indc_global_emissions (
     target_2c numeric,
     target_1_5c numeric,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    current_policies_scenario numeric
 );
 
 
@@ -4915,6 +4916,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220527093456'),
 ('20240924080237'),
 ('20250114104537'),
-('20250114105639');
+('20250114105639'),
+('20250114120726');
 
 
