@@ -1114,6 +1114,45 @@ ALTER SEQUENCE public.indc_documents_id_seq OWNED BY public.indc_documents.id;
 
 
 --
+-- Name: indc_global_emissions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.indc_global_emissions (
+    id bigint NOT NULL,
+    year integer NOT NULL,
+    historical_emission numeric,
+    ndcs_conditional_2020 numeric,
+    ndcs_unconditional_2020 numeric,
+    ndcs_conditional_2025 numeric,
+    ndcs_unconditional_2025 numeric,
+    target_2c numeric,
+    target_1_5c numeric,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    current_policies_scenario numeric
+);
+
+
+--
+-- Name: indc_global_emissions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.indc_global_emissions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: indc_global_emissions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.indc_global_emissions_id_seq OWNED BY public.indc_global_emissions.id;
+
+
+--
 -- Name: indc_indicators; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2603,6 +2642,13 @@ ALTER TABLE ONLY public.indc_documents ALTER COLUMN id SET DEFAULT nextval('publ
 
 
 --
+-- Name: indc_global_emissions id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.indc_global_emissions ALTER COLUMN id SET DEFAULT nextval('public.indc_global_emissions_id_seq'::regclass);
+
+
+--
 -- Name: indc_indicators id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -3179,6 +3225,14 @@ ALTER TABLE ONLY public.indc_category_types
 
 ALTER TABLE ONLY public.indc_documents
     ADD CONSTRAINT indc_documents_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: indc_global_emissions indc_global_emissions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.indc_global_emissions
+    ADD CONSTRAINT indc_global_emissions_pkey PRIMARY KEY (id);
 
 
 --
@@ -4860,6 +4914,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220519084239'),
 ('20220520090514'),
 ('20220527093456'),
-('20240924080237');
+('20240924080237'),
+('20250114104537'),
+('20250114105639'),
+('20250114120726');
 
 

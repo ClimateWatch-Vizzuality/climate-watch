@@ -90,6 +90,12 @@ object_contents = {
     Afghanistan,AFG,First NDC Submitted,11/3/24,https://unfccc.int/NDCREG
     Algeria,DZA,First NDC Submitted,12/3/24,https://unfccc.int/NDCREG
   END
+
+  "#{CW_FILES_PREFIX}indc/NDC_global_emissions.csv" => <<~END
+    year,Historical emissions,Current policies scenario,2020 NDCs conditional,2020 NDCs unconditional,2025 NDCs conditional,2025 NDCs unconditional,2C,1.5C
+    2030,100,56,1,48,3,4,32,24
+    2031,200,56,1,2,45,47,28,17
+  END
 }
 
 describe ImportIndc do
@@ -155,6 +161,10 @@ describe ImportIndc do
 
   it 'Creates new INDC timeline records' do
     expect { subject }.to change { Indc::Timeline.count }.by(2)
+  end
+
+  it 'Creates new INDC global emissions records' do
+    expect { subject }.to change { Indc::GlobalEmission.count }.by(2)
   end
 
   it 'Creates new adaptation actions' do
