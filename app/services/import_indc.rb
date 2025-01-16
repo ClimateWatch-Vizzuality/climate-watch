@@ -20,6 +20,7 @@ class ImportIndc
     "#{CW_FILES_PREFIX}indc/NDC_documents.csv".freeze
   DATA_TIMELINE_FILEPATH = "#{CW_FILES_PREFIX}indc/NDC_timeline.csv".freeze
   DATA_GLOBAL_EMISSIONS_FILEPATH = "#{CW_FILES_PREFIX}indc/NDC_global_emissions.csv".freeze
+  DATA_COUNTRY_EMISSIONS_FILEPATH = "#{CW_FILES_PREFIX}indc/NDC_country_emissions.csv".freeze
   PLEDGES_DATA_FILEPATH = "#{CW_FILES_PREFIX}indc/pledges_data.csv".freeze
   COMPARISON_FILEPATH = "#{CW_FILES_PREFIX}indc/comparison_matrix.csv".freeze
 
@@ -62,6 +63,7 @@ class ImportIndc
       import_comparison_slugs
       import_timelines
       import_global_emissions
+      import_country_emissions
     end
 
     generate_subsectors_map_data
@@ -173,6 +175,7 @@ class ImportIndc
     Indc::Document.delete_all
     Indc::Timeline.delete_all
     Indc::GlobalEmission.delete_all
+    Indc::CountryEmission.delete_all
   end
 
   def load_csvs
@@ -195,6 +198,7 @@ class ImportIndc
     @comparison_indicators = S3CSVReader.read(COMPARISON_FILEPATH).map(&:to_h)
     @timelines = S3CSVReader.read(DATA_TIMELINE_FILEPATH).map(&:to_h)
     @global_emissions = S3CSVReader.read(DATA_GLOBAL_EMISSIONS_FILEPATH).map(&:to_h)
+    @country_emissions = S3CSVReader.read(DATA_COUNTRY_EMISSIONS_FILEPATH).map(&:to_h)
   end
 
   def load_locations
@@ -310,6 +314,39 @@ class ImportIndc
       ndcs_unconditional_2025:convert_to_decimal_or_nil( emission[:'2025_ndcs_unconditional']),
       target_2c: convert_to_decimal_or_nil(emission[:'2c']),
       target_1_5c: convert_to_decimal_or_nil(emission[:'15c'])
+    }
+  end
+
+  def country_emission_attributes(location, emission)
+    {
+      location: location,
+      historical_cw1990: emission[:historical_cw1990]&.to_f,
+      historical_cw2005: emission[:historical_cw2005]&.to_f,
+      historical_cw2018: emission[:historical_cw2018]&.to_f,
+      targets_nfgs_uc2030: emission[:targets_nfgs_uc2030]&.to_f,
+      targets_nfgs_c2030: emission[:targets_nfgs_c2030]&.to_f,
+      targets_nfgs_uc2035: emission[:targets_nfgs_uc2035]&.to_f,
+      targets_nfgs_c2035: emission[:targets_nfgs_c2035]&.to_f,
+      baseline1990_2030_uc: emission[:baseline1990_2030_uc]&.to_f,
+      baseline1990_2030_uc_percentage: emission[:baseline1990_2030_uc_percentage]&.to_f,
+      baseline1990_2035_uc: emission[:baseline1990_2035_uc]&.to_f,
+      baseline1990_2035_uc_percentage: emission[:baseline1990_2035_uc_percentage]&.to_f,
+      baseline1990_2035_c: emission[:baseline1990_2035_c]&.to_f,
+      baseline1990_2035_c_percentage: emission[:baseline1990_2035_c_percentage]&.to_f,
+      baseline2005_2030_uc: emission[:baseline2005_2030_uc]&.to_f,
+      baseline2005_2030_uc_percentage: emission[:baseline2005_2030_uc_percentage]&.to_f,
+      baseline2005_2035_uc: emission[:baseline2005_2035_uc]&.to_f,
+      baseline2005_2035_uc_percentage: emission[:baseline2005_2035_uc_percentage]&.to_f,
+      baseline2005_2035_c: emission[:baseline2005_2035_c]&.to_f,
+      baseline2005_2035_c_percentage: emission[:baseline2005_2035_c_percentage]&.to_f,
+      baseline2018_2030_uc: emission[:baseline2018_2030_uc]&.to_f,
+      baseline2018_2030_uc_percentage: emission[:baseline2018_2030_uc_percentage]&.to_f,
+      baseline2018_2035_uc: emission[:baseline2018_2035_uc]&.to_f,
+      baseline2018_2035_uc_percentage: emission[:baseline2018_2035_uc_percentage]&.to_f,
+      baseline2018_2035_c: emission[:baseline2018_2035_c]&.to_f,
+      baseline2018_2035_c_percentage: emission[:baseline2018_2035_c_percentage]&.to_f,
+      absolute_emissions_comparison_c: emission[:absolute_emissions_comparison_c]&.to_f,
+      absolute_emissions_comparison_uc: emission[:absolute_emissions_comparison_uc]&.to_f
     }
   end
 
@@ -762,6 +799,17 @@ class ImportIndc
   def import_global_emissions
     @global_emissions.each do |emission|
       Indc::GlobalEmission.create!(global_emission_attributes(emission))
+    rescue => e
+      puts "This row failed #{emission}, reason: #{e.message}"
+    end
+  end
+
+  def import_country_emissions
+    @country_emissions.each do |emission|
+      location = Location.find_by(iso_code3: emission[:iso_country])
+      next unless location
+
+      Indc::CountryEmission.create!(country_emission_attributes(location, emission))
     rescue => e
       puts "This row failed #{emission}, reason: #{e.message}"
     end

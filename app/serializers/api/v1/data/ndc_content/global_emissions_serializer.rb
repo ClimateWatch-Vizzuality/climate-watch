@@ -18,35 +18,35 @@ module Api
 
           # mapping them to float to ease parsing by the FE for now
           def historical_emission
-            object.historical_emission.to_f
+            object.historical_emission.nil? ? nil : object.historical_emission.to_f
           end
 
           def current_policies_scenario
-            object.current_policies_scenario.to_f
+            object.current_policies_scenario.nil? ? nil : object.current_policies_scenario.to_f
           end
 
           def ndcs_conditional_2020
-            object.ndcs_conditional_2020.to_f
+            object.ndcs_conditional_2020.nil? ? nil : object.ndcs_conditional_2020.to_f
           end
 
           def ndcs_unconditional_2020
-            object.ndcs_unconditional_2020.to_f
+            object.ndcs_unconditional_2020.nil? ? nil : object.ndcs_unconditional_2020.to_f
           end
 
           def ndcs_conditional_2025
-            object.ndcs_conditional_2025.to_f
+            object.ndcs_conditional_2025.nil? ? nil : object.ndcs_conditional_2025.to_f
           end
 
           def ndcs_unconditional_2025
-            object.ndcs_unconditional_2025.to_f
+            object.ndcs_unconditional_2025.nil? ? nil : object.ndcs_unconditional_2025.to_f
           end
 
           def target_2c
-            object.target_2c.to_f
+            object.target_2c.nil? ? nil : object.target_2c.to_f
           end
 
           def target_1_5c
-            object.target_1_5c.to_f
+            object.target_1_5c.nil? ? nil : object.target_1_5c.to_f
           end
         end
       end
