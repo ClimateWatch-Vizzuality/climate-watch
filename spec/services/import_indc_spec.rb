@@ -164,7 +164,28 @@ describe ImportIndc do
   end
 
   it 'Creates new INDC global emissions records' do
-    expect { subject }.to change { Indc::GlobalEmission.count }.by(2)
+    subject
+    result = Indc::GlobalEmission.order(:year)
+    expect(result.count).to eq(2)
+    expect(result[0].year).to eq(2030)
+    expect(result[0].historical_emission).to eq(100)
+    expect(result[0].current_policies_scenario).to eq(56)
+    expect(result[0].ndcs_conditional_2020).to eq(1)
+    expect(result[0].ndcs_unconditional_2020).to eq(48)
+    expect(result[0].ndcs_conditional_2025).to eq(3)
+    expect(result[0].ndcs_unconditional_2025).to eq(4)
+    expect(result[0].target_2c).to eq(32)
+    expect(result[0].target_1_5c).to eq(24)
+
+    expect(result[1].year).to eq(2031)
+    expect(result[1].historical_emission).to eq(200)
+    expect(result[1].current_policies_scenario).to eq(56)
+    expect(result[1].ndcs_conditional_2020).to eq(1)
+    expect(result[1].ndcs_unconditional_2020).to eq(2)
+    expect(result[1].ndcs_conditional_2025).to eq(45)
+    expect(result[1].ndcs_unconditional_2025).to eq(47)
+    expect(result[1].target_2c).to eq(28)
+    expect(result[1].target_1_5c).to eq(17)
   end
 
   it 'Creates new adaptation actions' do
