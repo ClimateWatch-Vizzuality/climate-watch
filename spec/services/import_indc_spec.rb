@@ -165,33 +165,27 @@ describe ImportIndc do
 
   it 'Creates new INDC global emissions records' do
     subject
-    result = Indc::GlobalEmission.all
+    result = Indc::GlobalEmission.order(:year)
     expect(result.count).to eq(2)
-    expected = [
-      Indc::GlobalEmission(
-        year: 2030,
-        historical_emission: 100,
-        current_policies_scenario: 56,
-        ndcs_conditional_2020: 1,
-        ndcs_unconditional_2020: 48,
-        ndcs_conditional_2025: 3,
-        ndcs_unconditional_2025: 4,
-        target_2c: 32,
-        target_1_5c: 24
-      ),
-      Indc::GlobalEmission(
-        year: 2031,
-        historical_emission: 200,
-        current_policies_scenario: 56,
-        ndcs_conditional_2020: 1,
-        ndcs_unconditional_2020: 2,
-        ndcs_conditional_2025: 45,
-        ndcs_unconditional_2025: 47,
-        target_2c: 28,
-        target_1_5c: 17
-      )
-    ]
-    expect(result).to match_array(expected)
+    expect(result[0].year).to eq(2030)
+    expect(result[0].historical_emission).to eq(100)
+    expect(result[0].current_policies_scenario).to eq(56)
+    expect(result[0].ndcs_conditional_2020).to eq(1)
+    expect(result[0].ndcs_unconditional_2020).to eq(48)
+    expect(result[0].ndcs_conditional_2025).to eq(3)
+    expect(result[0].ndcs_unconditional_2025).to eq(4)
+    expect(result[0].target_2c).to eq(32)
+    expect(result[0].target_1_5c).to eq(24)
+
+    expect(result[1].year).to eq(2031)
+    expect(result[1].historical_emission).to eq(200)
+    expect(result[1].current_policies_scenario).to eq(56)
+    expect(result[1].ndcs_conditional_2020).to eq(1)
+    expect(result[1].ndcs_unconditional_2020).to eq(2)
+    expect(result[1].ndcs_conditional_2025).to eq(45)
+    expect(result[1].ndcs_unconditional_2025).to eq(47)
+    expect(result[1].target_2c).to eq(28)
+    expect(result[1].target_1_5c).to eq(17)
   end
 
   it 'Creates new adaptation actions' do
