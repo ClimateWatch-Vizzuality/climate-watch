@@ -53,6 +53,7 @@ platforms:
           - NDC_single_version
           - NDC_documents
           - NDC_global_emissions
+          - NDC_country_emissions
           - NDC_timeline
           - pledges_data
           - comparison_matrix
