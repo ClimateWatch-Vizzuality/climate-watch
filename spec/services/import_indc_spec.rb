@@ -164,6 +164,7 @@ describe ImportIndc do
   end
 
   it 'Creates new INDC global emissions records' do
+    subject
     result = Indc::GlobalEmission.all
     expect(result.count).to eq(2)
     expected = [
