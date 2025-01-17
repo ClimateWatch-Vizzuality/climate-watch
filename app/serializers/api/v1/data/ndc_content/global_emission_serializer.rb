@@ -2,7 +2,7 @@ module Api
   module V1
     module Data
       module NdcContent
-        class GlobalEmissionsSerializer < ActiveModel::Serializer
+        class GlobalEmissionSerializer < ActiveModel::Serializer
           attributes :id,
                      :year,
                      :historical_emission,
