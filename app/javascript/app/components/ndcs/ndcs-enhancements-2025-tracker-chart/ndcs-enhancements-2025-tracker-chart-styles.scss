@@ -2,6 +2,9 @@
 
 .wrapper {
   position: relative;
+  background-color: $gray3;
+  padding-top: $gutter-padding;
+  padding-bottom: $gutter-padding;
 }
 
 .summary {

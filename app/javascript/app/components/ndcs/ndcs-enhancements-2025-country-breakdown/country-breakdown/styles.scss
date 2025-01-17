@@ -1,0 +1,69 @@
+@import "~styles/layout.scss";
+
+.wrapper {
+  display: block;
+  position: relative;
+  width: 100%;
+}
+
+.summaryHeader {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin: 10px 0;
+  gap: 20px;
+}
+
+.summaryDescription {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+// .buttonGroupContainer {
+//   border: 1px solid red;
+// }
+
+.buttonGroup {
+  > *,
+  button {
+    width: 50px !important;
+  }
+}
+
+.chartOptionsContainer {
+  display: flex;
+  align-items: end;
+  justify-content: end;
+  gap: 14px;
+  margin: 24px 0;
+}
+
+.chartDropdownsContainer {
+  display: flex;
+  gap: 14px;
+  white-space: nowrap;
+  margin-bottom: 1px;
+}
+
+.conditionalSwitchContainer {
+  white-space: nowrap;
+}
+
+// .chartContainer {}
+
+.chartPlaceholderImg {
+  // border: 1px solid red;
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 100%;
+}
+
+.lastUpdated {
+  margin-top: 14px;
+  font-style: italic;
+}
+
+.footnote {
+  margin-top: 14px;
+}

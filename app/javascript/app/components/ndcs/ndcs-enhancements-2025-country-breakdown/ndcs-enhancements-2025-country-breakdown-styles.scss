@@ -1,0 +1,44 @@
+@import "~styles/layout.scss";
+
+.wrapper {
+  position: relative;
+  margin-bottom: 40px;
+}
+
+.summary {
+  .summaryHeader {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-bottom: 34px;
+    gap: 20px;
+  }
+
+  .summaryDescription {
+    a {
+      color: $theme-color-medium;
+
+      &:visited,
+      &:link {
+        color: $theme-color-medium;
+      }
+    }
+  }
+
+  h2 {
+    font-size: $font-size-large;
+    color: $theme-color;
+    font-weight: $font-weight;
+    flex: 1;
+  }
+}
+
+.switchWrapper {
+  display: flex;
+  margin: 20px 0;
+  justify-content: center;
+}
+
+.chartWrapper {
+  display: flex;
+}
