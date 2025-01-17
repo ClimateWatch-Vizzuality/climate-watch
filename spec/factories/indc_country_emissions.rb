@@ -36,7 +36,7 @@
 #
 FactoryBot.define do
   factory :indc_country_emission, class: 'Indc::CountryEmission' do
-    location_id { 1 }
+    location
     historical_cw1990 { 10.5 }
     historical_cw2005 { 20.3 }
     historical_cw2018 { 30.7 }
