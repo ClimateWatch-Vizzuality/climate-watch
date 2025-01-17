@@ -6,6 +6,7 @@ import ButtonGroup from 'components/button-group';
 import countryChartPlaceholder from 'assets/placeholders/iconic-country-placeholder.png';
 
 import styles from './styles.scss';
+import TagsComponent from './tags';
 
 const viewDropdownOptions = [
   { label: 'Baseline Year Comparison', value: 'baseline-year-comparison' },
@@ -124,6 +125,11 @@ const CountryBreakdownComponent = () => {
             />
           </div>
         </div>
+      </div>
+      <TagsComponent />
+      {/* <div className={styles.lastUpdated}>Last updated on June 12,2024</div> */}
+      <div className={styles.footnote}>
+        * Percentage Change in Emissions relative to Baseline
       </div>
     </div>
   );
