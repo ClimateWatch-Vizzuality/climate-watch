@@ -1079,6 +1079,64 @@ ALTER SEQUENCE public.indc_category_types_id_seq OWNED BY public.indc_category_t
 
 
 --
+-- Name: indc_country_emissions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.indc_country_emissions (
+    id bigint NOT NULL,
+    location_id bigint NOT NULL,
+    historical_cw1990 double precision,
+    historical_cw2005 double precision,
+    historical_cw2018 double precision,
+    targets_nfgs_uc2030 double precision,
+    targets_nfgs_c2030 double precision,
+    targets_nfgs_uc2035 double precision,
+    targets_nfgs_c2035 double precision,
+    baseline1990_2030_uc double precision,
+    baseline1990_2030_uc_percentage double precision,
+    baseline1990_2035_uc double precision,
+    baseline1990_2035_uc_percentage double precision,
+    baseline1990_2035_c double precision,
+    baseline1990_2035_c_percentage double precision,
+    baseline2005_2030_uc double precision,
+    baseline2005_2030_uc_percentage double precision,
+    baseline2005_2035_uc double precision,
+    baseline2005_2035_uc_percentage double precision,
+    baseline2005_2035_c double precision,
+    baseline2005_2035_c_percentage double precision,
+    baseline2018_2030_uc double precision,
+    baseline2018_2030_uc_percentage double precision,
+    baseline2018_2035_uc double precision,
+    baseline2018_2035_uc_percentage double precision,
+    baseline2018_2035_c double precision,
+    baseline2018_2035_c_percentage double precision,
+    absolute_emissions_comparison_c double precision,
+    absolute_emissions_comparison_uc double precision,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: indc_country_emissions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.indc_country_emissions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: indc_country_emissions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.indc_country_emissions_id_seq OWNED BY public.indc_country_emissions.id;
+
+
+--
 -- Name: indc_documents; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2635,6 +2693,13 @@ ALTER TABLE ONLY public.indc_category_types ALTER COLUMN id SET DEFAULT nextval(
 
 
 --
+-- Name: indc_country_emissions id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.indc_country_emissions ALTER COLUMN id SET DEFAULT nextval('public.indc_country_emissions_id_seq'::regclass);
+
+
+--
 -- Name: indc_documents id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -3217,6 +3282,14 @@ ALTER TABLE ONLY public.indc_categories
 
 ALTER TABLE ONLY public.indc_category_types
     ADD CONSTRAINT indc_category_types_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: indc_country_emissions indc_country_emissions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.indc_country_emissions
+    ADD CONSTRAINT indc_country_emissions_pkey PRIMARY KEY (id);
 
 
 --
@@ -3871,6 +3944,13 @@ CREATE UNIQUE INDEX index_indc_category_types_on_name ON public.indc_category_ty
 
 
 --
+-- Name: index_indc_country_emissions_on_location_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_indc_country_emissions_on_location_id ON public.indc_country_emissions USING btree (location_id);
+
+
+--
 -- Name: index_indc_documents_on_ordering; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -4253,6 +4333,14 @@ CREATE INDEX index_wri_metadata_values_on_source_id ON public.wri_metadata_value
 --
 
 CREATE UNIQUE INDEX source_id_property_id_index ON public.wri_metadata_values USING btree (source_id, property_id);
+
+
+--
+-- Name: indc_country_emissions fk_rails_061a34ec1c; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.indc_country_emissions
+    ADD CONSTRAINT fk_rails_061a34ec1c FOREIGN KEY (location_id) REFERENCES public.locations(id) ON DELETE CASCADE;
 
 
 --
@@ -4917,6 +5005,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240924080237'),
 ('20250114104537'),
 ('20250114105639'),
-('20250114120726');
+('20250114120726'),
+('20250116191108');
 
 
