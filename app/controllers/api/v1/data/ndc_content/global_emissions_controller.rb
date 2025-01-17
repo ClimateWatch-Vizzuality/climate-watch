@@ -7,7 +7,7 @@ module Api
             global_emissions = ::Indc::GlobalEmission.order(:year)
             render json: global_emissions,
                    adapter: :json,
-                   each_serializer: Api::V1::Data::NdcContent::GlobalEmissionsSerializer,
+                   each_serializer: Api::V1::Data::NdcContent::GlobalEmissionSerializer,
                    root: :data
           end
         end
