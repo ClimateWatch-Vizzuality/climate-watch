@@ -99,7 +99,7 @@ export const getDescriptionText = createSelector(
         </p>
         {iso === 'USA' && (
           <p>
-            On [day, month, year], the United States{' '}
+            On 20, January, 2025, the United States{' '}
             <span className={styles.bold}>
               withdrew from the Paris Agreement and no longer has an active NDC
               under the UNFCC.
