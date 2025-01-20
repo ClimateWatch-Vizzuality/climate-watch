@@ -98,7 +98,7 @@ class NDCSEnhancements2025MapContainer extends PureComponent {
 
       return {
         label: this.getTooltipLabel(),
-        value,
+        value: id === 'USA' ? 'Withdrawn NDC' : value,
         statement,
         note:
           'Click on the country or see table below to compare with previous NDC',

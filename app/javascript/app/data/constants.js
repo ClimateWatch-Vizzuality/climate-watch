@@ -563,6 +563,7 @@ export const NDC_2025_COLORS = {
 
 export const LEGEND_STATUS_2025_VALUES_COLORS = {
   'New NDC': NDC_2025_LABEL_COLORS.SUBMITTED_2025,
+  'Withdrawn NDC': CHART_COLORS[3],
   'No New NDC': NDC_2025_LABEL_COLORS.NO_SUBMISSION,
   'Not Applicable: Countries that are not a Party to the UNFCCC':
     NDC_2025_COLORS.lightGray
@@ -619,5 +620,6 @@ export const COMPARISON_2025_INDICATORS_LABELS = {
   '2025_compare_2': 'Economy-wide (for 2035) GHG target included',
   '2025_compare_3': 'Strengthened or added policies and actions',
   '2025_compare_4': 'Strengthened Adaptation',
-  '2025_compare_5': 'Provided additional Information for clarity, transparency, and understanding'
+  '2025_compare_5':
+    'Provided additional Information for clarity, transparency, and understanding'
 };
