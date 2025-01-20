@@ -44,6 +44,7 @@ const ReductionsComponent = ({ chartConfig = {} }) => {
       {/* Emissions Reductions */}
       <ChangeBarComponent
         type="emission-reductions"
+        scales={scales}
         margins={margins}
         dimensions={dimensions}
         position={baseReductions?.position}
@@ -57,6 +58,7 @@ const ReductionsComponent = ({ chartConfig = {} }) => {
       {/* Additional Reductions */}
       <ChangeBarComponent
         type="emission-additional-reductions"
+        scales={scales}
         margins={margins}
         dimensions={dimensions}
         position={additionalReductions?.position}

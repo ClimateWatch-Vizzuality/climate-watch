@@ -1,11 +1,13 @@
 /* eslint-disable no-mixed-operators */
 import React from 'react';
 import PropTypes from 'prop-types';
+import { line } from 'd3-shape';
 
 import RectComponent from '../rect';
 import PolygonComponent from '../polygon';
 import TextComponent from '../text';
 import CircleComponent from '../circle';
+import LineComponent from '../line';
 
 const CHANGE_BAR_WIDTH = 54;
 const CHANGE_BAR_ARROW_HEIGHT = 10;
@@ -13,6 +15,7 @@ const CHANGE_CIRCLE_VALUE_OFFSET = 65;
 
 const ChangeBarComponent = ({
   type,
+  scales,
   margins,
   dimensions,
   position,
@@ -20,14 +23,17 @@ const ChangeBarComponent = ({
   value,
   legend,
   color,
+  connectingLines,
   displayLimitCircles = false,
   displayArrow = true,
   displayValueInCircle = false
 }) => {
   if (!position) return null;
 
+  // Legend text, array due to multiline
   const legendItems = Array.isArray(legend) ? legend : [legend];
 
+  // Calculating points to draw the arrow polygon
   const arrowPoints = `${position.x},${position.y +
     height -
     CHANGE_BAR_ARROW_HEIGHT}
@@ -35,6 +41,28 @@ const ChangeBarComponent = ({
     height -
     CHANGE_BAR_ARROW_HEIGHT}
       ${position.x + CHANGE_BAR_WIDTH / 2},${position.y + height}`;
+
+  // Calculating connecting lines to a origin
+  const connectingLinePaths = {
+    upper: line()
+      .x((d) => scales.x(d.x))
+      .y((d) => scales.y(d.y))([
+        { x: 2035, y: connectingLines?.upper?.value },
+        {
+          x: 2035 + connectingLines?.lower?.offset,
+          y: connectingLines?.upper?.value
+        }
+      ]),
+    lower: line()
+      .x((d) => scales.x(d.x))
+      .y((d) => scales.y(d.y))([
+        { x: 2035, y: connectingLines?.lower?.value },
+        {
+          x: 2035 + connectingLines?.lower?.offset,
+          y: connectingLines?.lower?.value
+        }
+      ])
+  };
 
   return (
     <g transform={`translate(${-CHANGE_BAR_WIDTH / 2}, 0)`}>
@@ -48,6 +76,27 @@ const ChangeBarComponent = ({
           height: displayArrow ? height - CHANGE_BAR_ARROW_HEIGHT : height
         }}
       />
+      {connectingLines && (
+        <g transform={`translate(${CHANGE_BAR_WIDTH / 2}, 0)`}>
+          {connectingLines?.upper && (
+            <LineComponent
+              type="connecting-line"
+              color={color}
+              margins={margins}
+              path={connectingLinePaths?.upper}
+            />
+          )}
+          {connectingLines?.lower && (
+            <LineComponent
+              type="connecting-line"
+              color={color}
+              margins={margins}
+              path={connectingLinePaths?.lower}
+            />
+          )}
+        </g>
+      )}
+
       {displayArrow && (
         <PolygonComponent
           margins={margins}
@@ -176,6 +225,20 @@ ChangeBarComponent.propTypes = {
   displayArrow: PropTypes.bool,
   displayValueInCircle: PropTypes.bool,
   height: PropTypes.number.isRequired,
+  connectingLines: PropTypes.shape({
+    upper: PropTypes.shape({
+      value: PropTypes.number.isRequired,
+      offset: PropTypes.number.isRequired
+    }),
+    lower: PropTypes.shape({
+      value: PropTypes.number.isRequired,
+      offset: PropTypes.number.isRequired
+    })
+  }),
+  scales: PropTypes.shape({
+    x: PropTypes.func.isRequired,
+    y: PropTypes.func.isRequired
+  }),
   dimensions: PropTypes.shape({
     width: PropTypes.number.isRequired,
     height: PropTypes.number.isRequired
