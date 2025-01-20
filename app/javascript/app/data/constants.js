@@ -563,6 +563,7 @@ export const NDC_2025_COLORS = {
 
 export const LEGEND_STATUS_2025_VALUES_COLORS = {
   'New NDC': NDC_2025_LABEL_COLORS.SUBMITTED_2025,
+  'Withdrawn NDC': CHART_COLORS[3],
   'No New NDC': NDC_2025_LABEL_COLORS.NO_SUBMISSION,
   'Not Applicable: Countries that are not a Party to the UNFCCC':
     NDC_2025_COLORS.lightGray

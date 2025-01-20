@@ -380,6 +380,7 @@ const Ndc2025TrackerChartComponent = props => {
                     </p>
                     <p>
                       <span>{hoveredBar?.indc_submission}</span>
+                      {hoveredBar?.iso === 'USA' && <p>Withdrawn NDC</p>}
                     </p>
                   </div>
                 )}
