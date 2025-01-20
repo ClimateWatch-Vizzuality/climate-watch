@@ -379,8 +379,11 @@ const Ndc2025TrackerChartComponent = props => {
                       GHG Emissions: <span>{hoveredBar?.ndce_ghg}</span>
                     </p>
                     <p>
-                      <span>{hoveredBar?.indc_submission}</span>
-                      {hoveredBar?.iso === 'USA' && <p>Withdrawn NDC</p>}
+                      {hoveredBar?.iso !== 'USA' ? (
+                        <span>{hoveredBar?.indc_submission}</span>
+                      ) : (
+                        <span>Withdrawn NDC</span>
+                      )}
                     </p>
                   </div>
                 )}
