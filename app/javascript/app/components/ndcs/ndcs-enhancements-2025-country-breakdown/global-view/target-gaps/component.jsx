@@ -1,6 +1,6 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
+import { chartConfigPropTypes } from '../index';
 import { ChangeBarComponent } from '../components';
 
 const LIMITS_DISPLAY_OFFSETS = {
@@ -8,8 +8,11 @@ const LIMITS_DISPLAY_OFFSETS = {
   lowerLimit: 320
 };
 
-const TargetGapsComponent = ({ margins, dimensions, scales, data }) => {
-  if (!margins || !dimensions || !scales || !data) return null;
+const TargetGapsComponent = ({ chartConfig = {} }) => {
+  const { data: allData, margins, dimensions, scales } = chartConfig;
+  const targetGapsData = allData?.targetGaps;
+
+  if (!targetGapsData || !margins || !dimensions || !scales) return null;
 
   // Upper limit (2.0C)
   const upperLimit = {
@@ -18,10 +21,11 @@ const TargetGapsComponent = ({ margins, dimensions, scales, data }) => {
     color: '#579B7D',
     position: {
       x: scales.x(2035) + LIMITS_DISPLAY_OFFSETS.upperLimit,
-      y: scales.y(data?.upperLimit?.target)
+      y: scales.y(targetGapsData?.upperLimit?.target)
     },
     height:
-      scales.y(data?.upperLimit?.actual) - scales.y(data?.upperLimit?.target)
+      scales.y(targetGapsData?.upperLimit?.actual) -
+      scales.y(targetGapsData?.upperLimit?.target)
   };
 
   // Lower limit (1.5C)
@@ -31,10 +35,11 @@ const TargetGapsComponent = ({ margins, dimensions, scales, data }) => {
     color: '#8CB73F',
     position: {
       x: scales.x(2035) + LIMITS_DISPLAY_OFFSETS.lowerLimit,
-      y: scales.y(data?.lowerLimit?.target)
+      y: scales.y(targetGapsData?.lowerLimit?.target)
     },
     height:
-      scales.y(data?.lowerLimit?.actual) - scales.y(data?.lowerLimit?.target)
+      scales.y(targetGapsData?.lowerLimit?.actual) -
+      scales.y(targetGapsData?.lowerLimit?.target)
   };
 
   return (
@@ -66,21 +71,7 @@ const TargetGapsComponent = ({ margins, dimensions, scales, data }) => {
 };
 
 TargetGapsComponent.propTypes = {
-  data: PropTypes.any.isRequired,
-  scales: PropTypes.shape({
-    x: PropTypes.func.isRequired,
-    y: PropTypes.func.isRequired
-  }),
-  dimensions: PropTypes.shape({
-    width: PropTypes.number.isRequired,
-    height: PropTypes.number.isRequired
-  }),
-  margins: PropTypes.shape({
-    top: PropTypes.number.isRequired,
-    right: PropTypes.number.isRequired,
-    bottom: PropTypes.number.isRequired,
-    left: PropTypes.number.isRequired
-  })
+  chartConfig: chartConfigPropTypes
 };
 
 export default TargetGapsComponent;
