@@ -1,9 +1,12 @@
 import React, { Fragment, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import { select } from 'd3-selection';
 import { axisLeft, axisBottom } from 'd3-axis';
 
-const AxisGridComponent = ({ chartId, scales, margins, dimensions }) => {
+import { chartConfigPropTypes } from '../index';
+
+const AxisGridComponent = ({ chartConfig = {} }) => {
+  const { chartId, scales, margins, dimensions } = chartConfig;
+
   if (!scales) return null;
 
   useEffect(() => {
@@ -66,21 +69,7 @@ const AxisGridComponent = ({ chartId, scales, margins, dimensions }) => {
 };
 
 AxisGridComponent.propTypes = {
-  chartId: PropTypes.string.isRequired,
-  scales: PropTypes.shape({
-    x: PropTypes.func.isRequired,
-    y: PropTypes.func.isRequired
-  }),
-  dimensions: PropTypes.shape({
-    width: PropTypes.number.isRequired,
-    height: PropTypes.number.isRequired
-  }),
-  margins: PropTypes.shape({
-    top: PropTypes.number.isRequired,
-    right: PropTypes.number.isRequired,
-    bottom: PropTypes.number.isRequired,
-    left: PropTypes.number.isRequired
-  })
+  chartConfig: chartConfigPropTypes
 };
 
 export default AxisGridComponent;
