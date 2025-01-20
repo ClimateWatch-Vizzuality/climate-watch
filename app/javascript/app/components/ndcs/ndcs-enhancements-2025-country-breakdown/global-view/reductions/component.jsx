@@ -1,10 +1,13 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
+import { chartConfigPropTypes } from '../index';
 import { ChangeBarComponent } from '../components';
 
-const ReductionsComponent = ({ margins, dimensions, scales, data }) => {
-  if (!margins || !dimensions || !scales || !data) return null;
+const ReductionsComponent = ({ chartConfig = {} }) => {
+  const { data: allData, margins, dimensions, scales } = chartConfig;
+  const reductionsData = allData?.reductions;
+
+  if (!reductionsData || !margins || !dimensions || !scales) return null;
 
   const baseReductions = {
     value: 8,
@@ -12,20 +15,28 @@ const ReductionsComponent = ({ margins, dimensions, scales, data }) => {
     color: '#999C9F',
     position: {
       x: scales.x(2030),
-      y: scales.y(data?.['2030']?.target)
+      y: scales.y(reductionsData?.['2030']?.target)
     },
-    height: scales.y(data?.['2030']?.actual) - scales.y(data?.['2030']?.target)
+    height:
+      scales.y(reductionsData?.['2030']?.actual) -
+      scales.y(reductionsData?.['2030']?.target)
   };
 
   const additionalReductions = {
     value: 1,
-    legend: ['Additional emission', 'reductions from', 'Unconditional 2025 NDCs'],
+    legend: [
+      'Additional emission',
+      'reductions from',
+      'Unconditional 2025 NDCs'
+    ],
     color: '#0845CB',
     position: {
       x: scales.x(2035),
-      y: scales.y(data?.['2035']?.target)
+      y: scales.y(reductionsData?.['2035']?.target)
     },
-    height: scales.y(data?.['2035']?.actual) - scales.y(data?.['2035']?.target)
+    height:
+      scales.y(reductionsData?.['2035']?.actual) -
+      scales.y(reductionsData?.['2035']?.target)
   };
 
   return (
@@ -60,21 +71,7 @@ const ReductionsComponent = ({ margins, dimensions, scales, data }) => {
 };
 
 ReductionsComponent.propTypes = {
-  data: PropTypes.any.isRequired,
-  scales: PropTypes.shape({
-    x: PropTypes.func.isRequired,
-    y: PropTypes.func.isRequired
-  }),
-  dimensions: PropTypes.shape({
-    width: PropTypes.number.isRequired,
-    height: PropTypes.number.isRequired
-  }),
-  margins: PropTypes.shape({
-    top: PropTypes.number.isRequired,
-    right: PropTypes.number.isRequired,
-    bottom: PropTypes.number.isRequired,
-    left: PropTypes.number.isRequired
-  })
+  chartConfig: chartConfigPropTypes
 };
 
 export default ReductionsComponent;

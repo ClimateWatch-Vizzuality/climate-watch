@@ -117,6 +117,7 @@ const GlobalViewComponent = () => {
       data: {
         historical: historicalData,
         projected: projectedData,
+        targets: TARGETS_DATA,
         reductions: {
           2030: {
             actual: 44.5,
@@ -195,46 +196,12 @@ const GlobalViewComponent = () => {
             width={chartDimensions.width}
             height={chartDimensions.height}
           >
-            {/* Axises and Grids */}
-            <AxisGridComponent
-              chartId={chartConfig.chartId}
-              scales={chartConfig.scales}
-              margins={chartConfig.margins}
-              dimensions={chartConfig.dimensions}
-            />
-            {/* Historical Emissions */}
-            <HistoricalDataComponent
-              data={chartConfig.data?.historical}
-              scales={chartConfig.scales}
-              margins={chartConfig.margins}
-              dimensions={chartConfig.dimensions}
-            />
-            {/* Projected Emissions */}
-            <ProjectedDataComponent
-              data={chartConfig.data?.projected}
-              scales={chartConfig.scales}
-              margins={chartConfig.margins}
-            />
-            {/* Targets */}
-            <TargetsComponent
-              targets={TARGETS_DATA}
-              margins={chartConfig?.margins}
-              scales={chartConfig?.scales}
-            />
-            {/* Reductions */}
-            <ReductionsComponent
-              scales={chartConfig?.scales}
-              margins={chartConfig?.margins}
-              dimensions={chartConfig?.dimensions}
-              data={chartConfig?.data?.reductions}
-            />
-            {/* Targets Gap */}
-            <TargetGapsComponent
-              scales={chartConfig?.scales}
-              margins={chartConfig?.margins}
-              dimensions={chartConfig?.dimensions}
-              data={chartConfig?.data?.targetGaps}
-            />
+            <AxisGridComponent chartConfig={chartConfig} />
+            <HistoricalDataComponent chartConfig={chartConfig} />
+            <ProjectedDataComponent chartConfig={chartConfig} />
+            <TargetsComponent chartConfig={chartConfig} />
+            <ReductionsComponent chartConfig={chartConfig} />
+            <TargetGapsComponent chartConfig={chartConfig} />
           </svg>
         </div>
       </div>
