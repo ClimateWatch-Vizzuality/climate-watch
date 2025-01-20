@@ -222,6 +222,11 @@
 //   stroke: $white;
 // }
 
+.withdrawn {
+  fill: $chart-color-4;
+  stroke: $white;
+}
+
 .submitted2025 {
   fill: $chart-color-2;
   stroke: $white;
