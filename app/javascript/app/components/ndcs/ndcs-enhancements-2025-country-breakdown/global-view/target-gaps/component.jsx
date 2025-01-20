@@ -6,8 +6,8 @@ import { ChangeBarComponent } from '../components';
 const YEAR = 2035;
 
 const LIMITS_DISPLAY_OFFSETS = {
-  upperLimit: 160,
-  lowerLimit: 320
+  upperLimit: 5,
+  lowerLimit: 10
 };
 
 const TargetGapsComponent = ({ chartConfig = {} }) => {
@@ -23,12 +23,18 @@ const TargetGapsComponent = ({ chartConfig = {} }) => {
     legend: ['Remaining gap to', 'stay within 2°C', 'limit'],
     color: '#579B7D',
     position: {
-      x: scales.x(YEAR) + LIMITS_DISPLAY_OFFSETS.upperLimit,
+      x: scales.x(YEAR + LIMITS_DISPLAY_OFFSETS.upperLimit),
       y: scales.y(targetGapsData?.upperLimit?.target)
     },
     height:
       scales.y(targetGapsData?.upperLimit?.actual) -
-      scales.y(targetGapsData?.upperLimit?.target)
+      scales.y(targetGapsData?.upperLimit?.target),
+    connectingLines: {
+      lower: {
+        value: targetGapsData?.upperLimit?.actual,
+        offset: LIMITS_DISPLAY_OFFSETS.upperLimit
+      }
+    }
   };
 
   // Lower limit (1.5C)
@@ -38,12 +44,19 @@ const TargetGapsComponent = ({ chartConfig = {} }) => {
     legend: ['Remaining gap to', 'stay within 1.5°C', 'limit'],
     color: '#8CB73F',
     position: {
-      x: scales.x(YEAR) + LIMITS_DISPLAY_OFFSETS.lowerLimit,
+      x:
+        scales.x(YEAR + LIMITS_DISPLAY_OFFSETS.lowerLimit),
       y: scales.y(targetGapsData?.lowerLimit?.target)
     },
     height:
       scales.y(targetGapsData?.lowerLimit?.actual) -
-      scales.y(targetGapsData?.lowerLimit?.target)
+      scales.y(targetGapsData?.lowerLimit?.target),
+    connectingLines: {
+      lower: {
+        value: targetGapsData?.lowerLimit?.actual,
+        offset: LIMITS_DISPLAY_OFFSETS.lowerLimit
+      }
+    }
   };
 
   return (
@@ -51,6 +64,7 @@ const TargetGapsComponent = ({ chartConfig = {} }) => {
       {/* Upper limit (2.0C) */}
       <ChangeBarComponent
         type="gap-upper-limit"
+        scales={scales}
         margins={margins}
         dimensions={dimensions}
         position={upperLimit?.position}
@@ -58,10 +72,12 @@ const TargetGapsComponent = ({ chartConfig = {} }) => {
         value={upperLimit?.value}
         legend={upperLimit?.legend}
         color={upperLimit?.color}
+        connectingLines={upperLimit?.connectingLines}
       />
       {/* Lower limit (1.5C) */}
       <ChangeBarComponent
         type="gap-lower-limit"
+        scales={scales}
         margins={margins}
         dimensions={dimensions}
         position={lowerLimit?.position}
@@ -69,6 +85,7 @@ const TargetGapsComponent = ({ chartConfig = {} }) => {
         value={lowerLimit?.value}
         legend={lowerLimit?.legend}
         color={lowerLimit?.color}
+        connectingLines={lowerLimit?.connectingLines}
       />
     </>
   );
