@@ -10,7 +10,7 @@ const ReductionsComponent = ({ chartConfig = {} }) => {
   if (!reductionsData || !margins || !dimensions || !scales) return null;
 
   const baseReductions = {
-    value: 8,
+    value: reductionsData?.['2030']?.target - reductionsData?.['2030']?.actual,
     legend: ['Emission reductions', 'pledged in 2020 NDCs'],
     color: '#999C9F',
     position: {
@@ -23,7 +23,7 @@ const ReductionsComponent = ({ chartConfig = {} }) => {
   };
 
   const additionalReductions = {
-    value: 1,
+    value: reductionsData?.['2035']?.target - reductionsData?.['2035']?.actual,
     legend: [
       'Additional emission',
       'reductions from',
