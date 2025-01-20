@@ -3,6 +3,8 @@ import React from 'react';
 import { chartConfigPropTypes } from '../index';
 import { ChangeBarComponent } from '../components';
 
+const YEAR = 2035;
+
 const LIMITS_DISPLAY_OFFSETS = {
   upperLimit: 160,
   lowerLimit: 320
@@ -16,11 +18,12 @@ const TargetGapsComponent = ({ chartConfig = {} }) => {
 
   // Upper limit (2.0C)
   const upperLimit = {
-    value: 19,
+    value:
+      targetGapsData?.upperLimit?.target - targetGapsData?.upperLimit?.actual,
     legend: ['Remaining gap to', 'stay within 2°C', 'limit'],
     color: '#579B7D',
     position: {
-      x: scales.x(2035) + LIMITS_DISPLAY_OFFSETS.upperLimit,
+      x: scales.x(YEAR) + LIMITS_DISPLAY_OFFSETS.upperLimit,
       y: scales.y(targetGapsData?.upperLimit?.target)
     },
     height:
@@ -30,11 +33,12 @@ const TargetGapsComponent = ({ chartConfig = {} }) => {
 
   // Lower limit (1.5C)
   const lowerLimit = {
-    value: 30,
+    value:
+      targetGapsData?.lowerLimit?.target - targetGapsData?.lowerLimit?.actual,
     legend: ['Remaining gap to', 'stay within 1.5°C', 'limit'],
     color: '#8CB73F',
     position: {
-      x: scales.x(2035) + LIMITS_DISPLAY_OFFSETS.lowerLimit,
+      x: scales.x(YEAR) + LIMITS_DISPLAY_OFFSETS.lowerLimit,
       y: scales.y(targetGapsData?.lowerLimit?.target)
     },
     height:
