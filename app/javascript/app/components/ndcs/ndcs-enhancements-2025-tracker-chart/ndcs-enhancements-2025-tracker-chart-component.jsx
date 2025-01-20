@@ -59,10 +59,14 @@ const Ndc2025TrackerChartComponent = props => {
   };
 
   // Helper to select the correct fill style for the bar colors
-  const getCountrySubmissionTypeKey = country =>
-    Object.keys(SUBMISSION_TYPES).find(
-      key => SUBMISSION_TYPES[key] === country.indc_submission
-    ) || 'notSubmitted';
+  const getCountrySubmissionTypeKey = country => {
+    if (country?.iso === 'USA') return 'withdrawn';
+    return (
+      Object.keys(SUBMISSION_TYPES).find(
+        key => SUBMISSION_TYPES[key] === country.indc_submission
+      ) || 'notSubmitted'
+    );
+  };
 
   // Parse data in order to include the `emissions` property in a number format
   const parsedData = React.useMemo(() =>
