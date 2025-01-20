@@ -66,7 +66,7 @@ const ChangeBarComponent = ({
             }}
           />
           <TextComponent
-            type="value-big"
+            type="value"
             value={value}
             margins={margins}
             dimensions={{
