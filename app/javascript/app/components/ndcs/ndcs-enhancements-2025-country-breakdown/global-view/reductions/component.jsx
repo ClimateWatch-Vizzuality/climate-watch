@@ -1,31 +1,66 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
+import { chartConfigPropTypes } from '../index';
 import { ChangeBarComponent } from '../components';
 
-const ReductionsComponent = ({ margins, dimensions, scales, data }) => {
-  if (!margins || !dimensions || !scales || !data) return null;
+const BASE_REDUCTIONS_YEAR = 2030;
+const ADDITIONAL_REDUCTIONS_YEAR = 2035;
+
+const LIMITS_DISPLAY_OFFSETS = {
+  baseReductions: 5,
+  additionalReductions: 10
+};
+
+const ReductionsComponent = ({ chartConfig = {} }) => {
+  const { data: allData, margins, dimensions, scales } = chartConfig;
+  const reductionsData = allData?.reductions;
+
+  if (!reductionsData || !margins || !dimensions || !scales) return null;
 
   const baseReductions = {
-    value: 8,
+    value:
+      reductionsData?.[BASE_REDUCTIONS_YEAR]?.target -
+      reductionsData?.[BASE_REDUCTIONS_YEAR]?.actual,
     legend: ['Emission reductions', 'pledged in 2020 NDCs'],
     color: '#999C9F',
     position: {
       x: scales.x(2030),
-      y: scales.y(data?.['2030']?.target)
+      y: scales.y(reductionsData?.[BASE_REDUCTIONS_YEAR]?.target)
     },
-    height: scales.y(data?.['2030']?.actual) - scales.y(data?.['2030']?.target)
+    height:
+      scales.y(reductionsData?.[BASE_REDUCTIONS_YEAR]?.actual) -
+      scales.y(reductionsData?.[BASE_REDUCTIONS_YEAR]?.target),
+    connectingLines: {
+      lower: {
+        value: reductionsData?.[BASE_REDUCTIONS_YEAR]?.actual,
+        offset: -LIMITS_DISPLAY_OFFSETS.baseReductions
+      }
+    }
   };
 
   const additionalReductions = {
-    value: 1,
-    legend: ['Additional emission', 'reductions from', 'Unconditional 2025 NDCs'],
+    value:
+      reductionsData?.[ADDITIONAL_REDUCTIONS_YEAR]?.target -
+      reductionsData?.[ADDITIONAL_REDUCTIONS_YEAR]?.actual,
+    legend: [
+      'Additional emission',
+      'reductions from',
+      'Unconditional 2025 NDCs'
+    ],
     color: '#0845CB',
     position: {
       x: scales.x(2035),
-      y: scales.y(data?.['2035']?.target)
+      y: scales.y(reductionsData?.[ADDITIONAL_REDUCTIONS_YEAR]?.target)
     },
-    height: scales.y(data?.['2035']?.actual) - scales.y(data?.['2035']?.target)
+    height:
+      scales.y(reductionsData?.[ADDITIONAL_REDUCTIONS_YEAR]?.actual) -
+      scales.y(reductionsData?.[ADDITIONAL_REDUCTIONS_YEAR]?.target),
+    connectingLines: {
+      lower: {
+        value: reductionsData?.[ADDITIONAL_REDUCTIONS_YEAR]?.actual,
+        offset: LIMITS_DISPLAY_OFFSETS.additionalReductions
+      }
+    }
   };
 
   return (
@@ -33,6 +68,7 @@ const ReductionsComponent = ({ margins, dimensions, scales, data }) => {
       {/* Emissions Reductions */}
       <ChangeBarComponent
         type="emission-reductions"
+        scales={scales}
         margins={margins}
         dimensions={dimensions}
         position={baseReductions?.position}
@@ -41,11 +77,13 @@ const ReductionsComponent = ({ margins, dimensions, scales, data }) => {
         legend={baseReductions?.legend}
         color={baseReductions?.color}
         displayArrow={false}
+        connectingLines={baseReductions?.connectingLines}
         displayLimitCircles
       />
       {/* Additional Reductions */}
       <ChangeBarComponent
         type="emission-additional-reductions"
+        scales={scales}
         margins={margins}
         dimensions={dimensions}
         position={additionalReductions?.position}
@@ -53,6 +91,7 @@ const ReductionsComponent = ({ margins, dimensions, scales, data }) => {
         value={additionalReductions?.value}
         legend={additionalReductions?.legend}
         color={additionalReductions?.color}
+        connectingLines={additionalReductions?.connectingLines}
         displayValueInCircle
       />
     </>
@@ -60,21 +99,7 @@ const ReductionsComponent = ({ margins, dimensions, scales, data }) => {
 };
 
 ReductionsComponent.propTypes = {
-  data: PropTypes.any.isRequired,
-  scales: PropTypes.shape({
-    x: PropTypes.func.isRequired,
-    y: PropTypes.func.isRequired
-  }),
-  dimensions: PropTypes.shape({
-    width: PropTypes.number.isRequired,
-    height: PropTypes.number.isRequired
-  }),
-  margins: PropTypes.shape({
-    top: PropTypes.number.isRequired,
-    right: PropTypes.number.isRequired,
-    bottom: PropTypes.number.isRequired,
-    left: PropTypes.number.isRequired
-  })
+  chartConfig: chartConfigPropTypes
 };
 
 export default ReductionsComponent;

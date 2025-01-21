@@ -78,15 +78,15 @@ const GlobalViewComponent = () => {
   const projectedData = DEMO_DATA_PROJECTION;
 
   const chartDimensions = {
-    width: 780,
+    width: 1170,
     height: 480
   };
 
   const chartMargins = {
     top: 20,
-    right: 20,
+    right: 0,
     bottom: 40,
-    left: 40
+    left: 80
   };
 
   useEffect(() => {
@@ -99,7 +99,7 @@ const GlobalViewComponent = () => {
       ]);
 
     const xScale = scaleLinear()
-      .domain([2014, 2035])
+      .domain([2014, 2048])
       .range([
         0,
         chartDimensions.width - (chartMargins.left + chartMargins.right)
@@ -110,6 +110,10 @@ const GlobalViewComponent = () => {
       chartId: '#iconic-chart-global',
       margins: chartMargins,
       dimensions: chartDimensions,
+      axis: {
+        x: { ticks: [2015, 2020, 2025, 2030, 2035] },
+        y: { ticks: [20, 30, 40, 50] }
+      },
       scales: {
         x: xScale,
         y: yScale
@@ -117,6 +121,7 @@ const GlobalViewComponent = () => {
       data: {
         historical: historicalData,
         projected: projectedData,
+        targets: TARGETS_DATA,
         reductions: {
           2030: {
             actual: 44.5,
@@ -195,51 +200,19 @@ const GlobalViewComponent = () => {
             width={chartDimensions.width}
             height={chartDimensions.height}
           >
-            {/* Axises and Grids */}
-            <AxisGridComponent
-              chartId={chartConfig.chartId}
-              scales={chartConfig.scales}
-              margins={chartConfig.margins}
-              dimensions={chartConfig.dimensions}
-            />
-            {/* Historical Emissions */}
-            <HistoricalDataComponent
-              data={chartConfig.data?.historical}
-              scales={chartConfig.scales}
-              margins={chartConfig.margins}
-              dimensions={chartConfig.dimensions}
-            />
-            {/* Projected Emissions */}
-            <ProjectedDataComponent
-              data={chartConfig.data?.projected}
-              scales={chartConfig.scales}
-              margins={chartConfig.margins}
-            />
-            {/* Targets */}
-            <TargetsComponent
-              targets={TARGETS_DATA}
-              margins={chartConfig?.margins}
-              scales={chartConfig?.scales}
-            />
-            {/* Reductions */}
-            <ReductionsComponent
-              scales={chartConfig?.scales}
-              margins={chartConfig?.margins}
-              dimensions={chartConfig?.dimensions}
-              data={chartConfig?.data?.reductions}
-            />
-            {/* Targets Gap */}
-            <TargetGapsComponent
-              scales={chartConfig?.scales}
-              margins={chartConfig?.margins}
-              dimensions={chartConfig?.dimensions}
-              data={chartConfig?.data?.targetGaps}
-            />
+            <AxisGridComponent chartConfig={chartConfig} />
+            <HistoricalDataComponent chartConfig={chartConfig} />
+            <ProjectedDataComponent chartConfig={chartConfig} />
+            <TargetsComponent chartConfig={chartConfig} />
+            <ReductionsComponent chartConfig={chartConfig} />
+            <TargetGapsComponent chartConfig={chartConfig} />
           </svg>
         </div>
       </div>
-      <TagsComponent tags={TAGS_DATA} />
-      <div className={styles.lastUpdated}>Last updated on June 12,2024</div>
+      <div className={styles.tagsAndFooterContainer}>
+        <TagsComponent tags={TAGS_DATA} />
+        <div className={styles.lastUpdated}>Last updated on June 12,2024</div>
+      </div>
     </div>
   );
 };

@@ -1,11 +1,13 @@
 /* eslint-disable no-mixed-operators */
 import React from 'react';
 import PropTypes from 'prop-types';
+import { line } from 'd3-shape';
 
 import RectComponent from '../rect';
 import PolygonComponent from '../polygon';
 import TextComponent from '../text';
 import CircleComponent from '../circle';
+import LineComponent from '../line';
 
 const CHANGE_BAR_WIDTH = 54;
 const CHANGE_BAR_ARROW_HEIGHT = 10;
@@ -13,6 +15,7 @@ const CHANGE_CIRCLE_VALUE_OFFSET = 65;
 
 const ChangeBarComponent = ({
   type,
+  scales,
   margins,
   dimensions,
   position,
@@ -20,14 +23,19 @@ const ChangeBarComponent = ({
   value,
   legend,
   color,
+  offset,
+  connectingLines,
   displayLimitCircles = false,
   displayArrow = true,
-  displayValueInCircle = false
+  displayValueInCircle = false,
+  displayOffsetBars = false
 }) => {
   if (!position) return null;
 
+  // Legend text, array due to multiline
   const legendItems = Array.isArray(legend) ? legend : [legend];
 
+  // Calculating points to draw the arrow polygon
   const arrowPoints = `${position.x},${position.y +
     height -
     CHANGE_BAR_ARROW_HEIGHT}
@@ -36,8 +44,31 @@ const ChangeBarComponent = ({
     CHANGE_BAR_ARROW_HEIGHT}
       ${position.x + CHANGE_BAR_WIDTH / 2},${position.y + height}`;
 
+  // Calculating connecting lines to a origin
+  const connectingLinePaths = {
+    upper: line()
+      .x(d => scales.x(d.x))
+      .y(d => scales.y(d.y))([
+        { x: 2035, y: connectingLines?.upper?.value },
+        {
+          x: 2035 + connectingLines?.lower?.offset,
+          y: connectingLines?.upper?.value
+        }
+      ]),
+    lower: line()
+      .x(d => scales.x(d.x))
+      .y(d => scales.y(d.y))([
+        { x: 2035, y: connectingLines?.lower?.value },
+        {
+          x: 2035 + connectingLines?.lower?.offset,
+          y: connectingLines?.lower?.value
+        }
+      ])
+  };
+
   return (
     <g transform={`translate(${-CHANGE_BAR_WIDTH / 2}, 0)`}>
+      {/* Base bar display */}
       <RectComponent
         type={type}
         margins={margins}
@@ -48,6 +79,48 @@ const ChangeBarComponent = ({
           height: displayArrow ? height - CHANGE_BAR_ARROW_HEIGHT : height
         }}
       />
+
+      {/* Light offset bar displayed at the top */}
+      {displayOffsetBars && (
+        <RectComponent
+          type="offset-bar"
+          margins={margins}
+          dimensions={dimensions}
+          position={{
+            x: position.x,
+            y: position.y - offset
+          }}
+          size={{
+            width: CHANGE_BAR_WIDTH,
+            height: offset
+          }}
+          stroke={color}
+        />
+      )}
+
+      {/* Lines connecting from bar ends to other points in the chart */}
+      {connectingLines && (
+        <g transform={`translate(${CHANGE_BAR_WIDTH / 2}, 0)`}>
+          {connectingLines?.upper && (
+            <LineComponent
+              type="connecting-line"
+              color={color}
+              margins={margins}
+              path={connectingLinePaths?.upper}
+            />
+          )}
+          {connectingLines?.lower && (
+            <LineComponent
+              type="connecting-line"
+              color={color}
+              margins={margins}
+              path={connectingLinePaths?.lower}
+            />
+          )}
+        </g>
+      )}
+
+      {/* Arrow at the bottom of the bar */}
       {displayArrow && (
         <PolygonComponent
           margins={margins}
@@ -55,6 +128,8 @@ const ChangeBarComponent = ({
           color={color}
         />
       )}
+
+      {/* Circle above the component with the value */}
       {value && displayValueInCircle && (
         <>
           <CircleComponent
@@ -66,7 +141,7 @@ const ChangeBarComponent = ({
             }}
           />
           <TextComponent
-            type="value-big"
+            type="value"
             value={value}
             margins={margins}
             dimensions={{
@@ -93,6 +168,8 @@ const ChangeBarComponent = ({
           />
         </>
       )}
+
+      {/* Value displayed inside the bar */}
       {value && !displayValueInCircle && (
         <>
           <TextComponent
@@ -123,6 +200,8 @@ const ChangeBarComponent = ({
           />
         </>
       )}
+
+      {/* Point markers displayed above and below the bar */}
       {displayLimitCircles && (
         <>
           <CircleComponent
@@ -143,6 +222,8 @@ const ChangeBarComponent = ({
           />
         </>
       )}
+
+      {/* Legends shown below the bar */}
       {legendItems?.map((text, idx) => (
         <TextComponent
           type="legend"
@@ -172,10 +253,26 @@ ChangeBarComponent.propTypes = {
   value: PropTypes.string,
   legend: PropTypes.string,
   color: PropTypes.string,
+  offset: PropTypes.number,
   displayLimitCircles: PropTypes.bool,
   displayArrow: PropTypes.bool,
   displayValueInCircle: PropTypes.bool,
+  displayOffsetBars: PropTypes.bool,
   height: PropTypes.number.isRequired,
+  connectingLines: PropTypes.shape({
+    upper: PropTypes.shape({
+      value: PropTypes.number.isRequired,
+      offset: PropTypes.number.isRequired
+    }),
+    lower: PropTypes.shape({
+      value: PropTypes.number.isRequired,
+      offset: PropTypes.number.isRequired
+    })
+  }),
+  scales: PropTypes.shape({
+    x: PropTypes.func.isRequired,
+    y: PropTypes.func.isRequired
+  }),
   dimensions: PropTypes.shape({
     width: PropTypes.number.isRequired,
     height: PropTypes.number.isRequired

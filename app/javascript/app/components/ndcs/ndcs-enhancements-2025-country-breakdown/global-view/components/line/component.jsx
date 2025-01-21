@@ -4,18 +4,21 @@ import PropTypes from 'prop-types';
 const typeStyles = {
   historical: {
     fill: 'none',
-    stroke: '#999C9F',
     strokeWidth: '3'
   },
   projected: {
     fill: 'none',
-    stroke: '#999C9F',
     strokeDasharray: '5,5',
     strokeWidth: 3
+  },
+  'connecting-line': {
+    fill: 'none',
+    strokeDasharray: '2,2',
+    strokeWidth: 0.5
   }
 };
 
-const LineComponent = ({ type = 'historical', path, margins }) => {
+const LineComponent = ({ type = 'historical', color = '#999C9F', path, margins }) => {
   if (!path) return null;
 
   return (
@@ -24,12 +27,14 @@ const LineComponent = ({ type = 'historical', path, margins }) => {
       className="line"
       d={path}
       {...typeStyles[type]}
+      stroke={color}
     />
   );
 };
 
 LineComponent.propTypes = {
-  type: 'historical' || 'projected',
+  type: 'historical' || 'projected' || 'connecting-line',
+  color: PropTypes.string,
   path: PropTypes.any.isRequired,
   margins: PropTypes.shape({
     top: PropTypes.number.isRequired,
