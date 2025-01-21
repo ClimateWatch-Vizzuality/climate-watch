@@ -45,8 +45,8 @@ const ChangeBarComponent = ({
   // Calculating connecting lines to a origin
   const connectingLinePaths = {
     upper: line()
-      .x((d) => scales.x(d.x))
-      .y((d) => scales.y(d.y))([
+      .x(d => scales.x(d.x))
+      .y(d => scales.y(d.y))([
         { x: 2035, y: connectingLines?.upper?.value },
         {
           x: 2035 + connectingLines?.lower?.offset,
@@ -54,8 +54,8 @@ const ChangeBarComponent = ({
         }
       ]),
     lower: line()
-      .x((d) => scales.x(d.x))
-      .y((d) => scales.y(d.y))([
+      .x(d => scales.x(d.x))
+      .y(d => scales.y(d.y))([
         { x: 2035, y: connectingLines?.lower?.value },
         {
           x: 2035 + connectingLines?.lower?.offset,
