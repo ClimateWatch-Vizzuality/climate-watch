@@ -5,14 +5,14 @@ import { axisLeft, axisBottom } from 'd3-axis';
 import { chartConfigPropTypes } from '../index';
 
 const AxisGridComponent = ({ chartConfig = {} }) => {
-  const { chartId, scales, margins, dimensions } = chartConfig;
+  const { chartId, axis, scales, margins, dimensions } = chartConfig;
 
   if (!scales) return null;
 
   useEffect(() => {
     // X Axis
     const xAxis = axisBottom()
-      .tickValues([2015, 2020, 2025, 2030, 2035])
+      .tickValues(axis.x.ticks)
       .tickSize(8)
       .tickPadding(10)
       .scale(scales.x);
@@ -29,8 +29,7 @@ const AxisGridComponent = ({ chartConfig = {} }) => {
 
     // Y Axis
     const yAxis = axisLeft()
-      .tickValues([20, 30, 40, 50])
-      // .tickSize(0)
+      .tickValues(axis.y.ticks)
       .tickPadding(24)
       .tickFormat(d => `${d}Gt`)
       .scale(scales.y);
@@ -44,8 +43,20 @@ const AxisGridComponent = ({ chartConfig = {} }) => {
         g
           .selectAll('.tick line')
           .attr('stroke', '#ccc')
-          .attr('x2', dimensions.width - (margins.left + margins.right))
+          .attr('x2', scales.x(axis.x.ticks[axis.x.ticks.length - 1]))
       );
+
+    select(chartId)
+      .append('text')
+      .text('GtCO2e (Gigatonnes of CO2 equivalent)')
+      .attr(
+        'transform',
+        `translate(${margins.left},${margins.bottom}) rotate(-90)`
+      )
+      .attr('fill', '#000000')
+      .attr('font-size', 12)
+      .attr('x', -(dimensions.height / 2) - 40)
+      .attr('y', -64);
 
     // 2030 and 2035 lines
     select(chartId)
