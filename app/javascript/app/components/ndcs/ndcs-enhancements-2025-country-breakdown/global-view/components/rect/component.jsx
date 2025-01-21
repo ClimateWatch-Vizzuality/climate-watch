@@ -17,6 +17,12 @@ const typeStyles = {
   },
   'gap-lower-limit': {
     fill: '#8CB73F'
+  },
+  'offset-bar': {
+    fill: '#D9D9D9',
+    fillOpacity: '11%',
+    strokeDasharray: '2,2',
+    strokeWidth: 0.5
   }
 };
 
@@ -25,7 +31,8 @@ const RectComponent = ({
   margins,
   dimensions,
   position,
-  size
+  size,
+  stroke
 }) => {
   if (!margins || !dimensions || !position || !size) return null;
 
@@ -37,6 +44,7 @@ const RectComponent = ({
       x={position?.x}
       y={position?.y}
       {...typeStyles[type]}
+      stroke={stroke}
     />
   );
 };
@@ -47,7 +55,9 @@ RectComponent.propTypes = {
     'emission-reductions' ||
     'emission-additional-reductions' ||
     'gap-upper-limit' ||
-    'gap-lower-limit',
+    'gap-lower-limit' ||
+    'offset-bar',
+  stroke: PropTypes.string,
   dimensions: PropTypes.shape({
     width: PropTypes.number.isRequired,
     height: PropTypes.number.isRequired

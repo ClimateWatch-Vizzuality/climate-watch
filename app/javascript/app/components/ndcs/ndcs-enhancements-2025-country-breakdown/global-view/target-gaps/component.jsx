@@ -13,8 +13,17 @@ const LIMITS_DISPLAY_OFFSETS = {
 const TargetGapsComponent = ({ chartConfig = {} }) => {
   const { data: allData, margins, dimensions, scales } = chartConfig;
   const targetGapsData = allData?.targetGaps;
+  const reductionsData = allData?.reductions;
 
-  if (!targetGapsData || !margins || !dimensions || !scales) return null;
+  if (
+    !targetGapsData ||
+    !reductionsData ||
+    !margins ||
+    !dimensions ||
+    !scales
+  ) {
+    return null;
+  }
 
   // Upper limit (2.0C)
   const upperLimit = {
@@ -34,7 +43,10 @@ const TargetGapsComponent = ({ chartConfig = {} }) => {
         value: targetGapsData?.upperLimit?.actual,
         offset: LIMITS_DISPLAY_OFFSETS.upperLimit
       }
-    }
+    },
+    offset:
+      scales.y(reductionsData?.[YEAR]?.actual) -
+      scales.y(reductionsData?.[YEAR]?.target)
   };
 
   // Lower limit (1.5C)
@@ -44,8 +56,7 @@ const TargetGapsComponent = ({ chartConfig = {} }) => {
     legend: ['Remaining gap to', 'stay within 1.5°C', 'limit'],
     color: '#8CB73F',
     position: {
-      x:
-        scales.x(YEAR + LIMITS_DISPLAY_OFFSETS.lowerLimit),
+      x: scales.x(YEAR + LIMITS_DISPLAY_OFFSETS.lowerLimit),
       y: scales.y(targetGapsData?.lowerLimit?.target)
     },
     height:
@@ -56,7 +67,10 @@ const TargetGapsComponent = ({ chartConfig = {} }) => {
         value: targetGapsData?.lowerLimit?.actual,
         offset: LIMITS_DISPLAY_OFFSETS.lowerLimit
       }
-    }
+    },
+    offset:
+      scales.y(reductionsData?.[YEAR]?.actual) -
+      scales.y(reductionsData?.[YEAR]?.target)
   };
 
   return (
@@ -73,6 +87,8 @@ const TargetGapsComponent = ({ chartConfig = {} }) => {
         legend={upperLimit?.legend}
         color={upperLimit?.color}
         connectingLines={upperLimit?.connectingLines}
+        offset={upperLimit?.offset}
+        displayOffsetBars
       />
       {/* Lower limit (1.5C) */}
       <ChangeBarComponent
@@ -86,6 +102,8 @@ const TargetGapsComponent = ({ chartConfig = {} }) => {
         legend={lowerLimit?.legend}
         color={lowerLimit?.color}
         connectingLines={lowerLimit?.connectingLines}
+        offset={upperLimit?.offset}
+        displayOffsetBars
       />
     </>
   );
