@@ -23,10 +23,12 @@ const ChangeBarComponent = ({
   value,
   legend,
   color,
+  offset,
   connectingLines,
   displayLimitCircles = false,
   displayArrow = true,
-  displayValueInCircle = false
+  displayValueInCircle = false,
+  displayOffsetBars = false
 }) => {
   if (!position) return null;
 
@@ -66,6 +68,7 @@ const ChangeBarComponent = ({
 
   return (
     <g transform={`translate(${-CHANGE_BAR_WIDTH / 2}, 0)`}>
+      {/* Base bar display */}
       <RectComponent
         type={type}
         margins={margins}
@@ -76,6 +79,26 @@ const ChangeBarComponent = ({
           height: displayArrow ? height - CHANGE_BAR_ARROW_HEIGHT : height
         }}
       />
+
+      {/* Light offset bar displayed at the top */}
+      {displayOffsetBars && (
+        <RectComponent
+          type="offset-bar"
+          margins={margins}
+          dimensions={dimensions}
+          position={{
+            x: position.x,
+            y: position.y - offset
+          }}
+          size={{
+            width: CHANGE_BAR_WIDTH,
+            height: offset
+          }}
+          stroke={color}
+        />
+      )}
+
+      {/* Lines connecting from bar ends to other points in the chart */}
       {connectingLines && (
         <g transform={`translate(${CHANGE_BAR_WIDTH / 2}, 0)`}>
           {connectingLines?.upper && (
@@ -97,6 +120,7 @@ const ChangeBarComponent = ({
         </g>
       )}
 
+      {/* Arrow at the bottom of the bar */}
       {displayArrow && (
         <PolygonComponent
           margins={margins}
@@ -104,6 +128,8 @@ const ChangeBarComponent = ({
           color={color}
         />
       )}
+
+      {/* Circle above the component with the value */}
       {value && displayValueInCircle && (
         <>
           <CircleComponent
@@ -142,6 +168,8 @@ const ChangeBarComponent = ({
           />
         </>
       )}
+
+      {/* Value displayed inside the bar */}
       {value && !displayValueInCircle && (
         <>
           <TextComponent
@@ -172,6 +200,8 @@ const ChangeBarComponent = ({
           />
         </>
       )}
+
+      {/* Point markers displayed above and below the bar */}
       {displayLimitCircles && (
         <>
           <CircleComponent
@@ -192,6 +222,8 @@ const ChangeBarComponent = ({
           />
         </>
       )}
+
+      {/* Legends shown below the bar */}
       {legendItems?.map((text, idx) => (
         <TextComponent
           type="legend"
@@ -221,9 +253,11 @@ ChangeBarComponent.propTypes = {
   value: PropTypes.string,
   legend: PropTypes.string,
   color: PropTypes.string,
+  offset: PropTypes.number,
   displayLimitCircles: PropTypes.bool,
   displayArrow: PropTypes.bool,
   displayValueInCircle: PropTypes.bool,
+  displayOffsetBars: PropTypes.bool,
   height: PropTypes.number.isRequired,
   connectingLines: PropTypes.shape({
     upper: PropTypes.shape({
