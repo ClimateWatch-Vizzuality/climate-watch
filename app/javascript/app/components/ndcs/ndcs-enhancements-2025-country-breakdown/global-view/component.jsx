@@ -84,7 +84,7 @@ const GlobalViewComponent = () => {
 
   const chartMargins = {
     top: 20,
-    right: 20,
+    right: 0,
     bottom: 40,
     left: 80
   };
@@ -209,8 +209,10 @@ const GlobalViewComponent = () => {
           </svg>
         </div>
       </div>
-      <TagsComponent tags={TAGS_DATA} />
-      <div className={styles.lastUpdated}>Last updated on June 12,2024</div>
+      <div className={styles.tagsAndFooterContainer}>
+        <TagsComponent tags={TAGS_DATA} />
+        <div className={styles.lastUpdated}>Last updated on June 12,2024</div>
+      </div>
     </div>
   );
 };
