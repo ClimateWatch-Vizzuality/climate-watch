@@ -40,10 +40,16 @@
 .chartContainerGlobal {
   position: relative;
   padding: 0 14px;
+  margin-left: -40px;
+  margin-right: -40px;
 
   svg {
     overflow: visible;
   }
+}
+
+.tagsAndFooterContainer {
+  margin-left: 54px;
 }
 
 .lastUpdated {
