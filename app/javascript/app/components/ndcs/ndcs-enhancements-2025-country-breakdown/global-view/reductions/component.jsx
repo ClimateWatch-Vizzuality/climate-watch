@@ -3,6 +3,14 @@ import React from 'react';
 import { chartConfigPropTypes } from '../index';
 import { ChangeBarComponent } from '../components';
 
+const BASE_REDUCTIONS_YEAR = 2030;
+const ADDITIONAL_REDUCTIONS_YEAR = 2035;
+
+const LIMITS_DISPLAY_OFFSETS = {
+  baseReductions: 5,
+  additionalReductions: 10
+};
+
 const ReductionsComponent = ({ chartConfig = {} }) => {
   const { data: allData, margins, dimensions, scales } = chartConfig;
   const reductionsData = allData?.reductions;
@@ -10,20 +18,30 @@ const ReductionsComponent = ({ chartConfig = {} }) => {
   if (!reductionsData || !margins || !dimensions || !scales) return null;
 
   const baseReductions = {
-    value: reductionsData?.['2030']?.target - reductionsData?.['2030']?.actual,
+    value:
+      reductionsData?.[BASE_REDUCTIONS_YEAR]?.target -
+      reductionsData?.[BASE_REDUCTIONS_YEAR]?.actual,
     legend: ['Emission reductions', 'pledged in 2020 NDCs'],
     color: '#999C9F',
     position: {
       x: scales.x(2030),
-      y: scales.y(reductionsData?.['2030']?.target)
+      y: scales.y(reductionsData?.[BASE_REDUCTIONS_YEAR]?.target)
     },
     height:
-      scales.y(reductionsData?.['2030']?.actual) -
-      scales.y(reductionsData?.['2030']?.target)
+      scales.y(reductionsData?.[BASE_REDUCTIONS_YEAR]?.actual) -
+      scales.y(reductionsData?.[BASE_REDUCTIONS_YEAR]?.target),
+    connectingLines: {
+      lower: {
+        value: reductionsData?.[BASE_REDUCTIONS_YEAR]?.actual,
+        offset: -LIMITS_DISPLAY_OFFSETS.baseReductions
+      }
+    }
   };
 
   const additionalReductions = {
-    value: reductionsData?.['2035']?.target - reductionsData?.['2035']?.actual,
+    value:
+      reductionsData?.[ADDITIONAL_REDUCTIONS_YEAR]?.target -
+      reductionsData?.[ADDITIONAL_REDUCTIONS_YEAR]?.actual,
     legend: [
       'Additional emission',
       'reductions from',
@@ -32,11 +50,17 @@ const ReductionsComponent = ({ chartConfig = {} }) => {
     color: '#0845CB',
     position: {
       x: scales.x(2035),
-      y: scales.y(reductionsData?.['2035']?.target)
+      y: scales.y(reductionsData?.[ADDITIONAL_REDUCTIONS_YEAR]?.target)
     },
     height:
-      scales.y(reductionsData?.['2035']?.actual) -
-      scales.y(reductionsData?.['2035']?.target)
+      scales.y(reductionsData?.[ADDITIONAL_REDUCTIONS_YEAR]?.actual) -
+      scales.y(reductionsData?.[ADDITIONAL_REDUCTIONS_YEAR]?.target),
+    connectingLines: {
+      lower: {
+        value: reductionsData?.[ADDITIONAL_REDUCTIONS_YEAR]?.actual,
+        offset: LIMITS_DISPLAY_OFFSETS.additionalReductions
+      }
+    }
   };
 
   return (
@@ -53,6 +77,7 @@ const ReductionsComponent = ({ chartConfig = {} }) => {
         legend={baseReductions?.legend}
         color={baseReductions?.color}
         displayArrow={false}
+        connectingLines={baseReductions?.connectingLines}
         displayLimitCircles
       />
       {/* Additional Reductions */}
@@ -66,6 +91,7 @@ const ReductionsComponent = ({ chartConfig = {} }) => {
         value={additionalReductions?.value}
         legend={additionalReductions?.legend}
         color={additionalReductions?.color}
+        connectingLines={additionalReductions?.connectingLines}
         displayValueInCircle
       />
     </>
