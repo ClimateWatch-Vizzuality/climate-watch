@@ -69,18 +69,14 @@ const TARGETS_DATA = {
 
 const GlobalViewComponent = () => {
   const chartContainer = useRef();
-  const [chartConfig, setChartConfig] = useState({});
+  const [chartContainerWidth, setChartContainerWidth] = useState(undefined);
+  const [chartConfig, setChartConfig] = useState(undefined);
   const [conditionalNDC, setConditionalNDC] = useState(
     conditionalSwitchOptions[0]
   );
 
   const historicalData = DEMO_DATA_HISTORICAL;
   const projectedData = DEMO_DATA_PROJECTION;
-
-  const chartDimensions = {
-    width: 1170,
-    height: 480
-  };
 
   const chartMargins = {
     top: 20,
@@ -90,11 +86,28 @@ const GlobalViewComponent = () => {
   };
 
   useEffect(() => {
+    const onResize = () => {
+      setChartContainerWidth(chartContainer?.current?.getBoundingClientRect()?.width);
+    };
+
+    onResize();
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
+
+  useEffect(() => {
+    // Chart dimensions
+    const dimensions = {
+      width: chartContainerWidth,
+      height: 480
+    };
+
     // Scales
     const yScale = scaleLinear()
       .domain([20, 55])
       .range([
-        chartDimensions.height - (chartMargins.top + chartMargins.bottom),
+        dimensions?.height -
+          (chartMargins.top + chartMargins.bottom),
         0
       ]);
 
@@ -102,14 +115,14 @@ const GlobalViewComponent = () => {
       .domain([2014, 2048])
       .range([
         0,
-        chartDimensions.width - (chartMargins.left + chartMargins.right)
+        chartContainerWidth - (chartMargins.left + chartMargins.right)
       ]);
 
     // Chart config
     setChartConfig({
       chartId: '#iconic-chart-global',
       margins: chartMargins,
-      dimensions: chartDimensions,
+      dimensions: dimensions?.width && dimensions,
       axis: {
         x: { ticks: [2015, 2020, 2025, 2030, 2035] },
         y: { ticks: [20, 30, 40, 50] }
@@ -144,7 +157,9 @@ const GlobalViewComponent = () => {
         }
       }
     });
-  }, []);
+  }, [chartContainerWidth]);
+
+  const chartReady = !!chartContainerWidth && !!chartConfig && !!chartConfig?.dimensions;
 
   return (
     <div className={styles.wrapper}>
@@ -195,18 +210,20 @@ const GlobalViewComponent = () => {
 
       <div className={styles.chartContainer}>
         <div ref={chartContainer} className={styles.chartContainerGlobal}>
-          <svg
-            id="iconic-chart-global"
-            width={chartDimensions.width}
-            height={chartDimensions.height}
-          >
-            <AxisGridComponent chartConfig={chartConfig} />
-            <HistoricalDataComponent chartConfig={chartConfig} />
-            <ProjectedDataComponent chartConfig={chartConfig} />
-            <TargetsComponent chartConfig={chartConfig} />
-            <ReductionsComponent chartConfig={chartConfig} />
-            <TargetGapsComponent chartConfig={chartConfig} />
-          </svg>
+          {chartReady && (
+            <svg
+              id="iconic-chart-global"
+              width={chartContainerWidth}
+              height={chartConfig?.dimensions?.height}
+            >
+              <AxisGridComponent chartConfig={chartConfig} />
+              <HistoricalDataComponent chartConfig={chartConfig} />
+              <ProjectedDataComponent chartConfig={chartConfig} />
+              <TargetsComponent chartConfig={chartConfig} />
+              <ReductionsComponent chartConfig={chartConfig} />
+              <TargetGapsComponent chartConfig={chartConfig} />
+            </svg>
+          )}
         </div>
       </div>
       <div className={styles.tagsAndFooterContainer}>
