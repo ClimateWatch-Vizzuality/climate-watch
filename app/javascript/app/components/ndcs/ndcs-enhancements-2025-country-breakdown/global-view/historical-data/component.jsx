@@ -11,8 +11,8 @@ const HistoricalDataComponent = ({ chartConfig = {} }) => {
   if (!historicalData || !scales || !dimensions || !margins) return null;
 
   const historicalEmissionsLinePath = line()
-    .x(d => scales.x(d.x))
-    .y(d => scales.y(d.y))(historicalData);
+    .x((d) => scales.x(d.x))
+    .y((d) => scales.y(d.y))(historicalData);
 
   const historicalEmissionsMarkerPosition = {
     x: scales.x(historicalData[historicalData.length - 1]?.x),

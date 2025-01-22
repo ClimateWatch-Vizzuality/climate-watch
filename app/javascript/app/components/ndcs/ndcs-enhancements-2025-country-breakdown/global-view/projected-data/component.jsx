@@ -5,14 +5,14 @@ import { chartConfigPropTypes } from '../index';
 import { LineComponent } from '../components';
 
 const ProjectedDataComponent = ({ chartConfig = {} }) => {
-  const { data: allData, scales, margins } = chartConfig;
+  const { data: allData, scales, margins, dimensions } = chartConfig;
   const projectedData = allData?.projected;
 
-  if (!projectedData || !scales || !margins) return null;
+  if (!projectedData || !scales || !margins || !dimensions) return null;
 
   const projectedEmissionsLinePath = line()
-    .x(d => scales.x(d.x))
-    .y(d => scales.y(d.y))(projectedData);
+    .x((d) => scales.x(d.x))
+    .y((d) => scales.y(d.y))(projectedData);
 
   return (
     <LineComponent
