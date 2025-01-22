@@ -15,7 +15,7 @@ const getGlobalEmissions = createThunkAction(
     apiWithCache
       .get('/api/v1/data/ndc_content/global_emissions')
       .then(response => {
-        dispatch(getGlobalEmissionsReady(response.data));
+        dispatch(getGlobalEmissionsReady(response.data?.data));
       })
       .catch(error => {
         console.warn(error);
