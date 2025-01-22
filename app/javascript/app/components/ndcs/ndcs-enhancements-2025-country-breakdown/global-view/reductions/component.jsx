@@ -12,7 +12,7 @@ const LIMITS_DISPLAY_OFFSETS = {
 };
 
 const ReductionsComponent = ({ chartConfig = {} }) => {
-  const { data: allData, margins, dimensions, scales } = chartConfig;
+  const { data: allData, options, margins, dimensions, scales } = chartConfig;
   const reductionsData = allData?.reductions;
 
   if (!reductionsData || !margins || !dimensions || !scales) return null;
@@ -45,7 +45,7 @@ const ReductionsComponent = ({ chartConfig = {} }) => {
     legend: [
       'Additional emission',
       'reductions from',
-      'Unconditional 2025 NDCs'
+      options?.conditionalNdc ? 'conditional 2025 NDCs' : 'unconditional 2025 NDCs'
     ],
     color: '#0845CB',
     position: {

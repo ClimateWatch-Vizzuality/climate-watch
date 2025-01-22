@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Switch } from 'cw-components';
-
+/* eslint-disable no-mixed-operators */
+import React, { useState, useEffect, useRef, useMemo } from 'react';
+import PropTypes from 'prop-types';
 import { scaleLinear } from 'd3-scale';
+import { Switch } from 'cw-components';
 
 import ButtonGroup from 'components/button-group';
 
@@ -14,80 +15,137 @@ import ReductionsComponent from './reductions';
 import TargetGapsComponent from './target-gaps';
 import TagsComponent from './tags';
 
-const conditionalSwitchOptions = [
-  {
-    name: 'Unconditional NDC',
-    value: 'unconditional'
-  },
-  {
-    name: 'Conditional NDC',
-    value: 'conditional'
-  }
-];
+import { SETTINGS, CONDITIONAL_SWITCH_OPTIONS, TAGS_DATA } from './constants';
 
-const DEMO_DATA_HISTORICAL = [
-  { x: 2014, y: 43 },
-  { x: 2015, y: 42 },
-  { x: 2016, y: 44 },
-  { x: 2017, y: 48 },
-  { x: 2018, y: 48 },
-  { x: 2019, y: 46 },
-  { x: 2020, y: 45 },
-  { x: 2021, y: 48 }
-];
-
-const DEMO_DATA_PROJECTION = [
-  { x: 2021, y: 48 },
-  { x: 2030, y: 52 }
-];
-
-const TAGS_DATA = [
-  {
-    label: 'Historical Emissions',
-    color: 'gray'
-  },
-  {
-    label: 'Business As Usual Projection',
-    color: 'gray'
-  },
-  {
-    label: '2025 NDC Emissions Reduction',
-    color: 'blue'
-  }
-];
-
-const TARGETS_DATA = {
-  2030: {
-    '2.0C': 38,
-    '1.5C': 31
-  },
-  2035: {
-    '2.0C': 34,
-    '1.5C': 24
-  }
-};
-
-const GlobalViewComponent = () => {
+const GlobalViewComponent = ({ data }) => {
   const chartContainer = useRef();
   const [chartContainerWidth, setChartContainerWidth] = useState(undefined);
   const [chartConfig, setChartConfig] = useState(undefined);
   const [conditionalNDC, setConditionalNDC] = useState(
-    conditionalSwitchOptions[0]
+    CONDITIONAL_SWITCH_OPTIONS[0]
   );
 
-  const historicalData = DEMO_DATA_HISTORICAL;
-  const projectedData = DEMO_DATA_PROJECTION;
+  const {
+    historicalEmissions,
+    projectedEmissions,
+    policies,
+    ndcs,
+    targets: targetsData
+  } = data;
 
-  const chartMargins = {
-    top: 20,
-    right: 0,
-    bottom: 40,
-    left: 80
-  };
+  // Calculating historical and projection chart data for display
+  const historicalChartData = useMemo(
+    () =>
+      historicalEmissions
+        ?.filter(({ year }) => year >= SETTINGS.chartMinYear)
+        ?.map(({ year, value }) => ({
+          x: year,
+          y: value
+        })),
+    [historicalEmissions]
+  );
+
+  const projectionChartData = useMemo(
+    () =>
+      projectedEmissions?.map(({ year, value }) => ({
+        x: year,
+        y: value
+      })),
+    [historicalEmissions]
+  );
+
+  // Calculating reductions data for display on the 2030 and 2035 bars
+  const reductionsData = useMemo(
+    () => ({
+      2030: {
+        target: policies?.['2030'],
+        actual: ndcs?.['2030']?.unconditional?.['2020']
+      },
+      2035: {
+        target: ndcs?.['2030']?.unconditional?.['2020'],
+        actual: ndcs?.['2035']?.[conditionalNDC?.value]?.['2025']
+      }
+    }),
+    [ndcs, policies, conditionalNDC]
+  );
+
+  // Calculating target gaps data for bar display
+  const targetGapsData = useMemo(
+    () => ({
+      upperLimit: {
+        target: ndcs?.['2035']?.[conditionalNDC?.value]?.['2025'],
+        actual: targetsData?.['2035']?.['2.0C']
+      },
+      lowerLimit: {
+        target: ndcs?.['2035']?.[conditionalNDC?.value]?.['2025'],
+        actual: targetsData?.['2035']?.['1.5C']
+      }
+    }),
+    [conditionalNDC, ndcs, targetsData]
+  );
+
+  // Calculating chart domains and ticks to display on the axises, based on the data
+  const chartDomains = useMemo(() => {
+    const xDomain = [
+      SETTINGS.chartMinYear,
+      SETTINGS.chartMaxYear + 13
+    ];
+
+    // Figure out all possible Y values displayed in the chart so we can properly
+    // create a domain for D3 to display. Knowing the historical + projection data values
+    // and taking into account the values for the "remaining gap" bars we can figure out
+    // min and max values from here.
+    const allYValues = [
+      ...(historicalChartData?.map(({ y }) => y) || []),
+      ...(projectionChartData?.map(({ y }) => y) || []),
+      ...(Object.values(targetsData || {})?.reduce(
+        (acc, cur) => [
+          ...acc,
+          ...Object.values(cur || {})?.reduce(
+            (acc2, cur2) => [...acc2, cur2],
+            []
+          )
+        ],
+        []
+      ) || [])
+    ].sort();
+
+    // Min and max values to build our Y domain for D3. We'll add some padding
+    // so that the bars don't display with the edges on the SVG edges.
+    const yDomain = [allYValues[0] - 10, allYValues[allYValues?.length - 1] + 5];
+
+    return {
+      x: xDomain,
+      y: yDomain
+    };
+  }, [historicalChartData, projectionChartData]);
+
+  const chartTicks = useMemo(() => {
+    // We're displaying years in 5 year increments, we can base the ticks
+    // on whether the number is divisible by 5 (2010, 2015, etc)
+    const xTicks = Array.from(
+      { length: SETTINGS.chartMaxYear - SETTINGS.chartMinYear + 1 },
+      (_, k) => k + SETTINGS.chartMinYear
+    ).filter((val) => val % 5 === 0);
+
+    // We're displaying emissions in 10 year increments, we can base the ticks
+    // on whether the number is divisible by 5 (20gt, 30Gt, etc)
+    const yTicks = Array.from(
+      { length: chartDomains?.y?.[1] + 1 - chartDomains?.y?.[0] },
+      (_, k) => k + chartDomains?.y?.[0]
+    ).filter((val) => val % 10 === 0);
+
+    return {
+      x: xTicks,
+      y: yTicks
+    };
+  }, [historicalChartData, chartDomains]);
 
   useEffect(() => {
     const onResize = () => {
-      setChartContainerWidth(chartContainer?.current?.getBoundingClientRect()?.width);
+      setChartContainerWidth(
+        chartContainer?.current?.getBoundingClientRect()?.width
+      );
     };
 
     onResize();
@@ -104,62 +162,55 @@ const GlobalViewComponent = () => {
 
     // Scales
     const yScale = scaleLinear()
-      .domain([20, 55])
+      .domain(chartDomains.y)
       .range([
         dimensions?.height -
-          (chartMargins.top + chartMargins.bottom),
+          (SETTINGS.chartMargins.top + SETTINGS.chartMargins.bottom),
         0
       ]);
 
     const xScale = scaleLinear()
-      .domain([2014, 2048])
+      .domain(chartDomains.x)
       .range([
         0,
-        chartContainerWidth - (chartMargins.left + chartMargins.right)
+        chartContainerWidth -
+          (SETTINGS.chartMargins.left + SETTINGS.chartMargins.right)
       ]);
 
     // Chart config
     setChartConfig({
       chartId: '#iconic-chart-global',
-      margins: chartMargins,
+      margins: SETTINGS.chartMargins,
       dimensions: dimensions?.width && dimensions,
+      options: {
+        conditionalNdc: conditionalNDC?.value === 'conditional'
+      },
       axis: {
-        x: { ticks: [2015, 2020, 2025, 2030, 2035] },
-        y: { ticks: [20, 30, 40, 50] }
+        x: { ticks: chartTicks.x },
+        y: { ticks: chartTicks.y }
       },
       scales: {
         x: xScale,
         y: yScale
       },
       data: {
-        historical: historicalData,
-        projected: projectedData,
-        targets: TARGETS_DATA,
-        reductions: {
-          2030: {
-            actual: 44.5,
-            target: projectedData[projectedData.length - 1]?.y
-          },
-          2035: {
-            actual: 42,
-            target: 44.5
-          }
-        },
-        targetGaps: {
-          upperLimit: {
-            actual: TARGETS_DATA['2035']['2.0C'],
-            target: 42
-          },
-          lowerLimit: {
-            actual: TARGETS_DATA['2035']['1.5C'],
-            target: 42
-          }
-        }
+        historical: historicalChartData,
+        projected: projectionChartData,
+        targets: targetsData,
+        reductions: reductionsData,
+        targetGaps: targetGapsData
       }
     });
-  }, [chartContainerWidth]);
+  }, [
+    chartContainerWidth,
+    historicalChartData,
+    projectionChartData,
+    reductionsData,
+    targetsData
+  ]);
 
-  const chartReady = !!chartContainerWidth && !!chartConfig && !!chartConfig?.dimensions;
+  const chartReady =
+    !!chartContainerWidth && !!chartConfig && !!chartConfig?.dimensions;
 
   return (
     <div className={styles.wrapper}>
@@ -198,7 +249,7 @@ const GlobalViewComponent = () => {
 
       <div className={styles.chartOptionsContainer}>
         <Switch
-          options={conditionalSwitchOptions}
+          options={CONDITIONAL_SWITCH_OPTIONS}
           selectedOption={conditionalNDC.value}
           onClick={setConditionalNDC}
           theme={{
@@ -234,6 +285,14 @@ const GlobalViewComponent = () => {
   );
 };
 
-GlobalViewComponent.PropTypes = {};
+GlobalViewComponent.propTypes = {
+  data: PropTypes.shape({
+    historicalEmissions: PropTypes.object.isRequired,
+    projectedEmissions: PropTypes.object.isRequired,
+    targets: PropTypes.object.isRequired,
+    policies: PropTypes.object.isRequired,
+    ndcs: PropTypes.object.isRequired
+  }).isRequired
+};
 
 export default GlobalViewComponent;
