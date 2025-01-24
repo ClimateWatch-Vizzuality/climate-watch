@@ -5,7 +5,6 @@ import {
   COUNTRY_STYLES
 } from 'components/ndcs/shared/constants';
 import { getColorByIndex, shouldShowPath } from 'utils/map';
-import { CHART_COLORS } from 'data/constants';
 
 export const getColorException = (indicator, label) => {
   if (indicator.value !== 'child_sensitive_NDC') return null;
@@ -253,7 +252,7 @@ export const pathsWithStylesFunction = (
         const color =
           getColorException(indicator, label) ||
           getColorByIndex(legendBuckets, label.index);
-        style.default.fill = iso === 'USA' ? CHART_COLORS[9] : color;
+        style.default.fill = color;
         style.hover.fill = color;
       }
 
