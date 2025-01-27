@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { chartConfigPropTypes } from '../index';
+import { chartConfigPropTypes } from '../../index';
 import { ChangeBarComponent } from '../components';
 
 const YEAR = 2035;

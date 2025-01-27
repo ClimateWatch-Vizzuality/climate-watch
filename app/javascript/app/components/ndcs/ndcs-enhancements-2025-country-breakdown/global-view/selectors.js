@@ -3,6 +3,9 @@ import { createSelector } from 'reselect';
 const getGlobalEmissions = state =>
   state.ndcContentGlobalEmissions?.data || null;
 
+export const getMetadata = state =>
+  !state.metadata.loading ? state.metadata.data : null;
+
 const getHistoricalEmissions = createSelector(
   [getGlobalEmissions],
   globalEmissions => {
@@ -106,7 +109,13 @@ const getNdcs = createSelector([getGlobalEmissions], globalEmissions => {
 });
 
 export const getData = createSelector(
-  [getHistoricalEmissions, getProjectedEmissions, getTargets, getPolicies, getNdcs],
+  [
+    getHistoricalEmissions,
+    getProjectedEmissions,
+    getTargets,
+    getPolicies,
+    getNdcs
+  ],
   (historicalEmissions, projectedEmissions, targets, policies, ndcs) => ({
     historicalEmissions,
     projectedEmissions,

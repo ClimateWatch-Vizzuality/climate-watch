@@ -1,7 +1,7 @@
 import React from 'react';
 import { line } from 'd3-shape';
 
-import { chartConfigPropTypes } from '../index';
+import { chartConfigPropTypes } from '../../index';
 import { LineComponent } from '../components';
 
 const ProjectedDataComponent = ({ chartConfig = {} }) => {
@@ -11,8 +11,8 @@ const ProjectedDataComponent = ({ chartConfig = {} }) => {
   if (!projectedData || !scales || !margins || !dimensions) return null;
 
   const projectedEmissionsLinePath = line()
-    .x((d) => scales.x(d.x))
-    .y((d) => scales.y(d.y))(projectedData);
+    .x(d => scales.x(d.x))
+    .y(d => scales.y(d.y))(projectedData);
 
   return (
     <LineComponent
