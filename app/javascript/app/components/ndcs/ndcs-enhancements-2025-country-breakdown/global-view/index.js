@@ -3,18 +3,43 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 
-import { getData } from './selectors';
+import { actions as modalActions } from 'components/modal-metadata';
+import { actions as pngModalActions } from 'components/modal-png-download';
+
+import { getData, getMetadata } from './selectors';
 import Component from './component';
 
+const pngDownloadId = 'iconic-global-chart';
+
+const actions = { ...modalActions, ...pngModalActions };
+
 const mapStateToProps = state => ({
-  data: getData(state)
+  data: getData(state),
+  metadata: getMetadata(state)
 });
 
 function GlobalViewContainer(props) {
-  return createElement(Component, { ...props });
-}
+  const { setModalMetadata, setModalPngDownload } = props;
 
-const actions = {};
+  const handleInfoClick = () => {
+    setModalMetadata({
+      category: 'NDC Content Map',
+      slugs: '2025_NDC',
+      open: true
+    });
+  };
+
+  const handlePngDownloadModal = () => {
+    setModalPngDownload({ open: pngDownloadId });
+  };
+
+  return createElement(Component, {
+    ...props,
+    pngDownloadId,
+    handleInfoClick,
+    handlePngDownloadModal
+  });
+}
 
 export const chartConfigPropTypes = {
   chartId: PropTypes.string.isRequired,
@@ -41,5 +66,5 @@ export const chartConfigPropTypes = {
 GlobalViewContainer.propTypes = {};
 
 export default withRouter(
-  connect(mapStateToProps, actions)(Component)
+  connect(mapStateToProps, actions)(GlobalViewContainer)
 );

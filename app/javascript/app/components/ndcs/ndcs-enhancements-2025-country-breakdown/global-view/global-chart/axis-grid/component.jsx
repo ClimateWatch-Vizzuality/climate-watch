@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import { select } from 'd3-selection';
 import { axisLeft, axisBottom } from 'd3-axis';
 
-import { chartConfigPropTypes } from '../index';
+import { chartConfigPropTypes } from '../../index';
 
 const AxisGridComponent = ({ chartConfig = {} }) => {
   const { chartId, axis, scales, margins, dimensions } = chartConfig;
@@ -28,8 +28,8 @@ const AxisGridComponent = ({ chartConfig = {} }) => {
       `translate(${margins.left},${dimensions.height - margins.bottom})`
     )
     .call(xAxis)
-    .call((g) => g.select('.domain').remove())
-    .call((g) => g.selectAll('.tick line').attr('stroke', '#ccc'));
+    .call(g => g.select('.domain').remove())
+    .call(g => g.selectAll('.tick line').attr('stroke', '#ccc'));
 
   // Y Axis
   const yAxis = axisLeft()
@@ -43,8 +43,8 @@ const AxisGridComponent = ({ chartConfig = {} }) => {
     .attr('class', 'axis-grid')
     .attr('transform', `translate(${margins.left},${margins.top})`)
     .call(yAxis)
-    .call((g) => g.select('.domain').remove())
-    .call((g) =>
+    .call(g => g.select('.domain').remove())
+    .call(g =>
       g
         .selectAll('.tick line')
         .attr('stroke', '#ccc')
@@ -73,8 +73,8 @@ const AxisGridComponent = ({ chartConfig = {} }) => {
     .data([2030, 2035])
     .enter()
     .append('line')
-    .attr('x1', (d) => scales.x(d))
-    .attr('x2', (d) => scales.x(d))
+    .attr('x1', d => scales.x(d))
+    .attr('x2', d => scales.x(d))
     .attr('y1', 0)
     .attr('y2', dimensions.height - margins.top - margins.bottom - 20)
     .attr('stroke', '#D3D3D3')

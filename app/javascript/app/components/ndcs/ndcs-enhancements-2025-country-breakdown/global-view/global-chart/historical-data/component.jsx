@@ -1,7 +1,7 @@
 import React from 'react';
 import { line } from 'd3-shape';
 
-import { chartConfigPropTypes } from '../index';
+import { chartConfigPropTypes } from '../../index';
 import { RectComponent, LineComponent, CircleComponent } from '../components';
 
 const HistoricalDataComponent = ({ chartConfig = {} }) => {
@@ -11,8 +11,8 @@ const HistoricalDataComponent = ({ chartConfig = {} }) => {
   if (!historicalData || !scales || !dimensions || !margins) return null;
 
   const historicalEmissionsLinePath = line()
-    .x((d) => scales.x(d.x))
-    .y((d) => scales.y(d.y))(historicalData);
+    .x(d => scales.x(d.x))
+    .y(d => scales.y(d.y))(historicalData);
 
   const historicalEmissionsMarkerPosition = {
     x: scales.x(historicalData[historicalData.length - 1]?.x),
