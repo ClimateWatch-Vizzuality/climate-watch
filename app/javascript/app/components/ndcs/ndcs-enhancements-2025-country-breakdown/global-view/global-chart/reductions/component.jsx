@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { chartConfigPropTypes } from '../index';
+import { chartConfigPropTypes } from '../../index';
 import { ChangeBarComponent } from '../components';
 
 const BASE_REDUCTIONS_YEAR = 2030;
@@ -45,7 +45,9 @@ const ReductionsComponent = ({ chartConfig = {} }) => {
     legend: [
       'Additional emission',
       'reductions from',
-      options?.conditionalNdc ? 'conditional 2025 NDCs' : 'unconditional 2025 NDCs'
+      options?.conditionalNdc
+        ? 'conditional 2025 NDCs'
+        : 'unconditional 2025 NDCs'
     ],
     color: '#0845CB',
     position: {
