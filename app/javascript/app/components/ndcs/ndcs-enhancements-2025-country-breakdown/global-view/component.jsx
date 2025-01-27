@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { Switch } from 'cw-components';
 
+import NdcContentGlobalEmissionsProvider from 'providers/ndc-content-global-emissions-provider';
 import ButtonGroup from 'components/button-group';
 import ModalPngDownload from 'components/modal-png-download';
 
@@ -112,11 +113,11 @@ const GlobalViewComponent = props => {
                   type: 'info',
                   onClick: handleInfoClick
                 },
-                // {
-                //   type: 'share',
-                //   shareUrl: '/embed/emissions-reductions-country-global',
-                //   positionRight: true
-                // },
+                {
+                  type: 'share',
+                  shareUrl: '/embed/ndcs/global-emissions-reductions',
+                  positionRight: true
+                },
                 {
                   type: 'downloadCombo',
                   options: [
@@ -159,6 +160,7 @@ const GlobalViewComponent = props => {
           <span className={styles.spacer} />
         </div>
       </ModalPngDownload>
+      <NdcContentGlobalEmissionsProvider />
     </>
   );
 };
