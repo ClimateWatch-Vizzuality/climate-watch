@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Switch } from 'cw-components';
 import { timeFormat } from 'd3-time-format';
 
+import ModalMetadata from 'components/modal-metadata';
 import NdcContentGlobalEmissionsProvider from 'providers/ndc-content-global-emissions-provider';
 import ButtonGroup from 'components/button-group';
 import ModalPngDownload from 'components/modal-png-download';
@@ -166,6 +167,7 @@ const GlobalViewComponent = props => {
           <span className={styles.spacer} />
         </div>
       </ModalPngDownload>
+      <ModalMetadata />
       <NdcContentGlobalEmissionsProvider />
     </>
   );
