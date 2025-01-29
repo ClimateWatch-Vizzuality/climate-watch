@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { Switch } from 'cw-components';
+import { timeFormat } from 'd3-time-format';
 
 import NdcContentGlobalEmissionsProvider from 'providers/ndc-content-global-emissions-provider';
 import ButtonGroup from 'components/button-group';
@@ -30,7 +31,8 @@ const GlobalViewComponent = props => {
     projectedEmissions,
     policies,
     ndcs,
-    targets: targetsData
+    targets: targetsData,
+    lastUpdated
   } = data;
 
   // Calculating historical and projection chart data for display
@@ -84,14 +86,19 @@ const GlobalViewComponent = props => {
     [conditionalNDC, ndcs, targetsData]
   );
 
+  const formattedLastUpdated = useMemo(() => {
+    if (!lastUpdated) return null;
+    return timeFormat('%B %d, %Y')(new Date(lastUpdated));
+  }, [lastUpdated]);
+
   useEffect(() => {
-    // Chart config
     setChartData({
       historical: historicalChartData,
       projected: projectionChartData,
       targets: targetsData,
       reductions: reductionsData,
-      targetGaps: targetGapsData
+      targetGaps: targetGapsData,
+      lastUpdated
     });
   }, [historicalChartData, projectionChartData, reductionsData, targetsData]);
 
@@ -149,7 +156,11 @@ const GlobalViewComponent = props => {
         <div className={styles.tagsContainer}>
           <TagsComponent tags={TAGS_DATA} />
         </div>
-        <div className={styles.lastUpdated}>Last updated on June 12,2024</div>
+        {formattedLastUpdated && (
+          <div className={styles.lastUpdated}>
+            Last updated on {formattedLastUpdated}
+          </div>
+        )}
       </div>
       <ModalPngDownload id={pngDownloadId}>
         <div>
@@ -171,7 +182,8 @@ GlobalViewComponent.propTypes = {
     projectedEmissions: PropTypes.object.isRequired,
     targets: PropTypes.object.isRequired,
     policies: PropTypes.object.isRequired,
-    ndcs: PropTypes.object.isRequired
+    ndcs: PropTypes.object.isRequired,
+    lastUpdated: PropTypes.string.isRequired
   }).isRequired,
   pngDownloadId: PropTypes.string.isRequired,
   handleInfoClick: PropTypes.func.isRequired,

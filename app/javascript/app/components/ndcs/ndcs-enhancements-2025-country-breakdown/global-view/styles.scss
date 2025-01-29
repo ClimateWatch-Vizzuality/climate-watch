@@ -30,28 +30,16 @@
   margin: 24px 0;
 }
 
-.chartContainerGlobal {
-  position: relative;
-  padding: 0 14px;
-  margin-left: -40px;
-  margin-right: -40px;
-
-  svg {
-    overflow: visible;
-  }
-}
-
 .tagsContainer {
-  margin-left: 26px;
-}
-
-.lastUpdated {
-  margin-left: 54px;
-  margin-top: 14px;
-  font-style: italic;
+  margin-left: 46px;
 }
 
 .spacer {
   display: block;
   height: 20px;
+}
+
+.lastUpdated {
+  margin-left: 94px;
+  font-style: italic;
 }
