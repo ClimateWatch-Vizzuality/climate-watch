@@ -106,12 +106,7 @@ const GlobalViewComponent = props => {
     <>
       <div className={styles.wrapper}>
         <div className={styles.summaryHeader}>
-          <div className={styles.summaryDescription}>
-            <p>
-              Historical emissions and projections of NDCs targets and global
-              GHG Emissions.
-            </p>
-          </div>
+          <div className={styles.summaryDescription} />
           <div className={styles.buttonGroupContainer}>
             <ButtonGroup
               className={styles.buttonGroup}
