@@ -35,14 +35,6 @@ const Ndc2025CountryBreakdownComponent = () => {
             <div className={styles.summaryHeader}>
               <h2>How much could new NDCs reduce emissions by 2035?</h2>
             </div>
-            <div className={styles.summaryDescription}>
-              <p>
-                Explore how countries are collectively and individually
-                contributing to reduce their emissions by 2035, and find out how
-                far the world is from closing the emission gap to reach a 2C or
-                a 1.5C aligned future.
-              </p>
-            </div>
           </div>
           <div className={styles.switchWrapper}>
             <Switch
