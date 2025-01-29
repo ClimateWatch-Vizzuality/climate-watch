@@ -33,10 +33,7 @@ const Ndc2025CountryBreakdownComponent = () => {
         <div className={layout.content}>
           <div className={styles.summary}>
             <div className={styles.summaryHeader}>
-              <h2>
-                How are countries collectively reducing their emissions for
-                2035?
-              </h2>
+              <h2>How much could new NDCs reduce emissions by 2035?</h2>
             </div>
             <div className={styles.summaryDescription}>
               <p>
