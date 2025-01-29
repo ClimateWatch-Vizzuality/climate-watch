@@ -30,9 +30,5 @@ export const TAGS_DATA = [
     type: 'projection-line',
     label: 'Business As Usual Projection',
     color: 'gray'
-  },
-  {
-    label: '2025 NDC Emissions Reduction',
-    color: 'blue'
   }
 ];
