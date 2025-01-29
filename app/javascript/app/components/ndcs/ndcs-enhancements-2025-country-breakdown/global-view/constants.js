@@ -22,10 +22,12 @@ export const CONDITIONAL_SWITCH_OPTIONS = [
 
 export const TAGS_DATA = [
   {
+    type: 'historical-line',
     label: 'Historical Emissions',
     color: 'gray'
   },
   {
+    type: 'projection-line',
     label: 'Business As Usual Projection',
     color: 'gray'
   },

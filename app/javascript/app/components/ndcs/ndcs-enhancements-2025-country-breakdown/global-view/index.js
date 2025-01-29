@@ -47,6 +47,10 @@ export const chartConfigPropTypes = {
     conditionalNdc: PropTypes.bool.isRequired
   },
   data: PropTypes.object.isRequired,
+  domains: PropTypes.shape({
+    x: PropTypes.array.isRequired,
+    y: PropTypes.array.isRequired
+  }),
   scales: PropTypes.shape({
     x: PropTypes.func.isRequired,
     y: PropTypes.func.isRequired
