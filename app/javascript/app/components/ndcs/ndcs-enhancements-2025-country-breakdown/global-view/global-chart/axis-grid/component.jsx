@@ -24,6 +24,7 @@ const AxisGridComponent = ({ chartConfig = {} }) => {
     .tickValues(axis.x.ticks)
     .tickSize(8)
     .tickPadding(10)
+    .tickFormat(d => d) // Needed or there will be comma separators
     .scale(scales.x);
 
   select(chartId)
