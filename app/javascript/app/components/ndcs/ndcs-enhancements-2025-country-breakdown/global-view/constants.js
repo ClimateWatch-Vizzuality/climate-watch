@@ -11,11 +11,11 @@ export const SETTINGS = {
 
 export const CONDITIONAL_SWITCH_OPTIONS = [
   {
-    name: 'Unconditional NDC',
+    name: 'Unconditional NDCs',
     value: 'unconditional'
   },
   {
-    name: 'Conditional NDC',
+    name: 'Conditional NDCs',
     value: 'conditional'
   }
 ];

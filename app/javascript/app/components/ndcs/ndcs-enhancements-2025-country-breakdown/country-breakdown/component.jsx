@@ -26,11 +26,11 @@ const baselineYearDropdownOptions = [
 
 const conditionalSwitchOptions = [
   {
-    name: 'Unconditional NDC',
+    name: 'Unconditional NDCS',
     value: 'unconditional'
   },
   {
-    name: 'Conditional NDC',
+    name: 'Conditional NDCS',
     value: 'conditional'
   }
 ];
