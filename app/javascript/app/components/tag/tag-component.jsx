@@ -23,12 +23,16 @@ class Tag extends PureComponent {
       label,
       className,
       canRemove,
-      tooltipId
+      tooltipId,
+      children
     } = this.props;
 
     const tagContent = (
       <React.Fragment>
-        <span className={theme.dot} style={{ backgroundColor: color }} />
+        {children}
+        {!children && (
+          <span className={theme.dot} style={{ backgroundColor: color }} />
+        )}
         {data && data.title && tooltipId ? (
           <p className={theme.label} data-tip={data.title} data-for={tooltipId}>
             {label}
@@ -63,7 +67,8 @@ Tag.propTypes = {
   color: Proptypes.string,
   className: Proptypes.string,
   canRemove: Proptypes.bool,
-  theme: Proptypes.object
+  theme: Proptypes.object,
+  children: Proptypes.node
 };
 
 Tag.defaultPropTypes = {

@@ -11,3 +11,24 @@
     margin: 0;
   }
 }
+
+.historical {
+  border-top: 3px solid #999C9F;
+  width: 16px;
+  margin-right: 6px;
+  border-radius: 20px;
+}
+
+.projection {
+  display: block;
+  width: 16px;
+  height: 3px;
+  border-radius: 20px;
+  margin-right: 6px;
+  
+  background-image: linear-gradient(to right, #999C9F 65%, transparent 35%);
+  background-position: top;
+  background-size: 10px 3px;
+  background-position-x: left;
+  background-repeat: repeat-x;
+}
