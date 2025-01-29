@@ -1,7 +1,8 @@
 /* eslint-disable no-mixed-operators */
-import React from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { line } from 'd3-shape';
+import { format } from 'd3-format';
 
 import RectComponent from '../rect';
 import PolygonComponent from '../polygon';
@@ -28,9 +29,15 @@ const ChangeBarComponent = ({
   displayLimitCircles = false,
   displayArrow = true,
   displayValueInCircle = false,
-  displayOffsetBars = false
+  displayOffsetBars = false,
+  valueFormat = ',.1f'
 }) => {
   if (!position) return null;
+
+  const formattedValue = useMemo(() => {
+    if (value % 1 === 0) return value;
+    return format(valueFormat)(value);
+  }, [value, valueFormat]);
 
   // Legend text, array due to multiline
   const legendItems = Array.isArray(legend) ? legend : [legend];
@@ -142,7 +149,7 @@ const ChangeBarComponent = ({
           />
           <TextComponent
             type="value"
-            value={value}
+            value={formattedValue}
             margins={margins}
             dimensions={{
               width: CHANGE_BAR_WIDTH,
@@ -174,7 +181,7 @@ const ChangeBarComponent = ({
         <>
           <TextComponent
             type="value"
-            value={value}
+            value={formattedValue}
             margins={margins}
             dimensions={{
               width: CHANGE_BAR_WIDTH,
@@ -251,6 +258,7 @@ ChangeBarComponent.propTypes = {
     'type-upper-limit' ||
     'type-lower-limit',
   value: PropTypes.string,
+  valueFormat: PropTypes.string,
   legend: PropTypes.string,
   color: PropTypes.string,
   offset: PropTypes.number,

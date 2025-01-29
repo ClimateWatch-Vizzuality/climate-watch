@@ -21,6 +21,7 @@ const ReductionsComponent = ({ chartConfig = {} }) => {
     value:
       reductionsData?.[BASE_REDUCTIONS_YEAR]?.target -
       reductionsData?.[BASE_REDUCTIONS_YEAR]?.actual,
+    valueFormat: ',.1f',
     legend: ['Emission reductions', 'pledged in 2020 NDCs'],
     color: '#999C9F',
     position: {
@@ -76,6 +77,7 @@ const ReductionsComponent = ({ chartConfig = {} }) => {
         position={baseReductions?.position}
         height={baseReductions?.height}
         value={baseReductions?.value}
+        valueFormat={baseReductions?.valueFormat}
         legend={baseReductions?.legend}
         color={baseReductions?.color}
         displayArrow={false}
@@ -91,6 +93,7 @@ const ReductionsComponent = ({ chartConfig = {} }) => {
         position={additionalReductions?.position}
         height={additionalReductions?.height}
         value={additionalReductions?.value}
+        valueFormat={baseReductions?.valueFormat}
         legend={additionalReductions?.legend}
         color={additionalReductions?.color}
         connectingLines={additionalReductions?.connectingLines}
