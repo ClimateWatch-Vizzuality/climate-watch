@@ -5,12 +5,6 @@ import NDCSEnhancements2025Table from 'components/ndcs/ndcs-enhancements-2025-ta
 
 export default [
   {
-    hash: 'country-breakdown',
-    anchor: true,
-    label: 'Country Comparison',
-    component: NDCSEnhancements2025CountryBreakdown
-  },
-  {
     hash: 'chart',
     anchor: false,
     label: 'Chart',
@@ -21,6 +15,12 @@ export default [
     anchor: true,
     label: 'Map',
     component: NDCSEnhancements2025Map
+  },
+  {
+    hash: 'country-breakdown',
+    anchor: true,
+    label: 'Country Comparison',
+    component: NDCSEnhancements2025CountryBreakdown
   },
   {
     hash: 'table',
