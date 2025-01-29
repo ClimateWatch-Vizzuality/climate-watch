@@ -1,11 +1,17 @@
-import React, { Fragment } from 'react';
+import React, { useMemo } from 'react';
 import { select } from 'd3-selection';
 import { axisLeft, axisBottom } from 'd3-axis';
+import { line } from 'd3-shape';
 
 import { chartConfigPropTypes } from '../../index';
+import { LineComponent } from '../components';
+
+import { SETTINGS } from '../../constants';
+
+const Y_AXIS_LINES = [2030, 2035];
 
 const AxisGridComponent = ({ chartConfig = {} }) => {
-  const { chartId, axis, scales, margins, dimensions } = chartConfig;
+  const { chartId, axis, domains, scales, margins, dimensions } = chartConfig;
 
   if (!scales) return null;
 
@@ -34,7 +40,7 @@ const AxisGridComponent = ({ chartConfig = {} }) => {
   // Y Axis
   const yAxis = axisLeft()
     .tickValues(axis.y.ticks)
-    .tickPadding(24)
+    .tickPadding(16)
     .tickFormat(d => `${d}Gt`)
     .scale(scales.y);
 
@@ -44,12 +50,7 @@ const AxisGridComponent = ({ chartConfig = {} }) => {
     .attr('transform', `translate(${margins.left},${margins.top})`)
     .call(yAxis)
     .call(g => g.select('.domain').remove())
-    .call(g =>
-      g
-        .selectAll('.tick line')
-        .attr('stroke', '#ccc')
-        .attr('x2', scales.x(axis.x.ticks[axis.x.ticks.length - 1]))
-    );
+    .call(g => g.selectAll('.tick line').remove());
 
   select(chartId)
     .append('text')
@@ -64,24 +65,40 @@ const AxisGridComponent = ({ chartConfig = {} }) => {
     .attr('x', -(dimensions.height / 2) - 40)
     .attr('y', -64);
 
-  // 2030 and 2035 lines
-  select(chartId)
-    .append('g')
-    .attr('class', 'axis-grid')
-    .attr('transform', `translate(${margins.left},${margins.bottom})`)
-    .selectAll('line')
-    .data([2030, 2035])
-    .enter()
-    .append('line')
-    .attr('x1', d => scales.x(d))
-    .attr('x2', d => scales.x(d))
-    .attr('y1', 0)
-    .attr('y2', dimensions.height - margins.top - margins.bottom - 20)
-    .attr('stroke', '#D3D3D3')
-    .attr('stroke-dasharray', '4,4')
-    .attr('stroke-width', '0.5');
+  const axisLines = useMemo(() => {
+    const x = Y_AXIS_LINES?.map(year =>
+      line()
+        .x(d => scales.x(d.x))
+        .y(d => scales.y(d.y))([
+          { x: year, y: domains?.y?.[0] + 0.5 },
+          { x: year, y: domains?.y?.[domains?.y?.length - 1] }
+        ])
+    );
 
-  return <Fragment />;
+    const y = axis?.y?.ticks?.map(tick =>
+      line()
+        .x(d => scales.x(d.x))
+        .y(d => scales.y(d.y))([
+          { x: SETTINGS?.chartMinYear, y: tick },
+          { x: SETTINGS?.chartMaxYear, y: tick }
+        ])
+    );
+
+    return { x, y };
+  });
+
+  return (
+    <>
+      {/* X axis lines: 2030 & 2035 lines */}
+      {axisLines?.x?.map(path => (
+        <LineComponent type="axis-x" margins={margins} path={path} />
+      ))}
+      {/* Y axis lines */}
+      {axisLines?.y?.map(path => (
+        <LineComponent type="axis-y" margins={margins} path={path} />
+      ))}
+    </>
+  );
 };
 
 AxisGridComponent.propTypes = {
