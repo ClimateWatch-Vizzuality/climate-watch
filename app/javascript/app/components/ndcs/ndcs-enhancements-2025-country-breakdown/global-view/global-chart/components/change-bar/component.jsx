@@ -11,7 +11,7 @@ import CircleComponent from '../circle';
 import LineComponent from '../line';
 
 const CHANGE_BAR_WIDTH = 54;
-const CHANGE_BAR_ARROW_HEIGHT = 10;
+const CHANGE_BAR_ARROW_HEIGHT = 9;
 const CHANGE_CIRCLE_VALUE_OFFSET = 65;
 
 const ChangeBarComponent = ({
@@ -43,13 +43,22 @@ const ChangeBarComponent = ({
   const legendItems = Array.isArray(legend) ? legend : [legend];
 
   // Calculating points to draw the arrow polygon
-  const arrowPoints = `${position.x},${position.y +
+  // Note: It isn't quite an arrow, as we are building a little "rectangle" on top
+  //       of the arrow, with 1px height, matching the above bar's width.
+  //       This is to solve antialising issues, or there will be a faint line
+  //       between the rectangle and the (triangle) polygon that displays the arrow.
+  const arrowPoints = `
+    ${position.x},${position.y + height - CHANGE_BAR_ARROW_HEIGHT - 1} 
+    ${position.x + CHANGE_BAR_WIDTH},${position.y +
+    height -
+    CHANGE_BAR_ARROW_HEIGHT -
+    1} 
+    ${position.x + CHANGE_BAR_WIDTH},${position.y +
     height -
     CHANGE_BAR_ARROW_HEIGHT}
-     ${position.x + CHANGE_BAR_WIDTH},${position.y +
-    height -
-    CHANGE_BAR_ARROW_HEIGHT}
-      ${position.x + CHANGE_BAR_WIDTH / 2},${position.y + height}`;
+    ${position.x + CHANGE_BAR_WIDTH / 2},${position.y + height}
+    ${position.x},${position.y + height - CHANGE_BAR_ARROW_HEIGHT}
+  `;
 
   // Calculating connecting lines to a origin
   const connectingLinePaths = {
