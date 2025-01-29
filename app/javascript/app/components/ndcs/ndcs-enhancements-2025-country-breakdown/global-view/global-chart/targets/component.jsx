@@ -14,22 +14,6 @@ const TargetsComponent = ({ chartConfig = {} }) => {
         type="upper-target"
         margins={margins}
         position={{
-          x: scales.x(2030),
-          y: scales.y(targetsData[2030]['2.0C'])
-        }}
-      />
-      <CircleComponent
-        type="lower-target"
-        margins={margins}
-        position={{
-          x: scales.x(2030),
-          y: scales.y(targetsData[2030]['1.5C'])
-        }}
-      />
-      <CircleComponent
-        type="upper-target"
-        margins={margins}
-        position={{
           x: scales.x(2035),
           y: scales.y(targetsData[2035]['2.0C'])
         }}
