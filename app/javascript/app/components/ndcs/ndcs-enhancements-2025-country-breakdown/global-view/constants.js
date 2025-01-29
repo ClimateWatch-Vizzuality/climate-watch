@@ -11,11 +11,11 @@ export const SETTINGS = {
 
 export const CONDITIONAL_SWITCH_OPTIONS = [
   {
-    name: 'Unconditional NDC',
+    name: 'Unconditional NDCs',
     value: 'unconditional'
   },
   {
-    name: 'Conditional NDC',
+    name: 'Conditional NDCs',
     value: 'conditional'
   }
 ];
@@ -30,9 +30,5 @@ export const TAGS_DATA = [
     type: 'projection-line',
     label: 'Business As Usual Projection',
     color: 'gray'
-  },
-  {
-    label: '2025 NDC Emissions Reduction',
-    color: 'blue'
   }
 ];

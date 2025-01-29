@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Switch } from 'cw-components';
 import { timeFormat } from 'd3-time-format';
 
+import ModalMetadata from 'components/modal-metadata';
 import NdcContentGlobalEmissionsProvider from 'providers/ndc-content-global-emissions-provider';
 import ButtonGroup from 'components/button-group';
 import ModalPngDownload from 'components/modal-png-download';
@@ -106,12 +107,7 @@ const GlobalViewComponent = props => {
     <>
       <div className={styles.wrapper}>
         <div className={styles.summaryHeader}>
-          <div className={styles.summaryDescription}>
-            <p>
-              Historical emissions and projections of NDCs targets and global
-              GHG Emissions.
-            </p>
-          </div>
+          <div className={styles.summaryDescription} />
           <div className={styles.buttonGroupContainer}>
             <ButtonGroup
               className={styles.buttonGroup}
@@ -171,6 +167,7 @@ const GlobalViewComponent = props => {
           <span className={styles.spacer} />
         </div>
       </ModalPngDownload>
+      <ModalMetadata />
       <NdcContentGlobalEmissionsProvider />
     </>
   );

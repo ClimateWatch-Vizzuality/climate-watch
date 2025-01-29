@@ -5,9 +5,12 @@
   background-color: $gray3;
   padding-top: $gutter-padding;
   padding-bottom: $gutter-padding;
+  margin-top: -$gutter-padding;
 }
 
 .summary {
+  padding-top: $gutter-padding;
+
   .summaryHeader {
     display: flex;
     flex-wrap: wrap;

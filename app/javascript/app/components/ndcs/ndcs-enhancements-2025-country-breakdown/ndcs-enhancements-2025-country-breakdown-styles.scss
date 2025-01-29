@@ -2,7 +2,8 @@
 
 .wrapper {
   position: relative;
-  margin-bottom: 40px;
+  padding-top: 40px;
+  padding-bottom: 40px;
 }
 
 .summary {
@@ -10,19 +11,7 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    margin-bottom: 34px;
     gap: 20px;
-  }
-
-  .summaryDescription {
-    a {
-      color: $theme-color-medium;
-
-      &:visited,
-      &:link {
-        color: $theme-color-medium;
-      }
-    }
   }
 
   h2 {
@@ -35,7 +24,7 @@
 
 .switchWrapper {
   display: flex;
-  margin: 20px 0;
+  margin: 20px 0 10px;
   justify-content: center;
 }
 
