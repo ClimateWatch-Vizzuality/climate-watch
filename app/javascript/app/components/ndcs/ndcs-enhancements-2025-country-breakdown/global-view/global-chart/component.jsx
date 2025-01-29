@@ -67,8 +67,8 @@ const GlobalChartComponent = ({ type = 'chart', data }) => {
     // Min and max values to build our Y domain for D3. We'll add some padding
     // so that the bars don't display with the edges on the SVG edges.
     const yDomain = [
-      allYValues[0] - 10,
-      allYValues[allYValues?.length - 1] + 5
+      10, // Should be allYValues[0] - 10, but we're capping it for display purposes
+      allYValues[allYValues?.length - 1] + 7
     ];
 
     return {
@@ -106,7 +106,7 @@ const GlobalChartComponent = ({ type = 'chart', data }) => {
     // Chart dimensions
     const dimensions = {
       width: chartContainerWidth,
-      height: 480
+      height: 540
     };
 
     // Scales
@@ -131,6 +131,7 @@ const GlobalChartComponent = ({ type = 'chart', data }) => {
       chartId: `#iconic-chart-global-${type}`,
       margins: SETTINGS.chartMargins,
       dimensions: dimensions?.width && dimensions,
+      domains: chartDomains?.x && chartDomains?.y && chartDomains,
       axis: {
         x: { ticks: chartTicks.x },
         y: { ticks: chartTicks.y }

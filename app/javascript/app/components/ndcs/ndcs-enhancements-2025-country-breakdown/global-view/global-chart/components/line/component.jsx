@@ -2,6 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const typeStyles = {
+  'axis-x': {
+    stroke: '#D3D3D3',
+    strokeDasharray: '4,4',
+    strokeWidth: '0.5'
+  },
+  'axis-y': {
+    stroke: '#CCCCCC',
+    strokeWidth: '0.5'
+  },
   historical: {
     fill: 'none',
     strokeWidth: '3'
@@ -18,7 +27,12 @@ const typeStyles = {
   }
 };
 
-const LineComponent = ({ type = 'historical', color = '#999C9F', path, margins }) => {
+const LineComponent = ({
+  type = 'historical',
+  color = '#999C9F',
+  path,
+  margins
+}) => {
   if (!path) return null;
 
   return (
@@ -33,7 +47,8 @@ const LineComponent = ({ type = 'historical', color = '#999C9F', path, margins }
 };
 
 LineComponent.propTypes = {
-  type: 'historical' || 'projected' || 'connecting-line',
+  type:
+    'axis-x' || 'axis-y' || 'historical' || 'projected' || 'connecting-line',
   color: PropTypes.string,
   path: PropTypes.any.isRequired,
   margins: PropTypes.shape({
