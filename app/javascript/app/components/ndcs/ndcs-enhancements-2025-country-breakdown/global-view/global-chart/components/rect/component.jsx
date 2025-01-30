@@ -28,6 +28,7 @@ const typeStyles = {
 
 const RectComponent = ({
   type = 'historical',
+  tooltipId,
   margins,
   dimensions,
   position,
@@ -45,6 +46,8 @@ const RectComponent = ({
       y={position?.y}
       {...typeStyles[type]}
       stroke={stroke}
+      data-tip
+      data-for={tooltipId}
     />
   );
 };
@@ -57,6 +60,7 @@ RectComponent.propTypes = {
     'gap-upper-limit' ||
     'gap-lower-limit' ||
     'offset-bar',
+  tooltipId: PropTypes.string,
   stroke: PropTypes.string,
   dimensions: PropTypes.shape({
     width: PropTypes.number.isRequired,
