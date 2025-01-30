@@ -2,6 +2,7 @@ import React from 'react';
 
 import { chartConfigPropTypes } from '../../index';
 import { ChangeBarComponent } from '../components';
+import { TOOLTIPS } from '../constants';
 
 const BASE_REDUCTIONS_YEAR = 2030;
 const ADDITIONAL_REDUCTIONS_YEAR = 2035;
@@ -83,6 +84,13 @@ const ReductionsComponent = ({ chartConfig = {} }) => {
         displayArrow={false}
         connectingLines={baseReductions?.connectingLines}
         displayLimitCircles
+        tooltipId={TOOLTIPS.reductions.emissionsReductions.id}
+        upperLimitTooltipId={
+          TOOLTIPS.reductions.emissionsReductions.markers.upperLimit.id
+        }
+        lowerLimitTooltipId={
+          TOOLTIPS.reductions.emissionsReductions.markers.lowerLimit.id
+        }
       />
       {/* Additional Reductions */}
       <ChangeBarComponent
@@ -98,6 +106,7 @@ const ReductionsComponent = ({ chartConfig = {} }) => {
         color={additionalReductions?.color}
         connectingLines={additionalReductions?.connectingLines}
         displayValueInCircle
+        tooltipId={TOOLTIPS.reductions.additionalReductions.id}
       />
     </>
   );

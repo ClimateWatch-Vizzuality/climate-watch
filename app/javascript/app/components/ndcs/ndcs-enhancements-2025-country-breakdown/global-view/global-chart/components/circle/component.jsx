@@ -30,7 +30,7 @@ const typeStyles = {
   }
 };
 
-const CircleComponent = ({ type = 'historical', position, margins }) => {
+const CircleComponent = ({ type = 'historical', position, margins, tooltipId }) => {
   if (!position) return null;
 
   return (
@@ -39,12 +39,15 @@ const CircleComponent = ({ type = 'historical', position, margins }) => {
       cx={position?.x}
       cy={position?.y}
       {...typeStyles[type]}
+      data-tip
+      data-for={tooltipId}
     />
   );
 };
 
 CircleComponent.propTypes = {
   type: 'limit-marker' || 'historical' || 'upper-target' || 'lower-target' || 'additional-emissions-reductions',
+  tooltipId: PropTypes.string,
   position: PropTypes.shape({
     x: PropTypes.number,
     y: PropTypes.number
