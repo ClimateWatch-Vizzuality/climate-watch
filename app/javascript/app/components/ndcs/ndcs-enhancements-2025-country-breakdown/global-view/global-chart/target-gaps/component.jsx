@@ -2,6 +2,7 @@ import React from 'react';
 
 import { chartConfigPropTypes } from '../../index';
 import { ChangeBarComponent } from '../components';
+import { TOOLTIPS } from '../constants';
 
 const YEAR = 2035;
 
@@ -89,6 +90,7 @@ const TargetGapsComponent = ({ chartConfig = {} }) => {
         connectingLines={upperLimit?.connectingLines}
         offset={upperLimit?.offset}
         displayOffsetBars
+        tooltipId={TOOLTIPS.targetGaps.upperLimit.id}
       />
       {/* Lower limit (1.5C) */}
       <ChangeBarComponent
@@ -104,6 +106,7 @@ const TargetGapsComponent = ({ chartConfig = {} }) => {
         connectingLines={lowerLimit?.connectingLines}
         offset={upperLimit?.offset}
         displayOffsetBars
+        tooltipId={TOOLTIPS.targetGaps.lowerLimit.id}
       />
     </>
   );

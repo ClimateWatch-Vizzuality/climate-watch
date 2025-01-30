@@ -22,7 +22,7 @@ const typeStyles = {
   }
 };
 
-const TextComponent = ({ type = 'value', value, color, dimensions, position, margins }) => {
+const TextComponent = ({ type = 'value', value, color, dimensions, position, margins, tooltipId }) => {
   if (!value || !margins || !position || !dimensions) return null;
 
   return (
@@ -36,6 +36,8 @@ const TextComponent = ({ type = 'value', value, color, dimensions, position, mar
       transform={`translate(${margins.left},${margins.top})`}
       fill={color}
       {...typeStyles[type]}
+      data-tip
+      data-for={tooltipId}
     >
       {value}
     </text>
@@ -44,6 +46,7 @@ const TextComponent = ({ type = 'value', value, color, dimensions, position, mar
 
 TextComponent.propTypes = {
   type: 'value' || 'unit',
+  tooltipId: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
   color: PropTypes.string,
   dimensions: PropTypes.shape({

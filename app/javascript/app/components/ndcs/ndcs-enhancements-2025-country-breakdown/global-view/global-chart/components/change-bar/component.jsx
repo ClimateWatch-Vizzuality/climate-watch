@@ -30,7 +30,10 @@ const ChangeBarComponent = ({
   displayArrow = true,
   displayValueInCircle = false,
   displayOffsetBars = false,
-  valueFormat = ',.1f'
+  valueFormat = ',.1f',
+  tooltipId,
+  upperLimitTooltipId,
+  lowerLimitTooltipId
 }) => {
   if (!position) return null;
 
@@ -63,8 +66,8 @@ const ChangeBarComponent = ({
   // Calculating connecting lines to a origin
   const connectingLinePaths = {
     upper: line()
-      .x(d => scales.x(d.x))
-      .y(d => scales.y(d.y))([
+      .x((d) => scales.x(d.x))
+      .y((d) => scales.y(d.y))([
         { x: 2035, y: connectingLines?.upper?.value },
         {
           x: 2035 + connectingLines?.lower?.offset,
@@ -72,8 +75,8 @@ const ChangeBarComponent = ({
         }
       ]),
     lower: line()
-      .x(d => scales.x(d.x))
-      .y(d => scales.y(d.y))([
+      .x((d) => scales.x(d.x))
+      .y((d) => scales.y(d.y))([
         { x: 2035, y: connectingLines?.lower?.value },
         {
           x: 2035 + connectingLines?.lower?.offset,
@@ -83,82 +86,178 @@ const ChangeBarComponent = ({
   };
 
   return (
-    <g transform={`translate(${-CHANGE_BAR_WIDTH / 2}, 0)`}>
-      {/* Base bar display */}
-      <RectComponent
-        type={type}
-        margins={margins}
-        dimensions={dimensions}
-        position={position}
-        size={{
-          width: CHANGE_BAR_WIDTH,
-          height: displayArrow ? height - CHANGE_BAR_ARROW_HEIGHT : height
-        }}
-      />
-
-      {/* Light offset bar displayed at the top */}
-      {displayOffsetBars && (
+    <>
+      <g transform={`translate(${-CHANGE_BAR_WIDTH / 2}, 0)`}>
+        {/* Base bar display */}
         <RectComponent
-          type="offset-bar"
+          type={type}
           margins={margins}
           dimensions={dimensions}
-          position={{
-            x: position.x,
-            y: position.y - offset
-          }}
+          position={position}
           size={{
             width: CHANGE_BAR_WIDTH,
-            height: offset
+            height: displayArrow ? height - CHANGE_BAR_ARROW_HEIGHT : height
           }}
-          stroke={color}
+          tooltipId={tooltipId}
         />
-      )}
 
-      {/* Lines connecting from bar ends to other points in the chart */}
-      {connectingLines && (
-        <g transform={`translate(${CHANGE_BAR_WIDTH / 2}, 0)`}>
-          {connectingLines?.upper && (
-            <LineComponent
-              type="connecting-line"
-              color={color}
+        {/* Light offset bar displayed at the top */}
+        {displayOffsetBars && (
+          <RectComponent
+            type="offset-bar"
+            margins={margins}
+            dimensions={dimensions}
+            position={{
+              x: position.x,
+              y: position.y - offset
+            }}
+            size={{
+              width: CHANGE_BAR_WIDTH,
+              height: offset
+            }}
+            stroke={color}
+          />
+        )}
+
+        {/* Lines connecting from bar ends to other points in the chart */}
+        {connectingLines && (
+          <g transform={`translate(${CHANGE_BAR_WIDTH / 2}, 0)`}>
+            {connectingLines?.upper && (
+              <LineComponent
+                type="connecting-line"
+                color={color}
+                margins={margins}
+                path={connectingLinePaths?.upper}
+              />
+            )}
+            {connectingLines?.lower && (
+              <LineComponent
+                type="connecting-line"
+                color={color}
+                margins={margins}
+                path={connectingLinePaths?.lower}
+              />
+            )}
+          </g>
+        )}
+
+        {/* Arrow at the bottom of the bar */}
+        {displayArrow && (
+          <PolygonComponent
+            margins={margins}
+            points={arrowPoints}
+            color={color}
+            tooltipId={tooltipId}
+          />
+        )}
+
+        {/* Circle above the component with the value */}
+        {value && displayValueInCircle && (
+          <>
+            <CircleComponent
+              type="emission-additional-reductions"
               margins={margins}
-              path={connectingLinePaths?.upper}
+              position={{
+                x: position.x + CHANGE_BAR_WIDTH / 2,
+                y: position.y - CHANGE_CIRCLE_VALUE_OFFSET
+              }}
+              tooltipId={tooltipId}
             />
-          )}
-          {connectingLines?.lower && (
-            <LineComponent
-              type="connecting-line"
-              color={color}
+            <TextComponent
+              type="value"
+              value={formattedValue}
               margins={margins}
-              path={connectingLinePaths?.lower}
+              dimensions={{
+                width: CHANGE_BAR_WIDTH,
+                height
+              }}
+              position={{
+                x: position.x + CHANGE_BAR_WIDTH / 2,
+                y: position.y - CHANGE_CIRCLE_VALUE_OFFSET - 4
+              }}
+              tooltipId={tooltipId}
             />
-          )}
-        </g>
-      )}
+            <TextComponent
+              type="unit"
+              value="GtCO2e"
+              margins={margins}
+              dimensions={{
+                width: CHANGE_BAR_WIDTH,
+                height
+              }}
+              position={{
+                x: position.x + CHANGE_BAR_WIDTH / 2,
+                y: position.y - CHANGE_CIRCLE_VALUE_OFFSET + 18
+              }}
+              tooltipId={tooltipId}
+            />
+          </>
+        )}
 
-      {/* Arrow at the bottom of the bar */}
-      {displayArrow && (
-        <PolygonComponent
-          margins={margins}
-          points={arrowPoints}
-          color={color}
-        />
-      )}
+        {/* Value displayed inside the bar */}
+        {value && !displayValueInCircle && (
+          <>
+            <TextComponent
+              type="value"
+              value={formattedValue}
+              margins={margins}
+              dimensions={{
+                width: CHANGE_BAR_WIDTH,
+                height
+              }}
+              position={{
+                x: position.x + CHANGE_BAR_WIDTH / 2,
+                y: -4 + position.y + height / 2
+              }}
+              tooltipId={tooltipId}
+            />
+            <TextComponent
+              type="unit"
+              value="GtCO2e"
+              margins={margins}
+              dimensions={{
+                width: CHANGE_BAR_WIDTH,
+                height
+              }}
+              position={{
+                x: position.x + CHANGE_BAR_WIDTH / 2,
+                y: 14 + position.y + height / 2
+              }}
+              tooltipId={tooltipId}
+            />
+          </>
+        )}
 
-      {/* Circle above the component with the value */}
-      {value && displayValueInCircle && (
-        <>
-          <CircleComponent
-            type="emission-additional-reductions"
-            margins={margins}
-            position={{
-              x: position.x + CHANGE_BAR_WIDTH / 2,
-              y: position.y - CHANGE_CIRCLE_VALUE_OFFSET
-            }}
-          />
+        {/* Point markers displayed above and below the bar */}
+        {displayLimitCircles && (
+          <>
+            <CircleComponent
+              type="limit-marker"
+              margins={margins}
+              position={{
+                x: position.x + CHANGE_BAR_WIDTH / 2,
+                y: position.y
+              }}
+              tooltipId={upperLimitTooltipId}
+            />
+            <CircleComponent
+              type="limit-marker"
+              margins={margins}
+              position={{
+                x: position.x + CHANGE_BAR_WIDTH / 2,
+                y: position.y + height
+              }}
+              tooltipId={lowerLimitTooltipId}
+            />
+          </>
+        )}
+
+        {/* Legends shown below the bar */}
+        {legendItems?.map((text, idx) => (
           <TextComponent
-            type="value"
-            value={formattedValue}
+            type="legend"
+            color={color}
+            value={text}
             margins={margins}
             dimensions={{
               width: CHANGE_BAR_WIDTH,
@@ -166,97 +265,12 @@ const ChangeBarComponent = ({
             }}
             position={{
               x: position.x + CHANGE_BAR_WIDTH / 2,
-              y: position.y - CHANGE_CIRCLE_VALUE_OFFSET - 4
+              y: 20 + position.y + height + idx * 16
             }}
           />
-          <TextComponent
-            type="unit"
-            value="GtCO2e"
-            margins={margins}
-            dimensions={{
-              width: CHANGE_BAR_WIDTH,
-              height
-            }}
-            position={{
-              x: position.x + CHANGE_BAR_WIDTH / 2,
-              y: position.y - CHANGE_CIRCLE_VALUE_OFFSET + 18
-            }}
-          />
-        </>
-      )}
-
-      {/* Value displayed inside the bar */}
-      {value && !displayValueInCircle && (
-        <>
-          <TextComponent
-            type="value"
-            value={formattedValue}
-            margins={margins}
-            dimensions={{
-              width: CHANGE_BAR_WIDTH,
-              height
-            }}
-            position={{
-              x: position.x + CHANGE_BAR_WIDTH / 2,
-              y: -4 + position.y + height / 2
-            }}
-          />
-          <TextComponent
-            type="unit"
-            value="GtCO2e"
-            margins={margins}
-            dimensions={{
-              width: CHANGE_BAR_WIDTH,
-              height
-            }}
-            position={{
-              x: position.x + CHANGE_BAR_WIDTH / 2,
-              y: 14 + position.y + height / 2
-            }}
-          />
-        </>
-      )}
-
-      {/* Point markers displayed above and below the bar */}
-      {displayLimitCircles && (
-        <>
-          <CircleComponent
-            type="limit-marker"
-            margins={margins}
-            position={{
-              x: position.x + CHANGE_BAR_WIDTH / 2,
-              y: position.y
-            }}
-          />
-          <CircleComponent
-            type="limit-marker"
-            margins={margins}
-            position={{
-              x: position.x + CHANGE_BAR_WIDTH / 2,
-              y: position.y + height
-            }}
-          />
-        </>
-      )}
-
-      {/* Legends shown below the bar */}
-      {legendItems?.map((text, idx) => (
-        <TextComponent
-          type="legend"
-          color={color}
-          value={text}
-          margins={margins}
-          dimensions={{
-            width: CHANGE_BAR_WIDTH,
-            height
-          }}
-          position={{
-            x: position.x + CHANGE_BAR_WIDTH / 2,
-            y: 20 + position.y + height + idx * 16
-          }}
-        />
-      ))}
-    </g>
+        ))}
+      </g>
+    </>
   );
 };
 
@@ -268,6 +282,9 @@ ChangeBarComponent.propTypes = {
     'type-lower-limit',
   value: PropTypes.string,
   valueFormat: PropTypes.string,
+  tooltipId: PropTypes.string,
+  upperLimitTooltipId: PropTypes.string,
+  lowerLimitTooltipId: PropTypes.string,
   legend: PropTypes.string,
   color: PropTypes.string,
   offset: PropTypes.number,

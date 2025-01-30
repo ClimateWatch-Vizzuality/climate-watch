@@ -31,7 +31,8 @@ const LineComponent = ({
   type = 'historical',
   color = '#999C9F',
   path,
-  margins
+  margins,
+  tooltipId
 }) => {
   if (!path) return null;
 
@@ -42,6 +43,8 @@ const LineComponent = ({
       d={path}
       {...typeStyles[type]}
       stroke={color}
+      data-tip
+      data-for={tooltipId}
     />
   );
 };
@@ -49,6 +52,7 @@ const LineComponent = ({
 LineComponent.propTypes = {
   type:
     'axis-x' || 'axis-y' || 'historical' || 'projected' || 'connecting-line',
+  tooltipId: PropTypes.string,
   color: PropTypes.string,
   path: PropTypes.any.isRequired,
   margins: PropTypes.shape({
