@@ -9,6 +9,7 @@ import ProjectedDataComponent from './projected-data';
 import TargetsComponent from './targets';
 import ReductionsComponent from './reductions';
 import TargetGapsComponent from './target-gaps';
+import TooltipsComponent from './tooltips';
 
 import styles from './styles.scss';
 
@@ -26,8 +27,6 @@ const GlobalChartComponent = ({ type = 'chart', data }) => {
     reductions: reductionsData,
     targetGaps: targetGapsData
   } = data || {};
-
-  // eslint-disable-next-line no-console
 
   useEffect(() => {
     const onResize = () => {
@@ -155,6 +154,9 @@ const GlobalChartComponent = ({ type = 'chart', data }) => {
 
   return (
     <div className={styles.chartContainer}>
+      {/* <div data-tip data-for="test-tooltip-id">
+        TEST
+      </div> */}
       <div ref={chartContainer} className={styles.chartContainerGlobal}>
         <svg
           id={`${chartConfig?.chartId?.substring(1)}`}
@@ -172,6 +174,7 @@ const GlobalChartComponent = ({ type = 'chart', data }) => {
             </>
           )}
         </svg>
+        <TooltipsComponent data={data} />
       </div>
     </div>
   );

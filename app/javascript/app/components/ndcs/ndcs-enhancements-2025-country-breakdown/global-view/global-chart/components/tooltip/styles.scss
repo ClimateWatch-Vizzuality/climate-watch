@@ -1,0 +1,17 @@
+// .globalChartTooltipTheme {}
+
+.globalChartTooltip{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  max-width: 180px; // 170px will match designs for remaining gaps
+}
+
+.globalChartTooltipLabel {
+  text-align: center;
+}
+
+.globalChartTooltipValue {
+  text-align: center;
+}

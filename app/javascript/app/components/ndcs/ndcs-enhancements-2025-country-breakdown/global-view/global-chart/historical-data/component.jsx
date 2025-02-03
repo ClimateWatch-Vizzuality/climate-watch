@@ -3,6 +3,7 @@ import { line } from 'd3-shape';
 
 import { chartConfigPropTypes } from '../../index';
 import { RectComponent, LineComponent, CircleComponent } from '../components';
+import { TOOLTIPS } from '../constants';
 
 const HistoricalDataComponent = ({ chartConfig = {} }) => {
   const { data, scales, dimensions, margins } = chartConfig;
@@ -40,6 +41,7 @@ const HistoricalDataComponent = ({ chartConfig = {} }) => {
       <CircleComponent
         margins={margins}
         position={historicalEmissionsMarkerPosition}
+        tooltipId={TOOLTIPS.historical.marker.id}
       />
     </>
   );
