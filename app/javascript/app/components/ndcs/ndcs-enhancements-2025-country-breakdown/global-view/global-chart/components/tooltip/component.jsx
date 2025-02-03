@@ -17,16 +17,18 @@ const TooltipComponent = ({ id, label, value }) => {
     }
   });
   return (
-    <ReactTooltip id={id} className={styles.globalChartTooltipTheme}>
-      <div className={styles.globalChartTooltip}>
-        {label && (
-          <span className={styles.globalChartTooltipLabel}>{label}</span>
-        )}
-        {value && (
-          <span className={styles.globalChartTooltipValue}>{value}</span>
-        )}
-      </div>
-    </ReactTooltip>
+    <div className={styles.globalChartTooltipWrapper}>
+      <ReactTooltip id={id} className={styles.globalChartTooltipTheme}>
+        <div className={styles.globalChartTooltip}>
+          {label && (
+            <span className={styles.globalChartTooltipLabel}>{label}</span>
+          )}
+          {value && (
+            <span className={styles.globalChartTooltipValue}>{value}</span>
+          )}
+        </div>
+      </ReactTooltip>
+    </div>
   );
 };
 
