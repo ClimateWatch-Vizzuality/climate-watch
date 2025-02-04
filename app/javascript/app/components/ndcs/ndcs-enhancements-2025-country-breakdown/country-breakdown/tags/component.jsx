@@ -1,19 +1,12 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Tag } from 'cw-components';
 
+import { TAGS } from './constants';
 import styles from './styles.scss';
 
-const TagsComponent = () => {
-  const tags = [
-    {
-      label: '2030 Unconditional NDC Target',
-      color: 'gray'
-    },
-    {
-      label: '2035 Unconditional NDC Target',
-      color: 'blue'
-    }
-  ];
+const TagsComponent = ({ type }) => {
+  const tags = TAGS[type];
 
   return (
     <div className={styles.tagsContainer}>
@@ -22,6 +15,10 @@ const TagsComponent = () => {
       ))}
     </div>
   );
+};
+
+TagsComponent.propTypes = {
+  type: PropTypes.oneOf(['conditional', 'unconditional'])
 };
 
 export default TagsComponent;

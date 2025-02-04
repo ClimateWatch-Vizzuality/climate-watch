@@ -41,6 +41,10 @@
   gap: 14px;
   white-space: nowrap;
   margin-bottom: 1px;
+
+  > * {
+    max-width: 30%;
+  }
 }
 
 .conditionalSwitchContainer {

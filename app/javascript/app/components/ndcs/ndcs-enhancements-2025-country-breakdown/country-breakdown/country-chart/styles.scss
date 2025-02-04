@@ -1,0 +1,10 @@
+@import "~styles/layout.scss";
+
+.chartContainerCountry {
+  position: relative;
+  padding: 0 14px;
+
+  svg {
+    overflow: visible;
+  }
+}

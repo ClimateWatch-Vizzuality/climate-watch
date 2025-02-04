@@ -1,49 +1,127 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Dropdown, Switch } from 'cw-components';
 
 import NdcContentCountryEmissionsProvider from 'providers/ndc-content-country-emissions-provider';
 import ButtonGroup from 'components/button-group';
-
-import countryChartPlaceholder from 'assets/placeholders/iconic-country-placeholder.png';
+import GhgMultiselectDropdown from 'components/ghg-multiselect-dropdown';
 
 import styles from './styles.scss';
 import TagsComponent from './tags';
+import CountryChartComponent from './country-chart/component';
+import {
+  VIEW_OPTIONS,
+  LOCATION_GROUPS,
+  BASELINE_YEAR_OPTIONS,
+  CONDITIONAL_SWITCH_OPTIONS
+} from './constants';
 
-const viewDropdownOptions = [
-  { label: 'Baseline Year Comparison', value: 'baseline-year-comparison' },
-  { label: '2030-2035 Target Comparison', value: '2030-2035-target-comparison' }
-];
-
-const locationDropdownOptions = [
-  { label: 'Top Emitters', value: 'top-emitters' }
-];
-
-const baselineYearDropdownOptions = [
-  { label: '1990 Historical Emissions', value: '1990' },
-  { label: '2005 Historical Emissions', value: '1990' },
-  { label: '2018 Historical Emissions', value: '1990' }
-];
-
-const conditionalSwitchOptions = [
-  {
-    name: 'Unconditional NDCS',
-    value: 'unconditional'
-  },
-  {
-    name: 'Conditional NDCS',
-    value: 'conditional'
-  }
-];
-
-const CountryBreakdownComponent = () => {
-  const [view, setView] = useState(viewDropdownOptions[0]);
-  const [location, setLocation] = useState(locationDropdownOptions[0]);
-  const [baselineYear, setBaselineYear] = useState(
-    baselineYearDropdownOptions[0]
-  );
+const CountryBreakdownComponent = ({ data }) => {
+  const [view, setView] = useState(VIEW_OPTIONS[1]);
+  const [locations, setLocations] = useState(undefined);
+  const [baselineYear, setBaselineYear] = useState(BASELINE_YEAR_OPTIONS[0]);
   const [conditionalNDC, setConditionalNDC] = useState(
-    conditionalSwitchOptions[0]
+    CONDITIONAL_SWITCH_OPTIONS[0]
   );
+  const [chartData, setChartData] = useState(undefined);
+
+  // Locations ISOs (de-duplicated) from selection
+  const locationsISOs = useMemo(() => {
+    const selectedLocations = locations?.reduce((acc, entry) => {
+      const isos = entry?.groupId === 'regions' ? entry?.expandsTo : [entry?.iso];
+      return [...acc, ...isos];
+    }, []);
+    return [...new Set(selectedLocations)];
+  }, [locations]);
+
+  // Option to default to when no location is selected
+  // const defaultLocationOption = useMemo(
+  //   () =>
+  //     data?.locations?.find(
+  //       ({ iso }) => iso === 'G20' // WORLD | G20 | TOP | BRA (20) | CHN (29) | IDN (65)
+  //     ),
+  //   [data]
+  // );
+
+  const defaultLocationOptions = useMemo(
+    () =>
+      data?.locations?.filter(
+        // ({ iso }) => ['GBR', 'RUS', 'CHN', 'PRT', 'ESP', 'EUU']?.includes(iso)
+        ({ iso }) => ['TOP']?.includes(iso)
+      ),
+    [data]
+  );
+
+  // Set default location when data changes
+  useEffect(() => {
+    // setLocations(defaultLocationOption ? [defaultLocationOption] : []);
+    setLocations(defaultLocationOptions || []);
+  }, [data]);
+
+  // Parse data to a format the chart expects
+  useEffect(() => {
+    const baselineData =
+      Object.values(data?.emissions || {})
+        ?.filter((entry) => locationsISOs?.includes(entry?.location?.iso_code3))
+        ?.reduce((acc, { location: entryLocation, baseline: entryBaseline }) => {
+          const target = entryBaseline?.[baselineYear?.value]?.target;
+          return [
+            ...acc,
+            {
+              iso: entryLocation?.iso_code3,
+              name: entryLocation?.cait_name,
+              unconditional: {
+                2030: target?.['2030']?.unconditional?.percentage,
+                2035: target?.['2035']?.unconditional?.percentage
+              },
+              conditional: {
+                2030: target?.['2030']?.conditional?.percentage,
+                2035: target?.['2035']?.conditional?.percentage
+              }
+            }
+          ];
+        }, []);
+
+    const targetData = Object.values(data?.emissions || {})
+      ?.filter((entry) => locationsISOs?.includes(entry?.location?.iso_code3))
+      ?.reduce((acc, { location: entryLocation, target: entryTarget }) => [
+        ...acc,
+        {
+          iso: entryLocation?.iso_code3,
+          name: entryLocation?.cait_name,
+          unconditional: entryTarget?.unconditional,
+          conditional: entryTarget?.conditional
+        }
+      ], []);
+
+    setChartData({
+      baseline: baselineData,
+      target: targetData
+    });
+  }, [data, view, locations, baselineYear, conditionalNDC]);
+
+  // Handle location change - when no location selected, we'll pre-selected the default one
+  const handleLocationSelectionChange = (entries) => {
+    if (!entries?.length) {
+      // setLocations(defaultLocationOption ? [defaultLocationOption] : []);
+      setLocations(defaultLocationOptions || []);
+      return;
+    }
+    setLocations(entries);
+  };
+
+  // Chart settings
+  const chartSettings = useMemo(
+    () => ({
+      view,
+      locations: locationsISOs,
+      baselineYear,
+      conditionalNDC
+    }),
+    [view, locations, baselineYear, conditionalNDC]
+  );
+
+  const { locations: locationsOptions } = data;
+  const displayBaselineYearOptions = view?.value === 'baseline';
 
   return (
     <>
@@ -86,28 +164,30 @@ const CountryBreakdownComponent = () => {
             <Dropdown
               label="View"
               value={view}
-              options={viewDropdownOptions}
+              options={VIEW_OPTIONS}
               onValueChange={setView}
               hideResetButton
             />
-            <Dropdown
-              label="Location"
-              value={location}
-              options={locationDropdownOptions}
-              onValueChange={setLocation}
-              hideResetButton
+            <GhgMultiselectDropdown
+              label={'Location'}
+              values={locations || []}
+              options={locationsOptions || []}
+              groups={LOCATION_GROUPS}
+              onSelectionChange={handleLocationSelectionChange}
             />
-            <Dropdown
-              label="Baseline Year"
-              value={baselineYear}
-              options={baselineYearDropdownOptions}
-              onValueChange={setBaselineYear}
-              hideResetButton
-            />
+            {displayBaselineYearOptions && (
+              <Dropdown
+                label="Baseline Year"
+                value={baselineYear}
+                options={BASELINE_YEAR_OPTIONS}
+                onValueChange={setBaselineYear}
+                hideResetButton
+              />
+            )}
           </div>
           <div className={styles.conditionalSwitchContainer}>
             <Switch
-              options={conditionalSwitchOptions}
+              options={CONDITIONAL_SWITCH_OPTIONS}
               selectedOption={conditionalNDC.value}
               onClick={setConditionalNDC}
               theme={{
@@ -118,17 +198,9 @@ const CountryBreakdownComponent = () => {
           </div>
         </div>
 
-        <div className={styles.chartContainer}>
-          <div>
-            <div>
-              <img
-                className={styles.chartPlaceholderImg}
-                src={countryChartPlaceholder}
-              />
-            </div>
-          </div>
-        </div>
-        <TagsComponent />
+        <CountryChartComponent data={chartData} settings={chartSettings} />
+
+        <TagsComponent type={conditionalNDC.value} />
         {/* <div className={styles.lastUpdated}>Last updated on June 12,2024</div> */}
         <div className={styles.footnote}>
           * Percentage Change in Emissions relative to Baseline
@@ -139,6 +211,6 @@ const CountryBreakdownComponent = () => {
   );
 };
 
-CountryBreakdownComponent.PropTypes = {};
+CountryBreakdownComponent.propTypes = {};
 
 export default CountryBreakdownComponent;

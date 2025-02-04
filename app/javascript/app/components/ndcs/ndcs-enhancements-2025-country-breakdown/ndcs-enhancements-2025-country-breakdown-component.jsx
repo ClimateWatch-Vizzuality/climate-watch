@@ -3,6 +3,8 @@ import { Switch } from 'cw-components';
 
 import layout from 'styles/layout';
 
+import RegionsProvider from 'providers/regions-provider/regions-provider';
+import CountriesProvider from 'providers/countries-provider/countries-provider';
 import NdcContentGlobalEmissionsProvider from 'providers/ndc-content-global-emissions-provider';
 import NdcContentCountryEmissionsProvider from 'providers/ndc-content-country-emissions-provider';
 
@@ -24,7 +26,7 @@ const tabs = [
 ];
 
 const Ndc2025CountryBreakdownComponent = () => {
-  const [selectedTab, setSelectedTab] = useState(tabs[0]);
+  const [selectedTab, setSelectedTab] = useState(tabs[1]);
   const ViewComponent = selectedTab?.Component || Fragment;
 
   return (
@@ -52,6 +54,8 @@ const Ndc2025CountryBreakdownComponent = () => {
           </div>
         </div>
       </div>
+      <CountriesProvider />
+      <RegionsProvider />
       <NdcContentGlobalEmissionsProvider />
       <NdcContentCountryEmissionsProvider />
     </>
