@@ -90,6 +90,19 @@ object_contents = {
     Afghanistan,AFG,First NDC Submitted,11/3/24,https://unfccc.int/NDCREG
     Algeria,DZA,First NDC Submitted,12/3/24,https://unfccc.int/NDCREG
   END
+
+  "#{CW_FILES_PREFIX}indc/NDC_global_emissions.csv" => <<~END,
+    year,Historical emissions,Current policies scenario,2020 NDCs conditional,2020 NDCs unconditional,2025 NDCs conditional,2025 NDCs unconditional,2C,1.5C
+    2030,100,56,1,48,3,4,32,24
+    2031,200,56,1,2,45,47,28,17
+  END
+
+  "#{CW_FILES_PREFIX}indc/NDC_country_emissions.csv" => <<~END
+    iso_country,historical_cw1990,historical_cw2005,historical_cw2018,targets_nfgs_uc2030,targets_nfgs_c2030,targets_nfgs_uc2035,targets_nfgs_c2035,baseline1990_2030_uc,baseline1990_2030_uc_percentage,baseline1990_2035_uc,baseline1990_2035_uc_percentage,baseline1990_2035_c,baseline1990_2035_c_percentage,baseline2005_2030_uc,baseline2005_2030_uc_percentage,baseline2005_2035_uc,baseline2005_2035_uc_percentage,baseline2005_2035_c,baseline2005_2035_c_percentage,baseline2018_2030_uc,baseline2018_2030_uc_percentage,baseline2018_2035_uc,baseline2018_2035_uc_percentage,baseline2018_2035_c,baseline2018_2035_c_percentage,absolute_emissions_comparison_c,absolute_emissions_comparison_uc
+    AFG,9.238795,16.75753,33.25262,44.9026090409889,45.784521230399,44.9026090409889,45.784521230399,-35.6638140409889,3.8602235509056,-35.6638140409889,3.8602235509056,-36.545726230399,3.95568104178077,-28.1450790409889,1.67954818168244,-28.1450790409889,1.67954818168244,-29.026991230399,1.732175996725,-11.6499890409889,0.350348003886278,-11.6499890409889,0.350348003886278,-12.531901230399,0.376869588934617,28,13
+    DZA,70.19451,122.4017,125.9159,116.569569049311,116.569569049311,116.569569049311,116.569569049311,-46.3750590493106,0.660665044165286,-46.3750590493106,0.660665044165286,-46.3750590493106,0.660665044165286,5.83213095068942,-0.047647466911729,5.83213095068942,-0.047647466911729,5.83213095068942,-0.047647466911729,9.34633095068941,-0.074226773192976,9.34633095068941,-0.074226773192976,9.34633095068941,-0.074226773192976,-6,-9
+    AND,11.3716,7.894226,9.426838,11.982068,11.982068,11.982068,,-0.610467999999999,,-0.610467999999999,0.053683562559358,-0.610467999999999,0.053683562559358,-4.087842,0.517826826847876,-4.087842,0.517826826847876,-4.087842,0.517826826847876,-2.55523,0.271059076224711,-2.55523,0.271059076224711,-2.55523,0.271059076224711,4,3
+  END
 }
 
 describe ImportIndc do
@@ -155,6 +168,124 @@ describe ImportIndc do
 
   it 'Creates new INDC timeline records' do
     expect { subject }.to change { Indc::Timeline.count }.by(2)
+  end
+
+  it 'Creates new INDC global emissions records' do
+    subject
+    result = Indc::GlobalEmission.order(:year)
+    expect(result.count).to eq(2)
+    expect(result[0].year).to eq(2030)
+    expect(result[0].historical_emission).to eq(100)
+    expect(result[0].current_policies_scenario).to eq(56)
+    expect(result[0].ndcs_conditional_2020).to eq(1)
+    expect(result[0].ndcs_unconditional_2020).to eq(48)
+    expect(result[0].ndcs_conditional_2025).to eq(3)
+    expect(result[0].ndcs_unconditional_2025).to eq(4)
+    expect(result[0].target_2c).to eq(32)
+    expect(result[0].target_1_5c).to eq(24)
+
+    expect(result[1].year).to eq(2031)
+    expect(result[1].historical_emission).to eq(200)
+    expect(result[1].current_policies_scenario).to eq(56)
+    expect(result[1].ndcs_conditional_2020).to eq(1)
+    expect(result[1].ndcs_unconditional_2020).to eq(2)
+    expect(result[1].ndcs_conditional_2025).to eq(45)
+    expect(result[1].ndcs_unconditional_2025).to eq(47)
+    expect(result[1].target_2c).to eq(28)
+    expect(result[1].target_1_5c).to eq(17)
+  end
+
+  it 'Creates new INDC country emissions records' do
+    subject
+    result = Indc::CountryEmission.order(:id)
+    expect(result.count).to eq(3)
+
+    expect(result[0].location.iso_code3).to eq('AFG')
+    expect(result[0].historical_cw1990).to eq(9.238795)
+    expect(result[0].historical_cw2005).to eq(16.75753)
+    expect(result[0].historical_cw2018).to eq(33.25262)
+    expect(result[0].targets_nfgs_uc2030).to eq(44.9026090409889)
+    expect(result[0].targets_nfgs_c2030).to eq(45.784521230399)
+    expect(result[0].targets_nfgs_uc2035).to eq(44.9026090409889)
+    expect(result[0].targets_nfgs_c2035).to eq(45.784521230399)
+    expect(result[0].baseline1990_2030_uc).to eq(-35.6638140409889)
+    expect(result[0].baseline1990_2030_uc_percentage).to eq(3.8602235509056)
+    expect(result[0].baseline1990_2035_uc).to eq(-35.6638140409889)
+    expect(result[0].baseline1990_2035_uc_percentage).to eq(3.8602235509056)
+    expect(result[0].baseline1990_2035_c).to eq(-36.545726230399)
+    expect(result[0].baseline1990_2035_c_percentage).to eq(3.95568104178077)
+    expect(result[0].baseline2005_2030_uc).to eq(-28.1450790409889)
+    expect(result[0].baseline2005_2030_uc_percentage).to eq(1.67954818168244)
+    expect(result[0].baseline2005_2035_uc).to eq(-28.1450790409889)
+    expect(result[0].baseline2005_2035_uc_percentage).to eq(1.67954818168244)
+    expect(result[0].baseline2005_2035_c).to eq(-29.026991230399)
+    expect(result[0].baseline2005_2035_c_percentage).to eq(1.732175996725)
+    expect(result[0].baseline2018_2030_uc).to eq(-11.6499890409889)
+    expect(result[0].baseline2018_2030_uc_percentage).to eq(0.350348003886278)
+    expect(result[0].baseline2018_2035_uc).to eq(-11.6499890409889)
+    expect(result[0].baseline2018_2035_uc_percentage).to eq(0.350348003886278)
+    expect(result[0].baseline2018_2035_c).to eq(-12.531901230399)
+    expect(result[0].baseline2018_2035_c_percentage).to eq(0.376869588934617)
+    expect(result[0].absolute_emissions_comparison_c).to eq(28)
+    expect(result[0].absolute_emissions_comparison_uc).to eq(13)
+
+    expect(result[1].location.iso_code3).to eq('DZA')
+    expect(result[1].historical_cw1990).to eq(70.19451)
+    expect(result[1].historical_cw2005).to eq(122.4017)
+    expect(result[1].historical_cw2018).to eq(125.9159)
+    expect(result[1].targets_nfgs_uc2030).to eq(116.569569049311)
+    expect(result[1].targets_nfgs_c2030).to eq(116.569569049311)
+    expect(result[1].targets_nfgs_uc2035).to eq(116.569569049311)
+    expect(result[1].targets_nfgs_c2035).to eq(116.569569049311)
+    expect(result[1].baseline1990_2030_uc).to eq(-46.3750590493106)
+    expect(result[1].baseline1990_2030_uc_percentage).to eq(0.660665044165286)
+    expect(result[1].baseline1990_2035_uc).to eq(-46.3750590493106)
+    expect(result[1].baseline1990_2035_uc_percentage).to eq(0.660665044165286)
+    expect(result[1].baseline1990_2035_c).to eq(-46.3750590493106)
+    expect(result[1].baseline1990_2035_c_percentage).to eq(0.660665044165286)
+    expect(result[1].baseline2005_2030_uc).to eq(5.83213095068942)
+    expect(result[1].baseline2005_2030_uc_percentage).to eq(-0.047647466911729)
+    expect(result[1].baseline2005_2035_uc).to eq(5.83213095068942)
+    expect(result[1].baseline2005_2035_uc_percentage).to eq(-0.047647466911729)
+    expect(result[1].baseline2005_2035_c).to eq(5.83213095068942)
+    expect(result[1].baseline2005_2035_c_percentage).to eq(-0.047647466911729)
+    expect(result[1].baseline2018_2030_uc).to eq(9.34633095068941)
+    expect(result[1].baseline2018_2030_uc_percentage).to eq(-0.074226773192976)
+    expect(result[1].baseline2018_2035_uc).to eq(9.34633095068941)
+    expect(result[1].baseline2018_2035_uc_percentage).to eq(-0.074226773192976)
+    expect(result[1].baseline2018_2035_c).to eq(9.34633095068941)
+    expect(result[1].baseline2018_2035_c_percentage).to eq(-0.074226773192976)
+    expect(result[1].absolute_emissions_comparison_c).to eq(-6)
+    expect(result[1].absolute_emissions_comparison_uc).to eq(-9)
+
+    expect(result[2].location.iso_code3).to eq('AND')
+    expect(result[2].historical_cw1990).to eq(11.3716)
+    expect(result[2].historical_cw2005).to eq(7.894226)
+    expect(result[2].historical_cw2018).to eq(9.426838)
+    expect(result[2].targets_nfgs_uc2030).to eq(11.982068)
+    expect(result[2].targets_nfgs_c2030).to eq(11.982068)
+    expect(result[2].targets_nfgs_uc2035).to eq(11.982068)
+    expect(result[2].targets_nfgs_c2035).to be_nil
+    expect(result[2].baseline1990_2030_uc).to eq(-0.610467999999999)
+    expect(result[2].baseline1990_2030_uc_percentage).to be_nil
+    expect(result[2].baseline1990_2035_uc).to eq(-0.610467999999999)
+    expect(result[2].baseline1990_2035_uc_percentage).to eq(0.053683562559358)
+    expect(result[2].baseline1990_2035_c).to eq(-0.610467999999999)
+    expect(result[2].baseline1990_2035_c_percentage).to eq(0.053683562559358)
+    expect(result[2].baseline2005_2030_uc).to eq(-4.087842)
+    expect(result[2].baseline2005_2030_uc_percentage).to eq(0.517826826847876)
+    expect(result[2].baseline2005_2035_uc).to eq(-4.087842)
+    expect(result[2].baseline2005_2035_uc_percentage).to eq(0.517826826847876)
+    expect(result[2].baseline2005_2035_c).to eq(-4.087842)
+    expect(result[2].baseline2005_2035_c_percentage).to eq(0.517826826847876)
+    expect(result[2].baseline2018_2030_uc).to eq(-2.55523)
+    expect(result[2].baseline2018_2030_uc_percentage).to eq(0.271059076224711)
+    expect(result[2].baseline2018_2035_uc).to eq(-2.55523)
+    expect(result[2].baseline2018_2035_uc_percentage).to eq(0.271059076224711)
+    expect(result[2].baseline2018_2035_c).to eq(-2.55523)
+    expect(result[2].baseline2018_2035_c_percentage).to eq(0.271059076224711)
+    expect(result[2].absolute_emissions_comparison_c).to eq(4)
+    expect(result[2].absolute_emissions_comparison_uc).to eq(3)
   end
 
   it 'Creates new adaptation actions' do

@@ -1,0 +1,44 @@
+@import "~styles/layout.scss";
+
+.wrapper {
+  display: block;
+  position: relative;
+  width: 100%;
+}
+
+.summaryHeader {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin: 10px 0;
+  gap: 20px;
+}
+
+.summaryDescription {
+  display: flex;
+  align-items: center;
+}
+
+.buttonGroup {
+  width: 152px;
+}
+
+.chartOptionsContainer {
+  display: flex;
+  justify-content: end;
+  margin: 24px 0;
+}
+
+.tagsContainer {
+  margin-left: 46px;
+}
+
+.spacer {
+  display: block;
+  height: 20px;
+}
+
+.lastUpdated {
+  margin-left: 94px;
+  font-style: italic;
+}

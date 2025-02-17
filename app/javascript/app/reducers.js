@@ -48,6 +48,8 @@ import * as ndcCompareAllTargetsProvider from 'providers/ndc-compare-all-targets
 import * as customCompareAccordionProvider from 'providers/custom-compare-accordion-provider';
 import * as keyVisualizationsProvider from 'providers/key-visualizations-provider';
 import * as metadataProvider from 'providers/metadata-provider';
+import * as ndcContentGlobalEmissionsProvider from 'providers/ndc-content-global-emissions-provider';
+import * as ndcContentCountryEmissionsProvider from 'providers/ndc-content-country-emissions-provider';
 
 const providersReducers = {
   ndcs: handleActions(NDCSProvider),
@@ -97,6 +99,8 @@ const providersReducers = {
   customCompareAccordion: handleActions(customCompareAccordionProvider),
   keyVisualizations: handleActions(keyVisualizationsProvider),
   metadata: handleActions(metadataProvider),
+  ndcContentGlobalEmissions: handleActions(ndcContentGlobalEmissionsProvider),
+  ndcContentCountryEmissions: handleActions(ndcContentCountryEmissionsProvider)
 };
 
 // Pages
