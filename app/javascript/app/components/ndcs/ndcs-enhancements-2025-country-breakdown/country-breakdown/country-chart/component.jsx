@@ -5,8 +5,13 @@ import { scaleLinear, scaleBand } from 'd3-scale';
 
 import AxisGridComponent from './axis-grid/component';
 
-import { SETTINGS, TARGET_YEARS, CHART_COMPONENTS } from '../constants';
-import styles from '../styles';
+import {
+  SETTINGS,
+  TARGET_YEARS,
+  CHART_COMPONENTS,
+  CHART_AXES
+} from '../constants';
+import styles from './styles';
 // import TooltipsComponent from './tooltips';
 
 const CountryChartComponent = ({
@@ -46,7 +51,7 @@ const CountryChartComponent = ({
     const parseBaselineData = () => {
       const baselineData = data?.baseline || [];
 
-      const sortEntries = (entries) =>
+      const sortEntries = entries =>
         entries?.sort((a, b) => {
           // TODO: How about countries with no 2035 target?
           //       Do they go to the end or do we order by 2020 target?
@@ -91,7 +96,7 @@ const CountryChartComponent = ({
         [
           ...countriesToDisplay,
           !!Object.values(otherCountriesEntry)?.length && otherCountriesEntry
-        ]?.filter((entry) => !!entry)
+        ]?.filter(entry => !!entry)
       );
 
       const yValues = sortedData
@@ -114,7 +119,7 @@ const CountryChartComponent = ({
           ],
           []
         )
-        ?.filter((entry) => !!entry)
+        ?.filter(entry => !!entry)
         ?.sort((a, b) => a - b);
 
       return {
@@ -127,7 +132,7 @@ const CountryChartComponent = ({
     const parseTargetData = () => {
       const targetData = data?.target || [];
 
-      const sortEntries = (entries) =>
+      const sortEntries = entries =>
         entries?.sort((a, b) => {
           // TODO: How about countries with no 2035 target?
           //       Do they go to the end or do we order by 2020 target?
@@ -154,15 +159,18 @@ const CountryChartComponent = ({
         [
           ...countriesToDisplay,
           !!Object.values(otherCountriesEntry)?.length && otherCountriesEntry
-        ]?.filter((entry) => !!entry)
+        ]?.filter(entry => !!entry)
       );
 
       const yValues = sortedData
         ?.reduce(
-          (allValuesAcc, allValuesEntry) => [...allValuesAcc, allValuesEntry?.[conditionalNDC?.value]],
+          (allValuesAcc, allValuesEntry) => [
+            ...allValuesAcc,
+            allValuesEntry?.[conditionalNDC?.value]
+          ],
           []
         )
-        ?.filter((entry) => !!entry)
+        ?.filter(entry => !!entry)
         ?.sort((a, b) => a - b);
 
       return {
@@ -288,7 +296,7 @@ const CountryChartComponent = ({
       domains: chartDomains?.x && chartDomains?.y && chartDomains,
       axis: {
         x: { ticks: chartTicks.x },
-        y: { ticks: chartTicks.y }
+        y: { ticks: chartTicks.y, ...CHART_AXES[currentView] }
       },
       scales: {
         x: xScale,
@@ -296,7 +304,7 @@ const CountryChartComponent = ({
       },
       data: parsedData
     });
-  }, [type, chartContainerWidth, chartDomains, chartTicks]);
+  }, [type, chartContainerWidth, chartDomains, chartTicks, currentView]);
 
   const chartReady = !!chartConfig && !!chartConfig?.dimensions;
   const ChartComponent = CHART_COMPONENTS[currentView];
@@ -315,10 +323,7 @@ const CountryChartComponent = ({
         {chartReady && (
           <>
             <AxisGridComponent chartConfig={chartConfig} />
-            <ChartComponent
-              chartConfig={chartConfig}
-              settings={settings}
-            />
+            <ChartComponent chartConfig={chartConfig} settings={settings} />
           </>
         )}
       </svg>

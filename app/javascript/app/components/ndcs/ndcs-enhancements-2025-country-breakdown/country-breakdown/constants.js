@@ -10,6 +10,17 @@ export const CHART_COMPONENTS = {
   target: TargetEmissionsComponent
 };
 
+export const CHART_AXES = {
+  baseline: {
+    unit: '%',
+    title: 'Percent Change in Emissions relative to Baseline'
+  },
+  target: {
+    unit: 'MtCO2e',
+    title: 'Difference in Absolute Emissions compared to 2030 targets'
+  }
+};
+
 export const SETTINGS = {
   chartMargins: {
     top: 20,
@@ -35,10 +46,14 @@ export const LOCATION_GROUPS = [
   }
 ];
 
-export const BASELINE_YEAR_OPTIONS = (() => BASELINE_YEARS?.map((year) => ({
-  label: `${year} Historical Emissions`, value: year
-})))();
+export const BASELINE_YEAR_OPTIONS = (() =>
+  BASELINE_YEARS?.map(year => ({
+    label: `${year} Historical Emissions`,
+    value: year
+  })))();
 
-export const CONDITIONAL_SWITCH_OPTIONS = (() => CONDITIONAL_OPTIONS?.map((type) => ({
-  name: `${type.charAt(0).toUpperCase() + type.slice(1)} NDCS`, value: type
-})))();
+export const CONDITIONAL_SWITCH_OPTIONS = (() =>
+  CONDITIONAL_OPTIONS?.map(type => ({
+    name: `${type.charAt(0).toUpperCase() + type.slice(1)} NDCS`,
+    value: type
+  })))();

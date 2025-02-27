@@ -20,7 +20,7 @@ const TargetEmissionsComponent = ({ chartConfig = {}, settings }) => {
       emissionsData?.reduce((dataAcc, dataEntry) => {
         const { iso } = dataEntry;
 
-        const calculateBarForType = (value) => {
+        const calculateBarForType = value => {
           if (value < 0) {
             const height = scales.y(value) - scales.y(0);
             return {
@@ -41,10 +41,13 @@ const TargetEmissionsComponent = ({ chartConfig = {}, settings }) => {
           ...dataAcc,
           {
             iso,
-            ...CONDITIONAL_OPTIONS?.reduce((optionAcc, optionEntry) => ({
-              ...optionAcc,
-              [optionEntry]: calculateBarForType(dataEntry[optionEntry])
-            }), {})
+            ...CONDITIONAL_OPTIONS?.reduce(
+              (optionAcc, optionEntry) => ({
+                ...optionAcc,
+                [optionEntry]: calculateBarForType(dataEntry[optionEntry])
+              }),
+              {}
+            )
           }
         ];
       }, []),
@@ -63,24 +66,24 @@ const TargetEmissionsComponent = ({ chartConfig = {}, settings }) => {
 
   return (
     <>
-      {barsData?.map((entry) => (
-        <g key={entry?.iso} transform={`translate(${offsetToCenterBars},0)`}>(
-        <EmissionsBarComponent
-          key={`${2035}-${entry?.iso}`}
-          type={2035}
-          margins={margins}
-          dimensions={dimensions}
-          scales={scales}
-          axis={axis}
-          domains={domains}
-          position={entry?.[type]?.position}
-          size={{
-            width: CHANGE_BAR_WIDTH,
-            height: entry?.[type]?.height
-          }}
-          tooltipId={entry?.[type]?.tooltipId}
-          value={entry?.[type]?.value}
-        />
+      {barsData?.map(entry => (
+        <g key={entry?.iso} transform={`translate(${offsetToCenterBars},0)`}>
+          <EmissionsBarComponent
+            key={`${2035}-${entry?.iso}`}
+            type={2035}
+            margins={margins}
+            dimensions={dimensions}
+            scales={scales}
+            axis={axis}
+            domains={domains}
+            position={entry?.[type]?.position}
+            size={{
+              width: CHANGE_BAR_WIDTH,
+              height: entry?.[type]?.height
+            }}
+            tooltipId={entry?.[type]?.tooltipId}
+            value={entry?.[type]?.value}
+          />
         </g>
       ))}
     </>

@@ -48,8 +48,8 @@ const AxisGridComponent = ({ chartConfig = {} }) => {
 
   const axisYBase = useMemo(() =>
     line()
-      .x((d) => d.x)
-      .y((d) => scales.y(d.y))([
+      .x(d => d.x)
+      .y(d => scales.y(d.y))([
         { x: 0, y: 0 },
         { x: dimensions.width - margins.left - margins.right, y: 0 }
       ])
@@ -71,11 +71,31 @@ const AxisGridComponent = ({ chartConfig = {} }) => {
 
   return (
     <g>
+      {/*  Y axis title */}
+      <g
+        transform={`translate(0,${(dimensions.height -
+          margins.bottom -
+          margins.top) /
+          2 +
+          margins.top}) rotate(-90)`}
+      >
+        <text x={0} y={0} dy="1em" fill="currentColor" textAnchor="middle">
+          {axis.y.title}
+        </text>
+      </g>
+
+      {/*  Y axit unit */}
+      <g transform={`translate(${margins.left},${margins.top})`}>
+        <text x={-22} y={-9} fill="currentColor" textAnchor="end">
+          {axis.y.unit}
+        </text>
+      </g>
+
       {/* Y axis zeroed */}
       <LineComponent type="axis-x-base" margins={margins} path={axisYBase} />
 
       {/* Y axis lines */}
-      {axisYLines?.map((path) => (
+      {axisYLines?.map(path => (
         <LineComponent type="axis-x" margins={margins} path={path} />
       ))}
     </g>

@@ -1,10 +1,15 @@
 @import "~styles/layout.scss";
 
 .chartContainerCountry {
-  position: relative;
-  padding: 0 14px;
+  //position: relative;
+  //padding: 0 14px;
 
   svg {
-    overflow: visible;
+    //overflow: visible;
+
+    text {
+      font-family: $font-family-1;
+      font-size: $font-size-s;
+    }
   }
 }
