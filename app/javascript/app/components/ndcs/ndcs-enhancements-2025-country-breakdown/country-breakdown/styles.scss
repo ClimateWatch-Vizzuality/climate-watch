@@ -31,19 +31,21 @@
 .chartOptionsContainer {
   display: flex;
   align-items: end;
-  justify-content: end;
+  justify-content: space-between;
   gap: 14px;
   margin: 24px 0;
 }
 
 .chartDropdownsContainer {
   display: flex;
+  flex: 1;
   gap: 14px;
   white-space: nowrap;
   margin-bottom: 1px;
+  flex-grow: 1;
 
   > * {
-    max-width: 30%;
+    max-width: 270px;
   }
 }
 
