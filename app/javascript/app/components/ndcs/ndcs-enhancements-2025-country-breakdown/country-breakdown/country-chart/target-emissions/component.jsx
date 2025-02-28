@@ -58,9 +58,8 @@ const TargetEmissionsComponent = ({ chartConfig = {}, settings }) => {
 
   const offsetToCenterBars = useMemo(
     () =>
-      dimensions.width / (axis?.x?.ticks?.length || 1) / 2 -
-      CHANGE_BAR_WIDTH -
-      4,
+      (dimensions.width - margins.left) / (axis?.x?.ticks?.length || 1) / 2 -
+      CHANGE_BAR_WIDTH,
     [dimensions, barsData]
   );
 
@@ -79,7 +78,7 @@ const TargetEmissionsComponent = ({ chartConfig = {}, settings }) => {
             position={entry?.[type]?.position}
             size={{
               width: CHANGE_BAR_WIDTH,
-              height: entry?.[type]?.height
+              height: entry?.[type]?.height || 0
             }}
             tooltipId={entry?.[type]?.tooltipId}
             value={entry?.[type]?.value}

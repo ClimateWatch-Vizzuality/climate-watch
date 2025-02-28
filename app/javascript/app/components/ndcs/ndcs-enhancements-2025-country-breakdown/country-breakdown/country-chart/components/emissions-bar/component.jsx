@@ -9,7 +9,16 @@ const LABEL_OFFSET = 14;
 const LABEL_HEIGHT = 20;
 const LABEL_WIDTH = 60;
 
-const EmissionsBarComponent = ({ type, scales, margins, dimensions, position, size, tooltipId, value }) => {
+const EmissionsBarComponent = ({
+  type,
+  scales,
+  margins,
+  dimensions,
+  position,
+  size,
+  tooltipId,
+  value
+}) => {
   if (!type || !scales || !margins || !dimensions || !size) return null;
 
   const displayValue = type === 2035;
@@ -28,7 +37,7 @@ const EmissionsBarComponent = ({ type, scales, margins, dimensions, position, si
 
   /* No target label positioning */
   const noTargetLabelPosition = useMemo(() => {
-    const x = position.x + barWidth / 2 - 1;
+    const x = position.x + barWidth - 1;
     const y = scales.y(0) / 2;
     return { x, y };
   }, [size, dimensions, value, position]);
