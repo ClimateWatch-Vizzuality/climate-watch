@@ -17,20 +17,20 @@ const BaselineEmissionsComponent = ({ chartConfig = {}, settings }) => {
   const barsData = useMemo(
     () =>
       emissionsData?.reduce((dataAcc, dataEntry) => {
-        const { iso } = dataEntry;
+        const { iso, name } = dataEntry;
 
-        const calculateBarForType = (value) => {
+        const calculateBarForType = value => {
           if (value < 0) {
             const height = scales.y(value) - scales.y(0);
             return {
-              position: { x: scales.x(iso), y: scales.y(value) - height },
+              position: { x: scales.x(name), y: scales.y(value) - height },
               height,
               value
             };
           }
 
           return {
-            position: { x: scales.x(iso), y: scales.y(value) },
+            position: { x: scales.x(name), y: scales.y(value) },
             height: scales.y(0) - scales.y(value),
             value
           };
@@ -44,7 +44,7 @@ const BaselineEmissionsComponent = ({ chartConfig = {}, settings }) => {
               (yearsAcc, year) => ({
                 ...yearsAcc,
                 [year]: CONDITIONAL_OPTIONS?.reduce(
-                  (targetTypesAcc) => ({
+                  targetTypesAcc => ({
                     ...targetTypesAcc,
                     [type]: {
                       tooltipId: `country-emissions-${iso}-${year}-${type}-${settings?.baselineYear?.value}-tooltip`,
@@ -74,9 +74,9 @@ const BaselineEmissionsComponent = ({ chartConfig = {}, settings }) => {
 
   return (
     <>
-      {barsData?.map((entry) => (
+      {barsData?.map(entry => (
         <g key={entry?.iso} transform={`translate(${offsetToCenterBars},0)`}>
-          {TARGET_YEARS?.map((year) => (
+          {TARGET_YEARS?.map(year => (
             <EmissionsBarComponent
               key={`${year}-${entry?.iso}`}
               type={year}

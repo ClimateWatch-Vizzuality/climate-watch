@@ -18,20 +18,20 @@ const TargetEmissionsComponent = ({ chartConfig = {}, settings }) => {
   const barsData = useMemo(
     () =>
       emissionsData?.reduce((dataAcc, dataEntry) => {
-        const { iso } = dataEntry;
+        const { iso, name } = dataEntry;
 
         const calculateBarForType = value => {
           if (value < 0) {
             const height = scales.y(value) - scales.y(0);
             return {
-              position: { x: scales.x(iso), y: scales.y(value) - height },
+              position: { x: scales.x(name), y: scales.y(value) - height },
               height,
               value
             };
           }
 
           return {
-            position: { x: scales.x(iso), y: scales.y(value) },
+            position: { x: scales.x(name), y: scales.y(value) },
             height: scales.y(0) - scales.y(value),
             value
           };

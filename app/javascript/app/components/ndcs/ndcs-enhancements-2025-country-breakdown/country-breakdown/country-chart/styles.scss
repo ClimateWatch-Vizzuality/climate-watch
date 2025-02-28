@@ -11,5 +11,10 @@
       font-family: $font-family-1;
       font-size: $font-size-s;
     }
+
+    :global(.axis-grid.x) text {
+      font-size: $font-size-xs;
+      font-weight: $font-weight-bold;
+    }
   }
 }

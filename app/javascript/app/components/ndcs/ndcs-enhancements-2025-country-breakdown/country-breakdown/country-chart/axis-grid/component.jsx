@@ -26,11 +26,42 @@ const AxisGridComponent = ({ chartConfig = {} }) => {
 
   select(chartId)
     .append('g')
-    .attr('class', 'axis-grid')
+    .attr('class', 'axis-grid x')
     .attr('transform', `translate(${margins.left},${margins.top})`)
     .call(xAxis)
     .call(g => g.select('.domain').remove())
-    .call(g => g.selectAll('.tick line').remove());
+    .call(g => g.selectAll('.tick line').remove())
+    .call(g =>
+      g.selectAll('text').each(function () {
+        const text = select(this);
+        const lines = [];
+        let currentLine = '';
+
+        const words = text.text().split(' ');
+        words.forEach(word => {
+          if (currentLine.length + word.length > 12) {
+            lines.push(currentLine);
+            currentLine = word;
+          } else {
+            if (currentLine !== '') {
+              currentLine += ' ';
+            }
+            currentLine += word;
+          }
+        });
+
+        lines.push(currentLine);
+        text.text('');
+
+        lines.forEach((l, index) => {
+          text
+            .append('tspan')
+            .attr('x', 0)
+            .attr('dy', index ? '1.2em' : '0em')
+            .text(l);
+        });
+      })
+    );
 
   // Y Axis
   const yAxis = axisLeft()
@@ -40,7 +71,7 @@ const AxisGridComponent = ({ chartConfig = {} }) => {
 
   select(chartId)
     .append('g')
-    .attr('class', 'axis-grid')
+    .attr('class', 'axis-grid y')
     .attr('transform', `translate(${margins.left},${margins.top})`)
     .call(yAxis)
     .call(g => g.select('.domain').remove())

@@ -191,8 +191,8 @@ const CountryChartComponent = ({
 
   const currentViewData = parsedData?.[currentView];
 
-  const sortedISOs = useMemo(
-    () => currentViewData?.data?.map(({ iso }) => iso),
+  const sortedNames = useMemo(
+    () => currentViewData?.data?.map(({ name }) => name),
     [currentViewData]
   );
 
@@ -241,7 +241,7 @@ const CountryChartComponent = ({
   // Domains
   const chartDomains = useMemo(() => {
     // Calculate X Domain
-    const xDomain = sortedISOs;
+    const xDomain = sortedNames;
 
     // Calculate Y Domain
     const yDisplayOffset = yTickSize / 2;
@@ -250,15 +250,15 @@ const CountryChartComponent = ({
     const yDomain = [yMinTick - yDisplayOffset, yMaxTick + yDisplayOffset];
 
     return { x: xDomain, y: yDomain };
-  }, [sortedISOs, yTicksArr]);
+  }, [sortedNames, yTicksArr]);
 
   // Ticks
   const chartTicks = useMemo(() => {
-    const xTicks = sortedISOs || [];
+    const xTicks = sortedNames || [];
     const yTicks = yTicksArr;
 
     return { x: xTicks, y: yTicks };
-  }, [sortedISOs, yTicksArr]);
+  }, [sortedNames, yTicksArr]);
 
   // =====================================
   // SETTING CHART CONFIGURATION AND DATA

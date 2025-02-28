@@ -27,7 +27,8 @@ const CountryBreakdownComponent = ({ data }) => {
   // Locations ISOs (de-duplicated) from selection
   const locationsISOs = useMemo(() => {
     const selectedLocations = locations?.reduce((acc, entry) => {
-      const isos = entry?.groupId === 'regions' ? entry?.expandsTo : [entry?.iso];
+      const isos =
+        entry?.groupId === 'regions' ? entry?.expandsTo : [entry?.iso];
       return [...acc, ...isos];
     }, []);
     return [...new Set(selectedLocations)];
@@ -59,39 +60,41 @@ const CountryBreakdownComponent = ({ data }) => {
 
   // Parse data to a format the chart expects
   useEffect(() => {
-    const baselineData =
-      Object.values(data?.emissions || {})
-        ?.filter((entry) => locationsISOs?.includes(entry?.location?.iso_code3))
-        ?.reduce((acc, { location: entryLocation, baseline: entryBaseline }) => {
-          const target = entryBaseline?.[baselineYear?.value]?.target;
-          return [
-            ...acc,
-            {
-              iso: entryLocation?.iso_code3,
-              name: entryLocation?.cait_name,
-              unconditional: {
-                2030: target?.['2030']?.unconditional?.percentage,
-                2035: target?.['2035']?.unconditional?.percentage
-              },
-              conditional: {
-                2030: target?.['2030']?.conditional?.percentage,
-                2035: target?.['2035']?.conditional?.percentage
-              }
+    const baselineData = Object.values(data?.emissions || {})
+      ?.filter(entry => locationsISOs?.includes(entry?.location?.iso_code3))
+      ?.reduce((acc, { location: entryLocation, baseline: entryBaseline }) => {
+        const target = entryBaseline?.[baselineYear?.value]?.target;
+        return [
+          ...acc,
+          {
+            iso: entryLocation?.iso_code3,
+            name: entryLocation?.wri_standard_name,
+            unconditional: {
+              2030: target?.['2030']?.unconditional?.percentage,
+              2035: target?.['2035']?.unconditional?.percentage
+            },
+            conditional: {
+              2030: target?.['2030']?.conditional?.percentage,
+              2035: target?.['2035']?.conditional?.percentage
             }
-          ];
-        }, []);
+          }
+        ];
+      }, []);
 
     const targetData = Object.values(data?.emissions || {})
-      ?.filter((entry) => locationsISOs?.includes(entry?.location?.iso_code3))
-      ?.reduce((acc, { location: entryLocation, target: entryTarget }) => [
-        ...acc,
-        {
-          iso: entryLocation?.iso_code3,
-          name: entryLocation?.cait_name,
-          unconditional: entryTarget?.unconditional,
-          conditional: entryTarget?.conditional
-        }
-      ], []);
+      ?.filter(entry => locationsISOs?.includes(entry?.location?.iso_code3))
+      ?.reduce(
+        (acc, { location: entryLocation, target: entryTarget }) => [
+          ...acc,
+          {
+            iso: entryLocation?.iso_code3,
+            name: entryLocation?.wri_standard_name,
+            unconditional: entryTarget?.unconditional,
+            conditional: entryTarget?.conditional
+          }
+        ],
+        []
+      );
 
     setChartData({
       baseline: baselineData,
@@ -100,7 +103,7 @@ const CountryBreakdownComponent = ({ data }) => {
   }, [data, view, locations, baselineYear, conditionalNDC]);
 
   // Handle location change - when no location selected, we'll pre-selected the default one
-  const handleLocationSelectionChange = (entries) => {
+  const handleLocationSelectionChange = entries => {
     if (!entries?.length) {
       // setLocations(defaultLocationOption ? [defaultLocationOption] : []);
       setLocations(defaultLocationOptions || []);
