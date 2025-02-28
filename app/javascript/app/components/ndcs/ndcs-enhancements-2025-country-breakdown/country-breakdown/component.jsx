@@ -203,7 +203,7 @@ const CountryBreakdownComponent = ({ data }) => {
 
         <CountryChartComponent data={chartData} settings={chartSettings} />
 
-        <TagsComponent type={conditionalNDC.value} />
+        <TagsComponent type={conditionalNDC.value} view={view.value} />
         {/* <div className={styles.lastUpdated}>Last updated on June 12,2024</div> */}
         <div className={styles.footnote}>
           * Percentage Change in Emissions relative to Baseline

@@ -5,8 +5,8 @@ import { Tag } from 'cw-components';
 import { TAGS } from './constants';
 import styles from './styles.scss';
 
-const TagsComponent = ({ type }) => {
-  const tags = TAGS[type];
+const TagsComponent = ({ type, view }) => {
+  const tags = TAGS[view][type];
 
   return (
     <div className={styles.tagsContainer}>
@@ -18,7 +18,8 @@ const TagsComponent = ({ type }) => {
 };
 
 TagsComponent.propTypes = {
-  type: PropTypes.oneOf(['conditional', 'unconditional'])
+  type: PropTypes.oneOf(['conditional', 'unconditional']),
+  view: PropTypes.oneOf(['baseline', 'target'])
 };
 
 export default TagsComponent;
