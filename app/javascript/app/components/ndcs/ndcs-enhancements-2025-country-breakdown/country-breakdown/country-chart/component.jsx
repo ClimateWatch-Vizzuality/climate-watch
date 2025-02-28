@@ -202,11 +202,11 @@ const CountryChartComponent = ({
   // DETERMINE CHART DOMAINS AND TICKS BASED ON SORTED DATA
   // =======================================================
 
-  // Min and Max Y values to be used to calculate chart domains as well as axises
+  // Min and Max Y values to be used to calculate chart domains as well as axes
   const yMinMax = useMemo(
     () => ({
-      min: yValues?.[0],
-      max: yValues?.[yValues?.length - 1]
+      min: yValues?.[0] || 0,
+      max: yValues?.[yValues?.length - 1] || 0
     }),
     [yValues]
   );
@@ -216,7 +216,10 @@ const CountryChartComponent = ({
     const tickCount = 6;
     const range = Math.abs(yMinMax.min) + Math.abs(yMinMax.max);
     const unroundedTickSize = range / (tickCount - 1);
-    const pow10x = 10 ** Math.ceil(Math.log10(unroundedTickSize) - 1);
+    const pow10x =
+      unroundedTickSize === 0
+        ? 1
+        : 10 ** Math.ceil(Math.log10(unroundedTickSize) - 1);
     return Math.ceil(unroundedTickSize / pow10x) * pow10x;
   }, [yMinMax]);
 
@@ -233,7 +236,7 @@ const CountryChartComponent = ({
         yMinMax.min < 0 ? Math.floor(Math.abs(yMinMax.min) / yTickSize) + 1 : 0
     })
       ?.map((_, i) => (i + 1) * -yTickSize)
-      ?.sort((a, b) => a + b);
+      ?.sort((a, b) => a - b);
 
     return [...(yMinMax.min >= 0 ? [] : negTicksArr), 0, ...posTicksArr];
   }, [yMinMax, yTickSize]);
