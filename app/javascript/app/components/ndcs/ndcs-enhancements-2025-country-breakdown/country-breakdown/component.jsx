@@ -4,6 +4,7 @@ import { Dropdown, Switch } from 'cw-components';
 import NdcContentCountryEmissionsProvider from 'providers/ndc-content-country-emissions-provider';
 import ButtonGroup from 'components/button-group';
 import GhgMultiselectDropdown from 'components/ghg-multiselect-dropdown';
+import { timeFormat } from 'd3-time-format';
 
 import styles from './styles.scss';
 import TagsComponent from './tags';
@@ -126,6 +127,11 @@ const CountryBreakdownComponent = ({ data }) => {
   const { locations: locationsOptions } = data;
   const displayBaselineYearOptions = view?.value === 'baseline';
 
+  const formattedLastUpdated = useMemo(() => {
+    if (!data?.lastUpdated) return null;
+    return timeFormat('%B %d, %Y')(new Date(data.lastUpdated));
+  }, [data]);
+
   return (
     <>
       <div className={styles.wrapper}>
@@ -204,10 +210,11 @@ const CountryBreakdownComponent = ({ data }) => {
         <CountryChartComponent data={chartData} settings={chartSettings} />
 
         <TagsComponent type={conditionalNDC.value} view={view.value} />
-        {/* <div className={styles.lastUpdated}>Last updated on June 12,2024</div> */}
-        <div className={styles.footnote}>
-          * Percentage Change in Emissions relative to Baseline
-        </div>
+        {formattedLastUpdated && (
+          <div className={styles.lastUpdated}>
+            Last updated on {formattedLastUpdated}
+          </div>
+        )}
       </div>
       <NdcContentCountryEmissionsProvider />
     </>
