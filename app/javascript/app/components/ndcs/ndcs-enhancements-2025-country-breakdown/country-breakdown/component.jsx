@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import PropTypes from 'prop-types';
 import { Dropdown, Switch } from 'cw-components';
 
 import NdcContentCountryEmissionsProvider from 'providers/ndc-content-country-emissions-provider';
@@ -16,7 +17,7 @@ import {
   CONDITIONAL_SWITCH_OPTIONS
 } from './constants';
 
-const CountryBreakdownComponent = ({ data }) => {
+const CountryBreakdownComponent = ({ data, handleInfoClick }) => {
   const [view, setView] = useState(VIEW_OPTIONS[1]);
   const [locations, setLocations] = useState(undefined);
   const [baselineYear, setBaselineYear] = useState(BASELINE_YEAR_OPTIONS[0]);
@@ -148,7 +149,7 @@ const CountryBreakdownComponent = ({ data }) => {
               buttonsConfig={[
                 {
                   type: 'info',
-                  onClick: () => {}
+                  onClick: handleInfoClick
                 },
                 {
                   type: 'share',
@@ -221,6 +222,8 @@ const CountryBreakdownComponent = ({ data }) => {
   );
 };
 
-CountryBreakdownComponent.propTypes = {};
+CountryBreakdownComponent.propTypes = {
+  handleInfoClick: PropTypes.func.isRequired
+};
 
 export default CountryBreakdownComponent;
