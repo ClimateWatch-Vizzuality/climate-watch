@@ -17,7 +17,8 @@ const EmissionsBarComponent = ({
   position,
   size,
   tooltipId,
-  value
+  value,
+  isGroupedLocations
 }) => {
   if (!type || !scales || !margins || !dimensions || !size) return null;
 
@@ -76,7 +77,7 @@ const EmissionsBarComponent = ({
         <>
           <TextComponent
             type="no-target"
-            value="No 2035"
+            value={isGroupedLocations ? 'Missing' : 'No 2035'}
             margins={margins}
             dimensions={{
               width: LABEL_WIDTH,
@@ -87,7 +88,7 @@ const EmissionsBarComponent = ({
 
           <TextComponent
             type="no-target"
-            value="Target"
+            value={isGroupedLocations ? '2035' : 'Target'}
             margins={margins}
             dimensions={{
               width: LABEL_WIDTH,
@@ -98,6 +99,22 @@ const EmissionsBarComponent = ({
               y: noTargetLabelPosition?.y + LABEL_HEIGHT - 2
             }}
           />
+
+          {isGroupedLocations && (
+            <TextComponent
+              type="no-target"
+              value="Target"
+              margins={margins}
+              dimensions={{
+                width: LABEL_WIDTH,
+                height: LABEL_HEIGHT
+              }}
+              position={{
+                x: noTargetLabelPosition?.x,
+                y: noTargetLabelPosition?.y + (LABEL_HEIGHT - 2) * 2
+              }}
+            />
+          )}
         </>
       )}
     </g>
@@ -113,7 +130,8 @@ EmissionsBarComponent.propTypes = {
   position: PropTypes.any,
   size: PropTypes.any,
   tooltipId: PropTypes.string,
-  value: PropTypes.number
+  value: PropTypes.number,
+  isGroupedLocations: PropTypes.bool
 };
 
 export default EmissionsBarComponent;

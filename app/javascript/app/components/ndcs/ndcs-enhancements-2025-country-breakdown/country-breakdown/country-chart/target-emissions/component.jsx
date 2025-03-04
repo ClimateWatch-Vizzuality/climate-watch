@@ -84,6 +84,7 @@ const TargetEmissionsComponent = ({ chartConfig = {}, settings }) => {
             }}
             tooltipId={entry?.[type]?.tooltipId}
             value={entry?.[type]?.value}
+            isGroupedLocations={entry?.iso === 'OTHERS' || false}
           />
         </g>
       ))}

@@ -92,6 +92,7 @@ const BaselineEmissionsComponent = ({ chartConfig = {}, settings }) => {
               }}
               tooltipId={entry?.[year]?.[type]?.tooltipId}
               value={entry?.[year]?.[type]?.value}
+              isGroupedLocations={entry?.iso === 'OTHERS' || false}
             />
           ))}
         </g>
