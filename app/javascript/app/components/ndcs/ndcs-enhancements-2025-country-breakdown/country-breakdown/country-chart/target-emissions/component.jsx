@@ -26,14 +26,16 @@ const TargetEmissionsComponent = ({ chartConfig = {}, settings }) => {
             return {
               position: { x: scales.x(name), y: scales.y(value) - height },
               height,
-              value
+              value,
+              tooltipId: `country-emissions-${iso}-tooltip`
             };
           }
 
           return {
             position: { x: scales.x(name), y: scales.y(value) },
             height: scales.y(0) - scales.y(value),
-            value
+            value,
+            tooltipId: `country-emissions-${iso}-tooltip`
           };
         };
 

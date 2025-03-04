@@ -7,17 +7,6 @@ import styles from './styles.scss';
 const TooltipComponent = ({ id, country, label, value, color = '#000000' }) => {
   if (!id || !value) return null;
 
-  // May possibly be needed if we find tooltips not updating values correctly
-  // but it comes with a performance cost.
-  // const didMountRef = useRef(false);
-  // useEffect(() => {
-  //   if (didMountRef.current) {
-  //     ReactTooltip.rebuild();
-  //   } else {
-  //     didMountRef.current = true;
-  //   }
-  // });
-
   return (
     <div className={styles.countryChartTooltipWrapper}>
       <ReactTooltip id={id} className={styles.countryChartTooltipTheme}>

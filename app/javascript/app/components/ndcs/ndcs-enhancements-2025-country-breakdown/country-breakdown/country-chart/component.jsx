@@ -12,7 +12,7 @@ import {
   CHART_AXES
 } from '../constants';
 import styles from './styles';
-// import TooltipsComponent from './tooltips';
+import TooltipsComponent from './tooltips';
 
 const CountryChartComponent = ({
   type = 'chart',
@@ -330,7 +330,11 @@ const CountryChartComponent = ({
           </>
         )}
       </svg>
-      {/* <TooltipsComponent data={parsedData} settings={settings} /> */}
+      <TooltipsComponent
+        data={chartConfig?.data}
+        view={currentView}
+        settings={settings}
+      />
     </div>
   );
 };
