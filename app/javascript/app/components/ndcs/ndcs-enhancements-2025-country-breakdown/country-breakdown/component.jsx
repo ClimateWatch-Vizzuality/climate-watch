@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { Dropdown, Switch } from 'cw-components';
+import { timeFormat } from 'd3-time-format';
 
 import NdcContentCountryEmissionsProvider from 'providers/ndc-content-country-emissions-provider';
 import ButtonGroup from 'components/button-group';
 import GhgMultiselectDropdown from 'components/ghg-multiselect-dropdown';
-import { timeFormat } from 'd3-time-format';
+import ModalPngDownload from 'components/modal-png-download';
 
 import styles from './styles.scss';
 import TagsComponent from './tags';
@@ -17,7 +18,12 @@ import {
   CONDITIONAL_SWITCH_OPTIONS
 } from './constants';
 
-const CountryBreakdownComponent = ({ data, handleInfoClick }) => {
+const CountryBreakdownComponent = ({
+  data,
+  pngDownloadId,
+  handleInfoClick,
+  handlePngDownloadModal
+}) => {
   const [view, setView] = useState(VIEW_OPTIONS[1]);
   const [locations, setLocations] = useState(undefined);
   const [baselineYear, setBaselineYear] = useState(BASELINE_YEAR_OPTIONS[0]);
@@ -156,11 +162,11 @@ const CountryBreakdownComponent = ({ data, handleInfoClick }) => {
                   shareUrl: null
                 },
                 {
-                  type: 'download',
+                  type: 'downloadCombo',
                   options: [
                     {
                       label: 'Save as image (PNG)',
-                      action: () => {}
+                      action: handlePngDownloadModal
                     }
                   ]
                 }
@@ -208,7 +214,11 @@ const CountryBreakdownComponent = ({ data, handleInfoClick }) => {
           </div>
         </div>
 
-        <CountryChartComponent data={chartData} settings={chartSettings} />
+        <CountryChartComponent
+          id="main"
+          data={chartData}
+          settings={chartSettings}
+        />
 
         <TagsComponent type={conditionalNDC.value} view={view.value} />
         {formattedLastUpdated && (
@@ -217,13 +227,26 @@ const CountryBreakdownComponent = ({ data, handleInfoClick }) => {
           </div>
         )}
       </div>
+      <ModalPngDownload id={pngDownloadId}>
+        <div>
+          <CountryChartComponent
+            id="download"
+            data={chartData}
+            settings={chartSettings}
+          />
+          <TagsComponent type={conditionalNDC.value} view={view.value} />
+          <span className={styles.spacer} />
+        </div>
+      </ModalPngDownload>
       <NdcContentCountryEmissionsProvider />
     </>
   );
 };
 
 CountryBreakdownComponent.propTypes = {
-  handleInfoClick: PropTypes.func.isRequired
+  pngDownloadId: PropTypes.string.isRequired,
+  handleInfoClick: PropTypes.func.isRequired,
+  handlePngDownloadModal: PropTypes.func.isRequired
 };
 
 export default CountryBreakdownComponent;

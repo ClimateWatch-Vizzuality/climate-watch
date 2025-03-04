@@ -15,6 +15,7 @@ import styles from './styles';
 import TooltipsComponent from './tooltips';
 
 const CountryChartComponent = ({
+  id,
   type = 'chart',
   data = [],
   settings = {}
@@ -293,7 +294,7 @@ const CountryChartComponent = ({
 
     // Chart config
     setChartConfig({
-      chartId: `#iconic-chart-country-${type}`,
+      chartId: `#iconic-chart-country-${type}-${id}`,
       margins: SETTINGS.chartMargins,
       dimensions: dimensions?.width && dimensions,
       domains: chartDomains?.x && chartDomains?.y && chartDomains,
@@ -307,7 +308,7 @@ const CountryChartComponent = ({
       },
       data: parsedData
     });
-  }, [type, chartContainerWidth, chartDomains, chartTicks, currentView]);
+  }, [id, type, chartContainerWidth, chartDomains, chartTicks, currentView]);
 
   const chartReady = !!chartConfig && !!chartConfig?.dimensions;
   const ChartComponent = CHART_COMPONENTS[currentView];
@@ -340,6 +341,7 @@ const CountryChartComponent = ({
 };
 
 CountryChartComponent.propTypes = {
+  id: PropTypes.string.isRequired,
   type: PropTypes.oneOf(['chart', 'png-download']),
   data: PropTypes.array,
   settings: PropTypes.object

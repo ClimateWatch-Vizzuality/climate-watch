@@ -3,6 +3,7 @@ import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 
 import { actions as modalActions } from 'components/modal-metadata';
+import { actions as pngModalActions } from 'components/modal-png-download';
 
 import { getData } from './selectors';
 import Component from './component';
@@ -11,10 +12,12 @@ const mapStateToProps = state => ({
   data: getData(state)
 });
 
-const actions = { ...modalActions };
+const pngDownloadId = 'iconic-country-breakdown-chart';
+
+const actions = { ...modalActions, ...pngModalActions };
 
 function CountryBreakdownContainer(props) {
-  const { setModalMetadata } = props;
+  const { setModalMetadata, setModalPngDownload } = props;
 
   const handleInfoClick = () => {
     setModalMetadata({
@@ -24,9 +27,15 @@ function CountryBreakdownContainer(props) {
     });
   };
 
+  const handlePngDownloadModal = () => {
+    setModalPngDownload({ open: pngDownloadId });
+  };
+
   return createElement(Component, {
     ...props,
-    handleInfoClick
+    pngDownloadId,
+    handleInfoClick,
+    handlePngDownloadModal
   });
 }
 
