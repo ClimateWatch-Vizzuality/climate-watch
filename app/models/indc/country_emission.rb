@@ -31,6 +31,15 @@
 #  baseline2018_2035_c_percentage    :float
 #  absolute_emissions_comparison_c   :float
 #  absolute_emissions_comparison_uc  :float
+#  total_emissions                   :float
+#  latest_ndc                        :text
+#  historical_cw2019                 :float
+#  baseline2019_2030_uc              :float
+#  baseline2019_2030_uc_percentage   :float
+#  baseline2019_2035_uc              :float
+#  baseline2019_2035_uc_percentage   :float
+#  baseline2019_2035_c               :float
+#  baseline2019_2035_c_percentage    :float
 #  created_at                        :datetime         not null
 #  updated_at                        :datetime         not null
 #
@@ -47,7 +56,10 @@ module Indc
               :baseline2005_2035_uc_percentage, :baseline2005_2035_c, :baseline2005_2035_c_percentage,
               :baseline2018_2030_uc, :baseline2018_2030_uc_percentage, :baseline2018_2035_uc,
               :baseline2018_2035_uc_percentage, :baseline2018_2035_c, :baseline2018_2035_c_percentage,
-              :absolute_emissions_comparison_c, :absolute_emissions_comparison_uc,
+              :absolute_emissions_comparison_c, :absolute_emissions_comparison_uc, :total_emissions,
+              :latest_ndc, :historical_cw2019, :baseline2019_2030_uc, :baseline2019_2030_uc_percentage,
+              :baseline2019_2035_uc, :baseline2019_2035_uc_percentage, :baseline2019_2035_c,
+              :baseline2019_2035_c_percentage,
               numericality: {allow_nil: true}
   end
 end
