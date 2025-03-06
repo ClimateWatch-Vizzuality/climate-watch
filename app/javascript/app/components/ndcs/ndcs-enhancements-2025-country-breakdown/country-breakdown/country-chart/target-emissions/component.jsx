@@ -12,13 +12,17 @@ const CHANGE_BAR_WIDTH = 18;
 const TargetEmissionsComponent = ({ chartConfig = {}, settings }) => {
   const { axis, scales, domains, margins, dimensions, data } = chartConfig;
   const type = settings?.conditionalNDC?.value || 'conditional';
-  const emissionsData = data?.target?.data;
+
+  // Remove the bars that are not part of the scale (i.e. that don't have NDC data for the current view)
+  const emissionsData = data?.target?.data?.filter(dataEntry =>
+    scales.x.domain().includes(dataEntry.name)
+  );
 
   if (!margins || !dimensions || !scales || !settings || !axis) return null;
 
   const barsData = useMemo(
     () =>
-      emissionsData?.reduce((dataAcc, dataEntry) => {
+      emissionsData?.map(dataEntry => {
         const { iso, name } = dataEntry;
 
         const calculateBarForType = value => {
@@ -40,20 +44,17 @@ const TargetEmissionsComponent = ({ chartConfig = {}, settings }) => {
           };
         };
 
-        return [
-          ...dataAcc,
-          {
-            iso,
-            ...CONDITIONAL_OPTIONS?.reduce(
-              (optionAcc, optionEntry) => ({
-                ...optionAcc,
-                [optionEntry]: calculateBarForType(dataEntry[optionEntry])
-              }),
-              {}
-            )
-          }
-        ];
-      }, []),
+        return {
+          iso,
+          ...CONDITIONAL_OPTIONS?.reduce(
+            (optionAcc, optionEntry) => ({
+              ...optionAcc,
+              [optionEntry]: calculateBarForType(dataEntry[optionEntry])
+            }),
+            {}
+          )
+        };
+      }),
     [chartConfig, data, settings]
   );
 

@@ -98,7 +98,15 @@ const CountryBreakdownComponent = ({
             iso: entryLocation?.iso_code3,
             name: entryLocation?.wri_standard_name,
             unconditional: entryTarget?.unconditional,
+            unconditionalHidden:
+              !!entryTarget?.latest_ndc &&
+              (entryTarget?.latest_ndc === 'no_2035' ||
+                entryTarget?.latest_ndc === 'conditional_only'),
             conditional: entryTarget?.conditional,
+            conditionalHidden:
+              !!entryTarget?.latest_ndc &&
+              (entryTarget?.latest_ndc === 'no_2035' ||
+                entryTarget?.latest_ndc === 'unconditional_only'),
             total2021: entryTarget?.total_2021
           }
         ],

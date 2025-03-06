@@ -146,7 +146,8 @@ export const getEmissionsByCountry = createSelector(
           entry?.targets_nfgs_uc2035 - entry?.targets_nfgs_uc2030 || null,
         conditional:
           entry?.targets_nfgs_c2035 - entry?.targets_nfgs_c2030 || null,
-        total_2021: entry?.total_emissions || 0
+        total_2021: entry?.total_emissions || 0,
+        latest_ndc: entry?.latest_ndc
       };
     };
 

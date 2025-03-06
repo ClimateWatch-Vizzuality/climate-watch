@@ -145,7 +145,9 @@ const CountryChartComponent = ({
       const worldEntry = targetData.find(({ iso }) => iso === 'WORLD') || {
         iso: 'WORLD',
         conditional: 0,
+        conditionalHidden: false,
         unconditional: 0,
+        unconditionalHidden: false,
         total2021: 0
       };
       const nonWorldEntries = targetData.filter(({ iso }) => iso !== 'WORLD');
@@ -159,8 +161,12 @@ const CountryChartComponent = ({
           iso: 'OTHERS',
           name: 'Other Countries',
           conditional: (ocAcc?.conditional || 0) + (ocEntry?.conditional || 0),
+          conditionalHidden:
+            ocAcc?.conditionalHidden || ocEntry?.conditionalHidden || false,
           unconditional:
             (ocAcc?.unconditional || 0) + (ocEntry?.unconditional || 0),
+          unconditionalHidden:
+            ocAcc?.unconditionalHidden || ocEntry?.unconditionalHidden || false,
           total2021: (ocAcc?.total_2021 || 0) + (ocEntry?.total_2021 || 0)
         }),
         {}
@@ -208,10 +214,20 @@ const CountryChartComponent = ({
 
   const currentViewData = parsedData?.[currentView];
 
-  const sortedNames = useMemo(
-    () => currentViewData?.data?.map(({ name }) => name),
-    [currentViewData]
-  );
+  const sortedNames = useMemo(() => {
+    if (currentView === 'target') {
+      // We remove the countries/regions which don't have NDCs
+      return currentViewData?.data
+        ?.filter(
+          ({ conditionalHidden, unconditionalHidden }) =>
+            (!conditionalHidden && conditionalNDC?.value === 'conditional') ||
+            (!unconditionalHidden && conditionalNDC?.value === 'unconditional')
+        )
+        ?.map(({ name }) => name);
+    }
+
+    return currentViewData?.data?.map(({ name }) => name);
+  }, [currentView, currentViewData]);
 
   const yValues = currentViewData?.yValues;
 
