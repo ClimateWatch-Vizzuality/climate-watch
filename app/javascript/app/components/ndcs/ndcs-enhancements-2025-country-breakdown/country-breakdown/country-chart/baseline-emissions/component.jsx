@@ -79,6 +79,7 @@ const BaselineEmissionsComponent = ({ chartConfig = {}, settings }) => {
           {TARGET_YEARS?.map(year => (
             <EmissionsBarComponent
               key={`${year}-${entry?.iso}`}
+              color={year === 2030 ? '#CCCDCF' : '#83A2E5'}
               type={year}
               margins={margins}
               dimensions={dimensions}

@@ -98,7 +98,8 @@ const CountryBreakdownComponent = ({
             iso: entryLocation?.iso_code3,
             name: entryLocation?.wri_standard_name,
             unconditional: entryTarget?.unconditional,
-            conditional: entryTarget?.conditional
+            conditional: entryTarget?.conditional,
+            total2021: entryTarget?.total_2021
           }
         ],
         []

@@ -36,7 +36,7 @@ const TooltipsComponent = ({ data, settings, view }) => {
           type.slice(1)} NDC Target Compared to 2030 Target`,
         color: '#0845CB',
         value: `${Math.round(entry?.[type])} MtCO2e`,
-        country: entry?.name
+        country: entry?.iso === 'WORLD' ? 'Global Values' : entry?.name
       }))
       ?.flat();
   }, [data, settings, view]);

@@ -24,7 +24,7 @@ export const TAGS = {
   target: {
     unconditional: [
       {
-        label: 'Global Value',
+        label: 'Global Values',
         color: '#0845CB'
       },
       {
@@ -34,7 +34,7 @@ export const TAGS = {
     ],
     conditional: [
       {
-        label: 'Global Value',
+        label: 'Global Values',
         color: '#0845CB'
       },
       {

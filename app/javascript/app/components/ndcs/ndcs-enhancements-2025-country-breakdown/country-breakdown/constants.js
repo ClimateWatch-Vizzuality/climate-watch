@@ -25,8 +25,8 @@ export const SETTINGS = {
   chartMargins: {
     top: 20,
     right: 0,
-    bottom: 40,
-    left: 80
+    bottom: 76,
+    left: 104
   }
 };
 

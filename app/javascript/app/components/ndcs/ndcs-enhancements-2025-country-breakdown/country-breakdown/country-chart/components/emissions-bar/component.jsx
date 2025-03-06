@@ -11,6 +11,7 @@ const LABEL_WIDTH = 60;
 
 const EmissionsBarComponent = ({
   type,
+  color,
   scales,
   margins,
   dimensions,
@@ -51,6 +52,7 @@ const EmissionsBarComponent = ({
       {/* Bar display */}
       <RectComponent
         type={type}
+        color={color}
         margins={margins}
         dimensions={dimensions}
         position={position}
@@ -124,6 +126,7 @@ const EmissionsBarComponent = ({
 // TODO: Fix proptypes
 EmissionsBarComponent.propTypes = {
   type: PropTypes.oneOf([2030, 2035]),
+  color: PropTypes.string,
   margins: PropTypes.any,
   dimensions: PropTypes.any,
   scales: PropTypes.any,

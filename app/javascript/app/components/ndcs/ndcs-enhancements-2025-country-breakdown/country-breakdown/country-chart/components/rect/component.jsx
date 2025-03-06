@@ -1,15 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const typeStyles = {
-  2030: {
-    fill: '#CCCDCF'
-  },
-  2035: {
-    fill: '#83A2E5'
-  }
-};
-
 const RectComponent = ({
   type = 2030,
   tooltipId,
@@ -17,7 +8,8 @@ const RectComponent = ({
   dimensions,
   position,
   size,
-  stroke
+  stroke,
+  color
 }) => {
   if (!margins || !dimensions || !position || !size) return null;
 
@@ -30,7 +22,7 @@ const RectComponent = ({
       height={size?.height}
       x={position?.x}
       y={position?.y}
-      {...typeStyles[type]}
+      fill={color}
       stroke={stroke}
       data-tip
       data-for={tooltipId}
@@ -42,6 +34,7 @@ RectComponent.propTypes = {
   type: PropTypes.oneOf([2030, 2035]),
   tooltipId: PropTypes.string,
   stroke: PropTypes.string,
+  color: PropTypes.string,
   dimensions: PropTypes.shape({
     width: PropTypes.number.isRequired,
     height: PropTypes.number.isRequired

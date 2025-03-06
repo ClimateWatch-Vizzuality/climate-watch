@@ -142,25 +142,27 @@ export const getEmissionsByCountry = createSelector(
     const targetForEntry = entry => {
       if (!entry) return null;
       return {
-        unconditional: (entry?.targets_nfgs_uc2035 - entry?.targets_nfgs_uc2030) || null,
-        conditional: (entry?.targets_nfgs_c2035 - entry?.targets_nfgs_c2030) || null
+        unconditional:
+          entry?.targets_nfgs_uc2035 - entry?.targets_nfgs_uc2030 || null,
+        conditional:
+          entry?.targets_nfgs_c2035 - entry?.targets_nfgs_c2030 || null,
+        total_2021: entry?.total_emissions || 0
       };
     };
 
-    const processedData = countries?.reduce(
-      (acc, country) => {
-        const entry = countryEmissionsFiltered?.find(({ location }) => location?.iso_code3 === country?.iso_code3);
-        return {
-          ...acc,
-          [country?.iso_code3]: {
-            location: country,
-            baseline: baselineForEntry(entry),
-            target: targetForEntry(entry)
-          }
-        };
-      },
-      {}
-    );
+    const processedData = countries?.reduce((acc, country) => {
+      const entry = countryEmissionsFiltered?.find(
+        ({ location }) => location?.iso_code3 === country?.iso_code3
+      );
+      return {
+        ...acc,
+        [country?.iso_code3]: {
+          location: country,
+          baseline: baselineForEntry(entry),
+          target: targetForEntry(entry)
+        }
+      };
+    }, {});
 
     return processedData;
   }

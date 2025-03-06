@@ -142,26 +142,42 @@ const CountryChartComponent = ({
           return aValue - bValue;
         });
 
-      const sortedCountries = sortEntries(targetData);
-      const countriesToDisplay = sortedCountries.slice(0, 10);
-      const otherCountries = sortedCountries.slice(10);
+      const worldEntry = targetData.find(({ iso }) => iso === 'WORLD') || {
+        iso: 'WORLD',
+        conditional: 0,
+        unconditional: 0,
+        total2021: 0
+      };
+      const nonWorldEntries = targetData.filter(({ iso }) => iso !== 'WORLD');
+      const sortedNonWorldEntries = sortEntries(nonWorldEntries);
 
-      const otherCountriesEntry = otherCountries?.reduce(
+      const top9NonWorldEntries = sortedNonWorldEntries.slice(0, 9);
+      const otherNonWorldEntries = sortedNonWorldEntries.slice(9);
+
+      const otherCountriesEntry = otherNonWorldEntries?.reduce(
         (ocAcc, ocEntry) => ({
           iso: 'OTHERS',
           name: 'Other Countries',
-          conditional: ocAcc?.conditional || 0 + ocEntry?.conditional || 0,
-          unconditional: ocAcc?.unconditional || 0 + ocEntry?.unconditional || 0
+          conditional: (ocAcc?.conditional || 0) + (ocEntry?.conditional || 0),
+          unconditional:
+            (ocAcc?.unconditional || 0) + (ocEntry?.unconditional || 0),
+          total2021: (ocAcc?.total_2021 || 0) + (ocEntry?.total_2021 || 0)
         }),
         {}
       );
 
-      const sortedData = sortEntries(
-        [
-          ...countriesToDisplay,
-          !!Object.values(otherCountriesEntry)?.length && otherCountriesEntry
-        ]?.filter(entry => !!entry)
-      );
+      const sortedData = [
+        {
+          ...worldEntry,
+          name: 'Global Values'
+        },
+        ...sortEntries(
+          [
+            ...top9NonWorldEntries,
+            !!Object.values(otherCountriesEntry)?.length && otherCountriesEntry
+          ]?.filter(entry => !!entry)
+        )
+      ];
 
       const yValues = sortedData
         ?.reduce(
@@ -272,30 +288,30 @@ const CountryChartComponent = ({
     // Chart dimensions
     const dimensions = {
       width: chartContainerWidth,
-      height: 420
+      height: 450
+    };
+
+    const margins = {
+      ...SETTINGS.chartMargins,
+      bottom: currentView === 'target' ? SETTINGS.chartMargins.bottom : 0
     };
 
     // Scales
     const yScale = scaleLinear()
       .domain(chartDomains.y)
       .range([
-        dimensions?.height -
-          (SETTINGS.chartMargins.top + SETTINGS.chartMargins.bottom),
-        0
+        dimensions?.height - (margins.top + margins.bottom),
+        20 // These 20px add some space between the countries at the top of the chart itself
       ]);
 
     const xScale = scaleBand()
       .domain(chartDomains.x)
-      .range([
-        0,
-        chartContainerWidth -
-          (SETTINGS.chartMargins.left + SETTINGS.chartMargins.right)
-      ]);
+      .range([0, chartContainerWidth - (margins.left + margins.right)]);
 
     // Chart config
     setChartConfig({
       chartId: `#iconic-chart-country-${type}-${id}`,
-      margins: SETTINGS.chartMargins,
+      margins,
       dimensions: dimensions?.width && dimensions,
       domains: chartDomains?.x && chartDomains?.y && chartDomains,
       axis: {

@@ -1,5 +1,6 @@
 /* eslint-disable no-mixed-operators */
 import React, { useMemo } from 'react';
+import { format } from 'd3-format';
 // import PropTypes from 'prop-types';
 
 import EmissionsBarComponent from '../components/emissions-bar';
@@ -71,6 +72,7 @@ const TargetEmissionsComponent = ({ chartConfig = {}, settings }) => {
         <g key={entry?.iso} transform={`translate(${offsetToCenterBars},0)`}>
           <EmissionsBarComponent
             key={`${2035}-${entry?.iso}`}
+            color={entry?.iso === 'WORLD' ? '#0845CB' : '#83A2E5'}
             type={2035}
             margins={margins}
             dimensions={dimensions}
@@ -88,6 +90,48 @@ const TargetEmissionsComponent = ({ chartConfig = {}, settings }) => {
           />
         </g>
       ))}
+      {/* Total emissions */}
+      <g transform={`translate(0,${dimensions.height - margins.bottom + 20})`}>
+        {/* Label */}
+        <g transform={`translate(${margins.left - 12},0)`}>
+          <text x={0} y={0} dy="1em" fill="currentColor" textAnchor="end">
+            Total emissions
+          </text>
+          <text x={0} y={18} dy="1em" fill="currentColor" textAnchor="end">
+            in 2021
+          </text>
+          <text x={0} y={36} dy="1em" fill="currentColor" textAnchor="end">
+            (MtCO2e)
+          </text>
+        </g>
+        {/* Background rect */}
+        <rect
+          fill="#F1F4FB"
+          x={margins.left}
+          y={0}
+          height={margins.bottom - 20}
+          width={dimensions.width - margins.left - margins.right}
+        />
+        {/* Values */}
+        <g
+          transform={`translate(${margins.left +
+            offsetToCenterBars +
+            CHANGE_BAR_WIDTH -
+            1},0)`}
+        >
+          {emissionsData?.map(({ name, total2021 }) => (
+            <text
+              x={scales.x(name)}
+              y={(margins.bottom - 20) / 2}
+              dy="0.5em"
+              fill="currentColor"
+              textAnchor="middle"
+            >
+              {format(',.2f')(total2021 || 0)}
+            </text>
+          ))}
+        </g>
+      </g>
     </>
   );
 };
