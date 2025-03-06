@@ -42,27 +42,13 @@ const CountryBreakdownComponent = ({
     return [...new Set(selectedLocations)];
   }, [locations]);
 
-  // Option to default to when no location is selected
-  // const defaultLocationOption = useMemo(
-  //   () =>
-  //     data?.locations?.find(
-  //       ({ iso }) => iso === 'G20' // WORLD | G20 | TOP | BRA (20) | CHN (29) | IDN (65)
-  //     ),
-  //   [data]
-  // );
-
   const defaultLocationOptions = useMemo(
-    () =>
-      data?.locations?.filter(
-        // ({ iso }) => ['GBR', 'RUS', 'CHN', 'PRT', 'ESP', 'EUU']?.includes(iso)
-        ({ iso }) => ['TOP']?.includes(iso)
-      ),
+    () => data?.locations?.filter(({ iso }) => ['TOP']?.includes(iso)),
     [data]
   );
 
   // Set default location when data changes
   useEffect(() => {
-    // setLocations(defaultLocationOption ? [defaultLocationOption] : []);
     setLocations(defaultLocationOptions || []);
   }, [data]);
 
@@ -122,7 +108,6 @@ const CountryBreakdownComponent = ({
   // Handle location change - when no location selected, we'll pre-selected the default one
   const handleLocationSelectionChange = entries => {
     if (!entries?.length) {
-      // setLocations(defaultLocationOption ? [defaultLocationOption] : []);
       setLocations(defaultLocationOptions || []);
       return;
     }

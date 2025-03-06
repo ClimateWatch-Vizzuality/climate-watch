@@ -1,6 +1,5 @@
 /* eslint-disable no-mixed-operators */
 import React, { useMemo } from 'react';
-// import PropTypes from 'prop-types';
 
 import EmissionsBarComponent from '../components/emissions-bar';
 import { TARGET_YEARS, CONDITIONAL_OPTIONS } from '../../constants';

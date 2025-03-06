@@ -1,7 +1,6 @@
 /* eslint-disable no-mixed-operators */
 import React, { useMemo } from 'react';
 import { format } from 'd3-format';
-// import PropTypes from 'prop-types';
 
 import EmissionsBarComponent from '../components/emissions-bar';
 

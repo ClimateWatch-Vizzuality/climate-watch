@@ -54,8 +54,6 @@ const CountryChartComponent = ({
 
       const sortEntries = entries =>
         entries?.sort((a, b) => {
-          // TODO: How about countries with no 2035 target?
-          //       Do they go to the end or do we order by 2020 target?
           const aValue = a?.[conditionalNDC?.value]?.[2035] || 100000;
           const bValue = b?.[conditionalNDC?.value]?.[2035] || 100000;
           return aValue - bValue;
@@ -135,8 +133,6 @@ const CountryChartComponent = ({
 
       const sortEntries = entries =>
         entries?.sort((a, b) => {
-          // TODO: How about countries with no 2035 target?
-          //       Do they go to the end or do we order by 2020 target?
           const aValue = a?.[conditionalNDC?.value] || 100000;
           const bValue = b?.[conditionalNDC?.value] || 100000;
           return aValue - bValue;

@@ -7,13 +7,7 @@ import { line } from 'd3-shape';
 import LineComponent from '../components/line/component';
 
 const AxisGridComponent = ({ chartConfig = {} }) => {
-  const {
-    chartId,
-    axis,
-    /* domains, */ scales,
-    margins,
-    dimensions
-  } = chartConfig;
+  const { chartId, axis, scales, margins, dimensions } = chartConfig;
 
   if (!scales) return null;
 
