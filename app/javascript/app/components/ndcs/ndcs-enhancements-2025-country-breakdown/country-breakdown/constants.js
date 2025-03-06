@@ -1,7 +1,7 @@
 import BaselineEmissionsComponent from './country-chart/baseline-emissions';
 import TargetEmissionsComponent from './country-chart/target-emissions';
 
-export const BASELINE_YEARS = [1990, 2005, 2018];
+export const BASELINE_YEARS = [1990, 2005, 2019];
 export const TARGET_YEARS = [2030, 2035];
 export const CONDITIONAL_OPTIONS = ['unconditional', 'conditional'];
 
