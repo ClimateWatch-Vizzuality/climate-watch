@@ -7,6 +7,18 @@ export const TOOLTIPS = {
     }
   },
   targets: {
+    2030: {
+      '2.0C': {
+        id: 'global-targets-2030-2_0C-tooltip',
+        label: '2030 - 2°C Target',
+        color: '#579B7D'
+      },
+      '1.5C': {
+        id: 'global-targets-2030-1_5-tooltip',
+        label: '2030 - 1.5°C Target',
+        color: '#8CB73F'
+      }
+    },
     2035: {
       '2.0C': {
         id: 'global-targets-2035-2_0C-tooltip',
@@ -14,7 +26,7 @@ export const TOOLTIPS = {
         color: '#579B7D'
       },
       '1.5C': {
-        id: 'global-targets-2035-1_5-tooltipC',
+        id: 'global-targets-2035-1_5-tooltip',
         label: '2035 - 1.5°C Target',
         color: '#8CB73F'
       }

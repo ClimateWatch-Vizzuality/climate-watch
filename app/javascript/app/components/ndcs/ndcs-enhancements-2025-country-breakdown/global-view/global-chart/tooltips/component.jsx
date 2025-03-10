@@ -32,6 +32,10 @@ const TooltipsComponent = ({ data }) => {
       )
     };
     const targets = {
+      2030: {
+        '2.0C': formatGtValue(data?.targets?.[2030]?.['2.0C']),
+        '1.5C': formatGtValue(data?.targets?.[2030]?.['1.5C'])
+      },
       2035: {
         '2.0C': formatGtValue(data?.targets?.[2035]?.['2.0C']),
         '1.5C': formatGtValue(data?.targets?.[2035]?.['1.5C'])
@@ -64,6 +68,18 @@ const TooltipsComponent = ({ data }) => {
       />
 
       {/* Targets */}
+      <TooltipComponent
+        id={TOOLTIPS.targets[2030]['2.0C'].id}
+        label={TOOLTIPS.targets[2030]['2.0C'].label}
+        color={TOOLTIPS.targets[2030]['2.0C'].color}
+        value={tooltipValues?.targets[2030]['2.0C']}
+      />
+      <TooltipComponent
+        id={TOOLTIPS.targets[2030]['1.5C'].id}
+        label={TOOLTIPS.targets[2030]['1.5C'].label}
+        color={TOOLTIPS.targets[2030]['1.5C'].color}
+        value={tooltipValues?.targets[2030]['1.5C']}
+      />
       <TooltipComponent
         id={TOOLTIPS.targets[2035]['2.0C'].id}
         label={TOOLTIPS.targets[2035]['2.0C'].label}
