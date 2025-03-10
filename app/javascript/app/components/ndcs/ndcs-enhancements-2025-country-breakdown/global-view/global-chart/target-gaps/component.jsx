@@ -46,8 +46,8 @@ const TargetGapsComponent = ({ chartConfig = {} }) => {
       }
     },
     offset:
-      scales.y(reductionsData?.[YEAR]?.actual) -
-      scales.y(reductionsData?.[YEAR]?.target)
+      scales.y(reductionsData?.[YEAR]?.target) -
+      scales.y(reductionsData?.[YEAR]?.actual)
   };
 
   // Lower limit (1.5C)
@@ -70,8 +70,8 @@ const TargetGapsComponent = ({ chartConfig = {} }) => {
       }
     },
     offset:
-      scales.y(reductionsData?.[YEAR]?.actual) -
-      scales.y(reductionsData?.[YEAR]?.target)
+      scales.y(reductionsData?.[YEAR]?.target) -
+      scales.y(reductionsData?.[YEAR]?.actual)
   };
 
   return (

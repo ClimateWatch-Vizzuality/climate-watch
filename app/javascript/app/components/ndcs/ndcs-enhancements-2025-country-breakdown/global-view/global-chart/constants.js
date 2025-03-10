@@ -28,12 +28,12 @@ export const TOOLTIPS = {
       markers: {
         upperLimit: {
           id: 'global-emissions-reductions-upper-limit-tooltip',
-          label: '2030 - BAU',
+          label: '',
           color: '#8F8F9F'
         },
         lowerLimit: {
           id: 'global-emissions-reductions-lower-limit-tooltip',
-          label: '2030 - Unconditional 2020 NDC',
+          label: '',
           color: '#8F8F9F'
         }
       }

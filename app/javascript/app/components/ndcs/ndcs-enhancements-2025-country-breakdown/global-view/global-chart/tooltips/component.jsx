@@ -8,25 +8,27 @@ import { TOOLTIPS } from '../constants';
 const TooltipsComponent = ({ data }) => {
   if (!data) return null;
 
-  const formatGtValue = (value) => {
+  const formatGtValue = value => {
     if (value % 1 === 0) return `${value}Gt`;
     const formattedGtValue = format('.1f')(value);
     return `${formattedGtValue}Gt`;
   };
 
   const tooltipValues = useMemo(() => {
-    const historical = formatGtValue(data?.historical?.[data?.historical?.length - 1]?.y);
+    const historical = formatGtValue(
+      data?.historical?.[data?.historical?.length - 1]?.y
+    );
     const reductions = {
       2030: {
-        value: formatGtValue(
-          data?.reductions?.['2030']?.target -
-            data?.reductions?.['2030']?.actual
-        ),
-        upperLimit: formatGtValue(data?.reductions?.['2030']?.target),
-        lowerLimit: formatGtValue(data?.reductions?.['2030']?.actual)
+        label: `2030 - ${
+          data?.isConditionalNDC ? 'Conditional' : 'Unconditional'
+        } 2020 NDC`,
+        value: formatGtValue(data?.reductions?.['2035']?.actual),
+        upperLimit: '',
+        lowerLimit: formatGtValue(data?.reductions?.['2035']?.actual)
       },
       2035: formatGtValue(
-        data?.reductions?.['2035']?.target - data?.reductions?.['2035']?.actual
+        data?.reductions?.['2035']?.actual - data?.reductions?.['2035']?.target
       )
     };
     const targets = {
@@ -90,7 +92,7 @@ const TooltipsComponent = ({ data }) => {
       />
       <TooltipComponent
         id={TOOLTIPS.reductions.emissionsReductions.markers.lowerLimit.id}
-        label={TOOLTIPS.reductions.emissionsReductions.markers.lowerLimit.label}
+        label={tooltipValues?.reductions?.[2030]?.label}
         color={TOOLTIPS.reductions.emissionsReductions.markers.lowerLimit.color}
         value={tooltipValues?.reductions?.[2030]?.lowerLimit}
       />
