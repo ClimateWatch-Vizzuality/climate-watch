@@ -164,16 +164,13 @@ const MultiselectDropdownComponent = ({
                         {region.label}
                       </div>
                       {isRegionExpanded(region.label) && (
-                        <div
-                          className={cx(styles.expandedRegionsContainer, {
-                            [styles.expandedMediumRegionContainer]:
-                              region.label === 'G77',
-                            [styles.expandedHighRegionContainer]:
-                              region.label === 'World'
-                          })}
-                        >
+                        <div className={cx(styles.expandedRegionsContainer)}>
                           {region.regionCountries.map(country => (
-                            <p key={country.iso} className={styles.regionName}>
+                            <p
+                              key={country.iso}
+                              title={country.label}
+                              className={styles.regionName}
+                            >
                               {country.label}
                             </p>
                           ))}

@@ -142,6 +142,7 @@ const GlobalChartComponent = ({ type = 'chart', data }) => {
       data
     });
   }, [
+    type,
     chartContainerWidth,
     historicalData,
     projectedData,
@@ -154,9 +155,6 @@ const GlobalChartComponent = ({ type = 'chart', data }) => {
 
   return (
     <div className={styles.chartContainer}>
-      {/* <div data-tip data-for="test-tooltip-id">
-        TEST
-      </div> */}
       <div ref={chartContainer} className={styles.chartContainerGlobal}>
         <svg
           id={`${chartConfig?.chartId?.substring(1)}`}

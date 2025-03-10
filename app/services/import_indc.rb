@@ -320,9 +320,11 @@ class ImportIndc
   def country_emission_attributes(location, emission)
     {
       location: location,
+      latest_ndc: emission[:latest_ndc]&.to_s,
+      total_emissions: emission[:total_emissions]&.to_f,
       historical_cw1990: emission[:historical_cw1990]&.to_f,
       historical_cw2005: emission[:historical_cw2005]&.to_f,
-      historical_cw2018: emission[:historical_cw2018]&.to_f,
+      historical_cw2019: emission[:historical_cw2019]&.to_f,
       targets_nfgs_uc2030: emission[:targets_nfgs_uc2030]&.to_f,
       targets_nfgs_c2030: emission[:targets_nfgs_c2030]&.to_f,
       targets_nfgs_uc2035: emission[:targets_nfgs_uc2035]&.to_f,
@@ -339,12 +341,12 @@ class ImportIndc
       baseline2005_2035_uc_percentage: emission[:baseline2005_2035_uc_percentage]&.to_f,
       baseline2005_2035_c: emission[:baseline2005_2035_c]&.to_f,
       baseline2005_2035_c_percentage: emission[:baseline2005_2035_c_percentage]&.to_f,
-      baseline2018_2030_uc: emission[:baseline2018_2030_uc]&.to_f,
-      baseline2018_2030_uc_percentage: emission[:baseline2018_2030_uc_percentage]&.to_f,
-      baseline2018_2035_uc: emission[:baseline2018_2035_uc]&.to_f,
-      baseline2018_2035_uc_percentage: emission[:baseline2018_2035_uc_percentage]&.to_f,
-      baseline2018_2035_c: emission[:baseline2018_2035_c]&.to_f,
-      baseline2018_2035_c_percentage: emission[:baseline2018_2035_c_percentage]&.to_f,
+      baseline2019_2030_uc: emission[:baseline2019_2030_uc]&.to_f,
+      baseline2019_2030_uc_percentage: emission[:baseline2019_2030_uc_percentage]&.to_f,
+      baseline2019_2035_uc: emission[:baseline2019_2035_uc]&.to_f,
+      baseline2019_2035_uc_percentage: emission[:baseline2019_2035_uc_percentage]&.to_f,
+      baseline2019_2035_c: emission[:baseline2019_2035_c]&.to_f,
+      baseline2019_2035_c_percentage: emission[:baseline2019_2035_c_percentage]&.to_f,
       absolute_emissions_comparison_c: emission[:absolute_emissions_comparison_c]&.to_f,
       absolute_emissions_comparison_uc: emission[:absolute_emissions_comparison_uc]&.to_f
     }
