@@ -40,7 +40,7 @@ const GlobalChartComponent = ({ type = 'chart', data }) => {
     return () => window.removeEventListener('resize', onResize);
   }, []);
 
-  // Calculating chart domains and ticks to display on the axises, based on the data
+  // Calculating chart domains and ticks to display on the axes, based on the data
   const chartDomains = useMemo(() => {
     const xDomain = [SETTINGS.chartMinYear, SETTINGS.chartMaxYear + 13];
 

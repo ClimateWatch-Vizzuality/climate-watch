@@ -25,37 +25,6 @@ const getLastUpdated = createSelector([getGlobalEmissions], globalEmissions => {
   return globalEmissions?.[0]?.updated_at;
 });
 
-const getPolicies = createSelector([getGlobalEmissions], globalEmissions => {
-  if (!globalEmissions) return null;
-  return globalEmissions
-    .map(entry => ({
-      year: entry?.year,
-      value: entry?.current_policies_scenario
-    }))
-    ?.filter(({ value }) => !!value)
-    ?.reduce(
-      (acc, cur) => ({
-        ...acc,
-        [cur?.year]: cur?.value
-      }),
-      {}
-    );
-});
-
-const getProjectedEmissions = createSelector(
-  [getHistoricalEmissions, getPolicies],
-  (historicalEmissions, policies) => {
-    if (!historicalEmissions || !policies) return null;
-    return [
-      historicalEmissions?.[historicalEmissions?.length - 1],
-      {
-        year: 2030,
-        value: policies?.[2030]
-      }
-    ];
-  }
-);
-
 const getTargets = createSelector([getGlobalEmissions], globalEmissions => {
   if (!globalEmissions) return null;
   return globalEmissions
@@ -114,26 +83,10 @@ const getNdcs = createSelector([getGlobalEmissions], globalEmissions => {
 });
 
 export const getData = createSelector(
-  [
-    getHistoricalEmissions,
-    getProjectedEmissions,
-    getTargets,
-    getPolicies,
-    getNdcs,
-    getLastUpdated
-  ],
-  (
+  [getHistoricalEmissions, getTargets, getNdcs, getLastUpdated],
+  (historicalEmissions, targets, ndcs, lastUpdated) => ({
     historicalEmissions,
-    projectedEmissions,
     targets,
-    policies,
-    ndcs,
-    lastUpdated
-  ) => ({
-    historicalEmissions,
-    projectedEmissions,
-    targets,
-    policies,
     ndcs,
     lastUpdated
   })

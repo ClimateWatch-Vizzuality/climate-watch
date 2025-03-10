@@ -15,6 +15,24 @@ const TargetsComponent = ({ chartConfig = {} }) => {
         type="upper-target"
         margins={margins}
         position={{
+          x: scales.x(2030),
+          y: scales.y(targetsData[2030]['2.0C'])
+        }}
+        tooltipId={TOOLTIPS.targets[2030]['2.0C'].id}
+      />
+      <CircleComponent
+        type="lower-target"
+        margins={margins}
+        position={{
+          x: scales.x(2030),
+          y: scales.y(targetsData[2030]['1.5C'])
+        }}
+        tooltipId={TOOLTIPS.targets[2030]['1.5C'].id}
+      />
+      <CircleComponent
+        type="upper-target"
+        margins={margins}
+        position={{
           x: scales.x(2035),
           y: scales.y(targetsData[2035]['2.0C'])
         }}

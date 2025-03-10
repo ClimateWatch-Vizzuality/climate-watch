@@ -27,14 +27,7 @@ const GlobalViewComponent = props => {
     handlePngDownloadModal
   } = props;
 
-  const {
-    historicalEmissions,
-    projectedEmissions,
-    policies,
-    ndcs,
-    targets: targetsData,
-    lastUpdated
-  } = data;
+  const { historicalEmissions, ndcs, targets: targetsData, lastUpdated } = data;
 
   // Calculating historical and projection chart data for display
   const historicalChartData = useMemo(
@@ -49,27 +42,28 @@ const GlobalViewComponent = props => {
   );
 
   const projectionChartData = useMemo(
-    () =>
-      projectedEmissions?.map(({ year, value }) => ({
-        x: year,
-        y: value
-      })),
-    [historicalEmissions]
+    () => [
+      {
+        x: 2021,
+        y: historicalChartData?.[historicalChartData?.length - 1]?.y
+      },
+      {
+        x: 2030,
+        y: ndcs?.['2030']?.[conditionalNDC?.value]?.['2020']
+      }
+    ],
+    [ndcs, historicalChartData, conditionalNDC]
   );
 
   // Calculating reductions data for display on the 2030 and 2035 bars
   const reductionsData = useMemo(
     () => ({
-      2030: {
-        target: policies?.['2030'],
-        actual: ndcs?.['2030']?.unconditional?.['2020']
-      },
       2035: {
-        target: ndcs?.['2030']?.unconditional?.['2020'],
-        actual: ndcs?.['2035']?.[conditionalNDC?.value]?.['2025']
+        actual: ndcs?.['2030']?.[conditionalNDC?.value]?.['2020'],
+        target: ndcs?.['2035']?.[conditionalNDC?.value]?.['2025']
       }
     }),
-    [ndcs, policies, conditionalNDC]
+    [ndcs, conditionalNDC]
   );
 
   // Calculating target gaps data for bar display
@@ -99,13 +93,20 @@ const GlobalViewComponent = props => {
       targets: targetsData,
       reductions: reductionsData,
       targetGaps: targetGapsData,
+      isConditionalNDC: conditionalNDC?.value === 'conditional',
       lastUpdated
     });
-  }, [historicalChartData, projectionChartData, reductionsData, targetsData]);
+  }, [
+    historicalChartData,
+    projectionChartData,
+    reductionsData,
+    targetsData,
+    conditionalNDC
+  ]);
 
   return (
     <>
-      <div className={styles.wrapper}>
+      <div className={styles.globalWrapper}>
         <div className={styles.summaryHeader}>
           <div className={styles.summaryDescription} />
           <div className={styles.buttonGroupContainer}>
@@ -149,9 +150,7 @@ const GlobalViewComponent = props => {
 
         <GlobalChart data={chartData} />
 
-        <div className={styles.tagsContainer}>
-          <TagsComponent tags={TAGS_DATA} />
-        </div>
+        <TagsComponent tags={TAGS_DATA[conditionalNDC?.value]} />
         {formattedLastUpdated && (
           <div className={styles.lastUpdated}>
             Last updated on {formattedLastUpdated}
@@ -159,11 +158,9 @@ const GlobalViewComponent = props => {
         )}
       </div>
       <ModalPngDownload id={pngDownloadId}>
-        <div>
+        <div className={styles.globalDownloadModalWrapper}>
           <GlobalChart type="png-download" data={chartData} />
-          <div className={styles.tagsContainer}>
-            <TagsComponent tags={TAGS_DATA} />
-          </div>
+          <TagsComponent tags={TAGS_DATA[conditionalNDC?.value]} />
           <span className={styles.spacer} />
         </div>
       </ModalPngDownload>
@@ -176,9 +173,7 @@ const GlobalViewComponent = props => {
 GlobalViewComponent.propTypes = {
   data: PropTypes.shape({
     historicalEmissions: PropTypes.object.isRequired,
-    projectedEmissions: PropTypes.object.isRequired,
     targets: PropTypes.object.isRequired,
-    policies: PropTypes.object.isRequired,
     ndcs: PropTypes.object.isRequired,
     lastUpdated: PropTypes.string.isRequired
   }).isRequired,

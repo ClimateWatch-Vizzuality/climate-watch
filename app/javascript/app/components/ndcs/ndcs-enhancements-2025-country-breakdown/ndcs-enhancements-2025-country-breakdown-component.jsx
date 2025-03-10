@@ -26,7 +26,7 @@ const tabs = [
 ];
 
 const Ndc2025CountryBreakdownComponent = () => {
-  const [selectedTab, setSelectedTab] = useState(tabs[1]);
+  const [selectedTab, setSelectedTab] = useState(tabs[0]);
   const ViewComponent = selectedTab?.Component || Fragment;
 
   return (
