@@ -10,8 +10,7 @@ import NdcContentCountryEmissionsProvider from 'providers/ndc-content-country-em
 
 import styles from './ndcs-enhancements-2025-country-breakdown-styles.scss';
 import GlobalViewComponent from './global-view';
-// import CountryBreakdownComponent from './country-breakdown';
-import CountryBreakdownFlourishComponent from './country-breakdown-flourish';
+import CountryBreakdownComponent from './country-breakdown';
 
 const tabs = [
   {
@@ -22,7 +21,7 @@ const tabs = [
   {
     name: 'Country Breakdown',
     value: 'country',
-    Component: CountryBreakdownFlourishComponent
+    Component: CountryBreakdownComponent
   }
 ];
 
