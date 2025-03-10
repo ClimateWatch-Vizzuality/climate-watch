@@ -57,7 +57,7 @@ module Indc
               :baseline2018_2030_uc, :baseline2018_2030_uc_percentage, :baseline2018_2035_uc,
               :baseline2018_2035_uc_percentage, :baseline2018_2035_c, :baseline2018_2035_c_percentage,
               :absolute_emissions_comparison_c, :absolute_emissions_comparison_uc, :total_emissions,
-              :latest_ndc, :historical_cw2019, :baseline2019_2030_uc, :baseline2019_2030_uc_percentage,
+              :historical_cw2019, :baseline2019_2030_uc, :baseline2019_2030_uc_percentage,
               :baseline2019_2035_uc, :baseline2019_2035_uc_percentage, :baseline2019_2035_c,
               :baseline2019_2035_c_percentage,
               numericality: {allow_nil: true}
