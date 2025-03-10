@@ -1113,7 +1113,16 @@ CREATE TABLE public.indc_country_emissions (
     absolute_emissions_comparison_c double precision,
     absolute_emissions_comparison_uc double precision,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    total_emissions double precision,
+    latest_ndc text,
+    historical_cw2019 double precision,
+    baseline2019_2030_uc double precision,
+    baseline2019_2030_uc_percentage double precision,
+    baseline2019_2035_uc double precision,
+    baseline2019_2035_uc_percentage double precision,
+    baseline2019_2035_c double precision,
+    baseline2019_2035_c_percentage double precision
 );
 
 
@@ -5006,6 +5015,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20250114104537'),
 ('20250114105639'),
 ('20250114120726'),
-('20250116191108');
+('20250116191108'),
+('20250305213814'),
+('20250305215041'),
+('20250305221411');
 
 

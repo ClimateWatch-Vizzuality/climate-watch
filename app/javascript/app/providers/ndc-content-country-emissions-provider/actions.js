@@ -15,7 +15,7 @@ const getCountryEmissions = createThunkAction(
     apiWithCache
       .get('/api/v1/data/ndc_content/country_emissions')
       .then(response => {
-        dispatch(getCountryEmissionsReady(response.data));
+        dispatch(getCountryEmissionsReady(response.data?.data));
       })
       .catch(error => {
         console.warn(error);

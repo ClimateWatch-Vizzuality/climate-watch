@@ -16,6 +16,7 @@ const TooltipComponent = ({ id, label, value, color }) => {
       didMountRef.current = true;
     }
   });
+
   return (
     <div className={styles.globalChartTooltipWrapper}>
       <ReactTooltip id={id} className={styles.globalChartTooltipTheme}>
