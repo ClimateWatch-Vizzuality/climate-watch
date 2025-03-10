@@ -4,7 +4,6 @@ import { chartConfigPropTypes } from '../../index';
 import { ChangeBarComponent } from '../components';
 import { TOOLTIPS } from '../constants';
 
-const BASE_REDUCTIONS_YEAR = 2030;
 const ADDITIONAL_REDUCTIONS_YEAR = 2035;
 
 const LIMITS_DISPLAY_OFFSETS = {
@@ -13,28 +12,28 @@ const LIMITS_DISPLAY_OFFSETS = {
 };
 
 const ReductionsComponent = ({ chartConfig = {} }) => {
-  const { data: allData, options, margins, dimensions, scales } = chartConfig;
+  const { data: allData, margins, dimensions, scales } = chartConfig;
   const reductionsData = allData?.reductions;
 
   if (!reductionsData || !margins || !dimensions || !scales) return null;
 
   const baseReductions = {
-    value:
-      reductionsData?.[BASE_REDUCTIONS_YEAR]?.target -
-      reductionsData?.[BASE_REDUCTIONS_YEAR]?.actual,
+    value: 0,
     valueFormat: ',.1f',
-    legend: ['Emission reductions', 'pledged in 2020 NDCs'],
+    legend: [
+      'Estimated emissions',
+      'based on previous',
+      `${allData?.isConditionalNDC ? 'conditional' : 'unconditional'} NDCs`
+    ],
     color: '#999C9F',
     position: {
       x: scales.x(2030),
-      y: scales.y(reductionsData?.[BASE_REDUCTIONS_YEAR]?.target)
+      y: scales.y(reductionsData?.[ADDITIONAL_REDUCTIONS_YEAR]?.actual)
     },
-    height:
-      scales.y(reductionsData?.[BASE_REDUCTIONS_YEAR]?.actual) -
-      scales.y(reductionsData?.[BASE_REDUCTIONS_YEAR]?.target),
+    height: 0,
     connectingLines: {
       lower: {
-        value: reductionsData?.[BASE_REDUCTIONS_YEAR]?.actual,
+        value: reductionsData?.[ADDITIONAL_REDUCTIONS_YEAR]?.actual,
         offset: -LIMITS_DISPLAY_OFFSETS.baseReductions
       }
     }
@@ -42,26 +41,24 @@ const ReductionsComponent = ({ chartConfig = {} }) => {
 
   const additionalReductions = {
     value:
-      reductionsData?.[ADDITIONAL_REDUCTIONS_YEAR]?.target -
-      reductionsData?.[ADDITIONAL_REDUCTIONS_YEAR]?.actual,
+      reductionsData?.[ADDITIONAL_REDUCTIONS_YEAR]?.actual -
+      reductionsData?.[ADDITIONAL_REDUCTIONS_YEAR]?.target,
     legend: [
       'Additional emission',
       'reductions from',
-      options?.conditionalNdc
-        ? 'conditional 2025 NDCs'
-        : 'unconditional 2025 NDCs'
+      allData?.isConditionalNDC ? 'conditional NDCs' : 'unconditional NDCs'
     ],
     color: '#0845CB',
     position: {
       x: scales.x(2035),
-      y: scales.y(reductionsData?.[ADDITIONAL_REDUCTIONS_YEAR]?.target)
+      y: scales.y(reductionsData?.[ADDITIONAL_REDUCTIONS_YEAR]?.actual)
     },
     height:
-      scales.y(reductionsData?.[ADDITIONAL_REDUCTIONS_YEAR]?.actual) -
-      scales.y(reductionsData?.[ADDITIONAL_REDUCTIONS_YEAR]?.target),
+      scales.y(reductionsData?.[ADDITIONAL_REDUCTIONS_YEAR]?.target) -
+      scales.y(reductionsData?.[ADDITIONAL_REDUCTIONS_YEAR]?.actual),
     connectingLines: {
       lower: {
-        value: reductionsData?.[ADDITIONAL_REDUCTIONS_YEAR]?.actual,
+        value: reductionsData?.[ADDITIONAL_REDUCTIONS_YEAR]?.target,
         offset: LIMITS_DISPLAY_OFFSETS.additionalReductions
       }
     }
@@ -85,9 +82,7 @@ const ReductionsComponent = ({ chartConfig = {} }) => {
         connectingLines={baseReductions?.connectingLines}
         displayLimitCircles
         tooltipId={TOOLTIPS.reductions.emissionsReductions.id}
-        upperLimitTooltipId={
-          TOOLTIPS.reductions.emissionsReductions.markers.upperLimit.id
-        }
+        upperLimitTooltipId={''}
         lowerLimitTooltipId={
           TOOLTIPS.reductions.emissionsReductions.markers.lowerLimit.id
         }
