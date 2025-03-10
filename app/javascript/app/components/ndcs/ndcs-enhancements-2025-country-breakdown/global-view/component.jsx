@@ -105,7 +105,7 @@ const GlobalViewComponent = props => {
 
   return (
     <>
-      <div className={styles.wrapper}>
+      <div className={styles.globalWrapper}>
         <div className={styles.summaryHeader}>
           <div className={styles.summaryDescription} />
           <div className={styles.buttonGroupContainer}>
@@ -149,9 +149,7 @@ const GlobalViewComponent = props => {
 
         <GlobalChart data={chartData} />
 
-        <div className={styles.tagsContainer}>
-          <TagsComponent tags={TAGS_DATA} />
-        </div>
+        <TagsComponent tags={TAGS_DATA} />
         {formattedLastUpdated && (
           <div className={styles.lastUpdated}>
             Last updated on {formattedLastUpdated}
@@ -159,11 +157,9 @@ const GlobalViewComponent = props => {
         )}
       </div>
       <ModalPngDownload id={pngDownloadId}>
-        <div>
+        <div className={styles.globalDownloadModalWrapper}>
           <GlobalChart type="png-download" data={chartData} />
-          <div className={styles.tagsContainer}>
-            <TagsComponent tags={TAGS_DATA} />
-          </div>
+          <TagsComponent tags={TAGS_DATA} />
           <span className={styles.spacer} />
         </div>
       </ModalPngDownload>

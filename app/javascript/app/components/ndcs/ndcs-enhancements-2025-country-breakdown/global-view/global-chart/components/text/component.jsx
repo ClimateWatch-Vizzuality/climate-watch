@@ -22,11 +22,20 @@ const typeStyles = {
   }
 };
 
-const TextComponent = ({ type = 'value', value, color, dimensions, position, margins, tooltipId }) => {
+const TextComponent = ({
+  type = 'value',
+  value,
+  color,
+  dimensions,
+  position,
+  margins,
+  tooltipId
+}) => {
   if (!value || !margins || !position || !dimensions) return null;
 
   return (
     <text
+      className="customFontSize"
       width={dimensions.width}
       height={dimensions.height}
       x={position.x}
