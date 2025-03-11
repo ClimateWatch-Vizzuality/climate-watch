@@ -1,10 +1,10 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import TooltipComponent from '../components/tooltip/component';
 
 const TooltipsComponent = ({ data, settings, view }) => {
-  if (!data) return null;
+  const [count, setCount] = useState(0); // `count` in incremented everytime `tooltipValues` changes
 
   const tooltipValues = useMemo(() => {
     const type = settings?.conditionalNDC?.value;
@@ -41,13 +41,18 @@ const TooltipsComponent = ({ data, settings, view }) => {
       ?.flat();
   }, [data, settings, view]);
 
-  if (!tooltipValues) return null;
+  useEffect(() => {
+    setCount(c => c + 1);
+  }, [tooltipValues]);
+
+  if (!data || !tooltipValues) return null;
 
   return (
     <>
       {tooltipValues?.map(({ id, label, color, value, country }) => (
         <TooltipComponent
-          key={id}
+          // `count` is very important here as it makes sure the tooltip it attached to the latest DOM element
+          key={[id, count]}
           id={id}
           label={label}
           color={color}
