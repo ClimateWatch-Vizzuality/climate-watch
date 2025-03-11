@@ -103,14 +103,6 @@ const getLastUpdated = createSelector(
 export const getEmissionsByCountry = createSelector(
   [getCountries, getCountryEmissions],
   (countries, countryEmissions) => {
-    // TODO: Remove. Just for debugging due to outliers such as VNM
-    const countryEmissionsFiltered = countryEmissions?.filter(
-      entry =>
-        !['VNM', 'FSM', 'PLW', 'MDV', 'MLI'].includes(
-          entry?.location?.iso_code3
-        )
-    );
-
     const baselineForEntry = entry => {
       if (!entry) return null;
       const baselines = BASELINE_YEARS?.reduce((baseAcc, baseYear) => {
@@ -142,28 +134,41 @@ export const getEmissionsByCountry = createSelector(
     const targetForEntry = entry => {
       if (!entry) return null;
       return {
-        unconditional:
-          entry?.targets_nfgs_uc2035 - entry?.targets_nfgs_uc2030 || null,
-        conditional:
-          entry?.targets_nfgs_c2035 - entry?.targets_nfgs_c2030 || null,
+        unconditional: entry?.absolute_emissions_comparison_uc || null,
+        conditional: entry?.absolute_emissions_comparison_c || null,
         total_2021: entry?.total_emissions || 0,
         latest_ndc: entry?.latest_ndc
       };
     };
 
-    const processedData = countries?.reduce((acc, country) => {
-      const entry = countryEmissionsFiltered?.find(
-        ({ location }) => location?.iso_code3 === country?.iso_code3
-      );
-      return {
-        ...acc,
-        [country?.iso_code3]: {
-          location: country,
-          baseline: baselineForEntry(entry),
-          target: targetForEntry(entry)
+    const worldEntry = countryEmissions?.find(
+      ({ location }) => location.iso_code3 === 'WORLD'
+    );
+
+    const processedData = countries?.reduce(
+      (acc, country) => {
+        const entry = countryEmissions?.find(
+          ({ location }) => location?.iso_code3 === country?.iso_code3
+        );
+
+        return {
+          ...acc,
+          [country?.iso_code3]: {
+            location: country,
+            baseline: baselineForEntry(entry),
+            target: targetForEntry(entry)
+          }
+        };
+      },
+      {
+        // We manually add the world entry so that we have its data in the comparison target chart
+        WORLD: {
+          location: worldEntry?.location,
+          baseline: null,
+          target: targetForEntry(worldEntry)
         }
-      };
-    }, {});
+      }
+    );
 
     return processedData;
   }

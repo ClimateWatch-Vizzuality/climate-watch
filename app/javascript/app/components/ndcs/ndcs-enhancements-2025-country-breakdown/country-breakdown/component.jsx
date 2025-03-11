@@ -34,11 +34,14 @@ const CountryBreakdownComponent = ({
 
   // Locations ISOs (de-duplicated) from selection
   const locationsISOs = useMemo(() => {
-    const selectedLocations = locations?.reduce((acc, entry) => {
-      const isos =
-        entry?.groupId === 'regions' ? entry?.expandsTo : [entry?.iso];
-      return [...acc, ...isos];
-    }, []);
+    const selectedLocations = locations?.reduce(
+      (acc, entry) => {
+        const isos =
+          entry?.groupId === 'regions' ? entry?.expandsTo : [entry?.iso];
+        return [...acc, ...isos];
+      },
+      ['WORLD']
+    );
     return [...new Set(selectedLocations)];
   }, [locations]);
 
