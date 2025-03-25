@@ -32,7 +32,7 @@ export const SETTINGS = {
 
 export const VIEW_OPTIONS = [
   { label: 'Baseline Year Comparison', value: 'baseline' },
-  { label: '2030-2035 Target Comparison', value: 'target' }
+  { label: '2035-2030 Target Comparison', value: 'target' }
 ];
 
 export const LOCATION_GROUPS = [
