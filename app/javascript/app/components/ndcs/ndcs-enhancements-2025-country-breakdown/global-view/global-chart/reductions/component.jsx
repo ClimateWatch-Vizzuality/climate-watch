@@ -45,7 +45,7 @@ const ReductionsComponent = ({ chartConfig = {} }) => {
       reductionsData?.[ADDITIONAL_REDUCTIONS_YEAR]?.target,
     legend: [
       'Additional emission',
-      'reductions from',
+      'reductions from new',
       allData?.isConditionalNDC ? 'conditional NDCs' : 'unconditional NDCs'
     ],
     color: '#0845CB',
