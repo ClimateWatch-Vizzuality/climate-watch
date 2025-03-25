@@ -58,7 +58,11 @@ const CountryBreakdownComponent = ({
   // Parse data to a format the chart expects
   useEffect(() => {
     const baselineData = Object.values(data?.emissions || {})
-      ?.filter(entry => locationsISOs?.includes(entry?.location?.iso_code3))
+      ?.filter(
+        entry =>
+          locationsISOs?.includes(entry?.location?.iso_code3) &&
+          entry?.location?.iso_code3 !== 'WORLD'
+      )
       ?.reduce((acc, { location: entryLocation, baseline: entryBaseline }) => {
         const target = entryBaseline?.[baselineYear?.value]?.target;
         return [
