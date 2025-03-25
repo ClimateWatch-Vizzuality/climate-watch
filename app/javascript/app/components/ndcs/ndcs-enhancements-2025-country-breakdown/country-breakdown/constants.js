@@ -48,7 +48,7 @@ export const LOCATION_GROUPS = [
 
 export const BASELINE_YEAR_OPTIONS = (() =>
   BASELINE_YEARS?.map(year => ({
-    label: `${year} Historical Emissions`,
+    label: `${year} Emissions`,
     value: year
   })))();
 
