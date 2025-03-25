@@ -171,7 +171,7 @@ const CountryChartComponent = ({
       const sortedData = [
         {
           ...worldEntry,
-          name: 'Global Values'
+          name: 'Global Total'
         },
         ...sortEntries(
           [
