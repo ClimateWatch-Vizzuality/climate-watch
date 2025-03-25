@@ -10,24 +10,24 @@ export const TOOLTIPS = {
     2030: {
       '2.0C': {
         id: 'global-targets-2030-2_0C-tooltip',
-        label: '2030 - 2°C Target',
+        label: '2030 - 2°C Benchmark',
         color: '#579B7D'
       },
       '1.5C': {
         id: 'global-targets-2030-1_5-tooltip',
-        label: '2030 - 1.5°C Target',
+        label: '2030 - 1.5°C Benchmark',
         color: '#8CB73F'
       }
     },
     2035: {
       '2.0C': {
         id: 'global-targets-2035-2_0C-tooltip',
-        label: '2035 - 2°C Target',
+        label: '2035 - 2°C Benchmark',
         color: '#579B7D'
       },
       '1.5C': {
         id: 'global-targets-2035-1_5-tooltip',
-        label: '2035 - 1.5°C Target',
+        label: '2035 - 1.5°C Benchmark',
         color: '#8CB73F'
       }
     }
