@@ -45,15 +45,19 @@ const CountryBreakdownComponent = ({
     return [...new Set(selectedLocations)];
   }, [locations]);
 
-  const defaultLocationOptions = useMemo(
-    () => data?.locations?.filter(({ iso }) => ['TOP']?.includes(iso)),
-    [data]
-  );
+  const defaultLocationOptions = useMemo(() => {
+    let defaultIso = 'TOP';
+    if (view.value === 'baseline') {
+      defaultIso = 'WORLD';
+    }
+
+    return data?.locations?.filter(({ iso }) => iso === defaultIso);
+  }, [data, view]);
 
   // Set default location when data changes
   useEffect(() => {
     setLocations(defaultLocationOptions || []);
-  }, [data]);
+  }, [defaultLocationOptions]);
 
   // Parse data to a format the chart expects
   useEffect(() => {
