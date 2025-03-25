@@ -141,10 +141,7 @@ const CountryBreakdownComponent = ({
       <div className={styles.wrapper}>
         <div className={styles.summaryHeader}>
           <div className={styles.summaryDescription}>
-            <p>
-              Compare countries' 2030 and 2035 NDC targets to various baseline
-              years and evaluate the differences between the two target years.
-            </p>
+            <p>Compare NDC targets.</p>
           </div>
           <div className={styles.buttonGroupContainer}>
             <ButtonGroup
