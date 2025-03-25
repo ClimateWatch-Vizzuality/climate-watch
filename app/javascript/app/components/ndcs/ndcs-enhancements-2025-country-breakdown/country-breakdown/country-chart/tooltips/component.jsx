@@ -18,9 +18,7 @@ const TooltipsComponent = ({ data, settings, view }) => {
           targets?.map(year => ({
             id: `country-emissions-${entry?.iso}-${year}-tooltip`,
             label: `${year} ${type.charAt(0).toUpperCase() +
-              type.slice(
-                1
-              )} NDC Target Compared to ${baseline} Historical Emissions`,
+              type.slice(1)} NDC Target Compared to ${baseline} Emissions`,
             color: year === 2030 ? '#8F8F9F' : '#0845CB',
             value: `${Math.round(entry?.[type]?.[year])}%`,
             country: entry?.name
