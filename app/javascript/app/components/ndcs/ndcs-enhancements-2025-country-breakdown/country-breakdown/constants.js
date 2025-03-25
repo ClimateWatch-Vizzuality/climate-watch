@@ -13,7 +13,7 @@ export const CHART_COMPONENTS = {
 export const CHART_AXES = {
   baseline: {
     unit: '%',
-    title: 'Percent Change in Emissions relative to Baseline'
+    title: 'Percent Change in Emissions relative to Base Year'
   },
   target: {
     unit: 'MtCO2e',
@@ -31,7 +31,7 @@ export const SETTINGS = {
 };
 
 export const VIEW_OPTIONS = [
-  { label: 'Baseline Year Comparison', value: 'baseline' },
+  { label: 'Base Year Comparison', value: 'baseline' },
   { label: '2035-2030 Target Comparison', value: 'target' }
 ];
 

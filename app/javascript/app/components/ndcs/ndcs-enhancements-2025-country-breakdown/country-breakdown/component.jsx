@@ -191,7 +191,7 @@ const CountryBreakdownComponent = ({
             />
             {displayBaselineYearOptions && (
               <Dropdown
-                label="Baseline Year"
+                label="Base Year"
                 value={baselineYear}
                 options={BASELINE_YEAR_OPTIONS}
                 onValueChange={setBaselineYear}
