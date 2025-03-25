@@ -20,9 +20,7 @@ const TooltipsComponent = ({ data }) => {
     );
     const reductions = {
       2030: {
-        label: `2030 - ${
-          data?.isConditionalNDC ? 'Conditional' : 'Unconditional'
-        } 2020 NDC`,
+        label: '',
         value: formatGtValue(data?.reductions?.['2035']?.actual),
         upperLimit: '',
         lowerLimit: formatGtValue(data?.reductions?.['2035']?.actual)
