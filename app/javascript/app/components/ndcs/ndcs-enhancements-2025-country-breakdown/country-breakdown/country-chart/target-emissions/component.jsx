@@ -119,17 +119,19 @@ const TargetEmissionsComponent = ({ chartConfig = {}, settings }) => {
             CHANGE_BAR_WIDTH -
             1},0)`}
         >
-          {emissionsData?.map(({ name, total2021 }) => (
-            <text
-              x={scales.x(name)}
-              y={(margins.bottom - 20) / 2}
-              dy="0.5em"
-              fill="currentColor"
-              textAnchor="middle"
-            >
-              {format(',.2f')(total2021 || 0)}
-            </text>
-          ))}
+          {emissionsData
+            ?.filter(({ iso }) => iso !== 'OTHERS')
+            .map(({ name, total2021 }) => (
+              <text
+                x={scales.x(name)}
+                y={(margins.bottom - 20) / 2}
+                dy="0.5em"
+                fill="currentColor"
+                textAnchor="middle"
+              >
+                {format(',.2f')(total2021 || 0)}
+              </text>
+            ))}
         </g>
       </g>
     </>
