@@ -98,10 +98,10 @@ object_contents = {
   END
 
   "#{CW_FILES_PREFIX}indc/NDC_country_emissions.csv" => <<~END
-    iso_country,latest_ndc,total_emissions,historical_cw1990,historical_cw2005,historical_cw2019,targets_nfgs_uc2030,targets_nfgs_c2030,targets_nfgs_uc2035,targets_nfgs_c2035,baseline1990_2030_uc,baseline1990_2030_uc_percentage,baseline1990_2035_uc,baseline1990_2035_uc_percentage,baseline1990_2035_c,baseline1990_2035_c_percentage,baseline2005_2030_uc,baseline2005_2030_uc_percentage,baseline2005_2035_uc,baseline2005_2035_uc_percentage,baseline2005_2035_c,baseline2005_2035_c_percentage,baseline2019_2030_uc,baseline2019_2030_uc_percentage,baseline2019_2035_uc,baseline2019_2035_uc_percentage,baseline2019_2035_c,baseline2019_2035_c_percentage,absolute_emissions_comparison_c,absolute_emissions_comparison_uc
-    AFG,no_2035,12791.58,9.238795,16.75753,33.25262,44.9026090409889,45.784521230399,44.9026090409889,45.784521230399,-35.6638140409889,3.8602235509056,-35.6638140409889,3.8602235509056,-36.545726230399,3.95568104178077,-28.1450790409889,1.67954818168244,-28.1450790409889,1.67954818168244,-29.026991230399,1.732175996725,-11.6499890409889,0.350348003886278,-11.6499890409889,0.350348003886278,-12.531901230399,0.376869588934617,28,13
-    DZA,unconditional_only,5564.83,70.19451,122.4017,125.9159,116.569569049311,116.569569049311,116.569569049311,116.569569049311,-46.3750590493106,0.660665044165286,-46.3750590493106,0.660665044165286,-46.3750590493106,0.660665044165286,5.83213095068942,-0.047647466911729,5.83213095068942,-0.047647466911729,5.83213095068942,-0.047647466911729,9.34633095068941,-0.074226773192976,9.34633095068941,-0.074226773192976,9.34633095068941,-0.074226773192976,-6,-9
-    AND,conditional_and_unconditional,3419.89,11.3716,7.894226,9.426838,11.982068,11.982068,11.982068,,-0.610467999999999,,-0.610467999999999,0.053683562559358,-0.610467999999999,0.053683562559358,-4.087842,0.517826826847876,-4.087842,0.517826826847876,-4.087842,0.517826826847876,-2.55523,0.271059076224711,-2.55523,0.271059076224711,-2.55523,0.271059076224711,4,3
+    iso_country,latest_ndc,total_emissions,historical_cw1990,historical_cw2005,historical_cw2019,targets_nfgs_uc2030,targets_nfgs_c2030,targets_nfgs_uc2035,targets_nfgs_c2035,baseline1990_2030_uc,baseline1990_2030_uc_percentage,baseline1990_2035_uc,baseline1990_2035_uc_percentage,baseline1990_2035_c,baseline1990_2035_c_percentage,baseline2005_2030_uc,baseline2005_2030_uc_percentage,baseline2005_2035_uc,baseline2005_2035_uc_percentage,baseline2005_2035_c,baseline2005_2035_c_percentage,baseline2019_2030_uc,baseline2019_2030_uc_percentage,baseline2019_2035_uc,baseline2019_2035_uc_percentage,baseline2019_2035_c,baseline2019_2035_c_percentage,baseline1990_2030_c,baseline2005_2030_c,baseline2019_2030_c,baseline1990_2030_c_percentage,baseline2005_2030_c_percentage,baseline2019_2030_c_percentage,absolute_emissions_comparison_c,absolute_emissions_comparison_uc
+    AFG,no_2035,12791.58,9.238795,16.75753,33.25262,44.9026090409889,45.784521230399,44.9026090409889,45.784521230399,-35.6638140409889,3.8602235509056,-35.6638140409889,3.8602235509056,-36.545726230399,3.95568104178077,-28.1450790409889,1.67954818168244,-28.1450790409889,1.67954818168244,-29.026991230399,1.732175996725,-11.6499890409889,0.350348003886278,-11.6499890409889,0.350348003886278,-12.531901230399,0.376869588934617,1.5,1.6,1.7,1.8,1.9,2.0,28,13
+    DZA,unconditional_only,5564.83,70.19451,122.4017,125.9159,116.569569049311,116.569569049311,116.569569049311,116.569569049311,-46.3750590493106,0.660665044165286,-46.3750590493106,0.660665044165286,-46.3750590493106,0.660665044165286,5.83213095068942,-0.047647466911729,5.83213095068942,-0.047647466911729,5.83213095068942,-0.047647466911729,9.34633095068941,-0.074226773192976,9.34633095068941,-0.074226773192976,9.34633095068941,-0.074226773192976,2.5,2.6,2.7,2.8,2.9,3.0,-6,-9
+    AND,conditional_and_unconditional,3419.89,11.3716,7.894226,9.426838,11.982068,11.982068,11.982068,,-0.610467999999999,,-0.610467999999999,0.053683562559358,-0.610467999999999,0.053683562559358,-4.087842,0.517826826847876,-4.087842,0.517826826847876,-4.087842,0.517826826847876,-2.55523,0.271059076224711,-2.55523,0.271059076224711,-2.55523,0.271059076224711,3.5,3.6,3.7,3.8,3.9,4.0,4,3
   END
 }
 
@@ -228,6 +228,12 @@ describe ImportIndc do
     expect(result[0].baseline2019_2035_uc_percentage).to eq(0.350348003886278)
     expect(result[0].baseline2019_2035_c).to eq(-12.531901230399)
     expect(result[0].baseline2019_2035_c_percentage).to eq(0.376869588934617)
+    expect(result[0].baseline1990_2030_c).to eq(1.5)
+    expect(result[0].baseline2005_2030_c).to eq(1.6)
+    expect(result[0].baseline2019_2030_c).to eq(1.7)
+    expect(result[0].baseline1990_2030_c_percentage).to eq(1.8)
+    expect(result[0].baseline2005_2030_c_percentage).to eq(1.9)
+    expect(result[0].baseline2019_2030_c_percentage).to eq(2.0)
     expect(result[0].absolute_emissions_comparison_c).to eq(28)
     expect(result[0].absolute_emissions_comparison_uc).to eq(13)
 
@@ -259,6 +265,12 @@ describe ImportIndc do
     expect(result[1].baseline2019_2035_uc_percentage).to eq(-0.074226773192976)
     expect(result[1].baseline2019_2035_c).to eq(9.34633095068941)
     expect(result[1].baseline2019_2035_c_percentage).to eq(-0.074226773192976)
+    expect(result[1].baseline1990_2030_c).to eq(2.5)
+    expect(result[1].baseline2005_2030_c).to eq(2.6)
+    expect(result[1].baseline2019_2030_c).to eq(2.7)
+    expect(result[1].baseline1990_2030_c_percentage).to eq(2.8)
+    expect(result[1].baseline2005_2030_c_percentage).to eq(2.9)
+    expect(result[1].baseline2019_2030_c_percentage).to eq(3.0)
     expect(result[1].absolute_emissions_comparison_c).to eq(-6)
     expect(result[1].absolute_emissions_comparison_uc).to eq(-9)
 
@@ -290,6 +302,12 @@ describe ImportIndc do
     expect(result[2].baseline2019_2035_uc_percentage).to eq(0.271059076224711)
     expect(result[2].baseline2019_2035_c).to eq(-2.55523)
     expect(result[2].baseline2019_2035_c_percentage).to eq(0.271059076224711)
+    expect(result[2].baseline1990_2030_c).to eq(3.5)
+    expect(result[2].baseline2005_2030_c).to eq(3.6)
+    expect(result[2].baseline2019_2030_c).to eq(3.7)
+    expect(result[2].baseline1990_2030_c_percentage).to eq(3.8)
+    expect(result[2].baseline2005_2030_c_percentage).to eq(3.9)
+    expect(result[2].baseline2019_2030_c_percentage).to eq(4.0)
     expect(result[2].absolute_emissions_comparison_c).to eq(4)
     expect(result[2].absolute_emissions_comparison_uc).to eq(3)
   end

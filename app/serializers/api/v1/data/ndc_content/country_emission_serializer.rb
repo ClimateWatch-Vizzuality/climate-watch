@@ -14,6 +14,12 @@ module Api
                      :baseline2019_2030_uc, :baseline2019_2030_uc_percentage, :baseline2019_2035_uc,
                      :baseline2019_2035_uc_percentage, :baseline2019_2035_c, :baseline2019_2035_c_percentage,
                      :absolute_emissions_comparison_c, :absolute_emissions_comparison_uc, :total_emissions,
+                     :baseline1990_2030_c,
+                     :baseline2005_2030_c,
+                     :baseline2019_2030_c,
+                     :baseline1990_2030_c_percentage,
+                     :baseline2005_2030_c_percentage,
+                     :baseline2019_2030_c_percentage,
                      :latest_ndc, :created_at, :updated_at
         end
       end

@@ -347,6 +347,12 @@ class ImportIndc
       baseline2019_2035_uc_percentage: emission[:baseline2019_2035_uc_percentage]&.to_f,
       baseline2019_2035_c: emission[:baseline2019_2035_c]&.to_f,
       baseline2019_2035_c_percentage: emission[:baseline2019_2035_c_percentage]&.to_f,
+      baseline1990_2030_c: emission[:baseline1990_2030_c]&.to_f,
+      baseline2005_2030_c: emission[:baseline2005_2030_c]&.to_f,
+      baseline2019_2030_c: emission[:baseline2019_2030_c]&.to_f,
+      baseline1990_2030_c_percentage: emission[:baseline1990_2030_c_percentage]&.to_f,
+      baseline2005_2030_c_percentage: emission[:baseline2005_2030_c_percentage]&.to_f,
+      baseline2019_2030_c_percentage: emission[:baseline2019_2030_c_percentage]&.to_f,
       absolute_emissions_comparison_c: emission[:absolute_emissions_comparison_c]&.to_f,
       absolute_emissions_comparison_uc: emission[:absolute_emissions_comparison_uc]&.to_f
     }
