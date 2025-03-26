@@ -40,6 +40,12 @@
 #  baseline2019_2035_uc_percentage   :float
 #  baseline2019_2035_c               :float
 #  baseline2019_2035_c_percentage    :float
+#  baseline1990_2030_c               :float
+#  baseline2005_2030_c               :float
+#  baseline2019_2030_c               :float
+#  baseline1990_2030_c_percentage    :float
+#  baseline2005_2030_c_percentage    :float
+#  baseline2019_2030_c_percentage    :float
 #  created_at                        :datetime         not null
 #  updated_at                        :datetime         not null
 #
@@ -60,6 +66,12 @@ module Indc
               :historical_cw2019, :baseline2019_2030_uc, :baseline2019_2030_uc_percentage,
               :baseline2019_2035_uc, :baseline2019_2035_uc_percentage, :baseline2019_2035_c,
               :baseline2019_2035_c_percentage,
+              :baseline1990_2030_c,
+              :baseline2005_2030_c,
+              :baseline2019_2030_c,
+              :baseline1990_2030_c_percentage,
+              :baseline2005_2030_c_percentage,
+              :baseline2019_2030_c_percentage,
               numericality: {allow_nil: true}
   end
 end
