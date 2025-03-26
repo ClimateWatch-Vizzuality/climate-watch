@@ -1122,7 +1122,13 @@ CREATE TABLE public.indc_country_emissions (
     baseline2019_2035_uc double precision,
     baseline2019_2035_uc_percentage double precision,
     baseline2019_2035_c double precision,
-    baseline2019_2035_c_percentage double precision
+    baseline2019_2035_c_percentage double precision,
+    baseline1990_2030_c double precision,
+    baseline2005_2030_c double precision,
+    baseline2019_2030_c double precision,
+    baseline1990_2030_c_percentage double precision,
+    baseline2005_2030_c_percentage double precision,
+    baseline2019_2030_c_percentage double precision
 );
 
 
@@ -5018,6 +5024,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20250116191108'),
 ('20250305213814'),
 ('20250305215041'),
-('20250305221411');
+('20250305221411'),
+('20250326110535');
 
 

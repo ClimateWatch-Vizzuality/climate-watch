@@ -40,6 +40,12 @@
 #  baseline2019_2035_uc_percentage   :float
 #  baseline2019_2035_c               :float
 #  baseline2019_2035_c_percentage    :float
+#  baseline1990_2030_c               :float
+#  baseline2005_2030_c               :float
+#  baseline2019_2030_c               :float
+#  baseline1990_2030_c_percentage    :float
+#  baseline2005_2030_c_percentage    :float
+#  baseline2019_2030_c_percentage    :float
 #  created_at                        :datetime         not null
 #  updated_at                        :datetime         not null
 #
@@ -73,6 +79,12 @@ FactoryBot.define do
     baseline2019_2035_uc_percentage { 230.0 }
     baseline2019_2035_c { 240.1 }
     baseline2019_2035_c_percentage { 250.2 }
+    baseline1990_2030_c { 260.3 }
+    baseline2005_2030_c { 270.4 }
+    baseline2019_2030_c { 280.5 }
+    baseline1990_2030_c_percentage { 290.6 }
+    baseline2005_2030_c_percentage { 300.7 }
+    baseline2019_2030_c_percentage { 310.8 }
     absolute_emissions_comparison_c { 260.3 }
     absolute_emissions_comparison_uc { 270.4 }
     created_at { '2026-01-14 10:45:37' }
