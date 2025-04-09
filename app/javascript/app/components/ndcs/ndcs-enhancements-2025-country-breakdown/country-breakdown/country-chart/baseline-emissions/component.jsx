@@ -3,6 +3,7 @@ import React, { useMemo } from 'react';
 
 import EmissionsBarComponent from '../components/emissions-bar';
 import { TARGET_YEARS, CONDITIONAL_OPTIONS } from '../../constants';
+import MessagesComponent from '../components/messages';
 
 const CHANGE_BAR_WIDTH = 18;
 
@@ -16,7 +17,7 @@ const BaselineEmissionsComponent = ({ chartConfig = {}, settings }) => {
   const barsData = useMemo(
     () =>
       emissionsData?.reduce((dataAcc, dataEntry) => {
-        const { iso, name } = dataEntry;
+        const { iso, name, latest_ndc } = dataEntry;
 
         const calculateBarForType = value => {
           if (value < 0) {
@@ -24,14 +25,16 @@ const BaselineEmissionsComponent = ({ chartConfig = {}, settings }) => {
             return {
               position: { x: scales.x(name), y: scales.y(value) - height },
               height,
-              value
+              value,
+              latest_ndc
             };
           }
 
           return {
             position: { x: scales.x(name), y: scales.y(value) },
             height: scales.y(0) - scales.y(value),
-            value
+            value,
+            latest_ndc
           };
         };
 
@@ -73,30 +76,143 @@ const BaselineEmissionsComponent = ({ chartConfig = {}, settings }) => {
 
   return (
     <>
-      {barsData?.map(entry => (
-        <g key={entry?.iso} transform={`translate(${offsetToCenterBars},0)`}>
-          {TARGET_YEARS?.map(year => (
-            <EmissionsBarComponent
-              key={`${year}-${entry?.iso}`}
-              color={year === 2030 ? '#CCCDCF' : '#83A2E5'}
-              type={year}
-              margins={margins}
-              dimensions={dimensions}
-              scales={scales}
-              axis={axis}
-              domains={domains}
-              position={entry?.[year]?.[type]?.position}
-              size={{
-                width: CHANGE_BAR_WIDTH,
-                height: entry?.[year]?.[type]?.height
-              }}
-              tooltipId={entry?.[year]?.[type]?.tooltipId}
-              value={entry?.[year]?.[type]?.value}
-              isGroupedLocations={entry?.iso === 'OTHERS' || false}
-            />
-          ))}
-        </g>
-      ))}
+      {barsData?.map(entry => {
+        const latestNDCByYear =
+          TARGET_YEARS?.map(year => entry?.[year]?.[type]?.latest_ndc) || [];
+        const valueByYear =
+          TARGET_YEARS?.map(year => entry?.[year]?.[type]?.value) || [];
+
+        // The country's latest_ndc is no_ndc or the aggregated “Other Countries” only represents countries with no_ndc
+        if (latestNDCByYear.flat().every(item => item === 'no_ndc')) {
+          return (
+            <g
+              key={entry?.iso}
+              transform={`translate(${offsetToCenterBars},0)`}
+            >
+              <MessagesComponent
+                messages={['No NDC']}
+                margins={margins}
+                dimensions={dimensions}
+                scales={scales}
+                position={entry?.[TARGET_YEARS[0]]?.[type]?.position}
+                size={{
+                  width: CHANGE_BAR_WIDTH,
+                  height: 0
+                }}
+              />
+            </g>
+          );
+        }
+
+        // The country's latest_ndc is no_new_ndc or the aggregated “Other Countries” only represents countries with
+        // no_ndc or no_new_ndc
+        if (
+          latestNDCByYear
+            .flat()
+            .every(item => item === 'no_ndc' || item === 'no_new_ndc')
+        ) {
+          return (
+            <g
+              key={entry?.iso}
+              transform={`translate(${offsetToCenterBars},0)`}
+            >
+              <MessagesComponent
+                messages={['No New NDC']}
+                margins={margins}
+                dimensions={dimensions}
+                scales={scales}
+                position={entry?.[TARGET_YEARS[0]]?.[type]?.position}
+                size={{
+                  width: CHANGE_BAR_WIDTH,
+                  height: 0
+                }}
+              />
+            </g>
+          );
+        }
+
+        // The country doesn't have any value for any of the target years or the aggregated “Other Countries” represents
+        // at least some countries with new_ndc but without any value for any of the target years
+        if (valueByYear.every(value => value === undefined || value === null)) {
+          return (
+            <g
+              key={entry?.iso}
+              transform={`translate(${offsetToCenterBars},0)`}
+            >
+              <MessagesComponent
+                messages={[
+                  'No',
+                  type === 'conditional' ? 'Conditional' : 'Unconditional',
+                  'Targets'
+                ]}
+                margins={margins}
+                dimensions={dimensions}
+                scales={scales}
+                position={entry?.[TARGET_YEARS[0]]?.[type]?.position}
+                size={{
+                  width: CHANGE_BAR_WIDTH,
+                  height: 0
+                }}
+              />
+            </g>
+          );
+        }
+
+        // The country is missing some values for some target years or the aggregated “Other Countries” represents at
+        // least some countries with new_ndc for which some values are missing for some target years
+        const messages = [];
+        if (valueByYear.some(value => value === undefined || value === null)) {
+          valueByYear.forEach((value, index) => {
+            if (value === undefined || value === null) {
+              const year = TARGET_YEARS[index];
+              messages.push(
+                ...[
+                  `No ${year}`,
+                  type === 'conditional' ? 'Conditional' : 'Unconditional',
+                  'Target'
+                ]
+              );
+            }
+          });
+        }
+
+        return (
+          <g key={entry?.iso} transform={`translate(${offsetToCenterBars},0)`}>
+            {messages.length > 0 && (
+              <MessagesComponent
+                messages={messages}
+                margins={margins}
+                dimensions={dimensions}
+                scales={scales}
+                position={entry?.[TARGET_YEARS[0]]?.[type]?.position}
+                size={{
+                  width: CHANGE_BAR_WIDTH,
+                  height: 0
+                }}
+              />
+            )}
+            {TARGET_YEARS?.map(year => (
+              <EmissionsBarComponent
+                key={`${year}-${entry?.iso}`}
+                color={year === 2030 ? '#CCCDCF' : '#83A2E5'}
+                year={year}
+                margins={margins}
+                dimensions={dimensions}
+                scales={scales}
+                axis={axis}
+                domains={domains}
+                position={entry?.[year]?.[type]?.position}
+                size={{
+                  width: CHANGE_BAR_WIDTH,
+                  height: entry?.[year]?.[type]?.height
+                }}
+                tooltipId={entry?.[year]?.[type]?.tooltipId}
+                value={entry?.[year]?.[type]?.value}
+              />
+            ))}
+          </g>
+        );
+      })}
     </>
   );
 };
