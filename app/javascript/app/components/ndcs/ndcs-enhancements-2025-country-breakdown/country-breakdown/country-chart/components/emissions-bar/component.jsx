@@ -7,10 +7,9 @@ import TextComponent from '../text';
 
 const LABEL_OFFSET = 14;
 const LABEL_HEIGHT = 20;
-const LABEL_WIDTH = 60;
 
 const EmissionsBarComponent = ({
-  type,
+  year,
   color,
   scales,
   margins,
@@ -18,12 +17,11 @@ const EmissionsBarComponent = ({
   position,
   size,
   tooltipId,
-  value,
-  isGroupedLocations
+  value
 }) => {
-  if (!type || !scales || !margins || !dimensions || !size) return null;
+  if (!year || !scales || !margins || !dimensions || !size) return null;
 
-  const displayValue = type === 2035;
+  const displayValue = year === 2035;
   const barWidth = size?.width;
 
   /* Label with values positioning */
@@ -37,21 +35,13 @@ const EmissionsBarComponent = ({
     return { x, y };
   }, [size, dimensions, value, position]);
 
-  /* No target label positioning */
-  const noTargetLabelPosition = useMemo(() => {
-    const x = position.x + barWidth - 1;
-    const y = scales.y(0) / 2;
-    return { x, y };
-  }, [size, dimensions, value, position]);
-
   const formattedValue = Math.round(value);
-  const no2035Target = type === 2035 && !value;
 
   return (
     <g>
       {/* Bar display */}
       <RectComponent
-        type={type}
+        type={year}
         color={color}
         margins={margins}
         dimensions={dimensions}
@@ -73,59 +63,12 @@ const EmissionsBarComponent = ({
           position={labelPosition}
         />
       )}
-
-      {/* No 2035 target */}
-      {no2035Target && (
-        <>
-          <TextComponent
-            type="no-target"
-            value={isGroupedLocations ? 'Missing' : 'No 2035'}
-            margins={margins}
-            dimensions={{
-              width: LABEL_WIDTH,
-              height: LABEL_HEIGHT
-            }}
-            position={noTargetLabelPosition}
-          />
-
-          <TextComponent
-            type="no-target"
-            value={isGroupedLocations ? '2035' : 'Target'}
-            margins={margins}
-            dimensions={{
-              width: LABEL_WIDTH,
-              height: LABEL_HEIGHT
-            }}
-            position={{
-              x: noTargetLabelPosition?.x,
-              y: noTargetLabelPosition?.y + LABEL_HEIGHT - 2
-            }}
-          />
-
-          {isGroupedLocations && (
-            <TextComponent
-              type="no-target"
-              value="Target"
-              margins={margins}
-              dimensions={{
-                width: LABEL_WIDTH,
-                height: LABEL_HEIGHT
-              }}
-              position={{
-                x: noTargetLabelPosition?.x,
-                y: noTargetLabelPosition?.y + (LABEL_HEIGHT - 2) * 2
-              }}
-            />
-          )}
-        </>
-      )}
     </g>
   );
 };
 
-// TODO: Fix proptypes
 EmissionsBarComponent.propTypes = {
-  type: PropTypes.oneOf([2030, 2035]),
+  year: PropTypes.oneOf([2030, 2035]),
   color: PropTypes.string,
   margins: PropTypes.any,
   dimensions: PropTypes.any,
@@ -133,8 +76,7 @@ EmissionsBarComponent.propTypes = {
   position: PropTypes.any,
   size: PropTypes.any,
   tooltipId: PropTypes.string,
-  value: PropTypes.number,
-  isGroupedLocations: PropTypes.bool
+  value: PropTypes.number
 };
 
 export default EmissionsBarComponent;

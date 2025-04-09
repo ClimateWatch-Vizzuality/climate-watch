@@ -5,6 +5,7 @@ import { format } from 'd3-format';
 import EmissionsBarComponent from '../components/emissions-bar';
 
 import { CONDITIONAL_OPTIONS } from '../../constants';
+import MessagesComponent from '../components/messages';
 
 const CHANGE_BAR_WIDTH = 18;
 
@@ -22,7 +23,7 @@ const TargetEmissionsComponent = ({ chartConfig = {}, settings }) => {
   const barsData = useMemo(
     () =>
       emissionsData?.map(dataEntry => {
-        const { iso, name } = dataEntry;
+        const { iso, name, latest_ndc } = dataEntry;
 
         const calculateBarForType = value => {
           if (value < 0) {
@@ -31,6 +32,7 @@ const TargetEmissionsComponent = ({ chartConfig = {}, settings }) => {
               position: { x: scales.x(name), y: scales.y(value) - height },
               height,
               value,
+              latest_ndc,
               tooltipId: `country-emissions-${iso}-tooltip`
             };
           }
@@ -39,6 +41,7 @@ const TargetEmissionsComponent = ({ chartConfig = {}, settings }) => {
             position: { x: scales.x(name), y: scales.y(value) },
             height: scales.y(0) - scales.y(value),
             value,
+            latest_ndc,
             tooltipId: `country-emissions-${iso}-tooltip`
           };
         };
@@ -68,28 +71,112 @@ const TargetEmissionsComponent = ({ chartConfig = {}, settings }) => {
 
   return (
     <>
-      {barsData?.map(entry => (
-        <g key={entry?.iso} transform={`translate(${offsetToCenterBars},0)`}>
-          <EmissionsBarComponent
-            key={`${2035}-${entry?.iso}`}
-            color={entry?.iso === 'WORLD' ? '#0845CB' : '#83A2E5'}
-            type={2035}
-            margins={margins}
-            dimensions={dimensions}
-            scales={scales}
-            axis={axis}
-            domains={domains}
-            position={entry?.[type]?.position}
-            size={{
-              width: CHANGE_BAR_WIDTH,
-              height: entry?.[type]?.height || 0
-            }}
-            tooltipId={entry?.[type]?.tooltipId}
-            value={entry?.[type]?.value}
-            isGroupedLocations={entry?.iso === 'OTHERS' || false}
-          />
-        </g>
-      ))}
+      {barsData?.map(entry => {
+        const latestNDC = entry?.[type]?.latest_ndc;
+        const value = entry?.[type]?.value;
+
+        // The country's latest_ndc is no_ndc or the aggregated “Other Countries” only represents countries with no_ndc
+        if (
+          latestNDC === 'no_ndc' ||
+          (Array.isArray(latestNDC) &&
+            latestNDC.every(item => item === 'no_ndc'))
+        ) {
+          return (
+            <g
+              key={entry?.iso}
+              transform={`translate(${offsetToCenterBars},0)`}
+            >
+              <MessagesComponent
+                messages={['No NDC']}
+                margins={margins}
+                dimensions={dimensions}
+                scales={scales}
+                position={entry?.[type]?.position}
+                size={{
+                  width: CHANGE_BAR_WIDTH,
+                  height: 0
+                }}
+              />
+            </g>
+          );
+        }
+
+        // The country's latest_ndc is no_new_ndc or the aggregated “Other Countries” only represents countries with
+        // no_ndc or no_new_ndc
+        if (
+          latestNDC === 'no_new_ndc' ||
+          (Array.isArray(latestNDC) &&
+            latestNDC.every(item => item === 'no_new_ndc' || item === 'no_ndc'))
+        ) {
+          return (
+            <g
+              key={entry?.iso}
+              transform={`translate(${offsetToCenterBars},0)`}
+            >
+              <MessagesComponent
+                messages={['No New NDC']}
+                margins={margins}
+                dimensions={dimensions}
+                scales={scales}
+                position={entry?.[type]?.position}
+                size={{
+                  width: CHANGE_BAR_WIDTH,
+                  height: 0
+                }}
+              />
+            </g>
+          );
+        }
+
+        // The country doesn't have any value or the aggregated “Other Countries” represents at least some countries
+        // with new_ndc but without any value
+        if (value === undefined || value === null) {
+          return (
+            <g
+              key={entry?.iso}
+              transform={`translate(${offsetToCenterBars},0)`}
+            >
+              <MessagesComponent
+                messages={[
+                  'No 2035',
+                  type === 'conditional' ? 'Conditional' : 'Unconditional',
+                  'Target'
+                ]}
+                margins={margins}
+                dimensions={dimensions}
+                scales={scales}
+                position={entry?.[type]?.position}
+                size={{
+                  width: CHANGE_BAR_WIDTH,
+                  height: 0
+                }}
+              />
+            </g>
+          );
+        }
+
+        return (
+          <g key={entry?.iso} transform={`translate(${offsetToCenterBars},0)`}>
+            <EmissionsBarComponent
+              key={`${2035}-${entry?.iso}`}
+              color={entry?.iso === 'WORLD' ? '#0845CB' : '#83A2E5'}
+              year={2035}
+              margins={margins}
+              dimensions={dimensions}
+              scales={scales}
+              axis={axis}
+              domains={domains}
+              position={entry?.[type]?.position}
+              size={{
+                width: CHANGE_BAR_WIDTH,
+                height: entry?.[type]?.height || 0
+              }}
+              tooltipId={entry?.[type]?.tooltipId}
+              value={entry?.[type]?.value}
+            />
+          </g>
+        );
+      })}
       {/* Total emissions */}
       <g transform={`translate(0,${dimensions.height - margins.bottom + 20})`}>
         {/* Label */}
