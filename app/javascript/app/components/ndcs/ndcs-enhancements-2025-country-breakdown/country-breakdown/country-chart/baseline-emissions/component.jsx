@@ -50,7 +50,9 @@ const BaselineEmissionsComponent = ({ chartConfig = {}, settings }) => {
                     ...targetTypesAcc,
                     [type]: {
                       tooltipId: `country-emissions-${iso}-${year}-tooltip`,
-                      ...calculateBarForType(dataEntry?.[type]?.[year])
+                      ...calculateBarForType(
+                        dataEntry?.[type]?.[year]?.percentage
+                      )
                     }
                   }),
                   {}
