@@ -20,7 +20,7 @@ const TooltipsComponent = ({ data, settings, view }) => {
             label: `${year} ${type.charAt(0).toUpperCase() +
               type.slice(1)} NDC Target Compared to ${baseline} Emissions`,
             color: year === 2030 ? '#8F8F9F' : '#0845CB',
-            value: `${Math.round(entry?.[type]?.[year])}%`,
+            value: `${Math.round(entry?.[type]?.[year]?.percentage)}%`,
             country: entry?.name
           }))
         )

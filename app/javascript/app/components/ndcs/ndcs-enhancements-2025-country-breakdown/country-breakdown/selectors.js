@@ -111,6 +111,7 @@ export const getEmissionsByCountry = createSelector(
             ...targetAcc,
             [targetYear]: {
               latest_ndc: entry?.latest_ndc,
+              historical: entry?.[`historical_cw${baseYear}`],
               unconditional: {
                 value: entry?.[`baseline${baseYear}_${targetYear}_uc`],
                 percentage:

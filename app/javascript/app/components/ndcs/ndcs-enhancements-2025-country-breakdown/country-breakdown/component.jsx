@@ -75,9 +75,16 @@ const CountryBreakdownComponent = ({
             iso: entryLocation?.iso_code3,
             name: entryLocation?.wri_standard_name,
             latest_ndc: target?.['2030']?.latest_ndc,
+            historical: target?.['2030']?.historical,
             unconditional: {
-              2030: target?.['2030']?.unconditional?.percentage,
-              2035: target?.['2035']?.unconditional?.percentage
+              2030: {
+                percentage: target?.['2030']?.unconditional?.percentage,
+                value: target?.['2030']?.unconditional?.value
+              },
+              2035: {
+                percentage: target?.['2035']?.unconditional?.percentage,
+                value: target?.['2035']?.unconditional?.value
+              }
             },
             conditional: {
               2030: target?.['2030']?.conditional?.percentage,

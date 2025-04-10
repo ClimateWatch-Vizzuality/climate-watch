@@ -54,8 +54,10 @@ const CountryChartComponent = ({
 
       const sortEntries = entries =>
         entries?.sort((a, b) => {
-          const aValue = a?.[conditionalNDC?.value]?.[2035] || 100000;
-          const bValue = b?.[conditionalNDC?.value]?.[2035] || 100000;
+          const aValue =
+            a?.[conditionalNDC?.value]?.[2035]?.percentage || 100000;
+          const bValue =
+            b?.[conditionalNDC?.value]?.[2035]?.percentage || 100000;
           return aValue - bValue;
         });
 
@@ -63,51 +65,71 @@ const CountryChartComponent = ({
       const countriesToDisplay = sortedCountries.slice(0, 10);
       const otherCountries = sortedCountries.slice(10);
 
-      const otherCountriesEntry = otherCountries?.reduce(
-        (ocAcc, ocEntry) => ({
+      const otherCountriesEntry = otherCountries?.reduce((ocAcc, ocEntry) => {
+        const isFalsy = value => value === null || value === undefined;
+        return {
           iso: 'OTHERS',
           name: 'Other Countries',
           latest_ndc: [...(ocAcc?.latest_ndc || []), ocEntry?.latest_ndc],
           conditional: {
-            2030:
-              (ocAcc?.conditional?.[2030] === null ||
-                ocAcc?.conditional?.[2030] === undefined) &&
-              (ocEntry?.conditional?.[2030] === null ||
-                ocEntry?.conditional?.[2030] === undefined)
-                ? null
-                : (ocAcc?.conditional?.[2030] || 0) +
-                  (ocEntry?.conditional?.[2030] || 0),
-            2035:
-              (ocAcc?.conditional?.[2035] === null ||
-                ocAcc?.conditional?.[2035] === undefined) &&
-              (ocEntry?.conditional?.[2035] === null ||
-                ocEntry?.conditional?.[2035] === undefined)
-                ? null
-                : (ocAcc?.conditional?.[2035] || 0) +
-                  (ocEntry?.conditional?.[2035] || 0)
+            2030: {
+              value:
+                isFalsy(ocAcc?.conditional?.[2030]?.value) &&
+                isFalsy(ocEntry?.conditional?.[2030]?.value)
+                  ? null
+                  : (ocAcc?.conditional?.[2030]?.value || 0) +
+                    (ocEntry?.conditional?.[2030]?.value || 0)
+            },
+            2035: {
+              value:
+                isFalsy(ocAcc?.conditional?.[2035]?.value) &&
+                isFalsy(ocEntry?.conditional?.[2035]?.value)
+                  ? null
+                  : (ocAcc?.conditional?.[2035]?.value || 0) +
+                    (ocEntry?.conditional?.[2035]?.value || 0)
+            }
           },
           unconditional: {
-            2030:
-              (ocAcc?.unconditional?.[2030] === null ||
-                ocAcc?.unconditional?.[2030] === undefined) &&
-              (ocEntry?.unconditional?.[2030] === null ||
-                ocEntry?.unconditional?.[2030] === undefined)
-                ? null
-                : (ocAcc?.unconditional?.[2030] || 0) +
-                  (ocEntry?.unconditional?.[2030] || 0),
-            2035:
-              (ocAcc?.unconditional?.[2035] === null ||
-                ocAcc?.unconditional?.[2035] === undefined) &&
-              (ocEntry?.unconditional?.[2035] === null ||
-                ocEntry?.unconditional?.[2035] === undefined)
-                ? null
-                : (ocAcc?.unconditional?.[2035] || 0) +
-                  (ocEntry?.unconditional?.[2035] || 0)
+            2030: {
+              value:
+                isFalsy(ocAcc?.unconditional?.[2030]?.value) &&
+                isFalsy(ocEntry?.unconditional?.[2030]?.value)
+                  ? null
+                  : (ocAcc?.unconditional?.[2030]?.value || 0) +
+                    (ocEntry?.unconditional?.[2030]?.value || 0)
+            },
+            2035: {
+              value:
+                isFalsy(ocAcc?.unconditional?.[2035]?.value) &&
+                isFalsy(ocEntry?.unconditional?.[2035]?.value)
+                  ? null
+                  : (ocAcc?.unconditional?.[2035]?.value || 0) +
+                    (ocEntry?.unconditional?.[2035]?.value || 0)
+            }
           }
-        }),
-        {}
-      );
+        };
+      }, {});
 
+      if (
+        otherCountriesEntry.conditional &&
+        otherCountriesEntry.unconditional
+      ) {
+        const historical = otherCountries
+          .map(entry => entry.historical)
+          .reduce((res, value) => res + (value || 0), 0);
+        otherCountriesEntry.conditional[2030].percentage =
+          ((otherCountriesEntry.conditional[2030].value || 0) / historical) *
+          -1;
+        otherCountriesEntry.conditional[2035].percentage =
+          ((otherCountriesEntry.conditional[2035].value || 0) / historical) *
+          -1;
+        otherCountriesEntry.unconditional[2030].percentage =
+          ((otherCountriesEntry.unconditional[2030].value || 0) / historical) *
+          -1;
+        otherCountriesEntry.unconditional[2035].percentage =
+          ((otherCountriesEntry.unconditional[2035].value || 0) / historical) *
+          -1;
+      }
       const sortedData = sortEntries(
         [
           ...countriesToDisplay,
@@ -125,7 +147,7 @@ const CountryChartComponent = ({
                 ...TARGET_YEARS?.reduce(
                   (targetAcc, targetEntry) => [
                     ...targetAcc,
-                    allValuesEntry?.[typeEntry]?.[targetEntry]
+                    allValuesEntry?.[typeEntry]?.[targetEntry]?.percentage
                   ],
                   []
                 )
