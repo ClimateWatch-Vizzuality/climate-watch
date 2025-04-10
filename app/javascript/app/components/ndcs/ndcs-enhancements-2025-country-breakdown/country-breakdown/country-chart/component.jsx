@@ -119,17 +119,22 @@ const CountryChartComponent = ({
           .reduce((res, value) => res + (value || 0), 0);
         otherCountriesEntry.conditional[2030].percentage =
           ((otherCountriesEntry.conditional[2030].value || 0) / historical) *
-          -1;
+          -1 *
+          100;
         otherCountriesEntry.conditional[2035].percentage =
           ((otherCountriesEntry.conditional[2035].value || 0) / historical) *
-          -1;
+          -1 *
+          100;
         otherCountriesEntry.unconditional[2030].percentage =
           ((otherCountriesEntry.unconditional[2030].value || 0) / historical) *
-          -1;
+          -1 *
+          100;
         otherCountriesEntry.unconditional[2035].percentage =
           ((otherCountriesEntry.unconditional[2035].value || 0) / historical) *
-          -1;
+          -1 *
+          100;
       }
+
       const sortedData = sortEntries(
         [
           ...countriesToDisplay,
