@@ -114,23 +114,44 @@ const CountryChartComponent = ({
         otherCountriesEntry.conditional &&
         otherCountriesEntry.unconditional
       ) {
-        const historical = otherCountries
+        const historicalConditional = otherCountries
+          // We only take into account the 2030 value as requested by WRI
+          .filter(
+            entry =>
+              entry.conditional[2030]?.value !== null &&
+              entry.conditional[2030]?.value !== undefined
+          )
           .map(entry => entry.historical)
           .reduce((res, value) => res + (value || 0), 0);
+
+        const historicalUnconditional = otherCountries
+          // We only take into account the 2030 value as requested by WRI
+          .filter(
+            entry =>
+              entry.unconditional[2030]?.value !== null &&
+              entry.unconditional[2030]?.value !== undefined
+          )
+          .map(entry => entry.historical)
+          .reduce((res, value) => res + (value || 0), 0);
+
         otherCountriesEntry.conditional[2030].percentage =
-          ((otherCountriesEntry.conditional[2030].value || 0) / historical) *
+          ((otherCountriesEntry.conditional[2030].value || 0) /
+            historicalConditional) *
           -1 *
           100;
         otherCountriesEntry.conditional[2035].percentage =
-          ((otherCountriesEntry.conditional[2035].value || 0) / historical) *
+          ((otherCountriesEntry.conditional[2035].value || 0) /
+            historicalConditional) *
           -1 *
           100;
         otherCountriesEntry.unconditional[2030].percentage =
-          ((otherCountriesEntry.unconditional[2030].value || 0) / historical) *
+          ((otherCountriesEntry.unconditional[2030].value || 0) /
+            historicalUnconditional) *
           -1 *
           100;
         otherCountriesEntry.unconditional[2035].percentage =
-          ((otherCountriesEntry.unconditional[2035].value || 0) / historical) *
+          ((otherCountriesEntry.unconditional[2035].value || 0) /
+            historicalUnconditional) *
           -1 *
           100;
       }
