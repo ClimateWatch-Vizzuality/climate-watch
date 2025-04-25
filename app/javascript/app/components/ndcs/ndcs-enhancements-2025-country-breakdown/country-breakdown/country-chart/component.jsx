@@ -170,13 +170,20 @@ const CountryChartComponent = ({
             ...[settings?.conditionalNDC?.value]?.reduce(
               (typeAcc, typeEntry) => [
                 ...typeAcc,
-                ...TARGET_YEARS?.reduce(
-                  (targetAcc, targetEntry) => [
+                ...TARGET_YEARS?.reduce((targetAcc, targetEntry) => {
+                  // Ignore the values for countries which are not displayed in the chart
+                  if (
+                    allValuesEntry?.latest_ndc === 'no_ndc' ||
+                    allValuesEntry?.latest_ndc === 'no_new_ndc'
+                  ) {
+                    return targetAcc;
+                  }
+
+                  return [
                     ...targetAcc,
                     allValuesEntry?.[typeEntry]?.[targetEntry]?.percentage
-                  ],
-                  []
-                )
+                  ];
+                }, [])
               ],
               []
             )
