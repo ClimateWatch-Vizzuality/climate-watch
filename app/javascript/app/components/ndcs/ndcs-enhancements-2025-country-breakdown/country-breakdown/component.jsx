@@ -87,8 +87,14 @@ const CountryBreakdownComponent = ({
               }
             },
             conditional: {
-              2030: target?.['2030']?.conditional?.percentage,
-              2035: target?.['2035']?.conditional?.percentage
+              2030: {
+                percentage: target?.['2030']?.conditional?.percentage,
+                value: target?.['2030']?.conditional?.value
+              },
+              2035: {
+                percentage: target?.['2035']?.conditional?.percentage,
+                value: target?.['2035']?.conditional?.value
+              }
             }
           }
         ];
