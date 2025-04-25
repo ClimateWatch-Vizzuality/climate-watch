@@ -180,19 +180,6 @@ const BaselineEmissionsComponent = ({ chartConfig = {}, settings }) => {
 
         return (
           <g key={entry?.iso} transform={`translate(${offsetToCenterBars},0)`}>
-            {messages.length > 0 && (
-              <MessagesComponent
-                messages={messages}
-                margins={margins}
-                dimensions={dimensions}
-                scales={scales}
-                position={entry?.[TARGET_YEARS[0]]?.[type]?.position}
-                size={{
-                  width: CHANGE_BAR_WIDTH,
-                  height: 0
-                }}
-              />
-            )}
             {TARGET_YEARS?.map(year => (
               <EmissionsBarComponent
                 key={`${year}-${entry?.iso}`}
@@ -212,6 +199,19 @@ const BaselineEmissionsComponent = ({ chartConfig = {}, settings }) => {
                 value={entry?.[year]?.[type]?.value}
               />
             ))}
+            {messages.length > 0 && (
+              <MessagesComponent
+                messages={messages}
+                margins={margins}
+                dimensions={dimensions}
+                scales={scales}
+                position={entry?.[TARGET_YEARS[0]]?.[type]?.position}
+                size={{
+                  width: CHANGE_BAR_WIDTH,
+                  height: 0
+                }}
+              />
+            )}
           </g>
         );
       })}
