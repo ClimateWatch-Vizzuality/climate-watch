@@ -111,7 +111,7 @@ const CountryBreakdownComponent = ({
             unconditional: entryTarget?.unconditional,
             conditional: entryTarget?.conditional,
             latest_ndc: entryTarget?.latest_ndc,
-            total2021: entryTarget?.total_2021
+            total2022: entryTarget?.total_2022
           }
         ],
         []

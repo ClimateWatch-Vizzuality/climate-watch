@@ -185,7 +185,7 @@ const TargetEmissionsComponent = ({ chartConfig = {}, settings }) => {
             Total emissions
           </text>
           <text x={0} y={18} dy="1em" fill="currentColor" textAnchor="end">
-            in 2021
+            in 2022
           </text>
           <text x={0} y={36} dy="1em" fill="currentColor" textAnchor="end">
             (MtCO2e)
@@ -208,7 +208,7 @@ const TargetEmissionsComponent = ({ chartConfig = {}, settings }) => {
         >
           {emissionsData
             ?.filter(({ iso }) => iso !== 'OTHERS')
-            .map(({ name, total2021 }) => (
+            .map(({ name, total2022 }) => (
               <text
                 x={scales.x(name)}
                 y={(margins.bottom - 20) / 2}
@@ -216,7 +216,7 @@ const TargetEmissionsComponent = ({ chartConfig = {}, settings }) => {
                 fill="currentColor"
                 textAnchor="middle"
               >
-                {format(',.2f')(total2021 || 0)}
+                {format(',.2f')(total2022 || 0)}
               </text>
             ))}
         </g>
