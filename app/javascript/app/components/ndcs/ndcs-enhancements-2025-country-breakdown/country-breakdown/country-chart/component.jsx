@@ -215,7 +215,7 @@ const CountryChartComponent = ({
         conditional: 0,
         unconditional: 0,
         latest_ndc: [],
-        total2021: 0
+        total2022: 0
       };
       const nonWorldEntries = targetData.filter(({ iso }) => iso !== 'WORLD');
       const sortedNonWorldEntries = sortEntries(nonWorldEntries);
@@ -241,7 +241,7 @@ const CountryChartComponent = ({
               ? null
               : (ocAcc?.unconditional || 0) + (ocEntry?.unconditional || 0),
           latest_ndc: [...(ocAcc?.latest_ndc || []), ocEntry?.latest_ndc],
-          total2021: (ocAcc?.total_2021 || 0) + (ocEntry?.total_2021 || 0)
+          total2022: (ocAcc?.total_2022 || 0) + (ocEntry?.total_2022 || 0)
         }),
         {}
       );
