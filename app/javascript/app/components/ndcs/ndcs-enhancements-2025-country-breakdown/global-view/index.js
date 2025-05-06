@@ -24,7 +24,7 @@ function GlobalViewContainer(props) {
   const handleInfoClick = () => {
     setModalMetadata({
       category: 'NDC Content Map',
-      slugs: '2025_NDC',
+      slugs: '2030_2035_estimates',
       open: true
     });
   };
