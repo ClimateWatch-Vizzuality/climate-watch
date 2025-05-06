@@ -7,6 +7,7 @@ import NdcContentCountryEmissionsProvider from 'providers/ndc-content-country-em
 import ButtonGroup from 'components/button-group';
 import GhgMultiselectDropdown from 'components/ghg-multiselect-dropdown';
 import ModalPngDownload from 'components/modal-png-download';
+import { generateLinkToDataExplorer } from 'utils/data-explorer';
 
 import styles from './styles.scss';
 import TagsComponent from './tags';
@@ -31,6 +32,12 @@ const CountryBreakdownComponent = ({
     CONDITIONAL_SWITCH_OPTIONS[0]
   );
   const [chartData, setChartData] = useState(undefined);
+
+  // Generate data explorer link
+  const downloadLink = generateLinkToDataExplorer(
+    { category: 'ndc_tracker' },
+    'ndc-content'
+  );
 
   // Locations ISOs (de-duplicated) from selection
   const locationsISOs = useMemo(() => {
@@ -176,6 +183,11 @@ const CountryBreakdownComponent = ({
                     {
                       label: 'Save as image (PNG)',
                       action: handlePngDownloadModal
+                    },
+                    {
+                      label: 'Go to data explorer',
+                      link: downloadLink,
+                      target: '_self'
                     }
                   ]
                 }

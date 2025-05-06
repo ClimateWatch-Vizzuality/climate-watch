@@ -7,6 +7,7 @@ import ModalMetadata from 'components/modal-metadata';
 import NdcContentGlobalEmissionsProvider from 'providers/ndc-content-global-emissions-provider';
 import ButtonGroup from 'components/button-group';
 import ModalPngDownload from 'components/modal-png-download';
+import { generateLinkToDataExplorer } from 'utils/data-explorer';
 
 import GlobalChart from './global-chart';
 import TagsComponent from './tags';
@@ -26,6 +27,12 @@ const GlobalViewComponent = props => {
     handleInfoClick,
     handlePngDownloadModal
   } = props;
+
+  // Generate data explorer link
+  const downloadLink = generateLinkToDataExplorer(
+    { category: 'ndc_tracker' },
+    'ndc-content'
+  );
 
   const { historicalEmissions, ndcs, targets: targetsData, lastUpdated } = data;
 
@@ -128,6 +135,11 @@ const GlobalViewComponent = props => {
                     {
                       label: 'Save as image (PNG)',
                       action: handlePngDownloadModal
+                    },
+                    {
+                      label: 'Go to data explorer',
+                      link: downloadLink,
+                      target: '_self'
                     }
                   ]
                 }
