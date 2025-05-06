@@ -29,6 +29,10 @@
   }
 
   .tagsContainer {
+    @media #{$mobile-only} {
+      margin-left: 0;
+    }
+
     margin-left: 79px;
   }
 
@@ -38,6 +42,10 @@
   }
 
   .lastUpdated {
+    @media #{$mobile-only} {
+      margin-left: 0;
+    }
+
     margin-left: 79px;
     font-style: italic;
   }

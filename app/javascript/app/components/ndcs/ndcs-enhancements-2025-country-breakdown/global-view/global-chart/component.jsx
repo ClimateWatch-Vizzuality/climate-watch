@@ -31,7 +31,11 @@ const GlobalChartComponent = ({ type = 'chart', data }) => {
   useEffect(() => {
     const onResize = () => {
       setChartContainerWidth(
-        chartContainer?.current?.getBoundingClientRect()?.width
+        Math.max(
+          chartContainer?.current?.getBoundingClientRect()?.width,
+          // Minimum width necessary to display the chart correctly
+          960
+        )
       );
     };
 
