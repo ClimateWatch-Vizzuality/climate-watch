@@ -29,6 +29,11 @@
 }
 
 .chartOptionsContainer {
+  @media #{$mobile-only} {
+    flex-direction: column;
+    align-items: start;
+  }
+
   display: flex;
   align-items: end;
   justify-content: space-between;
@@ -37,6 +42,10 @@
 }
 
 .chartDropdownsContainer {
+  @media #{$mobile-only} {
+    flex-direction: column;
+  }
+
   display: flex;
   flex: 1;
   gap: 14px;
@@ -45,11 +54,20 @@
   flex-grow: 1;
 
   > * {
+    @media #{$mobile-only} {
+      width: 100%;
+      max-width: none;
+    }
+
     max-width: 270px;
   }
 }
 
 .conditionalSwitchContainer {
+  @media #{$mobile-only} {
+    white-space: normal;
+  }
+
   white-space: nowrap;
 }
 
@@ -63,11 +81,19 @@
 }
 
 .tagsContainer {
+  @media #{$mobile-only} {
+    margin-left: 0;
+  }
+
   margin-left: 104px;
   margin-top: 18px;
 }
 
 .lastUpdated {
+  @media #{$mobile-only} {
+    margin-left: 0;
+  }
+
   margin-top: 14px;
   margin-left: 104px;
   font-style: italic;

@@ -1,9 +1,17 @@
+@import "~styles/layout.scss";
+
 .tagsContainer {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
 
   li {
+    @media #{$mobile-only} {
+      max-width: 100%;
+      height: auto !important;
+      padding: 0 5px !important;
+    }
+
     height: 24px;
   }
 
@@ -13,7 +21,7 @@
 }
 
 .historical {
-  border-top: 3px solid #999C9F;
+  border-top: 3px solid #999c9f;
   width: 16px;
   margin-right: 6px;
   border-radius: 20px;
@@ -25,8 +33,7 @@
   height: 3px;
   border-radius: 20px;
   margin-right: 6px;
-  
-  background-image: linear-gradient(to right, #999C9F 65%, transparent 35%);
+  background-image: linear-gradient(to right, #999c9f 65%, transparent 35%);
   background-position: top;
   background-size: 10px 3px;
   background-position-x: left;
