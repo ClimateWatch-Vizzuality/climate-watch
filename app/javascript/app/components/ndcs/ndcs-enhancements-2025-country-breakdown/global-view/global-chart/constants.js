@@ -2,7 +2,7 @@ export const TOOLTIPS = {
   historical: {
     marker: {
       id: 'global-historical-marker-tooltip',
-      label: '2021 - Historical Emissions',
+      label: '2022 - Historical Emissions',
       color: '#999C9F'
     }
   },

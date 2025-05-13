@@ -51,7 +51,7 @@ const GlobalViewComponent = props => {
   const projectionChartData = useMemo(
     () => [
       {
-        x: 2021,
+        x: 2022,
         y: historicalChartData?.[historicalChartData?.length - 1]?.y
       },
       {
