@@ -7,7 +7,9 @@ import { TOOLTIPS } from '../constants';
 const TargetsComponent = ({ chartConfig = {} }) => {
   const { data: allData, margins, scales } = chartConfig;
   const targetsData = allData?.targets;
-  if (!targetsData || !scales) return null;
+  if (!targetsData || !targetsData[2030] || !targetsData[2035] || !scales) {
+    return null;
+  }
 
   return (
     <>
