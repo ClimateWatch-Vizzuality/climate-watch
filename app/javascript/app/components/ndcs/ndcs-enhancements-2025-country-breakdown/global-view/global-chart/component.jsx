@@ -155,6 +155,12 @@ const GlobalChartComponent = ({ type = 'chart', data }) => {
     targetGapsData
   ]);
 
+  const hasData =
+    !!historicalData &&
+    !!projectedData &&
+    !!targetsData &&
+    !!reductionsData &&
+    !!targetGapsData;
   const chartReady = !!chartConfig && !!chartConfig?.dimensions;
 
   return (
@@ -165,7 +171,7 @@ const GlobalChartComponent = ({ type = 'chart', data }) => {
           width={chartContainerWidth}
           height={chartConfig?.dimensions?.height}
         >
-          {chartReady && (
+          {hasData && chartReady && (
             <>
               <AxisGridComponent chartConfig={chartConfig} />
               <HistoricalDataComponent chartConfig={chartConfig} />
