@@ -1079,6 +1079,79 @@ ALTER SEQUENCE public.indc_category_types_id_seq OWNED BY public.indc_category_t
 
 
 --
+-- Name: indc_country_emissions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.indc_country_emissions (
+    id bigint NOT NULL,
+    location_id bigint NOT NULL,
+    historical_cw1990 double precision,
+    historical_cw2005 double precision,
+    historical_cw2018 double precision,
+    targets_nfgs_uc2030 double precision,
+    targets_nfgs_c2030 double precision,
+    targets_nfgs_uc2035 double precision,
+    targets_nfgs_c2035 double precision,
+    baseline1990_2030_uc double precision,
+    baseline1990_2030_uc_percentage double precision,
+    baseline1990_2035_uc double precision,
+    baseline1990_2035_uc_percentage double precision,
+    baseline1990_2035_c double precision,
+    baseline1990_2035_c_percentage double precision,
+    baseline2005_2030_uc double precision,
+    baseline2005_2030_uc_percentage double precision,
+    baseline2005_2035_uc double precision,
+    baseline2005_2035_uc_percentage double precision,
+    baseline2005_2035_c double precision,
+    baseline2005_2035_c_percentage double precision,
+    baseline2018_2030_uc double precision,
+    baseline2018_2030_uc_percentage double precision,
+    baseline2018_2035_uc double precision,
+    baseline2018_2035_uc_percentage double precision,
+    baseline2018_2035_c double precision,
+    baseline2018_2035_c_percentage double precision,
+    absolute_emissions_comparison_c double precision,
+    absolute_emissions_comparison_uc double precision,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    total_emissions double precision,
+    latest_ndc text,
+    historical_cw2019 double precision,
+    baseline2019_2030_uc double precision,
+    baseline2019_2030_uc_percentage double precision,
+    baseline2019_2035_uc double precision,
+    baseline2019_2035_uc_percentage double precision,
+    baseline2019_2035_c double precision,
+    baseline2019_2035_c_percentage double precision,
+    baseline1990_2030_c double precision,
+    baseline2005_2030_c double precision,
+    baseline2019_2030_c double precision,
+    baseline1990_2030_c_percentage double precision,
+    baseline2005_2030_c_percentage double precision,
+    baseline2019_2030_c_percentage double precision
+);
+
+
+--
+-- Name: indc_country_emissions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.indc_country_emissions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: indc_country_emissions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.indc_country_emissions_id_seq OWNED BY public.indc_country_emissions.id;
+
+
+--
 -- Name: indc_documents; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1111,6 +1184,45 @@ CREATE SEQUENCE public.indc_documents_id_seq
 --
 
 ALTER SEQUENCE public.indc_documents_id_seq OWNED BY public.indc_documents.id;
+
+
+--
+-- Name: indc_global_emissions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.indc_global_emissions (
+    id bigint NOT NULL,
+    year integer NOT NULL,
+    historical_emission numeric,
+    ndcs_conditional_2020 numeric,
+    ndcs_unconditional_2020 numeric,
+    ndcs_conditional_2025 numeric,
+    ndcs_unconditional_2025 numeric,
+    target_2c numeric,
+    target_1_5c numeric,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    current_policies_scenario numeric
+);
+
+
+--
+-- Name: indc_global_emissions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.indc_global_emissions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: indc_global_emissions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.indc_global_emissions_id_seq OWNED BY public.indc_global_emissions.id;
 
 
 --
@@ -2596,10 +2708,24 @@ ALTER TABLE ONLY public.indc_category_types ALTER COLUMN id SET DEFAULT nextval(
 
 
 --
+-- Name: indc_country_emissions id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.indc_country_emissions ALTER COLUMN id SET DEFAULT nextval('public.indc_country_emissions_id_seq'::regclass);
+
+
+--
 -- Name: indc_documents id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.indc_documents ALTER COLUMN id SET DEFAULT nextval('public.indc_documents_id_seq'::regclass);
+
+
+--
+-- Name: indc_global_emissions id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.indc_global_emissions ALTER COLUMN id SET DEFAULT nextval('public.indc_global_emissions_id_seq'::regclass);
 
 
 --
@@ -3174,11 +3300,27 @@ ALTER TABLE ONLY public.indc_category_types
 
 
 --
+-- Name: indc_country_emissions indc_country_emissions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.indc_country_emissions
+    ADD CONSTRAINT indc_country_emissions_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: indc_documents indc_documents_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.indc_documents
     ADD CONSTRAINT indc_documents_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: indc_global_emissions indc_global_emissions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.indc_global_emissions
+    ADD CONSTRAINT indc_global_emissions_pkey PRIMARY KEY (id);
 
 
 --
@@ -3817,6 +3959,13 @@ CREATE UNIQUE INDEX index_indc_category_types_on_name ON public.indc_category_ty
 
 
 --
+-- Name: index_indc_country_emissions_on_location_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_indc_country_emissions_on_location_id ON public.indc_country_emissions USING btree (location_id);
+
+
+--
 -- Name: index_indc_documents_on_ordering; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -4199,6 +4348,14 @@ CREATE INDEX index_wri_metadata_values_on_source_id ON public.wri_metadata_value
 --
 
 CREATE UNIQUE INDEX source_id_property_id_index ON public.wri_metadata_values USING btree (source_id, property_id);
+
+
+--
+-- Name: indc_country_emissions fk_rails_061a34ec1c; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.indc_country_emissions
+    ADD CONSTRAINT fk_rails_061a34ec1c FOREIGN KEY (location_id) REFERENCES public.locations(id) ON DELETE CASCADE;
 
 
 --
@@ -4860,6 +5017,14 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220519084239'),
 ('20220520090514'),
 ('20220527093456'),
-('20240924080237');
+('20240924080237'),
+('20250114104537'),
+('20250114105639'),
+('20250114120726'),
+('20250116191108'),
+('20250305213814'),
+('20250305215041'),
+('20250305221411'),
+('20250326110535');
 
 

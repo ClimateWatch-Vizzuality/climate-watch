@@ -1,0 +1,197 @@
+import React, { useState, useEffect, useMemo } from 'react';
+import PropTypes from 'prop-types';
+import { Switch } from 'cw-components';
+import { timeFormat } from 'd3-time-format';
+
+import ModalMetadata from 'components/modal-metadata';
+import NdcContentGlobalEmissionsProvider from 'providers/ndc-content-global-emissions-provider';
+import ButtonGroup from 'components/button-group';
+import ModalPngDownload from 'components/modal-png-download';
+import { generateLinkToDataExplorer } from 'utils/data-explorer';
+
+import GlobalChart from './global-chart';
+import TagsComponent from './tags';
+import { SETTINGS, CONDITIONAL_SWITCH_OPTIONS, TAGS_DATA } from './constants';
+
+import styles from './styles.scss';
+
+const GlobalViewComponent = props => {
+  const [chartData, setChartData] = useState(undefined);
+  const [conditionalNDC, setConditionalNDC] = useState(
+    CONDITIONAL_SWITCH_OPTIONS[0]
+  );
+
+  const {
+    data,
+    pngDownloadId,
+    handleInfoClick,
+    handlePngDownloadModal
+  } = props;
+
+  // Generate data explorer link
+  const downloadLink = generateLinkToDataExplorer(
+    { category: 'ndc_tracker' },
+    'ndc-content'
+  );
+
+  const { historicalEmissions, ndcs, targets: targetsData, lastUpdated } = data;
+
+  // Calculating historical and projection chart data for display
+  const historicalChartData = useMemo(
+    () =>
+      historicalEmissions
+        ?.filter(({ year }) => year >= SETTINGS.chartMinYear)
+        ?.map(({ year, value }) => ({
+          x: year,
+          y: value
+        })),
+    [historicalEmissions]
+  );
+
+  const projectionChartData = useMemo(
+    () => [
+      {
+        x: 2022,
+        y: historicalChartData?.[historicalChartData?.length - 1]?.y
+      },
+      {
+        x: 2030,
+        y: ndcs?.['2030']?.[conditionalNDC?.value]?.['2020']
+      }
+    ],
+    [ndcs, historicalChartData, conditionalNDC]
+  );
+
+  // Calculating reductions data for display on the 2030 and 2035 bars
+  const reductionsData = useMemo(
+    () => ({
+      2035: {
+        actual: ndcs?.['2030']?.[conditionalNDC?.value]?.['2020'],
+        target: ndcs?.['2035']?.[conditionalNDC?.value]?.['2025']
+      }
+    }),
+    [ndcs, conditionalNDC]
+  );
+
+  // Calculating target gaps data for bar display
+  const targetGapsData = useMemo(
+    () => ({
+      upperLimit: {
+        target: ndcs?.['2035']?.[conditionalNDC?.value]?.['2025'],
+        actual: targetsData?.['2035']?.['2.0C']
+      },
+      lowerLimit: {
+        target: ndcs?.['2035']?.[conditionalNDC?.value]?.['2025'],
+        actual: targetsData?.['2035']?.['1.5C']
+      }
+    }),
+    [conditionalNDC, ndcs, targetsData]
+  );
+
+  const formattedLastUpdated = useMemo(() => {
+    if (!lastUpdated) return null;
+    return timeFormat('%B %d, %Y')(new Date(lastUpdated));
+  }, [lastUpdated]);
+
+  useEffect(() => {
+    setChartData({
+      historical: historicalChartData,
+      projected: projectionChartData,
+      targets: targetsData,
+      reductions: reductionsData,
+      targetGaps: targetGapsData,
+      isConditionalNDC: conditionalNDC?.value === 'conditional',
+      lastUpdated
+    });
+  }, [
+    historicalChartData,
+    projectionChartData,
+    reductionsData,
+    targetsData,
+    conditionalNDC
+  ]);
+
+  return (
+    <>
+      <div className={styles.globalWrapper}>
+        <div className={styles.summaryHeader}>
+          <div className={styles.summaryDescription} />
+          <div className={styles.buttonGroupContainer}>
+            <ButtonGroup
+              className={styles.buttonGroup}
+              buttonsConfig={[
+                {
+                  type: 'info',
+                  onClick: handleInfoClick
+                },
+                {
+                  type: 'share',
+                  shareUrl: '/embed/ndcs/global-emissions-reductions',
+                  positionRight: true
+                },
+                {
+                  type: 'downloadCombo',
+                  options: [
+                    {
+                      label: 'Save as image (PNG)',
+                      action: handlePngDownloadModal
+                    },
+                    {
+                      label: 'Go to data explorer',
+                      link: downloadLink,
+                      target: '_self'
+                    }
+                  ]
+                }
+              ]}
+            />
+          </div>
+        </div>
+
+        <div className={styles.chartOptionsContainer}>
+          <Switch
+            options={CONDITIONAL_SWITCH_OPTIONS}
+            selectedOption={conditionalNDC.value}
+            onClick={setConditionalNDC}
+            theme={{
+              wrapper: styles.switchWrapper,
+              checkedOption: styles.switchSelected
+            }}
+          />
+        </div>
+
+        <GlobalChart data={chartData} />
+
+        <TagsComponent tags={TAGS_DATA[conditionalNDC?.value]} />
+        {formattedLastUpdated && (
+          <div className={styles.lastUpdated}>
+            Last updated on {formattedLastUpdated}
+          </div>
+        )}
+      </div>
+      <ModalPngDownload id={pngDownloadId}>
+        <div className={styles.globalDownloadModalWrapper}>
+          <GlobalChart type="png-download" data={chartData} />
+          <TagsComponent tags={TAGS_DATA[conditionalNDC?.value]} />
+          <span className={styles.spacer} />
+        </div>
+      </ModalPngDownload>
+      <ModalMetadata />
+      <NdcContentGlobalEmissionsProvider />
+    </>
+  );
+};
+
+GlobalViewComponent.propTypes = {
+  data: PropTypes.shape({
+    historicalEmissions: PropTypes.object.isRequired,
+    targets: PropTypes.object.isRequired,
+    ndcs: PropTypes.object.isRequired,
+    lastUpdated: PropTypes.string.isRequired
+  }).isRequired,
+  pngDownloadId: PropTypes.string.isRequired,
+  handleInfoClick: PropTypes.func.isRequired,
+  handlePngDownloadModal: PropTypes.func.isRequired
+};
+
+export default GlobalViewComponent;

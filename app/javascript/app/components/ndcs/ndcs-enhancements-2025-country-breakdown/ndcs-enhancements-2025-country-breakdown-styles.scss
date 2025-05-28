@@ -1,0 +1,37 @@
+@import "~styles/layout.scss";
+
+.wrapper {
+  position: relative;
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
+.summary {
+  .summaryHeader {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 20px;
+  }
+
+  h2 {
+    font-size: $font-size-large;
+    color: $theme-color;
+    font-weight: $font-weight;
+    flex: 1;
+  }
+}
+
+.switchWrapper {
+  @media #{$mobile-only} {
+    margin: 10px auto;
+  }
+
+  display: flex;
+  margin: 20px 0 10px;
+  justify-content: center;
+}
+
+.chartWrapper {
+  display: flex;
+}

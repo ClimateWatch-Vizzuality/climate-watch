@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import Component from './country-climate-enhancements-component';
 import {
-  getPreviousComparisonCountryValues,
+  getComparisonIndicators,
   getCountryName
 } from './country-climate-enhancements-selectors';
 
@@ -13,7 +13,7 @@ const mapStateToProps = (state, { match }) => {
   };
 
   return {
-    previousComparisonValues: getPreviousComparisonCountryValues(stateWithIso),
+    comparisonIndicators: getComparisonIndicators(stateWithIso),
     countryName: getCountryName(stateWithIso)
   };
 };

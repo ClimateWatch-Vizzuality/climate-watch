@@ -31,24 +31,29 @@
   @include xy-gutters($gutter-position: ('bottom'));
 }
 
-.item {
-  text-align: center;
+.comparisonIndicator {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-top: 44px;
 }
 
-.previousComparison {
-  @include columns(4);
-  @include xy-gutters(80px, $gutter-position: ('top'), $gutter-type: margin);
-
-  > div {
-    padding-bottom: 30px;
-  }
+.comparisonIndicatorReducedWidth {
+  margin-left: auto;
+  margin-right: auto;
 
   @media #{$tablet-landscape} {
-    @include columns(1.71); // 12 / 7 indicators
+    padding-right: 80px;
+  }
+}
 
-    > div {
-      padding-bottom: 0;
-    }
+.comparisonIndicatorItem {
+  text-align: center;
+  width: 96px;
+  margin-bottom: 30px;
+
+  @media #{$tablet-landscape} {
+    width: 140px;
   }
 }
 
