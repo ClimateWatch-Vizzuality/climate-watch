@@ -96,7 +96,10 @@ export const getMapIndicator = createSelector(
 
     if (!mapIndicator) return null;
 
-    const updatedMapIndicator = { ...mapIndicator };
+    const updatedMapIndicator = {
+      ...mapIndicator,
+      locations: { ...mapIndicator.locations }
+    };
 
     // Missing slug in the legendBuckets data
     const noInfoId = Object.keys(updatedMapIndicator.legendBuckets).find(
