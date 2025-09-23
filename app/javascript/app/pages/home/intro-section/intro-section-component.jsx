@@ -18,7 +18,7 @@ const HomeIntroSection = () => (
     <div className={cx(styles.column, styles.homeIntro)}>
       <Icon icon={cwLogo} className={styles.cwLogo} />
       <Intro
-        description='<p>Climate Watch offers open data, visualizations and analysis to help policymakers, researchers and other stakeholders gather insights on countries&apos; climate progress.</p><p>Countries are expected to submit new <a href="https://www.wri.org/insights/nationally-determined-contributions-ndcs-explained" rel="noopener noreferrer" target="_blank">NDCs</a> by early 2025. <a href="/ndc-tracker">Track submissions here</a> and learn about the <a href="https://www.wri.org/ndcs" rel="noopener noreferrer" target="_blank">benefits of strong new NDCs</a>.</p>'
+        description='<p>Climate Watch offers open data, visualizations and analysis to help policymakers, researchers and other stakeholders gather insights on countries&apos; climate progress.</p><p>Visit our <a href="/ndc-tracker">new NDC Tracker</a> to monitor the latest submissions and see how much new climate plans could cut emissions.</p>'
         className={styles.intro}
         skipAbbrReplace
       />
