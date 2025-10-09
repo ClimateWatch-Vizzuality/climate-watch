@@ -27,3 +27,9 @@ permalink: /_docs/domain-description
 **IPCC version** == GWP (Global Warming Potential) - Versions of the data created for UNFCCC
 
 **ANNEX 1 and non-ANNEX 2 (UNFCCC)** - Different groups of parties of the convention
+
+**WRI** - World Resources Institute - NGO that provides data for the platform
+
+**WB** - World Bank - International financial institution that provides data for the platform
+
+**ESP** - Emission scenarios platform - Platform that provides data for the Emission Pathways
