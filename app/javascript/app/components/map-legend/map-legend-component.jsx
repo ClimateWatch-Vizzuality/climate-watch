@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import { getColorByIndex } from 'utils/map';
+import { CHART_COLORS } from 'data/constants';
 
 import styles from './map-legend-styles.scss';
 
@@ -16,11 +17,10 @@ const renderBuckets = (buckets, mapColors) => {
       <span
         className={styles.bucketIcon}
         style={{
-          backgroundColor: getColorByIndex(
-            buckets,
-            buckets[key].index,
-            mapColors
-          )
+          backgroundColor:
+            key === 'withdrawn-ndc'
+              ? CHART_COLORS[3]
+              : getColorByIndex(buckets, buckets[key].index, mapColors)
         }}
       />
       <span className={styles.bucketTxt}>{buckets[key].name}</span>

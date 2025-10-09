@@ -231,21 +231,13 @@ $container-padding: 15px;
   margin-left: 70px;
   color: $gray1;
   font-size: $font-size-s;
-  display: flex;
-  flex-flow: column wrap;
-  height: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
+  gap: 0 20px;
   max-width: 100%;
-  max-height: 300px;
-}
-
-.expandedMediumRegionContainer {
-  max-height: 700px;
-}
-
-.expandedHighRegionContainer {
-  max-height: 1200px;
 }
 
 .regionName {
-  max-width: 20%;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

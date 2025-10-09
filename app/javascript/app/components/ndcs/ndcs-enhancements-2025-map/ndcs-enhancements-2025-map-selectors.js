@@ -17,7 +17,8 @@ import {
   ENHANCEMENT_CATEGORIES,
   ENHANCEMENT_LABEL_SLUGS,
   NDC_2025_LABEL_COLORS,
-  INDICATOR_SLUGS
+  INDICATOR_SLUGS,
+  CHART_COLORS
 } from 'data/constants';
 
 const NDC_2025_SLUGS = {
@@ -96,7 +97,10 @@ export const getMapIndicator = createSelector(
 
     if (!mapIndicator) return null;
 
-    const updatedMapIndicator = { ...mapIndicator };
+    const updatedMapIndicator = {
+      ...mapIndicator,
+      locations: { ...mapIndicator.locations }
+    };
 
     // Missing slug in the legendBuckets data
     const noInfoId = Object.keys(updatedMapIndicator.legendBuckets).find(
@@ -206,12 +210,15 @@ export const reduceLegendBuckets = createSelector(
       updatedIndicator.legendBuckets
     ).reduce((acc, [key, value]) => {
       if (value.name === 'No Information') {
-        acc[key] = { ...value, name: 'No New NDC' };
+        acc[key] = { ...value, name: 'No New NDC', order: 2 };
       } else if (value.name === 'Submitted 2025 NDC') {
-        acc[key] = { ...value, name: 'New NDC' };
+        acc[key] = { ...value, name: 'New NDC', order: 1 };
       } else {
         acc[key] = value;
       }
+
+      acc['withdrawn-ndc'] = { ...value, name: 'Withdrawn NDC', order: 4 };
+
       return acc;
     }, {});
 
@@ -222,6 +229,8 @@ export const reduceLegendBuckets = createSelector(
         acc[key] = { ...value, name: 'No New NDC' };
       } else if (value.name === 'Submitted 2025 NDC') {
         acc[key] = { ...value, name: 'New NDC' };
+      } else if (value.name === 'Withdrawn NDC') {
+        acc[key] = { ...value, name: 'Withdrawn NDC' };
       } else {
         acc[key] = value;
       }
@@ -237,7 +246,12 @@ export const sortIndicatorLegend = createSelector(
   indicator => {
     if (!indicator) return null;
     const updatedIndicator = { ...indicator };
-    const namesLegendOrder = ['New NDC', 'No New NDC', 'Not Applicable'];
+    const namesLegendOrder = [
+      'New NDC',
+      'Withdrawn NDC',
+      'No New NDC',
+      'Not Applicable'
+    ];
     const updatedLegendBuckets = {};
 
     Object.entries(updatedIndicator.legendBuckets).forEach(([key, value]) => {
@@ -289,19 +303,21 @@ export const getPathsWithStyles = createSelector(
         if (countryData && countryData.label_id) {
           const legendIndex = legendBuckets[countryData.label_id].index;
           const color = getColorByIndex(legendBuckets, legendIndex, MAP_COLORS);
+
+          const fill = iso === 'USA' ? CHART_COLORS[3] : color;
           style = {
             ...COUNTRY_STYLES,
             default: {
               ...COUNTRY_STYLES.default,
               strokeWidth,
-              fill: color,
+              fill,
               fillOpacity: 1
             },
             hover: {
               ...COUNTRY_STYLES.hover,
               cursor: 'pointer',
               strokeWidth,
-              fill: color,
+              fill,
               fillOpacity: 1
             }
           };

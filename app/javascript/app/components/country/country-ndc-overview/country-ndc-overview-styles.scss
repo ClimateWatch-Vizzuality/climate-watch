@@ -47,6 +47,11 @@
   @include xy-gutters($gutter-position: ('bottom'));
 }
 
+.descriptionNote {
+  font-weight: $font-weight-semi-bold;
+  padding: 0 0 38px;
+}
+
 .subtitles {
   @include columns((9, 3));
 }

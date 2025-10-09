@@ -35,7 +35,9 @@ const getNetZeroAnd2020StatusValues = createSelector(
     );
     const netZeroIndicator = indicators.find(i => i.slug === 'nz_status');
 
-    if (!status2020indicator || !status2025indicator || !netZeroIndicator) { return null; }
+    if (!status2020indicator || !status2025indicator || !netZeroIndicator) {
+      return null;
+    }
 
     const status2020Label =
       status2020indicator &&

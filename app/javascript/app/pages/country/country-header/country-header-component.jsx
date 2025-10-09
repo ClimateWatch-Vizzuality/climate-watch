@@ -81,7 +81,11 @@ function CountryHeader(props) {
       <div className={styles.headerContainer}>
         <div className={styles.mainContent}>
           <div className={styles.header}>
-            <Intro title={country.name} description={description} />
+            <Intro
+              title={country.name}
+              description={description}
+              skipAbbrReplace
+            />
             {Object.keys(EXTERNAL_COUNTRY_LINKS).includes(
               country.name.toLowerCase()
             ) && renderExternalLink}

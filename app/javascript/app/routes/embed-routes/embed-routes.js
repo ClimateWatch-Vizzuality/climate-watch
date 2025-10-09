@@ -3,6 +3,8 @@ import { Redirect } from 'react-router-dom';
 
 import NDCSEnhancementsMap from 'components/ndcs/ndcs-enhancements-map';
 import NDCS2025EnhancementsMap from 'components/ndcs/ndcs-enhancements-2025-map';
+import NDCS2025EnhancementsGlobalView from 'components/ndcs/ndcs-enhancements-2025-country-breakdown/global-view';
+import NDCS2025EnhancementsCountryBreakdown from 'components/ndcs/ndcs-enhancements-2025-country-breakdown/country-breakdown';
 import GhgEmissionsGraph from 'components/ghg-emissions';
 import CompareGhgChart from 'components/compare/compare-ghg-chart';
 import CountryGhg from 'components/country/country-ghg';
@@ -31,6 +33,16 @@ export default [
   {
     path: '/embed/ndc-tracker',
     component: NDCS2025EnhancementsMap,
+    exact: true
+  },
+  {
+    path: '/embed/ndcs/global-emissions-reductions',
+    component: NDCS2025EnhancementsGlobalView,
+    exact: true
+  },
+  {
+    path: '/embed/ndcs/country-emissions-reductions',
+    component: NDCS2025EnhancementsCountryBreakdown,
     exact: true
   },
   {

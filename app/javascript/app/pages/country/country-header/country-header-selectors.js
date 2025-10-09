@@ -84,16 +84,31 @@ export const getDescriptionText = createSelector(
       ? emissionsData.emissions[emissionsData.emissions.length - 1]
       : {};
     const percentage = isoData && isoData.value;
+
     return ReactDOMServer.renderToString(
       <div className={styles.introDescription}>
-        In {lastYear}, {countryName} emitted
-        <span className={styles.bold}>
-          {' '}
-          {emissionValue && Math.round(emissionValue * 100) / 100} million
-          tonnes
-        </span>{' '}
-        of CO<sub>2</sub> equivalent representing{' '}
-        <span className={styles.bold}>{percentage} of global emissions</span>
+        <p>
+          In {lastYear}, {countryName} emitted
+          <span className={styles.bold}>
+            {' '}
+            {emissionValue && Math.round(emissionValue * 100) / 100} million
+            tonnes
+          </span>{' '}
+          of CO<sub>2</sub> equivalent representing{' '}
+          <span className={styles.bold}>{percentage} of global emissions</span>
+        </p>
+        {iso === 'USA' && (
+          <p>
+            On 20, January, 2025, the United States{' '}
+            <span className={styles.bold}>
+              withdrew from the Paris Agreement and no longer has an active NDC
+              under the UNFCC.
+            </span>{' '}
+            The NDC-related information on this country profile refers to the
+            United States latest submitted NDC (December 19, 2024) despite it
+            being no longer active.
+          </p>
+        )}
       </div>
     );
   }

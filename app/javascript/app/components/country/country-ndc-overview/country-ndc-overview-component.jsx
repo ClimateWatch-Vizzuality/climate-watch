@@ -169,6 +169,15 @@ function CountryNdcOverview(props) {
             <div className="grid-column-item">
               <div className={styles.header}>
                 {renderIntro()}
+                {iso === 'USA' && (
+                  <p className={styles.descriptionNote}>
+                    On 20, January, 2025, the United States withdrew from the
+                    Paris Agreement and no longer has an active NDC under the
+                    UNFCCC. The NDC-related information on this NDC Page refers
+                    to the United States latest submitted NDC (December 19,
+                    2024) despite it being no longer active.
+                  </p>
+                )}
                 <TabletPortraitOnly>{description}</TabletPortraitOnly>
               </div>
               <TabletLandscape>{description}</TabletLandscape>

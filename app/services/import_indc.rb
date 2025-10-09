@@ -19,6 +19,8 @@ class ImportIndc
   DOCUMENTS_FILEPATH =
     "#{CW_FILES_PREFIX}indc/NDC_documents.csv".freeze
   DATA_TIMELINE_FILEPATH = "#{CW_FILES_PREFIX}indc/NDC_timeline.csv".freeze
+  DATA_GLOBAL_EMISSIONS_FILEPATH = "#{CW_FILES_PREFIX}indc/NDC_global_emissions.csv".freeze
+  DATA_COUNTRY_EMISSIONS_FILEPATH = "#{CW_FILES_PREFIX}indc/NDC_country_emissions.csv".freeze
   PLEDGES_DATA_FILEPATH = "#{CW_FILES_PREFIX}indc/pledges_data.csv".freeze
   COMPARISON_FILEPATH = "#{CW_FILES_PREFIX}indc/comparison_matrix.csv".freeze
 
@@ -60,6 +62,8 @@ class ImportIndc
       import_submissions
       import_comparison_slugs
       import_timelines
+      import_global_emissions
+      import_country_emissions
     end
 
     generate_subsectors_map_data
@@ -170,6 +174,8 @@ class ImportIndc
     Indc::Submission.delete_all
     Indc::Document.delete_all
     Indc::Timeline.delete_all
+    Indc::GlobalEmission.delete_all
+    Indc::CountryEmission.delete_all
   end
 
   def load_csvs
@@ -191,6 +197,8 @@ class ImportIndc
     @pledges_data = S3CSVReader.read(PLEDGES_DATA_FILEPATH).map(&:to_h)
     @comparison_indicators = S3CSVReader.read(COMPARISON_FILEPATH).map(&:to_h)
     @timelines = S3CSVReader.read(DATA_TIMELINE_FILEPATH).map(&:to_h)
+    @global_emissions = S3CSVReader.read(DATA_GLOBAL_EMISSIONS_FILEPATH).map(&:to_h)
+    @country_emissions = S3CSVReader.read(DATA_COUNTRY_EMISSIONS_FILEPATH).map(&:to_h)
   end
 
   def load_locations
@@ -286,6 +294,67 @@ class ImportIndc
       submission: timeline[:submission],
       date: timeline[:date],
       url: timeline[:url]
+    }
+  end
+
+  def convert_to_decimal_or_nil(str)
+    BigDecimal(str)
+  rescue ArgumentError, TypeError
+    nil
+  end
+
+  def global_emission_attributes(emission)
+    {
+      year: Integer(emission[:year]),
+      historical_emission: convert_to_decimal_or_nil(emission[:historical_emissions]),
+      current_policies_scenario: convert_to_decimal_or_nil(emission[:current_policies_scenario]),
+      ndcs_conditional_2020: convert_to_decimal_or_nil(emission[:'2020_ndcs_conditional']),
+      ndcs_unconditional_2020: convert_to_decimal_or_nil(emission[:'2020_ndcs_unconditional']),
+      ndcs_conditional_2025: convert_to_decimal_or_nil(emission[:'2025_ndcs_conditional']),
+      ndcs_unconditional_2025:convert_to_decimal_or_nil( emission[:'2025_ndcs_unconditional']),
+      target_2c: convert_to_decimal_or_nil(emission[:'2c']),
+      target_1_5c: convert_to_decimal_or_nil(emission[:'15c'])
+    }
+  end
+
+  def country_emission_attributes(location, emission)
+    {
+      location: location,
+      latest_ndc: emission[:latest_ndc]&.to_s,
+      total_emissions: emission[:total_emissions]&.to_f,
+      historical_cw1990: emission[:historical_cw1990]&.to_f,
+      historical_cw2005: emission[:historical_cw2005]&.to_f,
+      historical_cw2019: emission[:historical_cw2019]&.to_f,
+      targets_nfgs_uc2030: emission[:targets_nfgs_uc2030]&.to_f,
+      targets_nfgs_c2030: emission[:targets_nfgs_c2030]&.to_f,
+      targets_nfgs_uc2035: emission[:targets_nfgs_uc2035]&.to_f,
+      targets_nfgs_c2035: emission[:targets_nfgs_c2035]&.to_f,
+      baseline1990_2030_uc: emission[:baseline1990_2030_uc]&.to_f,
+      baseline1990_2030_uc_percentage: emission[:baseline1990_2030_uc_percentage]&.to_f,
+      baseline1990_2035_uc: emission[:baseline1990_2035_uc]&.to_f,
+      baseline1990_2035_uc_percentage: emission[:baseline1990_2035_uc_percentage]&.to_f,
+      baseline1990_2035_c: emission[:baseline1990_2035_c]&.to_f,
+      baseline1990_2035_c_percentage: emission[:baseline1990_2035_c_percentage]&.to_f,
+      baseline2005_2030_uc: emission[:baseline2005_2030_uc]&.to_f,
+      baseline2005_2030_uc_percentage: emission[:baseline2005_2030_uc_percentage]&.to_f,
+      baseline2005_2035_uc: emission[:baseline2005_2035_uc]&.to_f,
+      baseline2005_2035_uc_percentage: emission[:baseline2005_2035_uc_percentage]&.to_f,
+      baseline2005_2035_c: emission[:baseline2005_2035_c]&.to_f,
+      baseline2005_2035_c_percentage: emission[:baseline2005_2035_c_percentage]&.to_f,
+      baseline2019_2030_uc: emission[:baseline2019_2030_uc]&.to_f,
+      baseline2019_2030_uc_percentage: emission[:baseline2019_2030_uc_percentage]&.to_f,
+      baseline2019_2035_uc: emission[:baseline2019_2035_uc]&.to_f,
+      baseline2019_2035_uc_percentage: emission[:baseline2019_2035_uc_percentage]&.to_f,
+      baseline2019_2035_c: emission[:baseline2019_2035_c]&.to_f,
+      baseline2019_2035_c_percentage: emission[:baseline2019_2035_c_percentage]&.to_f,
+      baseline1990_2030_c: emission[:baseline1990_2030_c]&.to_f,
+      baseline2005_2030_c: emission[:baseline2005_2030_c]&.to_f,
+      baseline2019_2030_c: emission[:baseline2019_2030_c]&.to_f,
+      baseline1990_2030_c_percentage: emission[:baseline1990_2030_c_percentage]&.to_f,
+      baseline2005_2030_c_percentage: emission[:baseline2005_2030_c_percentage]&.to_f,
+      baseline2019_2030_c_percentage: emission[:baseline2019_2030_c_percentage]&.to_f,
+      absolute_emissions_comparison_c: emission[:absolute_emissions_comparison_c]&.to_f,
+      absolute_emissions_comparison_uc: emission[:absolute_emissions_comparison_uc]&.to_f
     }
   end
 
@@ -732,6 +801,25 @@ class ImportIndc
       Indc::Timeline.create!(timeline_attributes(location, timeline))
     rescue
       puts "This row failed #{timeline}"
+    end
+  end
+
+  def import_global_emissions
+    @global_emissions.each do |emission|
+      Indc::GlobalEmission.create!(global_emission_attributes(emission))
+    rescue => e
+      puts "This row failed #{emission}, reason: #{e.message}"
+    end
+  end
+
+  def import_country_emissions
+    @country_emissions.each do |emission|
+      location = Location.find_by(iso_code3: emission[:iso_country])
+      next unless location
+
+      Indc::CountryEmission.create!(country_emission_attributes(location, emission))
+    rescue => e
+      puts "This row failed #{emission}, reason: #{e.message}"
     end
   end
 

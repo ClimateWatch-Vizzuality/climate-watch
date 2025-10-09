@@ -20,7 +20,7 @@ const NDCSEnhancements2025 = ({ route }) => (
             <BackButton pathname="/ndcs-explore" backLabel="Explore NDCs" />
             <Intro
               title="NDC Tracker"
-              description="The Paris Agreement requires countries to submit new Nationally Determined Contributions (NDCs) every five years, reflecting progressively higher ambition and taking into account each country’s capacity. The new round of NDCs, due in early 2025, will outline countries’ climate actions through 2035 and take into account the Global Stocktake. To learn more, please visit WRI’s page on <a href='https://www.wri.org/ndcs' target='_blank' rel='noopener noreferrer'>Next Generation NDCs.</a>"
+              description="The Paris Agreement requires countries to submit new Nationally Determined Contributions (NDCs) every five years, reflecting progressively higher ambition and taking into account each country’s capacity. The new round of NDCs, expected in 2025, will outline countries’ climate actions through 2035 and take into account the Global Stocktake. To learn more, please visit WRI’s page on <a href='https://www.wri.org/ndcs' target='_blank' rel='noopener noreferrer'>Next Generation NDCs.</a>"
               skipAbbrReplace
             />
             <Ndc2025Timeline />
@@ -29,16 +29,14 @@ const NDCSEnhancements2025 = ({ route }) => (
       </div>
     </Header>
     <div className={styles.wrapper}>
-      <div className={layout.content}>
-        {route.sections &&
-          route.sections.length > 0 &&
-          route.sections.map(section => (
-            <div key={section.hash} className={styles.section}>
-              <div id={section.hash} className={styles.sectionHash} />
-              <section.component />
-            </div>
-          ))}
-      </div>
+      {route.sections &&
+        route.sections.length > 0 &&
+        route.sections.map(section => (
+          <div key={section.hash} className={styles.section}>
+            <div id={section.hash} className={styles.sectionHash} />
+            <section.component />
+          </div>
+        ))}
     </div>
   </div>
 );

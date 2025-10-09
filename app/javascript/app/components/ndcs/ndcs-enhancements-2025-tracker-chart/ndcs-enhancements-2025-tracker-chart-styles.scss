@@ -2,9 +2,15 @@
 
 .wrapper {
   position: relative;
+  background-color: $gray3;
+  padding-top: $gutter-padding;
+  padding-bottom: $gutter-padding;
+  margin-top: -$gutter-padding;
 }
 
 .summary {
+  padding-top: $gutter-padding;
+
   .summaryHeader {
     display: flex;
     flex-wrap: wrap;
@@ -218,6 +224,11 @@
 //   fill: $chart-color-3;
 //   stroke: $white;
 // }
+
+.withdrawn {
+  fill: $chart-color-4;
+  stroke: $white;
+}
 
 .submitted2025 {
   fill: $chart-color-2;

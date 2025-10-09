@@ -1,0 +1,104 @@
+@import "~styles/layout.scss";
+
+.wrapper {
+  display: block;
+  position: relative;
+  width: 100%;
+}
+
+.summaryHeader {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin: 10px 0;
+  gap: 20px;
+}
+
+.summaryDescription {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+// .buttonGroupContainer {
+//   border: 1px solid red;
+// }
+
+.buttonGroup {
+  width: 152px;
+}
+
+.chartOptionsContainer {
+  @media #{$mobile-only} {
+    flex-direction: column;
+    align-items: start;
+  }
+
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 14px;
+  margin: 24px 0;
+}
+
+.chartDropdownsContainer {
+  @media #{$mobile-only} {
+    flex-direction: column;
+  }
+
+  display: flex;
+  flex: 1;
+  gap: 14px;
+  white-space: nowrap;
+  margin-bottom: 1px;
+  flex-grow: 1;
+
+  > * {
+    @media #{$mobile-only} {
+      width: 100%;
+      max-width: none;
+    }
+
+    max-width: 270px;
+  }
+}
+
+.conditionalSwitchContainer {
+  @media #{$mobile-only} {
+    white-space: normal;
+  }
+
+  white-space: nowrap;
+}
+
+// .chartContainer {}
+
+.chartPlaceholderImg {
+  // border: 1px solid red;
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 100%;
+}
+
+.tagsContainer {
+  @media #{$mobile-only} {
+    margin-left: 0;
+  }
+
+  margin-left: 104px;
+  margin-top: 18px;
+}
+
+.lastUpdated {
+  @media #{$mobile-only} {
+    margin-left: 0;
+  }
+
+  margin-top: 14px;
+  margin-left: 104px;
+  font-style: italic;
+}
+
+.footnote {
+  margin-top: 14px;
+}

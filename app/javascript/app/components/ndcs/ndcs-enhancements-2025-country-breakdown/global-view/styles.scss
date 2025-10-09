@@ -1,0 +1,58 @@
+@import "~styles/layout.scss";
+
+.globalWrapper {
+  display: block;
+  position: relative;
+  width: 100%;
+
+  .summaryHeader {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 10px 0;
+    gap: 20px;
+  }
+
+  .summaryDescription {
+    display: flex;
+    align-items: center;
+  }
+
+  .buttonGroup {
+    width: 152px;
+  }
+
+  .chartOptionsContainer {
+    display: flex;
+    justify-content: end;
+    margin: 24px 0;
+  }
+
+  .tagsContainer {
+    @media #{$mobile-only} {
+      margin-left: 0;
+    }
+
+    margin-left: 79px;
+  }
+
+  .spacer {
+    display: block;
+    height: 20px;
+  }
+
+  .lastUpdated {
+    @media #{$mobile-only} {
+      margin-left: 0;
+    }
+
+    margin-left: 79px;
+    font-style: italic;
+  }
+}
+
+.globalDownloadModalWrapper {
+  .tagsContainer {
+    margin-left: 79px;
+  }
+}
