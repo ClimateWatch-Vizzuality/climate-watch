@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 
-import { TOP_EMITTERS_OPTION } from 'data/constants';
+import { DEFAULT_EMISSIONS_SELECTIONS } from 'data/constants';
 import {
   europeSlug,
   europeGroupExplorerPagesSlug,
@@ -28,7 +28,7 @@ export const getLocations = createSelector(
     }));
     const SOURCES = ['Climate Watch'];
 
-    const regionOptions = [TOP_EMITTERS_OPTION];
+    const regionOptions = [DEFAULT_EMISSIONS_SELECTIONS];
     const updatedRegions = regions;
     updatedRegions.forEach(region => {
       const regionMembers =

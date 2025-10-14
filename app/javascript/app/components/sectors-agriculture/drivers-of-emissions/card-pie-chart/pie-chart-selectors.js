@@ -52,7 +52,7 @@ export const getPieChartData = createSelector(
 
     const filteredEmissions = lastYearEmissions.filter(
       ({ sector, value }) => value > 0 && INCLUDED_SECTORS.includes(sector)
-    ); // filter for negative emission for Forestry sector and total LUCF sectors
+    ); // filter for negative emission for Forestry sector and total LULUCF sectors
 
     if (!filteredEmissions || !totalIncludingLUCF || !totalExcludingLUCF) {
       return null;

@@ -31,7 +31,7 @@ class GhgEmissions extends PureComponent {
           {renderLink(
             'from just 10 countries',
             'About 60% of GHG emissions come from just 10 countries',
-            '/ghg-emissions?chartType=percentage'
+            '/ghg-emissions?chartType=area'
           )}
           , while the 100 least-emitting contributed less than 3%. Energy makes
           up{' '}
