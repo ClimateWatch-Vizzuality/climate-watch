@@ -9,8 +9,8 @@ import { format } from 'd3-format';
 import getIsoCode from './location-selectors';
 
 const AGRICULTURE_COLOR = '#0677B3';
-const TOTAL_EXCLUDING_LUCF = 'Total excluding LULUCF';
-const TOTAL_INCLUDING_LUCF = 'Total including LULUCF';
+const TOTAL_EXCLUDING_LUCF = 'Total excluding LUCF';
+const TOTAL_INCLUDING_LUCF = 'Total including LUCF';
 const INCLUDED_SECTORS = [
   'Agriculture',
   'Energy',
@@ -52,7 +52,7 @@ export const getPieChartData = createSelector(
 
     const filteredEmissions = lastYearEmissions.filter(
       ({ sector, value }) => value > 0 && INCLUDED_SECTORS.includes(sector)
-    ); // filter for negative emission for Forestry sector and total LULUCF sectors
+    ); // filter for negative emission for Forestry sector and total LUCF sectors
 
     if (!filteredEmissions || !totalIncludingLUCF || !totalExcludingLUCF) {
       return null;

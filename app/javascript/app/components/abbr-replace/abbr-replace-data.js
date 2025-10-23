@@ -45,7 +45,7 @@ export const ABBREVIATIONS = {
   INDC: 'Intended Nationally Determined Contribution',
   IPCC: 'Intergovernmental Panel on Climate Change',
   LTS: 'Long-term Strategy',
-  LULUCF: 'Land-Use, Land-Use Change and Forestry',
+  LUCF: 'Land-Use, Land-Use Change and Forestry',
   MtCO2e: 'Million metric tonnes of carbon dioxide equivalent',
   Mt: 'Million metric tonnes',
   N2O: 'Nitrous Oxide',
