@@ -53,10 +53,7 @@ const CountryBreakdownComponent = ({
   }, [locations]);
 
   const defaultLocationOptions = useMemo(() => {
-    let defaultIso = 'TOP';
-    if (view.value === 'baseline') {
-      defaultIso = 'WORLD';
-    }
+    const defaultIso = 'WORLD';
 
     return data?.locations?.filter(({ iso }) => iso === defaultIso);
   }, [data, view]);

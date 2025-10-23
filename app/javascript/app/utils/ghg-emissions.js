@@ -22,7 +22,7 @@ export const getGhgEmissionDefaultSlugs = (source, meta) => {
   const defaults = DEFAULT_EMISSIONS_SELECTIONS[sourceName];
   if (!defaults) {
     console.warn(
-      'Remember to add the defaults for a new sournce on DEFAULT_EMISSIONS_SELECTIONS'
+      'Remember to add the defaults for a new source on DEFAULT_EMISSIONS_SELECTIONS'
     );
     return {};
   }

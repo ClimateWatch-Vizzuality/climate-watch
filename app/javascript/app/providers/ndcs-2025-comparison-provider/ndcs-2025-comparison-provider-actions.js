@@ -3,15 +3,9 @@ import { createThunkAction } from 'utils/redux';
 import { apiWithCache } from 'services/api';
 import { getValueWithLabelId } from 'utils/indctransform';
 
-const fetch2025NDCComparisonInit = createAction(
-  'fetch2025NDCComparisonInit'
-);
-const fetch2025NDCComparisonReady = createAction(
-  'fetch2025NDCComparisonReady'
-);
-const fetch2025NDCComparisonFail = createAction(
-  'fetch2025NDCComparisonFail'
-);
+const fetch2025NDCComparisonInit = createAction('fetch2025NDCComparisonInit');
+const fetch2025NDCComparisonReady = createAction('fetch2025NDCComparisonReady');
+const fetch2025NDCComparisonFail = createAction('fetch2025NDCComparisonFail');
 
 const fetch2025NDCComparison = createThunkAction(
   'fetch2025NDCComparison',
