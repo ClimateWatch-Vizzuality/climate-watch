@@ -38,7 +38,7 @@ jobs:
 
       - name: Cache Node Modules
         id: cache-node-modules
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: node_modules
           key: node-modules-${{ hashFiles('yarn.lock') }}
@@ -64,7 +64,7 @@ jobs:
           DEV_USER_TOKEN: DEV_USER_TOKEN_PLACEHOLDER
         run: bundle exec rspec
       - name: Upload Code Coverage
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: code-coverage
           path: coverage/
