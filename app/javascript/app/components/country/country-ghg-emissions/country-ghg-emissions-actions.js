@@ -20,19 +20,13 @@ const fetchCountryGhgEmissionsData = createThunkAction(
     dispatch(fetchCountryGhgEmissionsInit());
     const promises = [
       apiWithCache
-        .get(
-          `https://www.climatewatchdata.org/api/v1/emissions?${qs.stringify(
-            filters
-          )}`
-        )
+        .get(`/api/v1/emissions?${qs.stringify(filters)}`)
         .then(response => {
           if (response.data) return response.data;
           throw Error(response.statusText);
         }),
       apiWithCache
-        .get(
-          `https://www.climatewatchdata.org/api/v1/quantifications?location=${filters.location}`
-        )
+        .get(`/api/v1/quantifications?location=${filters.location}`)
         .then(response => {
           if (response.data) return response.data;
           throw Error(response.statusText);

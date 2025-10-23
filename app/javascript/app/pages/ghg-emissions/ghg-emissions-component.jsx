@@ -31,7 +31,7 @@ class GhgEmissions extends PureComponent {
           {renderLink(
             'from just 10 countries',
             'About 60% of GHG emissions come from just 10 countries',
-            '/ghg-emissions?chartType=area'
+            '/ghg-emissions?chartType=percentage'
           )}
           , while the 100 least-emitting contributed less than 3%. Energy makes
           up{' '}
@@ -47,8 +47,8 @@ class GhgEmissions extends PureComponent {
             '/ghg-emissions?breakBy=sector&chartType=percentage&sectors=agriculture%2Cindustrial-processes%2Cland-use-change-and-forestry%2Cbuilding%2Celectricity-heat%2Cfugitive-emissions%2Cmanufacturing-construction%2Cother-fuel-combustion%2Ctransportation%2Cwaste'
           )}{' '}
           , followed by transportation and manufacturing. Land use, land
-          use-change and forestry (LULUCF) is both a source and sink of
-          emissions and key sector to get to net-zero emissions.
+          use-change and forestry (LUCF) is both a source and sink of emissions
+          and key sector to get to net-zero emissions.
         </p>
         <p className={styles.learnMore} data-tour="ghg-05">
           Learn more about our data sources (Climate Watch, PIK, UNFCCC, GCP)
