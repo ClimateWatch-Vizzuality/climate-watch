@@ -12,7 +12,11 @@ const fetchGhgEmissionsMapData = createThunkAction(
   'fetchGhgEmissionsMapData',
   filters => dispatch => {
     dispatch(fetchGhgEmissionsMapInit());
-    fetch(`/api/v1/emissions?${qs.stringify(filters)}`)
+    fetch(
+      `https://www.climatewatchdata.org/api/v1/emissions?${qs.stringify(
+        filters
+      )}`
+    )
       .then(response => {
         if (response.ok) return response.json();
         throw Error(response.statusText);

@@ -77,7 +77,7 @@ export const FILTER_DEFAULTS = {
     'data-sources': 'Climate Watch',
     regions: ALL_SELECTED,
     gases: 'All GHG',
-    sectors: 'Total including LULUCF'
+    sectors: 'Total including LUCF'
   },
   'ndc-content': {
     categories: 'UNFCCC Process',
