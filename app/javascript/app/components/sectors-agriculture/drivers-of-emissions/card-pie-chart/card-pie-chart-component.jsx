@@ -24,7 +24,7 @@ class CardPieChart extends PureComponent {
     const emission =
       pieChartData &&
       pieChartData.agricultureEmissions &&
-      pieChartData.agricultureEmissions.excludingLUCF;
+      pieChartData.agricultureEmissions.excludingLULUCF;
 
     return (
       <div className={styles.agricultureLabel}>
@@ -80,10 +80,12 @@ class CardPieChart extends PureComponent {
 
     const agricultureEmissions =
       pieChartData && pieChartData.agricultureEmissions;
-    const totalIncludingLUCF = pieChartData && pieChartData.totalIncludingLUCF;
-    const totalExcludingLUCF = pieChartData && pieChartData.totalExcludingLUCF;
+    const totalIncludingLULUCF =
+      pieChartData && pieChartData.totalIncludingLULUCF;
+    const totalExcludingLULUCF =
+      pieChartData && pieChartData.totalExcludingLULUCF;
     const subtitle = pieChartData
-      ? `${location} GHG emissions by sector in ${year} (excluding LUCF). Source: Climate Watch.`
+      ? `${location} GHG emissions by sector in ${year} (excluding LULUCF). Source: Climate Watch.`
       : 'Source: Climate Watch.';
 
     const cardTheme = {
@@ -101,18 +103,18 @@ class CardPieChart extends PureComponent {
                 <span>{location}</span> in <span>{year}</span>, the Agriculture
                 sector contributed{' '}
                 {renderEmissionValue(
-                  agricultureEmissions.excludingLUCF.formattedValue
+                  agricultureEmissions.excludingLULUCF.formattedValue
                 )}{' '}
                 GHG emissions, which represented{' '}
                 <span>
-                  {agricultureEmissions.excludingLUCF.formattedPercentage}
+                  {agricultureEmissions.excludingLULUCF.formattedPercentage}
                 </span>{' '}
                 of its total emissions excluding land-use change and forestry (
-                {renderEmissionValue(totalExcludingLUCF)}), and{' '}
+                {renderEmissionValue(totalExcludingLULUCF)}), and{' '}
                 <span>
-                  {agricultureEmissions.includingLUCF.formattedPercentage}
+                  {agricultureEmissions.includingLULUCF.formattedPercentage}
                 </span>{' '}
-                including LUCF ({renderEmissionValue(totalIncludingLUCF)})
+                including LULUCF ({renderEmissionValue(totalIncludingLULUCF)})
               </p>
               <TabletLandscape>
                 {this.renderAgricultureLabel()}
@@ -149,11 +151,11 @@ CardPieChart.propTypes = {
     year: PropTypes.string,
     color: PropTypes.string,
     agricultureEmissions: PropTypes.shape({
-      includingLUCF: EmissionObjectPropType,
-      excludingLUCF: EmissionObjectPropType
+      includingLULUCF: EmissionObjectPropType,
+      excludingLULUCF: EmissionObjectPropType
     }),
-    totalIncludingLUCF: PropTypes.string,
-    totalExcludingLUCF: PropTypes.string,
+    totalIncludingLULUCF: PropTypes.string,
+    totalExcludingLULUCF: PropTypes.string,
     data: PropTypes.arrayOf(
       PropTypes.shape({
         name: PropTypes.string,

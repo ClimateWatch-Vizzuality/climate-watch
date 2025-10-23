@@ -104,6 +104,3 @@ end
 
 # for debugging
 # gem 'cw_data_uploader', '~> 0.5.1', require: 'data_uploader', path: '../climate-watch-gems'
-
-gem "ed25519", "~> 1.3"
-gem "bcrypt_pbkdf", "~> 1.1"

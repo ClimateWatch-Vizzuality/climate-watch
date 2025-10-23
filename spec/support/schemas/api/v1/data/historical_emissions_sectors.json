@@ -23,7 +23,7 @@
             "type": "string",
             "title": "The Name Schema ",
             "default": "",
-            "examples": ["Total excluding LUCF"]
+            "examples": ["Total excluding LULUCF"]
           },
           "parent_id": {
             "$id": "/properties/data/items/properties/parent_id",

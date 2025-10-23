@@ -9,8 +9,8 @@ import { format } from 'd3-format';
 import getIsoCode from './location-selectors';
 
 const AGRICULTURE_COLOR = '#0677B3';
-const TOTAL_EXCLUDING_LUCF = 'Total excluding LUCF';
-const TOTAL_INCLUDING_LUCF = 'Total including LUCF';
+const TOTAL_EXCLUDING_LULUCF = 'Total excluding LULUCF';
+const TOTAL_INCLUDING_LULUCF = 'Total including LULUCF';
 const INCLUDED_SECTORS = [
   'Agriculture',
   'Energy',
@@ -43,18 +43,18 @@ export const getPieChartData = createSelector(
       return { sector, location, ...lastYearEmission };
     });
 
-    const totalIncludingLUCF = lastYearEmissions.find(
-      ({ sector }) => sector && sector === TOTAL_INCLUDING_LUCF
+    const totalIncludingLULUCF = lastYearEmissions.find(
+      ({ sector }) => sector && sector === TOTAL_INCLUDING_LULUCF
     );
-    const totalExcludingLUCF = lastYearEmissions.find(
-      ({ sector }) => sector && sector === TOTAL_EXCLUDING_LUCF
+    const totalExcludingLULUCF = lastYearEmissions.find(
+      ({ sector }) => sector && sector === TOTAL_EXCLUDING_LULUCF
     );
 
     const filteredEmissions = lastYearEmissions.filter(
       ({ sector, value }) => value > 0 && INCLUDED_SECTORS.includes(sector)
-    ); // filter for negative emission for Forestry sector and total LUCF sectors
+    ); // filter for negative emission for Forestry sector and total LULUCF sectors
 
-    if (!filteredEmissions || !totalIncludingLUCF || !totalExcludingLUCF) {
+    if (!filteredEmissions || !totalIncludingLULUCF || !totalExcludingLULUCF) {
       return null;
     }
 
@@ -83,7 +83,7 @@ export const getPieChartData = createSelector(
     const sectorEmissions = filteredEmissions.map(({ sector, value }) => ({
       name: getColumnValue(sector).toLowerCase(),
       sector,
-      ...emissionObject(value, totalExcludingLUCF.value)
+      ...emissionObject(value, totalExcludingLULUCF.value)
     }));
 
     const agricultureRow = sectorEmissions.find(
@@ -96,17 +96,17 @@ export const getPieChartData = createSelector(
       year: filteredEmissions[0] && String(filteredEmissions[0].year),
       location: filteredEmissions[0] && filteredEmissions[0].location,
       agricultureEmissions: {
-        includingLUCF: emissionObject(
+        includingLULUCF: emissionObject(
           agricultureRow.value,
-          totalIncludingLUCF.value
+          totalIncludingLULUCF.value
         ),
-        excludingLUCF: emissionObject(
+        excludingLULUCF: emissionObject(
           agricultureRow.value,
-          totalExcludingLUCF.value
+          totalExcludingLULUCF.value
         )
       },
-      totalExcludingLUCF: formatEmissionValue(totalExcludingLUCF.value),
-      totalIncludingLUCF: formatEmissionValue(totalIncludingLUCF.value),
+      totalExcludingLULUCF: formatEmissionValue(totalExcludingLULUCF.value),
+      totalIncludingLULUCF: formatEmissionValue(totalIncludingLULUCF.value),
       data: sectorEmissions
     };
   }

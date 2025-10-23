@@ -40,8 +40,8 @@ const AXES_CONFIG = {
 const DEFAULT_SELECTIONS = {
   model: 'Global Change Assessment Model',
   subcategory: {
-    best: 'GHG Emissions by gas with LUCF',
-    secondBest: 'GHG emissions by gas without LUCF',
+    best: 'GHG Emissions by gas with LULUCF',
+    secondBest: 'GHG emissions by gas without LULUCF',
     thirdBest: 'Total GHG Emissions'
   },
   indicator: 'CO2'

@@ -52,14 +52,6 @@ module.exports = merge(sharedConfig, {
       }
     },
     headers: { 'Access-Control-Allow-Origin': '*' },
-    historyApiFallback: true,
-    proxy: {
-      '/api': {
-        target: 'https://staging.climatewatchdata.org/api',
-        changeOrigin: true,
-        secure: true,
-        pathRewrite: { '^/api': '/api/v1' }
-      }
-    }
+    historyApiFallback: true
   }
 });

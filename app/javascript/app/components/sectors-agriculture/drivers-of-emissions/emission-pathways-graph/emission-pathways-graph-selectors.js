@@ -41,7 +41,7 @@ const DEFAULT_SELECTIONS = {
   model: 'Global Change Assessment Model',
   indicator: 'CO2',
   subcategory: {
-    best: 'LUCF Anthropogenic GHG Emissions by Gas',
+    best: 'LULUCF Anthropogenic GHG Emissions by Gas',
     secondBest: 'Land Cover'
   }
 };
