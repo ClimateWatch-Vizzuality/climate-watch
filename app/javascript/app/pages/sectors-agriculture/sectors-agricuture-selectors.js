@@ -10,12 +10,14 @@ const AGRICULTURE_SECTOR = 'Agriculture';
 const TOTAL_SECTOR = 'Total excluding LUCF';
 
 export const getAnchorLinks = createSelector([getSections], sections =>
-  sections.filter(route => route.anchor).map(route => ({
-    label: route.label,
-    path: route.path,
-    hash: route.hash,
-    component: route.component
-  }))
+  sections
+    .filter(route => route.anchor)
+    .map(route => ({
+      label: route.label,
+      path: route.path,
+      hash: route.hash,
+      component: route.component
+    }))
 );
 
 const getWorldwideGhgEmissionsData = createSelector(
@@ -56,7 +58,7 @@ export const getWorldwidePercentageAgricultureEmission = createSelector(
     );
 
     return `${format('.2f')(
-      lastYearAgricultureEmission.value * 100 / lastYearTotalEmission.value
+      (lastYearAgricultureEmission.value * 100) / lastYearTotalEmission.value
     )}%`;
   }
 );
