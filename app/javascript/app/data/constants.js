@@ -102,17 +102,17 @@ export const DEFAULT_EMISSIONS_SELECTIONS = {
   },
   PIK: {
     gas: 'KYOTOGHG',
-    sector: 'Total excluding LULUCF',
+    sector: 'Total excluding LUCF',
     location: 'WORLD'
   },
   UNFCCC_AI: {
     gas: 'Aggregate GHGs',
-    sector: 'Total GHG emissions with LULUCF',
+    sector: 'Total GHG emissions with LUCF',
     location: 'ANNEXI'
   },
   UNFCCC_NAI: {
     gas: 'Aggregate GHGs',
-    sector: 'Total GHG emissions including LULUCF/LUCF',
+    sector: 'Total GHG emissions including LUCF/LULUCF',
     location: 'TOP'
   },
   GCP: {
@@ -619,5 +619,6 @@ export const COMPARISON_2025_INDICATORS_LABELS = {
   '2025_compare_2': 'Economy-wide (for 2035) GHG target included',
   '2025_compare_3': 'Strengthened or added policies and actions',
   '2025_compare_4': 'Strengthened Adaptation',
-  '2025_compare_5': 'Provided additional Information for clarity, transparency, and understanding'
+  '2025_compare_5':
+    'Provided additional Information for clarity, transparency, and understanding'
 };

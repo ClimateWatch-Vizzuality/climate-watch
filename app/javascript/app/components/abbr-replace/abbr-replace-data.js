@@ -4,7 +4,7 @@ export const SUBSCRIPTS = ['CO2', 'CH4', 'N2O', 'NF3', 'SF6'];
 export const CONFLICTS = {
   BRICS: 'BR',
   INDC: 'NDC',
-  LULUCF: 'LUCF',
+  LULUCF: 'LULUCF',
   MtCO2e: 'Mt',
   UNFCCC: 'UN'
 };

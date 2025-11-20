@@ -11,17 +11,17 @@ object_contents = {
   END
   ImportHistoricalEmissions::META_SECTORS_FILEPATH => <<~END,
     Source,AnnexType,Sector,SubsectorOf
-    Climate Watch,,Total excluding LUCF,
-    PIK,,Total including LUCF,
+    Climate Watch,,Total excluding LULUCF,
+    PIK,,Total including LULUCF,
     UNFCCC_AI,AI,Total GHG emissions without LULUCF,
   END
   ImportHistoricalEmissions::DATA_CW_FILEPATH => <<~END,
     Country,Source,Sector,Gas,GWP,1990,1991,1992
-    ABW,Climate Watch,Total excluding LUCF,All GHG,AR2,15.21284765,15.28643902,14.01053087,14.02811754
+    ABW,Climate Watch,Total excluding LULUCF,All GHG,AR2,15.21284765,15.28643902,14.01053087,14.02811754
   END
   ImportHistoricalEmissions::DATA_PIK_FILEPATH => <<~END,
     Country,Source,Sector,Gas,GWP,1850,1851,1852
-    ABW,PIK,Total including LUCF,CH4,AR2,0.00000469,0.00000475,0.00000483
+    ABW,PIK,Total including LULUCF,CH4,AR2,0.00000469,0.00000475,0.00000483
   END
   ImportHistoricalEmissions::DATA_UNFCCC_FILEPATH => <<~END,
     Country,Source,Sector,Gas,GWP,1990,1991,1992
