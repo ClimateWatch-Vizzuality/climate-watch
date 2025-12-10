@@ -9,7 +9,7 @@ end
 # core gems
 gem 'rails', '~> 5.2.4'
 gem 'bootsnap'
-gem 'puma'
+gem 'puma', '~> 5.6.9'
 
 # DB
 gem 'pg', '~> 0.20'
@@ -31,7 +31,7 @@ gem 'faraday'
 gem 'kaminari'
 
 # Admin panel
-gem 'activeadmin'
+gem 'activeadmin' # Pinned to 2.6.1 by Rails 5.2; upgrade Rails to fix CVEs
 gem 'devise'
 gem 'trix-rails', require: 'trix'
 
@@ -40,7 +40,7 @@ gem 'aws-sdk-rails', '~> 2'
 gem 'aws-sdk-s3', '~> 1'
 
 # jobs
-gem 'sidekiq', '>= 6.1.0'
+gem 'sidekiq', '~> 6.5.10'
 gem 'sidekiq-failures'
 
 # Error monitoring
@@ -52,8 +52,10 @@ gem 'appsignal'
 gem 'activerecord-import'
 gem 'listen', '>= 3.0.5', '< 3.2'
 gem 'maxmind-db'
+gem 'nokogiri', '>= 1.13.10' # Pinned by Ruby 2.6; upgrade to Ruby 2.7+ to fix remaining CVEs
 gem 'oj'
 gem 'rubyzip'
+gem 'thor', '< 1.4' # Thor 1.4 requires minitest 2.6+, blocking other updates
 
 gem 'dotenv-rails'
 
