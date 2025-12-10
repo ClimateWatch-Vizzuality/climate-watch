@@ -97,17 +97,17 @@ export const DATA_SCALE = 1000000;
 export const DEFAULT_EMISSIONS_SELECTIONS = {
   'Climate Watch': {
     gas: 'All GHG',
-    sector: 'Total including LUCF',
+    sector: 'Total including LULUCF',
     location: 'WORLD'
   },
   PIK: {
     gas: 'KYOTOGHG',
-    sector: 'Total excluding LUCF',
+    sector: 'Total excluding LULUCF',
     location: 'WORLD'
   },
   UNFCCC_AI: {
     gas: 'Aggregate GHGs',
-    sector: 'Total GHG emissions with LUCF',
+    sector: 'Total GHG emissions with LULUCF',
     location: 'ANNEXI'
   },
   UNFCCC_NAI: {
@@ -122,7 +122,7 @@ export const DEFAULT_EMISSIONS_SELECTIONS = {
   },
   US: {
     gas: 'All GHG',
-    sector: 'Total including LUCF',
+    sector: 'Total including LULUCF',
     location: 'USA'
   }
 };
