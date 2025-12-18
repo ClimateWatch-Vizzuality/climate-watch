@@ -29,7 +29,7 @@ module Api
             #   { 'USA': { in_framework: true, in_sectoral: false } },
             #   ...
             # ]
-            if object.laws_info[location.iso_code3]
+            if object.laws_info.is_a?(Hash) && object.laws_info[location.iso_code3].is_a?(Hash)
               docs += object.laws_info[location.iso_code3].map do |key, val|
                 next unless val
 
@@ -83,8 +83,10 @@ module Api
           law_targets = {}
 
           laws = object.laws_and_policies['targets'].flat_map do |target|
+            next [] unless target && target['sources'].is_a?(Array)
+
             target['sources'].map do |law|
-              next unless law['sectoral'] || law['framework']
+              next unless law && (law['sectoral'] || law['framework'])
 
               law_targets[law['id']] ||= []
               law_targets[law['id']] << target['id']

@@ -14,8 +14,8 @@ module Api
         render json: CountriesDocuments.new(locations, laws_info, laws_and_policies),
                serializer: Api::V1::Indc::CountriesDocumentsSerializer
       rescue StandardError => e
-        Rails.logger.warn("[NdcDocumentsController#index] Error: #{e.class} - #{e.message}")
-        Rails.logger.warn("[NdcDocumentsController#index] Backtrace: #{e.backtrace.first(10).join("\n")}")
+        Rails.logger.error("NdcDocumentsController#index error: #{e.class} - #{e.message}")
+        Rails.logger.error(e.backtrace.join("\n"))
         
         render json: { error: 'An error occurred while fetching countries documents' }, 
                status: :internal_server_error
@@ -35,11 +35,11 @@ module Api
         params[:location].split(',').each do |iso|
           iso = iso == 'EUU' ? 'EUR' : iso
           data = SingleRecordFetcher.new(LSE_API, iso, iso).call
-          laws_and_policies['targets'] += data['targets'] if data['targets']
+          laws_and_policies['targets'] += data['targets'] if data.is_a?(Hash) && data['targets'].is_a?(Array)
         end
         laws_and_policies
       rescue StandardError => e
-        Rails.logger.warn("[NdcDocumentsController] Error fetching laws and policies: #{e.class} - #{e.message}")
+        Rails.logger.error("Error fetching laws and policies: #{e.message}")
         { 'targets' => [] }
       end
     end
