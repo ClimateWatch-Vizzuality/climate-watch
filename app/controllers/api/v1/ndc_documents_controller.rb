@@ -13,6 +13,12 @@ module Api
 
         render json: CountriesDocuments.new(locations, laws_info, laws_and_policies),
                serializer: Api::V1::Indc::CountriesDocumentsSerializer
+      rescue StandardError => e
+        Rails.logger.warn("[NdcDocumentsController#index] Error: #{e.class} - #{e.message}")
+        Rails.logger.warn("[NdcDocumentsController#index] Backtrace: #{e.backtrace.first(10).join("\n")}")
+        
+        render json: { error: 'An error occurred while fetching countries documents' }, 
+               status: :internal_server_error
       end
 
       private
@@ -32,6 +38,9 @@ module Api
           laws_and_policies['targets'] += data['targets'] if data['targets']
         end
         laws_and_policies
+      rescue StandardError => e
+        Rails.logger.warn("[NdcDocumentsController] Error fetching laws and policies: #{e.class} - #{e.message}")
+        { 'targets' => [] }
       end
     end
   end
