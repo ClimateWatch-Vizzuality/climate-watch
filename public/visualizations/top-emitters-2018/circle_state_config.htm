@@ -1,619 +1,1015 @@
 <!DOCTYPE html>
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
- 
-  <title>Climate Watch - Top 10 Greenhouse Gas Emitters 2018</title>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
-    
-    <!-- Google tag (gtag.js) --> <script async src="https://www.googletagmanager.com/gtag/js?id=G-25PZ8911RB"></script> <script> window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-25PZ8911RB'); </script> 
-    
-    
-    
-  <script id="twitter-wjs" src="files/widgets.js"></script>
+    <title>Climate Watch - Top 10 Greenhouse Gas Emitters 2018</title>
+
+    <!-- Google tag (gtag.js) -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-25PZ8911RB"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+      gtag('config', 'G-25PZ8911RB');
+    </script>
+
+    <script id="twitter-wjs" src="files/widgets.js"></script>
     <script type="text/javascript" src="files/d3.v3.min.js"></script>
-      <script type="text/javascript" src="files/jquery-2.1.4.min.js"></script>
-   
+    <script type="text/javascript" src="files/jquery-2.1.4.min.js"></script>
 
-  <style type="text/css">
-    body { overflow: hidden; margin: 0; font-family: Georgia, Arial, sans-serif; background: #ddd; }
-#wrapper { width: 940px; height: 990px; margin: 0 auto; position: relative; background: white; }
+    <style type="text/css">
+      body {
+        overflow: hidden;
+        margin: 0;
+        font-family: Georgia, Arial, sans-serif;
+        background: #ddd;
+      }
+      #wrapper {
+        width: 940px;
+        height: 990px;
+        margin: 0 auto;
+        position: relative;
+        background: white;
+      }
 
-#info { position: fixed; top: 70px; width: 910px; background: rgba(90,90,90,0.9);
-    padding: 12px 15px;
-    opacity: 0; color: white; z-index: 100; font-size: 18px;}
-#info #name { font-size: 22px; }
-#info #segment { font-size: 16px; margin-left: 10px; text-transform: uppercase; letter-spacing: 1px;}
-#info #percent { font-size: 14px; margin-left: 10px; }
+      #info {
+        position: fixed;
+        top: 70px;
+        width: 910px;
+        background: rgba(90, 90, 90, 0.9);
+        padding: 12px 15px;
+        opacity: 0;
+        color: white;
+        z-index: 100;
+        font-size: 18px;
+      }
+      #info #name {
+        font-size: 22px;
+      }
+      #info #segment {
+        font-size: 16px;
+        margin-left: 10px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+      #info #percent {
+        font-size: 14px;
+        margin-left: 10px;
+      }
 
-#splash { width: 900px; font-size: 18px; line-height: 1.1; text-shadow: 0px 0px 2px white; color: #111; background-color: rgba(255,255,255,0.8); padding:15px; padding-bottom: 4px; padding-top:10px;}
-h1 {
-    font-family: "Helvetica Neue",Helvetica,Arial;
-    margin-bottom:5px;
-    margin-top:0px;
-    font-size: 22px;
-}
-#splash #strap { font-size: 16px; line-height: 1.3; color: #333; width: 700px;}
-#splash #tip { font-size: 16px; margin-top: 20px; line-height: 1.3; }
-#splash a:link, a:visited { text-decoration: underline; color: #005689 }
-#splash a:hover, a:active { text-decoration: underline; color: #005689; }
+      #splash {
+        width: 900px;
+        font-size: 18px;
+        line-height: 1.1;
+        text-shadow: 0px 0px 2px white;
+        color: #111;
+        background-color: rgba(255, 255, 255, 0.8);
+        padding: 15px;
+        padding-bottom: 4px;
+        padding-top: 10px;
+      }
+      h1 {
+        font-family: 'Helvetica Neue', Helvetica, Arial;
+        margin-bottom: 5px;
+        margin-top: 0px;
+        font-size: 22px;
+      }
+      #splash #strap {
+        font-size: 16px;
+        line-height: 1.3;
+        color: #333;
+        width: 700px;
+      }
+      #splash #tip {
+        font-size: 16px;
+        margin-top: 20px;
+        line-height: 1.3;
+      }
+      #splash a:link,
+      a:visited {
+        text-decoration: underline;
+        color: #005689;
+      }
+      #splash a:hover,
+      a:active {
+        text-decoration: underline;
+        color: #005689;
+      }
 
-.toprightbox {
-    position:absolute;
-    top:13px;
-    right:7px;
-}
+      .toprightbox {
+        position: absolute;
+        top: 13px;
+        right: 7px;
+      }
 
+      #credits {
+        position: absolute;
+        bottom: 4px;
+        left: 10px;
+        font-size: 11px;
+        width: 930px;
+      }
+      #footnote {
+        position: absolute;
+        bottom: 56px;
+        right: 10px;
+        font-size: 10px;
+        width: 320px;
+        text-align: right;
+      }
 
-#credits { position: absolute; bottom: 4px; left: 10px; font-size: 11px; width: 930px;}
-#footnote { position: absolute; bottom: 56px; right: 10px; font-size: 10px; width: 320px; text-align:right;}
+      #tweet-box {
+        position: absolute;
+        opacity: 0;
+        left: 335px;
+        top: 330px;
+        width: 230px;
+        padding: 10px 20px;
+        text-align: center;
+        background: #333;
+        color: white;
+        display: none;
+        border-radius: 10px;
+        -moz-border-radius: 10px;
+        -webkit-border-radius: 10px;
+      }
+      #tweet-box #tweet-text {
+        margin: 10px 0;
+        font-size: 13px;
+        line-height: 1.2;
+      }
+      .close {
+        position: relative;
+        left: 10px;
+        top: -6px;
+        float: right;
+        cursor: pointer;
+        font-family: Arial;
+        font-weight: bold;
+      }
 
-#tweet-box { position: absolute; opacity: 0; left: 335px; top: 330px; width: 230px; padding: 10px 20px; text-align: center; background: #333; color: white; display: none; border-radius: 10px; -moz-border-radius: 10px; -webkit-border-radius: 10px; }
-#tweet-box #tweet-text { margin: 10px 0; font-size: 13px; line-height: 1.2;}
-.close { position:relative; left:10px; top:-6px; float:right; cursor: pointer; font-family: Arial; font-weight:bold;}
+      path {
+        stroke: #fff;
+        fill-rule: evenodd;
+      }
+      text {
+        font-size: 14px;
+        pointer-events: none;
+        fill: white;
+      }
+      #mainsvg {
+        margin: 0px 0 0 35px;
+      }
+      .highlighted-path {
+        fill: #f0ab00 !important;
+        opacity: 1 !important;
+      }
+      .hidden {
+        visibility: hidden;
+      }
 
-path { stroke: #fff; fill-rule: evenodd; }
-text { font-size: 14px; pointer-events: none; fill: white; }
-#mainsvg { margin: 0px 0 0 35px; }
-.highlighted-path { fill: #F0ab00!important; opacity: 1!important; }
-.hidden { visibility: hidden; }
+      #tweet-button2 {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+      }
 
+      .embed-code {
+        display: none;
+        padding: 3px 6px;
+        height: 41px;
+        width: 301px;
+        box-shadow: rgba(199, 199, 199, 0.4) 1px 1px 1px inset;
+        border: 1px solid #c7c7c7;
+        border-radius: 4px;
+        font-size: 11px;
+        line-height: 11px;
+        color: #9b9b9b;
+        background-color: #f3f3f3;
+        overflow-y: scroll;
+        position: absolute;
+        top: 28px;
+        right: 0px;
+        z-index: 100;
+      }
 
-#tweet-button2 {
-    position: absolute;
-    right:10px;
-    top:10px;
-}
+      .nicebutton {
+        background: #eee;
+        padding: 0.3em 0.45em;
+        border-radius: 4px;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        height: 13px;
+        width: 45px;
+        font-size: 12px;
+        font-weight: bold;
+        color: #444;
+        cursor: pointer;
+      }
 
+      #resetbutton {
+        position: relative;
+        top: 28px;
+        left: 20px;
+        float: right;
+        width: 35px;
+      }
 
-.embed-code {
-  display: none;
-  padding: 3px 6px;
-  height: 41px;
-  width:301px;
-  box-shadow: rgba(199,199,199,0.4) 1px 1px 1px inset;
-  border: 1px solid #c7c7c7;
-  border-radius: 4px;
-  font-size: 11px;
-  line-height: 11px;
-  color: #9b9b9b;
-  background-color: #f3f3f3;
-  overflow-y: scroll;
-  position: absolute;
-  top:28px;
-  right:0px;
-  z-index:100;
-}
+      .embed-link {
+        background: #eee;
+        padding: 0.3em 0.45em;
+        border-radius: 4px;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        height: 13px;
+        width: 45px;
+        font-size: 12px;
+        font-weight: bold;
+        color: #444;
+        cursor: pointer;
+      }
 
-.nicebutton {
-  background: #eee;
-  padding: 0.3em 0.45em;
-  border-radius: 4px;
-  border: 1px solid rgba(0,0,0,0.1);
-  height: 13px;
-  width:45px;
-  font-size: 12px;
-  font-weight: bold;
-  color: #444;
-  cursor: pointer;
-}
+      .logo {
+        width: 300px;
+      }
+      .addthis_sharing_toolbox {
+        position: absolute;
+        top: 63px;
+        right: 8px;
+        width: 75px;
+      }
+    </style>
 
-#resetbutton {
-    position:relative;
-    top:28px;
-    left:20px;
-    float:right;
-    width:35px;
-}
+    <script type="text/javascript">
+      //<![CDATA[
+      window.onload = function() {
+        var col = [
+          [
+            '#0099cc',
+            '#0099cc',
+            '#40b3d9',
+            '#70c6e3',
+            '#94d4ea',
+            '#afdfef',
+            '#c3e7f3',
+            '#c3e7f3',
+            '#c3e7f3',
+            '#c3e7f3'
+          ],
+          [
+            '#97bd3d',
+            '#97bd3d',
+            '#b1ce6e',
+            '#c5da92',
+            '#d4e3ad',
+            '#dfeac2',
+            '#e7efd1',
+            '#e7efd1',
+            '#e7efd1',
+            '#e7efd1'
+          ],
+          [
+            '#e98300',
+            '#e98300',
+            '#efa240',
+            '#f3b970',
+            '#f6cb94',
+            '#f8d8af',
+            '#fae2c3',
+            '#fae2c3',
+            '#fae2c3',
+            '#fae2c3'
+          ],
+          [
+            '#c51424',
+            '#c51424',
+            '#d44f5b',
+            '#df7b84',
+            '#e79ca3',
+            '#edb5ba',
+            '#f2c8cb',
+            '#f2c8cb',
+            '#f2c8cb',
+            '#f2c8cb'
+          ],
+          [
+            '#951b82',
+            '#951b82',
+            '#b054a1',
+            '#c47fb9',
+            '#d39fcb',
+            '#deb7d8',
+            '#e6c9e2',
+            '#e6c9e2',
+            '#e6c9e2',
+            '#e6c9e2'
+          ],
+          [
+            '#007a4d',
+            '#007a4d',
+            '#409b7a',
+            '#70b49b',
+            '#94c7b4',
+            '#afd5c7',
+            '#c3e0d5',
+            '#c3e0d5',
+            '#c3e0d5',
+            '#c3e0d5'
+          ],
+          [
+            '#003f6a',
+            '#003f6a',
+            '#406f8f',
+            '#7093ab',
+            '#94aec0',
+            '#afc2d0',
+            '#c3d1dc',
+            '#c3d1dc',
+            '#c3d1dc',
+            '#c3d1dc'
+          ],
+          [
+            '#ed1a37',
+            '#ed1a37',
+            '#f25369',
+            '#f57e8f',
+            '#f89eab',
+            '#fab6c0',
+            '#fbc8d0',
+            '#fbc8d0',
+            '#fbc8d0',
+            '#fbc8d0'
+          ],
+          [
+            '#f0ab00',
+            '#f0ab00',
+            '#f4c040',
+            '#f7d070',
+            '#f9dc94',
+            '#fbe5af',
+            '#fcecc3',
+            '#fcecc3',
+            '#fcecc3',
+            '#fcecc3'
+          ],
+          [
+            '#60bad4',
+            '#60bad4',
+            '#88cbdf',
+            '#a6d8e7',
+            '#bce2ed',
+            '#cde9f2',
+            '#daeff5',
+            '#daeff5',
+            '#daeff5',
+            '#daeff5'
+          ],
+          [
+            '#9b9b9b',
+            '#9b9b9b',
+            '#b4b4b4',
+            '#c7c7c7',
+            '#d5d5d5',
+            '#e0e0e0',
+            '#e8e8e8',
+            '#e8e8e8',
+            '#e8e8e8',
+            '#e8e8e8'
+          ]
+        ];
 
-.embed-link {
-  background: #eee;
-  padding: 0.3em 0.45em;
-  border-radius: 4px;
-  border: 1px solid rgba(0,0,0,0.1);
-  height: 13px;
-  width:45px;
-  font-size: 12px;
-  font-weight: bold;
-  color: #444;
-  cursor: pointer;
-}
+        var top10 = [
+          'China',
+          'United States',
+          'EU (27)',
+          'India',
+          'Russia',
+          'Japan',
+          'Brazil',
+          'Indonesia',
+          'Iran',
+          'Canada'
+        ];
+        var sources = [
+          'Electricity/Heat',
+          'Manufacturing/Construction',
+          'Industrial Processes',
+          'Transportation',
+          'Agriculture',
+          'Fugitive Emissions',
+          'Building',
+          'Other Fuel Combustion',
+          'Waste'
+        ];
 
-
-
-.logo {
-    width:300px;
-}
-.addthis_sharing_toolbox {
-    position: absolute;
-    top:63px;
-    right:8px;
-    width:75px;
-}
-  </style>
-
-
-
-<script type="text/javascript">//<![CDATA[
-window.onload=function(){
-var col = [["#0099cc","#0099cc","#40b3d9","#70c6e3","#94d4ea","#afdfef","#c3e7f3","#c3e7f3","#c3e7f3","#c3e7f3"],
-           ["#97bd3d","#97bd3d","#b1ce6e","#c5da92","#d4e3ad","#dfeac2","#e7efd1","#e7efd1","#e7efd1","#e7efd1"],
-           ["#e98300","#e98300","#efa240","#f3b970","#f6cb94","#f8d8af","#fae2c3","#fae2c3","#fae2c3","#fae2c3"],
-           ["#c51424","#c51424","#d44f5b","#df7b84","#e79ca3","#edb5ba","#f2c8cb","#f2c8cb","#f2c8cb","#f2c8cb"],
-           ["#951b82","#951b82","#b054a1","#c47fb9","#d39fcb","#deb7d8","#e6c9e2","#e6c9e2","#e6c9e2","#e6c9e2"],
-           ["#007a4d","#007a4d","#409b7a","#70b49b","#94c7b4","#afd5c7","#c3e0d5","#c3e0d5","#c3e0d5","#c3e0d5"],
-           ["#003f6a","#003f6a","#406f8f","#7093ab","#94aec0","#afc2d0","#c3d1dc","#c3d1dc","#c3d1dc","#c3d1dc"],
-           ["#ed1a37","#ed1a37","#f25369","#f57e8f","#f89eab","#fab6c0","#fbc8d0","#fbc8d0","#fbc8d0","#fbc8d0"],
-           ["#f0ab00","#f0ab00","#f4c040","#f7d070","#f9dc94","#fbe5af","#fcecc3","#fcecc3","#fcecc3","#fcecc3"],
-           ["#60bad4","#60bad4","#88cbdf","#a6d8e7","#bce2ed","#cde9f2","#daeff5","#daeff5","#daeff5","#daeff5"],
-           ["#9b9b9b","#9b9b9b","#b4b4b4","#c7c7c7","#d5d5d5","#e0e0e0","#e8e8e8","#e8e8e8","#e8e8e8","#e8e8e8"]];
-
-var top10 = ["China","United States","EU (27)","India","Russia","Japan","Brazil","Indonesia","Iran","Canada"];
-var sources = ["Electricity/Heat","Manufacturing/Construction","Industrial Processes","Transportation","Agriculture","Fugitive Emissions","Building","Other Fuel Combustion","Waste"];
-
-function search(data, value){
-	for(var i=0; i<data.length; i++) {
-    	if(data[i].value == value) return data[i];
-        if("children" in data[i]) {
-            var subsearch = search(data[i].children, value);
-            if(subsearch) return subsearch;
-        }
-    }
-    return false;
-}
-
-function getQueryParams(qs) {
-    qs = qs.split('+').join(' ');
-
-    var params = {},
-        tokens,
-        re = /[?&]?([^=]+)=([^&]*)/g;
-
-    while (tokens = re.exec(qs)) {
-        params[decodeURIComponent(tokens[1])] = decodeURIComponent(tokens[2]);
-    }
-    return params;
-}
-
-function insertParam(key, value) {
-    key = encodeURIComponent(key);
-    value = encodeURIComponent(value);
-
-    // kvp looks like ['key1=value1', 'key2=value2', ...]
-    var kvp = document.location.search.substr(1).split('&');
-    let i=0;
-
-    for(; i<kvp.length; i++){
-        if (kvp[i].startsWith(key + '=')) {
-            let pair = kvp[i].split('=');
-            pair[1] = value;
-            kvp[i] = pair.join('=');
-            break;
-        }
-    }
-
-    if(i >= kvp.length){
-        kvp[kvp.length] = [key,value].join('=');
-    }
-
-    // can return this or...
-    let params = kvp.join('&');
-
-    // reload page with new params
-    var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname +'?'+params;
-    window.history.pushState({ path: newurl }, '', newurl);
-}
-
-query = getQueryParams(document.location.search);
-if(query.hasOwnProperty('zoomto')){
-    setTimeout(function(){
-         ;
-        click(search(root.children, query.zoomto));
-    }, 1000);
-}
-
-if(query.hasOwnProperty('title')){
-    $("#titletext").html(query.title);
-}
-
-if(query.hasOwnProperty('strap')){
-    $("#strap").html(query.strap);
-}
-
-if(query.hasOwnProperty('disableTwitter')){
-    $("#tweet-box").css("z-index", "-100");
-}
-
-
-e = d3.tsv.parse(document.getElementById('edata').innerHTML);
-
-clist = d3.csv.parseRows(document.getElementById('clist').innerHTML);
-c = [];
-clist.forEach(function (el, i, arr) {
-    c[el[0]] = el[1];
-});
-
-slist = d3.csv.parseRows(document.getElementById('seclist').innerHTML);
-s = [];
-slist.forEach(function (el, i, arr) {
-    s[el[0]] = el[1];
-});
-
-var root = d3.nest()
-    .key(function(d) { return d.Top10; })
-    .key(function(d) { return d.Country; })
-    .entries(e);
-
-var globalEmissions = 47515.28;
-
-root = {
-	"name": "Global emissions",
-	"total": globalEmissions,
-    "children": root
-}
-
-
-root.children.forEach(function(d) {
-    d.name = d.key;
-    if ("values" in d) {
-        d.children = d.values;
-        d.children.forEach(function(d) {
-            d.name = d.key;
-            d.children=[];
-            for (var k in d.values[0]) {
-                if (d.values[0].hasOwnProperty(k)) {
-                    d.children.push({"name": k, "size": d.values[0][k]});
-                }
+        function search(data, value) {
+          for (var i = 0; i < data.length; i++) {
+            if (data[i].value == value) return data[i];
+            if ('children' in data[i]) {
+              var subsearch = search(data[i].children, value);
+              if (subsearch) return subsearch;
             }
-            d.children.sort(function(x, y){
-               return d3.descending(+x.size, +y.size);
-            });
-            var counter = 0;
+          }
+          return false;
+        }
+
+        function getQueryParams(qs) {
+          qs = qs.split('+').join(' ');
+
+          var params = {},
+            tokens,
+            re = /[?&]?([^=]+)=([^&]*)/g;
+
+          while ((tokens = re.exec(qs))) {
+            params[decodeURIComponent(tokens[1])] = decodeURIComponent(
+              tokens[2]
+            );
+          }
+          return params;
+        }
+
+        function insertParam(key, value) {
+          key = encodeURIComponent(key);
+          value = encodeURIComponent(value);
+
+          // kvp looks like ['key1=value1', 'key2=value2', ...]
+          var kvp = document.location.search.substr(1).split('&');
+          let i = 0;
+
+          for (; i < kvp.length; i++) {
+            if (kvp[i].startsWith(key + '=')) {
+              let pair = kvp[i].split('=');
+              pair[1] = value;
+              kvp[i] = pair.join('=');
+              break;
+            }
+          }
+
+          if (i >= kvp.length) {
+            kvp[kvp.length] = [key, value].join('=');
+          }
+
+          // can return this or...
+          let params = kvp.join('&');
+
+          // reload page with new params
+          var newurl =
+            window.location.protocol +
+            '//' +
+            window.location.host +
+            window.location.pathname +
+            '?' +
+            params;
+          window.history.pushState({ path: newurl }, '', newurl);
+        }
+
+        query = getQueryParams(document.location.search);
+        if (query.hasOwnProperty('zoomto')) {
+          setTimeout(function() {
+            click(search(root.children, query.zoomto));
+          }, 1000);
+        }
+
+        if (query.hasOwnProperty('title')) {
+          $('#titletext').html(query.title);
+        }
+
+        if (query.hasOwnProperty('strap')) {
+          $('#strap').html(query.strap);
+        }
+
+        if (query.hasOwnProperty('disableTwitter')) {
+          $('#tweet-box').css('z-index', '-100');
+        }
+
+        e = d3.tsv.parse(document.getElementById('edata').innerHTML);
+
+        clist = d3.csv.parseRows(document.getElementById('clist').innerHTML);
+        c = [];
+        clist.forEach(function(el, i, arr) {
+          c[el[0]] = el[1];
+        });
+
+        slist = d3.csv.parseRows(document.getElementById('seclist').innerHTML);
+        s = [];
+        slist.forEach(function(el, i, arr) {
+          s[el[0]] = el[1];
+        });
+
+        var root = d3
+          .nest()
+          .key(function(d) {
+            return d.Top10;
+          })
+          .key(function(d) {
+            return d.Country;
+          })
+          .entries(e);
+
+        var globalEmissions = 47515.28;
+
+        root = {
+          name: 'Global emissions',
+          total: globalEmissions,
+          children: root
+        };
+
+        root.children.forEach(function(d) {
+          d.name = d.key;
+          if ('values' in d) {
+            d.children = d.values;
             d.children.forEach(function(d) {
+              d.name = d.key;
+              d.children = [];
+              for (var k in d.values[0]) {
+                if (d.values[0].hasOwnProperty(k)) {
+                  d.children.push({ name: k, size: d.values[0][k] });
+                }
+              }
+              d.children.sort(function(x, y) {
+                return d3.descending(+x.size, +y.size);
+              });
+              var counter = 0;
+              d.children.forEach(function(d) {
                 d.order = counter;
                 counter++;
+              });
+            });
+          }
+        });
+
+        // Set up tweet buttons
+        function addTweetButton(tweetText) {
+          d3.select('#tweet-button').html('');
+          twttr.widgets.createShareButton(
+            'https://goo.gl/N5J6Hl',
+            document.getElementById('tweet-button'),
+            function(el) {},
+            {
+              count: 'none',
+              text:
+                '' +
+                tweetText +
+                ' #ClimateWatch @WorldResources. Get the full picture: '
+            }
+          );
+        }
+
+        // Set up tweet buttons on top
+        function addTweetButtonTop(tweetText) {
+          d3.select('#tweet-button2').html('');
+          twttr.widgets.createShareButton(
+            'https://goo.gl/N5J6Hl',
+            document.getElementById('tweet-button2'),
+            function(el) {},
+            {
+              count: 'none',
+              text:
+                ' ' +
+                tweetText +
+                ' #ClimateWatch @WorldResources. Get the full picture: '
+            }
+          );
+        }
+
+        //Set up graphic
+        var width = 940,
+          height = 860,
+          radius = height / 2,
+          x = d3.scale.linear().range([0, 2 * Math.PI]),
+          y = d3.scale
+            .pow()
+            .exponent(1.3)
+            .domain([0, 1])
+            .range([0, radius]),
+          padding = 5,
+          duration = 1000,
+          centreDepth = 0,
+          setTimeoutConst;
+
+        var tweetBoxShowing = false;
+
+        var div = d3.select('#wrapper');
+
+        var vis = div
+          .append('svg')
+          .attr('width', width + padding * 2)
+          .attr('height', height + padding * 2)
+          .attr('id', 'mainsvg')
+          .append('g')
+          .attr(
+            'transform',
+            'translate(' + [radius + padding, radius + padding] + ')'
+          );
+
+        var partition = d3.layout
+          .partition()
+          .value(function(d) {
+            return d.size;
+          })
+          .sort(null);
+
+        var arc = d3.svg
+          .arc()
+          .startAngle(function(d) {
+            return Math.max(0, Math.min(2 * Math.PI, x(d.x)));
+          })
+          .endAngle(function(d) {
+            return Math.max(0, Math.min(2 * Math.PI, x(d.x + d.dx)));
+          })
+          .innerRadius(function(d) {
+            return Math.max(0, d.y ? y(d.y) : d.y);
+          })
+          .outerRadius(function(d) {
+            return Math.max(0, y(d.y + d.dy));
+          });
+
+        var labelFits = function(d) {
+          return x(d.x + d.dx) - x(d.x) > 0.05;
+        };
+
+        var nodes = partition.nodes(root);
+        var path = vis.selectAll('path').data(nodes);
+
+        path
+          .enter()
+          .append('path')
+          .attr('id', function(d, i) {
+            return 'path-' + i;
+          })
+          .attr('d', arc)
+          .attr('fill-rule', 'evenodd')
+          .style('fill', function(d) {
+            return colors(d);
+          })
+          .style('opacity', function(d) {
+            return opacities(d);
+          })
+          .on('click', function(d) {
+            return d.depth < 4 ? click(d) : click(d.parent);
+          })
+          .on('mouseover', mouseOver)
+          .on('mouseout', mouseOut);
+
+        var text = vis.selectAll('text').data(nodes);
+        var textEnter = text
+          .enter()
+          .append('text')
+          .style('fill-opacity', 1)
+          .style('fill', function(d) {
+            return labelFits(d) ? 'white' : 'none';
+          })
+          .attr('text-anchor', function(d) {
+            return x(d.x + d.dx / 2) > Math.PI ? 'end' : 'start';
+          })
+          .attr('dy', '.35em')
+          .attr('transform', function(d) {
+            var multiline = (d.name || '').split(' ').length > 1,
+              angle = (x(d.x + d.dx / 2) * 180) / Math.PI - 90,
+              rotate = angle + (multiline ? -0.5 : 0);
+            return (
+              'rotate(' +
+              rotate +
+              ')translate(' +
+              (y(d.y) + padding) +
+              ')rotate(' +
+              (angle > 90 ? -180 : 0) +
+              ')'
+            );
+          });
+        textEnter
+          .append('tspan')
+          .attr('x', 0)
+          .text(function(d) {
+            // Truncate text where necessary for neatness
+            var firstLine = d.name.split(' ')[0];
+
+            if (d.depth && firstLine.length > 16) {
+              return firstLine.substring(0, 16) + '…';
+            } else if (d.depth) {
+              return firstLine;
+            } else return '';
+          });
+        textEnter
+          .append('tspan')
+          .attr('x', 0)
+          .attr('dy', '1.1em')
+          .text(function(d) {
+            return d.depth ? d.name.split(' ')[1] || '' : '';
+          });
+
+        d3.select('svg')
+          .append('circle')
+          .attr('id', 'centre-label-background')
+          .attr('cx', 435)
+          .attr('cy', 435)
+          .attr('r', 19)
+          .attr('fill', '#F0ab00')
+          .attr('pointer-events', 'none');
+        d3.select('svg')
+          .append('text')
+          .attr('id', 'centre-label')
+          .text('All Emissions \n 2018')
+          .attr('x', 435)
+          .attr('y', 440)
+          .attr('text-anchor', 'middle')
+          .attr('pointer-events', 'none');
+
+        function click(d) {
+          insertParam('zoomto', d.value);
+
+          path
+            .transition()
+            .duration(duration)
+            .attrTween('d', arcTween(d))
+            .each('end', function(d, i) {
+              // Once the scales have been updated by arcTween, update the
+              // fill style of the label depending on the size of the wedge
+              d3.select(text[0][i]).style('fill', function(d) {
+                return labelFits(d) ? 'white' : 'none';
+              });
+            });
+
+          // Somewhat of a hack as we rely on arcTween updating the scales.
+          text
+            .style('visibility', function(e) {
+              return isParentOf(d, e)
+                ? null
+                : d3.select(this).style('visibility');
             })
-        });
+            .transition()
+            .duration(duration)
+            .attrTween('text-anchor', function(d) {
+              return function() {
+                return x(d.x + d.dx / 2) > Math.PI ? 'end' : 'start';
+              };
+            })
+            .attrTween('transform', function(d) {
+              var multiline = (d.name || '').split(' ').length > 1;
+              return function() {
+                var angle = (x(d.x + d.dx / 2) * 180) / Math.PI - 90,
+                  rotate = angle + (multiline ? -0.5 : 0);
+                return (
+                  'rotate(' +
+                  rotate +
+                  ')translate(' +
+                  (y(d.y) + padding) +
+                  ')rotate(' +
+                  (angle > 90 ? -180 : 0) +
+                  ')'
+                );
+              };
+            })
+            .style('fill-opacity', function(e) {
+              return isParentOf(d, e) ? 1 : 1e-6;
+            })
+            .each('end', function(e) {
+              d3.select(this).style(
+                'visibility',
+                isParentOf(d, e) ? null : 'hidden'
+              );
+            });
 
-    }
-});
-
-
-
-// Set up tweet buttons
-function addTweetButton(tweetText) {
-  d3.select('#tweet-button').html("");
-  twttr.widgets.createShareButton(
-    'https://goo.gl/N5J6Hl',
-    document.getElementById('tweet-button'),
-    function (el) {  },
-      { count: 'none', text: ""+tweetText + " #ClimateWatch @WorldResources. Get the full picture: "  }
-    );
-}
-
-// Set up tweet buttons on top
-function addTweetButtonTop(tweetText) {
-  d3.select('#tweet-button2').html("");
-    twttr.widgets.createShareButton(
-    'https://goo.gl/N5J6Hl',
-    document.getElementById('tweet-button2'),
-    function (el) {  },
-      { count: 'none', text: " "+tweetText + " #ClimateWatch @WorldResources. Get the full picture: " }
-    );
-}
-
-
-
-//Set up graphic
-var width = 940,
-    height = 860,
-    radius = height / 2,
-    x = d3.scale.linear().range([0, 2 * Math.PI]),
-    y = d3.scale.pow().exponent(1.3).domain([0, 1]).range([0, radius]),
-    padding = 5,
-    duration = 1000,
-		centreDepth = 0,
-    setTimeoutConst;
-
-var tweetBoxShowing = false;
-
-var div = d3.select("#wrapper");
-
-var vis = div.append("svg")
-    .attr("width", width + padding * 2)
-    .attr("height", height + padding * 2)
-	.attr("id", "mainsvg")
-  .append("g")
-    .attr("transform", "translate(" + [radius + padding, radius + padding] + ")");
-
-var partition = d3.layout.partition()
-    .value(function(d) { return d.size; })
-    .sort(null);
-
-var arc = d3.svg.arc()
-    .startAngle(function(d) { return Math.max(0, Math.min(2 * Math.PI, x(d.x))); })
-    .endAngle(function(d) { return Math.max(0, Math.min(2 * Math.PI, x(d.x + d.dx))); })
-    .innerRadius(function(d) { return Math.max(0, d.y ? y(d.y) : d.y); })
-    .outerRadius(function(d) { return Math.max(0, y(d.y + d.dy)); });
-
-var labelFits = function(d) {
-	return x(d.x + d.dx) - x(d.x) > 0.05;
-};
-
-  var nodes = partition.nodes(root);
-  var path = vis.selectAll("path").data(nodes);
-
-  path.enter().append("path")
-      .attr("id", function(d, i) { return "path-" + i; })
-      .attr("d", arc)
-      .attr("fill-rule", "evenodd")
-	  .style("fill", function(d) {return colors(d); })
-      .style("opacity", function(d) {return opacities(d); })
-      .on("click", function(d) { return d.depth < 4 ? click(d) : click(d.parent) })
-			.on("mouseover", mouseOver)
-			.on("mouseout", mouseOut);
-
-  var text = vis.selectAll("text").data(nodes);
-  var textEnter = text.enter().append("text")
-      .style("fill-opacity", 1)
-			.style("fill", function(d) { return labelFits(d) ? "white" : "none"; })
-      .attr("text-anchor", function(d) {
-        return x(d.x + d.dx / 2) > Math.PI ? "end" : "start";
-      })
-			.attr("dy", ".35em")
-      .attr("transform", function(d) {
-				var multiline = (d.name || "").split(" ").length > 1,
-            angle = x(d.x + d.dx / 2) * 180 / Math.PI - 90,
-            rotate = angle + (multiline ? -.5 : 0);
-        return "rotate(" + rotate + ")translate(" + (y(d.y) + padding) + ")rotate(" + (angle > 90 ? -180 : 0) + ")";
-      });
-  textEnter.append("tspan")
-      .attr("x", 0)
-      .text(function(d) {
-				// Truncate text where necessary for neatness
-          var firstLine =  d.name.split(" ")[0];
-
-				if (d.depth && firstLine.length > 16) {
-					return firstLine.substring(0,16) + "…"
-				} else if (d.depth) {
-					return firstLine;
-				} else return ""
-			});
-  textEnter.append("tspan")
-      .attr("x", 0)
-      .attr("dy", "1.1em")
-      .text(function(d) { return d.depth ? d.name.split(" ")[1] || "" : ""; });
-
-	d3.select("svg")
-			.append("circle")
-			.attr("id","centre-label-background")
-			.attr("cx",435)
-			.attr("cy",435)
-			.attr("r",19)
-			.attr("fill","#F0ab00")
-			.attr("pointer-events","none");
-	d3.select("svg")
-			.append("text")
-			.attr("id","centre-label")
-			.text("All Emissions \n 2018")
-			.attr("x",435)
-			.attr("y",440)
-			.attr("text-anchor","middle")
-			.attr("pointer-events","none");
-
-  function click(d) {
-      insertParam("zoomto", d.value);
-
-    	path.transition()
-      .duration(duration)
-      .attrTween("d", arcTween(d))
-			.each("end", function(d, i) {
-				// Once the scales have been updated by arcTween, update the
-				// fill style of the label depending on the size of the wedge
-				d3.select(text[0][i]).style("fill", function(d) { return labelFits(d) ? "white" : "none"; });
-			});
-
-    // Somewhat of a hack as we rely on arcTween updating the scales.
-    text.style("visibility", function(e) {
-      return isParentOf(d, e) ? null : d3.select(this).style("visibility");
-    })
-      .transition()
-        .duration(duration)
-				.attrTween("text-anchor", function(d) {
-          return function() {
-            return x(d.x + d.dx / 2) > Math.PI ? "end" : "start";
-          };
-        })
-        .attrTween("transform", function(d) {
-          var multiline = (d.name || "").split(" ").length > 1;
-          return function() {
-            var angle = x(d.x + d.dx / 2) * 180 / Math.PI - 90,
-                rotate = angle + (multiline ? -.5 : 0);
-            return "rotate(" + rotate + ")translate(" + (y(d.y) + padding) + ")rotate(" + (angle > 90 ? -180 : 0) + ")";
-          };
-        })
-        .style("fill-opacity", function(e) { return isParentOf(d, e) ? 1 : 1e-6; })
-        .each("end", function(e) {
-          d3.select(this).style("visibility", isParentOf(d, e) ? null : "hidden");
-        });
-
-			// Fade headline, and adjust centre label, in/out depending on zoom
-			if (tweetBoxShowing) hideTweetBox();
-			if (d.depth == 0) {
-				d3.select("#splash").style("display","block").transition().duration(750).delay(500).style("opacity",1);
-				d3.select("#centre-label").text("All Emissions")						.style("font-family","Georgia, Arial, sans-serif").style("font-size","15px");
-			} else {
-				/*d3.select("#splash").transition().duration(750).style("opacity",0).each("end", function() {
+          // Fade headline, and adjust centre label, in/out depending on zoom
+          if (tweetBoxShowing) hideTweetBox();
+          if (d.depth == 0) {
+            d3.select('#splash')
+              .style('display', 'block')
+              .transition()
+              .duration(750)
+              .delay(500)
+              .style('opacity', 1);
+            d3.select('#centre-label')
+              .text('All Emissions')
+              .style('font-family', 'Georgia, Arial, sans-serif')
+              .style('font-size', '15px');
+          } else {
+            /*d3.select("#splash").transition().duration(750).style("opacity",0).each("end", function() {
 						d3.select(this).style("display","none");
 				});*/
-				d3.select("#centre-label").text("🔍").style("font-family","FontAwesome").style("font-size","18px");
-				//d3.select("#centre-label-background").transition().delay(750).style("fill",colors(d.parent))
-				if (d.depth == 3) {
-					var emissions = Math.round(d.value * 10)/10,
-							percent = Math.round(100 * 100 * emissions / globalEmissions)/100,
-                        tweetText = d.name+" emissions from "+d.parent.name+" contribute " + percent + "% to global emissions!";
-					d3.select("#tweet-text").transition().delay(750).text("‘" + tweetText + "’");
-					showTweetBox();
-					addTweetButton(tweetText);
-				};
-                if (d.depth == 2) {
-					var emissions = Math.round(d.value * 10)/10,
-							percent = Math.round(100 * 100 * emissions / globalEmissions)/100,
-                        tweetText = "Emissions from "+d.name+" contribute " + percent + "% to global emissions!";
-					d3.select("#tweet-text").transition().delay(750).text("‘" + tweetText + "’");
-					showTweetBox();
-					addTweetButton(tweetText);
-				};
-                if (d.depth == 1) {
-					var emissions = Math.round(d.value * 10)/10,
-							percent = Math.round(100 * 100 * emissions / globalEmissions)/100,
-                        tweetText = "Emissions from "+d.name+" contribute " + percent + "% to global emissions!";
-					d3.select("#tweet-text").transition().delay(750).text("‘" + tweetText + "’");
-					showTweetBox();
-					addTweetButton(tweetText);
-				};
-
-			}
-  }
-//});
-
-d3.select("#close").on("click", function() {
-	hideTweetBox();
-});
-
-d3.select("#close2").on("click", function() {
-    d3.select("#info")
-    .transition().duration(500)
-    .style("opacity",0)
-    .each("end", function() {
-        //d3.select(this).style("display", "none");
-    });
-});
-
-d3.select("#resetbutton").on("click", function() {
-       click(root);
-});
-
-function hideTweetBox() {
-	d3.select("#tweet-box")
-		.transition().duration(500)
-		.style("opacity",0)
-		.each("end", function() {
-			d3.select(this).style("display", "none");
-		});
-		tweetBoxShowing = false;
-}
-
-function showTweetBox() {
-	d3.select("#tweet-box")
-		.style("display", "block")
-		.transition().duration(500)
-		.style("opacity", 1);
-		tweetBoxShowing = true;
-}
-
-
-
-
-function mouseOver(d) {
-        displayDetails(d);
-        if (d.depth < 4) d3.select(this).style("cursor","pointer");
-        var ancestorArray = getAncestors(d);
-        d3.selectAll("path")
-                .classed("highlighted-path",false);
-        d3.selectAll("path")
-                .filter(function(node) { return ancestorArray.indexOf(node) >= 0; })
-                .classed("highlighted-path",true);
-        d3.select("#centre-label-background").classed("highlighted-path",true);
-}
-
-function displayDetails(d) {
-	d3.select("#info").transition().duration(750).style("opacity",1);
-    d3.select("#name").text(d.depth == 3 ? d.parent.name+" "+d.name+" Emissions ":(d.depth == 2 ? d.name+" emissions ": d.name));
-	d3.select("#segment").text(d.depth == 4 ? d.name : " ");
-	var emissions = Math.round(d.value * 10)/10,
-			percent = Math.round(10000 * emissions / globalEmissions)/100;
-	d3.select("#emissions").text(d.value != 0 ? emissions + " Mt CO₂e" : " ");
-	d3.select("#percent").text(d.value != 0 ? "(" + percent + "% of global greenhouse gas emissions)" : " ");
-}
-
-
-
-
-function mouseOut(d) {
-	d3.selectAll(".highlighted-path").classed("highlighted-path",false)
-    clearTimeout(setTimeoutConst );
-}
-
-
-function getAncestors(node) {
-	var path = [];
-	var current = node;
-	while (current.parent) {
-		path.unshift(current);
-		current = current.parent;
-	}
-	path.unshift(current)
-	return path;
-}
-
-function isParentOf(p, c) {
-  if (p === c) return true;
-  if (p.children) {
-    return p.children.some(function(d) {
-      return isParentOf(d, c);
-    });
-  }
-  return false;
-}
-
-// Interpolate the scales!
-function arcTween(d) {
-  var my = maxY(d),
-      xd = d3.interpolate(x.domain(), [d.x, d.x + d.dx]),
-      yd = d3.interpolate(y.domain(), [d.y, my]),
-      yr = d3.interpolate(y.range(), [d.y ? 20 : 0, radius]);
-  return function(d) {
-    return function(t) { x.domain(xd(t)); y.domain(yd(t)).range(yr(t)); return arc(d); };
-  };
-}
-
-function maxY(d) {
-  return d.children ? Math.max.apply(Math, d.children.map(maxY)) : d.y + d.dy;
-}
-
-
-function opacities(d) {
-    var opp = 0.6;
-    if (d.name == "Others") return opp;
-    if (d.parent && d.parent.name == "Others") return opp;
-    if (d.parent && d.parent.parent && d.parent.parent.name == "Others") return opp;
-    return 1;
-}
-
-
-function colors(d) {
-
-    if (d.depth == 1) {
-        if(d.name =="Others") return "#777";
-        else return "#E95B2E";
-    }
-    if (d.depth == 2) {
-        if(jQuery.inArray(d.name, top10) == -1) return col[10][0];
-        else return col[jQuery.inArray( d.name, top10)][0];
-    }
-
-    if (d.depth == 3) {
-        if(jQuery.inArray(d.parent.name, top10) == -1) return col[10][jQuery.inArray(d.name, sources)+1];
-        else {
-            //return col[jQuery.inArray(d.parent.name, top10)][jQuery.inArray(d.name, sources)+1];
-            return col[jQuery.inArray(d.parent.name, top10)][d.order-1];
+            d3.select('#centre-label')
+              .text('🔍')
+              .style('font-family', 'FontAwesome')
+              .style('font-size', '18px');
+            //d3.select("#centre-label-background").transition().delay(750).style("fill",colors(d.parent))
+            if (d.depth == 3) {
+              var emissions = Math.round(d.value * 10) / 10,
+                percent =
+                  Math.round((100 * 100 * emissions) / globalEmissions) / 100,
+                tweetText =
+                  d.name +
+                  ' emissions from ' +
+                  d.parent.name +
+                  ' contribute ' +
+                  percent +
+                  '% to global emissions!';
+              d3.select('#tweet-text')
+                .transition()
+                .delay(750)
+                .text('‘' + tweetText + '’');
+              showTweetBox();
+              addTweetButton(tweetText);
+            }
+            if (d.depth == 2) {
+              var emissions = Math.round(d.value * 10) / 10,
+                percent =
+                  Math.round((100 * 100 * emissions) / globalEmissions) / 100,
+                tweetText =
+                  'Emissions from ' +
+                  d.name +
+                  ' contribute ' +
+                  percent +
+                  '% to global emissions!';
+              d3.select('#tweet-text')
+                .transition()
+                .delay(750)
+                .text('‘' + tweetText + '’');
+              showTweetBox();
+              addTweetButton(tweetText);
+            }
+            if (d.depth == 1) {
+              var emissions = Math.round(d.value * 10) / 10,
+                percent =
+                  Math.round((100 * 100 * emissions) / globalEmissions) / 100,
+                tweetText =
+                  'Emissions from ' +
+                  d.name +
+                  ' contribute ' +
+                  percent +
+                  '% to global emissions!';
+              d3.select('#tweet-text')
+                .transition()
+                .delay(750)
+                .text('‘' + tweetText + '’');
+              showTweetBox();
+              addTweetButton(tweetText);
+            }
+          }
         }
-    }
+        //});
 
-    return "#F0ab00";
+        d3.select('#close').on('click', function() {
+          hideTweetBox();
+        });
 
-}
+        d3.select('#close2').on('click', function() {
+          d3.select('#info')
+            .transition()
+            .duration(500)
+            .style('opacity', 0)
+            .each('end', function() {
+              //d3.select(this).style("display", "none");
+            });
+        });
 
-/*
+        d3.select('#resetbutton').on('click', function() {
+          click(root);
+        });
+
+        function hideTweetBox() {
+          d3.select('#tweet-box')
+            .transition()
+            .duration(500)
+            .style('opacity', 0)
+            .each('end', function() {
+              d3.select(this).style('display', 'none');
+            });
+          tweetBoxShowing = false;
+        }
+
+        function showTweetBox() {
+          d3.select('#tweet-box')
+            .style('display', 'block')
+            .transition()
+            .duration(500)
+            .style('opacity', 1);
+          tweetBoxShowing = true;
+        }
+
+        function mouseOver(d) {
+          displayDetails(d);
+          if (d.depth < 4) d3.select(this).style('cursor', 'pointer');
+          var ancestorArray = getAncestors(d);
+          d3.selectAll('path').classed('highlighted-path', false);
+          d3.selectAll('path')
+            .filter(function(node) {
+              return ancestorArray.indexOf(node) >= 0;
+            })
+            .classed('highlighted-path', true);
+          d3.select('#centre-label-background').classed(
+            'highlighted-path',
+            true
+          );
+        }
+
+        function displayDetails(d) {
+          d3.select('#info')
+            .transition()
+            .duration(750)
+            .style('opacity', 1);
+          d3.select('#name').text(
+            d.depth == 3
+              ? d.parent.name + ' ' + d.name + ' Emissions '
+              : d.depth == 2
+              ? d.name + ' emissions '
+              : d.name
+          );
+          d3.select('#segment').text(d.depth == 4 ? d.name : ' ');
+          var emissions = Math.round(d.value * 10) / 10,
+            percent = Math.round((10000 * emissions) / globalEmissions) / 100;
+          d3.select('#emissions').text(
+            d.value != 0 ? emissions + ' Mt CO₂e' : ' '
+          );
+          d3.select('#percent').text(
+            d.value != 0
+              ? '(' + percent + '% of global greenhouse gas emissions)'
+              : ' '
+          );
+        }
+
+        function mouseOut(d) {
+          d3.selectAll('.highlighted-path').classed('highlighted-path', false);
+          clearTimeout(setTimeoutConst);
+        }
+
+        function getAncestors(node) {
+          var path = [];
+          var current = node;
+          while (current.parent) {
+            path.unshift(current);
+            current = current.parent;
+          }
+          path.unshift(current);
+          return path;
+        }
+
+        function isParentOf(p, c) {
+          if (p === c) return true;
+          if (p.children) {
+            return p.children.some(function(d) {
+              return isParentOf(d, c);
+            });
+          }
+          return false;
+        }
+
+        // Interpolate the scales!
+        function arcTween(d) {
+          var my = maxY(d),
+            xd = d3.interpolate(x.domain(), [d.x, d.x + d.dx]),
+            yd = d3.interpolate(y.domain(), [d.y, my]),
+            yr = d3.interpolate(y.range(), [d.y ? 20 : 0, radius]);
+          return function(d) {
+            return function(t) {
+              x.domain(xd(t));
+              y.domain(yd(t)).range(yr(t));
+              return arc(d);
+            };
+          };
+        }
+
+        function maxY(d) {
+          return d.children
+            ? Math.max.apply(Math, d.children.map(maxY))
+            : d.y + d.dy;
+        }
+
+        function opacities(d) {
+          var opp = 0.6;
+          if (d.name == 'Others') return opp;
+          if (d.parent && d.parent.name == 'Others') return opp;
+          if (d.parent && d.parent.parent && d.parent.parent.name == 'Others')
+            return opp;
+          return 1;
+        }
+
+        function colors(d) {
+          if (d.depth == 1) {
+            if (d.name == 'Others') return '#777';
+            else return '#E95B2E';
+          }
+          if (d.depth == 2) {
+            if (jQuery.inArray(d.name, top10) == -1) return col[10][0];
+            else return col[jQuery.inArray(d.name, top10)][0];
+          }
+
+          if (d.depth == 3) {
+            if (jQuery.inArray(d.parent.name, top10) == -1)
+              return col[10][jQuery.inArray(d.name, sources) + 1];
+            else {
+              //return col[jQuery.inArray(d.parent.name, top10)][jQuery.inArray(d.name, sources)+1];
+              return col[jQuery.inArray(d.parent.name, top10)][d.order - 1];
+            }
+          }
+
+          return '#F0ab00';
+        }
+
+        /*
 function colors(d) {
     if (d.depth == 1) {
         if(d.name =="Others") return "#777";
@@ -634,56 +1030,53 @@ function colors(d) {
 }
 */
 
-// http://www.w3.org/WAI/ER/WD-AERT/#color-contrast
-function brightness(rgb) {
-  return rgb.r * .299 + rgb.g * .587 + rgb.b * .114;
-}
+        // http://www.w3.org/WAI/ER/WD-AERT/#color-contrast
+        function brightness(rgb) {
+          return rgb.r * 0.299 + rgb.g * 0.587 + rgb.b * 0.114;
+        }
 
-$(".embed-code").focus(function() {
-    var t = $(this);
-    t.select();
+        $('.embed-code').focus(function() {
+          var t = $(this);
+          t.select();
 
-    // Work around Chrome's little problem
-    t.mouseup(function() {
-        // Prevent further mouseup intervention
-        t.unbind("mouseup");
-        return false;
-    });
-});
+          // Work around Chrome's little problem
+          t.mouseup(function() {
+            // Prevent further mouseup intervention
+            t.unbind('mouseup');
+            return false;
+          });
+        });
 
+        $(document).mouseup(function(e) {
+          var container = $('.embed-code');
 
-$(document).mouseup(function (e)
-{
-    var container = $(".embed-code");
+          if (
+            !container.is(e.target) && // if the target of the click isn't the container...
+            container.has(e.target).length === 0 &&
+            !$('.embed-link').is(e.target)
+          ) {
+            // ... nor a descendant of the container
+            container.hide();
+          } else if ($('.embed-link').is(e.target)) {
+            $('.embed-code').toggle();
+          }
+        });
+      }; //]]>
+    </script>
+  </head>
 
-    if (!container.is(e.target) // if the target of the click isn't the container...
-        && container.has(e.target).length === 0
-        && !$(".embed-link").is(e.target)) // ... nor a descendant of the container
-    {
-        container.hide();
-    }
-    else if ($(".embed-link").is(e.target)) {
-        $(".embed-code").toggle();
-    }
-});
-
-
-
-}//]]>
-
-</script>
-</head>
-
-
-<body>
-<pre id="seclist" style="display:none">erg,Energy
+  <body>
+    <pre id="seclist" style="display:none">
+erg,Energy
 ip,Industry
 agric,Agriculture
 waste,Waste
 bunkr,Bunker Fuels
-</pre>
+</pre
+    >
 
-<pre id="clist" style="display:none">id,country
+    <pre id="clist" style="display:none">
+id,country
 1,Afghanistan
 2,Albania
 3,Algeria
@@ -872,9 +1265,11 @@ bunkr,Bunker Fuels
 -1,World
 -26,European Union (15)
 -27,EU 28
-</pre>
+</pre
+    >
 
-<pre id="edata" style="display:none">Top10	Country	Electricity/Heat	Manufacturing/Construction	Transportation	Other Fuel Combustion	Fugitive Emissions	Building	Industrial Processes	Agriculture	Waste	Global Bunker*	Other Territories*
+    <pre id="edata" style="display:none">
+Top10	Country	Electricity/Heat	Manufacturing/Construction	Transportation	Other Fuel Combustion	Fugitive Emissions	Building	Industrial Processes	Agriculture	Waste	Global Bunker*	Other Territories*
 Top 10	China	5214.198	2667.425	917.024	284.0765217	693.6586934	542.126	1166.288411	717.2191958	197.5729122
 Top 10	United States	2103.172	458.792	1762.235	94.7522515	301.5814666	550.68	233.9141716	379.8395731	133.2401778
 Top 10	EU (27)	1108.45	378.832	807.157	118.2898812	54.99793047	435.043	166.0659299	395.0595911	108.702018
@@ -1042,42 +1437,87 @@ Others	Liechtenstein	0	0	0	0.001535532	0.001167225	0	0.011538438	0.0193421	0.002
 Others	Tuvalu	0.006	0	0.005	0.001		0	0.001631258	0.0067014	0.006174285
 Others	Niue	0.003	0	0.004	0		0	0	0.0014553
 Others	Unallocated										1031.149	557.2902533
-</pre>
+</pre
+    >
 
+    <script></script>
+    <script>
+      !(function(d, s, id) {
+        var js,
+          fjs = d.getElementsByTagName(s)[0];
+        if (!d.getElementById(id)) {
+          js = d.createElement(s);
+          js.id = id;
+          js.src = 'https://platform.twitter.com/widgets.js';
+          fjs.parentNode.insertBefore(js, fjs);
+        }
+      })(document, 'script', 'twitter-wjs');
+    </script>
 
-<script>
-</script>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+    <script
+      type="text/javascript"
+      src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-55426b7602762a4e"
+      async="async"
+    ></script>
 
-<!-- Go to www.addthis.com/dashboard to customize your tools -->
-<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-55426b7602762a4e" async="async"></script>
-
-
-	<div id="wrapper">
-		<div id="info">
-            <div id="close2" class="close">x</div>
-            <div id="resetbutton" class="nicebutton">Reset</div>
-            <div><span id="name">&nbsp;</span><span id="segment"></span></div>
-		    <div><span id="emissions">&nbsp;</span><span id="percent"></span></div>
-
-		</div>
-		<div id="splash">
-            <h1 id="titletext">The Top 10 GHG Emitters Contribute Over Two-Thirds of Global Emissions</h1>
-            <div id="strap" style="">Explore the Latest Global Greenhouse Gas Emissions Data on <a target="_top" href="https://www.climatewatchdata.org/" class="caitlink">Climate Watch</a>
-            </div>
-		</div>
-        <div class="toprightbox">
-                <div class="embed-link nicebutton">Embed</div>
-                <textarea class="embed-code">&lt;iframe src="https://www.wri.org/upload/circlechart2019/circle_state.htm" scrolling="no" style="width: 940px; height: 990px; border: 0"&gt;&lt;/iframe&gt;</textarea>
+    <div id="wrapper">
+      <div id="info">
+        <div id="close2" class="close">x</div>
+        <div id="resetbutton" class="nicebutton">Reset</div>
+        <div><span id="name">&nbsp;</span><span id="segment"></span></div>
+        <div><span id="emissions">&nbsp;</span><span id="percent"></span></div>
+      </div>
+      <div id="splash">
+        <h1 id="titletext">
+          The Top 10 GHG Emitters Contribute Over Two-Thirds of Global Emissions
+        </h1>
+        <div id="strap" style="">
+          Explore the Latest Global Greenhouse Gas Emissions Data on
+          <a
+            target="_top"
+            href="https://www.climatewatchdata.org/"
+            class="caitlink"
+            >Climate Watch</a
+          >
         </div>
-		<div id="tweet-box">
-			<div id="close" class="close">x</div>
-			<div id="tweet-text"></div>
-			<div id="tweet-button"></div>
-		</div>
-            <div id="credits">Graphic by <a target="_top" href="http://johannes-friedrich.com/">Johannes Friedrich</a>. Data source: <a target="_top" href="https://www.climatewatchdata.org/ghg-emissions?chartType=percentage&sectors=614" class="caitlink">Preliminary global greenhouse gas emissions 2018 excluding land-use change and forestry (LULUCF) from Climate Watch</a>.The EU 27 is considered a country. <br />
-            *Bunker fuels inlcude international aviation and shipping that are not included in country totals. Other territories include regions not covered by Climate Watch country data. See Climate Watch for country level land-use change and forestry and bunker fuel emissions.</div>
-        <div id="footnote">
-        <a target="_top" href="https://www.climatewatchdata.org/" class="caitlink logoa"><img src="files/logo.png" class="logo"></a></div>
-</div>
-    </body></html>
+      </div>
+      <div class="toprightbox">
+        <div class="embed-link nicebutton">Embed</div>
+        <textarea class="embed-code">
+&lt;iframe src="https://www.wri.org/upload/circlechart2019/circle_state.htm" scrolling="no" style="width: 940px; height: 990px; border: 0"&gt;&lt;/iframe&gt;</textarea
+        >
+      </div>
+      <div id="tweet-box">
+        <div id="close" class="close">x</div>
+        <div id="tweet-text"></div>
+        <div id="tweet-button"></div>
+      </div>
+      <div id="credits">
+        Graphic by
+        <a target="_top" href="http://johannes-friedrich.com/"
+          >Johannes Friedrich</a
+        >. Data source:
+        <a
+          target="_top"
+          href="https://www.climatewatchdata.org/ghg-emissions?chartType=percentage&sectors=614"
+          class="caitlink"
+          >Preliminary global greenhouse gas emissions 2018 excluding land-use
+          change and forestry (LULUCF) from Climate Watch</a
+        >.The EU 27 is considered a country. <br />
+        *Bunker fuels inlcude international aviation and shipping that are not
+        included in country totals. Other territories include regions not
+        covered by Climate Watch country data. See Climate Watch for country
+        level land-use change and forestry and bunker fuel emissions.
+      </div>
+      <div id="footnote">
+        <a
+          target="_top"
+          href="https://www.climatewatchdata.org/"
+          class="caitlink logoa"
+          ><img src="files/logo.png" class="logo"
+        /></a>
+      </div>
+    </div>
+  </body>
+</html>

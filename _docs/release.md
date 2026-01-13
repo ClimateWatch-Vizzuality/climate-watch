@@ -6,7 +6,7 @@ permalink: /_docs/release
 
 # Release
 
-## Semantic versioning on Half Earth
+## Semantic versioning
 We do our own flavour of [Semantic Versioning](https://semver.org){:target="_blank"}, in order to fulfill the specificities of a data intensive user facing project. In short, updates on version number will increase depending on the type of change that has been done to the codebase.
 This should be the structure of the version number: `major.minor.patch`
 

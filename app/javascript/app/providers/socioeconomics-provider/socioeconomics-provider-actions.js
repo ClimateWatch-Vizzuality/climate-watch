@@ -23,12 +23,12 @@ const fetchSocioeconomics = createThunkAction(
         !socioeconomics.loading
       ) {
         promises.push(
-          fetch(
-            `/api/v1/locations/${iso}/socioeconomics/latest`
-          ).then(response => {
-            if (response.ok) return response.json();
-            throw Error(response.statusText);
-          })
+          fetch(`/api/v1/locations/${iso}/socioeconomics/latest`).then(
+            response => {
+              if (response.ok) return response.json();
+              throw Error(response.statusText);
+            }
+          )
         );
         locationsWithPromise.push(iso);
       }

@@ -26,7 +26,8 @@ import {
 
 const DEFAULTS = {
   breakBy: 'countries',
-  calculation: GHG_CALCULATION_OPTIONS.ABSOLUTE_VALUE.value
+  calculation: GHG_CALCULATION_OPTIONS.ABSOLUTE_VALUE.value,
+  chartType: 'area'
 };
 
 const getOptionSelectedFunction = filter => (options, selected) => {

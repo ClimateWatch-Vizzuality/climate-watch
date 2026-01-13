@@ -2,11 +2,15 @@ import { createAction } from 'redux-actions';
 import { createThunkAction } from 'utils/redux';
 import isEmpty from 'lodash/isEmpty';
 
-const fetchAgricultureCountriesContextsInit = createAction('fetchAgricultureCountriesContextsInit');
+const fetchAgricultureCountriesContextsInit = createAction(
+  'fetchAgricultureCountriesContextsInit'
+);
 const fetchAgricultureCountriesContextsReady = createAction(
   'fetchAgricultureCountriesContextsReady'
 );
-const fetchAgricultureCountriesContextsFail = createAction('fetchAgricultureCountriesContextsFail');
+const fetchAgricultureCountriesContextsFail = createAction(
+  'fetchAgricultureCountriesContextsFail'
+);
 
 const BASE_URL = '/api/v1/data/agriculture_profile/country_contexts';
 
@@ -14,7 +18,10 @@ const fetchAgricultureCountriesContexts = createThunkAction(
   'fetchAgricultureCountriesContexts',
   () => (dispatch, state) => {
     const { agricultureCountriesContexts } = state();
-    if (agricultureCountriesContexts && isEmpty(agricultureCountriesContexts.data)) {
+    if (
+      agricultureCountriesContexts &&
+      isEmpty(agricultureCountriesContexts.data)
+    ) {
       dispatch(fetchAgricultureCountriesContextsInit());
       fetch(`${BASE_URL}`)
         .then(response => {
