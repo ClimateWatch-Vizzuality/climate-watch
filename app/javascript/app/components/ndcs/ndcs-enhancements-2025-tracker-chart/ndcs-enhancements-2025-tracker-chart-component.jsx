@@ -78,57 +78,41 @@ const Ndc2025TrackerChartComponent = props => {
 
   // Group countries by submission type
   const countriesBySubmissionType = React.useMemo(() => {
-    const findCountriesBySubmissionType = submissionType =>
-      parsedData?.filter(
-        // Note: 'EUU' is not a country, we need to explicitly exclude it.
-        ({ indc_submission, iso }) =>
-          iso !== 'EUU' && indc_submission === submissionType
-      );
+    const findCountriesBySubmissionType = submissionType => (parsedData || []).filter(({ indc_submission, iso }) => iso !== 'EUU' && indc_submission === submissionType);
 
-    return Object.keys(SUBMISSION_TYPES).reduce(
-      (acc, key) => {
-        if (key === "submitted2025") {
-          return (
-            ...acc,
-            [key]: {
-              numCountries: countriesBySubmissionType[key]?.filter(({ iso }) => {
-                return iso !== "USA";
-              }).length || 0,
-              emissionsPerc: globalEmissionsBySubmissionType(key) || 0
-            }
-          )
-        }
+    return Object.keys(SUBMISSION_TYPES).reduce((acc, key) => {
+      const countries = findCountriesBySubmissionType(key);
 
-        return (
-          ...acc,
-          [key]: {
-            numCountries: countriesBySubmissionType[key]?.length || 0,
-            emissionsPerc: globalEmissionsBySubmissionType(key) || 0
-          }
-        )
-      },
-      {}
-    );
-  });
+      const filteredCountries =
+        key === 'submitted2025'
+          ? countries.filter(({ iso }) => iso !== 'USA')
+          : countries;
+
+      acc[key] = filteredCountries;
+
+      return acc;
+    }, {});
+  }, [parsedData]);
 
   // Calculate statistics per submission type
   const submissionTypeStatistics = React.useMemo(() => {
-    const globalEmissionsBySubmissionType = submissionType => {
+    const emissionsByType = submissionType => {
       const countries = countriesBySubmissionType[submissionType] || [];
-      return countries.reduce((acc, country) => acc + country.emissions, 0);
+      return countries.reduce(
+        (acc, country) => acc + (country.emissions || 0),
+        0
+      );
     };
 
-    return Object.keys(SUBMISSION_TYPES).reduce(
-      (acc, key) => ({
-        ...acc,
-        [key]: {
-          numCountries: countriesBySubmissionType[key]?.length || 0,
-          emissionsPerc: globalEmissionsBySubmissionType(key) || 0
-        }
-      }),
-      {}
-    );
-  });
+    return Object.keys(SUBMISSION_TYPES).reduce((acc, key) => {
+      const countries = countriesBySubmissionType[key] || [];
+      acc[key] = {
+        numCountries: countries.length,
+        emissionsPerc: emissionsByType(key) || 0
+      };
+      return acc;
+    }, {});
+  }, [countriesBySubmissionType]);
 
   const cardsData = React.useMemo(() => {
     // Get keys to calculate cards' data. "Not submitted" will be calculated by hand, as it'll depend
