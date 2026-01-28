@@ -85,11 +85,28 @@ const Ndc2025TrackerChartComponent = props => {
           iso !== 'EUU' && indc_submission === submissionType
       );
 
-    return Object.entries(SUBMISSION_TYPES).reduce(
-      (acc, [key, submissionType]) => ({
-        ...acc,
-        [key]: findCountriesBySubmissionType(submissionType)
-      }),
+    return Object.keys(SUBMISSION_TYPES).reduce(
+      (acc, key) => {
+        if (key === "submitted2025") {
+          return (
+            ...acc,
+            [key]: {
+              numCountries: countriesBySubmissionType[key]?.filter(({ iso }) => {
+                return iso !== "USA";
+              }).length || 0,
+              emissionsPerc: globalEmissionsBySubmissionType(key) || 0
+            }
+          )
+        }
+
+        return (
+          ...acc,
+          [key]: {
+            numCountries: countriesBySubmissionType[key]?.length || 0,
+            emissionsPerc: globalEmissionsBySubmissionType(key) || 0
+          }
+        )
+      },
       {}
     );
   });
