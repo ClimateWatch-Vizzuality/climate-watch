@@ -20,6 +20,7 @@ const icons = {
     'Yes, enhancement in the revised submission': enhancementIconWhite,
     'No, no enhancement in the revised submission': noEnhancementIconWhite,
     'No, no economy-wide GHG target (for 2035) included': noEnhancementIconWhite,
+    'No, 2035 GHG target not included': noEnhancementIconWhite,
     Unclear: unclearIconWhite,
     'No revision compared with previous version': missingIconWhite,
     'No previous submission available': missingIconWhite,
@@ -53,7 +54,8 @@ const PreviousSubmissionIcon = ({
   tooltipId
 }) => {
   const iconValue =
-    submissionIconValue || (value?.startsWith('Yes')
+    submissionIconValue ||
+    (value?.startsWith('Yes')
       ? 'Yes, enhancement in the revised submission'
       : value);
 
