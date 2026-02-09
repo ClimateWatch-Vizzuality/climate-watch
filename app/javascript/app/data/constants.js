@@ -473,6 +473,7 @@ export const ALL_2025_ENHANCEMENT_VALUES_COLORS = {
   'Yes, economy-wide GHG target (for 2035) included':
     ENHANCEMENT_VALUE_COLORS.blue,
   'Yes, enhancement in the revised submission': ENHANCEMENT_VALUE_COLORS.blue,
+  'No, 2035 GHG target not included': ENHANCEMENT_VALUE_COLORS.red,
   'No, no economy-wide GHG target (for 2035) included':
     ENHANCEMENT_VALUE_COLORS.red,
   ...ENHANCEMENT_VALUES_COLORS
