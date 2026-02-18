@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import Proptypes from 'prop-types';
 import { renderRoutes } from 'react-router-config';
 import CountriesProvider from 'providers/countries-provider';
+import RegionsProvider from 'providers/regions-provider/regions-provider';
 import { isPageNdcp } from 'utils/navigation';
 import cwLogo from 'assets/icons/cw-logo.svg';
 import cx from 'classnames';
@@ -20,6 +21,7 @@ class Embed extends PureComponent {
     return (
       <div className={cx(styles.embed, { [styles.embedNdcp]: isNdcp })}>
         <CountriesProvider />
+        <RegionsProvider />
         <div
           className={cx(layout.content, styles.embedContent, {
             [styles.hasFooter]: !isNdcp
