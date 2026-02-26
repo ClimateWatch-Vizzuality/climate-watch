@@ -22,7 +22,7 @@ module Api
                 link: "/api/v1/data/ndc_sdg/#{resource}",
                 rel: "meta #{resource}"
               }
-            end + [{link: 'https://staging.climatewatchdata.org/api/v1/locations/countries', rel: 'meta locations'}]
+            end + [{link: '/api/v1/locations/countries', rel: 'meta locations'}]
           )
         end
 
