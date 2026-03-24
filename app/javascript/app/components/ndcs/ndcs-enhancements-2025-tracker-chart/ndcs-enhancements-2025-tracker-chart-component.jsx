@@ -60,7 +60,7 @@ const Ndc2025TrackerChartComponent = props => {
 
   // Helper to select the correct fill style for the bar colors
   const getCountrySubmissionTypeKey = country => {
-    if (country?.iso === 'USA') return 'withdrawn';
+    if (country?.indc_submission === 'Withdrawn 2025 NDC') return 'withdrawn';
     return (
       Object.keys(SUBMISSION_TYPES).find(
         key => SUBMISSION_TYPES[key] === country.indc_submission
@@ -80,9 +80,10 @@ const Ndc2025TrackerChartComponent = props => {
   const countriesBySubmissionType = React.useMemo(() => {
     const findCountriesBySubmissionType = submissionType =>
       parsedData?.filter(
-        // Note: 'EUU' is not a country, we need to explicitly exclude it.
+        // Note: 'EUU' is not a country, we need to explicitly exclude it. Yemen is also not official party to the Paris
+        // Agreement.
         ({ indc_submission, iso }) =>
-          iso !== 'EUU' && iso !== 'USA' && indc_submission === submissionType
+          iso !== 'EUU' && iso !== 'YEM' && indc_submission === submissionType
       );
 
     return Object.entries(SUBMISSION_TYPES).reduce(
@@ -114,36 +115,35 @@ const Ndc2025TrackerChartComponent = props => {
   });
 
   const cardsData = React.useMemo(() => {
-    // Get keys to calculate cards' data. "Not submitted" will be calculated by hand, as it'll depend
-    // on the remaining values in order to ensure percentages don't add up to more than 100%.
-    const submissionTypesKeys = Object.keys(SUBMISSION_TYPES).filter(
-      key => key !== 'notSubmitted'
+    // New NDCs = all countries with a submission type set, excluding "No New NDC" and "Withdrawn 2025 NDC"
+    const newNdcKeys = [
+      'submittedWith2030And2035',
+      'submittedWith2030',
+      'submitted2025'
+    ];
+    const newNdcCountries = newNdcKeys.reduce(
+      (acc, key) => acc + (submissionTypeStatistics[key]?.numCountries || 0),
+      0
     );
-
-    const submittedTypesData = submissionTypesKeys.reduce((acc, key) => {
-      const stats = submissionTypeStatistics[key];
-      const emissionsPercNotZero = stats.emissionsPerc > 0;
-
-      return {
-        ...acc,
-        [key]: {
-          numCountries: stats.numCountries.toFixed(0),
-          emissionsPerc: stats.emissionsPerc.toFixed(0),
-          emissionsPercNotZero
-        }
-      };
-    }, {});
-
-    const allSubmittedTypesPerc = Object.values(submittedTypesData).reduce(
-      (acc, d) => acc + d?.emissionsPerc || 0,
+    // ndce_ghg values are already percentages of global emissions so their sum is the correct percentage
+    const newNdcEmissionsPerc = newNdcKeys.reduce(
+      (acc, key) => acc + (submissionTypeStatistics[key]?.emissionsPerc || 0),
       0
     );
 
+    // No New NDCs Global Emissions = 100% - New NDCs %
+    const noNewNdcEmissionsPerc = 100 - newNdcEmissionsPerc;
+
     return {
-      ...submittedTypesData,
+      submitted2025: {
+        numCountries: newNdcCountries.toFixed(0),
+        emissionsPerc: newNdcEmissionsPerc.toFixed(0),
+        emissionsPercNotZero: newNdcEmissionsPerc > 0
+      },
       notSubmitted: {
         numCountries: submissionTypeStatistics.notSubmitted.numCountries,
-        emissionsPerc: 100 - allSubmittedTypesPerc // Ensure it won't cause values to go over 100%
+        emissionsPerc: noNewNdcEmissionsPerc.toFixed(0),
+        emissionsPercNotZero: noNewNdcEmissionsPerc > 0
       }
     };
   });
@@ -383,7 +383,7 @@ const Ndc2025TrackerChartComponent = props => {
                       GHG Emissions: <span>{hoveredBar?.ndce_ghg}</span>
                     </p>
                     <p>
-                      {hoveredBar?.iso !== 'USA' ? (
+                      {hoveredBar?.indc_submission !== 'Withdrawn 2025 NDC' ? (
                         <span>{hoveredBar?.indc_submission}</span>
                       ) : (
                         <span>Withdrawn NDC</span>
