@@ -18,7 +18,8 @@ import {
   ENHANCEMENT_LABEL_SLUGS,
   NDC_2025_LABEL_COLORS,
   INDICATOR_SLUGS,
-  CHART_COLORS
+  CHART_COLORS,
+  COMPARISON_2025_INDICATORS_ORDER
 } from 'data/constants';
 
 const NDC_2025_SLUGS = {
@@ -76,14 +77,11 @@ const getPreviousComparisonIndicators = createSelector(
   [getIndicatorsParsed],
   indicators => {
     if (!indicators) return null;
-    const compareIndicatorSlugs = [
-      '2025_compare_1',
-      '2025_compare_2',
-      '2025_compare_3',
-      '2025_compare_4',
-      '2025_compare_5'
-    ];
-    return indicators.filter(ind => compareIndicatorSlugs.includes(ind.value));
+    const compareIndicatorSlugs = COMPARISON_2025_INDICATORS_ORDER;
+    const filtered = indicators.filter(ind =>
+      compareIndicatorSlugs.includes(ind.value)
+    );
+    return sortBy(filtered, ind => compareIndicatorSlugs.indexOf(ind.value));
   }
 );
 
