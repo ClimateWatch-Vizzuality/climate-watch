@@ -522,14 +522,14 @@ export const ENHANCEMENT_LABELS_WITH_LETTERS = [
 
 export const ENHANCEMENT_2025_LABELS_WITH_LETTERS = [
   {
-    value: '2035 GHG target included',
-    letter: 'N',
-    label: 'New Target: 2035 GHG target included '
-  },
-  {
     value: 'Economy-wide GHG target (for 2035) included',
     letter: 'E',
     label: 'Economy-wide: Economy-wide 2035 GHG target included'
+  },
+  {
+    value: '2035 GHG target included',
+    letter: 'N',
+    label: 'New Target: 2035 GHG target included '
   },
   {
     value: 'Quantified non-CO2 target included',
@@ -571,7 +571,7 @@ export const NDC_2025_COLORS = {
 
 export const LEGEND_STATUS_2025_VALUES_COLORS = {
   'New NDC': NDC_2025_LABEL_COLORS.SUBMITTED_2025,
-  'Withdrawn NDC': CHART_COLORS[3],
+  'Withdrawn NDC': '#1c3160',
   'No New NDC': NDC_2025_LABEL_COLORS.NO_SUBMISSION,
   'Not Applicable: Countries that are not a Party to the UNFCCC':
     NDC_2025_COLORS.lightGray
@@ -586,14 +586,14 @@ export const LEGEND_COMPARISON_2025_VALUES_COLORS = {
 
 export const LEGEND_COMPARISON_2025_LETTERS = [
   {
-    value: '2025_compare_1',
-    letter: 'N',
-    label: 'New Target: 2035 GHG target included '
-  },
-  {
     value: '2025_compare_2',
     letter: 'E',
     label: 'Economy-wide: Economy-wide 2035 GHG target included'
+  },
+  {
+    value: '2025_compare_1',
+    letter: 'N',
+    label: 'New Target: 2035 GHG target included '
   },
   {
     value: '2025_compare_6',
@@ -622,8 +622,8 @@ export const LEGEND_COMPARISON_2025_LETTERS = [
 
 export const COMPARISON_2025_INDICATORS_ORDER = [
   '2025_compare_2',
-  '2025_compare_6',
   '2025_compare_1',
+  '2025_compare_6',
   '2025_compare_3',
   '2025_compare_4',
   '2025_compare_5'

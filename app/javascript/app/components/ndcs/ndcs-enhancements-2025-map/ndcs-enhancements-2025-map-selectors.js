@@ -18,7 +18,6 @@ import {
   ENHANCEMENT_LABEL_SLUGS,
   NDC_2025_LABEL_COLORS,
   INDICATOR_SLUGS,
-  CHART_COLORS,
   COMPARISON_2025_INDICATORS_ORDER
 } from 'data/constants';
 
@@ -298,31 +297,48 @@ export const getPathsWithStyles = createSelector(
         let style = COUNTRY_STYLES;
         const strokeWidth = zoom > 2 ? (1 / zoom) * 2 : 0.5;
 
+        const isWithdrawn = countryData?.value?.includes('Withdrawn');
+
         if (countryData && countryData.label_id) {
           const legendIndex = legendBuckets[countryData.label_id].index;
-          const color = getColorByIndex(legendBuckets, legendIndex, MAP_COLORS);
-
-          const fill = iso === 'USA' ? CHART_COLORS[3] : color;
+          const color = isWithdrawn
+            ? '#1c3160'
+            : getColorByIndex(legendBuckets, legendIndex, MAP_COLORS);
           style = {
             ...COUNTRY_STYLES,
             default: {
               ...COUNTRY_STYLES.default,
               strokeWidth,
-              fill,
+              fill: color,
               fillOpacity: 1
             },
             hover: {
               ...COUNTRY_STYLES.hover,
               cursor: 'pointer',
               strokeWidth,
-              fill,
+              fill: color,
               fillOpacity: 1
             }
           };
-        }
-
-        // Not applicable countries
-        if (!countryData) {
+        } else if (isWithdrawn) {
+          style = {
+            ...COUNTRY_STYLES,
+            default: {
+              ...COUNTRY_STYLES.default,
+              strokeWidth,
+              fill: '#1c3160',
+              fillOpacity: 1
+            },
+            hover: {
+              ...COUNTRY_STYLES.hover,
+              cursor: 'pointer',
+              strokeWidth,
+              fill: '#1c3160',
+              fillOpacity: 1
+            }
+          };
+        } else if (!countryData) {
+          // Not applicable countries
           style = {
             ...COUNTRY_STYLES,
             default: {
