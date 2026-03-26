@@ -4,7 +4,6 @@ import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
 import qs from 'query-string';
 import { getLocationParamUpdated } from 'utils/navigation';
-import { CHART_COLORS } from 'data/constants';
 
 import Component from './ndcs-enhancements-2025-table-component';
 
@@ -26,21 +25,6 @@ const mapStateToProps = (state, { location }) => {
     query: search.search,
     search
   };
-
-  const tableData = replaceAbbreviations(ndcsEnhancementsWithSelection);
-
-  const USAIndex = tableData?.findIndex(d => d.country.includes('USA'));
-
-  if (USAIndex > -1) {
-    tableData[USAIndex] = {
-      ...tableData[USAIndex],
-      'NDC Status': {
-        ...tableData[USAIndex]['NDC Status'],
-        text: 'Withdrawn NDC',
-        color: CHART_COLORS[3]
-      }
-    };
-  }
 
   return {
     loading: loading || getLoadingCompareLinks(ndcsEnhancementsWithSelection),

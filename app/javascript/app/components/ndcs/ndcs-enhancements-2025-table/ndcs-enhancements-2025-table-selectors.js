@@ -118,19 +118,22 @@ export const tableRemoveIsoFromData = createSelector(
       const updatedD = { ...d };
       updatedD['2025 Statement'] = updatedD['2025 NDC Statement'];
 
-      const color =
-        (d['2025 NDC Submission'] &&
-          NDC_2025_LABEL_COLORS[
-            INVERTED_NDC_2025_LABEL_SLUGS[d['2025 NDC Submission']]
-          ]) ||
-        NDC_2025_LABEL_COLORS.NO_SUBMISSION;
+      const isWithdrawn = d['2025 NDC Submission']?.includes('Withdrawn');
+      const color = isWithdrawn
+        ? '#1c3160'
+        : (d['2025 NDC Submission'] &&
+            NDC_2025_LABEL_COLORS[
+              INVERTED_NDC_2025_LABEL_SLUGS[d['2025 NDC Submission']]
+            ]) ||
+          NDC_2025_LABEL_COLORS.NO_SUBMISSION;
       updatedD['NDC Status'] = d['2025 NDC Submission'] && {
         color,
         text:
           {
             'Submitted 2025 NDC': 'New NDC',
             'No Information': 'No New NDC'
-          }[d['2025 NDC Submission']] || d['2025 NDC Submission'],
+          }[d['2025 NDC Submission']] ||
+          (isWithdrawn ? 'Withdrawn NDC' : d['2025 NDC Submission']),
         sortIndex: Object.values(NDC_2025_LABEL_SLUGS).indexOf(
           d['2025 NDC Submission']
         )
