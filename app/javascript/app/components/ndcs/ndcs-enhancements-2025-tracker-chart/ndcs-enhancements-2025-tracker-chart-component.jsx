@@ -134,6 +134,12 @@ const Ndc2025TrackerChartComponent = props => {
     // No New NDCs Global Emissions = 100% - New NDCs %
     const noNewNdcEmissionsPerc = 100 - newNdcEmissionsPerc;
 
+    // No New NDCs country count = total countries (excl. EUU) - New NDCs countries
+    // This mirrors the emissions logic and includes countries like USA (withdrawn) and Yemen
+    const totalCountries = (parsedData || []).filter(({ iso }) => iso !== 'EUU')
+      .length;
+    const noNewNdcCountries = totalCountries - newNdcCountries;
+
     return {
       submitted2025: {
         numCountries: newNdcCountries.toFixed(0),
@@ -141,7 +147,7 @@ const Ndc2025TrackerChartComponent = props => {
         emissionsPercNotZero: newNdcEmissionsPerc > 0
       },
       notSubmitted: {
-        numCountries: submissionTypeStatistics.notSubmitted.numCountries,
+        numCountries: noNewNdcCountries,
         emissionsPerc: noNewNdcEmissionsPerc.toFixed(0),
         emissionsPercNotZero: noNewNdcEmissionsPerc > 0
       }
