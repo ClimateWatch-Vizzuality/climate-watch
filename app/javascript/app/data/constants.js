@@ -6,6 +6,8 @@ import {
   CHART_NAMED_EXTRA_COLORS
 } from 'app/styles/constants';
 
+export const WITHDRAWN_NDC_COLOR = CHART_NAMED_GRAY_COLORS.grayColor4;
+
 const { GFW_API } = process.env;
 const { CW_API } = process.env;
 const { ESP_API } = process.env;
@@ -571,7 +573,7 @@ export const NDC_2025_COLORS = {
 
 export const LEGEND_STATUS_2025_VALUES_COLORS = {
   'New NDC': NDC_2025_LABEL_COLORS.SUBMITTED_2025,
-  'Withdrawn NDC': '#1c3160',
+  'Withdrawn NDC': CHART_NAMED_GRAY_COLORS.grayColor4,
   'No New NDC': NDC_2025_LABEL_COLORS.NO_SUBMISSION,
   'Not Applicable: Countries that are not a Party to the UNFCCC':
     NDC_2025_COLORS.lightGray

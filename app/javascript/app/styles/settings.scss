@@ -84,6 +84,7 @@ $notification-color: #f00;
 $gray1: #757584;
 $gray2: #cccdcf;
 $gray3: #f1f4fb;
+$gray4: #535a60; // Withdrawn NDC countries (e.g. USA)
 
 // $map-gray: #868697; Only on js
 
@@ -163,6 +164,7 @@ $sector-colors-waste: #80c3f6;
   chartGrayColors: {
     grayColor1: $chart-gray-color-1;
     grayColor2: $gray2;
+    grayColor4: $gray4; // Withdrawn NDC countries (e.g. USA)
   }
 
   chartColors: {

@@ -18,7 +18,8 @@ import {
   ENHANCEMENT_LABEL_SLUGS,
   NDC_2025_LABEL_COLORS,
   INDICATOR_SLUGS,
-  COMPARISON_2025_INDICATORS_ORDER
+  COMPARISON_2025_INDICATORS_ORDER,
+  WITHDRAWN_NDC_COLOR
 } from 'data/constants';
 
 const NDC_2025_SLUGS = {
@@ -302,7 +303,7 @@ export const getPathsWithStyles = createSelector(
         if (countryData && countryData.label_id) {
           const legendIndex = legendBuckets[countryData.label_id].index;
           const color = isWithdrawn
-            ? '#1c3160'
+            ? WITHDRAWN_NDC_COLOR
             : getColorByIndex(legendBuckets, legendIndex, MAP_COLORS);
           style = {
             ...COUNTRY_STYLES,
@@ -326,14 +327,14 @@ export const getPathsWithStyles = createSelector(
             default: {
               ...COUNTRY_STYLES.default,
               strokeWidth,
-              fill: '#1c3160',
+              fill: WITHDRAWN_NDC_COLOR,
               fillOpacity: 1
             },
             hover: {
               ...COUNTRY_STYLES.hover,
               cursor: 'pointer',
               strokeWidth,
-              fill: '#1c3160',
+              fill: WITHDRAWN_NDC_COLOR,
               fillOpacity: 1
             }
           };
