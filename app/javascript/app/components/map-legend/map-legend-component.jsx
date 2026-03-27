@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import { getColorByIndex } from 'utils/map';
+import { WITHDRAWN_NDC_COLOR } from 'data/constants';
 
 import styles from './map-legend-styles.scss';
 
@@ -18,7 +19,7 @@ const renderBuckets = (buckets, mapColors) => {
         style={{
           backgroundColor:
             key === 'withdrawn-ndc'
-              ? '#1c3160'
+              ? WITHDRAWN_NDC_COLOR
               : getColorByIndex(buckets, buckets[key].index, mapColors)
         }}
       />

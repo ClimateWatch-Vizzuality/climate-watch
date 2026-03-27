@@ -10,7 +10,8 @@ import {
   NDC_2025_LABEL_SLUGS,
   ENHANCEMENT_LABEL_SLUGS,
   ENHANCEMENT_2025_LABELS_WITH_LETTERS,
-  INDICATOR_SLUGS
+  INDICATOR_SLUGS,
+  WITHDRAWN_NDC_COLOR
 } from 'data/constants';
 import { getCompareLinks } from 'components/ndcs/ndcs-enhancements-map/ndcs-enhancements-map-selectors';
 
@@ -120,7 +121,7 @@ export const tableRemoveIsoFromData = createSelector(
 
       const isWithdrawn = d['2025 NDC Submission']?.includes('Withdrawn');
       const color = isWithdrawn
-        ? '#1c3160'
+        ? WITHDRAWN_NDC_COLOR
         : (d['2025 NDC Submission'] &&
             NDC_2025_LABEL_COLORS[
               INVERTED_NDC_2025_LABEL_SLUGS[d['2025 NDC Submission']]
