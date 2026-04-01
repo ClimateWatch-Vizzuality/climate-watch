@@ -173,7 +173,9 @@ export const getSourceOptions = createSelector(
     return sectionMeta.data_sources.map(option => {
       const updatedOption = option;
       updatedOption.dataSourceId = option.id;
-      updatedOption.name = option.display_name;
+      // TODO: Remove this override once the database display_name is updated from PIK to PRIMAP-hist
+      updatedOption.name =
+        option.name === 'PIK' ? 'PRIMAP-hist' : option.display_name;
       return updatedOption;
     });
   }
