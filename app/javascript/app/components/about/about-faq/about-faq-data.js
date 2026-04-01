@@ -138,10 +138,6 @@ export const sectionsData = [
           { Acronym: 'LTS', 'Acronym definition': 'Long-term Strategy' },
           {
             Acronym: 'LULUCF',
-            'Acronym definition': 'Land-use Change and Forestry'
-          },
-          {
-            Acronym: 'LULUCF',
             'Acronym definition': 'Land-use, land-use Change and Forestry'
           },
           { Acronym: 'Mt', 'Acronym definition': 'Million metric tonnes' },

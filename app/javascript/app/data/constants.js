@@ -112,7 +112,7 @@ export const DEFAULT_EMISSIONS_SELECTIONS = {
   },
   UNFCCC_NAI: {
     gas: 'Aggregate GHGs',
-    sector: 'Total GHG emissions including LUCF/LULUCF',
+    sector: 'Total GHG emissions including LULUCF',
     location: 'TOP'
   },
   GCP: {
