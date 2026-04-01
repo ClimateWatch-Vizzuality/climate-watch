@@ -82,7 +82,7 @@ const Ndc2025TrackerChartComponent = props => {
       parsedData?.filter(
         // Note: 'EUU' is not a country, we need to explicitly exclude it.
         ({ indc_submission, iso }) =>
-          iso !== 'EUU' && indc_submission === submissionType
+          iso !== 'EUU' && iso !== 'USA' && indc_submission === submissionType
       );
 
     return Object.entries(SUBMISSION_TYPES).reduce(
