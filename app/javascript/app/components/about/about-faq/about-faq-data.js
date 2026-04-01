@@ -25,7 +25,7 @@ export const sectionsData = [
         type: 'html',
         title: 'How do I cite Climate Watch data as a source?',
         answer:
-          '<span>Use the info button next to each dataset and figure on Climate Watch to see its citation information.  A general citation for Climate Watch is as follows: Climate Watch. 2024. Washington, D.C.: World Resources Institute. Available online at: <link to="/" innerText="www.climatewatchdata.org"></link>. See our <Link to="/about/permissions" innertext="Permissions and Licensing" />  page for more information about citation.  '
+          '<span>Use the info button next to each dataset and figure on Climate Watch to see its citation information.  A general citation for Climate Watch is as follows: Climate Watch. 2026. Washington, D.C.: World Resources Institute. Available online at: <link to="/" innerText="www.climatewatchdata.org"></link>. See our <Link to="/about/permissions" innertext="Permissions and Licensing" />  page for more information about citation.  '
       },
       {
         type: 'html',
@@ -49,7 +49,7 @@ export const sectionsData = [
         type: 'html',
         title: 'How frequently is the data updated?',
         answer:
-          '<Link to="/countries" innertext="Country profiles" /> are updated at least once per year. Links to UNFCCC submissions are updated more frequently as new documents are submitted. <Link to="/ghg-emissions" innertext="Historical GHG emissions" /> are updated as available. It takes at least 1-2 years for organizations to compile, process and report GHG data; thus, the last year of complete GHG data will often be 2-3 years behind the current calendar year.<p><Link to="/ndcs-content" innertext="NDC content" /> is updated as new NDCs are submitted to the UNFCCC.</p><p> <Link to="/ndcs-sdg" innertext="NDC-SDG linkages" /> are not regularly updated, but are up to date covering NDCs submitted prior to May 2021.</p>'
+          '<Link to="/countries" innertext="Country profiles" /> are updated at least once per year. Links to UNFCCC submissions are updated more frequently as new documents are submitted. <Link to="/ghg-emissions" innertext="Historical GHG emissions" /> are updated as available. It takes at least 1-2 years for organizations to compile, process and report GHG data; thus, the last year of complete GHG data will often be 2-3 years behind the current calendar year.<p><Link to="/ndcs-content" innertext="NDC content" /> is updated as new NDCs are submitted to the UNFCCC.</p><p> <Link to="/ndcs-sdg" innertext="NDC-SDG linkages" /> are not regularly updated, covering NDCs submitted prior to May 2021.</p>'
       },
       {
         type: 'html',
@@ -108,7 +108,7 @@ export const sectionsData = [
           {
             Acronym: 'F-gases',
             'Acronym definition':
-              'Hydrofluorocarbons, perfluorocarbons, sulfur hexafluoride, Nitrogen Trifluoride'
+              'Hydrofluorocarbons, perfluorocarbons, sulfur hexafluoride, Nitrogen trifluoride'
           },
           {
             Acronym: 'FAO',
@@ -138,7 +138,7 @@ export const sectionsData = [
           { Acronym: 'LTS', 'Acronym definition': 'Long-term Strategy' },
           {
             Acronym: 'LULUCF',
-            'Acronym definition': 'Land-use, land-use Change and Forestry'
+            'Acronym definition': 'Land Use, Land-Use Change and Forestry'
           },
           { Acronym: 'Mt', 'Acronym definition': 'Million metric tonnes' },
           {
@@ -153,7 +153,7 @@ export const sectionsData = [
           { Acronym: 'NC', 'Acronym definition': 'National Communication' },
           {
             Acronym: 'NDC',
-            'Acronym definition': 'Nationally Determined Contributions'
+            'Acronym definition': 'Nationally Determined Contribution'
           },
           {
             Acronym: '<span>NF<sub>3</sub></span>',
@@ -199,8 +199,8 @@ export const sectionsData = [
             '': 'Summary',
             'Climate Watch':
               'The Climate Watch dataset is the most comprehensive included on Climate Watch and includes all sectors and gases. In order to emphasize comparability of data across countries, it does not use countries’ official inventories reported to the UNFCCC. It has a 3 year lag.',
-            'PIK PRIMAP-hist':
-              'The PIK PRIMAP-hist dataset included on Climate Watch combines UNFCCC reported data where available and fills gaps with other sources. It does not include land use change and forestry (LULUCF) but covers all other sectors and has a 3 year lag. Additional data to what is shown on Climate Watch is available from <a href="https://www.pik-potsdam.de/paris-reality-check/primap-hist/">PIK</a>.',
+            'PRIMAP-hist':
+              'The PRIMAP-hist dataset included on Climate Watch combines UNFCCC reported data where available and fills gaps with other sources. It does not include land use change and forestry (LULUCF) but covers all other sectors and has a 3 year lag. Additional data to what is shown on Climate Watch is available from <a href="https://primap.org/primap-hist/">PRIMAP</a>.',
             UNFCCC:
               'UNFCCC includes only officially reported data by countries. It has large data gaps for non-Annex I countries. Due to different reporting requirements for Annex I and non-Annex I countries, the data is not internally comparable. It covers all sectors and has 2-3 year lag.',
             GCP:
@@ -209,26 +209,18 @@ export const sectionsData = [
           {
             '': 'Original data sources used',
             'Climate Watch':
-              'International Energy Agency (IEA), U.S. Environmental Protection Agency, U.N. Food and Agriculture Organization, Global Carbon Project. See more detailed information about sources <a href="https://wri-sites.s3.us-east-1.amazonaws.com/climatewatch.org/www.climatewatch.org/climate-watch/wri_metadata/CW_GHG_Method_Note.pdf">here</a>.',
-            'PIK PRIMAP-hist':
-              'Uses countries’ official inventories reported to the UNFCCC as a basis, and fills in with data from other sources, including CDIAC, Emissions Database for Global Atmospheric Research (EDGAR), and FAO, among others. See all sources <a href="https://doi.org/10.5194/essd-8-571-2016">here</a>.',
+              'International Energy Agency (IEA), U.S. Environmental Protection Agency, U.N. Food and Agriculture Organization, Global Carbon Project. See more detailed information about sources in the <a href="https://www.wri.org/research/climate-watch-country-greenhouse-gas-emissions-data-and-methodology">technical note</a>.',
+            'PRIMAP-hist':
+              'Uses countries’ official inventories reported to the UNFCCC as a basis, and fills in with data from other sources, including CDIAC, Emissions Database for Global Atmospheric Research (EDGAR), and FAO, among others. See all sources <a href="https://primap.org/primap-hist/">here</a>.',
             UNFCCC:
               'The inventory data are provided in the annual GHG inventory submissions by Annex I Parties and in the National Communications and Biennial Update Reports by non-Annex I Parties.',
             GCP:
-              ' The CDIAC-FF emissions dataset, derived largely from UN energy data, forms the foundation. Emissions are extended to year Y-1 using energy growth   rates reported by BP. Estimates are then replaced using data from what consider to be superior sources, for example Annex 1 countries’ official submissions to the UNFCCC. For full details see sources section on Global Carbon Atlas <a href="http://www.globalcarbonatlas.org/en/CO2-emissions">here</a>.'
-          },
-          {
-            '': 'Temporal coverage',
-            'Climate Watch': '1990-2020',
-            'PIK PRIMAP-hist': '1850-2022',
-            UNFCCC:
-              '1990-2021 for Annex I countries; Varied coverage for non-Annex I countries',
-            GCP: '1960-2022'
+              ' The CDIAC-FF emissions dataset, derived largely from UN energy data, forms the foundation. Emissions are extended to year Y-1 using energy growth   rates reported by BP. Estimates are then replaced using data from what consider to be superior sources, for example Annex 1 countries’ official submissions to the UNFCCC. For full details see <a href="https://zenodo.org/records/17417124">here</a>.'
           },
           {
             '': 'Geographic coverage',
             'Climate Watch': 'UNFCCC member states',
-            'PIK PRIMAP-hist':
+            'PRIMAP-hist':
               'UNFCCC member states and non-UNFCCC territories',
             UNFCCC:
               'All 43 Annex I Parties; 148 of the 154 non-Annex I Parties',
@@ -238,8 +230,8 @@ export const sectionsData = [
           {
             '': 'Sector coverage (sector definitions may vary across sources)',
             'Climate Watch':
-              'Main IPCC sectors, including energy sub-sectors. Includes:<ul><li>agriculture</li><li>bunker fuels</li><li>energy<ul><li>electricity/heat</li><li>fugitive emissions</li><li>manufacturing/ construction</li><li>other fuel combustion</li><li>transportation</li></ul></li><li>industrial processes</li><li>land-use change and forestry</li><li>waste</li>',
-            'PIK PRIMAP-hist':
+              'Main IPCC sectors, including energy sub-sectors. Includes:<ul><li>agriculture</li><li>bunker fuels</li><li>energy<ul><li>electricity/heat</li><li>fugitive emissions</li><li>manufacturing/ construction</li><li>other fuel combustion</li><li>transportation</li></ul></li><li>industrial processes</li><li>land use, land-use change and forestry</li><li>waste</li>',
+            'PRIMAP-hist':
               'Main IPCC sectors excluding LULUCF. Includes: <ul><li>agriculture</li><li>energy</li><li>industrial processes and product use</li><li>other</li><li>waste</li></ul>Excludes: <ul><li>land use change and forestry</li><li>bunker fuels</li></ul> Additional sub-sectors are included in the original source and not reflected on Climate Watch.',
             UNFCCC:
               'Main IPCC sectors; energy sub-sectors are reported but not included on Climate Watch. For Annex I countries: <ul><li>agriculture</li><li>energy</li><li>industrial processes and product use</li><li>land use, land-use change, and forestry</li><li>other</li><li>waste</li></ul>Excludes: <ul><li>bunker fuels (reported separately)</li></ul>For non-Annex I countries: <ul><li>agriculture</li><li>energy</li><li>industrial processes</li><li>land-use change and forestry</li><li>other</li><li>solvent and other product use</li><li>waste</li></ul>Excludes: <ul><li>bunker fuels (reported separately)</li></ul>',
@@ -249,21 +241,21 @@ export const sectionsData = [
           {
             '': 'Gas coverage ',
             'Climate Watch': 'Kyoto GHGs (CH4, CO2, N2O, F-gases)',
-            'PIK PRIMAP-hist': 'Kyoto GHGs (CH4, CO2, N2O, F-gases)',
+            'PRIMAP-hist': 'Kyoto GHGs (CH4, CO2, N2O, F-gases)',
             UNFCCC: 'Kyoto GHGs (CH4, CO2, N2O, F-gases)',
             GCP: 'CO2 only'
           },
           {
             '': 'Timeliness',
             'Climate Watch': '3 year lag',
-            'PIK PRIMAP-hist': '2 year lag',
+            'PRIMAP-hist': '2 year lag',
             UNFCCC: '2-3 year lag',
             GCP: '1-2 year lag'
           },
           {
             '': 'Use of country reported data to the UNFCC',
             'Climate Watch': 'Does not use UNFCCC reported data',
-            'PIK PRIMAP-hist': 'Uses UNFCCC reported data and fills gaps',
+            'PRIMAP-hist': 'Uses UNFCCC reported data and fills gaps',
             UNFCCC: 'Only uses UNFCCC reported data',
             GCP: 'Uses UNFCCC reported data and fills gaps'
           },
@@ -271,7 +263,7 @@ export const sectionsData = [
             '': 'Comparable methodology across countries',
             'Climate Watch':
               'Consistent methodology used across all countries to maximize comparability',
-            'PIK PRIMAP-hist':
+            'PRIMAP-hist':
               'Uses national inventories where available and fills in the gaps. Therefore, comparability varies depending on country groups (Annex 1 / non-Annex 1) and years.',
             UNFCCC:
               'Comparable across Annex 1 Parties, but not to non-Annex 1 Parties due to different reporting requirements between Annex 1 and non-Annex 1 Parties.',
@@ -284,7 +276,7 @@ export const sectionsData = [
         title:
           'What are the definitions of the different emissions sectors from the Climate Watch data? ',
         answer:
-          'You can find the definitions of all Climate Watch data sectors in our <a href="https://wri-sites.s3.us-east-1.amazonaws.com/climatewatch.org/www.climatewatch.org/climate-watch/wri_metadata/CW_GHG_Method_Note.pdf">Climate Watch Methodology</a>.'
+          'You can find the definitions of all Climate Watch data sectors in our technical note <a href="https://www.wri.org/research/climate-watch-country-greenhouse-gas-emissions-data-and-methodology">Climate Watch Country Greenhouse Gas Emissions Data and Methodology</a>.'
       },
       {
         type: 'html',
@@ -297,7 +289,7 @@ export const sectionsData = [
         type: 'html',
         title: 'Why do some countries have sectors with negative emissions?',
         answer:
-          '<p>The Land-use Change & Forestry (LULUCF) sector can be a carbon sink or a source of emissions. Trees and other vegetation take up carbon dioxide from the atmosphere, but they also release emissions when they are cut down, burned or converted to other land uses. Depending on the balance between emissions and carbon sequestration in this sector within a country’s territory, the resulting net emissions could be positive or negative.</p><p>This WRI <a href="https://www.wri.org/insights/forests-absorb-twice-much-carbon-they-emit-each-year">article</a> has more detail on how trees contribute to carbon sequestration.</p>'
+          '<p>The Land Use, Land-use Change and Forestry (LULUCF) sector can be a carbon sink or a source of emissions. Trees and other vegetation take up carbon dioxide from the atmosphere, but they also release emissions when they are cut down, burned or converted to other land uses. Depending on the balance between emissions and carbon sequestration in this sector within a country’s territory, the resulting net emissions could be positive or negative.</p><p>This WRI <a href="https://www.wri.org/insights/forests-absorb-twice-much-carbon-they-emit-each-year">article</a> has more detail on how trees contribute to carbon sequestration.</p>'
       },
       {
         type: 'html',
