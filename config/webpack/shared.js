@@ -124,7 +124,10 @@ module.exports = {
           { loader: 'style-loader', options: { insertAt: 'top' } },
           { loader: 'raw-loader' }
         ],
-        include: /node_modules/
+        include: [
+          /node_modules/,
+          /app\/javascript\/app\/styles\/slick-theme\.css$/
+        ]
       },
       {
         test: /\.(js|jsx)$/,

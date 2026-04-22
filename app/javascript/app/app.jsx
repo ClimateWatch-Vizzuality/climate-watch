@@ -7,7 +7,7 @@ import ScrollToTop from 'components/scroll-to-top';
 import { withRouter } from 'react-router';
 
 import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
+import './styles/slick-theme.css';
 import 'cw-components/dist/main.css';
 import 'styles/override/sticky.scss';
 import 'styles/override/react-tooltip.scss';
