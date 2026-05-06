@@ -15,11 +15,15 @@ ARG secretKey
 ENV SECRET_KEY_BASE $secretKey
 
 # Install dependencies
-RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -
+ARG NODE_VERSION=12.22.12
 RUN apt-get update \
   && apt-get install -y --no-install-recommends \
-  postgresql-client nodejs build-essential patch zlib1g-dev liblzma-dev libicu-dev
-RUN npm install -g yarn
+     postgresql-client curl ca-certificates build-essential patch zlib1g-dev liblzma-dev libicu-dev \
+  && curl -fsSL https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-x64.tar.gz \
+     | tar -zx -C /usr/local --strip-components=1 --no-same-owner \
+  && ln -sf /usr/local/bin/node /usr/local/bin/nodejs \
+  && npm i -g yarn@1.22.22 \
+  && rm -rf /var/lib/apt/lists/*
 
 # Create app directory
 RUN mkdir -p /usr/src/$NAME
