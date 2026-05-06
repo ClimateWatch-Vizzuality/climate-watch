@@ -44,14 +44,14 @@ class GhgEmissions extends PureComponent {
           {renderLink(
             'largest emitting sector is electricity and heat generation',
             'Largest emitting sector is electricity and heat generation',
-            '/ghg-emissions?breakBy=sector&chartType=percentage&sectors=agriculture%2Cindustrial-processes%2Cland-use-change-and-forestry%2Cbuilding%2Celectricity-heat%2Cfugitive-emissions%2Cmanufacturing-construction%2Cother-fuel-combustion%2Ctransportation%2Cwaste'
+            '/ghg-emissions?breakBy=sector&chartType=percentage&sectors=agriculture%2Cindustrial-processes%2Cland-use-land-use-change-and-forestry%2Cbuilding%2Celectricity-heat%2Cfugitive-emissions%2Cmanufacturing-construction%2Cother-fuel-combustion%2Ctransportation%2Cwaste'
           )}{' '}
           , followed by transportation and manufacturing. Land use, land
           use-change and forestry (LULUCF) is both a source and sink of
           emissions and key sector to get to net-zero emissions.
         </p>
         <p className={styles.learnMore} data-tour="ghg-05">
-          Learn more about our data sources (Climate Watch, PIK, UNFCCC, GCP)
+          Learn more about our data sources (Climate Watch, PRIMAP-hist, UNFCCC, GCP)
           and methodologies in our{' '}
           {renderLink(
             'Frequently asked questions',

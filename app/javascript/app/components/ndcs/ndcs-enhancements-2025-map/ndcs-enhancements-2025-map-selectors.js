@@ -18,7 +18,8 @@ import {
   ENHANCEMENT_LABEL_SLUGS,
   NDC_2025_LABEL_COLORS,
   INDICATOR_SLUGS,
-  CHART_COLORS
+  COMPARISON_2025_INDICATORS_ORDER,
+  WITHDRAWN_NDC_COLOR
 } from 'data/constants';
 
 const NDC_2025_SLUGS = {
@@ -76,14 +77,11 @@ const getPreviousComparisonIndicators = createSelector(
   [getIndicatorsParsed],
   indicators => {
     if (!indicators) return null;
-    const compareIndicatorSlugs = [
-      '2025_compare_1',
-      '2025_compare_2',
-      '2025_compare_3',
-      '2025_compare_4',
-      '2025_compare_5'
-    ];
-    return indicators.filter(ind => compareIndicatorSlugs.includes(ind.value));
+    const compareIndicatorSlugs = COMPARISON_2025_INDICATORS_ORDER;
+    const filtered = indicators.filter(ind =>
+      compareIndicatorSlugs.includes(ind.value)
+    );
+    return sortBy(filtered, ind => compareIndicatorSlugs.indexOf(ind.value));
   }
 );
 
@@ -300,31 +298,48 @@ export const getPathsWithStyles = createSelector(
         let style = COUNTRY_STYLES;
         const strokeWidth = zoom > 2 ? (1 / zoom) * 2 : 0.5;
 
+        const isWithdrawn = countryData?.value?.includes('Withdrawn');
+
         if (countryData && countryData.label_id) {
           const legendIndex = legendBuckets[countryData.label_id].index;
-          const color = getColorByIndex(legendBuckets, legendIndex, MAP_COLORS);
-
-          const fill = iso === 'USA' ? CHART_COLORS[3] : color;
+          const color = isWithdrawn
+            ? WITHDRAWN_NDC_COLOR
+            : getColorByIndex(legendBuckets, legendIndex, MAP_COLORS);
           style = {
             ...COUNTRY_STYLES,
             default: {
               ...COUNTRY_STYLES.default,
               strokeWidth,
-              fill,
+              fill: color,
               fillOpacity: 1
             },
             hover: {
               ...COUNTRY_STYLES.hover,
               cursor: 'pointer',
               strokeWidth,
-              fill,
+              fill: color,
               fillOpacity: 1
             }
           };
-        }
-
-        // Not applicable countries
-        if (!countryData) {
+        } else if (isWithdrawn) {
+          style = {
+            ...COUNTRY_STYLES,
+            default: {
+              ...COUNTRY_STYLES.default,
+              strokeWidth,
+              fill: WITHDRAWN_NDC_COLOR,
+              fillOpacity: 1
+            },
+            hover: {
+              ...COUNTRY_STYLES.hover,
+              cursor: 'pointer',
+              strokeWidth,
+              fill: WITHDRAWN_NDC_COLOR,
+              fillOpacity: 1
+            }
+          };
+        } else if (!countryData) {
+          // Not applicable countries
           style = {
             ...COUNTRY_STYLES,
             default: {

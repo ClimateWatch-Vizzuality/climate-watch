@@ -55,7 +55,7 @@ export const ABBREVIATIONS = {
   NF3: 'Nitrogen Trifluoride',
   OECD: 'Organization for Economic Co-operation and Development',
   PFC: 'Perfluorocarbon',
-  PIK: 'Potsdam Institute for Climate Impact Research',
+  'PRIMAP-hist': 'Potsdam Institute for Climate Impact Research',
   SDG: 'Sustainable Development Goals',
   SF6: 'Sulfur Hexafluoride',
   SIDS: 'Small Island Developing States',

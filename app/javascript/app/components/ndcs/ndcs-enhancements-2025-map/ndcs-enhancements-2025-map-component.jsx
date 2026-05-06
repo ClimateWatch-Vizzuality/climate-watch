@@ -88,6 +88,7 @@ const NDCSEnhancements2025Map = ({
                   INDICATOR_SLUGS.emissions,
                   '2025_compare_1',
                   '2025_compare_2',
+                  '2025_compare_6',
                   '2025_compare_3',
                   '2025_compare_4',
                   '2025_compare_5',

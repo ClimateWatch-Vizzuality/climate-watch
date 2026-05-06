@@ -20,6 +20,8 @@ const icons = {
     'Yes, enhancement in the revised submission': enhancementIconWhite,
     'No, no enhancement in the revised submission': noEnhancementIconWhite,
     'No, no economy-wide GHG target (for 2035) included': noEnhancementIconWhite,
+    'No, 2035 GHG target not included': noEnhancementIconWhite,
+    'No, no quantified non-CO2 target': noEnhancementIconWhite,
     Unclear: unclearIconWhite,
     'No revision compared with previous version': missingIconWhite,
     'No previous submission available': missingIconWhite,
@@ -29,6 +31,7 @@ const icons = {
     'Revised NDC compared with previous version': enhancementIcon,
     'Yes, enhancement in the revised submission': enhancementIcon,
     'No, no enhancement in the revised submission': noEnhancementIcon,
+    'No, no quantified non-CO2 target': noEnhancementIcon,
     Unclear: unclearIcon,
     'No revision compared with previous version': missingIcon,
     'No previous submission available': missingIcon,
@@ -53,7 +56,8 @@ const PreviousSubmissionIcon = ({
   tooltipId
 }) => {
   const iconValue =
-    submissionIconValue || (value?.startsWith('Yes')
+    submissionIconValue ||
+    (value?.startsWith('Yes')
       ? 'Yes, enhancement in the revised submission'
       : value);
 

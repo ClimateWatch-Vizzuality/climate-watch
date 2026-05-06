@@ -10,7 +10,8 @@ import {
   NDC_2025_LABEL_SLUGS,
   ENHANCEMENT_LABEL_SLUGS,
   ENHANCEMENT_2025_LABELS_WITH_LETTERS,
-  INDICATOR_SLUGS
+  INDICATOR_SLUGS,
+  WITHDRAWN_NDC_COLOR
 } from 'data/constants';
 import { getCompareLinks } from 'components/ndcs/ndcs-enhancements-map/ndcs-enhancements-map-selectors';
 
@@ -118,19 +119,22 @@ export const tableRemoveIsoFromData = createSelector(
       const updatedD = { ...d };
       updatedD['2025 Statement'] = updatedD['2025 NDC Statement'];
 
-      const color =
-        (d['2025 NDC Submission'] &&
-          NDC_2025_LABEL_COLORS[
-            INVERTED_NDC_2025_LABEL_SLUGS[d['2025 NDC Submission']]
-          ]) ||
-        NDC_2025_LABEL_COLORS.NO_SUBMISSION;
+      const isWithdrawn = d['2025 NDC Submission']?.includes('Withdrawn');
+      const color = isWithdrawn
+        ? WITHDRAWN_NDC_COLOR
+        : (d['2025 NDC Submission'] &&
+            NDC_2025_LABEL_COLORS[
+              INVERTED_NDC_2025_LABEL_SLUGS[d['2025 NDC Submission']]
+            ]) ||
+          NDC_2025_LABEL_COLORS.NO_SUBMISSION;
       updatedD['NDC Status'] = d['2025 NDC Submission'] && {
         color,
         text:
           {
             'Submitted 2025 NDC': 'New NDC',
             'No Information': 'No New NDC'
-          }[d['2025 NDC Submission']] || d['2025 NDC Submission'],
+          }[d['2025 NDC Submission']] ||
+          (isWithdrawn ? 'Withdrawn NDC' : d['2025 NDC Submission']),
         sortIndex: Object.values(NDC_2025_LABEL_SLUGS).indexOf(
           d['2025 NDC Submission']
         )

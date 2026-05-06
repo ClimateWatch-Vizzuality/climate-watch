@@ -44,7 +44,7 @@ const AboutPermissions = ({ location }) => (
       </p>
       <h3>Citation of Climate Watch platform and data:</h3>
       <p>
-        Climate Watch. 2024. Washington, DC: World Resources Institute.
+        Climate Watch. 2026. Washington, DC: World Resources Institute.
         Available online at:{' '}
         <a href="https://www.climatewatchdata.org">
           https://www.climatewatchdata.org
@@ -69,7 +69,7 @@ const AboutPermissions = ({ location }) => (
           .
         </li>
         <li>
-          NDCs: UNFCCC. 2024. NDC Registry. Available at:{' '}
+          NDCs: UNFCCC. 2026. NDC Registry. Available at:{' '}
           <a href="ttps://unfccc.int/NDCREG">
             ttps://unfccc.int/NDCREG
           </a>
@@ -99,7 +99,7 @@ const AboutPermissions = ({ location }) => (
       <h4>GHG Emissions:</h4>
       <ul>
         <li>
-          Climate Watch data: Climate Watch. 2024. GHG Emissions. Washington,
+          Climate Watch data: Climate Watch. 2026. GHG Emissions. Washington,
           DC: World Resources Institute. Available at:{' '}
           <a href="https://www.climatewatchdata.org/ghg-emissions">
             https://www.climatewatchdata.org/ghg-emissions
@@ -107,7 +107,7 @@ const AboutPermissions = ({ location }) => (
           .
           <ul>
             <li>
-              Please note that for the Land-Use Change and Forestry indicator in
+              Please note that for the Land Use, Land-Use Change and Forestry indicator in
               the Country GHG Emissions data collection, WRI has been granted a
               non-exclusive, non-transferrable right to publish these data by
               the Food and Agriculture Organization of the United Nations.
@@ -117,14 +117,14 @@ const AboutPermissions = ({ location }) => (
             <li>
               Climate Watch data are derived from several sources. Any use of
               the Land-Use Change and Forestry or Agriculture indicator should
-              be cited as FAO 2023, FAOSTAT Emissions Database. Any use of
+              be cited as FAO 2025, FAOSTAT Emissions Database. Any use of
               emissions from fuel combustion data should be cited as GHG
-              Emissions from Fuel Combustion, OECD/IEA, 2023
+              Emissions from Fuel Combustion, OECD/IEA, 2025
             </li>
           </ul>
         </li>
         <li>
-          PIK data: Gütschow, J.; Pflüger, M. (2023): The PRIMAP-hist national historical emissions time series v2.5 (1750-2022). zenodo. doi:10.5281/zenodo.10006301.
+          PRIMAP-hist data: Gütschow, Johannes ; Busch, Daniel ; Pflüger, Mika (2025): The PRIMAP-hist national historical emissions time series (1750-2024) v2.7. Zenodo. https://doi.org/10.5281/zenodo.17090760.
           <ul>
             <li>
               When using this dataset or one of its updates, please also cite
@@ -133,7 +133,7 @@ const AboutPermissions = ({ location }) => (
               supplement to. Please consider also citing the relevant original
               sources.
             </li>
-            <li>Gütschow, J.; Jeffery, L.; Gieseke, R.; Gebel, R.; Stevens, D.; Krapp, M.; Rocha, M. (2016): The PRIMAP-hist national historical emissions time series, Earth Syst. Sci. Data, 8, 571-603, doi:10.5194/essd-8-571-2016 
+            <li>Gütschow, Johannes; Jeffery, M. Louise; Gieseke, Robert; Gebel, Ronja; Stevens, David; Krapp, Mario; Rocha, Marcia (2016): The PRIMAP-hist national historical emissions time series, Earth Syst. Sci. Data, 8, 571-603, https://doi.org/10.5194/essd-8-571-2016 
             </li>
           </ul>
         </li>
@@ -183,7 +183,7 @@ const AboutPermissions = ({ location }) => (
       <h4>World Development Indicators:</h4>
       <ul>
         <li>
-          World Development Indicators. 2023. The World Bank. Available at:{' '}
+          World Development Indicators. 2026. The World Bank. Available at:{' '}
           <a href="http://databank.worldbank.org/data/reports.aspx?source=world-development-indicators">
             http://databank.worldbank.org/data/reports.aspx?source=world-development-indicators
           </a>

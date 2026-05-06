@@ -43,9 +43,12 @@ const fetchEmissionsMeta = createThunkAction(
                   };
                 }
                 if (key === 'data_source') {
+                  // TODO: Remove this override once the database display_name is updated from PIK to PRIMAP-hist
+                  const label =
+                    item.name === 'PIK' ? 'PRIMAP-hist' : item.display_name;
                   newItem = {
                     name: item.name,
-                    label: item.display_name,
+                    label,
                     value: item.id,
                     location: item.location_ids,
                     sector: item.sector_ids,
