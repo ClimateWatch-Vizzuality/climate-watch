@@ -16,7 +16,8 @@ ENV SECRET_KEY_BASE $secretKey
 
 # Install dependencies
 ARG NODE_VERSION=12.22.12
-RUN apt-get update \
+RUN sed -i '/security.debian.org/d' /etc/apt/sources.list \
+  && apt-get update \
   && apt-get install -y --no-install-recommends \
      postgresql-client curl ca-certificates build-essential patch zlib1g-dev liblzma-dev libicu-dev \
   && curl -fsSL https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-x64.tar.gz \
