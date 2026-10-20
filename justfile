@@ -68,5 +68,53 @@ test-rb:
       -e DEV_USER_ID=DEV_USER_ID_PLACEHOLDER -e DEV_USER_TOKEN=DEV_USER_TOKEN_PLACEHOLDER \
       app bash -c "bin/rails db:drop db:create db:structure:load && bundle exec rspec"
 
+# Needs `aws sso login --profile <profile>` and CW_STAGING_INSTANCE_ID in .env.
+# Deploy a branch to staging with Capistrano from the app container
+deploy-staging branch="develop" profile="climate-watch-admin":
+    @just _cap-staging {{quote(profile)}} deploy {{quote(branch)}}
+
+# Needs `aws sso login --profile <profile>` and CW_STAGING_INSTANCE_ID in .env.
+# The rollback quiets Sidekiq but never stops it, so its `sidekiq:start` is a
+# no-op and Sidekiq stays paused; restart it afterwards.
+# Roll staging back to the previous release with Capistrano
+rollback-staging profile="climate-watch-admin":
+    @just _cap-staging {{quote(profile)}} 'deploy:rollback sidekiq:restart'
+
+# Run a Capistrano task against staging from the app container
+_cap-staging profile task branch="develop":
+    #!/usr/bin/env bash
+    set -euo pipefail
+    instance=$(grep -E '^CW_STAGING_INSTANCE_ID=' .env | cut -d= -f2-)
+    [ -n "$instance" ] || { echo "Set CW_STAGING_INSTANCE_ID in .env" >&2; exit 1; }
+    # Throwaway key for this run only. RSA in PEM format so net-ssh can read
+    # it without the ed25519/bcrypt_pbkdf gems.
+    keydir=$(mktemp -d)
+    refresher=""
+    cleanup() {
+        if [ -n "$refresher" ]; then
+            kill "$refresher" 2>/dev/null || true
+            wait "$refresher" 2>/dev/null || true
+        fi
+        rm -rf "$keydir"
+    }
+    trap cleanup EXIT
+    ssh-keygen -q -t rsa -b 4096 -m PEM -N '' -C climate-watch-deploy -f "$keydir/id_rsa"
+    # EC2 Instance Connect only accepts a pushed key for 60 seconds, and
+    # Capistrano reconnects during a run, so keep pushing it until we're done.
+    push_key() {
+        aws ec2-instance-connect send-ssh-public-key --profile {{profile}} --region us-east-1 \
+          --instance-id "$instance" --instance-os-user ubuntu \
+          --ssh-public-key "file://$keydir/id_rsa.pub" >/dev/null
+    }
+    push_key
+    ( while sleep 45; do push_key || true; done ) &
+    refresher=$!
+    docker compose run --rm --no-deps \
+      -v "$keydir/id_rsa:/root/.ssh/id_rsa:ro" \
+      -v "$HOME/.ssh/known_hosts:/root/.ssh/known_hosts:ro" \
+      -e DEPLOY_BRANCH={{quote(branch)}} \
+      -e USER="$USER" \
+      app bundle exec cap staging {{task}}
+
 # All tests
 test: test-js test-rb
