@@ -83,6 +83,16 @@ list them).
 
 2. `just up` builds and starts the app, Sidekiq, Postgres and Redis. The app is
    served on `http://localhost:3000/` and the webpack dev server on port 3035.
+   `docker-compose.yml` sets `WEBPACKER_DEV_SERVER_HOST=0.0.0.0`, because
+   `config/webpacker.yml` binds the dev server to `localhost`, which the browser
+   can't reach inside the container (live reload fails with
+   `WebSocket connection to 'ws://localhost:3035/ws' failed`). It also sets
+   `RAILS_MAX_THREADS=1`: with several Puma threads, the parallel API requests
+   on the first page load race to autoload code and fail with errors like
+   `uninitialized constant Api::V1::...` or
+   `Bootsnap::LoadPathCache::Store::NestedTransactionError`. After changing
+   environment variables in `docker-compose.yml`, recreate the container with
+   `docker compose up -d app`; `docker compose restart` keeps the old values.
 
    The justfile builds and runs the containers as x86_64, because the Dockerfile
    installs the x64 build of Node 12. On Apple Silicon, turning on Docker
