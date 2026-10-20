@@ -114,13 +114,26 @@ are hard to install, such as Apple Silicon Macs.
    The key is visible in the image history, so only do this for local images.
 
 The database starts empty. To load data, see [Import and rake tasks](/climate-watch/_docs/import-rake).
-`rake db:import` reads the datasets from S3, so `.env` needs `AWS_ACCESS_KEY_ID`,
-`AWS_SECRET_ACCESS_KEY`, `AWS_REGION`, `S3_BUCKET_NAME` and `CW_FILES_PREFIX`.
-Run it inside the app container:
+`rake db:import` reads the datasets from S3, so `.env` needs `AWS_REGION`,
+`S3_BUCKET_NAME` and `CW_FILES_PREFIX`, plus AWS credentials.
+
+With IAM user keys, set `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` in `.env`
+and run the import inside the app container:
 
 ```
 docker compose exec app bundle exec rake db:import
 ```
+
+With AWS SSO, export temporary credentials and pass them to the container. They
+include `AWS_SESSION_TOKEN` and expire, so log in again if a long import fails:
+
+```
+aws sso login --profile <profile>
+eval "$(aws configure export-credentials --profile <profile> --format env)"
+docker compose run --rm -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY -e AWS_SESSION_TOKEN app bundle exec rake db:import
+```
+
+When switching back to IAM user keys, `unset AWS_SESSION_TOKEN` first.
 
 ## Infrastructure
 
