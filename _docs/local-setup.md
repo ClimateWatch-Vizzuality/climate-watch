@@ -74,66 +74,58 @@ Point your browser to `http://localhost:3000/`. Ta-da!
 ### Launching the app with docker
 
 Docker is the easiest way to run the app on machines where Ruby 2.6 and Node 12
-are hard to install, such as Apple Silicon Macs.
+are hard to install, such as Apple Silicon Macs. The commands live in the
+`justfile` (install [just](https://github.com/casey/just), then run `just` to
+list them).
 
-1. Create a `.env` file. Docker Compose sets `POSTGRES_URL` and `REDIS_SERVER`
-   itself, so a copy of the sample is enough to start:
+1. `just setup` creates `.env` from the sample. Docker Compose sets
+   `POSTGRES_URL` and `REDIS_SERVER` itself, so the sample is enough to start.
 
-   ```
-   cp .env.sample .env
-   ```
+2. `just up` builds and starts the app, Sidekiq, Postgres and Redis. The app is
+   served on `http://localhost:3000/` and the webpack dev server on port 3035.
 
-2. On Apple Silicon (arm64), build and run the containers as x86_64, because the
-   Dockerfile installs the x64 build of Node 12:
-
-   ```
-   export DOCKER_DEFAULT_PLATFORM=linux/amd64
-   ```
-
-   In Docker Desktop, turning on Settings > General > "Use Rosetta for
-   x86_64/amd64 emulation on Apple Silicon" makes this faster. (Search for "Choose Virtual Machine Manager (VMM)" if you can't find it.)
-
-3. Build and start the app, Sidekiq, Postgres and Redis:
-
-   ```
-   docker compose up --build
-   ```
-
-   On start, the app container runs the migrations and
-   `db:admin_boilerplate:create`, then serves the app on `http://localhost:3000/`
-   and the webpack dev server on port 3035.
+   The justfile builds and runs the containers as x86_64, because the Dockerfile
+   installs the x64 build of Node 12. On Apple Silicon, turning on Docker
+   Desktop's Settings > General > "Use Rosetta for x86_64/amd64 emulation on
+   Apple Silicon" makes this faster. (Search for "Choose Virtual Machine Manager
+   (VMM)" if you can't find it.)
 
    The build skips the MaxMind download unless a key is passed as a build
    argument. Development uses the bundled test DB (see [Geolocation](#geolocation)),
    so the key is only needed for the real DB:
+   `docker compose build --build-arg MAXMIND_LICENSE_KEY=<key>`. The key is
+   visible in the image history, so only do this for local images.
 
-   ```
-   docker compose build --build-arg MAXMIND_LICENSE_KEY=<key>
-   ```
+3. `just db-reset` recreates the development database and loads the schema from
+   `db/structure.sql`. Rerunning it wipes any imported data.
 
-   The key is visible in the image history, so only do this for local images.
+4. Load the data (see [Import and rake tasks](/climate-watch/_docs/import-rake)).
+   `rake db:import` reads the datasets from S3, so `.env` needs `AWS_REGION`,
+   `S3_BUCKET_NAME` and `CW_FILES_PREFIX`, plus AWS credentials:
 
-The database starts empty. To load data, see [Import and rake tasks](/climate-watch/_docs/import-rake).
-`rake db:import` reads the datasets from S3, so `.env` needs `AWS_REGION`,
-`S3_BUCKET_NAME` and `CW_FILES_PREFIX`, plus AWS credentials.
+   - With AWS SSO, run `aws sso login --profile <profile>`, then
+     `just import <profile>`. The temporary credentials include
+     `AWS_SESSION_TOKEN` and expire, so log in again if a long import fails.
+   - With IAM user keys, set `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` in
+     `.env` and run `just import-iam`.
 
-With IAM user keys, set `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` in `.env`
-and run the import inside the app container:
+   `just db-counts` shows how many rows were imported into a few tables.
 
-```
-docker compose exec app bundle exec rake db:import
-```
+`just bootstrap <profile>` runs all of the above with SSO credentials and starts
+the app in the background. `just clean` removes this project's containers,
+database volume and images, but keeps `.env`, so `just clean` followed by
+`just bootstrap <profile>` rebuilds everything from scratch.
 
-With AWS SSO, export temporary credentials and pass them to the container. They
-include `AWS_SESSION_TOKEN` and expire, so log in again if a long import fails:
+#### Running the tests with docker
 
-```
-aws sso login --profile <profile>
-eval "$(aws configure export-credentials --profile <profile> --format env)"
-docker compose run --rm -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY -e AWS_SESSION_TOKEN app bundle exec rake db:import
-```
+`just test-js` runs the frontend tests (Jest) and `just test-rb` the backend
+tests (RSpec); `just test` runs both. The test database settings use `PGHOST`,
+`PGUSER` and `PGPASSWORD`, not `POSTGRES_URL`, and the `DEV_USER_*` values in
+the recipe must match the recorded responses in
+`fixtures/vcr_cassettes/user_token.yml`.
 
-When switching back to IAM user keys, `unset AWS_SESSION_TOKEN` first.
+`spec/services/import_locations_spec.rb` calls the Carto API, so the backend
+tests need network access.
 
 ## Infrastructure
 
