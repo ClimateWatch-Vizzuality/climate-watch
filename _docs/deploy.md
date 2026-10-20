@@ -15,6 +15,10 @@ The app is deployed with [capistrano](https://capistranorb.com/). There are two 
 
 Important: Staging will deploy from `develop` branch and production from `master`. Make sure everything is merged before running the commands. The Environment variables should be set afterwards on the server direcly.
 
+The server addresses aren't in the repo: set `CW_STAGING_HOST` and
+`CW_PRODUCTION_HOST` in your local `.env` (Capistrano loads it). Ask the team
+for the values.
+
 ### `just deploy-staging [branch]`
 
 With the Docker setup (see [Local setup](/climate-watch/_docs/local-setup)), this runs
