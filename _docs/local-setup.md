@@ -103,6 +103,16 @@ are hard to install, such as Apple Silicon Macs.
    `db:admin_boilerplate:create`, then serves the app on `http://localhost:3000/`
    and the webpack dev server on port 3035.
 
+   The build skips the MaxMind download unless a key is passed as a build
+   argument. Development uses the bundled test DB (see [Geolocation](#geolocation)),
+   so the key is only needed for the real DB:
+
+   ```
+   docker compose build --build-arg MAXMIND_LICENSE_KEY=<key>
+   ```
+
+   The key is visible in the image history, so only do this for local images.
+
 The database starts empty. To load data, see [Import and rake tasks](/climate-watch/_docs/import-rake).
 `rake db:import` reads the datasets from S3, so `.env` needs `AWS_ACCESS_KEY_ID`,
 `AWS_SECRET_ACCESS_KEY`, `AWS_REGION`, `S3_BUCKET_NAME` and `CW_FILES_PREFIX`.

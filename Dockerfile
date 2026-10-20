@@ -41,8 +41,9 @@ RUN yarn install
 # Expose port 3000 to the Docker host, so we can access it
 EXPOSE 3000
 
-# Download maxmind IP db
-RUN bundle exec rails db:import_maxmind
+# Download maxmind IP db (skipped without a key; development uses the bundled test db)
+ARG MAXMIND_LICENSE_KEY
+RUN if [ -n "$MAXMIND_LICENSE_KEY" ]; then bundle exec rails db:import_maxmind; fi
 
 # Rails assets compile
 RUN bundle exec rake assets:precompile
