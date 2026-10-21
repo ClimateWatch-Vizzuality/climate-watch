@@ -71,21 +71,72 @@ test-rb:
 # Needs `aws sso login --profile <profile>` and CW_STAGING_INSTANCE_ID in .env.
 # Deploy a branch to staging with Capistrano from the app container
 deploy-staging branch="develop" profile="climate-watch-admin":
-    @just _cap-staging {{quote(profile)}} deploy {{quote(branch)}}
+    @just _cap staging {{quote(profile)}} deploy {{quote(branch)}}
 
 # Needs `aws sso login --profile <profile>` and CW_STAGING_INSTANCE_ID in .env.
 # The rollback quiets Sidekiq but never stops it, so its `sidekiq:start` is a
 # no-op and Sidekiq stays paused; restart it afterwards.
 # Roll staging back to the previous release with Capistrano
 rollback-staging profile="climate-watch-admin":
-    @just _cap-staging {{quote(profile)}} 'deploy:rollback sidekiq:restart'
+    @just _cap staging {{quote(profile)}} 'deploy:rollback sidekiq:restart'
 
-# Run a Capistrano task against staging from the app container
-_cap-staging profile task branch="develop":
+# Needs `aws sso login --profile <profile>` and CW_PRODUCTION_INSTANCE_ID in .env.
+# A snapshot is point-in-time when it starts, so the deploy can go ahead
+# while it completes in the background.
+# Snapshot all EBS volumes of the production instance
+snapshot-production profile="climate-watch-admin":
     #!/usr/bin/env bash
     set -euo pipefail
-    instance=$(grep -E '^CW_STAGING_INSTANCE_ID=' .env | cut -d= -f2-)
-    [ -n "$instance" ] || { echo "Set CW_STAGING_INSTANCE_ID in .env" >&2; exit 1; }
+    instance=$(grep -E '^CW_PRODUCTION_INSTANCE_ID=' .env | cut -d= -f2- || true)
+    [ -n "$instance" ] || { echo "Set CW_PRODUCTION_INSTANCE_ID in .env" >&2; exit 1; }
+    aws ec2 create-snapshots --profile {{profile}} --region us-east-1 \
+      --instance-specification "InstanceId=$instance,ExcludeBootVolume=false" \
+      --description "climate-watch production, manual snapshot, $(date -u +%Y-%m-%dT%H:%MZ), by $USER" \
+      --tag-specifications "ResourceType=snapshot,Tags=[{Key=Name,Value=climate-watch-production-manual},{Key=CreatedBy,Value=$USER}]" \
+      --query 'Snapshots[].[SnapshotId,VolumeId,VolumeSize,State]' --output table
+
+# Needs `aws sso login --profile <profile>` and CW_PRODUCTION_INSTANCE_ID in .env.
+# Show the latest snapshots of the production instance's volumes
+snapshot-production-status count="5" profile="climate-watch-admin":
+    #!/usr/bin/env bash
+    set -euo pipefail
+    instance=$(grep -E '^CW_PRODUCTION_INSTANCE_ID=' .env | cut -d= -f2- || true)
+    [ -n "$instance" ] || { echo "Set CW_PRODUCTION_INSTANCE_ID in .env" >&2; exit 1; }
+    volumes=$(aws ec2 describe-instances --profile {{profile}} --region us-east-1 --instance-ids "$instance" \
+      --query 'Reservations[].Instances[].BlockDeviceMappings[].Ebs.VolumeId' --output text | tr '\t' ',')
+    aws ec2 describe-snapshots --profile {{profile}} --region us-east-1 --owner-ids self \
+      --filters "Name=volume-id,Values=$volumes" \
+      --query "reverse(sort_by(Snapshots,&StartTime))[:{{count}}].[SnapshotId,StartTime,State,Progress,VolumeSize,Description]" \
+      --output table
+
+# Needs `aws sso login --profile <profile>` and CW_PRODUCTION_INSTANCE_ID in .env.
+# Asks for confirmation, then deploys master.
+# Deploy master to production with Capistrano from the app container
+deploy-production profile="climate-watch-admin":
+    #!/usr/bin/env bash
+    set -euo pipefail
+    echo "This deploys origin/master ($(git ls-remote origin refs/heads/master | cut -c1-9)) to PRODUCTION."
+    read -r -p "Type 'production' to continue: " answer
+    [ "$answer" = production ] || { echo "Aborted." >&2; exit 1; }
+    just _cap production {{quote(profile)}} deploy
+
+# Needs `aws sso login --profile <profile>` and CW_PRODUCTION_INSTANCE_ID in .env.
+# Asks for confirmation; restarts Sidekiq afterwards (see rollback-staging).
+# Roll production back to the previous release with Capistrano
+rollback-production profile="climate-watch-admin":
+    #!/usr/bin/env bash
+    set -euo pipefail
+    read -r -p "Type 'production' to roll PRODUCTION back to the previous release: " answer
+    [ "$answer" = production ] || { echo "Aborted." >&2; exit 1; }
+    just _cap production {{quote(profile)}} 'deploy:rollback sidekiq:restart'
+
+# Run a Capistrano task against a stage (staging or production) from the app container
+_cap stage profile task branch="develop":
+    #!/usr/bin/env bash
+    set -euo pipefail
+    var="CW_$(echo {{stage}} | tr '[:lower:]' '[:upper:]')_INSTANCE_ID"
+    instance=$(grep -E "^$var=" .env | cut -d= -f2- || true)
+    [ -n "$instance" ] || { echo "Set $var in .env" >&2; exit 1; }
     # Throwaway key for this run only. RSA in PEM format so net-ssh can read
     # it without the ed25519/bcrypt_pbkdf gems.
     keydir=$(mktemp -d)
@@ -114,7 +165,7 @@ _cap-staging profile task branch="develop":
       -v "$HOME/.ssh/known_hosts:/root/.ssh/known_hosts:ro" \
       -e DEPLOY_BRANCH={{quote(branch)}} \
       -e USER="$USER" \
-      app bundle exec cap staging {{task}}
+      app bundle exec cap {{stage}} {{task}}
 
 # All tests
 test: test-js test-rb

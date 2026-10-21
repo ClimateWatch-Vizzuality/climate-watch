@@ -41,3 +41,12 @@ rollback quiets Sidekiq but never stops it, so without the restart it stays
 paused (`ps` shows `stopping`). It doesn't undo database migrations, and it
 archives and deletes the release it rolled back from, so going forward again
 means a new deploy.
+
+### `just deploy-production` and `just rollback-production`
+
+The same as the staging recipes, for production, using `CW_PRODUCTION_INSTANCE_ID`
+in `.env`. Both ask you to type `production` first, and `deploy-production`
+always deploys `master`. `just snapshot-production` snapshots the instance's EBS
+volumes (code, gems, assets, config) if you want one before a risky change. The
+database is on RDS and isn't covered by that snapshot; RDS keeps its own
+automated backups.
