@@ -170,7 +170,8 @@ _cap stage profile task branch="develop":
 # Needs `aws sso login --profile <profile>` and Docker Desktop running. Runs Terraform
 # 1.0.5 (the version infrastructure/ requires) as x86_64, because the hashicorp/template
 # provider has no Apple Silicon build. There's no state locking, so only one person
-# should run Terraform at a time.
+# should run Terraform at a time. Saves the plan to infrastructure/tfplan for tf-apply;
+# the file can contain secrets, so it's gitignored.
 # Show what Terraform would change in AWS (read-only)
 tf-plan profile="climate-watch-admin":
     #!/usr/bin/env bash
@@ -184,7 +185,27 @@ tf-plan profile="climate-watch-admin":
     }
     # Always init: it's quick, and picks up modules added or restored since the last run.
     tf init -input=false -backend-config=bucket=climatewatch-tf-state > /dev/null
-    tf plan -input=false -lock=false -var-file=vars/terraform.tfvars
+    tf plan -input=false -lock=false -var-file=vars/terraform.tfvars -out=tfplan
+
+# Needs a plan saved by `just tf-plan`. Terraform refuses the saved plan if the state has
+# changed since, so it only makes the changes that plan showed.
+# Apply the plan saved by tf-plan (changes AWS)
+tf-apply profile="climate-watch-admin":
+    #!/usr/bin/env bash
+    set -euo pipefail
+    [ -f infrastructure/tfplan ] || { echo "No saved plan; run just tf-plan first" >&2; exit 1; }
+    eval "$(aws configure export-credentials --profile {{profile}} --format env)"
+    tf() {
+        docker run --rm --platform linux/amd64 -v "$PWD/infrastructure:/w" -w /w \
+          -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY -e AWS_SESSION_TOKEN \
+          -e AWS_REGION=us-east-1 -e TF_IN_AUTOMATION=1 \
+          hashicorp/terraform:1.0.5 "$@"
+    }
+    tf show tfplan
+    read -r -p "Type 'apply' to make these changes in AWS: " answer
+    [ "$answer" = apply ] || { echo "Aborted." >&2; exit 1; }
+    tf apply -input=false -lock=false tfplan
+    rm -f infrastructure/tfplan
 
 # All tests
 test: test-js test-rb

@@ -68,6 +68,7 @@ db/*.mmdb
 !db/GeoLite2-Country-Test.mmdb
 
 /infrastructure/.terraform/
+/infrastructure/tfplan
 /public/packs
 /public/packs-test
 /public/assets
