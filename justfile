@@ -167,5 +167,23 @@ _cap stage profile task branch="develop":
       -e USER="$USER" \
       app bundle exec cap {{stage}} {{task}}
 
+# Needs `aws sso login --profile <profile>` and Docker Desktop running. Runs Terraform
+# 1.0.5 (the version infrastructure/ requires) as x86_64, because the hashicorp/template
+# provider has no Apple Silicon build. There's no state locking, so only one person
+# should run Terraform at a time.
+# Show what Terraform would change in AWS (read-only)
+tf-plan profile="climate-watch-admin":
+    #!/usr/bin/env bash
+    set -euo pipefail
+    eval "$(aws configure export-credentials --profile {{profile}} --format env)"
+    tf() {
+        docker run --rm --platform linux/amd64 -v "$PWD/infrastructure:/w" -w /w \
+          -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY -e AWS_SESSION_TOKEN \
+          -e AWS_REGION=us-east-1 -e TF_IN_AUTOMATION=1 \
+          hashicorp/terraform:1.0.5 "$@"
+    }
+    [ -d infrastructure/.terraform ] || tf init -input=false -backend-config=bucket=climatewatch-tf-state
+    tf plan -input=false -lock=false -var-file=vars/terraform.tfvars
+
 # All tests
 test: test-js test-rb
