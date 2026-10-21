@@ -117,6 +117,9 @@ module "prod_load_balancer" {
   ec2_target_id = module.prod_server.ec2_instance_id
   domain        = "www.climatewatchdata.org"
   alt_domains   = ["climatewatchdata.org", "www.beta.climatewatchdata.org", "beta.climatewatchdata.org", "www.climatedata.org", "climatedata.org", ]
+  # The live default certificate (www only) was replaced outside Terraform; the module's
+  # six-domain certificate expired on 2026-07-08 and is still attached as an extra certificate.
+  default_certificate_arn = "arn:aws:acm:us-east-1:526902458254:certificate/c00f0c80-3b30-4331-90e5-106c765be9cb"
 }
 
 resource "aws_lb_listener_rule" "prod_redirect_domains_http" {
