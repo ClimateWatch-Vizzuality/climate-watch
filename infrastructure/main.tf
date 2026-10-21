@@ -161,27 +161,9 @@ resource "aws_lb_listener_rule" "prod_redirect_domains_https" {
   }
 }
 
-module "staging_server" {
-  source                    = "./modules/server"
-  project                   = var.project_name
-  environment = "staging"
-  region                    = var.aws_region
-  tags                      = local.tags
-  vpc                       = data.aws_vpc.default_vpc
-  user_data                 = data.template_file.server_setup.rendered
-  site_server_ami           = data.aws_ami.latest-ubuntu-lts.id
-  availability_zone         = "us-east-1a"
-  security_group_ids        = [aws_security_group.postgresql_access.id, aws_security_group.redis_access.id]
-  lb_security_group_id      = module.staging_load_balancer.lb_security_group_id
-  site_server_instance_type = "m6a.large"
-}
-
-module "staging_load_balancer" {
-  source        = "./modules/lb"
-  vpc_id        = data.aws_vpc.default_vpc.id
-  subnet_ids    = data.aws_subnet_ids.subnet_ids.ids
-  environment = "staging"
-  project       = var.project_name
-  ec2_target_id = module.staging_server.ec2_instance_id
-  domain        = "staging.climatewatchdata.org"
-}
+# Staging (server, load balancer, target group, certificate and security groups) is not
+# managed by Terraform for now. The server was rebuilt by hand in June 2026
+# (cw-server-staging-new, from launch template cw-stagig), so the old definitions were
+# removed. Their state entries must be removed too (terraform state rm
+# module.staging_server module.staging_load_balancer). Bring staging back by importing
+# or rebuilding it.
