@@ -182,7 +182,8 @@ tf-plan profile="climate-watch-admin":
           -e AWS_REGION=us-east-1 -e TF_IN_AUTOMATION=1 \
           hashicorp/terraform:1.0.5 "$@"
     }
-    [ -d infrastructure/.terraform ] || tf init -input=false -backend-config=bucket=climatewatch-tf-state
+    # Always init: it's quick, and picks up modules added or restored since the last run.
+    tf init -input=false -backend-config=bucket=climatewatch-tf-state > /dev/null
     tf plan -input=false -lock=false -var-file=vars/terraform.tfvars
 
 # All tests
