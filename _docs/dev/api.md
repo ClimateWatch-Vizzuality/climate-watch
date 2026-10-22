@@ -34,7 +34,7 @@ Lists all locations that are countries
 
 #### Query parameters
 
-* `topojson` - if present, the location's topojson structure will be sent with the object.
+- `topojson` - if present, the location's topojson structure will be sent with the object.
 
 ### `GET /locations/regions`
 
@@ -42,7 +42,7 @@ Lists all locations that are regions
 
 #### Query parameters
 
-* `topojson` - if present, the location's topojson structure will be sent with the object.
+- `topojson` - if present, the location's topojson structure will be sent with the object.
 
 ## World Bank Demographic data (WB Extra)
 
@@ -52,8 +52,8 @@ Retrives World Bank demographic information (population and gdp) per country, pe
 
 #### Query parameters
 
-* `startYear`
-* `endYear`
+- `startYear`
+- `endYear`
 
 #### Observations
 
@@ -65,8 +65,8 @@ Retrives World Bank demographic information (population and gdp) per country, pe
 
 #### Query parameters
 
-* `startYear` - show results from this year onwards
-* `endYear` - show results up to this year
+- `startYear` - show results from this year onwards
+- `endYear` - show results up to this year
 
 ## Historical Emissions
 
@@ -84,13 +84,13 @@ Retrieves time series data for historical emissions.
 
 #### Query parameters
 
-* `source` - emission data source id (cait, pik, wb)
-* `gas` - emission gas id
-* `sector` - emission sector id
-* `gwp` - emission gwp id
-* `location` - location iso3 code
-* `date_after` - show results from this year onwards
-* `date_before` - show results up to this year
+- `source` - emission data source id (cait, pik, wb)
+- `gas` - emission gas id
+- `sector` - emission sector id
+- `gwp` - emission gwp id
+- `location` - location iso3 code
+- `date_after` - show results from this year onwards
+- `date_before` - show results up to this year
 
 Note: all these parameters accept multiple values, separated by commas.
 
@@ -106,13 +106,13 @@ Lists all known NDC texts
 
 #### Query parameters
 
-* `query` - Free text search (lists snippets)
+- `query` - Free text search (lists snippets)
 
 The following parameters can be used to search sdg linkages' snippets of text (lists snippets in the original text).
 
-* `target` - NdcSdg target number
-* `goal` - NdcSdg goal number
-* `sector` - NdcSdg sector number
+- `target` - NdcSdg target number
+- `goal` - NdcSdg goal number
+- `sector` - NdcSdg sector number
 
 ### `GET /ndcs/:iso/text`
 
@@ -120,13 +120,13 @@ Shows NDC texts for the country given by the :iso parameter
 
 #### Query parameters
 
-* `query` - Free text search (highlights snippets in the original text)
+- `query` - Free text search (highlights snippets in the original text)
 
 The following parameters can be used to search and highlight sdg linkages' snippets of text
 
-* `target` - NdcSdg target number
-* `goal` - NdcSdg goal number
-* `sector` - NdcSdg sector number
+- `target` - NdcSdg target number
+- `goal` - NdcSdg goal number
+- `sector` - NdcSdg sector number
 
 ## NDCs (SDG linkages)
 
@@ -154,16 +154,15 @@ Lists NDC indicator information
 
 #### Query parameters
 
-* `filter` - Filter by category type (global, overview, map)
+- `filter` - Filter by category type (global, overview, map)
 
-* `category` - Filter by global category name
+- `category` - Filter by global category name
 
-* `location` - Filter by location iso code3. Accepts multiple values separated by commas.
+- `location` - Filter by location iso code3. Accepts multiple values separated by commas.
 
 #### Observations
 
-Collection is serialized as an object with embedded metadata (`categories` and ` sectors` keys). NDC data is inside the `indicators` key, where the collection is again an object with country iso codes as keys.
-
+Collection is serialized as an object with embedded metadata (`categories` and `sectors` keys). NDC data is inside the `indicators` key, where the collection is again an object with country iso codes as keys.
 
 ### `GET /ndcs/:iso/content_overview`
 
@@ -177,7 +176,7 @@ Lists adaptation indicator data
 
 #### Query parameters
 
-* `location` - Filter by location iso code3. Accepts multiple values separated by commas.
+- `location` - Filter by location iso code3. Accepts multiple values separated by commas.
 
 ## Quantifications
 
@@ -187,7 +186,7 @@ Lists quantification data, representing NDC emissions targets.
 
 #### Query parameters
 
-* `location` - Filter by location iso code3. Accepts multiple values separated by commas.
+- `location` - Filter by location iso code3. Accepts multiple values separated by commas.
 
 ## Socioeconomics
 
@@ -225,7 +224,7 @@ Shows timeline data for the given location `iso` code
 
 #### Query parameters
 
-* `limit`
+- `limit`
 
 ## My Climate Watch (Users)
 
@@ -239,7 +238,7 @@ Creates a new user in CW and links it to the Control Tower user
 
 #### Query parameters
 
-* `user[ct_id]` - The ID from Control Tower
+- `user[ct_id]` - The ID from Control Tower
 
 ## My Climate Watch (User Stories)
 
@@ -259,11 +258,11 @@ Returns a `json` with the created story if successfully created or `422` if ther
 
 #### Query Params
 
-* title (string) *MANDATORY* - The title of the story
+- title (string) _MANDATORY_ - The title of the story
 
-* body (json) - The body of the story
+- body (json) - The body of the story
 
-* public (boolean) - The privacy of the story
+- public (boolean) - The privacy of the story
 
 ### `PUT my_cw/user_stories/:id`
 
@@ -271,11 +270,11 @@ Returns a `json` with the updated story if successfully created or `422` if ther
 
 #### Query Params
 
-* user_story[title] (string) *MANDATORY* - The title of the story
+- user_story[title](string) _MANDATORY_ - The title of the story
 
-* user_story[body] (json) - The body of the story
+- user_story[body](json) - The body of the story
 
-* user_story[public] (boolean) - The privacy of the story
+- user_story[public](boolean) - The privacy of the story
 
 ### `DELETE my_cw/user_stories/:id`
 
@@ -299,11 +298,11 @@ Returns a `json` with the created visualization if successfully created or `422`
 
 #### Query Params
 
-* visualization[title] (string) *MANDATORY* - The title of the visualization
+- visualization[title](string) _MANDATORY_ - The title of the visualization
 
-* visualization[description] (text) - The description of the visualization
+- visualization[description](text) - The description of the visualization
 
-* visualization[json_body] (json) - The body of the visualization
+- visualization[json_body](json) - The body of the visualization
 
 ### `PUT my_cw/visualizations/:id`
 
@@ -311,11 +310,11 @@ Returns a `json` with the updated visualization if successfully created or `422`
 
 #### Query Params
 
-* visualization[title] (string) *MANDATORY* - The title of the visualization
+- visualization[title](string) _MANDATORY_ - The title of the visualization
 
-* visualization[description] (text) - The description of the visualization
+- visualization[description](text) - The description of the visualization
 
-* visualization[json_body] (json) - The body of the visualization
+- visualization[json_body](json) - The body of the visualization
 
 ### `DELETE my_cw/visualizations/:id`
 
@@ -326,7 +325,7 @@ Removes the visualization and returns `200` if it worked or `401` if the user do
 #### Overview page
 
 - `GET /api/v1/ndcs/sdgs_overview` will return a response with the following
-format:
+  format:
 
 ```
 [
@@ -370,14 +369,13 @@ Where:
 - `id`: is the Sustainable Development Goal id;
 - `number`: is the goal number;
 - `locations`: is an array with all the locations that have linkages to targets
-of this goal;
+  of this goal;
 - `targets`: is the list of targets available for a given SDG goal;
-
 
 #### WB (World Bank) Extra Country Data
 
-- `GET /api/v1/wb_extra/`  will return a response with the following
-format:
+- `GET /api/v1/wb_extra/` will return a response with the following
+  format:
 
 ```
 [
@@ -407,12 +405,11 @@ Where:
 - `gdp`: is the gross domestic product for the year and the iso code of the country;
 - `year`: year
 
-
-- `GET /api/v1/wb_extra/:iso` will return a response with the following
+* `GET /api/v1/wb_extra/:iso` will return a response with the following
 
 extra params:
-  startYear: min limit to the year. If its not included will get the closest min year
-  endYear: min limit to the year. If its not included will get the closest max year
+startYear: min limit to the year. If its not included will get the closest min year
+endYear: min limit to the year. If its not included will get the closest max year
 
 format:
 
@@ -436,6 +433,7 @@ format:
 ## Historical emissions
 
 ### Parameters
+
 - regions[] (ISO code 3)
 - source_ids[]
 - gas_ids[]
@@ -449,11 +447,9 @@ format:
 
 `/api/v1/data/historical_emissions/download.csv`
 
-
 File format:
 
 Country | Data source | Sector | Gas | Unit | year n | year n-1 | ...
-
 
 ### JSON API endpoint
 
@@ -512,7 +508,7 @@ Total: 31090
 Returns a Link header with meta endpoint urls for discovery (can be used with a HEAD request)
 
 ```
-Link: </api/v1/data/historical_emissions/data_sources>; rel="meta data_sources", </api/v1/data/historical_emissions/gases>; rel="meta gases", </api/v1/data/historical_emissions/sectors>; rel="meta sectors", </api/v1/locations/regions>; rel="meta locations"
+Link: </api/v1/data/historical_emissions/data_sources>; rel="meta data_sources", </api/v1/data/historical_emissions/gases>; rel="meta gases", </api/v1/data/historical_emissions/sectors>; rel="meta sectors", <https//staging.climatewatchdata.org/api/v1/locations/regions>; rel="meta locations"
 ```
 
 ### Data sources
@@ -569,7 +565,7 @@ Link: </api/v1/data/historical_emissions/data_sources>; rel="meta data_sources",
 
 ### Regions
 
-`/api/v1/locations/regions`
+`https//staging.climatewatchdata.org/api/v1/locations/regions`
 
 ```
 [
@@ -605,6 +601,7 @@ Link: </api/v1/data/historical_emissions/data_sources>; rel="meta data_sources",
 ## NDC SDG linkages
 
 ### Parameters
+
 - countries[]
 - goal_ids[]
 - target_ids[]
@@ -615,7 +612,6 @@ Link: </api/v1/data/historical_emissions/data_sources>; rel="meta data_sources",
 ### CSV download endpoint
 
 `/api/v1/data/ndc_sdg/download.csv`
-
 
 File format:
 
@@ -777,6 +773,7 @@ Link: </api/v1/data/ndc_sdg/goals>; rel="meta goals", </api/v1/data/ndc_sdg/targ
 ## NDC content
 
 ### Parameters
+
 - source_ids[]
 - countries[]
 - category_ids[]
@@ -789,11 +786,9 @@ Link: </api/v1/data/ndc_sdg/goals>; rel="meta goals", </api/v1/data/ndc_sdg/targ
 
 `/api/v1/data/ndc_content/download.csv`
 
-
 File format:
 
 Country | Global category | Overview category | Sector | Subsector | Indicator Id | Indicator name | Value
-
 
 ### JSON API endpoint
 
