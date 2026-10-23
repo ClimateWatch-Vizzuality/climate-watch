@@ -107,6 +107,7 @@ module "prod_server" {
   security_group_ids        = [aws_security_group.postgresql_access.id, aws_security_group.redis_access.id]
   lb_security_group_id      = module.prod_load_balancer.lb_security_group_id
   site_server_instance_type = "m6a.xlarge"
+  iam_instance_profile      = aws_iam_instance_profile.server.name
 }
 
 module "prod_load_balancer" {
@@ -183,6 +184,7 @@ module "staging_server" {
   security_group_ids        = [aws_security_group.postgresql_access.id, aws_security_group.redis_access.id]
   lb_security_group_id      = module.staging_load_balancer.lb_security_group_id
   site_server_instance_type = "t3.medium"
+  iam_instance_profile      = aws_iam_instance_profile.server.name
 
   # cw-server-staging-new was built by hand in June 2026 (launch template cw-stagig);
   # these match what's running.
