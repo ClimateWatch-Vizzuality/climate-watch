@@ -46,6 +46,16 @@ resource "aws_alb" "site_lb" {
   enable_http2               = true
   subnets                    = var.subnet_ids
   enable_deletion_protection = true
+
+  dynamic "access_logs" {
+    for_each = var.access_logs_bucket == null ? [] : [var.access_logs_bucket]
+
+    content {
+      bucket  = access_logs.value
+      prefix  = "${var.access_logs_prefix}/${var.environment}"
+      enabled = true
+    }
+  }
 }
 
 resource "aws_lb_listener" "site_lb_listener" {
