@@ -12,7 +12,7 @@ module "db" {
   engine            = "postgres"
   engine_version    = var.rds_engine_version
   instance_class    = var.rds_instance_class
-  allocated_storage = 20
+  allocated_storage = 100
 
   username = var.rds_user_name
   password = random_password.postgresql_superuser.result
@@ -34,10 +34,15 @@ module "db" {
   subnet_ids = var.subnet_ids
 
   # DB parameter group
-  family = "postgres13"
+  # Uses the parameter group created when the database was upgraded to Postgres 15
+  create_db_parameter_group = false
+  parameter_group_name      = "cw-db-postgres15"
 
   # DB option group
-  major_engine_version = "13"
+  major_engine_version = "15"
+
+  performance_insights_enabled          = true
+  performance_insights_retention_period = 7
 
   # Database Deletion Protection
   deletion_protection = true

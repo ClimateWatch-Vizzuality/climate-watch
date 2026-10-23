@@ -105,7 +105,7 @@ module "prod_server" {
   availability_zone         = "us-east-1a"
   security_group_ids        = [aws_security_group.postgresql_access.id, aws_security_group.redis_access.id]
   lb_security_group_id      = module.prod_load_balancer.lb_security_group_id
-  site_server_instance_type = "m6a.large"
+  site_server_instance_type = "m6a.xlarge"
 }
 
 module "prod_load_balancer" {
@@ -117,6 +117,10 @@ module "prod_load_balancer" {
   ec2_target_id = module.prod_server.ec2_instance_id
   domain        = "www.climatewatchdata.org"
   alt_domains   = ["climatewatchdata.org", "www.beta.climatewatchdata.org", "beta.climatewatchdata.org", "www.climatedata.org", "climatedata.org", ]
+  # The module's six-domain certificate expired on 2026-07-08. Production uses separate
+  # certificates created outside Terraform: www as the default, the bare domain alongside it.
+  default_certificate_arn = "arn:aws:acm:us-east-1:526902458254:certificate/c00f0c80-3b30-4331-90e5-106c765be9cb"
+  listener_certificate_arn = "arn:aws:acm:us-east-1:526902458254:certificate/b2124cd2-d22d-4149-b8bc-fb038d70ec33"
 }
 
 resource "aws_lb_listener_rule" "prod_redirect_domains_http" {
@@ -173,7 +177,16 @@ module "staging_server" {
   availability_zone         = "us-east-1a"
   security_group_ids        = [aws_security_group.postgresql_access.id, aws_security_group.redis_access.id]
   lb_security_group_id      = module.staging_load_balancer.lb_security_group_id
-  site_server_instance_type = "m6a.large"
+  site_server_instance_type = "t3.medium"
+
+  # cw-server-staging-new was built by hand in June 2026 (launch template cw-stagig);
+  # these match what's running.
+  server_name          = "cw-server-staging-new"
+  ebs_optimized        = false
+  monitoring           = false
+  root_volume_size     = 49
+  root_volume_name_tag = false
+  instance_shared_tags = false
 }
 
 module "staging_load_balancer" {
