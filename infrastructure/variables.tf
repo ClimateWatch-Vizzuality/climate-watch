@@ -57,3 +57,9 @@ variable "rds_backup_retention_period" {
   default     = 7
   description = "Time in days to keep db backups"
 }
+
+variable "alarm_emails" {
+  type        = list(string)
+  default     = []
+  description = "Email addresses subscribed to the CloudWatch alarms topic (each must confirm by email)"
+}
