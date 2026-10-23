@@ -57,3 +57,39 @@ variable "security_group_ids" {
 variable "lb_security_group_id" {
   type = string
 }
+
+# Defaults match the production server. The staging server was built by hand in June 2026,
+# so it overrides them to match what's running.
+variable "server_name" {
+  type        = string
+  default     = null
+  description = "Name tag for the instance (default: <project>-server-<environment>)"
+}
+
+variable "ebs_optimized" {
+  type    = bool
+  default = true
+}
+
+variable "monitoring" {
+  type        = bool
+  default     = true
+  description = "Detailed (1-minute) CloudWatch monitoring"
+}
+
+variable "root_volume_size" {
+  type    = number
+  default = 32
+}
+
+variable "root_volume_name_tag" {
+  type        = bool
+  default     = true
+  description = "Whether to set a Name tag on the root volume"
+}
+
+variable "instance_shared_tags" {
+  type        = bool
+  default     = true
+  description = "Whether to add var.tags to the instance (security groups and the EIP always get them)"
+}
