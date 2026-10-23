@@ -1,16 +1,59 @@
 #
-# CloudWatch alarms for production, notifying an SNS topic
+# CloudWatch alarms for production, posted to Slack through an SNS topic
 #
 resource "aws_sns_topic" "alarms" {
   name = "${var.project_name}-alarms"
   tags = local.tags
 }
 
-resource "aws_sns_topic_subscription" "alarm_emails" {
-  for_each  = toset(var.alarm_emails)
-  topic_arn = aws_sns_topic.alarms.arn
-  protocol  = "email"
-  endpoint  = each.value
+# Role the Slack integration (Amazon Q Developer in chat applications, formerly
+# AWS Chatbot) uses to show alarm graphs
+data "aws_iam_policy_document" "chatbot_assume_role" {
+  statement {
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["chatbot.amazonaws.com"]
+    }
+  }
+}
+
+resource "aws_iam_role" "chatbot" {
+  name               = "${var.project_name}-chatbot"
+  assume_role_policy = data.aws_iam_policy_document.chatbot_assume_role.json
+  tags               = local.tags
+}
+
+resource "aws_iam_role_policy_attachment" "chatbot" {
+  role       = aws_iam_role.chatbot.name
+  policy_arn = "arn:aws:iam::aws:policy/CloudWatchReadOnlyAccess"
+}
+
+# The Slack workspace was connected by hand in the AWS console (a one-time OAuth step).
+# AWS provider 3.x has no resource for the channel, so it's a CloudFormation stack.
+resource "aws_cloudformation_stack" "alarms_slack_channel" {
+  count = var.slack_channel_id == null ? 0 : 1
+
+  name = "${var.project_name}-alarms-slack"
+  template_body = jsonencode({
+    Resources = {
+      SlackChannel = {
+        Type = "AWS::Chatbot::SlackChannelConfiguration"
+        Properties = {
+          ConfigurationName = "${var.project_name}-alarms"
+          SlackWorkspaceId  = var.slack_workspace_id
+          SlackChannelId    = var.slack_channel_id
+          SnsTopicArns      = [aws_sns_topic.alarms.arn]
+          IamRoleArn        = aws_iam_role.chatbot.arn
+          # Caps what anyone in the channel can do through the app: read-only CloudWatch
+          GuardrailPolicies = ["arn:aws:iam::aws:policy/CloudWatchReadOnlyAccess"]
+          LoggingLevel      = "ERROR"
+        }
+      }
+    }
+  })
+  tags = local.tags
 }
 
 locals {

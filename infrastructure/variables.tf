@@ -58,8 +58,14 @@ variable "rds_backup_retention_period" {
   description = "Time in days to keep db backups"
 }
 
-variable "alarm_emails" {
-  type        = list(string)
-  default     = []
-  description = "Email addresses subscribed to the CloudWatch alarms topic (each must confirm by email)"
+variable "slack_workspace_id" {
+  type        = string
+  default     = null
+  description = "Slack workspace (team) ID connected to the AWS account for alarm notifications"
+}
+
+variable "slack_channel_id" {
+  type        = string
+  default     = null
+  description = "Slack channel ID the alarms are posted to; no Slack notifications when null"
 }
