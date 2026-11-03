@@ -6,10 +6,6 @@ export default [
     activeId
   },
   {
-    path: '/ndcs-explore?category=industry_tracker',
-    label: 'Industry'
-  },
-  {
     link: 'https://resourcewatch.org/dashboards/energy?tab=country',
     label: 'Power',
     target: '_blank',
