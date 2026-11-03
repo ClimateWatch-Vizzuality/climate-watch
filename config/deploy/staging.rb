@@ -1,4 +1,6 @@
-server '18.215.21.86', user: 'ubuntu', roles: %w{web app db}, primary: true
+host = ENV['CW_STAGING_HOST'].to_s.strip
+abort 'Set CW_STAGING_HOST in .env' if host.empty?
+server host, user: 'ubuntu', roles: %w{web app db}, primary: true
 
 set :ssh_options, forward_agent: true
 

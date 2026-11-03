@@ -42,7 +42,7 @@ module.exports = merge(sharedConfig, {
     compress: true,
     port: settings.dev_server.port,
     https: settings.dev_server.https,
-    host: settings.dev_server.host,
+    host: process.env.WEBPACKER_DEV_SERVER_HOST || settings.dev_server.host,
     static: {
       directory: output.path,
       publicPath: output.publicPath,
