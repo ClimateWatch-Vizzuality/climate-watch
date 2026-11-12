@@ -270,6 +270,7 @@ export const getIndicatorsParsed = createSelector(
           return {
             label: i.name,
             value: i.slug,
+            order: i.order,
             categoryIds: i.category_ids,
             locations: i.locations,
             legendBuckets: i.labels,
@@ -278,7 +279,8 @@ export const getIndicatorsParsed = createSelector(
         }).filter((i) => i !== null),
         'value'
       ),
-      'label'
+      // Metadata sheet order, falling back to the label for ties
+      ['order', 'label']
     );
 
     parentIndicatorNames = uniq(parentIndicatorNames);
@@ -308,9 +310,27 @@ export const getSelectedCategory = createSelector(
   }
 );
 
+const ALPHABETICAL_INDICATOR_CATEGORIES = [
+  'sectoral_mitigation_measures',
+  'sectoral_adaptation_measures'
+];
+
 export const getCategoryIndicators = createSelector(
   [getIndicatorsParsed, getSelectedCategory],
-  (indicatorsParsed, selectedCategory) => categoryIndicatorsFunction(indicatorsParsed, selectedCategory)
+  (indicatorsParsed, selectedCategory) => {
+    const categoryIndicators = categoryIndicatorsFunction(
+      indicatorsParsed,
+      selectedCategory
+    );
+    // Sectoral measures indicators are generated per sector, not from the metadata sheet
+    if (
+      categoryIndicators &&
+      ALPHABETICAL_INDICATOR_CATEGORIES.includes(selectedCategory.value)
+    ) {
+      return sortBy(categoryIndicators, 'label');
+    }
+    return categoryIndicators;
+  }
 );
 
 export const getSelectedIndicator = createSelector(
