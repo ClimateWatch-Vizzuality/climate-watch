@@ -6,7 +6,7 @@ export default [
     activeId
   },
   {
-    path: '/ndcs-explore?category=industry_tracker',
+    path: '/ndcs-explore?category=industry_ndc_tracker',
     label: 'Industry'
   },
   {
