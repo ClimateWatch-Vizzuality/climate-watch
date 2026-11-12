@@ -7,6 +7,7 @@ module Api
         attribute :name
         attribute :slug
         attribute :grouping_indicator
+        attribute :order
         attribute :description, if: -> { object.description }
         attribute :category_ids, if: -> { object.category_ids.length.positive? }
         attribute :labels
