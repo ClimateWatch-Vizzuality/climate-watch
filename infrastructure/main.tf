@@ -3,7 +3,8 @@ terraform {
   backend "s3" {
     region = "us-east-1"
     key    = "core.tfstate"
-    //    dynamodb_table = "aws-locks"
+    # Created by the bootstrap module
+    dynamodb_table = "aws-locks"
     encrypt = true
   }
 }
