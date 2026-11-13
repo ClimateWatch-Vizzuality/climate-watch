@@ -100,9 +100,9 @@ resource "aws_security_group_rule" "world_egress" {
 resource "aws_instance" "server" {
   ami               = var.site_server_ami
   availability_zone = var.availability_zone
-  ebs_optimized     = true
+  ebs_optimized     = var.ebs_optimized
   instance_type     = var.site_server_instance_type
-  monitoring        = true
+  monitoring        = var.monitoring
   vpc_security_group_ids = concat([
     aws_security_group.site_server_ssh_security_group.id,
     aws_security_group.site_server_http_security_group.id,
@@ -111,26 +111,33 @@ resource "aws_instance" "server" {
   user_data                   = var.user_data
 
   lifecycle {
+    # Set at launch; changing them would mean rebuilding the server.
     ignore_changes = [
       ami,
-    user_data]
+      user_data,
+      associate_public_ip_address,
+      launch_template,
+      security_groups,
+      credit_specification,
+      hibernation,
+    ]
   }
 
   tags = merge(
     {
-      Name = "${var.project}-server-${var.environment}"
+      Name = coalesce(var.server_name, "${var.project}-server-${var.environment}")
     },
-    var.tags
+    var.instance_shared_tags ? var.tags : {}
   )
 }
 
 resource "aws_ebs_volume" "root_volume" {
   availability_zone = var.availability_zone
-  size              = 32
+  size              = var.root_volume_size
 
-  tags = {
+  tags = var.root_volume_name_tag ? {
     Name = "${var.project}-server-${var.environment}"
-  }
+  } : {}
 }
 
 resource "aws_volume_attachment" "root_volume_attachment" {

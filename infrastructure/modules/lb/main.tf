@@ -69,7 +69,7 @@ resource "aws_lb_listener" "site_lb_listener_https" {
   load_balancer_arn = aws_alb.site_lb.arn
   port              = "443"
   protocol          = "HTTPS"
-  certificate_arn   = aws_acm_certificate.domain_cert.arn
+  certificate_arn   = coalesce(var.default_certificate_arn, aws_acm_certificate.domain_cert.arn)
 
   default_action {
     type             = "forward"
@@ -92,7 +92,7 @@ resource "aws_lb_target_group_attachment" "site_lb_target_group_attachment" {
 
 resource "aws_alb_listener_certificate" "alb_listener_certificate" {
   listener_arn = aws_lb_listener.site_lb_listener_https.arn
-  certificate_arn = aws_acm_certificate_validation.domain_cert_validation.certificate_arn
+  certificate_arn = coalesce(var.listener_certificate_arn, aws_acm_certificate.domain_cert.arn)
 }
 
 resource "aws_acm_certificate" "domain_cert" {
@@ -105,6 +105,3 @@ resource "aws_acm_certificate" "domain_cert" {
   }
 }
 
-resource "aws_acm_certificate_validation" "domain_cert_validation" {
-  certificate_arn = aws_acm_certificate.domain_cert.arn
-}

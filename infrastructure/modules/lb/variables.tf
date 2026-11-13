@@ -13,6 +13,18 @@ variable "domain" {
   description = "The domain to attach to the certificate"
 }
 
+variable "default_certificate_arn" {
+  type        = string
+  default     = null
+  description = "ACM certificate to use as the HTTPS listener's default, instead of the one this module creates"
+}
+
+variable "listener_certificate_arn" {
+  type        = string
+  default     = null
+  description = "ACM certificate to add to the HTTPS listener alongside the default, instead of the one this module creates"
+}
+
 variable "alt_domains" {
   type        = list(string)
   description = "Alternative domains to attach to the certificate"

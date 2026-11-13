@@ -16,72 +16,56 @@
             "type": "integer",
             "title": "The Id Schema ",
             "default": 0,
-            "examples": [
-              66310
-            ]
+            "examples": [66310]
           },
           "region": {
             "$id": "/properties/data/items/properties/region",
             "type": "string",
             "title": "The Region Schema ",
             "default": "",
-            "examples": [
-              "Aruba"
-            ]
+            "examples": ["Aruba"]
           },
           "iso_code3": {
             "$id": "/properties/data/items/properties/iso_code3",
             "type": "string",
             "title": "The Iso_code3 Schema ",
             "default": "",
-            "examples": [
-              "ABW"
-            ]
+            "examples": ["ABW"]
           },
           "data_source": {
             "$id": "/properties/data/items/properties/data_source",
             "type": "string",
             "title": "The Data_source Schema ",
             "default": "",
-            "examples": [
-              "PIK"
-            ]
+            "examples": ["PIK"]
           },
           "gwp": {
             "$id": "/properties/data/items/properties/gwp",
             "type": "string",
             "title": "The Gwp Schema ",
             "default": "",
-            "examples": [
-              "AR2"
-            ]
+            "examples": ["AR2"]
           },
           "sector": {
             "$id": "/properties/data/items/properties/sector",
             "type": "string",
             "title": "The Sector Schema ",
             "default": "",
-            "examples": [
-              "Total including LULUCF"
-            ]
+            "examples": ["Total including LUCF"]
           },
           "gas": {
             "$id": "/properties/data/items/properties/gas",
             "type": "string",
             "title": "The Gas Schema ",
             "default": "",
-            "examples": [
-              "CH4"
-            ]
+            "examples": ["CH4"]
           },
           "unit": {
             "$id": "/properties/data/items/properties/unit",
             "type": "string",
             "title": "The Unit Schema ",
             "default": "",
-            "examples": [
-              "C02e"
-            ]
+            "examples": ["C02e"]
           },
           "emissions": {
             "$id": "/properties/data/items/properties/emissions",
@@ -95,18 +79,14 @@
                   "type": "integer",
                   "title": "The Year Schema ",
                   "default": 0,
-                  "examples": [
-                    2011
-                  ]
+                  "examples": [2011]
                 },
                 "value": {
                   "$id": "/properties/data/items/properties/emissions/items/properties/value",
                   "type": "number",
                   "title": "The Value Schema ",
                   "default": 0,
-                  "examples": [
-                    0.02246999926865101
-                  ]
+                  "examples": [0.02246999926865101]
                 }
               }
             }
@@ -126,9 +106,7 @@
             "type": "integer",
             "title": "The 0th Schema ",
             "default": 0,
-            "examples": [
-              2015
-            ]
+            "examples": [2015]
           }
         },
         "header_years": {
@@ -139,9 +117,7 @@
             "type": "integer",
             "title": "The 0th Schema ",
             "default": 0,
-            "examples": [
-              2015
-            ]
+            "examples": [2015]
           }
         },
         "sorting": {
@@ -153,18 +129,14 @@
               "type": "string",
               "title": "The Sort_col Schema ",
               "default": "",
-              "examples": [
-                "iso_code3"
-              ]
+              "examples": ["iso_code3"]
             },
             "sort_dir": {
               "$id": "/properties/meta/properties/sorting/properties/sort_dir",
               "type": "string",
               "title": "The Sort_dir Schema ",
               "default": "",
-              "examples": [
-                "ASC"
-              ]
+              "examples": ["ASC"]
             }
           }
         },
