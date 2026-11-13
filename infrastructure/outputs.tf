@@ -35,3 +35,13 @@ output "redis_host" {
 output "redis_port" {
   value = module.redis.port
 }
+
+# Point the www.climatewatchdata.org DNS record here to send production traffic through CloudFront
+output "prod_cloudfront_domain" {
+  value = try(aws_cloudfront_distribution.environment["production"].domain_name, null)
+}
+
+# Point staging DNS here only after the app fix and private CloudFront checks pass.
+output "staging_cloudfront_domain" {
+  value = aws_cloudfront_distribution.environment["staging"].domain_name
+}
