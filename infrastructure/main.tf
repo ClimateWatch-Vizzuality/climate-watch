@@ -3,7 +3,8 @@ terraform {
   backend "s3" {
     region = "us-east-1"
     key    = "core.tfstate"
-    //    dynamodb_table = "aws-locks"
+    # Created by the bootstrap module
+    dynamodb_table = "aws-locks"
     encrypt = true
   }
 }
@@ -106,6 +107,7 @@ module "prod_server" {
   security_group_ids        = [aws_security_group.postgresql_access.id, aws_security_group.redis_access.id]
   lb_security_group_id      = module.prod_load_balancer.lb_security_group_id
   site_server_instance_type = "m6a.xlarge"
+  iam_instance_profile      = aws_iam_instance_profile.server.name
 }
 
 module "prod_load_balancer" {
@@ -121,6 +123,10 @@ module "prod_load_balancer" {
   # certificates created outside Terraform: www as the default, the bare domain alongside it.
   default_certificate_arn = "arn:aws:acm:us-east-1:526902458254:certificate/c00f0c80-3b30-4331-90e5-106c765be9cb"
   listener_certificate_arn = "arn:aws:acm:us-east-1:526902458254:certificate/b2124cd2-d22d-4149-b8bc-fb038d70ec33"
+  access_logs_bucket       = aws_s3_bucket.climatewatch_aws.bucket
+
+  # The load balancer checks it can write to the bucket when logging is turned on
+  depends_on = [aws_s3_bucket_policy.climatewatch_aws]
 }
 
 resource "aws_lb_listener_rule" "prod_redirect_domains_http" {
@@ -178,6 +184,7 @@ module "staging_server" {
   security_group_ids        = [aws_security_group.postgresql_access.id, aws_security_group.redis_access.id]
   lb_security_group_id      = module.staging_load_balancer.lb_security_group_id
   site_server_instance_type = "t3.medium"
+  iam_instance_profile      = aws_iam_instance_profile.server.name
 
   # cw-server-staging-new was built by hand in June 2026 (launch template cw-stagig);
   # these match what's running.
@@ -197,4 +204,7 @@ module "staging_load_balancer" {
   project       = var.project_name
   ec2_target_id = module.staging_server.ec2_instance_id
   domain        = "staging.climatewatchdata.org"
+  access_logs_bucket = aws_s3_bucket.climatewatch_aws.bucket
+
+  depends_on = [aws_s3_bucket_policy.climatewatch_aws]
 }

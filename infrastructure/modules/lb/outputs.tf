@@ -17,3 +17,11 @@ output "lb_dns" {
 output "certificate_validation_data" {
   value = aws_acm_certificate.domain_cert.domain_validation_options
 }
+
+output "lb_arn_suffix" {
+  value = aws_alb.site_lb.arn_suffix
+}
+
+output "target_group_arn_suffix" {
+  value = aws_lb_target_group.site_lb_tg.arn_suffix
+}

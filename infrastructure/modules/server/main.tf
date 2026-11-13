@@ -109,6 +109,7 @@ resource "aws_instance" "server" {
     aws_security_group.site_server_world_egress_security_group.id], var.security_group_ids)
   associate_public_ip_address = true
   user_data                   = var.user_data
+  iam_instance_profile        = var.iam_instance_profile
 
   lifecycle {
     # Set at launch; changing them would mean rebuilding the server.
