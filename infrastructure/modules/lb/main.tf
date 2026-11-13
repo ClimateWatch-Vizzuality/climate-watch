@@ -82,6 +82,18 @@ resource "aws_lb_target_group" "site_lb_tg" {
   port     = 80
   protocol = "HTTP"
   vpc_id   = var.vpc_id
+
+  health_check {
+    path                = "/"
+    port                = "traffic-port"
+    protocol            = "HTTP"
+    interval            = 30
+    timeout             = 5
+    healthy_threshold   = 5
+    unhealthy_threshold = 2
+    # The app answers / with a 301 redirect, so a working server returns a 3xx.
+    matcher = "200-399"
+  }
 }
 
 resource "aws_lb_target_group_attachment" "site_lb_target_group_attachment" {
