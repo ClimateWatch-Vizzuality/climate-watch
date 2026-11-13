@@ -51,3 +51,15 @@ variable "tags" {
   type        = map(string)
   description = "A mapping of keys and values to apply as tags to all resources that support them."
 }
+
+variable "access_logs_bucket" {
+  type        = string
+  default     = null
+  description = "S3 bucket for the load balancer's access logs; off when null"
+}
+
+variable "access_logs_prefix" {
+  type        = string
+  default     = "alb-logs"
+  description = "Folder in the bucket for access logs; each environment logs under <prefix>/<environment>"
+}
