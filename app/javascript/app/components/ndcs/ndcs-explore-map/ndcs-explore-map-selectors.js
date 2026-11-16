@@ -31,7 +31,7 @@ import {
   INDICATOR_SLUGS,
   TOP_EMITTERS_OPTION
 } from 'data/constants';
-import { getSubmitted2020Isos } from 'utils/indicatorCalculations';
+import { getSubmitted2025Isos } from 'utils/indicatorCalculations';
 import {
   selectedLocationsFunction,
   selectedCountriesISOFunction,
@@ -527,9 +527,9 @@ export const getSummaryCardData = createSelector(
   ) => {
     if (!indicators) return null;
     const submittedIndicator = indicators.find(
-      ind => ind.slug === INDICATOR_SLUGS.enhancements
+      ind => ind.slug === INDICATOR_SLUGS.submitted2025
     );
-    const submittedIsos = getSubmitted2020Isos(submittedIndicator);
+    const submittedIsos = getSubmitted2025Isos(submittedIndicator);
     if (!submittedIsos || !submittedIsos.length) return null;
     const submittedCountriesAndParties = getCountriesAndParties(submittedIsos);
     return [
@@ -538,7 +538,7 @@ export const getSummaryCardData = createSelector(
           ? submittedCountriesAndParties.partiesNumber
           : selectedCountriesISO.length,
         description: isDefaultLocationSelected
-          ? ` Parties (representing ${submittedCountriesAndParties.countriesNumber} countries) have submitted their new or updated NDCs. `
+          ? ` Parties (representing ${submittedCountriesAndParties.countriesNumber} countries) have submitted their NDC 3.0s. `
           : ` Parties (representing ${arrayToSentence(locationNames)})`
       }
     ];
