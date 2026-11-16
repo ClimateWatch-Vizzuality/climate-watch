@@ -152,13 +152,15 @@ _cap stage profile task branch="develop":
     ssh-keygen -q -t rsa -b 4096 -m PEM -N '' -C climate-watch-deploy -f "$keydir/id_rsa"
     # EC2 Instance Connect only accepts a pushed key for 60 seconds, and
     # Capistrano reconnects during a run, so keep pushing it until we're done.
+    # A push still in flight when cleanup deletes the key fails harmlessly, so
+    # the background pushes are silent; the first push still reports errors.
     push_key() {
         aws ec2-instance-connect send-ssh-public-key --profile {{profile}} --region us-east-1 \
           --instance-id "$instance" --instance-os-user ubuntu \
           --ssh-public-key "file://$keydir/id_rsa.pub" >/dev/null
     }
     push_key
-    ( while sleep 45; do push_key || true; done ) &
+    ( while sleep 45; do push_key 2>/dev/null || true; done ) &
     refresher=$!
     docker compose run --rm --no-deps \
       -v "$keydir/id_rsa:/root/.ssh/id_rsa:ro" \
