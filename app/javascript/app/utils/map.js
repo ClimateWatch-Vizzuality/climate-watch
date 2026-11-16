@@ -1,4 +1,8 @@
-import { PATH_LAYERS, MIN_ZOOM_SHOW_ISLANDS } from 'app/data/constants';
+import {
+  PATH_LAYERS,
+  MIN_ZOOM_SHOW_ISLANDS,
+  NOT_APPLICABLE_COLOR
+} from 'app/data/constants';
 import {
   CHART_NAMED_COLORS,
   CHART_NAMED_GRAY_COLORS
@@ -9,6 +13,8 @@ const buckets = colorArray.map((_, i) => colorArray.slice(0, i + 1));
 
 const GREY_INDICATOR_SLUGS = ['no_info_2020'];
 export function getColorByIndex(data, index, colors = buckets) {
+  // createLegendBuckets gives 'Not Applicable' an index of 0
+  if (index === 0) return NOT_APPLICABLE_COLOR;
   const length = Object.keys(data).length;
   const indexData = data && Object.values(data).find(d => d.index === index);
   if (
