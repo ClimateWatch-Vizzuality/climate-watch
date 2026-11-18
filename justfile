@@ -15,7 +15,7 @@ build:
 
 # Start the app, Sidekiq, Postgres and Redis
 up:
-    docker compose up --build
+    docker compose up
 
 # Stop everything
 down:
