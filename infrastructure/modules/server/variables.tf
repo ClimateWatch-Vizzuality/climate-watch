@@ -93,3 +93,9 @@ variable "instance_shared_tags" {
   default     = true
   description = "Whether to add var.tags to the instance (security groups and the EIP always get them)"
 }
+
+variable "iam_instance_profile" {
+  type        = string
+  default     = null
+  description = "IAM instance profile to attach to the server"
+}

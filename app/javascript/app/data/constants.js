@@ -7,6 +7,8 @@ import {
 } from 'app/styles/constants';
 
 export const WITHDRAWN_NDC_COLOR = CHART_NAMED_GRAY_COLORS.grayColor4;
+// Legend buckets with index 0 (Not Applicable, or No data on agriculture maps)
+export const NOT_APPLICABLE_COLOR = CHART_NAMED_GRAY_COLORS.grayColor2;
 
 const { GFW_API } = process.env;
 const { CW_API } = process.env;

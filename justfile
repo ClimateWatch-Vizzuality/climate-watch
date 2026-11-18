@@ -130,6 +130,54 @@ rollback-production profile="climate-watch-admin":
     [ "$answer" = production ] || { echo "Aborted." >&2; exit 1; }
     just _cap production {{quote(profile)}} 'deploy:rollback sidekiq:restart'
 
+# Needs `aws sso login --profile <profile>` and CW_<STAGE>_INSTANCE_ID and CW_<STAGE>_HOST in .env.
+# Pushes a throwaway key with EC2 Instance Connect (valid for 60 seconds, only
+# needed to log in). The long timeout gives a busy server time to answer.
+# Anything after the profile runs as a command instead of opening a shell.
+# Open an SSH session on a server (staging or production)
+ssh stage="staging" profile="climate-watch-admin" *command:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    case {{quote(stage)}} in staging|production) ;; *) echo "Stage must be staging or production" >&2; exit 1 ;; esac
+    prefix="CW_$(echo {{quote(stage)}} | tr '[:lower:]' '[:upper:]')"
+    instance=$(grep -E "^${prefix}_INSTANCE_ID=" .env | cut -d= -f2- || true)
+    host=$(grep -E "^${prefix}_HOST=" .env | cut -d= -f2- || true)
+    [ -n "$instance" ] || { echo "Set ${prefix}_INSTANCE_ID in .env" >&2; exit 1; }
+    [ -n "$host" ] || { echo "Set ${prefix}_HOST in .env" >&2; exit 1; }
+    keydir=$(mktemp -d)
+    trap 'rm -rf "$keydir"' EXIT
+    ssh-keygen -q -t ed25519 -N '' -C climate-watch-ssh -f "$keydir/id"
+    aws ec2-instance-connect send-ssh-public-key --profile {{profile}} --region us-east-1 \
+      --instance-id "$instance" --instance-os-user ubuntu \
+      --ssh-public-key "file://$keydir/id.pub" >/dev/null
+    cmd={{quote(command)}}
+    ssh -i "$keydir/id" -o IdentitiesOnly=yes -o ConnectTimeout=120 -o ServerAliveInterval=30 "ubuntu@$host" ${cmd:+"$cmd"}
+
+# Needs the same as `just ssh`.
+# Show the commit deployed on staging and the last few deploys
+rev-staging profile="climate-watch-admin":
+    @just _rev staging {{quote(profile)}}
+
+# Needs the same as `just ssh`.
+# Show the commit deployed on production and the last few deploys
+rev-production profile="climate-watch-admin":
+    @just _rev production {{quote(profile)}}
+
+# Print a server's current/REVISION, named from git (fetching origin if the
+# commit isn't local yet), and the end of Capistrano's revisions.log
+_rev stage profile:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    out=$(just ssh {{quote(stage)}} {{quote(profile)}} 'cat /var/www/climatewatch/current/REVISION && tail -3 /var/www/climatewatch/revisions.log')
+    sha=$(head -1 <<<"$out")
+    git cat-file -e "$sha^{commit}" 2>/dev/null || git fetch -q origin || true
+    # 7-character hashes, as GitHub shows them
+    desc=$(git log -1 --format='%s (%cr)' "$sha" 2>/dev/null || echo "(not on origin)")
+    echo "{{stage}} is on ${sha:0:7} $desc"
+    echo
+    echo "Recent deploys (revisions.log):"
+    tail -n +2 <<<"$out" | sed -E 's/(^|[^0-9a-f])([0-9a-f]{7})[0-9a-f]{33}/\1\2/g'
+
 # Run a Capistrano task against a stage (staging or production) from the app container
 _cap stage profile task branch="develop":
     #!/usr/bin/env bash
@@ -152,13 +200,15 @@ _cap stage profile task branch="develop":
     ssh-keygen -q -t rsa -b 4096 -m PEM -N '' -C climate-watch-deploy -f "$keydir/id_rsa"
     # EC2 Instance Connect only accepts a pushed key for 60 seconds, and
     # Capistrano reconnects during a run, so keep pushing it until we're done.
+    # A push still in flight when cleanup deletes the key fails harmlessly, so
+    # the background pushes are silent; the first push still reports errors.
     push_key() {
         aws ec2-instance-connect send-ssh-public-key --profile {{profile}} --region us-east-1 \
           --instance-id "$instance" --instance-os-user ubuntu \
           --ssh-public-key "file://$keydir/id_rsa.pub" >/dev/null
     }
     push_key
-    ( while sleep 45; do push_key || true; done ) &
+    ( while sleep 45; do push_key 2>/dev/null || true; done ) &
     refresher=$!
     docker compose run --rm --no-deps \
       -v "$keydir/id_rsa:/root/.ssh/id_rsa:ro" \
@@ -169,9 +219,9 @@ _cap stage profile task branch="develop":
 
 # Needs `aws sso login --profile <profile>` and Docker Desktop running. Runs Terraform
 # 1.0.5 (the version infrastructure/ requires) as x86_64, because the hashicorp/template
-# provider has no Apple Silicon build. There's no state locking, so only one person
-# should run Terraform at a time. Saves the plan to infrastructure/tfplan for tf-apply;
-# the file can contain secrets, so it's gitignored.
+# provider has no Apple Silicon build. The state is locked in DynamoDB (aws-locks) while
+# Terraform runs. Saves the plan to infrastructure/tfplan for tf-apply; the file can
+# contain secrets, so it's gitignored.
 # Show what Terraform would change in AWS (read-only)
 tf-plan profile="climate-watch-admin":
     #!/usr/bin/env bash
@@ -183,9 +233,10 @@ tf-plan profile="climate-watch-admin":
           -e AWS_REGION=us-east-1 -e TF_IN_AUTOMATION=1 \
           hashicorp/terraform:1.0.5 "$@"
     }
-    # Always init: it's quick, and picks up modules added or restored since the last run.
-    tf init -input=false -backend-config=bucket=climatewatch-tf-state > /dev/null
-    tf plan -input=false -lock=false -var-file=vars/terraform.tfvars -out=tfplan
+    # Always init: it's quick, and picks up modules and backend settings changed since the
+    # last run. -reconfigure because the state stays where it is.
+    tf init -input=false -reconfigure -backend-config=bucket=climatewatch-tf-state > /dev/null
+    tf plan -input=false -var-file=vars/terraform.tfvars -out=tfplan
 
 # Needs a plan saved by `just tf-plan`. Terraform refuses the saved plan if the state has
 # changed since, so it only makes the changes that plan showed.
@@ -204,7 +255,7 @@ tf-apply profile="climate-watch-admin":
     tf show tfplan
     read -r -p "Type 'apply' to make these changes in AWS: " answer
     [ "$answer" = apply ] || { echo "Aborted." >&2; exit 1; }
-    tf apply -input=false -lock=false tfplan
+    tf apply -input=false tfplan
     rm -f infrastructure/tfplan
 
 # All tests
