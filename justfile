@@ -130,6 +130,27 @@ rollback-production profile="climate-watch-admin":
     [ "$answer" = production ] || { echo "Aborted." >&2; exit 1; }
     just _cap production {{quote(profile)}} 'deploy:rollback sidekiq:restart'
 
+# Needs `aws sso login --profile <profile>` and CW_<STAGE>_INSTANCE_ID and CW_<STAGE>_HOST in .env.
+# Pushes a throwaway key with EC2 Instance Connect (valid for 60 seconds, only
+# needed to log in). The long timeout gives a busy server time to answer.
+# Open an SSH session on a server (staging or production)
+ssh stage="staging" profile="climate-watch-admin":
+    #!/usr/bin/env bash
+    set -euo pipefail
+    case {{quote(stage)}} in staging|production) ;; *) echo "Stage must be staging or production" >&2; exit 1 ;; esac
+    prefix="CW_$(echo {{quote(stage)}} | tr '[:lower:]' '[:upper:]')"
+    instance=$(grep -E "^${prefix}_INSTANCE_ID=" .env | cut -d= -f2- || true)
+    host=$(grep -E "^${prefix}_HOST=" .env | cut -d= -f2- || true)
+    [ -n "$instance" ] || { echo "Set ${prefix}_INSTANCE_ID in .env" >&2; exit 1; }
+    [ -n "$host" ] || { echo "Set ${prefix}_HOST in .env" >&2; exit 1; }
+    keydir=$(mktemp -d)
+    trap 'rm -rf "$keydir"' EXIT
+    ssh-keygen -q -t ed25519 -N '' -C climate-watch-ssh -f "$keydir/id"
+    aws ec2-instance-connect send-ssh-public-key --profile {{profile}} --region us-east-1 \
+      --instance-id "$instance" --instance-os-user ubuntu \
+      --ssh-public-key "file://$keydir/id.pub" >/dev/null
+    ssh -i "$keydir/id" -o IdentitiesOnly=yes -o ConnectTimeout=120 -o ServerAliveInterval=30 "ubuntu@$host"
+
 # Run a Capistrano task against a stage (staging or production) from the app container
 _cap stage profile task branch="develop":
     #!/usr/bin/env bash
