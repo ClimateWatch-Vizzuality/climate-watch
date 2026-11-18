@@ -130,6 +130,54 @@ rollback-production profile="climate-watch-admin":
     [ "$answer" = production ] || { echo "Aborted." >&2; exit 1; }
     just _cap production {{quote(profile)}} 'deploy:rollback sidekiq:restart'
 
+# Needs `aws sso login --profile <profile>` and CW_<STAGE>_INSTANCE_ID and CW_<STAGE>_HOST in .env.
+# Pushes a throwaway key with EC2 Instance Connect (valid for 60 seconds, only
+# needed to log in). The long timeout gives a busy server time to answer.
+# Anything after the profile runs as a command instead of opening a shell.
+# Open an SSH session on a server (staging or production)
+ssh stage="staging" profile="climate-watch-admin" *command:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    case {{quote(stage)}} in staging|production) ;; *) echo "Stage must be staging or production" >&2; exit 1 ;; esac
+    prefix="CW_$(echo {{quote(stage)}} | tr '[:lower:]' '[:upper:]')"
+    instance=$(grep -E "^${prefix}_INSTANCE_ID=" .env | cut -d= -f2- || true)
+    host=$(grep -E "^${prefix}_HOST=" .env | cut -d= -f2- || true)
+    [ -n "$instance" ] || { echo "Set ${prefix}_INSTANCE_ID in .env" >&2; exit 1; }
+    [ -n "$host" ] || { echo "Set ${prefix}_HOST in .env" >&2; exit 1; }
+    keydir=$(mktemp -d)
+    trap 'rm -rf "$keydir"' EXIT
+    ssh-keygen -q -t ed25519 -N '' -C climate-watch-ssh -f "$keydir/id"
+    aws ec2-instance-connect send-ssh-public-key --profile {{profile}} --region us-east-1 \
+      --instance-id "$instance" --instance-os-user ubuntu \
+      --ssh-public-key "file://$keydir/id.pub" >/dev/null
+    cmd={{quote(command)}}
+    ssh -i "$keydir/id" -o IdentitiesOnly=yes -o ConnectTimeout=120 -o ServerAliveInterval=30 "ubuntu@$host" ${cmd:+"$cmd"}
+
+# Needs the same as `just ssh`.
+# Show the commit deployed on staging and the last few deploys
+rev-staging profile="climate-watch-admin":
+    @just _rev staging {{quote(profile)}}
+
+# Needs the same as `just ssh`.
+# Show the commit deployed on production and the last few deploys
+rev-production profile="climate-watch-admin":
+    @just _rev production {{quote(profile)}}
+
+# Print a server's current/REVISION, named from git (fetching origin if the
+# commit isn't local yet), and the end of Capistrano's revisions.log
+_rev stage profile:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    out=$(just ssh {{quote(stage)}} {{quote(profile)}} 'cat /var/www/climatewatch/current/REVISION && tail -3 /var/www/climatewatch/revisions.log')
+    sha=$(head -1 <<<"$out")
+    git cat-file -e "$sha^{commit}" 2>/dev/null || git fetch -q origin || true
+    # 7-character hashes, as GitHub shows them
+    desc=$(git log -1 --format='%s (%cr)' "$sha" 2>/dev/null || echo "(not on origin)")
+    echo "{{stage}} is on ${sha:0:7} $desc"
+    echo
+    echo "Recent deploys (revisions.log):"
+    tail -n +2 <<<"$out" | sed -E 's/(^|[^0-9a-f])([0-9a-f]{7})[0-9a-f]{33}/\1\2/g'
+
 # Run a Capistrano task against a stage (staging or production) from the app container
 _cap stage profile task branch="develop":
     #!/usr/bin/env bash
