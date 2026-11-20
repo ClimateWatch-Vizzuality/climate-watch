@@ -230,8 +230,7 @@ function NDCSExploreMapContainer(props) {
       category: 'NDCS Explore Map',
       slugs: [
         'ndc_cw',
-        'ndc_wb',
-        'ndc_die',
+        'ndc_unido',
         'ndc_adaptation',
         'ndc_unicef',
         'ndc_finance'
