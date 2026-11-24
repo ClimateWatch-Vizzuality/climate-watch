@@ -1,0 +1,105 @@
+# Deploys staging with the same Capistrano deploy as `just deploy-staging`.
+# Setup and how it reaches the server: _docs/deploy.md
+name: Deploy staging
+
+on:
+  push:
+    branches: [develop]
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: Branch to deploy (the deploy settings come from the branch the workflow runs from)
+        required: true
+        default: develop
+
+permissions:
+  contents: read
+
+# One staging deploy at a time. A running deploy is never cancelled, since stopping
+# Capistrano halfway can leave a half-built release. A newer run waits, and replaces any
+# run that's already waiting, so staging ends up on the latest push.
+concurrency:
+  group: deploy-staging
+  cancel-in-progress: false
+
+jobs:
+  # Pushes to develop deploy only if the tests pass. Manual runs skip them: they've
+  # already run on the branch's own pushes.
+  tests:
+    if: github.event_name == 'push'
+    uses: ./.github/workflows/tests.yml
+
+  frontend-tests:
+    if: github.event_name == 'push'
+    uses: ./.github/workflows/frontend-tests.yml
+
+  deploy:
+    needs: [tests, frontend-tests]
+    if: ${{ !cancelled() && !contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled') }}
+    runs-on: ubuntu-22.04
+    timeout-minutes: 45
+    environment:
+      name: staging
+      url: https://staging.climatewatchdata.org
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - name: Get AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: us-east-1
+
+      - name: Deploy with Capistrano
+        env:
+          DEPLOY_BRANCH: ${{ inputs.branch || 'develop' }}
+          CW_STAGING_HOST: ${{ secrets.CW_STAGING_HOST }}
+          CW_STAGING_INSTANCE_ID: ${{ secrets.CW_STAGING_INSTANCE_ID }}
+          HOST_KEYS: ${{ vars.CW_STAGING_HOST_KEYS }}
+          # Shown in the server's revisions.log
+          USER: ${{ github.actor }} via GitHub Actions
+        run: |
+          for v in CW_STAGING_HOST CW_STAGING_INSTANCE_ID HOST_KEYS; do
+            [ -n "${!v}" ] || { echo "::error::Set $v on the staging environment"; exit 1; }
+          done
+          mkdir -p ~/.ssh && chmod 700 ~/.ssh
+          # net-ssh trusts a server it hasn't seen before, so list the server's own keys
+          while read -r type key; do
+            [ -n "$type" ] && echo "$CW_STAGING_HOST $type $key"
+          done <<< "$HOST_KEYS" > ~/.ssh/known_hosts
+          # Throwaway key for this run only. RSA in PEM format, as in the justfile's _cap.
+          ssh-keygen -q -t rsa -b 4096 -m PEM -N '' -C climate-watch-deploy -f ~/.ssh/id_rsa
+          # EC2 Instance Connect accepts a pushed key for 60 seconds, and Capistrano
+          # reconnects during a run, so keep pushing it until the deploy ends.
+          push_key() {
+            aws ec2-instance-connect send-ssh-public-key \
+              --instance-id "$CW_STAGING_INSTANCE_ID" --instance-os-user ubuntu \
+              --ssh-public-key "file://$HOME/.ssh/id_rsa.pub" >/dev/null
+          }
+          push_key
+          ( while sleep 45; do push_key 2>/dev/null || true; done ) &
+          trap 'kill $! 2>/dev/null || true' EXIT
+          bundle exec cap staging deploy
+
+      # Staging has basic auth in the app, so a 401 means Rails is up and answering.
+      # Passenger starts the new release on the first request; give it a few minutes.
+      - name: Check staging answers
+        run: |
+          for i in $(seq 1 18); do
+            code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 20 https://staging.climatewatchdata.org/ || true)
+            case "$code" in
+              2??|3??|401) echo "Staging answered $code"; exit 0 ;;
+            esac
+            echo "Attempt $i: got $code, trying again in 10 seconds"
+            sleep 10
+          done
+          echo "::error::Staging didn't answer within 3 minutes of the deploy"
+          exit 1
