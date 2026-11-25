@@ -38,9 +38,15 @@ Your AWS SSO role is what grants access. Before running it:
 The [Deploy staging workflow](https://github.com/ClimateWatch-Vizzuality/climate-watch/actions/workflows/deploy-staging.yml)
 runs the same Capistrano deploy:
 
-- on every push to `develop`, once Tests and Frontend Tests pass
+- on every push to `develop` that changes the site, once Tests and Frontend
+  Tests pass
 - by hand from the Actions tab (**Run workflow**), for any branch, without
   running the tests again
+
+A push that only changes files the site doesn't use (`infrastructure/`, the
+docs, `spec/`, other workflows, Docker and `just` files; see the `paths` list in
+the workflow) doesn't deploy. After one, `just rev-staging` shows an older commit
+than `develop`, but staging is serving the same site.
 
 A push to `develop` replaces whatever is on staging, including a feature branch
 deployed for review. Only one deploy runs at a time. A running deploy is never

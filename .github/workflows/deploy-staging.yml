@@ -5,6 +5,25 @@ name: Deploy staging
 on:
   push:
     branches: [develop]
+    # Skip pushes that only change files the site doesn't use. This lists what to
+    # leave out rather than what to deploy, so a file nobody thought of still deploys.
+    paths:
+      - '**'
+      - '!infrastructure/**'
+      - '!_docs/**'
+      - '!_config.yml'
+      - '!*.md'
+      - '!LICENSE'
+      - '!justfile'
+      - '!Dockerfile'
+      - '!docker-compose.yml'
+      - '!entrypoint.sh'
+      - '!.dockerignore'
+      - '!.env.sample'
+      - '!spec/**'
+      - '!.github/**'
+      # Must come after '!.github/**' to put this file back in
+      - '.github/workflows/deploy-staging.yml'
   workflow_dispatch:
     inputs:
       branch:
