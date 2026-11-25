@@ -81,7 +81,7 @@ list them).
 1. `just setup` creates `.env` from the sample. Docker Compose sets
    `POSTGRES_URL` and `REDIS_SERVER` itself, so the sample is enough to start.
 
-2. `just up` builds and starts the app, Sidekiq, Postgres and Redis. The app is
+2. `just up` starts the app, Sidekiq, Postgres and Redis. The app is
    served on `http://localhost:3000/` and the webpack dev server on port 3035.
    `docker-compose.yml` sets `WEBPACKER_DEV_SERVER_HOST=0.0.0.0`, because
    `config/webpacker.yml` binds the dev server to `localhost`, which the browser
@@ -93,6 +93,13 @@ list them).
    `Bootsnap::LoadPathCache::Store::NestedTransactionError`. After changing
    environment variables in `docker-compose.yml`, recreate the container with
    `docker compose up -d app`; `docker compose restart` keeps the old values.
+
+   `just up` only builds the image if it doesn't exist yet. The source is
+   mounted into the container, so code changes don't need a rebuild: Rails
+   reloads Ruby code on the next request and the webpack dev server recompiles
+   the JavaScript. After changing the `Gemfile`, `package.json` or the
+   `Dockerfile`, run `just build` and then `just up`, which recreates the
+   containers on the new image.
 
    The justfile builds and runs the containers as x86_64, because the Dockerfile
    installs the x64 build of Node 12. On Apple Silicon, turning on Docker
