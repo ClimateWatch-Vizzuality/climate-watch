@@ -4,8 +4,7 @@ name: Deploy staging
 
 on:
   push:
-    # TEMPORARY: test run from the PR branch; revert before merging
-    branches: [develop, feat/gha-staging-deploy]
+    branches: [develop]
   workflow_dispatch:
     inputs:
       branch:
