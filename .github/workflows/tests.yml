@@ -3,7 +3,10 @@ env:
   POSTGRES_PASSWORD: postgres
 
 name: Tests
-on: push
+on:
+  push:
+  # Also run by the staging deploy before it deploys
+  workflow_call:
 
 jobs:
   tests:

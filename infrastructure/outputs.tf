@@ -45,3 +45,8 @@ output "prod_cloudfront_domain" {
 output "staging_cloudfront_domain" {
   value = aws_cloudfront_distribution.environment["staging"].domain_name
 }
+
+output "github_deploy_staging_role_arn" {
+  value       = aws_iam_role.github_deploy_staging.arn
+  description = "Set as the AWS_DEPLOY_ROLE_ARN variable on the staging GitHub Environment"
+}
