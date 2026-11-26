@@ -23,3 +23,7 @@ output "host" {
 output "port" {
   value = module.db.db_instance_port
 }
+
+output "identifier" {
+  value = module.db.db_instance_id
+}

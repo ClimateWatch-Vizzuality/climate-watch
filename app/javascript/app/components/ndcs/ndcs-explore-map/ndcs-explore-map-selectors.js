@@ -31,7 +31,7 @@ import {
   INDICATOR_SLUGS,
   TOP_EMITTERS_OPTION
 } from 'data/constants';
-import { getSubmitted2020Isos } from 'utils/indicatorCalculations';
+import { getSubmitted2025Isos } from 'utils/indicatorCalculations';
 import {
   selectedLocationsFunction,
   selectedCountriesISOFunction,
@@ -270,6 +270,7 @@ export const getIndicatorsParsed = createSelector(
           return {
             label: i.name,
             value: i.slug,
+            order: i.order,
             categoryIds: i.category_ids,
             locations: i.locations,
             legendBuckets: i.labels,
@@ -278,7 +279,8 @@ export const getIndicatorsParsed = createSelector(
         }).filter((i) => i !== null),
         'value'
       ),
-      'label'
+      // Metadata sheet order, falling back to the label for ties
+      ['order', 'label']
     );
 
     parentIndicatorNames = uniq(parentIndicatorNames);
@@ -308,9 +310,27 @@ export const getSelectedCategory = createSelector(
   }
 );
 
+const ALPHABETICAL_INDICATOR_CATEGORIES = [
+  'sectoral_mitigation_measures',
+  'sectoral_adaptation_measures'
+];
+
 export const getCategoryIndicators = createSelector(
   [getIndicatorsParsed, getSelectedCategory],
-  (indicatorsParsed, selectedCategory) => categoryIndicatorsFunction(indicatorsParsed, selectedCategory)
+  (indicatorsParsed, selectedCategory) => {
+    const categoryIndicators = categoryIndicatorsFunction(
+      indicatorsParsed,
+      selectedCategory
+    );
+    // Sectoral measures indicators are generated per sector, not from the metadata sheet
+    if (
+      categoryIndicators &&
+      ALPHABETICAL_INDICATOR_CATEGORIES.includes(selectedCategory.value)
+    ) {
+      return sortBy(categoryIndicators, 'label');
+    }
+    return categoryIndicators;
+  }
 );
 
 export const getSelectedIndicator = createSelector(
@@ -527,9 +547,9 @@ export const getSummaryCardData = createSelector(
   ) => {
     if (!indicators) return null;
     const submittedIndicator = indicators.find(
-      ind => ind.slug === INDICATOR_SLUGS.enhancements
+      ind => ind.slug === INDICATOR_SLUGS.submitted2025
     );
-    const submittedIsos = getSubmitted2020Isos(submittedIndicator);
+    const submittedIsos = getSubmitted2025Isos(submittedIndicator);
     if (!submittedIsos || !submittedIsos.length) return null;
     const submittedCountriesAndParties = getCountriesAndParties(submittedIsos);
     return [
@@ -538,7 +558,7 @@ export const getSummaryCardData = createSelector(
           ? submittedCountriesAndParties.partiesNumber
           : selectedCountriesISO.length,
         description: isDefaultLocationSelected
-          ? ` Parties (representing ${submittedCountriesAndParties.countriesNumber} countries) have submitted their new or updated NDCs. `
+          ? ` Parties (representing ${submittedCountriesAndParties.countriesNumber} countries) have submitted their NDC 3.0s. `
           : ` Parties (representing ${arrayToSentence(locationNames)})`
       }
     ];

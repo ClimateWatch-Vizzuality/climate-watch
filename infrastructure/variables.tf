@@ -57,3 +57,15 @@ variable "rds_backup_retention_period" {
   default     = 7
   description = "Time in days to keep db backups"
 }
+
+variable "slack_workspace_id" {
+  type        = string
+  default     = null
+  description = "Slack workspace (team) ID connected to the AWS account for alarm notifications"
+}
+
+variable "slack_channel_id" {
+  type        = string
+  default     = null
+  description = "Slack channel ID the alarms are posted to; no Slack notifications when null"
+}

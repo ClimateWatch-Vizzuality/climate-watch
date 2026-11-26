@@ -19,7 +19,8 @@ import {
   NDC_2025_LABEL_COLORS,
   INDICATOR_SLUGS,
   COMPARISON_2025_INDICATORS_ORDER,
-  WITHDRAWN_NDC_COLOR
+  WITHDRAWN_NDC_COLOR,
+  NOT_APPLICABLE_COLOR
 } from 'data/constants';
 
 const NDC_2025_SLUGS = {
@@ -265,7 +266,6 @@ export const sortIndicatorLegend = createSelector(
   }
 );
 
-const NOT_APPLICABLE_COLOR = '#CCCDCF';
 const MAP_LABEL_COLORS = [
   ...Object.values(NDC_2025_LABEL_COLORS),
   NOT_APPLICABLE_COLOR
